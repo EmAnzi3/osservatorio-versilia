@@ -159,6 +159,40 @@ def test_documented_non_municipal_rule_resolves_recent_candidate() -> None:
     assert result["counts"]["regionalDocumentedExcluded"] == 1
 
 
+def test_family_nidi_reopening_is_excluded_from_municipal_completeness() -> None:
+    title = "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie"
+    url = "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie"
+    detail = (
+        "Riaperte le domande delle famiglie. "
+        "I genitori/tutori presentano domanda mediante l'applicativo regionale."
+    )
+    assert guard._is_family_only_nidi_application(title, url, detail)
+    assert not guard._is_family_only_nidi_application(
+        "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni",
+        "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni",
+        "I Comuni presentano adesione.",
+    )
+
+    candidate = {
+        "title": title,
+        "url": url,
+        "summary": detail,
+        "published_at": "2026-09-28",
+        "age_days": 4,
+        "deadline_at": "2026-10-26",
+        "applicant_scope": "families_only",
+    }
+    result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
+    guard.apply(result, date(2026, 10, 2), candidates=[candidate])
+    regional = result["regionalCompleteness"]
+    assert regional["status"] == "pass", regional
+    assert regional["overdue"] == []
+    assert regional["documentedExcluded"][0]["account_state"] == "documented_exclusion"
+    assert "genitori/tutori" in regional["documentedExcluded"][0]["reason"]
+    assert result["coverageHold"] == []
+    assert result["discoveryQueue"] == []
+
+
 def test_overdue_unresolved_candidate_blocks_publish() -> None:
     result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
     guard.apply(result, TODAY, candidates=[_candidate(age_days=guard.REVIEW_GRACE_DAYS + 1)])
@@ -255,6 +289,7 @@ def main() -> int:
     test_cross_source_market_identity_is_reconciled()
     test_cross_source_microzonation_identity_is_reconciled()
     test_missing_recent_candidate_enters_discovery()
+    test_family_nidi_reopening_is_excluded_from_municipal_completeness()
     test_documented_non_municipal_rule_resolves_recent_candidate()
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
