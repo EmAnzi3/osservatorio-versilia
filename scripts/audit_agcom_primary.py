@@ -314,8 +314,28 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
             data_rows = parsed[header_index + 1 :]
             break
     if data_rows is None:
+        stripped=text.lstrip()
+        payload_diag=""
+        if stripped.startswith(("{","[")):
+            try:
+                parsed_json=json.loads(stripped)
+                urls=[]
+                def walk(value):
+                    if isinstance(value,dict):
+                        for child in value.values(): walk(child)
+                    elif isinstance(value,list):
+                        for child in value: walk(child)
+                    elif isinstance(value,str) and value.startswith(("https://","http://")):
+                        urls.append(value)
+                walk(parsed_json)
+                keys=list(parsed_json)[:30] if isinstance(parsed_json,dict) else []
+                payload_diag=f"; jsonKeys={keys}; urls={urls[:20]}"
+            except json.JSONDecodeError:
+                payload_diag="; JSON-like ma non decodificabile"
+        else:
+            payload_diag=f"; prefix={text[:300]!r}"
         raise base.DataError(
-            "CSV AGCOM: schema/delimitatore inatteso (" + ", ".join(diagnostics) + ")"
+            "CSV AGCOM: schema/delimitatore inatteso (" + ", ".join(diagnostics) + ")" + payload_diag
         )
 
     result: dict[str, dict[str, Any]] = {}

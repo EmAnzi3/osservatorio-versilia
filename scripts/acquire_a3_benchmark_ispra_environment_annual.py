@@ -112,12 +112,16 @@ def official_national_2024():
     table=src.Tables(); table.feed(fetch_url(NATIONAL_URL))
     hits=[]
     for row in table.rows:
-        if len(row)<3 or str(row[0]).strip()!="2024": continue
-        rd=src.number(row[1]); ru=src.number(row[2])
-        if rd is None or ru is None or ru<=0: continue
-        hits.append({"rdTonnes":rd,"ruTonnes":ru,"recycling":rd/ru*100.0})
+        if len(row)<7 or src.norm(row[0])!="italia": continue
+        population=population_number(row[1])
+        rd=src.number(row[2]); ru=src.number(row[3]); pct=percent_number(row[4])
+        if None in (population,rd,ru,pct) or ru<=0: continue
+        hits.append({
+            "population":population,"rdTonnes":rd,"ruTonnes":ru,
+            "recycling":rd/ru*100.0,"publishedRecycling":pct,"rawRow":row
+        })
     if len(hits)!=1:
-        raise RuntimeError(f"ISPRA: totale nazionale 2024 non univoco {hits}")
+        raise RuntimeError(f"ISPRA: riga nazionale ITALIA 2024 non univoca {hits}")
     return hits[0]
 
 def official_regional_costs():
