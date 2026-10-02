@@ -78,7 +78,7 @@ def main()->None:
         selected[code]=row
     if set(selected)!=(codes-{"046030"}):
         raise RuntimeError(f"Biblioteche: copertura 2024 inattesa present={sorted(selected)}")
-    benchmarks={}; errors=[]
+    benchmarks={}; errors=[]; coverage={}
     tolerances={"libraryActiveBorrowersPer100":.011,"libraryLoansPerResident":.011,"libraryWeeklyOpeningHours":.011}
     snapshot_field={
       "libraryActiveBorrowersPer100":"Indice di impatto Comunale",
@@ -100,8 +100,18 @@ def main()->None:
             available+=1
             tv=number(row.get(tk))
             if tv is not None: tus.append(tv)
-        if available!=5:
-            errors.append(f"{mid}: copertura numerica {available}/7 != 5/7 governata")
+        expected_numeric=sum(
+            1 for code in codes
+            if number((current[code].get("selectedIndicatorRow") or {}).get(snapshot_field[mid])) is not None
+        )
+        coverage[mid]={
+          "sourceRowsPresent":len(selected),
+          "numericReconciled":available,
+          "expectedNumeric":expected_numeric,
+          "accountedTownCodes":sorted(codes),
+        }
+        if available!=expected_numeric:
+            errors.append(f"{mid}: copertura numerica {available}/7 != {expected_numeric}/7 governata")
         distinct=[]
         for v in tus:
             if not any(math.isclose(v,x,rel_tol=0.0,abs_tol=1e-9) for x in distinct): distinct.append(v)
@@ -115,7 +125,7 @@ def main()->None:
     payload={"schemaVersion":2,"publisher":"Regione Toscana","profileId":"regione-toscana-biblioteche-annual",
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED","sourceUrl":LANDING,
       "dataUrl":URL,"referenceYear":year,"benchmarks":benchmarks,
-      "qualityGate":{"status":gate,"publicReconciliation":"3 metrics × 5/7 numeric + Massarosa/Stazzema n.d. governed PASS" if gate=="PASS" else "FAIL","missingPolicy":"Massarosa n.d.; Stazzema absent; no zero imputation","errors":errors}}
+      "qualityGate":{"status":gate,"publicReconciliation":"3 metrics × governed town scope PASS" if gate=="PASS" else "FAIL","missingPolicy":"Massarosa n.d.; Stazzema absent; no zero imputation","coverage":coverage,"errors":errors}}
     out=Path(a.output); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(benchmarks),"year":year,"errors":errors[:20]},ensure_ascii=False))
 if __name__=="__main__": main()
