@@ -167,6 +167,8 @@ def test_family_nidi_reopening_is_excluded_from_municipal_completeness() -> None
         "I genitori/tutori presentano domanda mediante l'applicativo regionale."
     )
     assert guard._is_family_only_nidi_application(title, url, detail)
+    slash_only_detail = "La domanda deve essere presentata dai genitori/tutori."
+    assert guard._is_family_only_nidi_application(title, url, slash_only_detail)
     assert not guard._is_family_only_nidi_application(
         "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni",
         "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni",
