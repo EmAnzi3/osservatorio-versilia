@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import io
 import json
 import math
@@ -18,6 +19,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from collections import deque
 from pathlib import Path
 from typing import Any
@@ -258,6 +260,30 @@ def parse_pct(value: str) -> float | None:
 
 
 def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
+    if body.startswith(b"PK\x03\x04"):
+        try:
+            with zipfile.ZipFile(io.BytesIO(body)) as archive:
+                members=[
+                    name for name in archive.namelist()
+                    if not name.endswith("/") and name.lower().endswith((".csv",".txt"))
+                ]
+                failures=[]
+                for name in members:
+                    try:
+                        return parse_csv(archive.read(name))
+                    except base.DataError as exc:
+                        failures.append(f"{name}: {exc}")
+                raise base.DataError(
+                    "Archivio AGCOM senza CSV compatibile: " + " | ".join(failures[:10])
+                )
+        except zipfile.BadZipFile as exc:
+            raise base.DataError(f"Archivio AGCOM ZIP non valido: {exc}") from exc
+    if body.startswith(b"\x1f\x8b"):
+        try:
+            return parse_csv(gzip.decompress(body))
+        except OSError as exc:
+            raise base.DataError(f"Payload AGCOM gzip non valido: {exc}") from exc
+
     text = None
     for encoding in ("utf-8-sig", "cp1252", "latin-1"):
         try:
