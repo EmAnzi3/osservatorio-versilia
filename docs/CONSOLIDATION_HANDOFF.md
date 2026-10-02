@@ -2,7 +2,17 @@
 
 Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata al consolidamento.
 
-## Stato corrente
+## Workstream A3 benchmark attivo — PR #304
+
+- Branch `feat/a3-benchmark-available-missing`, base `fix/a3-enrichment-publication-gap`; OPEN/DRAFT, non mergiare.
+- Certificato dal run `36984935304`, head `b59a35e7f5a2af1f96060f0b9ed2f32923239476`: 112/112 benchmark pubblici, 0 gap, 101 AVAILABLE_MISSING, 81 chiusi su baseline 182. Spesa sociale per residente ACQUIRED.
+- ISPRA costa 2020: candidato PASS da run `36982743711`, artifact `11216461886`; fan-in locale, riconciliazione 4 costieri + 3 n.a.; ACQUIRED soltanto dopo il nuovo publication gate.
+- OpenBDAP: candidato rigettato, 271/273 Comuni Toscana; nessun aggregato pubblicato. Restano distinti SIOPE, compositi e formule non certificate.
+- Corretto il falso failure del fan-in senza diff; invariati perimetro file e soglia diff.
+- QA locale: contratti sorgente/dati e idempotenza biblioteche PASS; preflight quick eseguito con `OV_RELEASE_BUILD=1`, bloccato al prerender per Chromium assente (download browser non valido nel runtime). Nessun gate indebolito; certificazione pubblica demandata al run completo GitHub.
+- Prossima azione: leggere il nuovo publication gate, poi audit fonte/contratto sui residui. Nessuna chiusura A3 dichiarata; preservare golden master A5.
+
+## Stato A5 congelato
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0

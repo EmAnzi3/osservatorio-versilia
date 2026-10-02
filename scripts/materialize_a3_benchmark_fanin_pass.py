@@ -21,6 +21,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-libraries-benchmark-2024.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-business-benchmark-2023.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
+    ROOT / "data" / "source-snapshots" / "a3-ispra-coast-benchmark-2020.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -52,12 +53,40 @@ def public_rows(metric: dict[str, Any], metric_id: str) -> list[dict[str, Any]]:
     rows = metric.get("rows") or []
     if len(rows) != 7:
         raise RuntimeError(f"{metric_id}: righe pubbliche {len(rows)} != 7")
+    if metric_id == "rigidDefenceProtectedCoast":
+        validate_coast_public(rows)
+        return rows
     for row in rows:
         value=row.get("value")
         if metric_id in ALLOW_MISSING_PUBLIC and value is None:
             continue
         finite(value, f"{metric_id}/{row.get('code') or row.get('town')}")
     return rows
+
+def validate_coast_public(rows: list[dict[str, Any]]) -> None:
+    coastal = {"046005", "046013", "046024", "046033"}
+    not_applicable = {"046018", "046028", "046030"}
+    codes = [str(row.get("code") or "") for row in rows]
+    if len(set(codes)) != 7 or set(codes) != coastal | not_applicable:
+        raise RuntimeError("rigidDefenceProtectedCoast: perimetro pubblico diverso da 4 costieri + 3 n.a.")
+    source = load(ROOT / "data/source-snapshots/costa-mare-v123.json")
+    towns = (source.get("rigidDefenceProtectedCoast2020") or {}).get("towns") or {}
+    if set(towns) != coastal:
+        raise RuntimeError("rigidDefenceProtectedCoast: perimetro snapshot costiero inatteso")
+    for row in rows:
+        code = str(row["code"])
+        if code in not_applicable:
+            if row.get("value") is not None or row.get("notApplicable") is not True:
+                raise RuntimeError(f"rigidDefenceProtectedCoast/{code}: n.a. esplicito richiesto")
+            continue
+        raw = towns[code]
+        denominator = finite(raw.get("coastKm"), f"coastKm/{code}")
+        if denominator <= 0:
+            raise RuntimeError(f"rigidDefenceProtectedCoast/{code}: denominatore non positivo")
+        expected = finite(raw.get("protectedKm"), f"protectedKm/{code}") / denominator * 100
+        observed = finite(row.get("value"), f"rigidDefenceProtectedCoast/{code}")
+        if not math.isclose(observed, expected, rel_tol=0.0, abs_tol=.011):
+            raise RuntimeError(f"rigidDefenceProtectedCoast/{code}: {observed} != {expected}")
 
 def validate_agriculture_public(site: dict[str, Any]) -> None:
     source = load(AGRICULTURE_PUBLIC_SOURCE)

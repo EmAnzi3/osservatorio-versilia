@@ -27035,7 +27035,16 @@
         "comparisonDifference": "percentagePoints",
         "comparisonLabel": "quota Versilia",
         "comparisonOverline": "Rispetto alla quota Versilia",
-        "comparisonNote": "La quota Versilia è il rapporto tra i chilometri complessivamente protetti e la costa complessiva dei quattro Comuni costieri; non è la media semplice delle percentuali comunali."
+        "comparisonNote": "La quota Versilia è il rapporto tra i chilometri complessivamente protetti e la costa complessiva dei quattro Comuni costieri; non è la media semplice delle percentuali comunali.",
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 12.8343943672,
+          "italy": 18.20385170208589,
+          "source": "ISPRA — Costa protetta",
+          "url": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-coast-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
       "rows": [

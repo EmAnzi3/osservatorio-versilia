@@ -1,5 +1,5 @@
 name: A3 Benchmark fan-in materialization
-# controlled fan-in revision 5
+# controlled fan-in revision 6
 
 on:
   pull_request:
@@ -56,6 +56,10 @@ jobs:
         run: |
           git diff --name-only > /tmp/a3-fanin-changed.txt
           cat /tmp/a3-fanin-changed.txt
+          if [[ ! -s /tmp/a3-fanin-changed.txt ]]; then
+            echo "No catalog changes; PASS candidates already materialized" | tee /tmp/a3-fanin-stat.txt
+            exit 0
+          fi
           test "$(cat /tmp/a3-fanin-changed.txt)" = "data/site-data.json"
           read ADDED DELETED FILE <<< "$(git diff --numstat -- data/site-data.json)"
           echo "added=$ADDED deleted=$DELETED file=$FILE"

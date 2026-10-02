@@ -378,6 +378,36 @@
       "path": ".github/workflows/a5-municipal-rollout-cohort.yml",
       "category": "specialized-gate",
       "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-available-missing.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-bulk-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-candidate-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-fanin-materialize.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-parallel-fanout.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-source-probes.yml",
+      "category": "specialized-gate",
+      "status": "active"
     }
   ]
 }
