@@ -20,6 +20,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-ispra-soil-benchmark-2024.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-libraries-benchmark-2024.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-business-benchmark-2023.json",
+    ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
