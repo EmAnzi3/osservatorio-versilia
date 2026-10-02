@@ -8,9 +8,11 @@ import requests
 
 ROOT=Path(__file__).resolve().parents[1]
 LOCAL=ROOT/"data/source-snapshots/agid-asia-agcom-2026-08.json"
-DATASET="ISTAT/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7"
-API=f"https://api.db.nomics.world/v22/series/{DATASET}"
-OFFICIAL_URL="https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7"
+MUNICIPAL_DATASET="ISTAT/183_285_DF_DICA_ASIAULP_7"
+NATIONAL_DATASET="ISTAT/183_285_DF_DICA_ASIAULP_4"
+MUNICIPAL_API=f"https://api.db.nomics.world/v22/series/{MUNICIPAL_DATASET}"
+NATIONAL_API=f"https://api.db.nomics.world/v22/series/{NATIONAL_DATASET}"
+OFFICIAL_URL="https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_285_DF_DICA_ASIAULP_7"
 TUSCANY_PREFIXES={"045","046","047","048","049","050","051","052","053","100"}
 YEARS={2018,2023}
 PAGE=1000
@@ -23,15 +25,15 @@ def six(v:Any)->str:
     else:
         digits=re.sub(r"\D","",raw)
     return digits.zfill(6) if 1<=len(digits)<=6 else ""
-def request_docs(session:requests.Session,dims:dict[str,list[str]],offset:int=0,limit:int=PAGE)->dict:
-    r=session.get(API,params={"dimensions":json.dumps(dims,separators=(",",":")),"observations":"1","limit":str(limit),"offset":str(offset)},timeout=180)
+def request_docs(session:requests.Session,api:str,dims:dict[str,list[str]],offset:int=0,limit:int=PAGE)->dict:
+    r=session.get(api,params={"dimensions":json.dumps(dims,separators=(",",":")),"observations":"1","limit":str(limit),"offset":str(offset)},timeout=180)
     r.raise_for_status()
     return r.json().get("series") or {}
 def fetch_type(session:requests.Session,data_type:str)->dict[str,dict[int,float]]:
     dims={"FREQ":["A"],"PERS_EMPL_SIZE_CLASS":["TOTAL"],"DATA_TYPE":[data_type],"ECON_ACTIVITY_NACE_2007":["0010"]}
     out={}; offset=0; expected=None
     while expected is None or offset<expected:
-        p=request_docs(session,dims,offset)
+        p=request_docs(session,MUNICIPAL_API,dims,offset)
         expected=int(p.get("num_found") or 0); docs=p.get("docs") or []
         if expected<=0: return {}
         for doc in docs:
@@ -50,16 +52,29 @@ def fetch_type(session:requests.Session,data_type:str)->dict[str,dict[int,float]
     return out
 def discover_types(session:requests.Session)->list[str]:
     dims={"FREQ":["A"],"PERS_EMPL_SIZE_CLASS":["TOTAL"],"ECON_ACTIVITY_NACE_2007":["0010"]}
-    p=request_docs(session,dims,0,300)
+    p=request_docs(session,MUNICIPAL_API,dims,0,300)
     return sorted({str((doc.get("dimensions") or {}).get("DATA_TYPE") or "").strip() for doc in p.get("docs") or [] if str((doc.get("dimensions") or {}).get("DATA_TYPE") or "").strip()})
-def scope_sum(values:dict[str,dict[int,float]],year:int,scope:str)->tuple[float,int]:
-    vals=[]
-    for code,series in values.items():
-        if year not in series: continue
-        if scope=="tuscany" and code[:3] not in TUSCANY_PREFIXES: continue
-        vals.append(series[year])
-    if not vals: raise RuntimeError(f"ASIA-UL: scope vuoto {scope}/{year}")
+def tuscany_sum(values:dict[str,dict[int,float]],year:int)->tuple[float,int]:
+    vals=[series[year] for code,series in values.items() if code[:3] in TUSCANY_PREFIXES and year in series]
+    if not vals: raise RuntimeError(f"ASIA-UL: Toscana vuota {year}")
     return sum(vals),len(vals)
+
+def national_series(session:requests.Session,data_type:str)->dict[int,float]:
+    dims={"FREQ":["A"],"REF_AREA":["IT"],"PERS_EMPL_SIZE_CLASS":["TOTAL"],"DATA_TYPE":[data_type],"ECON_ACTIVITY_NACE_2007":["0010"]}
+    p=request_docs(session,NATIONAL_API,dims,0,20)
+    docs=p.get("docs") or []
+    matches=[]
+    for doc in docs:
+        if str((doc.get("dimensions") or {}).get("REF_AREA") or "")!="IT": continue
+        values={}
+        for period,value in zip(doc.get("period") or [],doc.get("value") or []):
+            try:y=int(str(period)[:4]); x=float(value)
+            except Exception: continue
+            if y in YEARS and math.isfinite(x): values[y]=x
+        if values: matches.append(values)
+    if len(matches)!=1 or set(matches[0])!=YEARS:
+        raise RuntimeError(f"ASIA-UL Italia {data_type}: serie non univoca/completa {matches}")
+    return matches[0]
 def local_reconciliation(values:dict[str,dict[int,float]],local:dict,field:str)->list[str]:
     errors=[]
     for town in local.get("towns") or []:
@@ -74,16 +89,16 @@ def local_reconciliation(values:dict[str,dict[int,float]],local:dict,field:str)-
 def main()->None:
     ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
     local=json.loads(LOCAL.read_text(encoding="utf-8"))
-    session=requests.Session(); session.headers["User-Agent"]="OsservatorioVersilia-A3-ASIAUL-benchmark/2.0"
+    session=requests.Session(); session.headers["User-Agent"]="OsservatorioVersilia-A3-ASIAUL-benchmark/3.0"
     units=fetch_type(session,"LU")
     unit_errors=local_reconciliation(units,local,"localUnits")
     blocked={}; benchmarks={}; scopes={}; discovered=[]
     if not unit_errors:
-        for scope in ("tuscany","italy"):
-            u18,c18=scope_sum(units,2018,scope); u23,c23=scope_sum(units,2023,scope)
-            scopes.setdefault(scope,{})["units"]={"2018":u18,"2023":u23,"coverage2018":c18,"coverage2023":c23}
-            if scope=="tuscany" and c23!=273: unit_errors.append(f"Toscana LU coverage {c23} != 273")
-            if scope=="italy" and c23<7800: unit_errors.append(f"Italia LU coverage insufficiente {c23}")
+        u18,c18=tuscany_sum(units,2018); u23,c23=tuscany_sum(units,2023)
+        scopes["tuscany"]={"units":{"2018":u18,"2023":u23,"coverage2018":c18,"coverage2023":c23}}
+        if c18!=273 or c23!=273: unit_errors.append(f"Toscana LU coverage 2018/2023 {c18}/{c23} != 273/273")
+        italy_units=national_series(session,"LU")
+        scopes["italy"]={"units":{"2018":italy_units[2018],"2023":italy_units[2023],"coverage2018":1,"coverage2023":1}}
     if not unit_errors:
         for scope,d in scopes.items(): d["units"]["change"]=(d["units"]["2023"]/d["units"]["2018"]-1.0)*100.0
         benchmarks["localUnits"]={"year":"2023","unit":"number","formula":"unità locali attive","tuscany":scopes["tuscany"]["units"]["2023"],"italy":scopes["italy"]["units"]["2023"]}
@@ -108,11 +123,11 @@ def main()->None:
 
     if employee_type:
         emp_errors=[]
-        for scope in ("tuscany","italy"):
-            e18,c18=scope_sum(employees,2018,scope); e23,c23=scope_sum(employees,2023,scope)
-            scopes.setdefault(scope,{})["employees"]={"2018":e18,"2023":e23,"coverage2018":c18,"coverage2023":c23}
-            if scope=="tuscany" and c23!=273: emp_errors.append(f"Toscana EMP coverage {c23} != 273")
-            if scope=="italy" and c23<7800: emp_errors.append(f"Italia EMP coverage insufficiente {c23}")
+        e18,c18=tuscany_sum(employees,2018); e23,c23=tuscany_sum(employees,2023)
+        scopes["tuscany"]["employees"]={"2018":e18,"2023":e23,"coverage2018":c18,"coverage2023":c23}
+        if c18!=273 or c23!=273: emp_errors.append(f"Toscana EMP coverage 2018/2023 {c18}/{c23} != 273/273")
+        italy_emp=national_series(session,employee_type)
+        scopes["italy"]["employees"]={"2018":italy_emp[2018],"2023":italy_emp[2023],"coverage2018":1,"coverage2023":1}
         if not emp_errors and "localUnits" in benchmarks:
             for scope,d in scopes.items():
                 d["employees"]["change"]=(d["employees"]["2023"]/d["employees"]["2018"]-1.0)*100.0
@@ -131,7 +146,7 @@ def main()->None:
     blocked["microUnits"]="richiede la distribuzione per classe dimensionale ASIA-UL; non inferita dal totale"
     status="ACQUIRED_CANDIDATE" if benchmarks else "CANDIDATE_REJECTED"
     payload={"schemaVersion":2,"publisher":"Istat — ASIA Unità Locali","profileId":"istat-business-annual","status":status,
-      "officialSourceUrl":OFFICIAL_URL,"retrievalMirror":"DBnomics mirror of Istat SDMX","dataset":DATASET,
+      "officialSourceUrl":OFFICIAL_URL,"retrievalMirror":"DBnomics mirror of Istat SDMX","municipalDataset":MUNICIPAL_DATASET,"nationalDataset":NATIONAL_DATASET,
       "employeeDataType":employee_type,"discoveredDataTypes":discovered,"benchmarks":benchmarks,"scopes":scopes,
       "qualityGate":{"status":"PASS" if benchmarks else "FAIL","publicSnapshotReconciliation":"metric-level 7/7 × 2018/2023","unitErrors":unit_errors},
       "blocked":blocked}
