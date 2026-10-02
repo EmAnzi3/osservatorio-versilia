@@ -26,6 +26,8 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-istat-water-benchmark-2018.json",
     ROOT / "data" / "source-snapshots" / "a3-toscana-early-childhood-benchmark-2024-25.json",
     ROOT / "data" / "source-snapshots" / "a3-toscana-hydraulic-features-benchmark-2021.json",
+    ROOT / "data" / "source-snapshots" / "a3-mef-real-income-benchmark-2024.json",
+    ROOT / "data" / "source-snapshots" / "a3-istat-tourism-capacity-benchmark-2024.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -245,6 +247,12 @@ def main() -> None:
                 validate_services_public(metric, metric_id, snapshot)
             if metric_id == 'hydraulicWorksCensusElements':
                 validate_hydraulic_public(metric, snapshot)
+            if metric_id in ('tourismBeds','tourismBedsPer1000','tourismStructuresPer1000'):
+                from acquire_a3_benchmark_istat_tourism_annual import validate_snapshot
+                validate_snapshot(metric, snapshot, site['metrics']['population'])
+            if metric_id == 'incomeVsInflation':
+                from acquire_a3_benchmark_mef_istat_real_income_annual import validate_snapshot
+                validate_snapshot(metric, snapshot)
             meta = metric.setdefault("meta", {})
             year = str(benchmark.get("year") or "").strip()
             unit = str(benchmark.get("unit") or "").strip()
@@ -284,7 +292,7 @@ def main() -> None:
                 "source": snapshot.get("publisher"),
                 "url": source_url,
                 "sourceSnapshot": snapshot_ref,
-                "note": (snapshot["scope"]["note"] if metric_id in ('blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
+                "note": (snapshot["scope"]["note"] if metric_id in ('blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements','incomeVsInflation','tourismBeds','tourismBedsPer1000','tourismStructuresPer1000') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
             }
             published.append(metric_id)
 

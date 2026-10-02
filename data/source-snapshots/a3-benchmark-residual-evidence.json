@@ -63,7 +63,25 @@
     },
     "openbdap-annual": {
       "worker": "scripts/acquire_a3_benchmark_openbdap_annual.py",
-      "evidenceSnapshot": "data/source-snapshots/a3-openbdap-benchmark-diagnostic-2025.json"
+      "evidenceSnapshot": "data/source-snapshots/a3-openbdap-benchmark-diagnostic-2025.json",
+      "latestCoverageVerification": {
+        "archiveSha256": "0b8dc17b69c4cc0fb80c1d20755f5983113e59c405ded472fdf2e7cdb9296372",
+        "memberCoverage": {
+          "entrate": 271,
+          "spese": 271,
+          "missioni": 271,
+          "risultato": 271
+        },
+        "missingMunicipalities": [
+          "045016",
+          "048026"
+        ],
+        "supplementAttempt": {
+          "Marradi": "Elenco ufficiale degli allegati rendiconto 2025 individuato; endpoint documentale risponde HTTP 502 nel runtime, nessun valore estratto.",
+          "Villafranca": "Portale trasparenza ufficiale individuato; pagina protetta da CAPTCHA nel runtime, nessun allegato 2025 acquisito.",
+          "rule": "Problemi di accesso non sono prove di indisponibilità; nessun valore assente trattato come zero."
+        }
+      }
     },
     "health-ministry-annual": {
       "workflowRun": 36982743711,
@@ -1210,6 +1228,10 @@
           "nextAction": "Risolvere il dataflow/export capacità 2024 e la classificazione delle strutture; controllare i sette conteggi e i totali senza cambiare anno o perimetro.",
           "evidenceFiles": []
         }
+      },
+      "acquisitionEvidence": {
+        "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+        "gate": "CANDIDATE PASS; public acquisition pending complete publication gate"
       }
     },
     "regione-toscana-early-childhood": {
@@ -2996,21 +3018,162 @@
       },
       "metricDiagnoses": {
         "tourismBedsPer1000": {
-          "diagnosis": "STOCK_PERIMETER_AND_DENOMINATOR_UNRESOLVED",
-          "reason": "Il pubblico richiede stock comunale 2025 di posti letto/strutture diviso per popolazione residente. Le tavole governate già acquisite riguardano movimenti (arrivi/presenze), non consistenza dell’offerta. Il precedente audit delle locazioni turistiche ha solo righe provinciali; il probe live del landing offerta 2025 non ha acquisito un export comunale compatibile. Non è verificata la delimitazione alberghiero/extralberghiero/locazioni né il denominatore dello stesso anno. Non è ammesso ripartire Lucca sui Comuni o confondere posti letto e presenze.",
-          "nextAction": "Acquisire tabella comunale 2025 della consistenza con la stessa inclusione delle locazioni e denominatore; riconciliare 7/7 prima di sommare la Toscana.",
+          "diagnosis": "REFERENCE_METADATA_CORRECTED_SOURCE_PANEL_VERIFIED",
+          "reason": "Riconciliazione esatta 7/7 prova che i conteggi pubblici sono Istat 2024, non consistenza media Regione Toscana 2025. Anno/fonte corretti; valori delle righe invariati. Denominatore pubblico al 1° gennaio 2026 esplicitato e conservato; stessa definizione applicata ai benchmark. Il perimetro Istat 2025 amplia le locazioni e non è usato come sostituto.",
+          "nextAction": "Verificare il gate pubblico sul candidato materializzato; se la metrica torna nel backlog, verificare la materializzazione del benchmark, non riaprire l’acquisizione fonte già riconciliata.",
           "evidenceFiles": [
-            "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json"
+            "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+            "scripts/acquire_a3_benchmark_istat_tourism_annual.py"
           ]
         },
         "tourismStructuresPer1000": {
-          "diagnosis": "STOCK_PERIMETER_AND_DENOMINATOR_UNRESOLVED",
-          "reason": "Il pubblico richiede stock comunale 2025 di posti letto/strutture diviso per popolazione residente. Le tavole governate già acquisite riguardano movimenti (arrivi/presenze), non consistenza dell’offerta. Il precedente audit delle locazioni turistiche ha solo righe provinciali; il probe live del landing offerta 2025 non ha acquisito un export comunale compatibile. Non è verificata la delimitazione alberghiero/extralberghiero/locazioni né il denominatore dello stesso anno. Non è ammesso ripartire Lucca sui Comuni o confondere posti letto e presenze.",
-          "nextAction": "Acquisire tabella comunale 2025 della consistenza con la stessa inclusione delle locazioni e denominatore; riconciliare 7/7 prima di sommare la Toscana.",
+          "diagnosis": "REFERENCE_METADATA_CORRECTED_SOURCE_PANEL_VERIFIED",
+          "reason": "Riconciliazione esatta 7/7 prova che i conteggi pubblici sono Istat 2024, non consistenza media Regione Toscana 2025. Anno/fonte corretti; valori delle righe invariati. Denominatore pubblico al 1° gennaio 2026 esplicitato e conservato; stessa definizione applicata ai benchmark. Il perimetro Istat 2025 amplia le locazioni e non è usato come sostituto.",
+          "nextAction": "Verificare il gate pubblico sul candidato materializzato; se la metrica torna nel backlog, verificare la materializzazione del benchmark, non riaprire l’acquisizione fonte già riconciliata.",
           "evidenceFiles": [
-            "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json"
+            "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+            "scripts/acquire_a3_benchmark_istat_tourism_annual.py"
           ]
         }
+      },
+      "capacityReconciliation2024": {
+        "tourismBedsPer1000": [
+          {
+            "code": "046018",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 868,
+            "publicPopulation": 21782,
+            "publicValue": 39.84941694977504,
+            "recomputed": 39.84941694977504
+          },
+          {
+            "code": "046033",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 15283,
+            "publicPopulation": 60680,
+            "publicValue": 251.8622280817403,
+            "recomputed": 251.8622280817403
+          },
+          {
+            "code": "046005",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 7052,
+            "publicPopulation": 31763,
+            "publicValue": 222.01933066775808,
+            "recomputed": 222.01933066775808
+          },
+          {
+            "code": "046024",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 6381,
+            "publicPopulation": 22678,
+            "publicValue": 281.37401887291645,
+            "recomputed": 281.37401887291645
+          },
+          {
+            "code": "046028",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 584,
+            "publicPopulation": 12284,
+            "publicValue": 47.54151742103549,
+            "recomputed": 47.54151742103549
+          },
+          {
+            "code": "046013",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 4279,
+            "publicPopulation": 6550,
+            "publicValue": 653.2824427480915,
+            "recomputed": 653.2824427480915
+          },
+          {
+            "code": "046030",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 256,
+            "publicPopulation": 2783,
+            "publicValue": 91.98706431908013,
+            "recomputed": 91.98706431908013
+          }
+        ],
+        "tourismStructuresPer1000": [
+          {
+            "code": "046018",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 52,
+            "publicPopulation": 21782,
+            "publicValue": 2.3872922596639428,
+            "recomputed": 2.3872922596639428
+          },
+          {
+            "code": "046033",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 205,
+            "publicPopulation": 60680,
+            "publicValue": 3.3783783783783785,
+            "recomputed": 3.3783783783783785
+          },
+          {
+            "code": "046005",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 267,
+            "publicPopulation": 31763,
+            "publicValue": 8.406006989264238,
+            "recomputed": 8.406006989264238
+          },
+          {
+            "code": "046024",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 208,
+            "publicPopulation": 22678,
+            "publicValue": 9.171884645912337,
+            "recomputed": 9.171884645912337
+          },
+          {
+            "code": "046028",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 16,
+            "publicPopulation": 12284,
+            "publicValue": 1.3025073266037122,
+            "recomputed": 1.3025073266037122
+          },
+          {
+            "code": "046013",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 137,
+            "publicPopulation": 6550,
+            "publicValue": 20.916030534351144,
+            "recomputed": 20.916030534351144
+          },
+          {
+            "code": "046030",
+            "sourceYear": 2024,
+            "publishedYear": "2025",
+            "sourceAbsolute": 19,
+            "publicPopulation": 2783,
+            "publicValue": 6.827164929931728,
+            "recomputed": 6.827164929931728
+          }
+        ]
+      },
+      "latestCapacitySources": {
+        "istatBulkDataflow": "IT1,DF_BULK_DCSC_CAPACOFTUR,1.0",
+        "istatZipSha256": "5de31720aa38b30ee03f74d79e0d6ed878111b4e36c2ab7ce0b40d3d47420ce1",
+        "regionalAverageZipSha256": "5c9cf463d93fe99d897cdc6587ce061f896bb41fee2740273fa780e3222f61f2",
+        "regionalAverageUrl": "https://www.regione.toscana.it/documents/d/guest/1-consistenza-media-per-comune-e-tipologia-ricettiva-2025",
+        "regionalScope": "media mensile arrotondata, al netto delle locazioni; totale Toscana non è la somma dei comuni"
       }
     },
     "istat-water-irregular": {
@@ -5110,6 +5273,10 @@
             "data/source-snapshots/nic-italia-2016-2024.json"
           ]
         }
+      },
+      "acquisitionEvidence": {
+        "snapshot": "data/source-snapshots/a3-mef-real-income-benchmark-2024.json",
+        "gate": "CANDIDATE PASS; public acquisition pending complete publication gate"
       }
     },
     "openbdap-continuous": {

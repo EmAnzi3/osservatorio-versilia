@@ -821,6 +821,12 @@
     },
     "financialDebtProfile": {
       "profile": "openbdap-annual"
+    },
+    "tourismBedsPer1000": {
+      "profile": "istat-tourism-annual"
+    },
+    "tourismStructuresPer1000": {
+      "profile": "istat-tourism-annual"
     }
   },
   "requestTimeoutSeconds": 20,

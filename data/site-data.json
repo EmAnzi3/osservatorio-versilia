@@ -8083,6 +8083,15 @@
           "label": "Posti letto ogni 1.000 residenti",
           "description": "Capacità ricettiva rapportata alla popolazione residente.",
           "unit": "per1000"
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 617143,
+          "italy": 5498773,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025."
         }
       },
       "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
@@ -41133,13 +41142,27 @@
         "theme": "economia",
         "label": "Posti letto turistici ogni 1.000 residenti",
         "shortLabel": "Posti letto / residenti",
-        "description": "Capacità ricettiva rapportata alla popolazione residente.",
+        "description": "Posti letto Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2025",
-        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
-        "polarity": "neutral"
+        "year": "2024",
+        "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
+        "polarity": "neutral",
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
+          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 168.65415653928622,
+          "italy": 93.28994190777546,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+        }
       },
-      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
       "rows": [
         {
           "town": "Massarosa",
@@ -41220,8 +41243,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "posti letto / popolazione residente × 1.000",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "formula": "posti letto Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },
@@ -41231,13 +41254,27 @@
         "theme": "economia",
         "label": "Strutture ricettive ogni 1.000 residenti",
         "shortLabel": "Strutture ricettive",
-        "description": "Strutture ricettive rapportate alla popolazione residente.",
+        "description": "Strutture ricettive Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2025",
-        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
-        "polarity": "neutral"
+        "year": "2024",
+        "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
+        "polarity": "neutral",
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
+          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.115780895501831,
+          "italy": 4.50129403360151,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+        }
       },
-      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
       "rows": [
         {
           "town": "Massarosa",
@@ -41318,8 +41355,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "strutture ricettive / popolazione residente × 1.000",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "formula": "strutture ricettive Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },
@@ -55935,7 +55972,16 @@
           "reddito reale",
           "nic",
           "prezzi"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 1.1133958655057397,
+          "italy": 1.8557286489092162,
+          "source": "MEF — Dipartimento Finanze / Istat NIC",
+          "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+          "sourceSnapshot": "data/source-snapshots/a3-mef-real-income-benchmark-2024.json",
+          "note": "Variazione reale 2016–2024 del reddito imponibile medio per dichiarante. Per Toscana e Italia: somma degli importi / somma delle frequenze su tutte le righe dei rispettivi archivi comunali MEF, poi stesso NIC nazionale del pubblico. Italia include la riga esplicita Mancante/errata (Non indicato nel 2016); nessuna cella mancante riempita. Non è una media dei redditi medi comunali. Le medie comunali sono arrotondate al centesimo, come nel contratto pubblico; gli aggregati regionali/nazionali mantengono i rapporti esatti."
+        }
       },
       "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "secondarySourceUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
