@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "version": "a3-regione-toscana-libraries-benchmark-2024-v1",
   "retrieved": "2026-10-02",
   "publisher": "Regione Toscana — Monitoraggio biblioteche pubbliche",
@@ -37,8 +37,8 @@
     }
   },
   "acquisitionEvidence": {
-    "runId": 36974853959,
-    "artifactId": 11213521022,
-    "head": "d552e82a019fc2f303a165f61a7a8059e150567b"
+    "runId": 36976143179,
+    "artifactId": 11213314343,
+    "head": "66ad65ef4c519effd1f21a41c43c73587965b47a"
   }
 }

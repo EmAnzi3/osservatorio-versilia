@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "version": "a3-ispra-soil-benchmark-2024-v1",
   "retrieved": "2026-10-02",
   "publisher": "ISPRA — Consumo di suolo",
@@ -32,8 +32,8 @@
     }
   },
   "acquisitionEvidence": {
-    "runId": 36974288111,
-    "artifactId": 11213145890,
-    "head": "52dde80d2bafc8eeaaf28f1b3e8486d189daa749"
+    "runId": 36976143179,
+    "artifactId": 11213597839,
+    "head": "66ad65ef4c519effd1f21a41c43c73587965b47a"
   }
 }
