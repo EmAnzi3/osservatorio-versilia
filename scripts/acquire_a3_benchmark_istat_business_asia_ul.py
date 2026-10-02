@@ -19,11 +19,9 @@ ACCEPT="application/vnd.sdmx.data+csv;version=1.0.0"
 
 def code6(v:Any)->str:
     raw=str(v or "").strip()
-    if not raw: return ""
-    if re.fullmatch(r"\d+(?:\.0+)?",raw):
-        digits=str(int(float(raw)))
-    else:
-        digits=re.sub(r"\D","",raw)
+    if not raw or not re.fullmatch(r"\d+(?:\.0+)?",raw):
+        return ""
+    digits=str(int(float(raw)))
     return digits.zfill(6) if 1<=len(digits)<=6 else ""
 
 def fetch_year(session:requests.Session,data_type:str,year:int)->dict[str,float]:
