@@ -197,6 +197,10 @@ def main()->None:
       "italy":"la stessa fonte Regione Toscana non espone un aggregato nazionale omogeneo; benchmark Italia resta n.d."
     }
     capacity_gate={}
+    capacity_diagnostics={
+      name:[[cell for cell in row[:40]] for row in rows_named(capacity,name)[:12]]
+      for name in [*town_names,"Toscana"]
+    }
     for metric_id in ("tourismBedsPer1000","tourismStructuresPer1000"):
         try:
             detail=capacity_component(capacity,metric_id,site,pop_by_town,town_names)
@@ -217,6 +221,7 @@ def main()->None:
       "sources":{"movement":URLS["movement"],"monthly":URLS["monthly"],"capacity":URLS["capacity"],"movementBytes":mb,"monthlyBytes":monb,"capacityBytes":capb},
       "benchmarks":benchmarks,
       "qualityGate":{"status":gate,"publicReconciliation":"6 movement metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","regionalRows":"movement + monthly Toscana PASS" if gate=="PASS" else "FAIL","capacityMetricGates":capacity_gate,"errors":movement_errors},
+      "capacityDiagnostics":capacity_diagnostics,
       "blocked":blocked
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
