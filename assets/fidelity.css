@@ -4471,7 +4471,8 @@ body[data-page="home"] .project-callout {
 /* -------------------------------------------------------------------------- */
 body[data-page="project"] .project-story,
 body[data-page="project"] .source-directory,
-body[data-page="project"] .version-log {
+body[data-page="project"] .license-section,
+body[data-page="project"] .versions-section {
   border-top-color: var(--secondary-line);
 }
 body[data-page="project"] .independence-note {
@@ -4500,7 +4501,7 @@ body[data-page="project"] .source-directory li a:hover {
 body[data-page="feedback"] .feedback-layout {
   gap: 22px;
 }
-body[data-page="feedback"] :is(.feedback-copy,.feedback-form) {
+body[data-page="feedback"] :is(.feedback-layout > aside,.feedback-form) {
   border: 1px solid var(--secondary-line);
   border-radius: 20px;
   background: linear-gradient(145deg, color-mix(in srgb, var(--secondary-soft) 74%, var(--surface)), #fff 44%);
@@ -4715,4 +4716,29 @@ body[data-page="special"]:has(main.economy-atlas-page) ov-economy-atlas {
     padding: 0 10px 12px;
     border-radius: 16px;
   }
+}
+
+
+/* secondary-pages-ui-prototype-v1.1 — hook verificati sui renderer canonici */
+body[data-page="project"] :is(.project-story,.source-directory,.license-section,.versions-section) {
+  border-top: 1px solid var(--secondary-line);
+}
+body[data-page="project"] :is(.project-story,.source-directory,.license-section,.versions-section) > :first-child .section-number {
+  color: var(--secondary-accent);
+}
+body[data-page="project"] .versions-section .version-list article {
+  border-color: color-mix(in srgb, var(--secondary-accent) 18%, var(--line));
+}
+body[data-page="project"] .contact-panel {
+  border: 1px solid var(--secondary-line);
+  border-top: 4px solid var(--secondary-accent);
+  border-radius: 22px;
+  background: linear-gradient(145deg, var(--secondary-soft), var(--surface) 48%);
+  box-shadow: 0 14px 38px color-mix(in srgb, var(--secondary-accent) 7%, transparent);
+}
+body[data-page="feedback"] .feedback-layout > aside {
+  border-top: 4px solid var(--secondary-accent);
+}
+body[data-page="feedback"] .feedback-layout > aside .overline {
+  color: var(--secondary-accent);
 }
