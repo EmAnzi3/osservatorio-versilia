@@ -10,10 +10,9 @@ ROOT=Path(__file__).resolve().parents[1]
 LOCAL=ROOT/"data/source-snapshots/agid-asia-agcom-2026-08.json"
 BASE="https://esploradati.istat.it/SDMXWS/rest/data"
 MUNICIPAL_FLOW="IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0"
-PROVINCE_FLOW="IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_6,1.0"
-ITALY_FLOW="IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_4,1.0"
+
 OFFICIAL_URL="https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7"
-TUSCANY_PROVINCES=("045","046","047","048","049","050","051","052","053","100")
+TUSCANY_PREFIXES=("045","046","047","048","049","050","051","052","053","100")
 DATA_TYPES=("LU","LUEMPDAA")
 YEARS=(2018,2023)
 ACCEPT="application/vnd.sdmx.data+csv;version=1.0.0"
@@ -27,50 +26,57 @@ def code6(v:Any)->str:
         digits=re.sub(r"\D","",raw)
     return digits.zfill(6) if 1<=len(digits)<=6 else ""
 
-def fetch_rows(session:requests.Session,flow:str,areas:list[str],label:str)->list[dict[str,str]]:
-    key=f"A.{'+'.join(areas)}.{'+'.join(DATA_TYPES)}.0010.TOTAL"
-    url=f"{BASE}/{flow}/{key}"
+def fetch_year(session:requests.Session,data_type:str,year:int)->dict[str,float]:
+    key=f"A..{data_type}.0010.TOTAL"
+    url=f"{BASE}/{MUNICIPAL_FLOW}/{key}"
     response=session.get(
         url,
-        params={"startPeriod":"2018"},
+        params={"startPeriod":str(year),"endPeriod":str(year)},
         headers={"Accept":ACCEPT},
         timeout=300,
     )
     response.raise_for_status()
     text=response.content.decode("utf-8-sig",errors="replace")
     reader=csv.DictReader(io.StringIO(text))
-    rows=[dict(row) for row in reader]
-    if not rows:
-        raise RuntimeError(f"ASIA-UL {label}: risposta CSV vuota {response.url}")
     required={"REF_AREA","DATA_TYPE","TIME_PERIOD","OBS_VALUE"}
     if not required.issubset(reader.fieldnames or []):
-        raise RuntimeError(f"ASIA-UL {label}: schema CSV inatteso {reader.fieldnames}")
-    return rows
-
-def parse(rows:list[dict[str,str]],area_mode:str)->dict[str,dict[str,dict[int,float]]]:
-    out={dtype:{} for dtype in DATA_TYPES}
-    for row in rows:
-        dtype=str(row.get("DATA_TYPE") or "").strip()
-        if dtype not in out: continue
-        raw_area=str(row.get("REF_AREA") or "").strip()
-        if area_mode=="municipality":
-            area=code6(raw_area)
-        else:
-            area=re.sub(r"\D","",raw_area) if raw_area!="IT" else "IT"
-            if area_mode=="province" and area:
-                area=area.zfill(3)
-        if not area: continue
-        try:
-            year=int(str(row.get("TIME_PERIOD") or "")[:4])
-            value=float(str(row.get("OBS_VALUE") or "").replace(",","."))
-        except Exception:
-            continue
-        if year not in YEARS or not math.isfinite(value): continue
-        old=out[dtype].setdefault(area,{}).get(year)
+        raise RuntimeError(f"ASIA-UL {data_type}/{year}: schema CSV inatteso {reader.fieldnames}")
+    out={}
+    for row in reader:
+        if str(row.get("DATA_TYPE") or "").strip()!=data_type: continue
+        try: row_year=int(str(row.get("TIME_PERIOD") or "")[:4])
+        except Exception: continue
+        if row_year!=year: continue
+        code=code6(row.get("REF_AREA"))
+        if not code: continue
+        try: value=float(str(row.get("OBS_VALUE") or "").replace(",","."))
+        except Exception: continue
+        if not math.isfinite(value): continue
+        old=out.get(code)
         if old is not None and not math.isclose(old,value,rel_tol=0.0,abs_tol=1e-9):
-            raise RuntimeError(f"ASIA-UL duplicato incoerente {dtype}/{area}/{year}: {old} != {value}")
-        out[dtype][area][year]=value
+            raise RuntimeError(f"ASIA-UL {data_type}/{year}: duplicato {code}: {old} != {value}")
+        out[code]=value
+    if len(out)<7800:
+        raise RuntimeError(f"ASIA-UL {data_type}/{year}: copertura comunale insufficiente {len(out)}")
     return out
+
+def build_series(session:requests.Session,data_type:str)->dict[str,dict[int,float]]:
+    result={}
+    for year in YEARS:
+        values=fetch_year(session,data_type,year)
+        for code,value in values.items():
+            result.setdefault(code,{})[year]=value
+    return result
+
+def aggregate_scope(values:dict[str,dict[int,float]],year:int,scope:str)->tuple[float,int]:
+    selected=[]
+    for code,series in values.items():
+        if year not in series: continue
+        if scope=="tuscany" and code[:3] not in TUSCANY_PREFIXES: continue
+        selected.append(float(series[year]))
+    if not selected:
+        raise RuntimeError(f"ASIA-UL {scope}/{year}: aggregato vuoto")
+    return sum(selected),len(selected)
 
 def local_reconciliation(values:dict[str,dict[int,float]],local:dict,field:str)->list[str]:
     errors=[]
@@ -108,9 +114,7 @@ def main()->None:
     session=requests.Session()
     session.headers["User-Agent"]="OsservatorioVersilia-A3-ASIAUL-benchmark/4.0"
 
-    municipal=parse(fetch_rows(session,MUNICIPAL_FLOW,town_codes,"municipal"),"municipality")
-    province=parse(fetch_rows(session,PROVINCE_FLOW,list(TUSCANY_PROVINCES),"province"),"province")
-    italy=parse(fetch_rows(session,ITALY_FLOW,["IT"],"italy"),"italy")
+    data={dtype:build_series(session,dtype) for dtype in DATA_TYPES}
 
     benchmarks={}
     blocked={}
@@ -121,15 +125,18 @@ def main()->None:
     }
 
     for dtype,spec in specs.items():
-        errors=local_reconciliation(municipal.get(dtype) or {},local,spec["field"])
+        values=data.get(dtype) or {}
+        errors=local_reconciliation(values,local,spec["field"])
         try:
-            tus={year:sum_scope(province.get(dtype) or {},list(TUSCANY_PROVINCES),year,f"Toscana/{dtype}") for year in YEARS}
+            tus={}
             ita={}
             for year in YEARS:
-                value=((italy.get(dtype) or {}).get("IT") or {}).get(year)
-                if value is None:
-                    raise RuntimeError(f"ASIA-UL Italia {dtype}: anno {year} assente")
-                ita[year]=float(value)
+                tus[year],tus_count=aggregate_scope(values,year,"tuscany")
+                ita[year],ita_count=aggregate_scope(values,year,"italy")
+                if tus_count!=273:
+                    errors.append(f"Toscana {dtype}/{year}: coverage {tus_count} != 273")
+                if ita_count<7800:
+                    errors.append(f"Italia {dtype}/{year}: coverage {ita_count} < 7800")
         except Exception as exc:
             errors.append(f"{type(exc).__name__}: {exc}")
             tus={}; ita={}
@@ -180,13 +187,13 @@ def main()->None:
       "status":status,
       "officialSourceUrl":OFFICIAL_URL,
       "retrieval":"Istat SEP SDMX ufficiale",
-      "flows":{"municipal":MUNICIPAL_FLOW,"province":PROVINCE_FLOW,"italy":ITALY_FLOW},
-      "requestCount":3,
+      "flows":{"municipal":MUNICIPAL_FLOW},
+      "requestCount":4,
       "benchmarks":benchmarks,
       "evidence":evidence,
       "qualityGate":{
         "status":"PASS" if benchmarks else "FAIL",
-        "publicSnapshotReconciliation":"metric-level 7/7 × 2018/2023; Toscana da 10 province; Italia da flow nazionale",
+        "publicSnapshotReconciliation":"metric-level 7/7 × 2018/2023; Toscana e Italia aggregati dalle stesse osservazioni comunali ufficiali",
         "candidateMetrics":sorted(benchmarks),
       },
       "blocked":blocked,
