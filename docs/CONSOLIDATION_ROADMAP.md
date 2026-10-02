@@ -167,7 +167,7 @@ Nota A4.5–A4.6: la PR #271 introduce un gate di regressione visuale rappresent
 
 ## A5 — Design System 2.0
 
-**Stato:** `IN_PROGRESS`
+**Stato:** `DONE`
 
 Scopo: migliorare gerarchia e leggibilità riducendo la predominanza del beige senza perdere l'identità del progetto.
 
@@ -189,7 +189,7 @@ Nota A5.5 — rollout comunale DONE: lo standard parametrico è esteso alle 7 sc
 
 Nota A5.5 — route speciali: `confronta/meteo-clima/`, `confronta/economia/atlante-attivita-economiche/` e `confronta/comunita/affluenza/` restano eccezioni intenzionali, non regressioni DS2. Meteo/clima mantiene il workspace analitico specializzato ed è coperto dai gate clima e dalla shell canonica; l’Atlante mantiene il web component autonomo e il browser contract dedicato desktop/tablet/mobile; Affluenza mantiene il proprio archivio/event selector ma riusa token e componenti canonici con adattamenti responsive dedicati.
 
-Nota chiusura A5.5: il checkpoint UI approvato è `bc9e5086aa796637828e1a5ae6e9952873024ef7`, con tutti i gate A5 e di release pertinenti verdi. `main` `46a31d3ca60717827ac92c709349b0c77355c3b4` è stato incorporato nel branch di chiusura senza modificare il perimetro UI. Il workstream A5 resta formalmente `IN_PROGRESS` soltanto fino all’approvazione esplicita e al merge della PR #280, come richiesto dal criterio generale di chiusura.
+Nota chiusura A5.5: il checkpoint UI approvato è `bc9e5086aa796637828e1a5ae6e9952873024ef7`. La PR #280 è stata approvata visivamente e mergiata su `main` il 30/09/2026 con merge commit `a98b89995e01cd12f2ab8422a0a6ed6aa81b5578`; Quick, Full, rollout comunali e golden lock sono risultati verdi sullo stesso head finale `ab9743821bd60fa99c346e824968b30f6e6c3d5d`. A5 è quindi `DONE`.
 
 Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e definisce la fondazione DS2 senza modificare la UI. La baseline CSS contiene 246 colori HEX distinti; `--paper` e `--surface` hanno contrasto 1,11:1; `--muted` su `--paper` è 4,37:1; 177/288 dichiarazioni `font-size` in px sono <= 11 px. L'audit rileva inoltre due sistemi tematici sovrapposti e copertura cromatica esplicita per 9 temi su 11. A5.2 separa canvas, superfici, testo, bordi, stati e tema; A5.3 converge `--theme-color` / `--theme-accent` in un solo vocabolario DS2. La prima modifica visuale è A5.4 e deve restare Draft fino ad approvazione desktop/mobile.
 
@@ -199,11 +199,13 @@ Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e 
 
 ## A6 — Semantic Data Layer e interrogazione deterministica
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre conclusioni causali non supportate.
 
 - [ ] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
+
+Nota avvio A6.1: il modello viene definito come contratto derivato da `data/site-data.json`, senza inventari paralleli di Comuni, temi o indicatori. Il primo lotto introduce documentazione, contratto machine-readable e validatore nel Quick preflight; nessuna UI e nessun valore pubblico vengono modificati.
 - [ ] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [ ] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.

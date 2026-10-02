@@ -54,3 +54,5 @@ scripts/test_visual_regression.py
 scripts/opportunity_shadow_compare.py
 scripts/test_opportunity_shadow_compare.py
 scripts/test_opportunity_daily_v2_shadow.py
+scripts/semantic_model_contract.py
+scripts/test_semantic_model_contract.py
