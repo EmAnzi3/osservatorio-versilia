@@ -4,15 +4,16 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 ## Workstream A3 benchmark attivo — PR #304
 
-- Branch `feat/a3-benchmark-available-missing`, base `fix/a3-enrichment-publication-gap`; OPEN/DRAFT, non mergiare.
-- Certificato dal run `36987416265`, head `85f39414eef27db0323e4b3f62e2117f0a7237d0`: **113/113 benchmark pubblici, 0 gap, 100 AVAILABLE_MISSING, 82 chiusi** su baseline 182. Spesa sociale e costa protetta ISPRA ACQUIRED.
-- Fan-in idempotente verde sullo stesso head; preservati benchmark biblioteche e golden A5. Inventario workflow A3 riallineato al contratto.
-- Nuovo candidato PASS: linea litoranea Istat 2021, Toscana 722,930 km / Italia 9.333,026 km; DBF ufficiale completo, 646 record univoci, 34 Toscana, 4 Comuni costieri + 3 n.a. riconciliati. Il materializzatore geografia lo integra nel catalogo effettivo; ACQUIRED soltanto dopo il nuovo publication gate.
-- Candidato FEE Bandiera Blu 2026 PASS: 45 località Toscana / 524 Italia secondo il conteggio delle voci separate FEE, con barre e parentesi conservate; revoche escluse. Italia include le spiagge in acque interne dell’elenco nazionale. Riconciliati nomi e conteggi 4 costieri + 3 n.a.; fan-in canonico, ancora non ACQUIRED.
-- OpenBDAP aggiornato localmente: **271/273**; assenti Villafranca in Lunigiana (`045016`) e Marradi (`048026`). Snapshot diagnostico FAIL, nessun aggregato parziale. SIOPE, compositi e formule non certificate restano distinti.
-- QA locale: contratti sorgente/dati e idempotenza PASS; quick eseguito con `OV_RELEASE_BUILD=1`, prerender bloccato da Chromium assente e download browser invalido nel runtime. Nessun gate indebolito; certificazione pubblica eseguita sul run completo GitHub.
-- Residual audit derivato: non cambia la matrice né conta diagnosi come acquisizioni. Sui 100 residui certificati documenta 68 blocchi e lascia 32 audit fonte esplicitamente aperti; include ragioni e prove metric-level. Dopo linea litoranea e FEE attesi 98 residui, da leggere realmente nel gate.
-- Prossima azione: leggere il nuovo publication gate e il residual audit; continuare acquisizioni/diagnosi sui residui. Nessuna chiusura A3 dichiarata.
+- Branch `feat/a3-benchmark-available-missing`, base `fix/a3-enrichment-publication-gap`; **OPEN/DRAFT**, non mergiare né Ready.
+- **Certificato:** run `36989516811`, head `b8b95be6fbc27f9b80576018bf5e5480cad79d87`: **115/115 benchmark pubblici, 0 gap, 98 AVAILABLE_MISSING su 44 profili, 84 chiusi** rispetto alla baseline 182.
+- Artifact `11218717605`: backlog JSON/Markdown e residual closure audit JSON/Markdown. Build catalogo, regressione matrice, matrice effettiva, publication audit, backlog e residual audit tutti SUCCESS; `benchmark-backlog` non skipped.
+- Nuovi ACQUIRED rispetto al passaggio 112: costa protetta ISPRA 2020, linea litoranea statistica Istat 2021, località Bandiera Blu FEE 2026. Per Istat DBF completo: 646 record univoci, 34 Toscana, 4 costieri + 3 n.a. riconciliati. Per FEE nomi delle sei località Versilia riconciliati; barre/parentesi conservate e revoche escluse; elenco nazionale comprende acque interne.
+- Fan-in idempotente verde; preservati benchmark biblioteche. Inventario workflow A3 riallineato al contratto. **Nessuna modifica ai golden master A5**; i relativi workflow sono skipped.
+- **Residual audit:** 98 righe, **68 blocchi documentati e 30 audit fonte ancora aperti**. Le diagnosi non modificano gli stati della matrice né contano come acquisizioni. `closureReady=false`: **A3 NON CHIUSA**.
+- OpenBDAP aggiornato: **271/273**, assenti Villafranca in Lunigiana (`045016`) e Marradi (`048026`). Snapshot diagnostico FAIL, nessun aggregato parziale; SIOPE, compositi e formule non certificate restano distinti.
+- QA locale: contratti sorgente/dati, idempotenza e rifiuto di duplicati, n.a. convertiti a zero e valori/nomi incoerenti PASS. Quick eseguito con `OV_RELEASE_BUILD=1`; prerender bloccato da Chromium assente e download browser invalido nel runtime. Certificazione pubblica completata su GitHub senza indebolire i gate.
+- Il fan-out selezionato conserva il riferimento storico 111/111 del lotto precedente: non usarlo come certificazione corrente. Il riferimento corrente è il run sopra; aggiornare le selezioni soltanto insieme a un nuovo batch motivato, evitando di rilanciare tutti i worker per un refresh dei soli contatori.
+- **Prossima azione:** leggere le 30 righe `REQUIRES_SOURCE_AUDIT` dall'artifact; priorità GTFS (3), clima (4), Ministero Salute (2), accessibilità servizi essenziali (1), poi i restanti profili scalari. Verificare definizione/periodo e riconciliazione prima di costruire i worker. Un solo gate dopo un gruppo sensato di nuovi PASS; nessun rilancio pesante per sole diagnosi/documentazione.
 
 ## Stato A5 congelato
 
