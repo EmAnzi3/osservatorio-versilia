@@ -107,6 +107,28 @@ def _has_explicit_municipal_audience(text: str) -> bool:
     return any(term in context for term in _MUNICIPAL_AUDIENCE_TERMS)
 
 
+def _is_family_only_nidi_application(title: str, url: str, text: str) -> bool:
+    """Recognize the family application page, distinct from the municipal call.
+
+    Regione Toscana maintains separate pages for municipal service adhesions
+    and for parents'/guardians' applications. The family page may link to the
+    municipal notice, so a nearby generic mention of municipalities must not
+    turn the family reopening into a municipal candidate.
+    """
+    folded_title = _fold(title)
+    folded_text = _fold(text)
+    normalized_url = str(url or "").casefold()
+    return (
+        "nidi gratis" in folded_title
+        and "rivolto alle famiglie" in folded_title
+        and "/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie" in normalized_url
+        and (
+            "genitori tutori" in folded_text
+            or "domande delle famiglie" in folded_text
+        )
+    )
+
+
 def _stable_key(url: str, title: str) -> str:
     raw = radar.v025.normalized_url(url) or _fold(title)
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:14]
@@ -238,6 +260,10 @@ def scan_recent_municipal_candidates(
         except Exception as exc:  # pragma: no cover - dipende dalla rete live
             errors.append(f"{title}: {exc}")
             continue
+        if _is_family_only_nidi_application(title, url, visible):
+            stub["applicant_scope"] = "families_only"
+            candidates.append(stub)
+            continue
         if not _has_explicit_municipal_audience(visible):
             continue
         candidates.append(stub)
@@ -290,6 +316,16 @@ def apply(
     documented_excluded: list[dict[str, Any]] = []
 
     for candidate in candidates:
+        if candidate.get("applicant_scope") == "families_only":
+            documented_excluded.append({
+                **candidate,
+                "account_state": "documented_exclusion",
+                "reason": (
+                    "La scheda ufficiale riguarda le domande dei genitori/tutori; "
+                    "la candidatura per adesioni dei Comuni è pubblicata su una pagina distinta."
+                ),
+            })
+            continue
         state = _account_state(result, candidate)
         if state in {None, "review", "discovery"}:
             exclusion_rule = _documented_exclusion_rule(candidate)
