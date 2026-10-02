@@ -27,8 +27,13 @@ def main()->None:
     profiles=list(manifest.get("profiles") or [])
     if not profiles: raise RuntimeError("Manifest vuoto")
     selected=profiles
-    reason="full"
-    if a.mode=="auto" and a.changed_files and a.changed_files.exists():
+    reason="full-fanout" if a.mode=="full" else "auto-full-fanout"
+    # A3 closure is intentionally source-profile parallel: a PR synchronization must
+    # not collapse the matrix to the single acquisition script that changed. That
+    # serializes source -> CI -> source and defeats the bulk fan-out/fan-in design.
+    # Keep all manifest profiles independent and let blocked/mismatch workers report
+    # evidence without preventing the remaining workers from progressing.
+    if False and a.mode=="auto" and a.changed_files and a.changed_files.exists():
         changed={line.strip() for line in a.changed_files.read_text(encoding="utf-8").splitlines() if line.strip()}
         structural={
           ".github/workflows/a3-benchmark-bulk-acquisition.yml",
