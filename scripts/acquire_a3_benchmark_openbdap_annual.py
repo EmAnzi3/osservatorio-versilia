@@ -168,10 +168,7 @@ def main():
     municipality_codes=sorted({
       code(row) for row in entrate if is_tuscany_municipality(row) and code(row)
     })
-    if len(municipality_codes)!=EXPECTED_TUSCANY_MUNICIPALITIES:
-        raise RuntimeError(
-          f"OpenBDAP: Comuni Toscana inattesi {len(municipality_codes)} != {EXPECTED_TUSCANY_MUNICIPALITIES}"
-        )
+    scope_complete=len(municipality_codes)==EXPECTED_TUSCANY_MUNICIPALITIES
 
     demo=json.loads(DEMOGRAPHY.read_text(encoding="utf-8"))
     population=float(demo["rcs"]["scopes"]["tuscany"]["population"])
@@ -185,6 +182,13 @@ def main():
     metric_details={}
 
     def build(metric_id):
+        if not scope_complete:
+            blocked[metric_id]={
+              "reason":"copertura Toscana incompleta; nessun aggregato calcolato",
+              "municipalityCount":len(municipality_codes),
+              "expectedMunicipalityCount":EXPECTED_TUSCANY_MUNICIPALITIES,
+            }
+            return
         values={}
         missing=[]
         for c in municipality_codes:
@@ -280,10 +284,12 @@ def main():
       "sourceUrl":PORTAL,
       "sourceArchive":response.url,
       "tuscanyMunicipalityCount":len(municipality_codes),
+      "tuscanyMunicipalityCodes":municipality_codes,
+      "scopeComplete":scope_complete,
       "populationDenominator":{"value":population,"year":"2025","municipalities":EXPECTED_TUSCANY_MUNICIPALITIES,"source":"Istat RCS/P02 governed snapshot"},
       "benchmarks":benchmarks,
       "qualityGate":{
-        "status":"PASS" if benchmarks else "FAIL",
+        "status":"PASS" if benchmarks and scope_complete else "FAIL",
         "candidateMetrics":sorted(benchmarks),
         "metricDetails":metric_details,
         "rule":"ogni metrica è indipendente; copertura 273/273 Toscana e riconciliazione 7/7 obbligatorie",
