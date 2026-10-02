@@ -10,12 +10,16 @@ from urllib.request import Request, urlopen
 
 TOWNS = ("camaiore", "forte-dei-marmi", "massarosa", "pietrasanta", "seravezza", "stazzema", "viareggio")
 STATIC_ROUTES = ("/stato-dati/", "/pnrr/", "/percorsi/")
+STATIC_MARKERS = {
+    "/stato-dati/": ('data-page="status"', "Stato dei dati."),
+    "/percorsi/": ('data-page="special"', "Percorsi e mobilità lenta"),
+}
 PNRR_MARKERS = {
     "/pnrr/": ("data-page=\"pnrr\"", "Le 22 opere fisiche"),
     "/confronta/comunita/": ("pnrr-town-detail.js", "Investimenti e comunità"),
     "/comuni/massarosa/": ("pnrr-town-detail.js",),
 }
-REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css")
+REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", "assets/pnrr-deep-dive.css")
 
 
 def require(condition: bool, message: str, failures: list[str]) -> None:
@@ -28,10 +32,10 @@ def validate_dist(root: Path) -> list[str]:
     for route in STATIC_ROUTES:
         page = root / route.strip("/") / "index.html"
         require(page.is_file() and page.stat().st_size > 100, f"route non generata: {route}", failures)
-    for route, markers in PNRR_MARKERS.items():
+    for route, markers in {**STATIC_MARKERS, **PNRR_MARKERS}.items():
         page = root / route.strip("/") / "index.html"
         if not page.is_file():
-            failures.append(f"route PNRR non generata: {route}")
+            failures.append(f"pagina pubblica non generata: {route}")
             continue
         content = page.read_text(encoding="utf-8")
         for marker in markers:
@@ -65,7 +69,7 @@ def validate_live(base_url: str) -> list[str]:
     for route in sorted(routes):
         try:
             content = fetch(base + route)
-            markers = PNRR_MARKERS.get(route, ())
+            markers = {**STATIC_MARKERS, **PNRR_MARKERS}.get(route, ())
             for marker in markers:
                 require(marker in content, f"marcatore live assente in {route}: {marker}", failures)
             if route in {f"/comuni/{slug}/" for slug in TOWNS}:
