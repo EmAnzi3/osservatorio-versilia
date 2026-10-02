@@ -73,11 +73,13 @@ def main()->None:
     if "toscana" not in by_reg:
         raise RuntimeError(f"ISPRA suolo: Toscana assente {list(by_reg)[:30]}")
     tus=by_reg["toscana"]
+    italy_evidence={}
     if "italia" in by_reg:
         ita=by_reg["italia"]
         italy_land_use=finite(ita["suolo_consumato_2024"])
         italy_change=finite(ita["incremento_netto_2023_2024_ettari"])
         italy_mode="official-row"
+        italy_evidence={"mode":italy_mode,"officialRow":True}
     else:
         region_rows=[
             r for key,r in by_reg.items()
@@ -98,6 +100,14 @@ def main()->None:
         if area<=0: raise RuntimeError("ISPRA suolo: superficie nazionale ricostruita nulla")
         italy_land_use=consumed/area*100.0
         italy_mode="20-region-weighted"
+        italy_evidence={
+          "mode":italy_mode,
+          "officialRow":False,
+          "regionCount":len(region_rows),
+          "consumedHectares":consumed,
+          "reconstructedAreaHectares":area,
+          "incrementHectares":italy_change,
+        }
     site_metrics=site["metrics"]
     benchmarks={
       "landUse":{"year":"2024","unit":str((site_metrics["landUse"].get("meta") or {}).get("unit") or "percent"),
@@ -110,7 +120,7 @@ def main()->None:
     gate="PASS" if not errors else "FAIL"
     payload={"schemaVersion":2,"publisher":"ISPRA","profileId":"ispra-consumo-suolo-2024",
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED","sourceUrl":LANDING,"dataUrl":URL,
-      "benchmarks":benchmarks if gate=="PASS" else {},"qualityGate":{"status":gate,"publicReconciliation":"2 metrics × 7/7 PASS" if gate=="PASS" else "FAIL","municipalSheet":ws.title,"regionalSheet":rws.title,"italyAggregation":italy_mode,"errors":errors}}
+      "benchmarks":benchmarks if gate=="PASS" else {},"qualityGate":{"status":gate,"publicReconciliation":"2 metrics × 7/7 PASS" if gate=="PASS" else "FAIL","municipalSheet":ws.title,"regionalSheet":rws.title,"italyAggregation":italy_mode,"italyAggregationEvidence":italy_evidence,"errors":errors}}
     out=Path(a.output); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(payload["benchmarks"]),"gate":payload["qualityGate"]},ensure_ascii=False))
 if __name__=="__main__": main()
