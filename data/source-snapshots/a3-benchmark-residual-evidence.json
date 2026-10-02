@@ -291,6 +291,24 @@
         "additionalOfficialArchive": "https://aci.gov.it/app/uploads/2025/11/Autoritratto-2024-OD.zip",
         "additionalArchiveStatus": 503,
         "result": "No complete municipal 2024 counts obtained; no bypass and no inferred aggregates. Access failures do not prove source absence."
+      },
+      "metricDiagnoses": {
+        "motorization": {
+          "diagnosis": "NATIVE_ARCHIVE_ACCESS_BLOCKED_NOT_UNAVAILABLE",
+          "reason": "Il precedente workbook Istat mobilità urbana non contiene Stazzema e non costituisce un censimento comunale ACI. Individuati gli archivi ufficiali Autoritratto 2024 Parco Veicolare e Open Data 2024; entrambi restituiscono HTTP 503 nel runtime (anche il link ZIP esatto pubblicato sul sito ACI con doppia barra). Portale OPV pubblico e dimensioni accessibili, launcher pubblico 2024 HTTP 401. Nessun pannello nazionale/comunale estratto: errore di accesso, non prova di assenza o granularità indisponibile.",
+          "nextAction": "Recuperare archivio ufficiale 2024 completo, verificare categorie/stock/PRA e conteggi/denominatori comunali 7/7 prima di Toscana/Italia; non usare solo capoluoghi, anni diversi o aggregati parziali.",
+          "evidenceFiles": [
+            "data/source-snapshots/a3-benchmark-residual-evidence.json"
+          ]
+        },
+        "pollutingCars": {
+          "diagnosis": "NATIVE_ARCHIVE_ACCESS_BLOCKED_NOT_UNAVAILABLE",
+          "reason": "Il precedente workbook Istat mobilità urbana non contiene Stazzema e non costituisce un censimento comunale ACI. Individuati gli archivi ufficiali Autoritratto 2024 Parco Veicolare e Open Data 2024; entrambi restituiscono HTTP 503 nel runtime (anche il link ZIP esatto pubblicato sul sito ACI con doppia barra). Portale OPV pubblico e dimensioni accessibili, launcher pubblico 2024 HTTP 401. Nessun pannello nazionale/comunale estratto: errore di accesso, non prova di assenza o granularità indisponibile.",
+          "nextAction": "Recuperare archivio ufficiale 2024 completo, verificare categorie/stock/PRA e conteggi/denominatori comunali 7/7 prima di Toscana/Italia; non usare solo capoluoghi, anni diversi o aggregati parziali.",
+          "evidenceFiles": [
+            "data/source-snapshots/a3-benchmark-residual-evidence.json"
+          ]
+        }
       }
     },
     "openbdap-annual": {
