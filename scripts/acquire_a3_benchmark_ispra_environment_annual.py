@@ -39,7 +39,7 @@ def parse_production_row(row,*,municipal=False):
         population=population_number(row[1]); rd=src.number(row[4]); ru=src.number(row[5])
         pct=percent_number(row[6]); pc_ru=src.number(row[8])
         if None in (population,rd,ru,pct,pc_ru): return None
-        if src.norm(row[3])!="COMUNE": return None
+        if src.norm(row[3])!="comune": return None
         return {"name":str(row[0]).strip(),"code":code,"population":population,"rd":rd,"ru":ru,"pct":pct,"pcRu":pc_ru}
     if len(row)<9: return None
     code=str(row[2]).strip()
