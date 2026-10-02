@@ -427,6 +427,14 @@
           "2025-12-31",
           "2026-10-02"
         ]
+      },
+      "nativePublicHospitalCsvVerification": {
+        "url": "https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv",
+        "bytes": 144304,
+        "sha256": "f1d869722a8da89e916bfc3385715438164813ad579ec2b202a00f9c9761cad1",
+        "actualYear": "2022",
+        "nonemptyRows": 508,
+        "note": "Il percorso di upload 2025-01 non è anno di osservazione. Tutte le 508 righe non vuote sono anno 2022; solo strutture pubbliche/equiparate. Non sostituisce il contratto completo pubblico/privato 2025."
       }
     },
     "regione-toscana-gtfs-scheduled": {
@@ -576,7 +584,7 @@
       "metricDiagnoses": {
         "activeTplAccessPoints": {
           "diagnosis": "REFERENCE_DATE_AND_OPERATOR_SCOPE_UNRESOLVED",
-          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Il precedente probe si fermava a 60 MiB; non prova indisponibilità. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. ",
+          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Feed completi recuperati oltre il limite da discovery: Trenitalia 6.127.610 byte/hash identici al congelato; autobus 185.186.625 byte con calendario 02–22 ottobre 2026, fuori dalla data richiesta. Non sostituire ottobre ad agosto né dedurre servizi assenti come zero. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. ",
           "evidenceFiles": [
             "data/source-snapshots/mobilita-tpl-2026-08-26.json",
             "scripts/materialize_mobilita_tpl_v119.py"
@@ -585,7 +593,7 @@
         },
         "scheduledTplTripsPer1000": {
           "diagnosis": "REFERENCE_DATE_AND_OPERATOR_SCOPE_UNRESOLVED",
-          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Il precedente probe si fermava a 60 MiB; non prova indisponibilità. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. ",
+          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Feed completi recuperati oltre il limite da discovery: Trenitalia 6.127.610 byte/hash identici al congelato; autobus 185.186.625 byte con calendario 02–22 ottobre 2026, fuori dalla data richiesta. Non sostituire ottobre ad agosto né dedurre servizi assenti come zero. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. ",
           "evidenceFiles": [
             "data/source-snapshots/mobilita-tpl-2026-08-26.json",
             "scripts/materialize_mobilita_tpl_v119.py"
@@ -594,7 +602,7 @@
         },
         "tplServiceSpan": {
           "diagnosis": "REFERENCE_DATE_AND_OPERATOR_SCOPE_UNRESOLVED",
-          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Il precedente probe si fermava a 60 MiB; non prova indisponibilità. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. Per l’ampiezza oraria manca inoltre una regola regionale che distingua estensione complessiva e distribuzione delle ampiezze comunali.",
+          "reason": "Contratto pubblico: servizio attivo il 26 agosto 2026, unione GTFS Autolinee Toscane + Trenitalia, confini Istat 2026. Il congelato conserva solo sette risultati comunali e hash dei feed (bus 136.536.110 byte), non i feed raw necessari alla lavorazione regionale. Feed completi recuperati oltre il limite da discovery: Trenitalia 6.127.610 byte/hash identici al congelato; autobus 185.186.625 byte con calendario 02–22 ottobre 2026, fuori dalla data richiesta. Non sostituire ottobre ad agosto né dedurre servizi assenti come zero. Catalogo CKAN verificato: include anche TFT, GEST, Toremar e altri feed. Mancano un perimetro operatori regionale/nazionale equivalente, deduplicazione delle corse/punti e lo stesso calendario del 26 agosto; gli assenti e i servizi non attivi non sono zero. Per l’ampiezza oraria manca inoltre una regola regionale che distingua estensione complessiva e distribuzione delle ampiezze comunali.",
           "evidenceFiles": [
             "data/source-snapshots/mobilita-tpl-2026-08-26.json",
             "scripts/materialize_mobilita_tpl_v119.py"
@@ -657,6 +665,89 @@
             "last_modified": "2026-04-29T10:44:36.175741"
           }
         ]
+      },
+      "fullNativeFeedVerification": {
+        "date": "2026-10-02",
+        "referenceDate": "2026-08-26",
+        "feeds": {
+          "rail": {
+            "bytes": 6127610,
+            "sha256": "a262c5bdfccd98a5c7e7ae08eea8eecb3189222f34c1015f5d4608faf3efc152",
+            "zipCrcVerified": true,
+            "members": [
+              "agency.txt",
+              "calendar_dates.txt",
+              "routes.txt",
+              "shapes.txt",
+              "stop_times.txt",
+              "stops.txt",
+              "trips.txt"
+            ],
+            "calendarDates": {
+              "rows": 37949,
+              "startDate": "20260115",
+              "endDate": "20261212",
+              "referenceDateRows": 121
+            },
+            "matchesPublicFrozenHash": true
+          },
+          "bus": {
+            "bytes": 185186625,
+            "sha256": "cbc113dbbad798d52787ba246ff3eb255007e46f1ce1dd68aa2b07c5581f7f20",
+            "zipCrcVerified": true,
+            "members": [
+              "agency.txt",
+              "area.txt",
+              "stops.txt",
+              "routes.txt",
+              "trips.txt",
+              "stop_times.txt",
+              "calendar.txt",
+              "calendar_dates.txt",
+              "shapes.txt",
+              "feed_info.txt"
+            ],
+            "feedInfo": [
+              {
+                "feed_publisher_name": "Autolinee Toscane",
+                "feed_publisher_url": "https://www.at-bus.it/",
+                "feed_lang": "it",
+                "feed_start_date": "20261002",
+                "feed_end_date": "20261022",
+                "feed_version": "",
+                "feed_contact_email": "",
+                "feed_contact_url": "",
+                "auto-feed_version": ""
+              }
+            ],
+            "calendar": {
+              "rows": 7304,
+              "startDate": "20261002",
+              "endDate": "20261022"
+            },
+            "calendarDates": {
+              "rows": 12187,
+              "startDate": "20261002",
+              "endDate": "20261022",
+              "referenceDateRows": 0
+            },
+            "matchesPublicFrozenHash": false
+          }
+        },
+        "result": "RAIL_FROZEN_SOURCE_RECOVERED_BUS_HISTORICAL_SOURCE_REQUIRED",
+        "note": "Feed bus completo 185.186.625 byte, nessun limite 60 MiB. Solo 02–22 ottobre 2026: non certifica assenza di servizi il 26 agosto e non è sostituibile al congelato. Il feed rail coincide byte/hash con il congelato e contiene la data richiesta.",
+        "originalAuditRecovery": {
+          "auditPullRequest": 108,
+          "auditHead": "eaf98eed10e386438ca5141b0071fcce4aa5656f",
+          "originalAuditRun": 32840806631,
+          "originalIntegratedRun": 32840806634,
+          "artifactApiResults": {
+            "32840806631": [],
+            "32840806634": []
+          },
+          "nativeFeedStorage": "scripts/audit_mobilita_v6.py uses tempfile.TemporaryDirectory; GTFS files are not copied to the uploaded review folder. Workflow retention-days is 14.",
+          "result": "Original source parser recovered through git history; no original raw bus ZIP recovered from these two runs. No substitute period and no source-unavailable conclusion."
+        }
       }
     },
     "lamma-copernicus-climate": {
@@ -3960,8 +4051,8 @@
       "metricDiagnoses": {
         "pabProgrammedInterventions": {
           "diagnosis": "CROSS_CONSORTIUM_DEFINITION_AND_NATIONAL_SCOPE_UNRESOLVED",
-          "reason": "Tutti i sei PAB regionali 2026 (sette PDF) acquisiti dalla banca dati atti. Hash CB1 identico alla fonte pubblica congelata; A-1 pagine 10–56: 5.328 codici univoci E/P e 16.119.754,60 euro, sette conteggi/importi esattamente riconciliati. La formula precedente limitata ai codici E ometteva 16 codici P nei sette Comuni. Restano da certificare deduplicazione, granularità e perimetro A-1 degli altri consorzi (CB3 attività pluricomunali/codici interni; CB5 Toscana/Lazio) e un pannello nazionale 2026 omologo. Non usare totali generali, WFS operativo o somme regionali come totale Italia.",
-          "nextAction": "Certificare sezioni A-1 omogenee e territorialità dei sei pannelli; reperire programmazione nazionale omologa prima di proporre Toscana/Italia. Nessun benchmark acquisito per la sola riconciliazione CB1.",
+          "reason": "Sei PAB 2026 acquisiti e tabelle A-1 lette integralmente. CB1 5.328 codici E/P, 16.119.754,60 euro e 7/7 esatti. CB2 88 codici ma celle PDF eccedono il totale stampato di 4 centesimi e P1120 è riserva urgente di 450.000 euro. CB3 A-1a/b 19.565.849,98 euro, codici interni/granularità diversa e servizi; ulteriori 1.156.750 euro sono A-3, non A-1. CB4 237 codici e dieci riserve senza codice, 10.791.249,48 euro; CB5 732 codici, 6.531.116,44 euro inclusa riserva non programmata 310.000; CB6 1.122 codici e 12.218.360,38 euro esatti, H/A-3 escluso. Importi e riserve conservati senza correzioni; perimetro programmato regionale ancora da certificare.",
+          "nextAction": "Risolvere scarto nativo CB2 e certificare inclusioni/esclusioni A-1 programmate omogenee; granularità per i conteggi. Il contratto ammette Toscana con Italia null, senza imporre un totale nazionale inesistente. Nessun candidato dalla sola somma degli A-1.",
           "evidenceFiles": [
             "data/source-snapshots/bonifica-rischio-v126.json",
             "data/source-snapshots/a3-pab-native-source-verification-2026.json"
@@ -3969,8 +4060,8 @@
         },
         "pabProgrammedMaintenanceValue": {
           "diagnosis": "CROSS_CONSORTIUM_DEFINITION_AND_NATIONAL_SCOPE_UNRESOLVED",
-          "reason": "Tutti i sei PAB regionali 2026 (sette PDF) acquisiti dalla banca dati atti. Hash CB1 identico alla fonte pubblica congelata; A-1 pagine 10–56: 5.328 codici univoci E/P e 16.119.754,60 euro, sette conteggi/importi esattamente riconciliati. La formula precedente limitata ai codici E ometteva 16 codici P nei sette Comuni. Restano da certificare deduplicazione, granularità e perimetro A-1 degli altri consorzi (CB3 attività pluricomunali/codici interni; CB5 Toscana/Lazio) e un pannello nazionale 2026 omologo. Non usare totali generali, WFS operativo o somme regionali come totale Italia.",
-          "nextAction": "Certificare sezioni A-1 omogenee e territorialità dei sei pannelli; reperire programmazione nazionale omologa prima di proporre Toscana/Italia. Nessun benchmark acquisito per la sola riconciliazione CB1.",
+          "reason": "Sei PAB 2026 acquisiti e tabelle A-1 lette integralmente. CB1 5.328 codici E/P, 16.119.754,60 euro e 7/7 esatti. CB2 88 codici ma celle PDF eccedono il totale stampato di 4 centesimi e P1120 è riserva urgente di 450.000 euro. CB3 A-1a/b 19.565.849,98 euro, codici interni/granularità diversa e servizi; ulteriori 1.156.750 euro sono A-3, non A-1. CB4 237 codici e dieci riserve senza codice, 10.791.249,48 euro; CB5 732 codici, 6.531.116,44 euro inclusa riserva non programmata 310.000; CB6 1.122 codici e 12.218.360,38 euro esatti, H/A-3 escluso. Importi e riserve conservati senza correzioni; perimetro programmato regionale ancora da certificare.",
+          "nextAction": "Risolvere scarto nativo CB2 e certificare inclusioni/esclusioni A-1 programmate omogenee; granularità per i conteggi. Il contratto ammette Toscana con Italia null, senza imporre un totale nazionale inesistente. Nessun candidato dalla sola somma degli A-1.",
           "evidenceFiles": [
             "data/source-snapshots/bonifica-rischio-v126.json",
             "data/source-snapshots/a3-pab-native-source-verification-2026.json"
@@ -3984,7 +4075,9 @@
         "cb1UniqueInterventions": 5328,
         "cb1NativeAmountCents": 1611975460,
         "publicMunicipalReconciliation": "7/7 count and amount, E and P identifiers",
-        "benchmarkCandidate": false
+        "benchmarkCandidate": false,
+        "allSixA1TablesRead": true,
+        "cb2NativeRowTotalDifferenceCents": 4
       }
     },
     "mef-istat-real-income-annual": {
@@ -7778,13 +7871,24 @@
       },
       "metricDiagnoses": {
         "accreditedRsaCount": {
-          "diagnosis": "ACCREDITATION_AND_HISTORICAL_SCOPE_UNRESOLVED",
-          "reason": "Pubblico: numero di RSA accreditate localizzate nel Comune, 2025; non posti letto né sole strutture convenzionate SSR. Il congelato contiene sette conteggi e totale Versilia 13, non l’elenco regionale dei record e delle validità di accreditamento. Il portale live è raggiungibile ma il probe non ha acquisito file strutturati. Nessun totale regionale 2025 è stato riconciliato con i sette conteggi; un elenco corrente o di strutture autorizzate misura un perimetro diverso.",
-          "nextAction": "Acquisire elenco ufficiale e validità 2025, deduplicare per struttura e verificare accreditamento/localizzazione 7/7 prima del totale regionale.",
+          "diagnosis": "HISTORICAL_NATIVE_CANDIDATE_PENDING_PUBLIC_GATE",
+          "reason": "Elenco ufficiale completo al 31-12-2025 acquisito: 22 pagine, 337 righe native RSA / 336 strutture uniche, una riga Ciapetti esattamente duplicata verificata nel PDF. Due celle impresa unite verticalmente conservate null; identità Comune/denominazione e data complete. Conteggi 5/0/0/2/2/0/4 riconciliati esattamente 7/7; benchmark regionale 336, Italia null. PDF completo/hash/pannello congelati, worker locale candidato PASS; certificazione pubblica pendente.",
+          "nextAction": "Leggere gate pubblico e artifact del worker su questo head; acquisire solo dopo pubblicazione effettiva e riduzione del backlog certificata.",
           "evidenceFiles": [
-            "data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json"
+            "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
+            "scripts/acquire_a3_benchmark_regione_toscana_rsa.py"
           ]
         }
+      },
+      "nativeSourceVerification": {
+        "referenceDate": "2025-12-31",
+        "pdfSha256": "239e6f23dd97242d37fa088cec769d6aaefc1496346a9a424d2d993965e004cf",
+        "physicalPdfPages": 22,
+        "nativeRsaRows": 337,
+        "uniqueStructures": 336,
+        "exactDuplicateRows": 1,
+        "publicMunicipalReconciliation": "7/7 exact",
+        "candidateStatus": "ACQUIRED_CANDIDATE_LOCAL_PASS_PUBLIC_GATE_PENDING"
       }
     },
     "istat-business-annual": {

@@ -2,32 +2,32 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37050672071,
-    "headSha": "934637f016df22ae54df2ec45d2c56bad14b7de4",
-    "publicBenchmarks": "132/132",
+    "workflowRun": 37051941850,
+    "headSha": "0b662facec713865961f41f39538db93e0173458",
+    "publicBenchmarks": "133/133",
     "publicationGap": 0,
-    "availableMissing": 81,
-    "artifactId": 11245919709
+    "availableMissing": 80,
+    "artifactId": 11246353825
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
   "profiles": [
     {
-      "profileId": "health-ministry-annual",
-      "bundleId": "health-ministry-annual::benchmark_toscana_italia",
+      "profileId": "regione-toscana-rsa",
+      "bundleId": "regione-toscana-rsa::benchmark_toscana_italia",
       "rank": 1,
       "pairCount": 1,
       "metricIds": [
-        "pharmaciesPer1000"
+        "accreditedRsaCount"
       ],
       "sourceReferences": [
-        "https://www.dati.salute.gov.it/it/dataset/farmacie/"
+        "https://www.regione.toscana.it/documents/d/guest/elenco-strutture-del-sistema-sociale-integrato-accreditate-al-31-dicembre-2025"
       ],
-      "publisher": "Ministero della Salute",
+      "publisher": "Regione Toscana",
       "costPoints": 1,
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-132-certified-historical-pharmacies",
-  "selectionRationale": "Official 2025-12-31 CSV recovered; full validity-interval filter and unique ministerial IDs reconcile 7/7 using the public 2026-01-01 population. Hospitals remain outside this pharmacy acquisition."
+  "workerGeneration": "post-133-certified-historical-rsa",
+  "selectionRationale": "Complete official accredited social-care structure panel at 2025-12-31 recovered, 337 native RSA rows / 336 unique structures. Exact duplicate preserved and counted once. Absolute counts reconcile 7/7 including source-verified zeros; regional benchmark only, Italy null."
 }

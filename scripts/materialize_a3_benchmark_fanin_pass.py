@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
 SNAPSHOTS = (
+    ROOT / "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-mef-taxable-income-benchmark-2024.json",
     ROOT / "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
@@ -242,9 +243,19 @@ def main() -> None:
 
         for metric_id, benchmark in benchmarks.items():
             metric = metrics.get(metric_id)
+            if metric is None and metric_id == 'accreditedRsaCount':
+                # Salute v140 derives this public metric before fan-in in the release build.
+                # Standalone fan-in still validates the candidate without adding raw catalog entries.
+                from materialize_salute_v140 import rsa_metric
+                from acquire_a3_benchmark_regione_toscana_rsa import validate_snapshot
+                validate_snapshot(rsa_metric(metrics['population']['rows']), snapshot)
+                continue
             if not isinstance(metric, dict):
                 raise RuntimeError(f"{metric_id}: metrica pubblica assente")
             public_rows(metric, metric_id)
+            if metric_id == 'accreditedRsaCount':
+                from acquire_a3_benchmark_regione_toscana_rsa import validate_snapshot
+                validate_snapshot(metric, snapshot)
             if metric_id == 'pharmaciesPer1000':
                 from acquire_a3_benchmark_health_ministry_pharmacies import validate_snapshot
                 validate_snapshot(metric, snapshot, metrics['population'])
@@ -308,7 +319,7 @@ def main() -> None:
                 "source": snapshot.get("publisher"),
                 "url": source_url,
                 "sourceSnapshot": snapshot_ref,
-                "note": (snapshot["scope"]["note"] if metric_id in ('pharmaciesPer1000','blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements','incomeVsInflation','tourismBeds','tourismBedsPer1000','tourismStructuresPer1000') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
+                "note": (snapshot["scope"]["note"] if metric_id in ('accreditedRsaCount','pharmaciesPer1000','blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements','incomeVsInflation','tourismBeds','tourismBedsPer1000','tourismStructuresPer1000') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
             }
             published.append(metric_id)
 

@@ -108,10 +108,7 @@ def apply_overlay():
  for iid,spec in SPECS.items():
   if spec['key'] in data['metrics']: raise RuntimeError(f"Metrica già presente: {spec['key']}")
   data['metrics'][spec['key']]=metric_from_ars(iid,spec,ars['indicators'][str(iid)],town_meta)
- rows=[]
- for town,base in town_meta.items():
-  value=RSA_VALUES[town]; rows.append({'town':town,'code':base['code'],'slug':base['slug'],'value':value,'formatted':f'{value} strutture' if value!=1 else '1 struttura','series':{'years':[2025],'values':[value]},'normalized':None,'benchmarkValue':value})
- data['metrics']['accreditedRsaCount']={'meta':{'key':'accreditedRsaCount','theme':'salute','label':'RSA accreditate presenti nel Comune','shortLabel':'RSA accreditate','description':'Numero di Residenze sanitarie assistenziali accreditate presenti nel territorio comunale.','unit':'count','year':'2025','source':'Regione Toscana — elenco RSA accreditate','polarity':'neutral','sourceMeta':{'publisher':'Regione Toscana','snapshot':'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'}},'sourceUrl':'https://servizi.toscana.it/RT/RSA/','rows':rows,'aggregate':{'value':13,'formatted':'13 strutture','label':'Totale nei 7 Comuni','note':'Somma delle RSA accreditate presenti nei sette Comuni della Versilia.'},'normalizedAggregate':None,'method':{'type':'Conteggio da fonte ufficiale','formula':'Conteggio delle strutture accreditate presenti nel Comune.','caveat':'Non misura posti letto, capacità ricettiva né strutture convenzionate SSR.','coverage':'7/7'}}
+ data['metrics']['accreditedRsaCount']=rsa_metric(population_rows)
  theme=data['themes']['salute']; esiti=['mortalityCancer','mortalityCirculatory','mortalityRespiratory','hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence','heartFailurePrevalence','priorStrokePrevalence']; territorio=['permanentRsaAssisted','specialistVisits7Psr','diagnosticImagingServices','accreditedRsaCount']
  theme['metrics']=add_after(theme['metrics'],'mortalityAll',esiti[:3]); theme['metrics']=add_after(theme['metrics'],'chronicTotal',esiti[3:]); theme['metrics']=add_after(theme['metrics'],'elderlyHomeCare',territorio)
  sections={s['key']:s for s in theme.get('sections',[])}; sections['esiti']['metrics']=add_after(sections['esiti']['metrics'],'mortalityAll',esiti[:3]); sections['esiti']['metrics']=add_after(sections['esiti']['metrics'],'chronicTotal',esiti[3:]); sections['territorio']['metrics']=add_after(sections['territorio']['metrics'],'elderlyHomeCare',territorio)
@@ -126,6 +123,13 @@ def apply_overlay():
  registry.setdefault('sourceProfileByUrl',{})[rsa_url]=RSA_PROFILE; registry.setdefault('sourceUrlProfiles',{})[rsa_url]=RSA_PROFILE; registry.setdefault('metricOverrides',{})['accreditedRsaCount']={'profile':RSA_PROFILE}
  save(DATA,data); save(REGISTRY,registry)
  print(f"Salute v1.40 materializzata: {len(data['metrics'])} indicatori nel workspace")
+
+def rsa_metric(population_rows):
+ rows=[]
+ for base in population_rows:
+  town=base['town']
+  value=RSA_VALUES[town]; rows.append({'town':town,'code':base['code'],'slug':base['slug'],'value':value,'formatted':f'{value} strutture' if value!=1 else '1 struttura','series':{'years':[2025],'values':[value]},'normalized':None,'benchmarkValue':value})
+ return {'meta':{'key':'accreditedRsaCount','theme':'salute','label':'RSA accreditate presenti nel Comune','shortLabel':'RSA accreditate','description':'Numero di Residenze sanitarie assistenziali accreditate presenti nel territorio comunale.','unit':'count','year':'2025','source':'Regione Toscana — elenco RSA accreditate','polarity':'neutral','sourceMeta':{'publisher':'Regione Toscana','snapshot':'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'}},'sourceUrl':'https://servizi.toscana.it/RT/RSA/','rows':rows,'aggregate':{'value':13,'formatted':'13 strutture','label':'Totale nei 7 Comuni','note':'Somma delle RSA accreditate presenti nei sette Comuni della Versilia.'},'normalizedAggregate':None,'method':{'type':'Conteggio da fonte ufficiale','formula':'Conteggio delle strutture accreditate presenti nel Comune.','caveat':'Non misura posti letto, capacità ricettiva né strutture convenzionate SSR.','coverage':'7/7'}}
 
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument('--refresh-source',action='store_true'); ap.add_argument('--snapshot-only',action='store_true'); a=ap.parse_args()
