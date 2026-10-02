@@ -49,6 +49,8 @@ def main()->None:
 
     dynamic_script="scripts/acquire_a3_benchmark_"+re.sub(r"[^a-z0-9]+","_",args.profile.lower()).strip("_")+".py"
     script=DEDICATED.get(args.profile)
+    if args.profile == "health-ministry-annual" and entry.get("metricIds") == ["pharmaciesPer1000"]:
+        script = "scripts/acquire_a3_benchmark_health_ministry_pharmacies.py"
     if args.profile == "mef-irpef-annual" and entry.get("metricIds") == ["income"]:
         script = "scripts/acquire_a3_benchmark_mef_taxable_income_annual.py"
     if args.profile == "istat-business-annual" and entry.get("metricIds") == ["microUnits"]:

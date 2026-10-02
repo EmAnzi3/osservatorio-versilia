@@ -401,13 +401,32 @@
           "nextAction": "Acquisire anagrafe completa dei presidi 2025; deduplicare presidi e stabilimenti, verificare Comuni senza strutture e i sette valori prima del totale."
         },
         "pharmaciesPer1000": {
-          "diagnosis": "TEMPORAL_AND_DENOMINATOR_RECONCILIATION_UNRESOLVED",
-          "reason": "Pubblico: farmacie aperte ogni 1.000 residenti, anno 2025. Il catalogo ufficiale Farmacie è giornaliero, aggiornato al 02-10-2026, e include succursali, dispensari e dispensari stagionali. Non è stata certificata una fotografia 2025 con lo stesso filtro e denominatore demografico dei sette valori pubblici (arrotondati a due decimali). Il precedente probe ha incontrato errori TLS, non indisponibilità certificata. Il totale giornaliero 2026 diviso per una popolazione generica non sarebbe equivalente.",
+          "diagnosis": "HISTORICAL_NATIVE_CANDIDATE_PENDING_PUBLIC_GATE",
+          "reason": "Fotografia ufficiale FRM_FARMA_5_20251231.csv acquisita integralmente (57.805 righe storiche), selezione tramite intervalli di validità al 31-12-2025: 20.730 codici unici Italia / 1.270 Toscana. Inclusi quattro tipi nativi, cessate e future escluse, nessun duplicato valido. Conteggi 6/20/11/9/4/5/1 e popolazione pubblica 01-01-2026 riconciliano 7/7 al centesimo. Benchmark candidati da conteggi aggregati / popolazione aggregata, non medie dei tassi. Non è usato il CSV corrente 2026.",
           "evidenceUrls": [
             "https://www.dati.salute.gov.it/it/dataset/farmacie/"
           ],
-          "nextAction": "Acquisire fotografia/filtro storico 2025 e dati grezzi dei conteggi comunali; certificare il denominatore coevo e ricostruire i sette tassi prima degli aggregati."
+          "nextAction": "Verificare worker e gate sul catalogo pubblico.",
+          "evidenceFiles": [
+            "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
+            "data/source-snapshots/a3-istat-demography-benchmark-2026.json"
+          ]
         }
+      },
+      "historicalPharmacyVerification": {
+        "evidenceFile": "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
+        "historicalCsvRows": 57805,
+        "activeUniqueIds": 20730,
+        "tuscanyActiveUniqueIds": 1270,
+        "referenceDate": "2025-12-31",
+        "populationDate": "2026-01-01",
+        "municipalReconciliation": "7/7 at public two decimals",
+        "candidate": "PASS_PENDING_PUBLIC_GATE",
+        "datedFilesRecovered": [
+          "2025-01-01",
+          "2025-12-31",
+          "2026-10-02"
+        ]
       }
     },
     "regione-toscana-gtfs-scheduled": {
@@ -3820,10 +3839,61 @@
       "metricDiagnoses": {
         "evPoints": {
           "diagnosis": "POINT_CONNECTOR_AND_REFERENCE_DATE_UNRESOLVED",
-          "reason": "Pubblico: punti di ricarica pubblici attivi 2026 / residenti ×1.000. Il solo file JSON trovato dal probe è manifest.json della web app (short_name, icons, start_url, display), non un elenco di punti. Mancano un export governato con data, stato attivo, identificatore del punto/connettore e filtro di accesso pubblico, oltre ai conteggi dei sette Comuni. Stazioni, colonnine, connettori e punti non sono intercambiabili.",
+          "reason": "Pubblico: punti di ricarica pubblici attivi 2026 / residenti ×1.000. Landing, configurazione e bundle ufficiale acquisiti; il client documenta ricerca pubblica paginata e filtri stato/accesso/regione/Comune. GET public/count e POST public/map/search restituiscono HTTP 403 Missing Authentication Token: nessuna riga dati acquisita. Restano da certificare data, ID EVSE/connettore, stato attivo, accesso pubblico e conteggi 7/7. Stazioni, colonnine, connettori e punti non sono intercambiabili. Il blocco di accesso non dimostra indisponibilità della fonte.",
           "nextAction": "Acquisire export ufficiale dei punti con ID/stato/data, deduplicare e riconciliare 7/7; usare la popolazione coeva senza dedurre assenze come zero.",
           "evidenceFiles": []
         }
+      },
+      "nativePublicApiVerification": {
+        "checkedAt": "2026-10-02",
+        "landingUrl": "https://www.piattaformaunicanazionale.it/",
+        "landingStatus": 200,
+        "bundleUrl": "https://www.piattaformaunicanazionale.it/static/js/main.33f55d37.js",
+        "bundleSha256": "0411664ce3a8c884dd7f994fd8beb1109040a41a8e74e8eed02fd0e7f0d8ff70",
+        "publicApiBase": "https://api.pun.piattaformaunicanazionale.it/",
+        "endpoints": [
+          {
+            "path": "v1/chargepoints/public/count",
+            "method": "GET",
+            "status": 403,
+            "response": {
+              "message": "Missing Authentication Token"
+            }
+          },
+          {
+            "path": "v1/chargepoints/public/map/search",
+            "method": "POST",
+            "request": {
+              "page": 0,
+              "size": 10,
+              "isItaly": true
+            },
+            "status": 403,
+            "response": {
+              "message": "Missing Authentication Token"
+            }
+          }
+        ],
+        "documentedMapRequest": {
+          "page": 0,
+          "size": 12000,
+          "filters": [
+            "new_input",
+            "search_area",
+            "max_electric_power",
+            "max_tariff_energy",
+            "access_mode",
+            "connectors_standard",
+            "capability",
+            "status",
+            "region",
+            "state",
+            "city",
+            "cpos"
+          ]
+        },
+        "result": "PUBLIC_DATA_NOT_ACQUIRED",
+        "note": "La ricerca pubblica esiste nel client e supera il precedente probe manifest-only, ma non restituisce dati nelle richieste effettuate. Nessuna prova di assenza o indisponibilità; nessun endpoint privato chiamato."
       }
     },
     "regione-toscana-pab-annual": {

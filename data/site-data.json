@@ -22477,11 +22477,20 @@
         "theme": "salute",
         "label": "Farmacie ogni 1.000 residenti",
         "shortLabel": "Densità farmacie",
-        "description": "Farmacie aperte nel comune rapportate alla popolazione residente.",
+        "description": "Farmacie aperte al pubblico al 31 dicembre 2025 secondo gli intervalli di validità ministeriali, incluse succursali e dispensari, rapportate ai residenti al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2025",
         "source": "Ministero della Salute — Open data farmacie",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 0.3470683112421165,
+          "italy": 0.3516967322979481,
+          "source": "Ministero della Salute",
+          "url": "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20251231.csv",
+          "sourceSnapshot": "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
+          "note": "Farmacie aperte al 31 dicembre 2025 secondo intervalli nativi di validità, incluse ordinarie, succursali, dispensari e dispensari stagionali. Una sola sede valida per codice ministeriale, nessuna somma delle righe storiche. Denominatore pubblico: residenti al 1° gennaio 2026, applicato anche a Toscana/Italia. Il CSV 2026 non sostituisce la fotografia storica 2025."
+        }
       },
       "sourceUrl": "https://www.dati.salute.gov.it/",
       "rows": [
@@ -22564,8 +22573,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "farmacie / popolazione residente × 1.000",
-        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "formula": "Sedi con codice ministeriale univoco valide al 31 dicembre 2025 / popolazione residente al 1° gennaio 2026 × 1.000.",
+        "caveat": "Include ordinarie, succursali, dispensari e dispensari stagionali della fotografia ministeriale 2025. Esclude registrazioni cessate e con validità futura; non conta tutte le righe storiche.",
         "coverage": "7/7"
       }
     },

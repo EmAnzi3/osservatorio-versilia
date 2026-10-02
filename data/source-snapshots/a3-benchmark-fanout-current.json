@@ -2,32 +2,32 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37047843481,
-    "headSha": "0202dd12690b532c05273070610a70b098403734",
-    "publicBenchmarks": "131/131",
+    "workflowRun": 37050672071,
+    "headSha": "934637f016df22ae54df2ec45d2c56bad14b7de4",
+    "publicBenchmarks": "132/132",
     "publicationGap": 0,
-    "availableMissing": 82,
-    "artifactId": 11245203235
+    "availableMissing": 81,
+    "artifactId": 11245919709
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
   "profiles": [
     {
-      "profileId": "mef-irpef-annual",
-      "bundleId": "mef-irpef-annual::benchmark_toscana_italia",
+      "profileId": "health-ministry-annual",
+      "bundleId": "health-ministry-annual::benchmark_toscana_italia",
       "rank": 1,
       "pairCount": 1,
       "metricIds": [
-        "income"
+        "pharmaciesPer1000"
       ],
       "sourceReferences": [
-        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+        "https://www.dati.salute.gov.it/it/dataset/farmacie/"
       ],
-      "publisher": "MEF",
+      "publisher": "Ministero della Salute",
       "costPoints": 1,
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-131-certified-taxable-income",
-  "selectionRationale": "Reuse the complete native MEF 2024 taxable-income amount/frequency panel certified for real income; public income reconciles 7/7 at the cent. Aggregate by sum amount/sum frequency, not municipality means."
+  "workerGeneration": "post-132-certified-historical-pharmacies",
+  "selectionRationale": "Official 2025-12-31 CSV recovered; full validity-interval filter and unique ministerial IDs reconcile 7/7 using the public 2026-01-01 population. Hospitals remain outside this pharmacy acquisition."
 }
