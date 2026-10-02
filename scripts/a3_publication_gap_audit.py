@@ -1,4 +1,4 @@
-# certification trigger: controlled A3 fan-in
+# certification trigger: controlled A3 fan-in round 2
 #!/usr/bin/env python3
 """Verify that A3-acquired history and Toscana/Italia benchmarks reach public UI contracts."""
 from __future__ import annotations
