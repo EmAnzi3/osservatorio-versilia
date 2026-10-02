@@ -258,6 +258,39 @@
         "runtimeArchiveStatus": 503,
         "status": "SOURCE_ACCESS_BLOCKED_NOT_UNAVAILABLE",
         "nextAction": "Acquire the official 2024 archive when reachable, then reconcile municipal vehicle counts and exact population/emission denominators 7/7."
+      },
+      "latestPublicPortalVerification": {
+        "officialPortal": "https://opv.aci.it/WEBDMCircolante/",
+        "portalStatus": 200,
+        "publicScriptStatus": 200,
+        "categoriesQueryStatus": 200,
+        "categories": [
+          "AB",
+          "AM",
+          "AS",
+          "AV",
+          "MC",
+          "MM",
+          "MS",
+          "ND",
+          "RM",
+          "RS",
+          "TS"
+        ],
+        "dimensionsQueryStatus": 200,
+        "dimensions": [
+          "ALIMENTAZIONE",
+          "EURO",
+          "FASCIA ANZIANITA",
+          "REGIONE",
+          "SOLO COMUNI CAPOLUOGO",
+          "SOLO PROVINCE"
+        ],
+        "yearQueryResult": "read timeout",
+        "documentedPublicDashboardResult": "HTTP 401 for the public destination1 launcher, requesting year 2024 and category AV",
+        "additionalOfficialArchive": "https://aci.gov.it/app/uploads/2025/11/Autoritratto-2024-OD.zip",
+        "additionalArchiveStatus": 503,
+        "result": "No complete municipal 2024 counts obtained; no bypass and no inferred aggregates. Access failures do not prove source absence."
       }
     },
     "openbdap-annual": {
@@ -7707,6 +7740,19 @@
         "bytes": 654071,
         "sha256": "a9bfe42de94215205f849ec1d78845cc8cfe19a61c61d1b29f2537bc76df3ecf",
         "result": "All eight 2023 tables measure employee job positions, not LU counts; not used as a proxy."
+      }
+    },
+    "mef-irpef-annual": {
+      "incomeNativePanelVerification": {
+        "status": "CANDIDATE_PASS_PUBLIC_GATE_PENDING",
+        "snapshot": "data/source-snapshots/a3-mef-taxable-income-benchmark-2024.json",
+        "sourcePanel": "data/source-snapshots/a3-mef-real-income-benchmark-2024.json",
+        "actualTaxYear": 2024,
+        "municipalReconciliation": "7/7 at published cent",
+        "nationalRecords": 7897,
+        "tuscanyMunicipalities": 273,
+        "formula": "sum Reddito imponibile Ammontare / sum Frequenza",
+        "result": "Previous generic contract blocker superseded by exact native taxable-income variable; no use of Reddito complessivo."
       }
     }
   }

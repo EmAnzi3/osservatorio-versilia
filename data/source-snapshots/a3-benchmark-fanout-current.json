@@ -2,32 +2,32 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37028478388,
-    "headSha": "37545f23851c242130684015a7dcbb8f990c81f1",
-    "publicBenchmarks": "130/130",
+    "workflowRun": 37047843481,
+    "headSha": "0202dd12690b532c05273070610a70b098403734",
+    "publicBenchmarks": "131/131",
     "publicationGap": 0,
-    "availableMissing": 83,
-    "artifactId": 11235619919
+    "availableMissing": 82,
+    "artifactId": 11245203235
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
   "profiles": [
     {
-      "profileId": "istat-business-annual",
-      "bundleId": "istat-business-annual::benchmark_toscana_italia",
+      "profileId": "mef-irpef-annual",
+      "bundleId": "mef-irpef-annual::benchmark_toscana_italia",
       "rank": 1,
       "pairCount": 1,
       "metricIds": [
-        "microUnits"
+        "income"
       ],
       "sourceReferences": [
-        "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/"
+        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
       ],
-      "publisher": "Istat",
-      "costPoints": 2,
+      "publisher": "MEF",
+      "costPoints": 1,
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-130-certified-micro-units",
-  "selectionRationale": "Native ASIA-UL 2023 W0_9 and TOTAL counts reconcile 7/7 municipalities. Official Tuscany/Italy aggregate ratios use the same size-class and economic activity, not municipal percentage averages."
+  "workerGeneration": "post-131-certified-taxable-income",
+  "selectionRationale": "Reuse the complete native MEF 2024 taxable-income amount/frequency panel certified for real income; public income reconciles 7/7 at the cent. Aggregate by sum amount/sum frequency, not municipality means."
 }
