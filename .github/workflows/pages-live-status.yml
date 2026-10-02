@@ -46,10 +46,12 @@ jobs:
               (job for job in jobs if job.get("name") in {"deploy", "publish verified Radar"}),
               None,
           )
-          deploy_ok = bool(deploy and deploy.get("conclusion") == "success")
+          conclusion = deploy.get("conclusion") if deploy else "missing"
+          deploy_ok = conclusion == "success"
           with open("/tmp/ov-live-site-check.txt", encoding="utf-8") as handle:
               routes_ok = "Public site integrity PASS" in handle.read()
-          published = deploy_ok and routes_ok
+          published = conclusion == "success"
+          published = published and routes_ok
           if published:
               description = "Pages pubblicato; route pubbliche verificate"
           elif not deploy_ok:
