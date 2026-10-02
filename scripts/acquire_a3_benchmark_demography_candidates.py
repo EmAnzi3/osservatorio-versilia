@@ -190,8 +190,8 @@ def p2_natural_headers(headers:list[str])->dict[str,str]:
 def p2_mobility_headers(headers:list[str])->dict[str,str]:
     return {
         **p2_population_headers(headers),
-        "internalIn":pick(headers,("iscritti","altri","comuni","totale")),
-        "internalOut":pick(headers,("cancellati","altri","comuni","totale")),
+        "internalIn":pick(headers,("iscritti","altro","comune","totale")),
+        "internalOut":pick(headers,("cancellati","altro","comune","totale")),
         "foreignIn":pick(headers,("iscritti","estero","totale")),
         "foreignOut":pick(headers,("cancellati","estero","totale")),
     }

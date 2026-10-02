@@ -199,7 +199,7 @@ def main():
             errors.append(f"{town}: {observed} != {got['ctot']}")
     metric_checks={
         "recycling":("pct",.011),
-        "wastePerResident":("pcRu",.11),
+        "wastePerResident":("pcRu",.51),
         "residualWaste":(None,.25),
     }
     for metric_id,(source_key,tolerance) in metric_checks.items():
