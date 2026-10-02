@@ -18,20 +18,33 @@ def fetch_url(url):
     with urllib.request.urlopen(request,timeout=45) as response:
         return response.read().decode("utf-8",errors="replace")
 
+def population_number(value):
+    text=str(value or "").strip().replace("\u00a0","").replace(" ","")
+    if not text: return None
+    if "," not in text:
+        text=text.replace(".","")
+    else:
+        text=text.replace(".","").split(",",1)[0]
+    try: return float(int(text))
+    except ValueError: return None
+
+def percent_number(value):
+    return src.number(str(value or "").strip().rstrip("%"))
+
 def parse_production_row(row,*,municipal=False):
     if municipal:
         if len(row)<9: return None
         code=str(row[2]).strip()
         if not (len(code)==8 and code.isdigit()): return None
-        population=src.number(row[1]); rd=src.number(row[4]); ru=src.number(row[5])
-        pct=src.number(row[6]); pc_ru=src.number(row[8])
+        population=population_number(row[1]); rd=src.number(row[4]); ru=src.number(row[5])
+        pct=percent_number(row[6]); pc_ru=src.number(row[8])
         if None in (population,rd,ru,pct,pc_ru): return None
         if src.norm(row[3])!="COMUNE": return None
         return {"name":str(row[0]).strip(),"code":code,"population":population,"rd":rd,"ru":ru,"pct":pct,"pcRu":pc_ru}
     if len(row)<9: return None
     code=str(row[2]).strip()
     if not (len(code)==5 and code.isdigit()): return None
-    population=src.number(row[3]); rd=src.number(row[4]); ru=src.number(row[5])
+    population=population_number(row[3]); rd=src.number(row[4]); ru=src.number(row[5])
     if None in (population,rd,ru): return None
     return {"region":str(row[0]).strip(),"province":str(row[1]).strip(),"code":code,"population":population,"rd":rd,"ru":ru}
 
