@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEMO = ROOT / 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
 URL = 'https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20251231.csv'
 SOURCE_SHA = '427d930c0143a012cb4d65fb71a50fee946dba8a5105850e685dd417cc36db20'
+RECORDS_SHA = '3eba2d584517859d59070a4f67c2faa88d67e6f9b11721b13dd54efa565154ca'
+FROZEN = ROOT / 'data/source-snapshots/a3-health-pharmacies-benchmark-2025.json'
 DAY = dt.date(2025, 12, 31)
 REGIONS = {'010','020','030','041','042','050','060','070','080','090','100','110','120','130','140','150','160','170','180','190','200'}
 CODES = {'046018','046033','046005','046024','046028','046013','046030'}
@@ -70,7 +72,7 @@ def verify_records(records):
 def validate_snapshot(metric, snapshot, population):
     records = snapshot['records']
     verify_records(records)
-    if snapshot.get('recordsSha256') != digest(records) or snapshot.get('sourceUrl') != URL or snapshot['source'].get('sha256') != SOURCE_SHA or snapshot.get('referenceDate') != DAY.isoformat():
+    if snapshot.get('recordsSha256') != digest(records) or digest(records) != RECORDS_SHA or snapshot.get('sourceUrl') != URL or snapshot['source'].get('sha256') != SOURCE_SHA or snapshot.get('referenceDate') != DAY.isoformat():
         raise RuntimeError('Pharmacies: historical provenance mismatch')
     demo_bytes = DEMO.read_bytes()
     denominator = json.loads(demo_bytes)['benchmarks']['population']
@@ -106,7 +108,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--csv', type=Path)
+    parser.add_argument('--refresh', action='store_true', help='Acquire the immutable historical CSV online; otherwise revalidate its versioned native panel.')
     args = parser.parse_args()
+    if not args.csv and not args.refresh:
+        snapshot = json.loads(FROZEN.read_text())
+        site = json.loads((ROOT/'data/site-data.json').read_text())
+        validate_snapshot(site['metrics']['pharmaciesPer1000'], snapshot, site['metrics']['population'])
+        if snapshot.get('qualityGate', {}).get('status') != 'PASS' or snapshot.get('qualityGate', {}).get('errors') != []:
+            raise RuntimeError('Pharmacies: versioned native quality gate mismatch')
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n')
+        print(json.dumps({'status':'ACQUIRED_CANDIDATE','mode':'revalidated_historical_native_panel','recordsSha256':RECORDS_SHA,'reconciliation':'7/7','activeRows':len(snapshot['records']),'benchmarks':snapshot['benchmarks']['pharmaciesPer1000']}))
+        return
     body = args.csv.read_bytes() if args.csv else urllib.request.urlopen(URL, timeout=60).read()
     records = parse(body)
     demo_bytes = DEMO.read_bytes()
