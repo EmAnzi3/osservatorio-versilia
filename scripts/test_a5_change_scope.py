@@ -35,7 +35,9 @@ def main() -> None:
         # A5 checkpoint when this PR actually changes at least one declared
         # A5 path; once in scope, the checkpoint diff still rejects extra paths.
         pr_changed=set(filter(None,git("diff","--name-only",f"{base}..{target}").splitlines()))
-        if not (pr_changed & allowed):
+        # Editing this checker alone does not make an unrelated PR an A5 batch.
+        a5_scope_paths=allowed - {"scripts/test_a5_change_scope.py"}
+        if not (pr_changed & a5_scope_paths):
             print("Scope lock non applicabile: la PR non modifica file A5 dichiarati.")
             return
 
