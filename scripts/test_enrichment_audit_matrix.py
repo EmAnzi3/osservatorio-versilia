@@ -187,6 +187,28 @@ def test_age_token_does_not_match_aggregate() -> None:
     assert age["classificationOrigin"] == "pending_source_evidence"
 
 
+def test_bibliographic_reference_is_not_benchmark() -> None:
+    reference_only = {
+        "method": {
+            "reference": "Carta Forestale d'Italia: riferimento nominale 2020, aggiornata al 2024."
+        }
+    }
+    assert audit.acquired_evidence(reference_only, "benchmark_toscana_italia") is None
+
+    numeric_benchmark = {
+        "meta": {
+            "benchmark": {
+                "year": 2024,
+                "tuscany": 10.0,
+                "italy": 11.0,
+                "source": "Fixture source",
+                "url": "https://example.test/benchmark",
+            }
+        }
+    }
+    assert audit.acquired_evidence(numeric_benchmark, "benchmark_toscana_italia") == "meta.benchmark"
+
+
 def test_strict_validation_rejects_unclassified_pairs() -> None:
     data, registry = fixtures()
     payload = audit.build_matrix(data, registry)
@@ -243,6 +265,7 @@ if __name__ == "__main__":
     test_derived_matrix_and_precedence()
     test_acquired_evidence_wins_over_registry_annotation()
     test_age_token_does_not_match_aggregate()
+    test_bibliographic_reference_is_not_benchmark()
     test_strict_validation_rejects_unclassified_pairs()
     test_strict_write_preserves_diagnostic_output()
     test_profile_not_applicable_is_rejected()

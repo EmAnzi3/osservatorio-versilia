@@ -32,6 +32,7 @@ jobs:
       - name: Run A3 regression suite
         run: |
           python scripts/test_enrichment_audit_matrix.py
+          python scripts/test_a3_publication_adapter.py
           python scripts/test_enrichment_structural_closure.py
           python scripts/test_enrichment_route_evidence.py
           python scripts/test_enrichment_companion_evidence.py
@@ -73,6 +74,33 @@ jobs:
             --registry dist/data/source-registry.json \
             --output /tmp/a3-enrichment-matrix.json \
             --allow-unclassified
+
+      - name: Upload effective A3 matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-enrichment-matrix
+          path: /tmp/a3-enrichment-matrix.json
+          if-no-files-found: error
+
+      - name: Audit A3 publication contract
+        run: |
+          python scripts/a3_publication_gap_audit.py \
+            --data dist/data/site-data.json \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --dist dist \
+            --json-output /tmp/a3-publication-gap.json \
+            --markdown-output /tmp/A3_PUBLICATION_GAP_AUDIT.md \
+            --strict
+          python scripts/test_a3_publication_contract.py
+
+      - name: Upload A3 publication gap audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-publication-gap
+          path: |
+            /tmp/a3-publication-gap.json
+            /tmp/A3_PUBLICATION_GAP_AUDIT.md
+          if-no-files-found: error
 
       - name: Report residual A3 pairs
         run: |
@@ -224,8 +252,8 @@ jobs:
           assert summary['classifiedPairCount'] == 2025, summary
           assert summary['unclassifiedPairCount'] == 0, summary
           assert summary['totalPairCount'] == 2025, summary
-          assert summary['acquiredPairCount'] == 544, summary
-          assert summary['availableMissingPairCount'] == 752, summary
+          assert summary['acquiredPairCount'] == 543, summary
+          assert summary['availableMissingPairCount'] == 753, summary
           assert summary['eligiblePairCount'] == 1296, summary
           assert summary['sourceUnavailablePairCount'] == 374, summary
           assert summary['notApplicablePairCount'] == 355, summary
@@ -233,7 +261,7 @@ jobs:
           assert summary['availableMissingPairCount'] == ms['state_AVAILABLE_MISSING'], (summary, ms)
           assert summary['sourceUnavailablePairCount'] == ms['state_SOURCE_UNAVAILABLE'], (summary, ms)
           assert summary['notApplicablePairCount'] == ms['state_NOT_APPLICABLE'], (summary, ms)
-          assert math.isclose(summary['coveragePercent'], 41.9753086419753, abs_tol=1e-12), summary
+          assert math.isclose(summary['coveragePercent'], 41.898148148148145, abs_tol=1e-12), summary
 
           print(
               'A3.6 coverage gate: '
@@ -455,7 +483,7 @@ jobs:
               assert row['evidence'].startswith('structured:'), (pair, row)
               metric_id, dimension = pair
               if dimension == 'serie_storica':
-                  assert 'a3History' in row['evidence'], (pair, row)
+                  assert 'series' in row['evidence'] and 'a3History' not in row['evidence'], (pair, row)
               elif dimension == 'categorie_specifiche':
                   assert 'businessCategoryBreakdown' in row['evidence'], (pair, row)
               elif metric_id in {'incomeSourceProfile', 'pensionIncomeShare'}:
@@ -495,7 +523,7 @@ jobs:
               assert row['state']=='ACQUIRED',(pair,row)
               assert row['classificationOrigin']=='catalog_structure',(pair,row)
               assert row['evidence'].startswith('structured:'),(pair,row)
-              assert 'a3History' in row['evidence'],(pair,row)
+              assert 'series' in row['evidence'] and 'a3History' not in row['evidence'],(pair,row)
           backlog_pairs={(pair['metricId'],bundle['dimension']) for bundle in backlog['bundles'] for pair in bundle['pairs']}
           assert expected.isdisjoint(backlog_pairs),expected & backlog_pairs
           assert backlog['summary']['availableMissingPairCount']==matrix['summary']['state_AVAILABLE_MISSING'],backlog['summary']
@@ -556,7 +584,7 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 752, backlog['summary']
+          assert backlog['summary']['availableMissingPairCount'] == 753, backlog['summary']
           assert backlog['summary']['availableMissingPairCount'] == matrix['summary']['state_AVAILABLE_MISSING']
           assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
           print(

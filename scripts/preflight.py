@@ -255,6 +255,7 @@ def quick(*, plan: bool = False) -> None:
         run_python(f"canonical: {label}", script, *args, plan=plan)
 
     run_python("build pre-rendered site", "scripts/build_static_brand.py", plan=plan)
+    run_python("A3 publication contract", "scripts/test_a3_publication_contract.py", plan=plan)
     git_source_clean(plan=plan)
     run_python("composite indicators fail-fast", "scripts/test_composite_indicators.py", plan=plan)
     run_python("visual grammar fail-fast", "scripts/test_visual_grammar.py", plan=plan)
