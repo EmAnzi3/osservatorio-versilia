@@ -297,7 +297,11 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
     data_rows = None
     diagnostics = []
     for delimiter in (";", ",", "\t", "|"):
-        parsed = list(csv.reader(io.StringIO(text), delimiter=delimiter))
+        try:
+            parsed = list(csv.reader(io.StringIO(text, newline=""), delimiter=delimiter))
+        except csv.Error as exc:
+            diagnostics.append(f"{delimiter!r}:csv_error:{exc}")
+            continue
         header_index = next(
             (i for i, row in enumerate(parsed) if any(str(cell).strip() for cell in row)),
             None,
