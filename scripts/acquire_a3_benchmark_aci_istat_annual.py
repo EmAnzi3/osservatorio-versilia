@@ -29,6 +29,30 @@ def find_geo(ws,name:str)->tuple[Any,...]:
         raise RuntimeError(f"ACI/Istat {ws.title}: riga {name} non univoca ({len(hits)})")
     return hits[0]
 
+def reconcile_public_rows(ws,rows:list[dict],value_index:int,metric_id:str,tolerance:float)->list[dict]:
+    evidence=[]
+    errors=[]
+    for item in rows:
+        town=str(item.get("town") or "").strip()
+        if not town:
+            errors.append(f"{metric_id}: town pubblico assente")
+            continue
+        try:
+            source=find_geo(ws,town)
+            expected=finite(source[value_index])
+            observed=finite(item.get("value"))
+        except Exception as exc:
+            errors.append(f"{metric_id}/{town}: {type(exc).__name__}: {exc}")
+            continue
+        evidence.append({"town":town,"observed":observed,"source":expected})
+        if not math.isclose(observed,expected,rel_tol=0.0,abs_tol=tolerance):
+            errors.append(f"{metric_id}/{town}: {observed} != {expected}")
+    if errors:
+        raise RuntimeError("; ".join(errors[:20]))
+    if len(evidence)!=7:
+        raise RuntimeError(f"{metric_id}: riconciliazione comunale {len(evidence)}/7")
+    return evidence
+
 def public_contract(site:dict,metric_id:str,unit:str,year:str,formula_tokens:tuple[str,...])->list[dict]:
     metric=(site.get("metrics") or {}).get(metric_id) or {}
     meta=metric.get("meta") or {}
@@ -59,6 +83,8 @@ def main()->None:
     if "mobilità urbana_11.1" not in wb.sheetnames or "mobilità urbana_12.1" not in wb.sheetnames:
         raise RuntimeError(f"ACI/Istat: fogli attesi assenti {wb.sheetnames}")
     ws_motor=wb["mobilità urbana_11.1"]; ws_poll=wb["mobilità urbana_12.1"]
+    motor_municipal=reconcile_public_rows(ws_motor,motor_rows,5,"motorization",.11)
+    poll_municipal=reconcile_public_rows(ws_poll,polluting_rows,19,"pollutingCars",.11)
     m_tus=find_geo(ws_motor,"Toscana"); m_ita=find_geo(ws_motor,"Italia")
     p_tus=find_geo(ws_poll,"Toscana"); p_ita=find_geo(ws_poll,"Italia")
     motor_tus=finite(m_tus[5]); motor_ita=finite(m_ita[5])
@@ -81,12 +107,13 @@ def main()->None:
       "qualityGate":{
         "status":"PASS",
         "publicContractCompatibility":"2 metrics × 7/7 public rows; source/unit/year/formula PASS",
+        "publicReconciliation":"2 metrics × 7/7 municipal rows PASS",
         "officialBenchmarkRows":"Toscana + Italia 2024 from Istat tables 11.1 and 12.1 PASS",
         "errors":[]
       },
       "evidence":{
-        "motorization":{"sheet":"mobilità urbana_11.1","tuscanyRow":list(m_tus),"italyRow":list(m_ita)},
-        "pollutingCars":{"sheet":"mobilità urbana_12.1","tuscanyRow":list(p_tus),"italyRow":list(p_ita)}
+        "motorization":{"sheet":"mobilità urbana_11.1","municipalRows":motor_municipal,"tuscanyRow":list(m_tus),"italyRow":list(m_ita)},
+        "pollutingCars":{"sheet":"mobilità urbana_12.1","municipalRows":poll_municipal,"tuscanyRow":list(p_tus),"italyRow":list(p_ita)}
       }
     }
     out=Path(a.output); out.parent.mkdir(parents=True,exist_ok=True)
