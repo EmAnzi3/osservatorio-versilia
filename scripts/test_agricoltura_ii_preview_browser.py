@@ -21,31 +21,30 @@ def assert_no_simple_mean_benchmark(text: str) -> None:
 
 
 def compare_row(page, town: str):
-    """Return a live locator for a town row.
-
-    The comparison chart is re-rendered after composite-selector changes.
-    Returning a Locator keeps Playwright attached to the selector across that
-    re-render; the previous implementation first observed the row in JS and
-    then enumerated a snapshot immediately afterwards, leaving a small race
-    window where the DOM could be replaced between the two operations.
-    """
-    row = page.locator("#compare-bars .bar-row").filter(
-        has_text=re.compile(rf"^\\s*{re.escape(town)}\\b")
+    """Return a live locator for a town row across chart re-renders."""
+    label = page.locator("#compare-bars .bar-row .bar-town").filter(
+        has_text=re.compile(rf"^\\s*{re.escape(town)}\\s*$")
     ).first
-    row.wait_for(state="visible")
-    return row
+    label.wait_for(state="visible")
+    return label.locator(
+        "xpath=ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' bar-row ')][1]"
+    )
 
 
 def town_current_row(page, town: str):
-    rows = page.locator(
-        '.history-panel [data-view-pane="current"] .bar-row, '
-        '.history-panel [data-view-pane="current"] .ux-bar-row'
-    )
-    row = rows.filter(
-        has_text=re.compile(rf"^\\s*{re.escape(town)}\\b")
+    label = page.locator(
+        '.history-panel [data-view-pane="current"] .bar-row .bar-town, '
+        '.history-panel [data-view-pane="current"] .ux-bar-row .ux-bar-town'
+    ).filter(
+        has_text=re.compile(rf"^\\s*{re.escape(town)}\\s*$")
     ).first
-    row.wait_for(state="visible")
-    return row
+    label.wait_for(state="visible")
+    return label.locator(
+        "xpath=ancestor::*["
+        "contains(concat(' ', normalize-space(@class), ' '), ' bar-row ') "
+        "or contains(concat(' ', normalize-space(@class), ' '), ' ux-bar-row ')"
+        "][1]"
+    )
 
 
 def visual_left(locator) -> float:
