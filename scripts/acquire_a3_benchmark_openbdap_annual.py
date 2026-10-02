@@ -12,6 +12,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 import requests
+from openpyxl import load_workbook
 
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/"data/site-data.json"
@@ -28,6 +29,7 @@ MEMBERS={
  "risultato":"Rendiconto SDB Allegato A Risultato di Amministrazione_TOSCANA.csv",
 }
 EXPECTED_TUSCANY_MUNICIPALITIES=273
+ISTAT_MUNICIPALITIES_URL="https://www.istat.it/wp-content/uploads/2026/02/Corone-urbane_Comuni_dal-31-12-2021-luglio26.xlsx"
 
 BASELINE_METRICS={
  "currentRevenueAccruedPerResident",
@@ -130,6 +132,32 @@ def exact(index,c,k,field):
     if value is None: return None,"non-numeric"
     return value,None
 
+def official_tuscany_municipalities(session:requests.Session)->dict[str,str]:
+    response=session.get(ISTAT_MUNICIPALITIES_URL,timeout=240)
+    response.raise_for_status()
+    workbook=load_workbook(io.BytesIO(response.content),read_only=True,data_only=True)
+    sheet_name="Comuni_01-01-2026"
+    if sheet_name not in workbook.sheetnames:
+        raise RuntimeError(f"Istat comuni: foglio {sheet_name} assente {workbook.sheetnames}")
+    ws=workbook[sheet_name]
+    rows=ws.iter_rows(values_only=True)
+    header=[str(x or "").strip() for x in next(rows)]
+    idx={name:i for i,name in enumerate(header)}
+    for required in ("COD_REG","PRO_COM_T","COMUNE"):
+        if required not in idx:
+            raise RuntimeError(f"Istat comuni: colonna {required} assente {header}")
+    out={}
+    for row in rows:
+        if str(row[idx["COD_REG"]] or "").strip().zfill(2)!="09":
+            continue
+        code=str(row[idx["PRO_COM_T"]] or "").strip()
+        name=str(row[idx["COMUNE"]] or "").strip()
+        if len(code)==6 and code.isdigit() and name:
+            out[code]=name
+    if len(out)!=EXPECTED_TUSCANY_MUNICIPALITIES:
+        raise RuntimeError(f"Istat comuni: Toscana {len(out)} != {EXPECTED_TUSCANY_MUNICIPALITIES}")
+    return out
+
 def public_expected():
     baseline=json.loads(BASELINE.read_text(encoding="utf-8"))
     v139=json.loads(V139.read_text(encoding="utf-8"))
@@ -168,7 +196,14 @@ def main():
     municipality_codes=sorted({
       code(row) for row in entrate if is_tuscany_municipality(row) and code(row)
     })
-    scope_complete=len(municipality_codes)==EXPECTED_TUSCANY_MUNICIPALITIES
+    official_tuscany=official_tuscany_municipalities(session)
+    official_codes=sorted(official_tuscany)
+    missing_codes=sorted(set(official_codes)-set(municipality_codes))
+    unexpected_codes=sorted(set(municipality_codes)-set(official_codes))
+    scope_complete=(
+      len(municipality_codes)==EXPECTED_TUSCANY_MUNICIPALITIES
+      and not missing_codes and not unexpected_codes
+    )
 
     demo=json.loads(DEMOGRAPHY.read_text(encoding="utf-8"))
     population=float(demo["rcs"]["scopes"]["tuscany"]["population"])
@@ -285,6 +320,9 @@ def main():
       "sourceArchive":response.url,
       "tuscanyMunicipalityCount":len(municipality_codes),
       "tuscanyMunicipalityCodes":municipality_codes,
+      "officialTuscanyMunicipalityCount":len(official_codes),
+      "missingMunicipalities":[{"code":code,"name":official_tuscany[code]} for code in missing_codes],
+      "unexpectedMunicipalityCodes":unexpected_codes,
       "scopeComplete":scope_complete,
       "populationDenominator":{"value":population,"year":"2025","municipalities":EXPECTED_TUSCANY_MUNICIPALITIES,"source":"Istat RCS/P02 governed snapshot"},
       "benchmarks":benchmarks,
