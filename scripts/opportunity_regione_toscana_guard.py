@@ -123,7 +123,7 @@ def _is_family_only_nidi_application(title: str, url: str, text: str) -> bool:
         and "rivolto alle famiglie" in folded_title
         and "/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie" in normalized_url
         and (
-            "genitori/tutori" in folded_text
+            "genitori tutori" in folded_text
             or "domande delle famiglie" in folded_text
         )
     )
