@@ -60050,7 +60050,16 @@
           "servizi sociali",
           "spesa per abitante",
           "assistenza sociale"
-        ]
+        ],
+        "benchmark": {
+          "year": "2022",
+          "tuscany": 167,
+          "italy": 150,
+          "source": "Istat — Spesa dei Comuni per i servizi sociali",
+          "url": "https://www.istat.it/comunicato-stampa/la-spesa-dei-comuni-per-i-servizi-sociali-anno-2022/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-social-services-benchmark-2022.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx",
       "rows": [
