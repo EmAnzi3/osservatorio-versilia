@@ -60,9 +60,10 @@ def province_production():
             empty_after=0
     if not 95<=len(found)<=120:
         raise RuntimeError(f"ISPRA: copertura provinciale Italia inattesa {len(found)}")
-    tuscany=[x for x in found.values() if src.norm(x["region"])=="TOSCANA"]
+    tuscany=[x for x in found.values() if str(x["code"]).startswith("09")]
     if len(tuscany)!=10:
-        raise RuntimeError(f"ISPRA: province Toscana inattese {len(tuscany)}")
+        sample=[{"code":x["code"],"region":x["region"],"province":x["province"]} for x in list(found.values())[:20]]
+        raise RuntimeError(f"ISPRA: province Toscana inattese {len(tuscany)}; sample={sample}")
     return list(found.values()),tuscany,pages
 
 def lucca_municipal_production():
