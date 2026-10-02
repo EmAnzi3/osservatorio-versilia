@@ -3217,11 +3217,136 @@
       },
       "metricDiagnoses": {
         "thirdSector": {
-          "diagnosis": "HISTORICAL_REGISTRATION_AND_TERRITORIAL_SCOPE_UNRESOLVED",
-          "reason": "Pubblico: enti iscritti al RUNTS / residenti ×1.000, anno 2025. Il portale Ricerca enti è raggiungibile ma il probe non acquisisce export (0 file strutturati). Mancano una fotografia 2025 per codice fiscale/ente, lo stato di iscrizione e la regola sede legale rispetto a sedi operative, oltre ai conteggi e denominatori dei sette tassi pubblici. Non è equivalente il Censimento Istat delle istituzioni non profit o un elenco corrente con cancellazioni successive.",
-          "nextAction": "Acquisire export/fotografia ufficiale 2025, definire sede/stato e deduplicare per ente; verificare conteggi comunali e denominatori prima degli aggregati.",
+          "diagnosis": "HISTORICAL_MUNICIPAL_RECONCILIATION_AND_LOCATION_MISMATCH",
+          "reason": "Excel ufficiali Lista-enti recuperati integralmente tramite form pubblico: 153.295 iscritti + 17.748 cancellati (02-10-2026), hash e schema verificati. Due date non leggibili; 171.041 righe parse. Filtro iscrizione entro 31-12-2025 e cancellazione successiva dà 139.984 codici fiscali unici / 11.238 righe in Toscana. Conteggi comunali 49/156/79/62/47/22/12 non riconciliati 0/7 con i tassi pubblici usando popolazione 2026. La nota nativa indica sede alla cancellazione; gli iscritti riportano sede corrente, non geografia storica. Nessun benchmark da conteggi parziali o fotografia corrente.",
+          "nextAction": "Certificare fotografia geografica/registrazione 2025, risolvere due date native mancanti e provenienza dei tassi pubblici prima del confronto regionale/nazionale; non correggere valori né periodo senza riconciliazione 7/7.",
           "evidenceFiles": []
         }
+      },
+      "fullNativeExportVerification": {
+        "referenceDate": "2025-12-31",
+        "sources": {
+          "iscritti": {
+            "sha256": "0271b60717373cf96f15812ef2e4b25a5b3ac0e6976f2d21978c78adf3b49785",
+            "bytes": 12870593,
+            "nonemptyRows": 153295,
+            "headers": [
+              "Codice fiscale\r\nSteuernummer",
+              "Repertorio\r\nRepertoire",
+              "Comune Sede legale\r\nGemeinsame Rechtssitz",
+              "Provincia Sede legale\r\nProvinz Rechtssitz",
+              "Data Iscrizione\r\nAnmeldedatum"
+            ]
+          },
+          "cancellati": {
+            "sha256": "d6eb5ea7723d7b47aeb7215786cf4d7ea27c94aa11c36c28444a317a381d449b",
+            "bytes": 1683872,
+            "nonemptyRows": 17748,
+            "headers": [
+              "Codice fiscale\r\nSteuernummer",
+              "Repertorio\r\nRepertoire",
+              "Comune Sede legale\r\nGemeinsame Rechtssitz",
+              "Provincia Sede legale\r\nProvinz Rechtssitz",
+              "Data Iscrizione\r\nAnmeldedatum",
+              "Data Cancellazione\r\nStornierungsdatum"
+            ]
+          }
+        },
+        "parsedRows": 171041,
+        "unparsedDateRows": 2,
+        "activeHistoricalRows": 139984,
+        "uniqueActiveFiscalCodes": 139984,
+        "duplicateFiscalCodes": 0,
+        "tuscanyRows": 11238,
+        "municipalCounts": {
+          "CAMAIORE": 79,
+          "FORTE DEI MARMI": 22,
+          "MASSAROSA": 49,
+          "PIETRASANTA": 62,
+          "SERAVEZZA": 47,
+          "STAZZEMA": 12,
+          "VIAREGGIO": 156
+        },
+        "currentMunicipalCounts": {
+          "CAMAIORE": 85,
+          "FORTE DEI MARMI": 24,
+          "MASSAROSA": 51,
+          "PIETRASANTA": 67,
+          "SERAVEZZA": 50,
+          "STAZZEMA": 13,
+          "VIAREGGIO": 173
+        },
+        "scopeLimitation": "Current registered entities use current municipality; cancelled entities use municipality at cancellation per native note. Historical transfers, section changes and re-registrations need checking. Do not infer a historical geographical panel from date filtering alone.",
+        "publicReconciliation": [
+          {
+            "town": "Massarosa",
+            "code": "046018",
+            "historicalDateFilteredCount": 49,
+            "population2026": 21782,
+            "computedPer1000": 2.249563860067946,
+            "publicPer1000": 2.34,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Viareggio",
+            "code": "046033",
+            "historicalDateFilteredCount": 156,
+            "population2026": 60680,
+            "computedPer1000": 2.5708635464733023,
+            "publicPer1000": 2.74,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Camaiore",
+            "code": "046005",
+            "historicalDateFilteredCount": 79,
+            "population2026": 31763,
+            "computedPer1000": 2.4871706073103925,
+            "publicPer1000": 2.64,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Pietrasanta",
+            "code": "046024",
+            "historicalDateFilteredCount": 62,
+            "population2026": 22678,
+            "computedPer1000": 2.733927154070024,
+            "publicPer1000": 2.78,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Seravezza",
+            "code": "046028",
+            "historicalDateFilteredCount": 47,
+            "population2026": 12284,
+            "computedPer1000": 3.8261152718984044,
+            "publicPer1000": 3.99,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Forte dei Marmi",
+            "code": "046013",
+            "historicalDateFilteredCount": 22,
+            "population2026": 6550,
+            "computedPer1000": 3.3587786259541983,
+            "publicPer1000": 3.82,
+            "matchesAtPublicPrecision": false
+          },
+          {
+            "town": "Stazzema",
+            "code": "046030",
+            "historicalDateFilteredCount": 12,
+            "population2026": 2783,
+            "computedPer1000": 4.311893639956881,
+            "publicPer1000": 4.67,
+            "matchesAtPublicPrecision": false
+          }
+        ],
+        "reconciledMunicipalities": 0,
+        "publicDownloadMethod": "Native public Lista-enti form POST using supplied hidden fields and published Scarica controls; Excel iscritti and cancellati, publication 2026-10-02.",
+        "officialUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+        "result": "FULL_NATIVE_EXPORT_ACQUIRED_HISTORICAL_MUNICIPAL_RECONCILIATION_FAILED",
+        "nativeCancelledSheetNote": "I dati riportati, inclusi quelli relativi al legale rappresentante, si riferiscono alla situazione risultante nel RUNTS al momento della cancellazione dell’ente."
       }
     },
     "regione-toscana-prc-annual": {
@@ -7871,9 +7996,9 @@
       },
       "metricDiagnoses": {
         "accreditedRsaCount": {
-          "diagnosis": "HISTORICAL_NATIVE_CANDIDATE_PENDING_PUBLIC_GATE",
-          "reason": "Elenco ufficiale completo al 31-12-2025 acquisito: 22 pagine, 337 righe native RSA / 336 strutture uniche, una riga Ciapetti esattamente duplicata verificata nel PDF. Due celle impresa unite verticalmente conservate null; identità Comune/denominazione e data complete. Conteggi 5/0/0/2/2/0/4 riconciliati esattamente 7/7; benchmark regionale 336, Italia null. PDF completo/hash/pannello congelati, worker locale candidato PASS; certificazione pubblica pendente.",
-          "nextAction": "Leggere gate pubblico e artifact del worker su questo head; acquisire solo dopo pubblicazione effettiva e riduzione del backlog certificata.",
+          "diagnosis": "HISTORICAL_NATIVE_CANDIDATE_PUBLIC_GATE_SUCCESS",
+          "reason": "Elenco ufficiale completo al 31-12-2025 acquisito: 22 pagine, 337 righe native RSA / 336 strutture uniche, una riga Ciapetti esattamente duplicata verificata nel PDF. Due celle impresa unite verticalmente conservate null; identità Comune/denominazione e data complete. Conteggi 5/0/0/2/2/0/4 riconciliati esattamente 7/7; benchmark regionale 336, Italia null. PDF completo/hash/pannello congelati, worker locale/CI effettivo ACQUIRED_CANDIDATE, artifact 11248372172 letto integralmente e identico. Gate pubblico 37055521487 / head aaa49aa2717ae14728de90abc998c2d958f968d5 SUCCESS: 134/134, zero gap, 79 residui; artifact 11248727848 letto.",
+          "nextAction": "RSA acquisita e pubblicamente consumabile nella build certificata; Italia resta null. Continuare sui 79 residui, nessuna chiusura della fase sulla sola diagnosi.",
           "evidenceFiles": [
             "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
             "scripts/acquire_a3_benchmark_regione_toscana_rsa.py"
@@ -7888,7 +8013,17 @@
         "uniqueStructures": 336,
         "exactDuplicateRows": 1,
         "publicMunicipalReconciliation": "7/7 exact",
-        "candidateStatus": "ACQUIRED_CANDIDATE_LOCAL_PASS_PUBLIC_GATE_PENDING"
+        "candidateStatus": "ACQUIRED_CANDIDATE_PUBLIC_GATE_SUCCESS",
+        "certification": {
+          "workflowRun": 37055521487,
+          "headSha": "aaa49aa2717ae14728de90abc998c2d958f968d5",
+          "artifactId": 11248727848,
+          "publicBenchmarks": "134/134",
+          "publicationGap": 0,
+          "availableMissing": 79,
+          "workerRun": 37055521406,
+          "workerArtifactId": 11248372172
+        }
       }
     },
     "istat-business-annual": {
