@@ -33,7 +33,7 @@ def main()->None:
     # serializes source -> CI -> source and defeats the bulk fan-out/fan-in design.
     # Keep all manifest profiles independent and let blocked/mismatch workers report
     # evidence without preventing the remaining workers from progressing.
-    if False and a.mode=="auto" and a.changed_files and a.changed_files.exists():
+    if a.mode=="auto" and a.changed_files and a.changed_files.exists():
         changed={line.strip() for line in a.changed_files.read_text(encoding="utf-8").splitlines() if line.strip()}
         structural={
           ".github/workflows/a3-benchmark-bulk-acquisition.yml",

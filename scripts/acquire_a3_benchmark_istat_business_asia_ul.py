@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse,json,math
+import argparse,json,math,re
 from pathlib import Path
 from typing import Any
 import requests
@@ -16,8 +16,13 @@ YEARS={2018,2023}
 PAGE=1000
 
 def six(v:Any)->str:
-    s=str(v or "").strip()
-    return s if len(s)==6 and s.isdigit() else ""
+    raw=str(v or "").strip()
+    if not raw: return ""
+    if re.fullmatch(r"\d+(?:\.0+)?",raw):
+        digits=str(int(float(raw)))
+    else:
+        digits=re.sub(r"\D","",raw)
+    return digits.zfill(6) if 1<=len(digits)<=6 else ""
 def request_docs(session:requests.Session,dims:dict[str,list[str]],offset:int=0,limit:int=PAGE)->dict:
     r=session.get(API,params={"dimensions":json.dumps(dims,separators=(",",":")),"observations":"1","limit":str(limit),"offset":str(offset)},timeout=180)
     r.raise_for_status()
@@ -87,7 +92,7 @@ def main()->None:
         blocked["localUnits"]="; ".join(unit_errors[:20]); blocked["localUnitsChange"]=blocked["localUnits"]
 
     employee_type=None; employees={}
-    for candidate in ["AENTEMPDAA"]:
+    for candidate in ["LUEMPDAA","AENTEMPDAA"]:
         values=fetch_type(session,candidate)
         if values and not local_reconciliation(values,local,"employeesAverageAnnual"):
             employee_type=candidate; employees=values; break

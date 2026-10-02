@@ -19,6 +19,15 @@ def norm(v:Any)->str:
     s=unicodedata.normalize("NFKD",str(v or ""))
     s="".join(ch for ch in s if not unicodedata.combining(ch))
     return re.sub(r"[^a-z0-9]+","_",s.lower()).strip("_")
+def code6(v:Any)->str:
+    raw=str(v or "").strip()
+    if not raw: return ""
+    if re.fullmatch(r"\d+(?:\.0+)?",raw):
+        digits=str(int(float(raw)))
+    else:
+        digits=re.sub(r"\D","",raw)
+    return digits.zfill(6) if 1<=len(digits)<=6 else ""
+
 def number(v:Any)->float|None:
     s=str(v or "").strip()
     if not s or s.casefold() in {"(null)","null","nan"}: return None
@@ -52,12 +61,12 @@ def main()->None:
     codes=set()
     for mid in FIELDS:
         metric=(site.get("metrics") or {}).get(mid) or {}
-        rr={str(x.get("code") or ""):x for x in metric.get("rows") or [] if str(x.get("code") or "")}
+        rr={code6(x.get("code")):x for x in metric.get("rows") or [] if code6(x.get("code"))}
         if len(rr)!=7: raise RuntimeError(f"{mid}: pubblico {len(rr)}/7")
         public[mid]=rr; codes.update(rr)
     year_rows={}
     for row in rows:
-        code=str(row.get(by_norm["codistat"]) or "").strip()
+        code=code6(row.get(by_norm["codistat"]))
         if code not in codes: continue
         try: year=int(float(str(row.get(by_norm["anno"]) or "").strip()))
         except Exception: continue
