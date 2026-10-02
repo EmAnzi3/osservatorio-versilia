@@ -49,6 +49,8 @@ def main()->None:
 
     dynamic_script="scripts/acquire_a3_benchmark_"+re.sub(r"[^a-z0-9]+","_",args.profile.lower()).strip("_")+".py"
     script=DEDICATED.get(args.profile)
+    if args.profile == "istat-business-annual" and entry.get("metricIds") == ["microUnits"]:
+        script = "scripts/acquire_a3_benchmark_istat_business_micro_units.py"
     if script is None and (ROOT/dynamic_script).exists():
         script=dynamic_script
 

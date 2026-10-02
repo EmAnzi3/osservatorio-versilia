@@ -2,32 +2,32 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37025847458,
-    "headSha": "e4af73b5af76071ac2c435cdc7ff0de51725fb3a",
-    "publicBenchmarks": "129/129",
+    "workflowRun": 37028478388,
+    "headSha": "37545f23851c242130684015a7dcbb8f990c81f1",
+    "publicBenchmarks": "130/130",
     "publicationGap": 0,
-    "availableMissing": 84,
-    "artifactId": 11234888793
+    "availableMissing": 83,
+    "artifactId": 11235619919
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
   "profiles": [
     {
-      "profileId": "istat-commuting-irregular",
-      "bundleId": "istat-commuting-irregular::benchmark_toscana_italia",
+      "profileId": "istat-business-annual",
+      "bundleId": "istat-business-annual::benchmark_toscana_italia",
       "rank": 1,
       "pairCount": 1,
       "metricIds": [
-        "selfContainment"
+        "microUnits"
       ],
       "sourceReferences": [
-        "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
+        "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/"
       ],
       "publisher": "Istat",
       "costPoints": 2,
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-129-certified-self-containment",
-  "selectionRationale": "The exact internal/(internal+outbound) formula reconciles the published one-decimal selfContainment observations 7/7. Aggregation uses all native numerator/denominator components, not a mean of percentages."
+  "workerGeneration": "post-130-certified-micro-units",
+  "selectionRationale": "Native ASIA-UL 2023 W0_9 and TOTAL counts reconcile 7/7 municipalities. Official Tuscany/Italy aggregate ratios use the same size-class and economic activity, not municipal percentage averages."
 }

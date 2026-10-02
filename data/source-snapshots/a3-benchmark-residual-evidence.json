@@ -7672,6 +7672,42 @@
           ]
         }
       }
+    },
+    "istat-business-annual": {
+      "microUnitsNativeSizeClassVerification": {
+        "status": "CANDIDATE_PASS_PUBLIC_GATE_PENDING",
+        "snapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
+        "panelSource": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2023&endPeriod=2023",
+          "sha256": "987ef6ea7c353a552533f98f41098947a9bc55ab826f105a2ce92baa9c9d9dfd",
+          "bytes": 2040024,
+          "nativeGeographies": 9171,
+          "municipalities": 7900,
+          "tuscanyMunicipalities": 273
+        },
+        "classDimension": "PERS_EMPL_SIZE_CLASS",
+        "numeratorCode": "W0_9",
+        "denominatorCode": "TOTAL",
+        "actualYear": 2023,
+        "dataType": "LU",
+        "economicActivity": "0010",
+        "municipalReconciliation": "7/7 at published two-decimal precision",
+        "aggregateReconciliation": "7900 municipal numerator/denominator sums equal native IT; 273 municipal sums equal ITE1 exactly",
+        "benchmark": {
+          "year": "2023",
+          "unit": "percent",
+          "formula": "unità locali con 0–9 addetti / unità locali totali × 100",
+          "tuscany": 93.96622262952901,
+          "italy": 94.22052599270442
+        }
+      },
+      "occupationAttachmentVerification": {
+        "flow": "DF_BULK_LOCALUNITS",
+        "url": "https://esploradati.istat.it/databrowser/DWL/Imprese/UNITA_LOCALI%20-%20OCCUPAZIONE_2018_2023.zip",
+        "bytes": 654071,
+        "sha256": "a9bfe42de94215205f849ec1d78845cc8cfe19a61c61d1b29f2537bc76df3ecf",
+        "result": "All eight 2023 tables measure employee job positions, not LU counts; not used as a proxy."
+      }
     }
   }
 }

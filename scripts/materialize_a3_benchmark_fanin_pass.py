@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
 SNAPSHOTS = (
+    ROOT / "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
     ROOT / "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-agriculture-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-tourism-benchmark-2025.json",
@@ -242,6 +243,9 @@ def main() -> None:
             if not isinstance(metric, dict):
                 raise RuntimeError(f"{metric_id}: metrica pubblica assente")
             public_rows(metric, metric_id)
+            if metric_id == 'microUnits':
+                from acquire_a3_benchmark_istat_business_micro_units import validate_snapshot
+                validate_snapshot(metric, snapshot, metrics['localUnits'])
             if metric_id == "blueFlagBeaches":
                 validate_blue_flag_public(metric, snapshot)
             if metric_id in ('waterNetworkLosses','earlyChildhoodPotentialCapacityRate'):

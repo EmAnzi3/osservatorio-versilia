@@ -8499,7 +8499,16 @@
         "unit": "percent",
         "year": "2023",
         "source": "Istat — ASIA unità locali",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 93.96622262952901,
+          "italy": 94.22052599270442,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
       "rows": [
