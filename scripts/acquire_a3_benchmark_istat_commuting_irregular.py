@@ -48,6 +48,10 @@ def decode_blob(blob:bytes)->str:
 
 def fetch_matrix(session:requests.Session)->tuple[str,str]:
     attempts=[
+      (f"{BASE}/IT1,{FLOW},1.0/all/all",{"format":"csvfile"}),
+      (f"{BASE}/IT1,{FLOW},1.0/all",{"format":"csvfile"}),
+      (f"{BASE}/{FLOW}/all/IT1",{"format":"csvfile"}),
+      (f"{BASE}/{FLOW}/all",{"format":"csvfile"}),
       (f"{BASE}/IT1,{FLOW},1.0/",{"format":"csvfile"}),
       (f"{BASE}/{FLOW}/",{"format":"csvfile"}),
       (f"{BASE}/{FLOW}//IT1",{"format":"csvfile"}),
