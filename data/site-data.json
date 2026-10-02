@@ -4422,7 +4422,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio interno"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 0.9608859827887721,
+          "italy": 0,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "rows": [
@@ -7860,6 +7869,15 @@
           "label": "Presenze turistiche per residente",
           "description": "Notti trascorse nelle strutture ricettive rapportate alla popolazione residente.",
           "unit": "decimal"
+        },
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 45769090,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
@@ -8207,6 +8225,15 @@
           "label": "Unità locali ogni 1.000 residenti",
           "description": "Unità locali attive rapportate alla popolazione residente.",
           "unit": "per1000"
+        },
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 366636,
+          "italy": 5144482,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
@@ -24201,7 +24228,16 @@
         "unit": "hectares",
         "year": "2024",
         "source": "ISPRA — Consumo di suolo",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 264.72,
+          "italy": 7850.369999999999,
+          "source": "ISPRA — Consumo di suolo",
+          "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-soil-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
       "rows": [
@@ -24701,6 +24737,15 @@
           "publisher": "Istat",
           "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
           "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 52337,
+          "italy": 1133006,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -24801,6 +24846,15 @@
           "label": "Quota della superficie comunale occupata da SAU",
           "description": "SAU localizzata nel Comune divisa per la superficie comunale Istat-SITUAS al 31 dicembre 2020.",
           "unit": "percent"
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 667001.03,
+          "italy": 12431785.2,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -24946,6 +25000,15 @@
           "publisher": "Istat",
           "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
           "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 12.619562387400478,
+          "italy": 11.094835645388148,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -25451,6 +25514,15 @@
           "label": "Quota di SAU irrigata",
           "description": "Superficie irrigata divisa per la SAU delle aziende con centro nel Comune.",
           "unit": "percent"
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 32736.14,
+          "italy": 2358259.76,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -38365,7 +38437,16 @@
         "unit": "kg",
         "year": "2024",
         "source": "ISPRA — Catasto rifiuti",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 589.9885520621804,
+          "italy": 507.9021049364955,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -38806,7 +38887,16 @@
         "unit": "percent",
         "year": "2024",
         "source": "ISPRA — Catasto rifiuti",
-        "polarity": "positive"
+        "polarity": "positive",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 68.06818821756305,
+          "italy": 67.68674612460485,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -40018,7 +40108,16 @@
         "unit": "percent",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico mensile",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 48.24943209489199,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -40116,7 +40215,16 @@
         "unit": "percent",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 57.948436379224496,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -40312,7 +40420,16 @@
         "unit": "kg",
         "year": "2024",
         "source": "Elaborazione Osservatorio su dati ISPRA",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 188.39403398242044,
+          "italy": 164.1196966066057,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -40886,7 +41003,16 @@
         "unit": "decimal",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 12.507874624715308,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -42284,7 +42410,16 @@
         "unit": "number",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 15141534,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -42382,7 +42517,16 @@
         "unit": "nights",
         "year": "2025",
         "source": "Elaborazione Osservatorio su dati Regione Toscana",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 3.022751195486534,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -45782,7 +45926,16 @@
         "unit": "people",
         "year": "2023",
         "source": "ISTAT — ASIA unità locali",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 1283739.83,
+          "italy": 18644421.78,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -45999,7 +46152,16 @@
         "unit": "decimal",
         "year": "2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 3.5014014717594564,
+          "italy": 3.624159202034335,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46216,7 +46378,16 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2018–2023",
+          "tuscany": 5.22243491687211,
+          "italy": 8.082484588553985,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46314,7 +46485,16 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2018–2023",
+          "tuscany": 5.794256622268157,
+          "italy": 7.846713682131012,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46412,7 +46592,16 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "31 dicembre 2025",
+          "tuscany": 73.22531610387755,
+          "italy": 82.89952077416727,
+          "source": "AGCOM — Broadband Map, reportistica comunale",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
@@ -46706,7 +46895,16 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "31 dicembre 2025",
+          "tuscany": 64.58685444439853,
+          "italy": 74.25960016740227,
+          "source": "AGCOM — Broadband Map, reportistica comunale",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
@@ -48855,7 +49053,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 5.800023666873182,
+          "italy": 4.4554243595798155,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
@@ -49610,7 +49817,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.760909649661954,
+          "italy": 4.4554243595798155,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
@@ -55529,7 +55745,16 @@
           "costo rifiuti",
           "ctotab",
           "igiene urbana"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 297.74,
+          "italy": 214.39,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&advice=si&pg=costiregione",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
       "rows": [
@@ -60575,6 +60800,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 0.66,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
@@ -61028,6 +61262,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 7.5,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
@@ -61477,6 +61720,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 33.16,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
