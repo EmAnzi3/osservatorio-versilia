@@ -44,12 +44,17 @@ def main():
         units=float(sheet.cell(rr,cu).value); employees=float(sheet.cell(rr,ca).value)
         out[key]={"localUnits":units,"localEmployees":employees,"employeesPerLocalUnit":employees/units}
     payload={
-      "schemaVersion":1,"publisher":"Istat","profileId":"istat-business-annual","year":2023,
+      "schemaVersion":2,"publisher":"Istat","profileId":"istat-business-annual","year":2023,
       "sourceUrl":URL,"archiveMember":member,"sheet":sheet.title,
-      "candidates":out,
-      "formulas":{"employeesPerLocalUnit":"Addetti / Numero unità locali"},
-      "status":"ACQUIRED_CANDIDATE"
+      "status":"SOURCE_LINEAGE_MISMATCH",
+      "blockedCandidates":out,
+      "reason":(
+        "Le metriche pubbliche localUnits/localEmployees/employeesPerLocalUnit usano ASIA-UL; "
+        "la Tavola Frame-SBS regionale usa il perimetro Frame territoriale e la grandezza Addetti. "
+        "Non si promuovono benchmark finché Toscana/Italia non sono acquisiti dallo stesso flusso ASIA-UL."
+      ),
+      "formulas":{"frameEmployeesPerLocalUnit":"Addetti / Numero unità locali"}
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"status":payload["status"],"metrics":["localUnits","localEmployees","employeesPerLocalUnit"],"output":str(p)},ensure_ascii=False))
+    print(json.dumps({"status":payload["status"],"blockedMetrics":["localUnits","localEmployees","employeesPerLocalUnit"],"output":str(p)},ensure_ascii=False))
 if __name__=="__main__": main()
