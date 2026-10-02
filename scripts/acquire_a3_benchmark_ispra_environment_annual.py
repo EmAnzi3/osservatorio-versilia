@@ -11,7 +11,7 @@ SITE=ROOT/"data/site-data.json"
 REGIONAL_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&advice=si&pg=costiregione"
 PROVINCE_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&p={page}&pg=provincia"
 LUCCA_MUNICIPAL_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&p={page}&pg=comune&regid=09046"
-NATIONAL_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=nazione"
+NATIONAL_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?pg=nazione"
 
 def fetch_url(url):
     request=urllib.request.Request(url,headers=src.UA)
