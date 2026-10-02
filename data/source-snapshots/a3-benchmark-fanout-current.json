@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37024640873,
-    "headSha": "a29bcd56833d08443acbf679022c0c6d7ef56ea5",
-    "publicBenchmarks": "128/128",
+    "workflowRun": 37025847458,
+    "headSha": "e4af73b5af76071ac2c435cdc7ff0de51725fb3a",
+    "publicBenchmarks": "129/129",
     "publicationGap": 0,
-    "availableMissing": 85,
-    "artifactId": 11234877862
+    "availableMissing": 84,
+    "artifactId": 11234888793
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
@@ -18,7 +18,7 @@
       "rank": 1,
       "pairCount": 1,
       "metricIds": [
-        "commuterBalanceRate"
+        "selfContainment"
       ],
       "sourceReferences": [
         "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
@@ -28,6 +28,6 @@
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-128-certified-commuting-balance",
-  "selectionRationale": "One remaining metric reconciled exactly 7/7 using native national P02 population at 1 January 2021. The worker revalidates the complete commuting snapshot, preserving five already certified benchmarks."
+  "workerGeneration": "post-129-certified-self-containment",
+  "selectionRationale": "The exact internal/(internal+outbound) formula reconciles the published one-decimal selfContainment observations 7/7. Aggregation uses all native numerator/denominator components, not a mean of percentages."
 }

@@ -22797,13 +22797,22 @@
         "theme": "mobilita",
         "label": "Autocontenimento del lavoro",
         "shortLabel": "Lavoro nel comune",
-        "description": "Quota di occupati residenti che lavora nel proprio comune.",
+        "description": "Quota dei pendolari residenti per lavoro il cui Comune di lavoro coincide con quello di residenza, secondo la matrice Istat 2021.",
         "unit": "percent",
         "year": "2021",
         "source": "Istat — Censimento permanente, mobilità",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 51.617194295052556,
+          "italy": 50.10672700048984,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
-      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
         {
           "town": "Massarosa",
@@ -22884,8 +22893,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "formula": "flussi interni al Comune / (flussi interni + flussi in uscita) × 100",
+        "caveat": "Matrice Istat per lavoro 2021: occupati che raggiungono il luogo abituale di lavoro almeno tre giorni a settimana e rientrano giornalmente. Le quote comunali pubblicate sono arrotondate a un decimale; i benchmark sono ricavati dalle componenti aggregate.",
         "coverage": "7/7"
       }
     },

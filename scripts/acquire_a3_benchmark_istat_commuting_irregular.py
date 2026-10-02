@@ -37,6 +37,7 @@ ARCHIVE_URL="https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_
 DEMO=ROOT/"data/source-snapshots/a3-istat-demography-benchmark-2026.json"
 DIRECT={"inboundCommuters":"inbound","outboundCommuters":"outbound","commuterBalance":"balance"}
 RATES={"inboundCommutersRate":"inbound","outboundCommutersRate":"outbound","commuterBalanceRate":"balance"}
+SHARES={"selfContainment":"internal/residentCommuters*100"}
 P2_URL="https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
 def fetch_matrix(session=None):
     with urllib.request.urlopen(ARCHIVE_URL,timeout=180) as r: body=r.read(20*1024*1024+1)
@@ -52,6 +53,7 @@ def verify_records(records):
         for i,v in enumerate((internal,outbound,inbound)):
             if isinstance(v,bool) or not isinstance(v,int) or v<0:raise RuntimeError("Commuting missing/noninteger")
             totals[i]+=v
+        if internal+outbound<=0:raise RuntimeError('Commuting resident denominator missing')
     if totals[1]!=totals[2] or sum(totals[:2])!=19565808 or sum(c[:3] in TUSCANY_PREFIXES for c in seen)!=273:raise RuntimeError("Commuting national/Tuscany reconciliation mismatch")
 
 def population_2021(body):
@@ -77,7 +79,8 @@ def verify_population_2021(records,flows):
 def validate_snapshot(metric,snapshot,population=None):
     mid=metric['meta']['key']
     unit='per1000' if mid in RATES else 'number' if mid=='inboundCommuters' else 'people'
-    if mid not in DIRECT|RATES or metric['meta']['year']!='2021' or metric['meta']['unit']!=unit:raise RuntimeError("Commuting reference mismatch")
+    if mid=='selfContainment':unit='percent'
+    if mid not in DIRECT|RATES|SHARES or metric['meta']['year']!='2021' or metric['meta']['unit']!=unit:raise RuntimeError("Commuting reference mismatch")
     if snapshot['qualityGate']['status']!='PASS' or snapshot['sourceUrl']!=SOURCE_URL or snapshot['resolvedDataUrl']!=ARCHIVE_URL or snapshot['matrixRows']!=523949:raise RuntimeError("Commuting source/gate mismatch")
     records=snapshot['records'];verify_records(records);by={r[0]:r for r in records}
     p21=snapshot['population2021'];verify_population_2021(p21['records'],records)
@@ -85,13 +88,14 @@ def validate_snapshot(metric,snapshot,population=None):
     pop21={r[0]:r[3] for r in p21['records']}
     demo_bytes=DEMO.read_bytes();demo=json.loads(demo_bytes)['benchmarks']['population']
     if snapshot['population']['sha256']!=hashlib.sha256(demo_bytes).hexdigest() or snapshot['population']['year']!='2026':raise RuntimeError("Commuting population provenance mismatch")
-    for target,field in (DIRECT|RATES).items():
+    for target,field in (DIRECT|RATES|SHARES).items():
         b=snapshot['benchmarks'][target]
-        expected_unit='per1000' if target in RATES else 'number' if target=='inboundCommuters' else 'people'
+        expected_unit='percent' if target in SHARES else 'per1000' if target in RATES else 'number' if target=='inboundCommuters' else 'people'
         if b.get('unit')!=expected_unit:raise RuntimeError('Commuting benchmark unit mismatch')
         for scope in ('tuscany','italy'):
             rs=[r for r in records if scope=='italy' or r[0][:3] in TUSCANY_PREFIXES]
             v=sum(r[3]-r[2] if field=='balance' else r[3 if field=='inbound' else 2] for r in rs)
+            if target in SHARES:v=sum(r[1] for r in rs)/sum(r[1]+r[2] for r in rs)*100
             if target in RATES:
                 den=sum(r[3] for r in p21['records'] if scope=='italy' or r[0][:3] in TUSCANY_PREFIXES) if target=='commuterBalanceRate' else demo[scope]
                 v=v/den*1000
@@ -99,8 +103,9 @@ def validate_snapshot(metric,snapshot,population=None):
     rows=metric['rows']
     if len(rows)!=7 or len({r['code'] for r in rows})!=7:raise RuntimeError("Commuting public scope mismatch")
     for row in rows:
-        r=by[row['code']];field=(DIRECT|RATES)[mid]
+        r=by[row['code']];field=(DIRECT|RATES|SHARES)[mid]
         value=r[3]-r[2] if field=='balance' else r[3 if field=='inbound' else 2]
+        if mid in SHARES:value=r[1]/(r[1]+r[2])*100
         if mid in RATES:
             if mid=='commuterBalanceRate':
                 value=value/pop21[row['code']]*1000
@@ -109,7 +114,7 @@ def validate_snapshot(metric,snapshot,population=None):
                 ps=[p['value'] for p in population['rows'] if p['code']==row['code']]
                 if len(ps)!=1 or isinstance(ps[0],bool) or ps[0]<=0:raise RuntimeError("Commuting public population missing")
                 value=value/ps[0]*1000
-        if isinstance(row['value'],bool) or not math.isclose(row['value'],value,rel_tol=0,abs_tol=1e-9):raise RuntimeError("Commuting public reconciliation mismatch")
+        if isinstance(row['value'],bool) or not math.isclose(row['value'],value,rel_tol=0,abs_tol=.0500000001 if mid in SHARES else 1e-9):raise RuntimeError("Commuting public reconciliation mismatch")
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--input-zip',type=Path);ap.add_argument('--input-population-2021',type=Path);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
@@ -135,18 +140,20 @@ def main():
         with urllib.request.urlopen(P2_URL,timeout=180) as r:p21body=r.read(8*1024*1024+1)
     p21records=population_2021(p21body);verify_population_2021(p21records,records)
     site=json.loads(SITE.read_text());demo_bytes=DEMO.read_bytes();demo=json.loads(demo_bytes)['benchmarks']['population'];benchmarks={}
-    for mid,field in (DIRECT|RATES).items():
+    for mid,field in (DIRECT|RATES|SHARES).items():
         values={}
         for scope in ('tuscany','italy'):
             rs=[r for r in records if scope=='italy' or r[0][:3] in TUSCANY_PREFIXES]
             v=sum(r[3]-r[2] if field=='balance' else r[3 if field=='inbound' else 2] for r in rs)
             den=sum(r[3] for r in p21records if scope=='italy' or r[0][:3] in TUSCANY_PREFIXES) if mid=='commuterBalanceRate' else demo[scope]
-            values[scope]=v/den*1000 if mid in RATES else v
+            values[scope]=sum(r[1] for r in rs)/sum(r[1]+r[2] for r in rs)*100 if mid in SHARES else v/den*1000 if mid in RATES else v
         benchmarks[mid]={'year':'2021','unit':site['metrics'][mid]['meta']['unit'],**values}
     snapshot={'schemaVersion':1,'profileId':'istat-commuting-irregular','publisher':'Istat — Matrice di pendolarismo per lavoro 2021','sourceUrl':SOURCE_URL,'resolvedDataUrl':ARCHIVE_URL,'archiveSha256':hashlib.sha256(body).hexdigest(),'records':records,'matrixRows':flows,'benchmarks':benchmarks,'population':{'year':'2026','sha256':hashlib.sha256(demo_bytes).hexdigest()},'qualityGate':{'status':'PASS','errors':[],'public7of7':list(benchmarks)},'scope':{'note':'Somma dei flussi tra Comuni distinti della matrice ufficiale Istat 2021, 523.949 coppie uniche, 7.904 origini e 7.903 destinazioni, 273 Comuni toscani. In Toscana entrate e uscite comprendono anche flussi tra Comuni toscani: si conserva la definizione comunale. Il saldo nazionale zero deriva dalla conservazione dei flussi osservati. I tassi in entrata e uscita usano la popolazione pubblica al 1° gennaio 2026, dichiarata anche per gli aggregati.'},'blocked':{'commuterBalanceRate':'Denominatore comunale diverso dalla popolazione pubblica 2026: richiede fotografia demografica esatta.','outsideMunicipality':'Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.','selfContainment':'Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.'}}
     snapshot['population2021']={'year':'2021','sourceUrl':P2_URL,'archiveSha256':hashlib.sha256(p21body).hexdigest(),'records':p21records}
     snapshot['blocked'].pop('commuterBalanceRate')
+    snapshot['blocked'].pop('selfContainment')
     snapshot['scope']['note']+=' Il tasso di saldo usa invece la popolazione censita al 1° gennaio 2021, riconciliata 7/7 e nel pannello nazionale completo di 7.904 Comuni, con maschi + femmine = totale in ogni riga.'
+    snapshot['scope']['note']+=' Autocontenimento: flussi interni al Comune / (flussi interni + flussi in uscita) × 100, aggregato dalle componenti complete, senza media delle quote comunali; valori pubblici riconciliati 7/7 con arrotondamento a un decimale.'
     for mid in benchmarks:validate_snapshot(site['metrics'][mid],snapshot,site['metrics']['population'])
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n')
     print(json.dumps({'candidateCount':len(benchmarks),'benchmarks':benchmarks,'blocked':snapshot['blocked']}))

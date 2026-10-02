@@ -68,9 +68,10 @@
           "commuterBalance",
           "inboundCommutersRate",
           "outboundCommutersRate",
-          "commuterBalanceRate"
+          "commuterBalanceRate",
+          "selfContainment"
         ],
-        "publicReconciliation": "6 metrics × 7/7 PASS",
+        "publicReconciliation": "7 metrics × 7/7 PASS",
         "routingFix": "Official dataflow attachment used instead of unsupported SDMX data endpoint; HTTP 404 did not prove absence.",
         "population2021": {
           "sourceUrl": "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip",
@@ -81,27 +82,164 @@
           "italy": 59236213,
           "componentReconciliation": "7904/7904 men + women = total",
           "municipalDenominators": "7/7 exact public commuterBalanceRate"
+        },
+        "selfContainmentCorrection": {
+          "status": "CANDIDATE_PASS_PENDING_PUBLICATION_GATE",
+          "correctedPreviousDiagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
+          "formula": "internal/(internal+outbound)*100",
+          "reconciliation": "7/7 at published one-decimal precision",
+          "roundingTolerance": 0.0500000001,
+          "tuscany": 51.617194295052556,
+          "italy": 50.10672700048984,
+          "scopeCorrection": "Public description now explicitly refers to resident workers included in the official commuting matrix, not all employed residents."
         }
       },
       "metricDiagnoses": {
         "outsideMunicipality": {
-          "diagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
-          "reason": "Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.",
+          "diagnosis": "REFERENCE_PERIOD_AND_MUNICIPAL_RECONCILIATION_MISMATCH",
+          "reason": "Archivio censuario completo acquisito e letto: 17.683.842 righe. Per Italia, Toscana e sette Comuni contiene spostamenti RP_COM_DAY soltanto 2018/2019, non 2021. Rapporti fuori Comune per lavoro dei due anni non riconciliano i sette valori pubblici. Neppure il complemento dell’autocontenimento 2021 coincide. Non sostituire periodo o sottopopolazione.",
           "evidenceUrls": [
-            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
-            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
+            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ISTR_LAV_PEN_2%20-%20Istruzione%2C%20lavoro%20e%20spostamenti%20per%20studio%20o%20lavoro%20-%20intero%20ds.csv.zip",
+            "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
           ],
-          "nextAction": "Acquisire quote censuarie sul totale occupati con lo stesso perimetro pubblico; non ricavare quote dalla sola sottopopolazione di pendolari per lavoro."
-        },
-        "selfContainment": {
-          "diagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
-          "reason": "Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.",
-          "evidenceUrls": [
-            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
-            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
-          ],
-          "nextAction": "Acquisire quote censuarie sul totale occupati con lo stesso perimetro pubblico; non ricavare quote dalla sola sottopopolazione di pendolari per lavoro."
+          "nextAction": "Risolvere la provenienza e il denominatore della quota pubblica 2021; acquisire il pannello esatto. Un confronto 2018/2019 o il complemento della matrice non sarebbe equivalente."
         }
+      },
+      "completeCensusSourceVerification": {
+        "archiveUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ISTR_LAV_PEN_2%20-%20Istruzione%2C%20lavoro%20e%20spostamenti%20per%20studio%20o%20lavoro%20-%20intero%20ds.csv.zip",
+        "archiveBytes": 189148593,
+        "archiveSha256": "56bf24c345ac67acefae7fbafcdc5be2fa60edc6bd754a5212582f7ee2f41a2f",
+        "csvUncompressedBytes": 4606220349,
+        "fullRowsScanned": 17683842,
+        "zipCrcVerifiedByCompleteRead": true,
+        "sourceMember": "DCSS_ISTR_LAV_PEN_2 - Istruzione, lavoro e spostamenti per studio o lavoro - intero ds.csv",
+        "selectedCommutingRows": 486,
+        "selectedTerritories": "Italy, Tuscany and all seven public municipalities",
+        "commutingIndicator": "RP_COM_DAY",
+        "actualCommutingYears": [
+          "2018",
+          "2019"
+        ],
+        "noCommuting2021ForSelectedTerritories": true,
+        "definitions": {
+          "SEXISTAT1": "T",
+          "ETA1": "TOTAL",
+          "CITTADINANZA": "TOTAL",
+          "TITOLO_STUDIO": "ALL",
+          "FORZE_LAV": "99",
+          "MOTIVOPS1": "WK",
+          "PROV_DEST_Z": [
+            "SMPUR",
+            "OMPUR",
+            "ALL"
+          ]
+        },
+        "publicReconciliation": {
+          "2018": {
+            "046018": {
+              "public": 62.9,
+              "internal": 2314,
+              "outbound": 5464,
+              "residentCommuters": 7778,
+              "nativeOutsideShare": 70.24942144510156
+            },
+            "046033": {
+              "public": 31.8,
+              "internal": 13602,
+              "outbound": 7266,
+              "residentCommuters": 20868,
+              "nativeOutsideShare": 34.8188614146061
+            },
+            "046005": {
+              "public": 48.4,
+              "internal": 5423,
+              "outbound": 5586,
+              "residentCommuters": 11009,
+              "nativeOutsideShare": 50.74030338813698
+            },
+            "046024": {
+              "public": 49.1,
+              "internal": 3873,
+              "outbound": 3796,
+              "residentCommuters": 7669,
+              "nativeOutsideShare": 49.497978875994264
+            },
+            "046028": {
+              "public": 64.2,
+              "internal": 1511,
+              "outbound": 2717,
+              "residentCommuters": 4228,
+              "nativeOutsideShare": 64.2620624408704
+            },
+            "046013": {
+              "public": 49.3,
+              "internal": 1005,
+              "outbound": 1115,
+              "residentCommuters": 2120,
+              "nativeOutsideShare": 52.594339622641506
+            },
+            "046030": {
+              "public": 63.2,
+              "internal": 278,
+              "outbound": 643,
+              "residentCommuters": 921,
+              "nativeOutsideShare": 69.81541802388708
+            }
+          },
+          "2019": {
+            "046018": {
+              "public": 62.9,
+              "internal": 2280,
+              "outbound": 5453,
+              "residentCommuters": 7733,
+              "nativeOutsideShare": 70.51597051597052
+            },
+            "046033": {
+              "public": 31.8,
+              "internal": 13370,
+              "outbound": 7577,
+              "residentCommuters": 20947,
+              "nativeOutsideShare": 36.17224423545138
+            },
+            "046005": {
+              "public": 48.4,
+              "internal": 5490,
+              "outbound": 5573,
+              "residentCommuters": 11063,
+              "nativeOutsideShare": 50.37512428816777
+            },
+            "046024": {
+              "public": 49.1,
+              "internal": 3854,
+              "outbound": 3821,
+              "residentCommuters": 7675,
+              "nativeOutsideShare": 49.785016286644954
+            },
+            "046028": {
+              "public": 64.2,
+              "internal": 1517,
+              "outbound": 2647,
+              "residentCommuters": 4164,
+              "nativeOutsideShare": 63.56868395773295
+            },
+            "046013": {
+              "public": 49.3,
+              "internal": 956,
+              "outbound": 1077,
+              "residentCommuters": 2033,
+              "nativeOutsideShare": 52.9758976881456
+            },
+            "046030": {
+              "public": 63.2,
+              "internal": 296,
+              "outbound": 618,
+              "residentCommuters": 914,
+              "nativeOutsideShare": 67.6148796498906
+            }
+          }
+        },
+        "status": "REFERENCE_PERIOD_AND_MUNICIPAL_RECONCILIATION_MISMATCH",
+        "note": "Both entire-file scans completed with native ZIP CRC verification; geographic and indicator filters derived from source headers/codelists. The tested complete archive does not supply 2021 commuting observations and neither 2018 nor 2019 work-commuting ratios reconcile the seven published values. No substitution of another year."
       }
     },
     "aci-istat-annual": {
@@ -111,7 +249,16 @@
       "status": "DEDICATED_ACQUISITION_FAILED",
       "blocked": {},
       "qualityGate": null,
-      "error": "ACI/Istat mobilità urbana_11.1: riga Stazzema non univoca (0)"
+      "error": "ACI/Istat mobilità urbana_11.1: riga Stazzema non univoca (0)",
+      "latestAlternativeSourceAttempt": {
+        "officialLanding": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+        "officialArchive": "https://aci.gov.it/app/uploads/2025/06/Autoritratto-2024-Parco-Veicolare.zip",
+        "sourceDiscovery": "Official archive linked by ACI; native municipal panel must be inspected rather than concluding absence from the previous Istat urban workbook.",
+        "runtimeLandingStatus": 503,
+        "runtimeArchiveStatus": 503,
+        "status": "SOURCE_ACCESS_BLOCKED_NOT_UNAVAILABLE",
+        "nextAction": "Acquire the official 2024 archive when reachable, then reconcile municipal vehicle counts and exact population/emission denominators 7/7."
+      }
     },
     "openbdap-annual": {
       "worker": "scripts/acquire_a3_benchmark_openbdap_annual.py",
