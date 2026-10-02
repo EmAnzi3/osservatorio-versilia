@@ -60,6 +60,11 @@ _CROSS_SOURCE_IDENTITIES = (
         "rule_ids": ("st-mercati-rionali-2026",),
     },
     {
+        "id": "rt-nidi-gratis-2026-2027",
+        "title_terms": ("nidi gratis", "2026-2027"),
+        "rule_ids": ("rt-nidi-gratis-comuni-reopening-2026-2027",),
+    },
+    {
         "id": "rt-microzonazione-sismica-2026",
         "title_terms": ("microzonazione sismica",),
         "rule_ids": ("rt-microzonazione-sismica-2026",),
