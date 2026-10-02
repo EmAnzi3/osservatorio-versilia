@@ -210,12 +210,14 @@ def pick_mobility(headers:list[str],movement:str,scope:str)->str:
     return hits[0]
 
 def p2_mobility_headers(headers:list[str])->dict[str,str]:
+    # P02 usa le etichette "Immigrati/Emigrati", non "Iscritti/Cancellati".
+    # Manteniamo il matcher semantico per tollerare variazioni minori del testo.
     return {
         **p2_population_headers(headers),
-        "internalIn":pick_mobility(headers,"iscritti","internal"),
-        "internalOut":pick_mobility(headers,"cancellati","internal"),
-        "foreignIn":pick_mobility(headers,"iscritti","foreign"),
-        "foreignOut":pick_mobility(headers,"cancellati","foreign"),
+        "internalIn":pick_mobility(headers,"immigrati","internal"),
+        "internalOut":pick_mobility(headers,"emigrati","internal"),
+        "foreignIn":pick_mobility(headers,"immigrati","foreign"),
+        "foreignOut":pick_mobility(headers,"emigrati","foreign"),
     }
 
 def aggregate_p2(
