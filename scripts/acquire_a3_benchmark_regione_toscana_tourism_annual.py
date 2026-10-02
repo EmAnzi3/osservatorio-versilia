@@ -14,6 +14,7 @@ URLS={
  "movement":"https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
  "monthly":"https://www.regione.toscana.it/documents/d/guest/5-movimento-comune_mese-2025-agg-maggio-2026-",
  "capacity":"https://www.regione.toscana.it/documents/d/guest/1-consistenza-media-per-comune-e-tipologia-ricettiva-2025",
+ "rentals":"https://www.regione.toscana.it/documents/d/guest/6-locazioni-agg-maggio-2026-",
 }
 NS={"office":"urn:oasis:names:tc:opendocument:xmlns:office:1.0","table":"urn:oasis:names:tc:opendocument:xmlns:table:1.0","text":"urn:oasis:names:tc:opendocument:xmlns:text:1.0"}
 TARGETS=["foreignTourismShare","tourismArrivals","tourismAverageStay","tourismIntensity","tourismPresences","tourismSeasonality"]
@@ -143,7 +144,7 @@ def main()->None:
     ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
     site=json.loads(SITE.read_text(encoding="utf-8"))
     demo=json.loads(DEMO.read_text(encoding="utf-8"))
-    movement,mb=fetch(URLS["movement"]); monthly,monb=fetch(URLS["monthly"]); capacity,capb=fetch(URLS["capacity"])
+    movement,mb=fetch(URLS["movement"]); monthly,monb=fetch(URLS["monthly"]); capacity,capb=fetch(URLS["capacity"]); rentals,renb=fetch(URLS["rentals"])
     mi=find_rows(movement); mo=find_rows(monthly)
     town_names=[str(t["name"]) for t in site.get("towns",[])]
     pop_by_town={str(r["town"]):float(r["value"]) for r in site["metrics"]["population"]["rows"]}
@@ -201,6 +202,10 @@ def main()->None:
       name:[[cell for cell in row[:40]] for row in rows_named(capacity,name)[:12]]
       for name in [*town_names,"Toscana"]
     }
+    rental_diagnostics={
+      name:[[cell for cell in row[:40]] for row in rows_named(rentals,name)[:20]]
+      for name in [*town_names,"Toscana"]
+    }
     for metric_id in ("tourismBedsPer1000","tourismStructuresPer1000"):
         try:
             detail=capacity_component(capacity,metric_id,site,pop_by_town,town_names)
@@ -218,10 +223,11 @@ def main()->None:
     payload={
       "schemaVersion":3,"publisher":"Regione Toscana — Ufficio regionale di Statistica / Istat","profileId":"regione-toscana-tourism-annual","referenceYear":2025,
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
-      "sources":{"movement":URLS["movement"],"monthly":URLS["monthly"],"capacity":URLS["capacity"],"movementBytes":mb,"monthlyBytes":monb,"capacityBytes":capb},
+      "sources":{"movement":URLS["movement"],"monthly":URLS["monthly"],"capacity":URLS["capacity"],"rentals":URLS["rentals"],"movementBytes":mb,"monthlyBytes":monb,"capacityBytes":capb,"rentalsBytes":renb},
       "benchmarks":benchmarks,
       "qualityGate":{"status":gate,"publicReconciliation":"6 movement metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","regionalRows":"movement + monthly Toscana PASS" if gate=="PASS" else "FAIL","capacityMetricGates":capacity_gate,"errors":movement_errors},
       "capacityDiagnostics":capacity_diagnostics,
+      "rentalDiagnostics":rental_diagnostics,
       "blocked":blocked
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
