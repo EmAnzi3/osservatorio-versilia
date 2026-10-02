@@ -3889,21 +3889,32 @@
       },
       "metricDiagnoses": {
         "pabProgrammedInterventions": {
-          "diagnosis": "INCOMPLETE_CONSORTIUM_AND_INTERVENTION_SCOPE",
-          "reason": "Fonte governata: PAB 2026 Allegato A-1, DGR 367 del 30-03-2026; codici univoci 2026CB1E… e importi programmati associati ai sette Comuni del Consorzio 1 Toscana Nord. Lo snapshot non conserva un pannello completo dei consorzi regionali/nazionali e la ripartizione degli interventi pluricomunali. Il landing ufficiale è raggiungibile ma il probe non ha acquisito Allegati A-1 aggiuntivi. Gli export operativi WFS non equivalgono agli importi approvati: non si possono sommare righe/geometrie o sostituire importi_lordi.",
-          "nextAction": "Acquisire Allegati A-1 2026 dei consorzi necessari; deduplicare per codice intervento e verificare importi e attribuzioni territoriali, distinguendo programmazione e spesa.",
+          "diagnosis": "CROSS_CONSORTIUM_DEFINITION_AND_NATIONAL_SCOPE_UNRESOLVED",
+          "reason": "Tutti i sei PAB regionali 2026 (sette PDF) acquisiti dalla banca dati atti. Hash CB1 identico alla fonte pubblica congelata; A-1 pagine 10–56: 5.328 codici univoci E/P e 16.119.754,60 euro, sette conteggi/importi esattamente riconciliati. La formula precedente limitata ai codici E ometteva 16 codici P nei sette Comuni. Restano da certificare deduplicazione, granularità e perimetro A-1 degli altri consorzi (CB3 attività pluricomunali/codici interni; CB5 Toscana/Lazio) e un pannello nazionale 2026 omologo. Non usare totali generali, WFS operativo o somme regionali come totale Italia.",
+          "nextAction": "Certificare sezioni A-1 omogenee e territorialità dei sei pannelli; reperire programmazione nazionale omologa prima di proporre Toscana/Italia. Nessun benchmark acquisito per la sola riconciliazione CB1.",
           "evidenceFiles": [
-            "data/source-snapshots/bonifica-rischio-v126.json"
+            "data/source-snapshots/bonifica-rischio-v126.json",
+            "data/source-snapshots/a3-pab-native-source-verification-2026.json"
           ]
         },
         "pabProgrammedMaintenanceValue": {
-          "diagnosis": "INCOMPLETE_CONSORTIUM_AND_INTERVENTION_SCOPE",
-          "reason": "Fonte governata: PAB 2026 Allegato A-1, DGR 367 del 30-03-2026; codici univoci 2026CB1E… e importi programmati associati ai sette Comuni del Consorzio 1 Toscana Nord. Lo snapshot non conserva un pannello completo dei consorzi regionali/nazionali e la ripartizione degli interventi pluricomunali. Il landing ufficiale è raggiungibile ma il probe non ha acquisito Allegati A-1 aggiuntivi. Gli export operativi WFS non equivalgono agli importi approvati: non si possono sommare righe/geometrie o sostituire importi_lordi.",
-          "nextAction": "Acquisire Allegati A-1 2026 dei consorzi necessari; deduplicare per codice intervento e verificare importi e attribuzioni territoriali, distinguendo programmazione e spesa.",
+          "diagnosis": "CROSS_CONSORTIUM_DEFINITION_AND_NATIONAL_SCOPE_UNRESOLVED",
+          "reason": "Tutti i sei PAB regionali 2026 (sette PDF) acquisiti dalla banca dati atti. Hash CB1 identico alla fonte pubblica congelata; A-1 pagine 10–56: 5.328 codici univoci E/P e 16.119.754,60 euro, sette conteggi/importi esattamente riconciliati. La formula precedente limitata ai codici E ometteva 16 codici P nei sette Comuni. Restano da certificare deduplicazione, granularità e perimetro A-1 degli altri consorzi (CB3 attività pluricomunali/codici interni; CB5 Toscana/Lazio) e un pannello nazionale 2026 omologo. Non usare totali generali, WFS operativo o somme regionali come totale Italia.",
+          "nextAction": "Certificare sezioni A-1 omogenee e territorialità dei sei pannelli; reperire programmazione nazionale omologa prima di proporre Toscana/Italia. Nessun benchmark acquisito per la sola riconciliazione CB1.",
           "evidenceFiles": [
-            "data/source-snapshots/bonifica-rischio-v126.json"
+            "data/source-snapshots/bonifica-rischio-v126.json",
+            "data/source-snapshots/a3-pab-native-source-verification-2026.json"
           ]
         }
+      },
+      "nativeSourceVerification": {
+        "evidenceFile": "data/source-snapshots/a3-pab-native-source-verification-2026.json",
+        "consortia": 6,
+        "pdfs": 7,
+        "cb1UniqueInterventions": 5328,
+        "cb1NativeAmountCents": 1611975460,
+        "publicMunicipalReconciliation": "7/7 count and amount, E and P identifiers",
+        "benchmarkCandidate": false
       }
     },
     "mef-istat-real-income-annual": {

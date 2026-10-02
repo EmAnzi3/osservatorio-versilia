@@ -62413,7 +62413,7 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Conteggio da Allegato A-1 PAB 2026",
-        "formula": "Conteggio dei codici univoci 2026CB1E… associati ai sette Comuni.",
+        "formula": "Conteggio dei codici univoci 2026CB1E… e 2026CB1P… dell’Allegato A-1 associati ai sette Comuni.",
         "caveat": "Programmazione approvata; non misura lo stato di avanzamento.",
         "coverage": "7/7",
         "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
