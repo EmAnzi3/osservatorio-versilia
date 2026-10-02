@@ -125,12 +125,14 @@ def main()->None:
     for dtype,spec in specs.items():
         values=data.get(dtype) or {}
         errors=local_reconciliation(values,local,spec["field"])
+        coverage={}
         try:
             tus={}
             ita={}
             for year in YEARS:
                 tus[year],tus_count=aggregate_scope(values,year,"tuscany")
                 ita[year],ita_count=aggregate_scope(values,year,"italy")
+                coverage[str(year)]={"tuscany":tus_count,"italy":ita_count}
                 expected_tuscany_count=274 if year==2018 else 273
                 if tus_count!=expected_tuscany_count:
                     errors.append(
@@ -141,7 +143,7 @@ def main()->None:
         except Exception as exc:
             errors.append(f"{type(exc).__name__}: {exc}")
             tus={}; ita={}
-        evidence[dtype]={"errors":errors,"tuscany":tus,"italy":ita}
+        evidence[dtype]={"errors":errors,"coverage":coverage,"tuscany":tus,"italy":ita}
         if errors:
             for mid in spec["metricIds"]:
                 blocked[mid]="; ".join(errors[:20])
