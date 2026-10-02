@@ -30,6 +30,15 @@ def main() -> None:
             base=parents[1]
             target=parents[2]
 
+    if base:
+        # This workflow is also triggered for unrelated PRs. Only enforce the
+        # A5 checkpoint when this PR actually changes at least one declared
+        # A5 path; once in scope, the checkpoint diff still rejects extra paths.
+        pr_changed=set(filter(None,git("diff","--name-only",f"{base}..{target}").splitlines()))
+        if not (pr_changed & allowed):
+            print("Scope lock non applicabile: la PR non modifica file A5 dichiarati.")
+            return
+
     changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
     upstream_only=set()
     if base:
