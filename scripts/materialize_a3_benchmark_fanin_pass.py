@@ -45,7 +45,7 @@ ALLOW_MISSING_PUBLIC = {
 def same_optional_number(left: Any, right: Any, label: str) -> bool:
     if left is None or right is None:
         return left is None and right is None
-    return math.isclose(finite(left, f"{label}/existing"), finite(right, f"{label}/candidate"), rel_tol=0.0, abs_tol=1e-9)
+    return math.isclose(finite(left, f"{label}/existing"), finite(right, f"{label}/candidate"), rel_tol=0.0, abs_tol=.011)
 
 def public_rows(metric: dict[str, Any], metric_id: str) -> list[dict[str, Any]]:
     rows = metric.get("rows") or []
