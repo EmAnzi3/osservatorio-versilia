@@ -131,8 +131,11 @@ def main()->None:
             for year in YEARS:
                 tus[year],tus_count=aggregate_scope(values,year,"tuscany")
                 ita[year],ita_count=aggregate_scope(values,year,"italy")
-                if tus_count!=273:
-                    errors.append(f"Toscana {dtype}/{year}: coverage {tus_count} != 273")
+                expected_tuscany_count=274 if year==2018 else 273
+                if tus_count!=expected_tuscany_count:
+                    errors.append(
+                        f"Toscana {dtype}/{year}: coverage {tus_count} != {expected_tuscany_count}"
+                    )
                 if ita_count<7800:
                     errors.append(f"Italia {dtype}/{year}: coverage {ita_count} < 7800")
         except Exception as exc:
