@@ -203,7 +203,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/build_static_brand.py
+          python scripts/build_public_site.py
+          python scripts/test_affluenza_release.py
+          python scripts/test_site_consistency.py
           python - <<'PY'
           import json
           from pathlib import Path
