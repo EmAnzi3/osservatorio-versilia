@@ -10,7 +10,7 @@ from typing import Any
 import audit_agcom_primary as ag
 
 ROOT = Path(__file__).resolve().parents[1]
-PARSER_SCHEMA_VERSION = 2
+PARSER_SCHEMA_VERSION = 3
 SITE = ROOT / "data" / "site-data.json"
 TUSCANY_PREFIXES = {"045","046","047","048","049","050","051","052","053","100"}
 PERCENT_METRICS = {
