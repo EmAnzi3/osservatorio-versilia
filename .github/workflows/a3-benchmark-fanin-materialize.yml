@@ -1,0 +1,42 @@
+name: A3 Benchmark fan-in materialization
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-fanin-materialize.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  fan-in:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile fan-in materializer
+        run: python -m py_compile scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Materialize accumulated PASS candidates
+        run: python scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Verify fan-in scope
+        shell: bash
+        run: |
+          git diff --name-only > /tmp/a3-fanin-changed.txt
+          cat /tmp/a3-fanin-changed.txt
+          test "$(cat /tmp/a3-fanin-changed.txt)" = "data/site-data.json"
+          git diff --stat -- data/site-data.json > /tmp/a3-fanin-stat.txt
+          cat /tmp/a3-fanin-stat.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-fanin-materialized
+          path: |
+            data/site-data.json
+            /tmp/a3-fanin-changed.txt
+            /tmp/a3-fanin-stat.txt
+          if-no-files-found: error
