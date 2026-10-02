@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 STYLESHEET = DIST / "assets" / "secondary-pages-ui.css"
+ATLAS_SCRIPT = DIST / "assets" / "secondary-pages-atlas.js"
 
 TARGETS = (
     DIST / "index.html",
@@ -24,6 +25,8 @@ TARGETS = (
     DIST / "stato-dati" / "index.html",
 )
 TOKEN = "secondary-pages-ui.css"
+ATLAS_TOKEN = "secondary-pages-atlas.js"
+ATLAS_PAGE = DIST / "confronta" / "economia" / "atlante-attivita-economiche" / "index.html"
 
 
 def href_for(path: Path) -> str:
@@ -46,6 +49,22 @@ def inject(path: Path) -> None:
     path.write_text(text.replace(marker, link + marker, 1), encoding="utf-8")
 
 
+def inject_atlas_script(path: Path) -> None:
+    if not ATLAS_SCRIPT.exists():
+        raise SystemExit("Adapter assets/secondary-pages-atlas.js non trovato nel dist")
+    text = path.read_text(encoding="utf-8")
+    if ATLAS_TOKEN in text:
+        if text.count(ATLAS_TOKEN) != 1:
+            raise SystemExit("Adapter Atlante duplicato")
+        return
+    marker = "</body>"
+    if marker not in text:
+        raise SystemExit("Body Atlante non trovato")
+    rel = os.path.relpath(ATLAS_SCRIPT, path.parent).replace(os.sep, "/")
+    script = f'  <script src="{rel}" defer></script>\n'
+    path.write_text(text.replace(marker, script + marker, 1), encoding="utf-8")
+
+
 def validate_scope() -> None:
     approved = {path.resolve() for path in TARGETS}
     found: set[Path] = set()
@@ -63,6 +82,21 @@ def validate_scope() -> None:
                     "Secondary-page UI duplicata: "
                     + str(path.relative_to(DIST))
                 )
+    atlas_found: set[Path] = set()
+    for path in DIST.rglob("*.html"):
+        text = path.read_text(encoding="utf-8")
+        if ATLAS_TOKEN in text:
+            atlas_found.add(path.resolve())
+            if path.resolve() != ATLAS_PAGE.resolve():
+                raise SystemExit(
+                    "Adapter Atlante fuori scope: "
+                    + str(path.relative_to(DIST))
+                )
+            if text.count(ATLAS_TOKEN) != 1:
+                raise SystemExit("Adapter Atlante duplicato")
+    if atlas_found != {ATLAS_PAGE.resolve()}:
+        raise SystemExit("Adapter Atlante non presente esclusivamente sulla route approvata")
+
     missing = approved - found
     if missing:
         names = ", ".join(str(path.relative_to(DIST)) for path in sorted(missing))
@@ -74,6 +108,7 @@ def main() -> int:
         raise SystemExit("Foglio assets/secondary-pages-ui.css non trovato nel dist")
     for path in TARGETS:
         inject(path)
+    inject_atlas_script(ATLAS_PAGE)
     validate_scope()
     print("Secondary-page UI applicata esclusivamente alle 7 route approvate")
     return 0
