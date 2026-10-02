@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-regione-toscana-libraries-benchmark-2024-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+  "sourceProfileId": "regione-toscana-biblioteche-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+  "dataUrl": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "3 metrics × 5/7 numeric + Massarosa/Stazzema n.d. governed PASS",
+    "missingPolicy": "Massarosa n.d.; Stazzema absent; no zero imputation",
+    "errors": []
+  },
+  "benchmarks": {
+    "libraryActiveBorrowersPer100": {
+      "year": "2024",
+      "unit": "per100",
+      "formula": "Indice di impatto Comunale",
+      "tuscany": 7.5,
+      "italy": null
+    },
+    "libraryLoansPerResident": {
+      "year": "2024",
+      "unit": "decimal",
+      "formula": "Indice di prestito Comunale",
+      "tuscany": 0.66,
+      "italy": null
+    },
+    "libraryWeeklyOpeningHours": {
+      "year": "2024",
+      "unit": "hours",
+      "formula": "Ore medie di apertura settimanale Comunale",
+      "tuscany": 33.16,
+      "italy": null
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36974853959,
+    "artifactId": 11213521022,
+    "head": "d552e82a019fc2f303a165f61a7a8059e150567b"
+  }
+}

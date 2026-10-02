@@ -18,6 +18,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-ispra-environment-benchmark-2024-v2.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-demography-mobility-benchmark-2024.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-soil-benchmark-2024.json",
+)    ROOT / "data" / "source-snapshots" / "a3-regione-toscana-libraries-benchmark-2024.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -34,12 +35,21 @@ def finite(value: Any, label: str) -> float:
         raise RuntimeError(f"{label}: valore non finito")
     return result
 
+ALLOW_MISSING_PUBLIC = {
+    "libraryActiveBorrowersPer100",
+    "libraryLoansPerResident",
+    "libraryWeeklyOpeningHours",
+}
+
 def public_rows(metric: dict[str, Any], metric_id: str) -> list[dict[str, Any]]:
     rows = metric.get("rows") or []
     if len(rows) != 7:
         raise RuntimeError(f"{metric_id}: righe pubbliche {len(rows)} != 7")
     for row in rows:
-        finite(row.get("value"), f"{metric_id}/{row.get('code') or row.get('town')}")
+        value=row.get("value")
+        if metric_id in ALLOW_MISSING_PUBLIC and value is None:
+            continue
+        finite(value, f"{metric_id}/{row.get('code') or row.get('town')}")
     return rows
 
 def validate_agriculture_public(site: dict[str, Any]) -> None:
