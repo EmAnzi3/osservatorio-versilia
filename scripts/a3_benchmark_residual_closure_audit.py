@@ -8,6 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def diagnose(metric, profile, metric_id, evidence):
     meta = metric.get('meta') or {}
+    observed = evidence['profiles'].get(profile) or {}
+    explicit = (observed.get('metricDiagnoses') or {}).get(metric_id)
+    if explicit:
+        if not all(isinstance(explicit.get(k),str) and explicit[k].strip() for k in ('diagnosis','reason','nextAction')):
+            raise RuntimeError(f'{metric_id}: incomplete metric-level source diagnosis')
+        proofs = explicit.get('evidenceFiles') or []
+        for proof in proofs:
+            if not (ROOT / proof).is_file(): raise RuntimeError(f'{metric_id}: evidence file missing: {proof}')
+        return explicit['diagnosis'], explicit['reason'] + ' Prossima azione: ' + explicit['nextAction'], 'data/source-snapshots/a3-benchmark-residual-evidence.json' + (': ' + ', '.join(proofs) if proofs else '')
     for path in sorted((ROOT / 'data/source-snapshots').glob('a3-*-benchmark-*.json')):
         snapshot = json.loads(path.read_text())
         blocked = (snapshot.get('blocked') or {}).get(metric_id)
@@ -28,7 +37,6 @@ def diagnose(metric, profile, metric_id, evidence):
         return 'ORDINAL_SCALE_INCOMPATIBLE_WITH_CARDINAL_SCALAR', (metric.get('method') or {}).get('caveat','') + ' Nessun benchmark regionale/nazionale omogeneo certificato.', reference
     if meta.get('compositeType') and meta['compositeType'] != 'sexBreakdown':
         return 'COMPOSITE_METRIC_INCOMPATIBLE_WITH_SCALAR_BENCHMARK', f"Contratto {meta['compositeType']}: il benchmark scalare non identifica componente/scenario/unità selezionati; il confronto tematico esclude i compositi da benchmarkMarkup. Nessuna modifica A5 autorizzata.", 'assets/app-parts/03.txt'
-    observed = evidence['profiles'].get(profile) or {}
     if metric_id in (observed.get('blocked') or {}):
         return 'SOURCE_AGGREGATION_OR_COVERAGE_UNRESOLVED', observed['blocked'][metric_id], f"workflow {observed['workflowRun']} / artifact {observed['artifactId']}"
     if profile == 'istat-commuting-irregular' and observed.get('error'):

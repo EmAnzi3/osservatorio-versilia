@@ -51,6 +51,7 @@ A3_BENCHMARK_MEF_RESIDUAL_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benc
 A3_BENCHMARK_TOSCANA_INDICATORS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_toscana_indicators.py"
 A3_BENCHMARK_SIOPE_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_siope.py"
 A3_BENCHMARK_FANIN_PASS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_fanin_pass.py"
+A3_BENCHMARK_FRAGILITY_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_fragility.py"
 A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
 A3_PUBLICATION_ADAPTER = ROOT / "scripts" / "materialize_a3_publication_adapter.py"
 
@@ -106,6 +107,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_TOSCANA_INDICATORS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_SIOPE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_FANIN_PASS_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_FRAGILITY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_PUBLICATION_ADAPTER), run_name="__main__")
         return result

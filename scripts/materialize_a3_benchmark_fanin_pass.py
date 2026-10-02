@@ -23,6 +23,9 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-coast-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-fee-blue-flag-benchmark-2026.json",
+    ROOT / "data" / "source-snapshots" / "a3-istat-water-benchmark-2018.json",
+    ROOT / "data" / "source-snapshots" / "a3-toscana-early-childhood-benchmark-2024-25.json",
+    ROOT / "data" / "source-snapshots" / "a3-toscana-hydraulic-features-benchmark-2021.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -153,6 +156,65 @@ def validate_agriculture_public(site: dict[str, Any]) -> None:
             if not math.isclose(observed, expected, rel_tol=0.0, abs_tol=.02):
                 raise RuntimeError(f"{metric_id}/{code}: {observed} != {expected}")
 
+def validate_services_public(metric: dict[str, Any], metric_id: str, snapshot: dict[str, Any]) -> None:
+    benchmark = snapshot['benchmarks'][metric_id]
+    if str(metric['meta'].get('year')) != benchmark['year'] or metric['meta'].get('unit') != benchmark['unit']:
+        raise RuntimeError(f'{metric_id}: public year/unit mismatch')
+    rows = public_rows(metric, metric_id)
+    proof = snapshot.get('municipalReconciliation') or {}
+    if len(proof) != 7 or len({r.get('code') for r in rows}) != 7 or {r.get('code') for r in rows} != set(proof):
+        raise RuntimeError(f'{metric_id}: public/source scope not 7/7')
+    if metric_id == 'waterNetworkLosses':
+        local = load(ROOT / 'data/source-snapshots/ambiente-acqua-v124-data.json')['waterNetworkLosses']['towns']
+        for row in rows:
+            source = proof[row['code']]; canonical = local[row['code']]['2018']
+            im = finite(source['immessa'], 'municipal water input'); er = finite(source['erogata'], 'municipal water output')
+            if im <= 0 or er < 0 or er > im or im != canonical['immessa'] or er != canonical['erogata']:
+                raise RuntimeError('Water municipal components mismatch')
+            expected = (im-er)/im*100
+            if not math.isclose(row['value'],expected,rel_tol=0,abs_tol=1e-9) or not math.isclose(source['value'],expected,rel_tol=0,abs_tol=1e-9):
+                raise RuntimeError('Water municipal ratio mismatch')
+        for scope in ('tuscany','italy'):
+            source = snapshot['raw'][scope]
+            im = finite(source['immessa'], 'regional/national water input'); er = finite(source['erogata'], 'regional/national water output')
+            if im <= 0 or er < 0 or er > im or source['lossPercent'] != benchmark[scope] or abs((im-er)/im*100-benchmark[scope]) > .051:
+                raise RuntimeError('Water official aggregate ratio mismatch')
+    else:
+        local = load(ROOT / 'data/source-snapshots/welfare-prima-infanzia-2026-08.json')['towns']
+        canonical = {t['istatCode']:t['earlyChildhood'] for t in local.values()}
+        for row in rows:
+            source = proof[row['code']]; src = canonical[row['code']]
+            cap = finite(source['capacity'], 'municipal capacity'); den = finite(source['children3to36Months'], 'municipal children')
+            if cap < 0 or den <= 0 or cap != src['potentialCapacity'] or den != src['children3to36Months']:
+                raise RuntimeError('Infancy municipal components mismatch')
+            if not math.isclose(row['value'],cap/den*100,rel_tol=0,abs_tol=1e-9) or not math.isclose(source['value'],cap/den*100,rel_tol=0,abs_tol=1e-9):
+                raise RuntimeError('Infancy municipal ratio mismatch')
+        regional = snapshot['raw']['tuscany']
+        cap = finite(regional['capacity'], 'regional capacity'); den = finite(regional['children3to36Months'], 'regional children')
+        if cap < 0 or den <= 0 or benchmark['italy'] is not None or not math.isclose(benchmark['tuscany'],cap/den*100,rel_tol=0,abs_tol=1e-9):
+            raise RuntimeError('Infancy regional ratio/scope mismatch')
+
+def validate_hydraulic_public(metric: dict[str, Any], snapshot: dict[str, Any]) -> None:
+    metric_id = 'hydraulicWorksCensusElements'
+    benchmark = snapshot['benchmarks'][metric_id]
+    if benchmark.get('year') != '2021' or benchmark.get('unit') != 'number' or metric['meta'].get('year') != '2021' or metric['meta'].get('unit') != 'number':
+        raise RuntimeError('Hydraulic public year/unit mismatch')
+    frozen = load(ROOT / 'data/source-snapshots/bonifica-rischio-v126-gis.json')
+    for key in ('hydraulicWorks','istatBoundaries'):
+        if snapshot['sources'][key]['sha256'] != frozen['sources'][key]['sha256']:
+            raise RuntimeError('Hydraulic source hash conflict')
+    raw = snapshot['raw']['tuscany']
+    if raw != frozen['hydraulicWorks']['sourceFeatureCounts'] or benchmark['tuscany'] != sum(raw.values()) or benchmark['italy'] is not None:
+        raise RuntimeError('Hydraulic regional scope/count mismatch')
+    expected = {frozen['boundaries']['byTown'][name]['istatCode']:item for name,item in frozen['hydraulicWorks']['byTown'].items()}
+    rows = public_rows(metric, metric_id); proof = snapshot.get('municipalReconciliation') or {}
+    if len(rows) != 7 or len({r['code'] for r in rows}) != 7 or {r['code'] for r in rows} != set(expected) or set(proof) != set(expected):
+        raise RuntimeError('Hydraulic public/source scope not 7/7')
+    for row in rows:
+        code = row['code']; counts = {k:expected[code][k]['sourceFeaturesIntersecting'] for k in ('area','line','point')}
+        if proof[code]['counts'] != counts or finite(proof[code]['value'],'hydraulic proof') != sum(counts.values()) or finite(row['value'],'hydraulic public') != sum(counts.values()):
+            raise RuntimeError('Hydraulic municipal source counts mismatch')
+
 def main() -> None:
     site = load(SITE)
     validate_agriculture_public(site)
@@ -179,6 +241,10 @@ def main() -> None:
             public_rows(metric, metric_id)
             if metric_id == "blueFlagBeaches":
                 validate_blue_flag_public(metric, snapshot)
+            if metric_id in ('waterNetworkLosses','earlyChildhoodPotentialCapacityRate'):
+                validate_services_public(metric, metric_id, snapshot)
+            if metric_id == 'hydraulicWorksCensusElements':
+                validate_hydraulic_public(metric, snapshot)
             meta = metric.setdefault("meta", {})
             year = str(benchmark.get("year") or "").strip()
             unit = str(benchmark.get("unit") or "").strip()
@@ -218,7 +284,7 @@ def main() -> None:
                 "source": snapshot.get("publisher"),
                 "url": source_url,
                 "sourceSnapshot": snapshot_ref,
-                "note": (snapshot["scope"]["note"] if metric_id == "blueFlagBeaches" else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
+                "note": (snapshot["scope"]["note"] if metric_id in ('blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
             }
             published.append(metric_id)
 

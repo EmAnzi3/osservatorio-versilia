@@ -55,7 +55,8 @@
     "scripts/patch_territorio_v137_runtime.py",
     "scripts/materialize_invalsi_v138_payload.py",
     "scripts/run_invalsi_v138_runtime.py",
-    "scripts/patch_per_capita_reference_runtime.py"
+    "scripts/patch_per_capita_reference_runtime.py",
+    "scripts/materialize_a3_benchmark_fragility.py"
   ],
   "publicSnapshotFiles": [
     "data/site-data.json",

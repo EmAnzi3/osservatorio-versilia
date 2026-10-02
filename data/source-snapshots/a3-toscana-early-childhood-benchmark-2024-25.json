@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Regione Toscana — Servizi educativi per la prima infanzia",
+  "sourceProfileId": "regione-toscana-early-childhood",
+  "sourceUrl": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv",
+  "sources": {
+    "data": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv",
+    "landing": "https://dati.toscana.it/dataset/serviziprimainfanzia",
+    "csvSha256": "b899e5a6e1af3f176e3b3e70183e5241a36241ab362e97bdca21528b5d8e1bf0",
+    "encoding": "cp1252",
+    "delimiter": ";"
+  },
+  "raw": {
+    "tuscany": {
+      "capacity": 28077,
+      "children3to36Months": 59052
+    }
+  },
+  "municipalReconciliation": {
+    "046005": {
+      "town": "Camaiore",
+      "capacity": 177,
+      "children3to36Months": 436,
+      "value": 40.596330275229356
+    },
+    "046013": {
+      "town": "Forte dei Marmi",
+      "capacity": 63,
+      "children3to36Months": 75,
+      "value": 84.0
+    },
+    "046018": {
+      "town": "Massarosa",
+      "capacity": 87,
+      "children3to36Months": 297,
+      "value": 29.292929292929294
+    },
+    "046024": {
+      "town": "Pietrasanta",
+      "capacity": 221,
+      "children3to36Months": 295,
+      "value": 74.91525423728814
+    },
+    "046028": {
+      "town": "Seravezza",
+      "capacity": 0,
+      "children3to36Months": 168,
+      "value": 0.0
+    },
+    "046030": {
+      "town": "Stazzema",
+      "capacity": 0,
+      "children3to36Months": 35,
+      "value": 0.0
+    },
+    "046033": {
+      "town": "Viareggio",
+      "capacity": 483,
+      "children3to36Months": 911,
+      "value": 53.018660812294186
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "errors": [],
+    "publicReconciliation": "7/7 exact capacity and denominator pairs",
+    "regionalRow": "unique explicit Tuscany total; 273 municipal rows; Union rows not summed"
+  },
+  "benchmarks": {
+    "earlyChildhoodPotentialCapacityRate": {
+      "year": "2024/25",
+      "unit": "percent",
+      "tuscany": 47.546230440967285,
+      "italy": null
+    }
+  },
+  "scope": {
+    "note": "Totale regionale esplicito 2024/25: 28.077 posti potenziali / 59.052 bambini di 3–36 mesi × 100. Include nidi e servizi integrativi; non è l’Indicatore di Lisbona. Italia non disponibile nella fonte regionale; celle vuote e righe delle Unioni non sono trasformate in zero né sommate due volte."
+  }
+}
