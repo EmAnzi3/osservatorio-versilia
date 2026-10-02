@@ -13,6 +13,7 @@ DEMO=ROOT/"data/source-snapshots/a3-istat-demography-benchmark-2026.json"
 URLS={
  "movement":"https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
  "monthly":"https://www.regione.toscana.it/documents/d/guest/5-movimento-comune_mese-2025-agg-maggio-2026-",
+ "capacity":"https://www.regione.toscana.it/documents/d/guest/1-consistenza-media-per-comune-e-tipologia-ricettiva-2025",
 }
 NS={"office":"urn:oasis:names:tc:opendocument:xmlns:office:1.0","table":"urn:oasis:names:tc:opendocument:xmlns:table:1.0","text":"urn:oasis:names:tc:opendocument:xmlns:text:1.0"}
 TARGETS=["foreignTourismShare","tourismArrivals","tourismAverageStay","tourismIntensity","tourismPresences","tourismSeasonality"]
@@ -72,11 +73,77 @@ def town_public(site:dict,metric_id:str)->dict[str,float]:
     if len(rows)!=7: raise RuntimeError(f"{metric_id}: pubblico non 7/7")
     return rows
 
+def rows_named(rows:list[list[Any]],name:str)->list[list[Any]]:
+    target=name.strip().casefold()
+    out=[]
+    for row in rows:
+        if any(str(cell or "").strip().casefold()==target for cell in row):
+            out.append(row)
+    return out
+
+def capacity_component(
+    rows:list[list[Any]],
+    metric_id:str,
+    site:dict,
+    pop_by_town:dict[str,float],
+    town_names:list[str],
+)->dict[str,Any]:
+    public=town_public(site,metric_id)
+    hits={}
+    for town in town_names:
+        candidates=[]
+        for row in rows_named(rows,town):
+            for col,value in enumerate(row):
+                if isinstance(value,bool): continue
+                try: absolute=float(value)
+                except Exception: continue
+                if absolute<0: continue
+                rate=absolute/pop_by_town[town]*1000.0
+                if math.isclose(rate,public[town],rel_tol=0.0,abs_tol=.11):
+                    candidates.append((col,absolute,row))
+        hits[town]=candidates
+    common=None
+    for town,candidates in hits.items():
+        cols={col for col,_,_ in candidates}
+        common=cols if common is None else common & cols
+    if not common:
+        raise RuntimeError(
+            f"{metric_id}: nessuna colonna ODS comune riconcilia 7/7; "
+            + " | ".join(f"{town}:{[(c,v) for c,v,_ in cand[:8]]}" for town,cand in hits.items())
+        )
+    resolved=[]
+    for col in sorted(common):
+        values={}
+        ok=True
+        for town,candidates in hits.items():
+            nums=sorted({float(v) for c,v,_ in candidates if c==col})
+            if len(nums)!=1:
+                ok=False; break
+            values[town]=nums[0]
+        if ok: resolved.append((col,values))
+    if len(resolved)!=1:
+        raise RuntimeError(f"{metric_id}: colonne riconciliate non univoche {[(c,v) for c,v in resolved]}")
+    col,values=resolved[0]
+
+    regional=[]
+    for row in rows_named(rows,"Toscana"):
+        if col>=len(row): continue
+        try: value=float(row[col])
+        except Exception: continue
+        labels=" ".join(str(x or "").strip().casefold() for x in row)
+        regional.append((value,labels,row))
+    total_rows=[item for item in regional if "totale" in item[1]]
+    candidates=total_rows or regional
+    distinct=sorted({float(value) for value,_,_ in candidates if value>=0})
+    if len(distinct)!=1:
+        raise RuntimeError(f"{metric_id}: aggregato Toscana non univoco col={col}, values={distinct[:30]}")
+    return {"column":col,"townAbsolute":values,"tuscanyAbsolute":distinct[0]}
+
 def main()->None:
     ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
     site=json.loads(SITE.read_text(encoding="utf-8"))
     demo=json.loads(DEMO.read_text(encoding="utf-8"))
-    movement,mb=fetch(URLS["movement"]); monthly,monb=fetch(URLS["monthly"])
+    movement,mb=fetch(URLS["movement"]); monthly,monb=fetch(URLS["monthly"]); capacity,capb=fetch(URLS["capacity"])
     mi=find_rows(movement); mo=find_rows(monthly)
     town_names=[str(t["name"]) for t in site.get("towns",[])]
     pop_by_town={str(r["town"]):float(r["value"]) for r in site["metrics"]["population"]["rows"]}
@@ -125,18 +192,32 @@ def main()->None:
           "tourismIntensity":{"year":"2025","unit":"decimal","formula":"presenze 2025 / popolazione benchmark 2026","tuscany":pres/pop,"italy":None},
         }
 
-    gate="PASS" if not errors else "FAIL"
+    movement_errors=list(errors)
+    blocked={
+      "italy":"la stessa fonte Regione Toscana non espone un aggregato nazionale omogeneo; benchmark Italia resta n.d."
+    }
+    capacity_gate={}
+    for metric_id in ("tourismBedsPer1000","tourismStructuresPer1000"):
+        try:
+            detail=capacity_component(capacity,metric_id,site,pop_by_town,town_names)
+            pop=float(demo["benchmarks"]["population"]["tuscany"])
+            benchmarks[metric_id]={
+              "year":"2025","unit":"per1000",
+              "formula":"consistenza ricettiva regionale / popolazione benchmark 2026 × 1.000",
+              "tuscany":detail["tuscanyAbsolute"]/pop*1000.0,"italy":None,
+            }
+            capacity_gate[metric_id]={"status":"PASS",**detail}
+        except Exception as exc:
+            capacity_gate[metric_id]={"status":"BLOCKED","reason":str(exc)}
+            blocked[metric_id]=str(exc)
+    gate="PASS" if not movement_errors else "FAIL"
     payload={
-      "schemaVersion":2,"publisher":"Regione Toscana — Ufficio regionale di Statistica / Istat","profileId":"regione-toscana-tourism-annual","referenceYear":2025,
+      "schemaVersion":3,"publisher":"Regione Toscana — Ufficio regionale di Statistica / Istat","profileId":"regione-toscana-tourism-annual","referenceYear":2025,
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
-      "sources":{"movement":URLS["movement"],"monthly":URLS["monthly"],"movementBytes":mb,"monthlyBytes":monb},
+      "sources":{"movement":URLS["movement"],"monthly":URLS["monthly"],"capacity":URLS["capacity"],"movementBytes":mb,"monthlyBytes":monb,"capacityBytes":capb},
       "benchmarks":benchmarks,
-      "qualityGate":{"status":gate,"publicReconciliation":"6 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","regionalRows":"movement + monthly Toscana PASS" if gate=="PASS" else "FAIL","errors":errors},
-      "blocked":{
-        "tourismBedsPer1000":"il file consistenza 2025 al netto locazioni non riconcilia il contratto pubblico corrente; non forzato",
-        "tourismStructuresPer1000":"il file consistenza 2025 al netto locazioni non riconcilia il contratto pubblico corrente; non forzato",
-        "italy":"la stessa fonte Regione Toscana non espone un aggregato nazionale omogeneo; benchmark Italia resta n.d."
-      }
+      "qualityGate":{"status":gate,"publicReconciliation":"6 movement metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","regionalRows":"movement + monthly Toscana PASS" if gate=="PASS" else "FAIL","capacityMetricGates":capacity_gate,"errors":movement_errors},
+      "blocked":blocked
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(benchmarks),"tuscany":{k:v["tuscany"] for k,v in benchmarks.items()},"gate":payload["qualityGate"]},ensure_ascii=False))

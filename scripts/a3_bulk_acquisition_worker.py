@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 DEDICATED={
-    "istat-business-annual":"scripts/acquire_a3_benchmark_frame_sbs_candidates.py",
+    "istat-business-annual":"scripts/acquire_a3_benchmark_istat_business_asia_ul.py",
     "mim-school-year":"scripts/acquire_a3_benchmark_mim_candidates.py",
     "mef-irpef-annual":"scripts/acquire_a3_benchmark_mef_residual_candidates.py",
     "istat-geografia-comunale-2021":"scripts/acquire_a3_benchmark_geography_candidates.py",
