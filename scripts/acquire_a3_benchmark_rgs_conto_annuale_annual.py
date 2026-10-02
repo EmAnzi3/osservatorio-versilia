@@ -148,16 +148,39 @@ def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
         if entity: result.add(entity)
     return result,missing
 
-def aggregate(codes,turn_g,age_g,hire_g,cess_g):
-    staff=0.0; over55=0.0; net=0.0; valid=0
-    for code in codes:
-        tr=turn_g.get(code); ar=age_g.get(code); hr=hire_g.get(code); cr=cess_g.get(code)
-        if not all((tr,ar,hr,cr)): continue
-        s=src.staff_total(tr); age=src.age_summary(ar); hi=src.flow_summary(hr); ce=src.flow_summary(cr)
-        if s<=0 or not math.isclose(s,age["total"],rel_tol=0.0,abs_tol=.001): continue
-        staff+=s; over55+=age["over55"]; net+=hi["netOfTransfers"]-ce["netOfTransfers"]; valid+=1
-    if valid<=0 or staff<=0: raise RuntimeError("RGS: aggregato vuoto")
-    return {"municipalities":valid,"staff":staff,"over55":over55,"netTurnoverHeadcount":net,"age55plusShare":over55/staff*100,"turnoverRate":net/staff*100}
+def aggregate_age(codes,turn_g,age_g):
+    staff=0.0; over55=0.0; valid=0; missing=[]
+    for code in sorted(codes):
+        tr=turn_g.get(code); ar=age_g.get(code)
+        if not tr:
+            missing.append(f"{code}:turnover"); continue
+        s=src.staff_total(tr)
+        if s<=0:
+            continue
+        if not ar:
+            missing.append(f"{code}:age"); continue
+        age=src.age_summary(ar)
+        if not math.isclose(s,age["total"],rel_tol=0.0,abs_tol=.001):
+            missing.append(f"{code}:staff-age-mismatch"); continue
+        staff+=s; over55+=age["over55"]; valid+=1
+    if valid<=0 or staff<=0: raise RuntimeError("RGS: aggregato età vuoto")
+    return {"municipalities":valid,"staff":staff,"over55":over55,"age55plusShare":over55/staff*100,"missing":missing}
+
+def aggregate_turnover(codes,turn_g,hire_g,cess_g):
+    staff=0.0; net=0.0; valid=0; missing=[]
+    for code in sorted(codes):
+        tr=turn_g.get(code); hr=hire_g.get(code); cr=cess_g.get(code)
+        if not tr:
+            missing.append(f"{code}:turnover"); continue
+        s=src.staff_total(tr)
+        if s<=0:
+            continue
+        if not hr or not cr:
+            missing.append(f"{code}:flows"); continue
+        hi=src.flow_summary(hr); ce=src.flow_summary(cr)
+        staff+=s; net+=hi["netOfTransfers"]-ce["netOfTransfers"]; valid+=1
+    if valid<=0 or staff<=0: raise RuntimeError("RGS: aggregato turnover vuoto")
+    return {"municipalities":valid,"staff":staff,"netTurnoverHeadcount":net,"turnoverRate":net/staff*100,"missing":missing}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
@@ -177,7 +200,8 @@ def main():
         )
     if not 250<=len(tus_codes)<=300: raise RuntimeError(f"RGS: Comuni Toscana inattesi {len(tus_codes)} selector={selector}")
     if not 7000<=len(ita_codes)<=9000: raise RuntimeError(f"RGS: Comuni Italia inattesi {len(ita_codes)}")
-    tus=aggregate(tus_codes,tg,ag,hg,cg); ita=aggregate(ita_codes,tg,ag,hg,cg)
+    tus_age=aggregate_age(tus_codes,tg,ag); ita_age=aggregate_age(ita_codes,tg,ag)
+    tus_turn=aggregate_turnover(tus_codes,tg,hg,cg); ita_turn=aggregate_turnover(ita_codes,tg,hg,cg)
     local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
     errors=[]
     by_name={}
@@ -193,22 +217,31 @@ def main():
         if not math.isclose(staff,float(d["staffAt31Dec"]),abs_tol=.001): errors.append(f"{town}: staff mismatch")
         if not math.isclose(age["over55"],float(d["age"]["age55plus"]),abs_tol=.001): errors.append(f"{town}: age55+ mismatch")
         if rate is None or not math.isclose(rate,float(d["netTurnoverRatePct"]),abs_tol=.00011): errors.append(f"{town}: turnover mismatch {rate} != {d['netTurnoverRatePct']}")
-    gate="PASS" if not errors else "FAIL"
+    age_complete=(not tus_age["missing"] and not ita_age["missing"])
+    turnover_complete=(not tus_turn["missing"] and not ita_turn["missing"])
+    benchmarks={}
+    if not errors and age_complete:
+        benchmarks["municipalStaffAgeStructure"]={"year":"2024","unit":"percent","defaultPart":"55 anni e più","formula":"dipendenti 55+ / personale al 31 dicembre × 100","tuscany":tus_age["age55plusShare"],"italy":ita_age["age55plusShare"]}
+    if not errors and turnover_complete:
+        benchmarks["municipalStaffTurnover"]={"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus_turn["turnoverRate"],"italy":ita_turn["turnoverRate"]}
+    gate="PASS" if benchmarks and not errors else "FAIL"
+    blocked={
+      "municipalEmployeesPer1000":"denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
+      "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"
+    }
+    if not age_complete:
+        blocked["municipalStaffAgeStructure"]=f"copertura aggregata incompleta: Toscana missing={len(tus_age['missing'])}, Italia missing={len(ita_age['missing'])}"
+    if not turnover_complete:
+        blocked["municipalStaffTurnover"]=f"copertura aggregata incompleta: Toscana missing={len(tus_turn['missing'])}, Italia missing={len(ita_turn['missing'])}; assenze non convertite in zero"
     payload={
-      "schemaVersion":1,"publisher":"Ragioneria Generale dello Stato — Conto Annuale/OpenBDAP","profileId":"rgs-conto-annuale-annual","referenceYear":2024,
+      "schemaVersion":2,"publisher":"Ragioneria Generale dello Stato — Conto Annuale/OpenBDAP","profileId":"rgs-conto-annuale-annual","referenceYear":2024,
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
       "sourceUrls":src.URLS,
-      "benchmarks":{
-        "municipalStaffAgeStructure":{"year":"2024","unit":"percent","defaultPart":"55 anni e più","formula":"dipendenti 55+ / personale al 31 dicembre × 100","tuscany":tus["age55plusShare"],"italy":ita["age55plusShare"]},
-        "municipalStaffTurnover":{"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus["turnoverRate"],"italy":ita["turnoverRate"]},
-      },
-      "raw":{"tuscany":tus,"italy":ita},
-      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","geographySelector":selector,"anagrafeEnte":anagrafe_meta,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"errors":errors},
-      "blocked":{
-        "municipalEmployeesPer1000":"denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
-        "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"
-      }
+      "benchmarks":benchmarks,
+      "raw":{"tuscany":{"age":tus_age,"turnover":tus_turn},"italy":{"age":ita_age,"turnover":ita_turn}},
+      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"7/7 towns PASS" if not errors else "FAIL","geographySelector":selector,"anagrafeEnte":anagrafe_meta,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"metricCompleteness":{"municipalStaffAgeStructure":age_complete,"municipalStaffTurnover":turnover_complete},"errors":errors},
+      "blocked":blocked
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(payload["benchmarks"]),"raw":payload["raw"],"gate":payload["qualityGate"]},ensure_ascii=False))
+    print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(payload["benchmarks"]),"raw":payload["raw"],"gate":payload["qualityGate"],"blocked":payload["blocked"]},ensure_ascii=False))
 if __name__=="__main__": main()
