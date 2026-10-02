@@ -50,7 +50,57 @@
       "status": "DEDICATED_ACQUISITION_FAILED",
       "blocked": {},
       "qualityGate": null,
-      "error": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1?format=csvfile"
+      "error": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1?format=csvfile",
+      "latestAcquisition": {
+        "status": "CANDIDATE_PASS_PENDING_PUBLICATION_GATE",
+        "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+        "archiveUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
+        "archiveSha256": "78795a98d97f75d26f14c66495f798f1ff96a3555587771a52f97e7f96d7bc51",
+        "sourceCatalogType": "ONLY_FILE",
+        "matrixRows": 523949,
+        "origins": 7904,
+        "destinations": 7903,
+        "tuscanyMunicipalities": 273,
+        "snapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+        "candidateMetrics": [
+          "inboundCommuters",
+          "outboundCommuters",
+          "commuterBalance",
+          "inboundCommutersRate",
+          "outboundCommutersRate"
+        ],
+        "publicReconciliation": "5 metrics × 7/7 PASS",
+        "routingFix": "Official dataflow attachment used instead of unsupported SDMX data endpoint; HTTP 404 did not prove absence."
+      },
+      "metricDiagnoses": {
+        "commuterBalanceRate": {
+          "diagnosis": "DENOMINATOR_PANEL_NOT_ACQUIRED",
+          "reason": "Numeratori matrice Istat 2021 riconciliati 7/7. Il denominatore effettivo coincide esattamente 7/7 con P02 al 1° gennaio 2021 dello snapshot demografico comunale, non popolazione 2026. Manca il pannello nazionale completo P02 2021 per aggregare con lo stesso periodo.",
+          "evidenceUrls": [
+            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
+            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
+          ],
+          "nextAction": "Acquisire pannello P02 nazionale 2021 e riconciliare i sette denominatori."
+        },
+        "outsideMunicipality": {
+          "diagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
+          "reason": "Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.",
+          "evidenceUrls": [
+            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
+            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
+          ],
+          "nextAction": "Acquisire quote censuarie sul totale occupati con lo stesso perimetro pubblico; non ricavare quote dalla sola sottopopolazione di pendolari per lavoro."
+        },
+        "selfContainment": {
+          "diagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
+          "reason": "Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.",
+          "evidenceUrls": [
+            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
+            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
+          ],
+          "nextAction": "Acquisire quote censuarie sul totale occupati con lo stesso perimetro pubblico; non ricavare quote dalla sola sottopopolazione di pendolari per lavoro."
+        }
+      }
     },
     "aci-istat-annual": {
       "workflowRun": 36982743711,

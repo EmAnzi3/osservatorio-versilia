@@ -22899,7 +22899,16 @@
         "unit": "number",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 641790,
+          "italy": 9762022,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -41366,11 +41375,20 @@
         "theme": "mobilita",
         "label": "Pendolari in uscita ogni 1.000 residenti",
         "shortLabel": "Pendolari in uscita",
-        "description": "Residenti che lavorano fuori Comune, rapportati alla popolazione.",
+        "description": "Residenti che lavorano fuori Comune, rapportati alla popolazione. Il rapporto usa la popolazione residente al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 175.73462337076023,
+          "italy": 165.61848712111336,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -41454,7 +41472,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "pendolari in uscita / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Numeratore: flussi Istat 2021; denominatore: popolazione al 1° gennaio 2026, anche per Toscana/Italia.",
         "coverage": "7/7"
       }
     },
@@ -41464,11 +41482,20 @@
         "theme": "mobilita",
         "label": "Pendolari in entrata ogni 1.000 residenti",
         "shortLabel": "Pendolari in entrata / residenti",
-        "description": "Lavoratori provenienti da altri Comuni, rapportati alla popolazione.",
+        "description": "Lavoratori provenienti da altri Comuni, rapportati alla popolazione. Il rapporto usa la popolazione residente al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 175.38974131659683,
+          "italy": 165.61848712111336,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -41552,7 +41579,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "pendolari in entrata / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Numeratore: flussi Istat 2021; denominatore: popolazione al 1° gennaio 2026, anche per Toscana/Italia.",
         "coverage": "7/7"
       }
     },
@@ -42688,7 +42715,16 @@
         "unit": "people",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 643052,
+          "italy": 9762022,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -42786,7 +42822,16 @@
         "unit": "people",
         "year": "2021",
         "source": "Elaborazione Osservatorio su matrice Istat",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": -1262,
+          "italy": 0,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [

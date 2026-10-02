@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
 SNAPSHOTS = (
+    ROOT / "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-agriculture-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-tourism-benchmark-2025.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-environment-benchmark-2024.json",
@@ -249,6 +250,9 @@ def main() -> None:
                 validate_hydraulic_public(metric, snapshot)
             if metric_id in ('tourismBeds','tourismBedsPer1000','tourismStructuresPer1000'):
                 from acquire_a3_benchmark_istat_tourism_annual import validate_snapshot
+                validate_snapshot(metric, snapshot, site['metrics']['population'])
+            if metric_id in ('inboundCommuters','outboundCommuters','commuterBalance','inboundCommutersRate','outboundCommutersRate'):
+                from acquire_a3_benchmark_istat_commuting_irregular import validate_snapshot
                 validate_snapshot(metric, snapshot, site['metrics']['population'])
             if metric_id == 'incomeVsInflation':
                 from acquire_a3_benchmark_mef_istat_real_income_annual import validate_snapshot

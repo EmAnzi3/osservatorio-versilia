@@ -2,49 +2,36 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37016547027,
-    "headSha": "64c5ff994e45d775483313e33e2e86a599a63a6b",
-    "publicBenchmarks": "119/119",
+    "workflowRun": 37023511530,
+    "headSha": "7a9160be29e7005ed853ee978446e619dfc92642",
+    "publicBenchmarks": "123/123",
     "publicationGap": 0,
-    "availableMissing": 94,
-    "artifactId": 11231710442
+    "availableMissing": 90,
+    "artifactId": 11234271437
   },
-  "selectedProfileCount": 2,
-  "selectedPairCount": 4,
+  "selectedProfileCount": 1,
+  "selectedPairCount": 5,
   "profiles": [
     {
-      "profileId": "mef-istat-real-income-annual",
-      "bundleId": "mef-istat-real-income-annual::benchmark_toscana_italia",
+      "profileId": "istat-commuting-irregular",
+      "bundleId": "istat-commuting-irregular::benchmark_toscana_italia",
       "rank": 1,
-      "pairCount": 1,
+      "pairCount": 5,
       "metricIds": [
-        "incomeVsInflation"
+        "inboundCommuters",
+        "outboundCommuters",
+        "commuterBalance",
+        "inboundCommutersRate",
+        "outboundCommutersRate"
       ],
       "sourceReferences": [
-        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
-      ],
-      "publisher": "MEF / Istat",
-      "costPoints": 2,
-      "priorityIndex": 1
-    },
-    {
-      "profileId": "istat-tourism-annual",
-      "bundleId": "istat-tourism-annual::benchmark_toscana_italia",
-      "rank": 2,
-      "pairCount": 3,
-      "metricIds": [
-        "tourismBeds",
-        "tourismBedsPer1000",
-        "tourismStructuresPer1000"
-      ],
-      "sourceReferences": [
-        "https://noi-italia.istat.it/pagina.php?L=0&categoria=8&dove=ITALIA"
+        "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
       ],
       "publisher": "Istat",
       "costPoints": 2,
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-119-certified-income-capacity",
-  "selectionRationale": "Two official panels reconcile 7/7. Istat profile includes the two published capacity rates whose source/year are corrected from proven 2024 counts. Those two IDs were AVAILABLE_MISSING in the certified artifact under regione-toscana-tourism-annual. Exactly two dedicated workers."
+  "workerGeneration": "post-123-certified-commuting",
+  "selectionRationale": "Official ONLY_FILE attachment restores acquisition; five exact 7/7 reconciliations. Remaining three metrics retain diagnosed census/denominator differences. One dedicated worker, no historical replay."
 }
