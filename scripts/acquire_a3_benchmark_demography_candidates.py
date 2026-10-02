@@ -16,7 +16,8 @@ import requests
 
 POSAS_2026="https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip"
 P2_2019="https://demo.istat.it/data/p2/P2_2019_it_Comuni.zip"
-P2_2024="https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip"\nP2_2025="https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip"
+P2_2024="https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip"
+P2_2025="https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip"
 RCS_2025="https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip"
 SITE_DATA=Path(__file__).resolve().parents[1]/"data"/"site-data.json"
 TOSCANY_PROVINCES={"045","046","047","048","049","050","051","052","053","100"}
