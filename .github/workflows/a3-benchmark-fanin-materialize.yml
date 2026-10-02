@@ -1,5 +1,5 @@
 name: A3 Benchmark fan-in materialization
-# controlled fan-in revision 4
+# controlled fan-in revision 5
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
       - ".github/workflows/a3-benchmark-fanin-materialize.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   fan-in:
@@ -71,3 +71,12 @@ jobs:
             /tmp/a3-fanin-changed.txt
             /tmp/a3-fanin-stat.txt
           if-no-files-found: error
+      - name: Commit materialized catalog
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json
+          git diff --cached --quiet && { echo "No catalog changes to commit"; exit 0; }
+          git commit -m "A3: publish accumulated benchmark PASS candidates"
+          git push origin HEAD:feat/a3-benchmark-available-missing
