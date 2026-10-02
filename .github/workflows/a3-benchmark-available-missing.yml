@@ -81,6 +81,13 @@ jobs:
         run: |
           python -m py_compile scripts/a3_benchmark_available_missing.py
           python scripts/a3_benchmark_available_missing.py             --matrix /tmp/a3-enrichment-matrix.json             --json-output /tmp/a3-benchmark-available-missing.json             --markdown-output /tmp/A3_BENCHMARK_AVAILABLE_MISSING.md
+      - name: Diagnose residual benchmark blockers
+        run: |
+          python scripts/a3_benchmark_residual_closure_audit.py \
+            --data dist/data/site-data.json \
+            --backlog /tmp/a3-benchmark-available-missing.json \
+            --json-output /tmp/a3-benchmark-residual-closure.json \
+            --markdown-output /tmp/A3_BENCHMARK_RESIDUAL_CLOSURE.md
       - name: Upload benchmark backlog
         uses: actions/upload-artifact@v4
         with:
@@ -88,4 +95,6 @@ jobs:
           path: |
             /tmp/a3-benchmark-available-missing.json
             /tmp/A3_BENCHMARK_AVAILABLE_MISSING.md
+            /tmp/a3-benchmark-residual-closure.json
+            /tmp/A3_BENCHMARK_RESIDUAL_CLOSURE.md
           if-no-files-found: error

@@ -26425,6 +26425,15 @@
         "sourceMeta": {
           "snapshot": "data/source-snapshots/costa-mare-v123.json",
           "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "benchmark": {
+          "year": "2026",
+          "tuscany": 45,
+          "italy": 524,
+          "source": "FEE Italia — Programma Bandiera Blu",
+          "url": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+          "sourceSnapshot": "data/source-snapshots/a3-fee-blue-flag-benchmark-2026.json",
+          "note": "Elenco nazionale FEE spiagge, incluse acque interne; località separate da virgole esterne alle parentesi, barre conservate; riconoscimenti revocati esclusi."
         }
       },
       "sourceUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "dimension": "benchmark_toscana_italia",
+  "profiles": {
+    "rgs-conto-annuale-annual": {
+      "workflowRun": 36982743711,
+      "artifactId": 11216047134,
+      "worker": "scripts/acquire_a3_benchmark_rgs_conto_annuale_annual.py",
+      "status": "CANDIDATE_REJECTED",
+      "blocked": {
+        "municipalEmployeesPer1000": "denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
+        "municipalStaffTraining": "l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta",
+        "municipalStaffAgeStructure": "copertura aggregata incompleta: Toscana missing=1, Italia missing=25",
+        "municipalStaffTurnover": "copertura aggregata incompleta: Toscana missing=55, Italia missing=3423; assenze non convertite in zero"
+      },
+      "qualityGate": {
+        "status": "FAIL",
+        "publicSourceSnapshotReconciliation": "7/7 towns PASS",
+        "geographySelector": {
+          "mode": "bdap-anagrafe",
+          "field": "Codice Ente BDAP",
+          "source": "CKAN:STM_AEN_BDP_ENT_01"
+        },
+        "anagrafeEnte": {
+          "catalogApi": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/action/package_search",
+          "datasetToken": "STM_AEN_BDP_ENT_01",
+          "package": "spd_stm_aen_bdp_ent_01",
+          "resource": "Anagrafe Enti - Ente.csv",
+          "source": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/745861d3-e741-43ff-b68a-7cf357aab888.csv",
+          "rows": 38306,
+          "mappedEntities": 38306,
+          "idField": "Id_Ente",
+          "regionCodeField": "Codice_Regione",
+          "regionLabelField": "Dizione_Regione"
+        },
+        "tuscanyInstitutionCount": 271,
+        "italyInstitutionCount": 7718,
+        "metricCompleteness": {
+          "municipalStaffAgeStructure": false,
+          "municipalStaffTurnover": false
+        },
+        "errors": []
+      },
+      "error": ""
+    },
+    "istat-commuting-irregular": {
+      "workflowRun": 36982743711,
+      "artifactId": 11215983268,
+      "worker": "scripts/acquire_a3_benchmark_istat_commuting_irregular.py",
+      "status": "DEDICATED_ACQUISITION_FAILED",
+      "blocked": {},
+      "qualityGate": null,
+      "error": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all/IT1?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/all?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_BULK_PEND_LAV_2021_1,1.0/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1/?format=csvfile | https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1: HTTPError: 404 Client Error: Not Found for url: https://esploradati.istat.it/SDMXWS/rest/data/DF_BULK_PEND_LAV_2021_1//IT1?format=csvfile"
+    },
+    "aci-istat-annual": {
+      "workflowRun": 36982743711,
+      "artifactId": 11215569514,
+      "worker": "scripts/acquire_a3_benchmark_aci_istat_annual.py",
+      "status": "DEDICATED_ACQUISITION_FAILED",
+      "blocked": {},
+      "qualityGate": null,
+      "error": "ACI/Istat mobilità urbana_11.1: riga Stazzema non univoca (0)"
+    },
+    "openbdap-annual": {
+      "worker": "scripts/acquire_a3_benchmark_openbdap_annual.py",
+      "evidenceSnapshot": "data/source-snapshots/a3-openbdap-benchmark-diagnostic-2025.json"
+    }
+  }
+}

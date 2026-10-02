@@ -22,6 +22,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-istat-business-benchmark-2023.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-coast-benchmark-2020.json",
+    ROOT / "data" / "source-snapshots" / "a3-fee-blue-flag-benchmark-2026.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -56,12 +57,51 @@ def public_rows(metric: dict[str, Any], metric_id: str) -> list[dict[str, Any]]:
     if metric_id == "rigidDefenceProtectedCoast":
         validate_coast_public(rows)
         return rows
+    if metric_id == "blueFlagBeaches":
+        coastal = {"046005", "046013", "046024", "046033"}
+        na = {"046018", "046028", "046030"}
+        if {r.get("code") for r in rows} != coastal | na:
+            raise RuntimeError("FEE: public perimeter mismatch")
+        for row in rows:
+            if row["code"] in na:
+                if row.get("value") is not None or row.get("notApplicable") is not True:
+                    raise RuntimeError("FEE: explicit n.a. required")
+            else:
+                finite(row.get("value"), f"FEE/{row['code']}")
+        return rows
     for row in rows:
         value=row.get("value")
         if metric_id in ALLOW_MISSING_PUBLIC and value is None:
             continue
         finite(value, f"{metric_id}/{row.get('code') or row.get('town')}")
     return rows
+
+def validate_blue_flag_public(metric: dict[str, Any], snapshot: dict[str, Any]) -> None:
+    records = snapshot.get("records") or []
+    if not records or len(records) != snapshot.get("scope", {}).get("listedMunicipalities"):
+        raise RuntimeError("FEE: incomplete listing")
+    normal = lambda text: " ".join(text.split()).casefold()
+    keys = [(r["region"], normal(r["town"])) for r in records]
+    if len(set(keys)) != len(keys):
+        raise RuntimeError("FEE: duplicate town entries")
+    benchmark = snapshot["benchmarks"]["blueFlagBeaches"]
+    if metric["meta"].get("year") != benchmark["year"] or metric["meta"].get("unit") != benchmark["unit"]:
+        raise RuntimeError("FEE: year/unit mismatch")
+    for scope in ("tuscany", "italy"):
+        expected = sum(len(r["localities"]) for r in records if not r["revoked"] and (scope == "italy" or r["region"] == "Toscana"))
+        if finite(benchmark[scope], f"FEE/{scope}") != expected:
+            raise RuntimeError("FEE: aggregate listing mismatch")
+    for row in public_rows(metric, "blueFlagBeaches"):
+        matching = [r for r in records if r["region"] == "Toscana" and normal(r["town"]) == normal(row["town"])]
+        if row.get("notApplicable"):
+            if matching: raise RuntimeError("FEE: unexpected listing for n.a. town")
+            continue
+        if len(matching) != 1 or matching[0]["revoked"]:
+            raise RuntimeError("FEE: missing/revoked coastal town")
+        names = matching[0]["localities"]
+        public_names = row.get("coastDetail", {}).get("localities2026") or []
+        if row["value"] != len(names) or {normal(n) for n in names} != {normal(n) for n in public_names}:
+            raise RuntimeError("FEE: public locality count/names mismatch")
 
 def validate_coast_public(rows: list[dict[str, Any]]) -> None:
     coastal = {"046005", "046013", "046024", "046033"}
@@ -137,6 +177,8 @@ def main() -> None:
             if not isinstance(metric, dict):
                 raise RuntimeError(f"{metric_id}: metrica pubblica assente")
             public_rows(metric, metric_id)
+            if metric_id == "blueFlagBeaches":
+                validate_blue_flag_public(metric, snapshot)
             meta = metric.setdefault("meta", {})
             year = str(benchmark.get("year") or "").strip()
             unit = str(benchmark.get("unit") or "").strip()
@@ -176,7 +218,7 @@ def main() -> None:
                 "source": snapshot.get("publisher"),
                 "url": source_url,
                 "sourceSnapshot": snapshot_ref,
-                "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS.",
+                "note": (snapshot["scope"]["note"] if metric_id == "blueFlagBeaches" else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
             }
             published.append(metric_id)
 

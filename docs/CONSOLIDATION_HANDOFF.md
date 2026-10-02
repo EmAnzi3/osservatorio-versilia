@@ -5,12 +5,14 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 ## Workstream A3 benchmark attivo — PR #304
 
 - Branch `feat/a3-benchmark-available-missing`, base `fix/a3-enrichment-publication-gap`; OPEN/DRAFT, non mergiare.
-- Certificato dal run `36984935304`, head `b59a35e7f5a2af1f96060f0b9ed2f32923239476`: 112/112 benchmark pubblici, 0 gap, 101 AVAILABLE_MISSING, 81 chiusi su baseline 182. Spesa sociale per residente ACQUIRED.
-- ISPRA costa 2020: candidato PASS da run `36982743711`, artifact `11216461886`; fan-in locale, riconciliazione 4 costieri + 3 n.a.; ACQUIRED soltanto dopo il nuovo publication gate.
-- OpenBDAP: candidato rigettato, 271/273 Comuni Toscana; nessun aggregato pubblicato. Restano distinti SIOPE, compositi e formule non certificate.
-- Corretto il falso failure del fan-in senza diff; invariati perimetro file e soglia diff.
-- QA locale: contratti sorgente/dati e idempotenza biblioteche PASS; preflight quick eseguito con `OV_RELEASE_BUILD=1`, bloccato al prerender per Chromium assente (download browser non valido nel runtime). Nessun gate indebolito; certificazione pubblica demandata al run completo GitHub.
-- Prossima azione: leggere il nuovo publication gate, poi audit fonte/contratto sui residui. Nessuna chiusura A3 dichiarata; preservare golden master A5.
+- Certificato dal run `36987416265`, head `85f39414eef27db0323e4b3f62e2117f0a7237d0`: **113/113 benchmark pubblici, 0 gap, 100 AVAILABLE_MISSING, 82 chiusi** su baseline 182. Spesa sociale e costa protetta ISPRA ACQUIRED.
+- Fan-in idempotente verde sullo stesso head; preservati benchmark biblioteche e golden A5. Inventario workflow A3 riallineato al contratto.
+- Nuovo candidato PASS: linea litoranea Istat 2021, Toscana 722,930 km / Italia 9.333,026 km; DBF ufficiale completo, 646 record univoci, 34 Toscana, 4 Comuni costieri + 3 n.a. riconciliati. Il materializzatore geografia lo integra nel catalogo effettivo; ACQUIRED soltanto dopo il nuovo publication gate.
+- Candidato FEE Bandiera Blu 2026 PASS: 45 località Toscana / 524 Italia secondo il conteggio delle voci separate FEE, con barre e parentesi conservate; revoche escluse. Italia include le spiagge in acque interne dell’elenco nazionale. Riconciliati nomi e conteggi 4 costieri + 3 n.a.; fan-in canonico, ancora non ACQUIRED.
+- OpenBDAP aggiornato localmente: **271/273**; assenti Villafranca in Lunigiana (`045016`) e Marradi (`048026`). Snapshot diagnostico FAIL, nessun aggregato parziale. SIOPE, compositi e formule non certificate restano distinti.
+- QA locale: contratti sorgente/dati e idempotenza PASS; quick eseguito con `OV_RELEASE_BUILD=1`, prerender bloccato da Chromium assente e download browser invalido nel runtime. Nessun gate indebolito; certificazione pubblica eseguita sul run completo GitHub.
+- Residual audit derivato: non cambia la matrice né conta diagnosi come acquisizioni. Sui 100 residui certificati documenta 68 blocchi e lascia 32 audit fonte esplicitamente aperti; include ragioni e prove metric-level. Dopo linea litoranea e FEE attesi 98 residui, da leggere realmente nel gate.
+- Prossima azione: leggere il nuovo publication gate e il residual audit; continuare acquisizioni/diagnosi sui residui. Nessuna chiusura A3 dichiarata.
 
 ## Stato A5 congelato
 
