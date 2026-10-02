@@ -192,27 +192,6 @@ def prepare_shells() -> None:
 
         if "assets/fidelity.css" not in text:
             text = text.replace("</head>", f'  <link rel="stylesheet" href="{assets}assets/fidelity.css">\n</head>')
-
-        # UI-only preview stylesheet: load it only on the four native entry
-        # routes under review. Special pages (Opportunità, PNRR, Stato dati)
-        # inherit the same stylesheet from progetto/index.html through
-        # site_chrome.extract_native_shell().
-        secondary_preview_routes = {
-            "index.html",
-            "progetto/index.html",
-            "segnala/index.html",
-            "confronta/economia/atlante-attivita-economiche/index.html",
-        }
-        relative_route = path.relative_to(DIST).as_posix()
-        if (
-            relative_route in secondary_preview_routes
-            and "assets/secondary-pages-preview.css" not in text
-        ):
-            text = text.replace(
-                "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/secondary-pages-preview.css">\n</head>',
-            )
-
         if "assets/ateco-detail.css" not in text:
             text = text.replace("</head>", f'  <link rel="stylesheet" href="{assets}assets/ateco-detail.css">\n</head>')
         if "assets/fidelity.js" not in text:
