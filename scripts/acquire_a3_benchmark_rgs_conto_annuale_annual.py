@@ -17,8 +17,8 @@ def groups(rows):
     out=defaultdict(list)
     for r in rows:
         if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
-        code=str(r.get("Codice Istituzione") or "").strip()
-        if code: out[code].append(r)
+        entity=src.norm(r.get("Descrizione Ente",""))
+        if entity: out[entity].append(r)
     return out
 
 TUSCANY_PROVINCES={"AR","FI","GR","LI","LU","MS","PI","PO","PT","SI","AREZZO","FIRENZE","GROSSETO","LIVORNO","LUCCA","MASSA CARRARA","PISA","PRATO","PISTOIA","SIENA"}
@@ -144,8 +144,8 @@ def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
                 if value not in TUSCANY_PROVINCES: continue
             else:
                 raise RuntimeError(f"RGS: selector inatteso {selector}")
-        code=str(r.get("Codice Istituzione") or "").strip()
-        if code: result.add(code)
+        entity=src.norm(r.get("Descrizione Ente",""))
+        if entity: result.add(entity)
     return result,missing
 
 def aggregate(codes,turn_g,age_g,hire_g,cess_g):
@@ -181,8 +181,8 @@ def main():
     local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
     errors=[]
     by_name={}
-    for code,rows in tg.items():
-        if rows: by_name[src.norm(rows[0].get("Descrizione Ente",""))]=code
+    for entity,rows in tg.items():
+        if rows: by_name[src.norm(rows[0].get("Descrizione Ente",""))]=entity
     for town,d in local.items():
         code=by_name.get(src.norm(f"COMUNE DI {town}"))
         if not code: errors.append(f"{town}: ente RGS assente"); continue
