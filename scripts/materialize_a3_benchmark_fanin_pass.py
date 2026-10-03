@@ -232,6 +232,8 @@ def main() -> None:
     from materialize_a3_simple_mef_history import apply_history as apply_mef_history
     apply_rcs_history(site)
     apply_mef_history(site)
+    from materialize_a3_istat_history_extension import apply_history as apply_istat_history
+    apply_istat_history(site)
     published: list[str] = []
     already_present: list[str] = []
 

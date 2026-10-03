@@ -177,6 +177,72 @@ def _runtime_corpus(dist: Path) -> str:
     return "\n".join(chunks)
 
 
+def _demographic_component_history(metric: dict[str, Any], runtime: str) -> str | None:
+    """Certify the selectable demographic route without inventing default history."""
+    meta = metric.get("meta", {})
+    if not isinstance(meta, dict) or meta.get("compositeType") != "demographicBreakdown":
+        return None
+    rows = metric.get("rows", [])
+    if not isinstance(rows, list) or len(rows) != 7 or not all(isinstance(row, dict) for row in rows):
+        return None
+    if any(row.get("notApplicable") for row in rows):
+        return None
+    if any(not row.get("code") or not row.get("town") for row in rows):
+        return None
+    if len({row["code"] for row in rows}) != 7 or len({row["town"] for row in rows}) != 7:
+        return None
+
+    options = []
+    for field in ("ageOptions", "genderOptions"):
+        values = meta.get(field)
+        if not isinstance(values, list) or not values or not all(isinstance(item, dict) for item in values):
+            return None
+        keys = [item.get("key") for item in values]
+        if any(not isinstance(key, str) or not key for key in keys) or len(set(keys)) != len(keys):
+            return None
+        options.append(set(keys))
+
+    def function_body(name: str) -> str:
+        found = re.search(r"\bfunction\s+" + name + r"\s*\([^)]*\)\s*\{(.*?)(?=\n\s*function\s|\Z)", runtime, re.DOTALL)
+        return found.group(1) if found else ""
+
+    projection = function_body("compositeChoiceMetric")
+    detector = function_body("hasComponentHistory")
+    selector = function_body("currentCompositeChoice")
+    if not ("demographicBreakdown" in projection and "row.parts" in projection
+            and "item.key===selected" in re.sub(r"\s+", "", projection)
+            and "series:part.series" in re.sub(r"\s+", "", projection)
+            and "demographicBreakdown" in detector and "part.series" in detector
+            and all(token in selector for token in ("data-demographic-age", "data-demographic-gender", "${age}|${gender}"))
+            and re.search(r"hasComponentHistory\([^)]*\)[^\n;?]*\?\s*currentCompositeChoice\(", runtime)
+            and re.search(r"historyMetric\(\s*compositeChoiceMetric\(", runtime)):
+        return None
+
+    candidates = None
+    for row in rows:
+        parts = row.get("parts")
+        if not isinstance(parts, list) or not all(isinstance(part, dict) for part in parts):
+            return None
+        keys = [part.get("key") for part in parts]
+        if any(not isinstance(key, str) for key in keys) or len(set(keys)) != len(keys):
+            return None
+        available = {}
+        for part in parts:
+            age, gender = part.get("ageKey"), part.get("genderKey")
+            key = part.get("key")
+            if age not in options[0] or gender not in options[1] or key != f"{age}|{gender}":
+                return None
+            series = part.get("series")
+            if (_valid_series(series) and all(_finite(value) for value in series["values"])
+                    and all(re.fullmatch(r"[0-9]{4}", str(year)) for year in series["years"])):
+                available[key] = {str(year) for year in series["years"]}
+        if candidates is None:
+            candidates = available
+        else:
+            candidates = {key: years & available[key] for key, years in candidates.items() if key in available}
+    return next((key for key, years in (candidates or {}).items() if len(years) >= 2), None)
+
+
 def _history_status(
     metric_id: str,
     metric: dict[str, Any],
@@ -197,6 +263,10 @@ def _history_status(
             "PUBLIC_RENDERED",
             "canonical row.series years/values is consumable by the standard history renderer/export",
         )
+
+    component = _demographic_component_history(metric, runtime)
+    if component is not None:
+        return ("SPECIAL_ROUTE_RENDERED", f"selectable demographic component {component} has common native history consumed by public age/gender selectors and history renderer")
 
     special_fields = _special_history_fields(metric)
     if special_fields:

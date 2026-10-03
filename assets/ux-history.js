@@ -145,6 +145,12 @@
 
   function renderHistoryMarkup(metric, series, selectedTown) {
     const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
+    if (metric?.meta?.compositeType === 'demographicBreakdown') {
+      const observation = metric.rows?.find(row => row.series?.years?.length)?.series;
+      return observation?.note
+        ? `${markup}<p class="ux-view-note">${toolkit.escapeHtml(observation.note)} <a href="${toolkit.escapeHtml(observation.sourceUrl)}" target="_blank" rel="noreferrer">Fonte storica Istat ↗</a></p>`
+        : markup;
+    }
     if (metric?.meta?.detailGroup === 'coast' && metric.aggregate?.series?.years?.length) {
       return markup
         .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Quattro Comuni costieri più l’aggregato ufficiale Versilia; i Comuni non costieri restano n.a. e non entrano nello storico.')
@@ -327,7 +333,7 @@
             ? 'Serie mensile MIMIT gennaio 2022–giugno 2026: media delle mediane comunali giornaliere self-service; Stazzema resta n.d. perché non risultano impianti attivi.'
             : historyAvailable
               ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
-              : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+              : selected.metric?.meta?.compositeType === 'demographicBreakdown' ? demographicHistoryAvailabilityNote(selected.metric) : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
     wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
@@ -354,19 +360,25 @@
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (!['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return metric;
+    if (metric?.meta?.compositeType !== 'demographicBreakdown' && !['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return metric;
     const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })), aggregate:metric.aggregate ? { ...metric.aggregate } : metric.aggregate };
-    if (metric.meta.compositeType === 'sexBreakdown') {
-      const selected = choice || metric.meta.defaultSex || 'totale';
-      const option = (metric.meta.sexOptions || []).find(item=>item.key===selected);
+    if (['sexBreakdown','demographicBreakdown'].includes(metric.meta.compositeType)) {
+      const demographic = metric.meta.compositeType === 'demographicBreakdown';
+      const selected = choice || (demographic ? `${metric.meta.defaultAge}|${metric.meta.defaultGender}` : metric.meta.defaultSex || 'totale');
+      const option = (demographic ? metric.rows?.[0]?.parts || [] : metric.meta.sexOptions || []).find(item=>item.key===selected);
       clone.meta.label = option ? `${metric.meta.label} · ${option.label}` : metric.meta.label;
-      clone.meta.benchmark = metric.meta.benchmarksBySex?.[selected] || metric.meta.benchmark;
+      clone.meta.benchmark = demographic
+        ? (selected === `${metric.meta.defaultAge}|${metric.meta.defaultGender}` ? metric.meta.benchmark : null)
+        : metric.meta.benchmarksBySex?.[selected] || metric.meta.benchmark;
       clone.rows = metric.rows.map(row => {
         const part=(row.parts || []).find(item=>item.key===selected) || row.parts?.[0] || {};
-        return { ...row, value:part.value, formatted:part.formatted || row.formatted, series:part.series || row.series };
+        const formatted = demographic
+          ? (Number.isFinite(part.value) ? `${percent1.format(part.value)}%` : 'n.d.')
+          : part.formatted || row.formatted;
+        return { ...row, value:part.value, formatted, series:part.series || (demographic ? null : row.series) };
       });
       const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
-      clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, formatted:aggregatePart.formatted, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || option?.label || ''}` };
+      clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, formatted:demographic ? (Number.isFinite(aggregatePart.value) ? `${percent1.format(aggregatePart.value)}%` : 'n.d.') : aggregatePart.formatted, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || option?.label || ''}` };
       return clone;
     }
     if (metric.meta.compositeType === 'securityMeasures') {
@@ -457,10 +469,22 @@
   }
 
   function hasComponentHistory(metric) {
-    return metric?.meta?.compositeType === 'sexBreakdown' || Boolean(metric?.rows?.some(row => row.componentSeries));
+    return metric?.meta?.compositeType === 'sexBreakdown' || Boolean(metric?.rows?.some(row => row.componentSeries || (metric.meta?.compositeType === 'demographicBreakdown' && row.parts?.some(part => part.series))));
+  }
+
+  function demographicHistoryAvailabilityNote(metric) {
+    const available = (metric.rows?.[0]?.parts || [])
+      .filter(part => part.series?.years?.length > 1)
+      .map(part => part.label);
+    return available.length
+      ? `Storico non acquisito per questa fascia e questo genere. Puoi consultarlo selezionando ${available.join(' oppure ')}.`
+      : 'Storico non acquisito per questa fascia e questo genere.';
   }
 
   function currentCompositeChoice() {
+    const age = document.querySelector('select[data-demographic-age], select[data-demographic-town-age]')?.value;
+    const gender = document.querySelector('select[data-demographic-gender], select[data-demographic-town-gender]')?.value;
+    if (age && gender) return `${age}|${gender}`;
     return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || document.querySelector('button[data-composite-choice].active')?.dataset.compositeChoice || 'summary';
   }
 
@@ -544,7 +568,7 @@
           ? 'Questo Comune non ha costa marina: lo storico non è applicabile e resta n.a.'
           : historyAvailable
             ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
-            : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+            : selected.metric?.meta?.compositeType === 'demographicBreakdown' ? demographicHistoryAvailabilityNote(selected.metric) : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
     wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
@@ -575,6 +599,23 @@
       const shell = document.querySelector('.history-panel .ux-view-shell');
       if (!metric || !shell) return;
       const choice = event.detail?.choice || 'summary';
+      if (metric.meta?.compositeType === 'demographicBreakdown') {
+        const selectedTown = document.body.dataset.town || '';
+        const viewMetric = compositeChoiceMetric(metric, choice);
+        const historyView = historyMetric(viewMetric);
+        const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+        const note = series
+          ? 'Storico della fascia e del genere selezionati; osservazioni nei soli anni indicati.'
+          : demographicHistoryAvailabilityNote(metric);
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = toolkit.viewShellMarkup(
+          townCurrentComparisonMarkup(data, { key:metricKey }, selectedTown, viewMetric),
+          renderHistoryMarkup(historyView, series, selectedTown), Boolean(series), note);
+        const replacementShell = wrapper.firstElementChild;
+        shell.replaceWith(replacementShell);
+        wireShell(replacementShell, 'ov-town-view', selectedTown, false);
+        return;
+      }
       refreshTownCompositeCurrent(data, metric, shell, document.body.dataset.town || '', choice);
       if (hasComponentHistory(metric)) {
         const selectedTown = document.body.dataset.town || '';
