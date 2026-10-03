@@ -56741,7 +56741,16 @@
           "personale comune",
           "dipendenti per abitante",
           "organico comunale"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.352905180397374,
+          "italy": null,
+          "source": "RGS — Conto Annuale / Istat / PIAO comunali",
+          "url": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
+          "sourceSnapshot": "data/source-snapshots/a3-rgs-staff-benchmark-2024.json",
+          "note": "Toscana: personale alle dipendenze dei Comuni al 31 dicembre 2024 / residenti Istat al 1° gennaio 2024 × 1.000, come nei sette valori comunali. Copertura 273/273: 271 enti RGS e zero dipendenti esplicitamente dichiarati nei PIAO 2025–2027 di Londa e San Godenzo. Personale dipendente dalle Unioni escluso. Italia non disponibile: copertura e corrispondenza territoriale del pannello nazionale ancora da certificare."
+        }
       },
       "sourceUrl": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
       "rows": [
