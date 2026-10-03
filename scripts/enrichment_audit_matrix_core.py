@@ -185,8 +185,12 @@ def _find_benchmark(metric: dict[str, Any]) -> str | None:
             candidates = [*value.keys(), *value.values()]
         elif isinstance(value, list):
             candidates = value
-        else:
+        elif any(_token_in_text(key, token) for token in {"benchmark"}):
             candidates = [value]
+        else:
+            # A scalar bibliographic/reference string mentioning "Italia" or
+            # "regionale" is not a numeric Toscana/Italia benchmark.
+            continue
         if any(
             _token_in_text(candidate, token)
             for candidate in candidates

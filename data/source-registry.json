@@ -612,7 +612,8 @@
     "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular",
     "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
-    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual"
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
+    "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -821,6 +822,12 @@
     },
     "financialDebtProfile": {
       "profile": "openbdap-annual"
+    },
+    "tourismBedsPer1000": {
+      "profile": "istat-tourism-annual"
+    },
+    "tourismStructuresPer1000": {
+      "profile": "istat-tourism-annual"
     }
   },
   "requestTimeoutSeconds": 20,

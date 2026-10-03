@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Istat",
+  "profileId": "istat-geografia-comunale-2021",
+  "referenceYear": 2021,
+  "source": {
+    "altimetry": "https://www.istat.it/wp-content/uploads/2026/02/Altimetria_Comuni-al-31_12_2021.xlsx",
+    "bands": "https://www.istat.it/wp-content/uploads/2026/02/Fasce-altimetriche-Comuni-al-31_12_2021.xlsx",
+    "municipalSnapshot": "data/source-snapshots/biometria-comune-v135.json",
+    "populationBenchmarkSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json"
+  },
+  "method": "Comuni canonici Istat a 6 cifre. Superficie benchmark = superficie comunale media dello scope; densità = popolazione aggregata / superficie aggregata; profilo altimetrico = quota di area >=300 m ponderata per superficie.",
+  "qualityGate": {
+    "status": "PASS",
+    "municipalityCountItaly": 7904,
+    "municipalityCountTuscany": 273,
+    "publicSnapshotReconciliation": "7/7 PASS",
+    "artifactRun": 36929739458,
+    "artifactId": 11195746232
+  },
+  "scopes": {
+    "tuscany": {
+      "municipalities": 273,
+      "totalSurfaceKm2": 22989.775575942836,
+      "meanMunicipalSurfaceKm2": 84.21163214631076,
+      "population": 3659222,
+      "populationDensity": 159.1673649841591,
+      "from300Pct": 47.407879965451585
+    },
+    "italy": {
+      "municipalities": 7904,
+      "totalSurfaceKm2": 302109.5696553943,
+      "meanMunicipalSurfaceKm2": 38.22236458190717,
+      "population": 58942828,
+      "populationDensity": 195.10414075010598,
+      "from300Pct": 53.60951619684477
+    }
+  },
+  "benchmarks": {
+    "municipalSurface": {
+      "year": "31 dicembre 2021",
+      "unit": "squareKm",
+      "formula": "total surface / municipality count",
+      "tuscany": 84.21163214631076,
+      "italy": 38.22236458190717
+    },
+    "populationDensity": {
+      "year": "2026 / superficie 2021",
+      "unit": "peoplePerSquareKm",
+      "formula": "scope population / scope surface",
+      "tuscany": 159.1673649841591,
+      "italy": 195.10414075010598
+    },
+    "altitudeProfile": {
+      "year": "31 dicembre 2021",
+      "unit": "percent",
+      "formula": "area >=300 m / total area × 100",
+      "defaultPart": "Territorio da 300 m in su",
+      "tuscany": 47.407879965451585,
+      "italy": 53.60951619684477
+    }
+  }
+}

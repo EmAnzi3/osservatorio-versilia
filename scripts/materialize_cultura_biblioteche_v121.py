@@ -226,6 +226,9 @@ def apply_site(site: dict, snapshot: dict) -> None:
     validate_snapshot(snapshot, site)
     metrics = build_metrics(site, snapshot)
     for key in KEYS:
+        benchmark = (site["metrics"].get(key, {}).get("meta") or {}).get("benchmark")
+        if isinstance(benchmark, dict):
+            metrics[key]["meta"]["benchmark"] = benchmark
         site["metrics"].pop(key, None)
     rebuilt = OrderedDict()
     inserted = False

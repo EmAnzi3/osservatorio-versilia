@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-demography-mobility-benchmark-2024-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Istat — Bilancio demografico comunale P02",
+  "sourceProfileId": "istat-demography-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "3 mobility metrics × 7/7 public rows + components PASS",
+    "aggregationRule": "flussi aggregati / popolazione media aggregata; nessuna media semplice dei tassi",
+    "errors": []
+  },
+  "benchmarks": {
+    "internalResidentialMobility": {
+      "year": "2024",
+      "unit": "per1000",
+      "formula": "(immigrati da altro Comune - emigrati per altro Comune) / popolazione media × 1.000",
+      "tuscany": 0.9608859827887721,
+      "italy": 0
+    },
+    "foreignResidentialMobility": {
+      "year": "2024",
+      "unit": "per1000",
+      "formula": "(immigrati dall'estero - emigrati per l'estero) / popolazione media × 1.000",
+      "tuscany": 5.800023666873182,
+      "italy": 4.4554243595798155
+    },
+    "totalResidentialMobility": {
+      "year": "2024",
+      "unit": "per1000",
+      "formula": "((immigrati interni + estero) - (emigrati interni + estero)) / popolazione media × 1.000",
+      "tuscany": 6.760909649661954,
+      "italy": 4.4554243595798155
+    }
+  },
+  "components": {
+    "tuscany": {
+      "jan1": 3660530,
+      "dec31": 3657716,
+      "internalIn": 89761,
+      "internalOut": 86245,
+      "foreignIn": 33194,
+      "foreignOut": 11971,
+      "meanPopulation": 3659123
+    },
+    "italy": {
+      "jan1": 58971230,
+      "dec31": 58943464,
+      "internalIn": 1385016,
+      "internalOut": 1385016,
+      "foreignIn": 451583,
+      "foreignOut": 188903,
+      "meanPopulation": 58957347
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36969647538,
+    "artifactId": 11210913003,
+    "head": "994c26b1fdd16d4bc3678216e8c4bb382552c2a9"
+  }
+}

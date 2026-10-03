@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import io
 import json
 import math
@@ -18,6 +19,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from collections import deque
 from pathlib import Path
 from typing import Any
@@ -258,6 +260,30 @@ def parse_pct(value: str) -> float | None:
 
 
 def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
+    if body.startswith(b"PK\x03\x04"):
+        try:
+            with zipfile.ZipFile(io.BytesIO(body)) as archive:
+                members=[
+                    name for name in archive.namelist()
+                    if not name.endswith("/") and name.lower().endswith((".csv",".txt"))
+                ]
+                failures=[]
+                for name in members:
+                    try:
+                        return parse_csv(archive.read(name))
+                    except base.DataError as exc:
+                        failures.append(f"{name}: {exc}")
+                raise base.DataError(
+                    "Archivio AGCOM senza CSV compatibile: " + " | ".join(failures[:10])
+                )
+        except zipfile.BadZipFile as exc:
+            raise base.DataError(f"Archivio AGCOM ZIP non valido: {exc}") from exc
+    if body.startswith(b"\x1f\x8b"):
+        try:
+            return parse_csv(gzip.decompress(body))
+        except OSError as exc:
+            raise base.DataError(f"Payload AGCOM gzip non valido: {exc}") from exc
+
     text = None
     for encoding in ("utf-8-sig", "cp1252", "latin-1"):
         try:
@@ -268,21 +294,56 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
     if text is None:
         raise base.DataError("CSV AGCOM: encoding non riconosciuto")
 
-    reader = csv.reader(io.StringIO(text), delimiter=";")
-    header = next((row for row in reader if any(str(cell).strip() for cell in row)), None)
-    if header is None:
-        raise base.DataError("CSV AGCOM vuoto")
-
-    normalized_header = [str(cell).replace("\ufeff", "").strip().lower() for cell in header]
-    if len(normalized_header) < 19:
-        raise base.DataError(f"CSV AGCOM: colonne inattese ({len(normalized_header)})")
-    if normalized_header[3] != "pro_com":
+    data_rows = None
+    diagnostics = []
+    for delimiter in (";", ",", "\t", "|"):
+        try:
+            parsed = list(csv.reader(io.StringIO(text, newline=""), delimiter=delimiter))
+        except csv.Error as exc:
+            diagnostics.append(f"{delimiter!r}:csv_error:{exc}")
+            continue
+        header_index = next(
+            (i for i, row in enumerate(parsed) if any(str(cell).strip() for cell in row)),
+            None,
+        )
+        if header_index is None:
+            diagnostics.append(f"{delimiter!r}:empty")
+            continue
+        header = parsed[header_index]
+        normalized_header = [
+            str(cell).replace("\ufeff", "").strip().lower() for cell in header
+        ]
+        diagnostics.append(f"{delimiter!r}:{len(normalized_header)}")
+        if len(normalized_header) >= 19 and normalized_header[3] == "pro_com":
+            data_rows = parsed[header_index + 1 :]
+            break
+    if data_rows is None:
+        stripped=text.lstrip()
+        payload_diag=""
+        if stripped.startswith(("{","[")):
+            try:
+                parsed_json=json.loads(stripped)
+                urls=[]
+                def walk(value):
+                    if isinstance(value,dict):
+                        for child in value.values(): walk(child)
+                    elif isinstance(value,list):
+                        for child in value: walk(child)
+                    elif isinstance(value,str) and value.startswith(("https://","http://")):
+                        urls.append(value)
+                walk(parsed_json)
+                keys=list(parsed_json)[:30] if isinstance(parsed_json,dict) else []
+                payload_diag=f"; jsonKeys={keys}; urls={urls[:20]}"
+            except json.JSONDecodeError:
+                payload_diag="; JSON-like ma non decodificabile"
+        else:
+            payload_diag=f"; prefix={text[:300]!r}"
         raise base.DataError(
-            f"CSV AGCOM: schema inatteso, colonna 4={normalized_header[3]!r}"
+            "CSV AGCOM: schema/delimitatore inatteso (" + ", ".join(diagnostics) + ")" + payload_diag
         )
 
     result: dict[str, dict[str, Any]] = {}
-    for raw in reader:
+    for raw in data_rows:
         if not any(str(cell).strip() for cell in raw):
             continue
         if len(raw) < 19:

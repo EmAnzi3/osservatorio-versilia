@@ -1,0 +1,2391 @@
+{
+  "schemaVersion": 2,
+  "profileId": "fee-blue-flag-annual",
+  "publisher": "FEE Italia — Programma Bandiera Blu",
+  "sourceUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+  "sourceSha256": "f67d97acc2dd1d202d8d045fab928a2ea690ba3e891c74787171cb83609e1603",
+  "status": "ACQUIRED_CANDIDATE",
+  "scope": {
+    "year": 2026,
+    "listedMunicipalities": 257,
+    "activeMunicipalities": 256,
+    "note": "Elenco nazionale FEE spiagge, incluse acque interne; località separate da virgole esterne alle parentesi, barre conservate; riconoscimenti revocati esclusi."
+  },
+  "benchmarks": {
+    "blueFlagBeaches": {
+      "year": "2026",
+      "unit": "number",
+      "tuscany": 45,
+      "italy": 524
+    }
+  },
+  "records": [
+    {
+      "region": "Abruzzo",
+      "town": "Torino di Sangro",
+      "localities": [
+        "Lungomare Costa Verde",
+        "Lungomare Le Morge"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Scanno",
+      "localities": [
+        "Spiaggetta di Scanno (Località Acquevive)",
+        "Parco dei Salici"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Francavilla al Mare",
+      "localities": [
+        "Piazza Adriatico",
+        "Piazza Sirena"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Ortona",
+      "localities": [
+        "Lido Saraceni",
+        "Ripari di Giobbe"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Vasto",
+      "localities": [
+        "Vignola/San Nicola",
+        "Punta Penna",
+        "San Tommaso"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "San Salvo",
+      "localities": [
+        "San Salvo Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Fossacesia",
+      "localities": [
+        "Fossacesia Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Villalago",
+      "localities": [
+        "Spiaggetta di Villalago"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Pescara",
+      "localities": [
+        "Riviera Nord/centro",
+        "Riviera Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Martinsicuro",
+      "localities": [
+        "Spiaggia di Villa Rosa",
+        "Spiaggia di Martinsicuro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Silvi",
+      "localities": [
+        "Parco Marino Torre del Cerrano",
+        "Arenile Sud",
+        "Lungomare Centrale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Roseto degli Abruzzi",
+      "localities": [
+        "Lungomare Centrale",
+        "Lungomare Nord",
+        "Lungomare Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Pineto",
+      "localities": [
+        "Villa Fumosa",
+        "Corfù",
+        "Torre Cerrano",
+        "S. Maria a Valle Sud",
+        "S. Maria a Valle Nord",
+        "Pineto Centro",
+        "Pineta Catucci - Lungomare dei Pini"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Giulianova",
+      "localities": [
+        "Lungomare Spalato/Rodi - Lungomare Zara"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Alba Adriatica",
+      "localities": [
+        "Spiaggia d'Argento"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Abruzzo",
+      "town": "Tortoreto",
+      "localities": [
+        "Spiaggia del Sole"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Basilicata",
+      "town": "Pisticci",
+      "localities": [
+        "Marina di Pisticci"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Basilicata",
+      "town": "Bernalda",
+      "localities": [
+        "Lido di Metaponto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Basilicata",
+      "town": "Policoro",
+      "localities": [
+        "Lido Nord e Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Basilicata",
+      "town": "Nova Siri",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Basilicata",
+      "town": "Maratea",
+      "localities": [
+        "Santa Teresa/Calaficarra",
+        "Macarro/Illicini/Nera",
+        "Castrocucco/Secca di Castrocucco",
+        "Acquafredda"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Falerna",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Catanzaro",
+      "localities": [
+        "Giovino"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Cropani",
+      "localities": [
+        "Mare Cropani"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Soverato",
+      "localities": [
+        "Baia Dell'Ippocampo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Sellia Marina",
+      "localities": [
+        "Località Ruggero/San Vincenzo-Sena/Jonio-Rivachiara"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Diamante",
+      "localities": [
+        "Diamante Nord (Cirella, Scogliera Cirella, Pietrarossa, Tropical)"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Trebisacce",
+      "localities": [
+        "Lungomare Sud-Riviera dei Saraceni-Viale Magna Grecia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Corigliano-Rossano",
+      "localities": [
+        "Lungomare Schiavonea Palmeto",
+        "Lungomare Rossano Centro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Santa Maria del Cedro",
+      "localities": [
+        "Chiatta in ferro - Abatemarco"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Roseto Capo Spulico",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Montegiordano",
+      "localities": [
+        "Marina di Montegiordano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Tortora",
+      "localities": [
+        "La Pineta/Fiume Noce"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "San Nicola Arcella",
+      "localities": [
+        "Arcomagno/Canale Grande Marinella"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Rocca Imperiale",
+      "localities": [
+        "Marina di Rocca Imperiale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Praia a mare",
+      "localities": [
+        "Camping Internazionale/Punta Fiuzzi"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Cariati",
+      "localities": [
+        "Santa Maria"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Villapiana",
+      "localities": [
+        "Marina di Villapiana - 114",
+        "Marina di Villapiana - 118"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Amendolara",
+      "localities": [
+        "Lido Ogigia - Torre spaccata"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Cirò Marina",
+      "localities": [
+        "Punta Alice",
+        "Cervara/Madonna di mare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Melissa",
+      "localities": [
+        "Litorale Torre Melissa"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Isola di Capo Rizzuto",
+      "localities": [
+        "Le Castella",
+        "Capo Rizzuto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Caulonia",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Locri",
+      "localities": [
+        "lungomare zaleuco"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Siderno",
+      "localities": [
+        "Spiaggia di Siderno"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Roccella Jonica",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Tropea",
+      "localities": [
+        "Marina del Convento",
+        "Marina dell'Isola",
+        "Rocca Nettuno"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Calabria",
+      "town": "Parghelia",
+      "localities": [
+        "Costa dei Monaci/Bordila",
+        "La Grazia/Vardano",
+        "Michelino",
+        "La Tonnara"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Cellole",
+      "localities": [
+        "Baia Felice",
+        "Baia Domizia sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Vico Equense",
+      "localities": [
+        "Scoglio Tre Fratelli - Bikini",
+        "Scrajo Mare",
+        "Capo la Gala",
+        "Marina di Seiano Ovest Porto",
+        "Marina di Vico",
+        "Punta Orlando"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Piano di Sorrento",
+      "localities": [
+        "Marina di Cassano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Sorrento",
+      "localities": [
+        "Puolo",
+        "Riviera di Massa",
+        "San Francesco",
+        "Tonnarella"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Massa Lubrense",
+      "localities": [
+        "Recommone/Marina del Cantone",
+        "Marina di Puolo",
+        "Giardino Romantico"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Anacapri",
+      "localities": [
+        "Gradola (Grotta Azzurra)",
+        "Faro Punta Carena"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Sapri",
+      "localities": [
+        "San Giorgio",
+        "Cammarelle"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Centola",
+      "localities": [
+        "Palinuro (Porto/Dune e Saline)",
+        "Marinella/Baia del Buon Dormire"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Pollica",
+      "localities": [
+        "Acciaroli",
+        "Pioppi"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Camerota",
+      "localities": [
+        "Cala finocchiara",
+        "San Domenico-Lentiscelle"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "San Mauro Cilento",
+      "localities": [
+        "Mezzatorre"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Montecorice",
+      "localities": [
+        "Baia Arena",
+        "Spiaggia Capitello",
+        "Spiaggia Agnone",
+        "San Nicola"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Castellabate",
+      "localities": [
+        "Baia Ogliastro",
+        "Punta Inferno",
+        "Pozzillo - San Marco",
+        "Marina Piccola",
+        "Lago Tresino"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Vibonati",
+      "localities": [
+        "Santa Maria Le Piane",
+        "Torre Villammare",
+        "Oliveto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Agropoli",
+      "localities": [
+        "Lungomare San Marco",
+        "Spiaggia Libera Porto",
+        "Trentova",
+        "Torre San Marco",
+        "Licina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Positano",
+      "localities": [
+        "Spiaggia Fornillo",
+        "Spiaggia Arienzo",
+        "Spiaggia Grande",
+        "Spiaggia Laurito"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Casal Velino",
+      "localities": [
+        "Marina di Casal Velino",
+        "Torre Dominella"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Ascea",
+      "localities": [
+        "Torre del Telegrafo",
+        "Piana di Velia",
+        "Marina di Ascea"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Pisciotta",
+      "localities": [
+        "Ficaiola/Torraca/Gabella",
+        "Pietracciaio/Fosso della Marina/Marina Acquabianca"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Campania",
+      "town": "Ispani",
+      "localities": [
+        "Capitello"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Comacchio",
+      "localities": [
+        "Lido degli Estensi",
+        "Lido di Volano/Nazioni/Pomposa/ Scacchi/Garibaldi",
+        "Lido Spina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Cesenatico",
+      "localities": [
+        "Levante (Valverde-Villamarina)",
+        "Litorale (Zadina Ponente)"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "San Mauro Pascoli",
+      "localities": [
+        "San Mauro Mare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Gatteo",
+      "localities": [
+        "Gatteo Mare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Ravenna",
+      "localities": [
+        "Porto Corsini",
+        "Marina di Ravenna/Lido Adriano",
+        "Lido di Savio",
+        "Lido di Dante/Lido di Classe",
+        "Casalborsetti"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Cervia",
+      "localities": [
+        "Milano Marittima",
+        "Pinarella"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Cattolica",
+      "localities": [
+        "Viale Fiume"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Rimini",
+      "localities": [
+        "Marina centro",
+        "litorale sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Bellaria Igea Marina",
+      "localities": [
+        "Igea Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Misano Adriatico",
+      "localities": [
+        "Misano Centro",
+        "Porto Verde"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Emilia Romagna",
+      "town": "Riccione",
+      "localities": [
+        "Fogliano Marina e Colonia Burgo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Friuli-Venezia Giulia",
+      "town": "Grado",
+      "localities": [
+        "Spiaggia Principale",
+        "Spiaggia Pineta",
+        "Costa Azzurra"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Friuli-Venezia Giulia",
+      "town": "Lignano Sabbiadoro",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Minturno",
+      "localities": [
+        "Spiaggia di ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Fondi",
+      "localities": [
+        "Spiaggia di Levante",
+        "Spiaggia di Ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Formia",
+      "localities": [
+        "Gianola",
+        "Vindicio"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Sabaudia",
+      "localities": [
+        "Litorale REVOCATA"
+      ],
+      "revoked": true
+    },
+    {
+      "region": "Lazio",
+      "town": "Terracina",
+      "localities": [
+        "Ponente",
+        "Levante"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Sperlonga",
+      "localities": [
+        "Ponente",
+        "Levante",
+        "Lago Lungo",
+        "Bazzano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Gaeta",
+      "localities": [
+        "Arenauta",
+        "Ariana",
+        "SantAgostino",
+        "Serapo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Latina",
+      "localities": [
+        "Marina di Latina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Anzio",
+      "localities": [
+        "Riviera di Ponente",
+        "Riviera di Levante"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lazio",
+      "town": "Trevignano Romano",
+      "localities": [
+        "Via della Rena"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Recco",
+      "localities": [
+        "Ciappea",
+        "Spiaggia Centrale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Camogli",
+      "localities": [
+        "Spiaggia di Camogli",
+        "San Fruttuoso"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Santa Margherita Ligure",
+      "localities": [
+        "Punta Pedale",
+        "Zona Milite Ignoto",
+        "Scogliera Pagana",
+        "Paraggi"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Moneglia",
+      "localities": [
+        "Levante",
+        "Centrale",
+        "La Secca"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Sori",
+      "localities": [
+        "Spiaggia Centrale di Sori"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Chiavari",
+      "localities": [
+        "Spiaggia Porto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Lavagna",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Sestri Levante",
+      "localities": [
+        "Baia Portobello",
+        "Spiaggia Renà",
+        "Riva Trigoso",
+        "Baia delle Favole Nord"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Diano Marina",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Sanremo",
+      "localities": [
+        "Tre Ponti",
+        "Imperatrice",
+        "Bussana",
+        "Baia Capo Pino",
+        "Tiro a Volo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Riva Ligure",
+      "localities": [
+        "Centro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Imperia",
+      "localities": [
+        "Spianata Borgo Peri",
+        "Borgo Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "San Lorenzo al Mare",
+      "localities": [
+        "U Nostromu/Prima Punta",
+        "Baia delle Vele"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Bordighera",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Taggia",
+      "localities": [
+        "Arma di Taggia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Santo Stefano al Mare",
+      "localities": [
+        "Baia Azzurra",
+        "Il Vascello"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Lerici",
+      "localities": [
+        "Eco del Mare",
+        "Colombo",
+        "Lido",
+        "Fiascherino",
+        "Baia Blu/Marinella",
+        "Venere azzurra"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Levanto",
+      "localities": [
+        "Ghiararo",
+        "Levante Porto Levanto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Framura",
+      "localities": [
+        "Spiaggia La Vallà-Apicchi",
+        "Fornaci"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Bonassola",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Noli",
+      "localities": [
+        "Le Cave/Capo Noli / Zona Vittoria / Zona Anita / Chiariventi"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Borgio Verezzi",
+      "localities": [
+        "Ex Sati",
+        "Rio Batorezza",
+        "Rio Bottasano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Albisola Superiore",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Albissola Marina",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Celle Ligure",
+      "localities": [
+        "Levante",
+        "Ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Andora",
+      "localities": [
+        "Colombina",
+        "Foce Rio Mezza'acqua",
+        "Trinacria"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Savona",
+      "localities": [
+        "Fornaci"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Loano",
+      "localities": [
+        "Spiaggia di Loano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Varazze",
+      "localities": [
+        "Levante Teiro",
+        "Ponente Teiro",
+        "Arrestra"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Finale Ligure",
+      "localities": [
+        "Castelletto San Donato",
+        "Varigotti",
+        "Spiaggia del Porto",
+        "Finalpia",
+        "Finalmarina",
+        "Malpasso"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Pietra Ligure",
+      "localities": [
+        "Ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Bergeggi",
+      "localities": [
+        "Villaggio del Sole",
+        "Il Faro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Spotorno",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Laigueglia",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Liguria",
+      "town": "Borghetto Santo Spirito",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lombardia",
+      "town": "Sirmione",
+      "localities": [
+        "Lido delle Grotte"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lombardia",
+      "town": "Gardone Riviera",
+      "localities": [
+        "Spiaggia Lido di Fasano",
+        "Spiaggia Casinò"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lombardia",
+      "town": "Toscolano Maderno",
+      "localities": [
+        "Lido Azzurro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Lombardia",
+      "town": "Limone sul Garda",
+      "localities": [
+        "Tifù",
+        "Cola"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Sirolo",
+      "localities": [
+        "Sassi Neri / San Michele / Urbani",
+        "Due Sorelle"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Senigallia",
+      "localities": [
+        "Spiaggia di Levante",
+        "Spiaggia di Ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Numana",
+      "localities": [
+        "Numana Bassa/Marcelli Nord",
+        "Numana Alta"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Ancona",
+      "localities": [
+        "Portonovo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Grottammare",
+      "localities": [
+        "Spiaggia Sud",
+        "Spiaggia Nord"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Cupra Marittima",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "San Benedetto del Tronto",
+      "localities": [
+        "Riviera delle Palme"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Altidona",
+      "localities": [
+        "Lungomare Paolo Borsellino"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Pedaso",
+      "localities": [
+        "Lungomare dei Cantautori"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Fermo",
+      "localities": [
+        "Lido di Fermo/Casabianca",
+        "Marina Palmense"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Porto S.Elpidio",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Campofilone",
+      "localities": [
+        "Lungomare dei Tintori"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Porto San Giorgio",
+      "localities": [
+        "Lungomare Centro Nord",
+        "Lungomare Centro Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Potenza Picena",
+      "localities": [
+        "Lido Nord/Centro",
+        "Lido Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Civitanova Marche",
+      "localities": [
+        "Lungomare Nord",
+        "Lungomare Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Porto Recanati",
+      "localities": [
+        "Litorare Nord/Centro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Fano",
+      "localities": [
+        "Torrette",
+        "Sassonia",
+        "Nord",
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Pesaro",
+      "localities": [
+        "Sottomonte",
+        "Ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Mondolfo",
+      "localities": [
+        "Marotta"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Marche",
+      "town": "Gabicce Mare",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Molise",
+      "town": "Campomarino",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Molise",
+      "town": "Termoli",
+      "localities": [
+        "Sant'Antonio",
+        "lungomare sud spiaggia Rio vivo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Piemonte",
+      "town": "Gozzano",
+      "localities": [
+        "Lido di Gozzano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Piemonte",
+      "town": "Cannobio",
+      "localities": [
+        "Spiaggia Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Piemonte",
+      "town": "Verbania",
+      "localities": [
+        "Fondotoce - Isolino"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Piemonte",
+      "town": "Cannero Riviera",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Monopoli",
+      "localities": [
+        "Castello Santo Stefano",
+        "Capitolo",
+        "Lido Porto Rosso",
+        "Cala Paradiso"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Polignano a Mare",
+      "localities": [
+        "Cala Paura",
+        "San Vito",
+        "Cala San Giovanni",
+        "Ripagnola / Coco Village",
+        "Cala Fetente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Margherita di Savoia",
+      "localities": [
+        "Centro Urbano-Cannafesca"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Bisceglie",
+      "localities": [
+        "La Salata",
+        "Salsello",
+        "Scogliera Scalette"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Fasano",
+      "localities": [
+        "Egnazia Case Bianche",
+        "Savelletri",
+        "Torre Canne"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Carovigno",
+      "localities": [
+        "Mezzaluna",
+        "Pantanagianni",
+        "Punta Penna Grossa",
+        "Specchiolla"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Ostuni",
+      "localities": [
+        "Creta Rossa",
+        "Lido Fontanelle",
+        "Lido Stella",
+        "Litorale Parco Dune Costiere",
+        "Litorale Rosa Marina",
+        "Litorale Torre Canne Sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Rodi Garganico",
+      "localities": [
+        "Riviera di Ponente",
+        "Riviera di Levante"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Peschici",
+      "localities": [
+        "Sfinale",
+        "Gusmay",
+        "Baia di Calalunga",
+        "Baia di Manaccora",
+        "Baia San Nicola/Zaiana",
+        "Procinisco",
+        "Baia di Peschici"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Isole Tremiti",
+      "localities": [
+        "Cala delle Arene"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Vieste",
+      "localities": [
+        "San Lorenzo",
+        "Scialara"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Zapponeta",
+      "localities": [
+        "Lido"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Lecce",
+      "localities": [
+        "San Cataldo",
+        "Acquatina e Idrovora di Frigole"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Melendugno",
+      "localities": [
+        "Roca",
+        "San Foca Nord/Centro/Torre Specchia",
+        "Torre Sant'Andrea",
+        "Torre dell'Orso"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Castro",
+      "localities": [
+        "Zinzulusa",
+        "La Sorgente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Gallipoli",
+      "localities": [
+        "Litoranea Sud",
+        "Litoranea Nord"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Salve",
+      "localities": [
+        "Torre Pali/Marina di Pescoluse/Posto Vecchio"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Morciano di Leuca",
+      "localities": [
+        "Torre Vado"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Nardò",
+      "localities": [
+        "Porto Selvaggio",
+        "Sant'Isidoro",
+        "Santa Caterina",
+        "Santa Maria al Bagno",
+        "Torre Squillace"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Tricase",
+      "localities": [
+        "Marina serra",
+        "Tricase porto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Ugento",
+      "localities": [
+        "Torre San Giovanni/Torre Mozza/Lido Marini"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Leporano",
+      "localities": [
+        "Lido Gandoli",
+        "Porto Pirrone",
+        "Portosaturo",
+        "Baia d'Argento"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Manduria",
+      "localities": [
+        "San Pietro in Bevagna"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Ginosa",
+      "localities": [
+        "Marina di Ginosa"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Castellaneta",
+      "localities": [
+        "Riva dei Tessali/Pineta Giovinazzi/Castellaneta Marina/Bosco della Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Pulsano",
+      "localities": [
+        "Marina di Pulsano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Puglia",
+      "town": "Maruggio",
+      "localities": [
+        "Commenda",
+        "Campomarino",
+        "Acqua Dolce"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Quartu Sant'Elena",
+      "localities": [
+        "Mari Pintau",
+        "Poetto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Teulada",
+      "localities": [
+        "Sabbie Bianche",
+        "Portù tramatza",
+        "Tuerredda"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Sant'Antioco",
+      "localities": [
+        "Maladroxia / Coacuaddus"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Bari Sardo",
+      "localities": [
+        "Bucca 'e Strumpu/Torre di Barì/Sa Marina",
+        "CEA",
+        "Planargia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Tortolì",
+      "localities": [
+        "Porto Frailis",
+        "La Capannina",
+        "Fox Lioni",
+        "Muxì (il Golfetto)",
+        "Lido di Orrì (I e II Spiaggia)",
+        "Lido di Cea",
+        "San Gemiliano",
+        "Cala Muresca"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Oristano",
+      "localities": [
+        "Torregrande"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "La Maddalena",
+      "localities": [
+        "Bassa Trinità",
+        "Carlotto/Nido d'Aquila",
+        "Cala Garibaldi/Due mari/Relitto (Isola di Caprera)",
+        "Spiaggia del pesce (Isola di Santo Stefano)",
+        "Lo Strangolato",
+        "Monte d'a Rena",
+        "Porto Lungo",
+        "Spalmatore",
+        "Tegge"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "San Teodoro",
+      "localities": [
+        "La Cinta"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Palau",
+      "localities": [
+        "Isolotto",
+        "Palau Vecchio"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Aglientu",
+      "localities": [
+        "Vignola Mare",
+        "Rena Majore",
+        "Lu Chiscinagghju"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Castelsardo",
+      "localities": [
+        "Sacro Cuore / Ampurias",
+        "Madonnina / Stella Maris",
+        "Ex Palazzo Americani"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Budoni",
+      "localities": [
+        "Baia di Budoni"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Sorso",
+      "localities": [
+        "Spiaggia della Marina",
+        "Marina di Sorso (quarto/quinto/settimo pettine)"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Sassari",
+      "localities": [
+        "Porto Ferro",
+        "Porto Palmas",
+        "Platamona Rotonda"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Trinità D'Agultu e Vignola",
+      "localities": [
+        "La Marinedda",
+        "Spiaggia Lunga Isola Rossa",
+        "Cala Sarraina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Badesi",
+      "localities": [
+        "Baia delle Mimose-Pirottu Li Frati",
+        "Li Mindi-Lu Stangioni",
+        "Li Junchi",
+        "Lu Poltu Biancu"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sardegna",
+      "town": "Santa Teresa Gallura",
+      "localities": [
+        "La Taltana - Santa Reparata",
+        "Zia Culumba (Loc. Capo Testa, Rena di Levante)",
+        "Rena Bianca",
+        "Rena Ponente (Loc. Capo Testa)",
+        "Conca Verde",
+        "La Marmorata"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Menfi",
+      "localities": [
+        "Lido Fiori Bertolino",
+        "Porto Palo Cipollazzo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Alì Terme",
+      "localities": [
+        "Lungomare di Alì Terme"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Nizza di Sicilia",
+      "localities": [
+        "Spiaggia di Nizza di Sicilia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Lipari",
+      "localities": [
+        "Vulcano Gelso",
+        "Acqua Calda",
+        "Canneto",
+        "Vulcano acque termali",
+        "Stromboli Ficogrande"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Santa Teresa di Riva",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Letojanni",
+      "localities": [
+        "Letojanni Centro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Taormina",
+      "localities": [
+        "Mazzeo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Messina",
+      "localities": [
+        "Messina Nord",
+        "Messina Sud",
+        "Messina Tirreno"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Furci Siculo",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Roccalumera",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Tusa",
+      "localities": [
+        "Lungomare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Modica",
+      "localities": [
+        "Maganuco",
+        "Marina di Modica"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Pozzallo",
+      "localities": [
+        "Pietre Nere",
+        "Raganzino"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Ragusa",
+      "localities": [
+        "Marina di Ragusa"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Scicli",
+      "localities": [
+        "Sampieri - Pisciotto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Sicilia",
+      "town": "Ispica",
+      "localities": [
+        "Santa Maria del Focallo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Castiglione della Pescaia",
+      "localities": [
+        "Levante/Tombolo",
+        "Pian D'alma/Casetta Civinini-Piastrone",
+        "Rocchette/Roccamare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Follonica",
+      "localities": [
+        "Follonica Sud",
+        "Follonica Nord"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Grosseto",
+      "localities": [
+        "Principina a Mare",
+        "Marina di Grosseto"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Orbetello",
+      "localities": [
+        "Fertilia",
+        "Puntata",
+        "Giannella",
+        "Tagliata",
+        "Osa - Albegna",
+        "Feniglia Centro"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Monte Argentario",
+      "localities": [
+        "Cala Galera",
+        "Feniglia",
+        "Pozzarello"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Cecina",
+      "localities": [
+        "Marina di Cecina",
+        "Le Gorette"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Castagneto Carducci",
+      "localities": [
+        "Marina di Castagneto Carducci"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "San Vincenzo",
+      "localities": [
+        "Rimigliano nord/sud",
+        "Spiaggia della Principessa",
+        "Conchiglia Fosso delle Rozze"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Piombino",
+      "localities": [
+        "Parco naturale della Sterpaia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Rosignano Marittimo",
+      "localities": [
+        "Castiglioncello",
+        "La Mazzanta"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Marciana Marina",
+      "localities": [
+        "La Fenicia",
+        "Re di Noce",
+        "La Marina"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Bibbona",
+      "localities": [
+        "Marina di Bibbona centro-sud"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Livorno",
+      "localities": [
+        "Bagni Rex",
+        "Cala Quercianella",
+        "Parco Marina del Boccale",
+        "Rogiolo",
+        "Bagni Roma"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Forte dei Marmi",
+      "localities": [
+        "Litorale"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Viareggio",
+      "localities": [
+        "Marina di Viareggio (Ponente/Levante)",
+        "Torre Del Lago Puccini"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Camaiore",
+      "localities": [
+        "Lido di Camaiore"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Pietrasanta",
+      "localities": [
+        "La Versiliana",
+        "Tonfano"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Carrara",
+      "localities": [
+        "Marina di Carrara Centro/Ovest"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Massa",
+      "localities": [
+        "Marina di Massa",
+        "Ricortola"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Toscana",
+      "town": "Pisa",
+      "localities": [
+        "Marina di Pisa",
+        "Calambrone/Tirrenia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Lavarone",
+      "localities": [
+        "Lido Marzari"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Sella Giudicarie",
+      "localities": [
+        "Spiaggia Roncone"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Levico Terme",
+      "localities": [
+        "Spiaggia di Levico"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Bondone",
+      "localities": [
+        "Porto Camarelle"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Bedollo",
+      "localities": [
+        "Località Piazze"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Baselga di Pinè",
+      "localities": [
+        "Spiaggia Lido",
+        "Alberon",
+        "Bar Spiaggia"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Calceranica al lago",
+      "localities": [
+        "Alle Barche/Al Pescatore/Riviera"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Caldonazzo",
+      "localities": [
+        "Lido/Spiaggetta"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Vallelaghi",
+      "localities": [
+        "Lido Terlago",
+        "Tre Faggi"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Tenno",
+      "localities": [
+        "Spiaggia Grande"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Tenna",
+      "localities": [
+        "Spiaggia di Tenna"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Trentino-Alto Adige",
+      "town": "Pergine Valsugana",
+      "localities": [
+        "San Cristoforo"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Porto Tolle",
+      "localities": [
+        "Barricata",
+        "Boccasette",
+        "Conchiglie"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Rosolina",
+      "localities": [
+        "Rosolina Mare",
+        "Albarella Centro Sportivo",
+        "Albarella Capo Nord"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "San Michele al Tagliamento",
+      "localities": [
+        "Bibione"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Cavallino Treporti",
+      "localities": [
+        "Litorale di ponente"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Jesolo",
+      "localities": [
+        "Lido",
+        "Levante"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Caorle",
+      "localities": [
+        "Ponente",
+        "Duna Verde",
+        "Brussa",
+        "Levante"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Eraclea",
+      "localities": [
+        "Eraclea Mare"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Chioggia",
+      "localities": [
+        "Sottomarina",
+        "Le Dune"
+      ],
+      "revoked": false
+    },
+    {
+      "region": "Veneto",
+      "town": "Venezia",
+      "localities": [
+        "Lido di Venezia",
+        "Alberoni"
+      ],
+      "revoked": false
+    }
+  ],
+  "municipalReconciliation": {
+    "046018": {
+      "notApplicable": true
+    },
+    "046033": {
+      "localities": [
+        "Marina di Viareggio (Ponente/Levante)",
+        "Torre Del Lago Puccini"
+      ],
+      "value": 2
+    },
+    "046005": {
+      "localities": [
+        "Lido di Camaiore"
+      ],
+      "value": 1
+    },
+    "046024": {
+      "localities": [
+        "La Versiliana",
+        "Tonfano"
+      ],
+      "value": 2
+    },
+    "046028": {
+      "notApplicable": true
+    },
+    "046013": {
+      "localities": [
+        "Litorale"
+      ],
+      "value": 1
+    },
+    "046030": {
+      "notApplicable": true
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "4 coastal + 3 n.a. PASS",
+    "regionalNationalControl": "Complete official FEE region/locality listing; revoked entries excluded",
+    "errors": []
+  }
+}

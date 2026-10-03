@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse, json, math, urllib.parse, urllib.request
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+import audit_rgs_amministrazione_values as src
+
+ROOT=Path(__file__).resolve().parents[1]
+LOCAL=ROOT/"data/source-snapshots/rgs-amministrazione-2024.json"
+CKAN_PACKAGE_SEARCH="https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/action/package_search"
+ANAGRAFE_DATASET_TOKEN="STM_AEN_BDP_ENT_01"
+
+def groups(rows):
+    out=defaultdict(list)
+    for r in rows:
+        if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
+        out[entity_id(r)].append(r)
+    return out
+
+def entity_id(row):
+    """Join datasets by the native employer ID, never a potentially homonymous label."""
+    value=clean_code(row.get("Codice Ente BDAP"))
+    if not value or not value.isdigit():
+        raise RuntimeError("RGS: Codice Ente BDAP comunale assente o non valido")
+    return value
+
+TUSCANY_PROVINCES={"AR","FI","GR","LI","LU","MS","PI","PO","PT","SI","AREZZO","FIRENZE","GROSSETO","LIVORNO","LUCCA","MASSA CARRARA","PISA","PRATO","PISTOIA","SIENA"}
+
+def clean_code(value):
+    raw=str(value or "").strip()
+    if raw.endswith(".0") and raw[:-2].isdigit(): raw=raw[:-2]
+    return raw
+
+def discover_anagrafe_csv():
+    query=urllib.parse.urlencode({"q":ANAGRAFE_DATASET_TOKEN,"rows":20})
+    request=urllib.request.Request(
+        f"{CKAN_PACKAGE_SEARCH}?{query}",
+        headers={"User-Agent":src.UA,"Accept":"application/json"},
+    )
+    with urllib.request.urlopen(request,timeout=60) as response:
+        payload=json.loads(response.read().decode("utf-8",errors="replace"))
+    results=((payload or {}).get("result") or {}).get("results") or []
+    packages=[
+        item for item in results
+        if isinstance(item,dict) and (
+            ANAGRAFE_DATASET_TOKEN.lower() in json.dumps(item,ensure_ascii=False).lower()
+            or "anagrafe enti - ente" in str(item.get("title") or "").lower()
+        )
+    ]
+    if not packages:
+        raise RuntimeError("RGS: package CKAN Anagrafe Ente non trovato")
+    resources=[]; diagnostics=[]
+    for package in packages:
+        for resource in package.get("resources") or []:
+            if not isinstance(resource,dict): continue
+            fmt=str(resource.get("format") or "").upper()
+            url=str(resource.get("url") or "").strip()
+            name=str(resource.get("name") or "").strip()
+            diagnostics.append({"name":name,"format":fmt,"url":url})
+            lowered=f"{name} {url}".lower()
+            if (
+                fmt=="CSV"
+                and url.startswith(("https://","http://"))
+                and ".pdf" not in lowered
+                and "metadat" not in lowered
+            ):
+                parsed=urllib.parse.urlsplit(url)
+                if parsed.scheme=="http" and parsed.hostname=="bdap-opendata.rgs.mef.gov.it":
+                    url=urllib.parse.urlunsplit(("https",parsed.netloc,parsed.path,parsed.query,parsed.fragment))
+                resources.append((url,package.get("name"),name))
+    if not resources:
+        raise RuntimeError(
+            "RGS: package Anagrafe Ente senza risorsa dati CSV governata; "
+            f"resources={diagnostics}"
+        )
+    return resources[0]
+
+def anagrafe_region_map():
+    resource_url,package_name,resource_name=discover_anagrafe_csv()
+    rows=src.parse(src.fetch(resource_url))
+    if not rows: raise RuntimeError("RGS: Anagrafe Ente BDAP vuota")
+    keys=list(rows[0])
+    by_norm={src.norm(k):k for k in keys}
+    id_field=by_norm.get("ID ENTE")
+    region_code_field=by_norm.get("CODICE REGIONE")
+    region_label_field=by_norm.get("DIZIONE REGIONE")
+    if not id_field or (not region_code_field and not region_label_field):
+        raise RuntimeError(f"RGS: Anagrafe Ente senza ID/Regione; headers={keys}")
+    mapping={}
+    for row in rows:
+        entity_id=clean_code(row.get(id_field))
+        if not entity_id: continue
+        mapping[entity_id]={
+            "code":str(row.get(region_code_field) or "").strip() if region_code_field else "",
+            "label":str(row.get(region_label_field) or "").strip() if region_label_field else "",
+        }
+    if len(mapping)<5000:
+        raise RuntimeError(f"RGS: Anagrafe Ente copertura inattesa {len(mapping)}")
+    return mapping,{
+        "catalogApi":CKAN_PACKAGE_SEARCH,
+        "datasetToken":ANAGRAFE_DATASET_TOKEN,
+        "package":package_name,
+        "resource":resource_name,
+        "source":resource_url,
+        "rows":len(rows),
+        "mappedEntities":len(mapping),
+        "idField":id_field,
+        "regionCodeField":region_code_field,
+        "regionLabelField":region_label_field,
+    }
+
+def geography_selector(rows):
+    target=src.norm("COMUNE DI CAMAIORE")
+    sample=next((r for r in rows if src.norm(r.get("Descrizione Ente",""))==target),None)
+    if not sample: raise RuntimeError("RGS: Camaiore assente")
+    region_keys=[k for k in sample if "REGION" in src.norm(k) and str(sample.get(k) or "").strip()]
+    if region_keys:
+        preferred=sorted(region_keys,key=lambda k:(0 if "CODICE" in src.norm(k) else 1,len(k)))[0]
+        return {"mode":"same-value","field":preferred,"value":str(sample.get(preferred) or "").strip()}
+    province_keys=[k for k in sample if ("PROVINC" in src.norm(k) or src.norm(k) in {"PROV","SIGLA PROVINCIA"}) and str(sample.get(k) or "").strip()]
+    if province_keys:
+        preferred=sorted(province_keys,key=lambda k:(0 if "SIGLA" in src.norm(k) else 1,len(k)))[0]
+        return {"mode":"tuscany-provinces","field":preferred,"value":str(sample.get(preferred) or "").strip()}
+    if "Codice Ente BDAP" in sample:
+        return {"mode":"bdap-anagrafe","field":"Codice Ente BDAP","source":"CKAN:STM_AEN_BDP_ENT_01"}
+    raise RuntimeError(f"RGS: nessun campo regione/provincia né Codice Ente BDAP; headers={list(sample)}")
+
+def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
+    result=set(); missing=set()
+    for r in turnover_rows:
+        if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
+        if selector["mode"]=="bdap-anagrafe":
+            bdap=clean_code(r.get(selector["field"]))
+            geo=(region_by_bdap or {}).get(bdap)
+            if not bdap or geo is None:
+                missing.add(bdap or "<empty>")
+                continue
+            if wanted_tuscany:
+                region_code=src.norm(geo.get("code",""))
+                region_label=src.norm(geo.get("label",""))
+                if region_code not in {"9","09"} and region_label!="TOSCANA": continue
+        elif wanted_tuscany:
+            field=selector["field"]; value=src.norm(r.get(field,""))
+            if selector["mode"]=="same-value":
+                if value!=src.norm(selector["value"]): continue
+            elif selector["mode"]=="tuscany-provinces":
+                if value not in TUSCANY_PROVINCES: continue
+            else:
+                raise RuntimeError(f"RGS: selector inatteso {selector}")
+        result.add(entity_id(r))
+    return result,missing
+
+def aggregate_age(codes,turn_g,age_g):
+    staff=0.0; over55=0.0; valid=0; missing=[]
+    for code in sorted(codes):
+        tr=turn_g.get(code); ar=age_g.get(code)
+        if not tr:
+            missing.append(f"{code}:turnover"); continue
+        s=src.staff_total(tr)
+        if s<=0:
+            continue
+        if not ar:
+            missing.append(f"{code}:age"); continue
+        age=src.age_summary(ar)
+        if not math.isclose(s,age["total"],rel_tol=0.0,abs_tol=.001):
+            missing.append(f"{code}:staff-age-mismatch"); continue
+        staff+=s; over55+=age["over55"]; valid+=1
+    if valid<=0 or staff<=0: raise RuntimeError("RGS: aggregato età vuoto")
+    return {"municipalities":valid,"staff":staff,"over55":over55,"age55plusShare":over55/staff*100,"missing":missing}
+
+def aggregate_turnover(codes,turn_g,hire_g,cess_g):
+    staff=0.0; net=0.0; valid=0; missing=[]
+    for code in sorted(codes):
+        tr=turn_g.get(code); hr=hire_g.get(code); cr=cess_g.get(code)
+        if not tr:
+            missing.append(f"{code}:turnover"); continue
+        s=src.staff_total(tr)
+        if s<=0:
+            continue
+        if not hr or not cr:
+            missing.append(f"{code}:flows"); continue
+        hi=src.flow_summary(hr); ce=src.flow_summary(cr)
+        staff+=s; net+=hi["netOfTransfers"]-ce["netOfTransfers"]; valid+=1
+    if valid<=0 or staff<=0: raise RuntimeError("RGS: aggregato turnover vuoto")
+    return {"municipalities":valid,"staff":staff,"netTurnoverHeadcount":net,"turnoverRate":net/staff*100,"missing":missing}
+
+def main():
+    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True)
+    ap.add_argument("--refresh",action="store_true",help="Audit live degli altri pannelli RGS senza promozione implicita")
+    a=ap.parse_args()
+    from acquire_a3_benchmark_rgs_staff_per_resident import FROZEN,validate_snapshot
+    if not a.refresh:
+        snapshot=json.loads(FROZEN.read_text(encoding="utf-8"))
+        metric=json.loads((ROOT/"data/site-data.json").read_text(encoding="utf-8"))["metrics"]["municipalEmployeesPer1000"]
+        validate_snapshot(metric,snapshot)
+        path=Path(a.output);path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+        print(json.dumps({"status":"ACQUIRED_CANDIDATE","candidateMetrics":list(snapshot["benchmarks"]),
+                          "gate":snapshot["qualityGate"],"raw":snapshot["raw"],"blocked":snapshot["blocked"]},ensure_ascii=False))
+        return
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        bodies=dict(zip(src.URLS,pool.map(src.fetch,src.URLS.values())))
+    ds={k:src.parse(v) for k,v in bodies.items()}
+    selector=geography_selector(ds["turnover"])
+    region_by_bdap=None; anagrafe_meta=None
+    if selector["mode"]=="bdap-anagrafe":
+        region_by_bdap,anagrafe_meta=anagrafe_region_map()
+    tg,ag,hg,cg=groups(ds["turnover"]),groups(ds["age"]),groups(ds["hires"]),groups(ds["cessations"])
+    tus_codes,tus_missing=scope_codes(ds["turnover"],selector,True,region_by_bdap)
+    ita_codes,ita_missing=scope_codes(ds["turnover"],selector,False,region_by_bdap)
+    if ita_missing:
+        raise RuntimeError(
+            f"RGS: join Codice Ente BDAP→Anagrafe incompleto: {len(ita_missing)} mancanti; sample={sorted(ita_missing)[:20]}"
+        )
+    if not 250<=len(tus_codes)<=300: raise RuntimeError(f"RGS: Comuni Toscana inattesi {len(tus_codes)} selector={selector}")
+    if not 7000<=len(ita_codes)<=9000: raise RuntimeError(f"RGS: Comuni Italia inattesi {len(ita_codes)}")
+    tus_age=aggregate_age(tus_codes,tg,ag); ita_age=aggregate_age(ita_codes,tg,ag)
+    tus_turn=aggregate_turnover(tus_codes,tg,hg,cg); ita_turn=aggregate_turnover(ita_codes,tg,hg,cg)
+    local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
+    errors=[]
+    by_name=defaultdict(set)
+    for entity,rows in tg.items():
+        for row in rows:
+            by_name[src.norm(row.get("Descrizione Ente",""))].add(entity)
+    for town,d in local.items():
+        matches=by_name.get(src.norm(f"COMUNE DI {town}"),set())
+        if len(matches)!=1:
+            errors.append(f"{town}: identità RGS assente o ambigua ({len(matches)} enti)"); continue
+        code=next(iter(matches))
+        tr,ar,hr,cr=tg[code],ag.get(code),hg.get(code),cg.get(code)
+        if not all((tr,ar,hr,cr)): errors.append(f"{town}: dataset incompleto"); continue
+        staff=src.staff_total(tr); age=src.age_summary(ar); hi=src.flow_summary(hr); ce=src.flow_summary(cr)
+        rate=(hi["netOfTransfers"]-ce["netOfTransfers"])/staff*100 if staff else None
+        if not math.isclose(staff,float(d["staffAt31Dec"]),abs_tol=.001): errors.append(f"{town}: staff mismatch")
+        if not math.isclose(age["over55"],float(d["age"]["age55plus"]),abs_tol=.001): errors.append(f"{town}: age55+ mismatch")
+        if rate is None or not math.isclose(rate,float(d["netTurnoverRatePct"]),abs_tol=.00011): errors.append(f"{town}: turnover mismatch {rate} != {d['netTurnoverRatePct']}")
+    age_complete=(not tus_age["missing"] and not ita_age["missing"])
+    turnover_complete=(not tus_turn["missing"] and not ita_turn["missing"])
+    benchmarks={}
+    if not errors and age_complete:
+        benchmarks["municipalStaffAgeStructure"]={"year":"2024","unit":"percent","defaultPart":"55 anni e più","formula":"dipendenti 55+ / personale al 31 dicembre × 100","tuscany":tus_age["age55plusShare"],"italy":ita_age["age55plusShare"]}
+    if not errors and turnover_complete:
+        benchmarks["municipalStaffTurnover"]={"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus_turn["turnoverRate"],"italy":ita_turn["turnoverRate"]}
+    gate="PASS" if benchmarks and not errors else "FAIL"
+    blocked={
+      "municipalEmployeesPer1000":"audit live separato dal candidato congelato 2024: copertura regionale e zeri PIAO richiedono la validazione dedicata",
+      "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"
+    }
+    if not age_complete:
+        blocked["municipalStaffAgeStructure"]=f"copertura aggregata incompleta: Toscana missing={len(tus_age['missing'])}, Italia missing={len(ita_age['missing'])}"
+    if not turnover_complete:
+        blocked["municipalStaffTurnover"]=f"copertura aggregata incompleta: Toscana missing={len(tus_turn['missing'])}, Italia missing={len(ita_turn['missing'])}; assenze non convertite in zero"
+    payload={
+      "schemaVersion":2,"publisher":"Ragioneria Generale dello Stato — Conto Annuale/OpenBDAP","profileId":"rgs-conto-annuale-annual","referenceYear":2024,
+      "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
+      "sourceUrls":src.URLS,
+      "benchmarks":benchmarks,
+      "raw":{"tuscany":{"age":tus_age,"turnover":tus_turn},"italy":{"age":ita_age,"turnover":ita_turn}},
+      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"7/7 towns PASS" if not errors else "FAIL","geographySelector":selector,"anagrafeEnte":anagrafe_meta,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"metricCompleteness":{"municipalStaffAgeStructure":age_complete,"municipalStaffTurnover":turnover_complete},"errors":errors},
+      "blocked":blocked
+    }
+    p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    print(json.dumps({"status":payload["status"],"candidateMetrics":sorted(payload["benchmarks"]),"raw":payload["raw"],"gate":payload["qualityGate"],"blocked":payload["blocked"]},ensure_ascii=False))
+if __name__=="__main__": main()

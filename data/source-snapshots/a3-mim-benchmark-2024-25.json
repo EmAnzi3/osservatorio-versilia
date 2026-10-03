@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-mim-benchmark-2024-25-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "MIM — Portale unico dei dati della scuola",
+  "sourceProfileId": "mim-school-year",
+  "schoolYear": "2024/25",
+  "sources": {
+    "registryState": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20242520250831.csv",
+    "registryPrivate": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20242520250831.csv",
+    "classesState": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20242520250831.csv",
+    "classesPrivate": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20242520250831.csv",
+    "timeState": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20242520250831.csv",
+    "timePrivate": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20242520250831.csv"
+  },
+  "definitions": {
+    "schoolStudents": "somma alunni maschi + femmine, statali e paritarie, scuole primarie e secondarie",
+    "studentsPerClass": "schoolStudents / classi delle stesse scuole",
+    "primaryFullTimeShare": "alunni primaria TEMPO PIENO / alunni primaria × 100"
+  },
+  "raw": {
+    "tuscany": {
+      "schoolStudents": 398412,
+      "classes": 20325,
+      "primaryStudents": 136694,
+      "fullTimeStudents": 79329
+    },
+    "italy": {
+      "schoolStudents": 6515638,
+      "classes": 346061,
+      "primaryStudents": 2318092,
+      "fullTimeStudents": 985279
+    }
+  },
+  "benchmarks": {
+    "schoolStudents": {
+      "unit": "people",
+      "tuscany": 398412,
+      "italy": 6515638
+    },
+    "studentsPerClass": {
+      "unit": "studentsPerClass",
+      "tuscany": 19.602066420664208,
+      "italy": 18.82800431137863
+    },
+    "primaryFullTimeShare": {
+      "unit": "percent",
+      "tuscany": 58.03400295550646,
+      "italy": 42.50387818947652
+    }
+  },
+  "acquisitionGate": {
+    "status": "PASS",
+    "note": "Aggregati Toscana/Italia ottenuti dagli stessi sei CSV MIM 2024/25 usati per le definizioni comunali; nessuna media semplice di percentuali comunali."
+  }
+}

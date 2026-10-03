@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 2,
+  "dimension": "benchmark_toscana_italia",
+  "certifiedFrom": {
+    "workflowRun": 37117443259,
+    "headSha": "f981ef97810872e014dc5c3287c7de145431d06a",
+    "publicBenchmarks": "137/137",
+    "publicationGap": 0,
+    "availableMissing": 76,
+    "artifactId": 11272062994
+  },
+  "selectedProfileCount": 1,
+  "selectedPairCount": 1,
+  "profiles": [
+    {
+      "profileId": "rgs-conto-annuale-annual",
+      "bundleId": "rgs-conto-annuale-annual::benchmark_toscana_italia",
+      "rank": 1,
+      "pairCount": 1,
+      "metricIds": [
+        "municipalEmployeesPer1000"
+      ],
+      "sourceReferences": [
+        "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/745861d3-e741-43ff-b68a-7cf357aab888.csv",
+        "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+        "https://www.comune.londa.fi.it/system/files/2025-04/piao%202025-2027_londa.pdf",
+        "https://www.comune.san-godenzo.fi.it/sites/www.comune.san-godenzo.fi.it/files/documenti/piao_2025-2027_san_godenzo.pdf"
+      ],
+      "publisher": "RGS / Istat / Comuni di Londa e San Godenzo",
+      "costPoints": 3,
+      "priorityIndex": 1.0
+    }
+  ],
+  "workerGeneration": "post-137-native-rgs-staff-2024",
+  "selectionRationale": "Verify the frozen complete Tuscany municipal-employer candidate through the actual RGS acquisition worker. Native employer-ID join covers 271 municipalities and original PIAO PDFs explicitly certify zero employees for the two remaining municipalities at 2024-12-31. The Istat 2024 demographic cohort and all seven public components reconcile exactly. Italy remains null pending national coverage; no live-worker replay or zero imputation."
+}
