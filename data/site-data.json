@@ -56887,8 +56887,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su dati ufficiali RGS e popolazione Istat già materializzata",
-        "formula": "dipendenti al 31 dicembre / residenti 2024 × 1.000",
-        "caveat": "La consistenza del personale dipende anche da esternalizzazioni, gestioni associate e organizzazione dei servizi. Un valore maggiore non è automaticamente migliore. La pagina RGS pubblica lo stesso concetto di indicatore; il controllo di parità sul denominatore della tabella dedicata resta separato dalla materializzazione.",
+        "formula": "dipendenti comunali al 31 dicembre 2024 / residenti Istat al 1° gennaio 2024 × 1.000",
+        "caveat": "La consistenza del personale dipende anche da esternalizzazioni, gestioni associate e organizzazione dei servizi. Un valore maggiore non è automaticamente migliore. Personale alle dipendenze dei Comuni: dipendenti delle Unioni esclusi. Stock al 31 dicembre 2024 rapportato ai residenti al 1° gennaio 2024, denominatore riconciliato con la fonte nativa Istat. Il benchmark Toscana copre 273/273 Comuni; per Londa e San Godenzo lo zero è dichiarato espressamente nei PIAO 2025–2027, non imputato da assenza in RGS. Italia non disponibile per copertura territoriale ancora da certificare.",
         "coverage": "7/7"
       }
     },

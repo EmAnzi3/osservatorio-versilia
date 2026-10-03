@@ -167,6 +167,11 @@
         "args": []
       },
       {
+        "label": "A3 RGS benchmark employer identity",
+        "script": "scripts/test_a3_benchmark_rgs_identity.py",
+        "args": []
+      },
+      {
         "label": "A3.6 enrichment coverage",
         "script": "scripts/test_enrichment_coverage.py",
         "args": []

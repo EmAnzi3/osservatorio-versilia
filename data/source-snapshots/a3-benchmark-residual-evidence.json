@@ -41,7 +41,39 @@
         },
         "errors": []
       },
-      "error": ""
+      "error": "",
+      "latestAcquisition": {
+        "status": "CANDIDATE_PASS_PENDING_PUBLICATION_GATE",
+        "snapshot": "data/source-snapshots/a3-rgs-staff-benchmark-2024.json",
+        "candidateMetrics": [
+          "municipalEmployeesPer1000"
+        ],
+        "referenceYear": 2024,
+        "tuscanyCoverage": "273/273",
+        "nativeEmployers": 271,
+        "explicitZeroEmployers": [
+          "048025",
+          "048039"
+        ],
+        "zeroEvidence": "PIAO 2025–2027: zero dipendenti esplicito al 31-12-2024; PDF originali e hash congelati, pagina 4 verificata",
+        "municipalReconciliation": "7/7 numerator, 1 January 2024 population, public unrounded value",
+        "rawTuscany": {
+          "staff": 23255,
+          "residentPopulation": 3660530
+        },
+        "italy": null,
+        "identityCorrection": "native Codice Ente BDAP: 7725 employers, not 7718 normalized names",
+        "remainingCoverage": {
+          "age": {
+            "tuscanyMissing": 1,
+            "italyMissing": 25
+          },
+          "turnover": {
+            "tuscanyMissing": 55,
+            "italyMissing": 3429
+          }
+        }
+      }
     },
     "istat-commuting-irregular": {
       "workflowRun": 36982743711,

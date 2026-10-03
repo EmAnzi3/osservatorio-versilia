@@ -17,9 +17,15 @@ def groups(rows):
     out=defaultdict(list)
     for r in rows:
         if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
-        entity=src.norm(r.get("Descrizione Ente",""))
-        if entity: out[entity].append(r)
+        out[entity_id(r)].append(r)
     return out
+
+def entity_id(row):
+    """Join datasets by the native employer ID, never a potentially homonymous label."""
+    value=clean_code(row.get("Codice Ente BDAP"))
+    if not value or not value.isdigit():
+        raise RuntimeError("RGS: Codice Ente BDAP comunale assente o non valido")
+    return value
 
 TUSCANY_PROVINCES={"AR","FI","GR","LI","LU","MS","PI","PO","PT","SI","AREZZO","FIRENZE","GROSSETO","LIVORNO","LUCCA","MASSA CARRARA","PISA","PRATO","PISTOIA","SIENA"}
 
@@ -144,8 +150,7 @@ def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
                 if value not in TUSCANY_PROVINCES: continue
             else:
                 raise RuntimeError(f"RGS: selector inatteso {selector}")
-        entity=src.norm(r.get("Descrizione Ente",""))
-        if entity: result.add(entity)
+        result.add(entity_id(r))
     return result,missing
 
 def aggregate_age(codes,turn_g,age_g):
@@ -183,7 +188,19 @@ def aggregate_turnover(codes,turn_g,hire_g,cess_g):
     return {"municipalities":valid,"staff":staff,"netTurnoverHeadcount":net,"turnoverRate":net/staff*100,"missing":missing}
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True)
+    ap.add_argument("--refresh",action="store_true",help="Audit live degli altri pannelli RGS senza promozione implicita")
+    a=ap.parse_args()
+    from acquire_a3_benchmark_rgs_staff_per_resident import FROZEN,validate_snapshot
+    if not a.refresh:
+        snapshot=json.loads(FROZEN.read_text(encoding="utf-8"))
+        metric=json.loads((ROOT/"data/site-data.json").read_text(encoding="utf-8"))["metrics"]["municipalEmployeesPer1000"]
+        validate_snapshot(metric,snapshot)
+        path=Path(a.output);path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
+        print(json.dumps({"status":"ACQUIRED_CANDIDATE","candidateMetrics":list(snapshot["benchmarks"]),
+                          "gate":snapshot["qualityGate"],"raw":snapshot["raw"],"blocked":snapshot["blocked"]},ensure_ascii=False))
+        return
     with ThreadPoolExecutor(max_workers=4) as pool:
         bodies=dict(zip(src.URLS,pool.map(src.fetch,src.URLS.values())))
     ds={k:src.parse(v) for k,v in bodies.items()}
@@ -204,12 +221,15 @@ def main():
     tus_turn=aggregate_turnover(tus_codes,tg,hg,cg); ita_turn=aggregate_turnover(ita_codes,tg,hg,cg)
     local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
     errors=[]
-    by_name={}
+    by_name=defaultdict(set)
     for entity,rows in tg.items():
-        if rows: by_name[src.norm(rows[0].get("Descrizione Ente",""))]=entity
+        for row in rows:
+            by_name[src.norm(row.get("Descrizione Ente",""))].add(entity)
     for town,d in local.items():
-        code=by_name.get(src.norm(f"COMUNE DI {town}"))
-        if not code: errors.append(f"{town}: ente RGS assente"); continue
+        matches=by_name.get(src.norm(f"COMUNE DI {town}"),set())
+        if len(matches)!=1:
+            errors.append(f"{town}: identità RGS assente o ambigua ({len(matches)} enti)"); continue
+        code=next(iter(matches))
         tr,ar,hr,cr=tg[code],ag.get(code),hg.get(code),cg.get(code)
         if not all((tr,ar,hr,cr)): errors.append(f"{town}: dataset incompleto"); continue
         staff=src.staff_total(tr); age=src.age_summary(ar); hi=src.flow_summary(hr); ce=src.flow_summary(cr)
@@ -226,7 +246,7 @@ def main():
         benchmarks["municipalStaffTurnover"]={"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus_turn["turnoverRate"],"italy":ita_turn["turnoverRate"]}
     gate="PASS" if benchmarks and not errors else "FAIL"
     blocked={
-      "municipalEmployeesPer1000":"denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
+      "municipalEmployeesPer1000":"audit live separato dal candidato congelato 2024: copertura regionale e zeri PIAO richiedono la validazione dedicata",
       "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"
     }
     if not age_complete:

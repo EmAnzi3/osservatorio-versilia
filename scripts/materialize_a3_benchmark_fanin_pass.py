@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
 SNAPSHOTS = (
+    ROOT / "data/source-snapshots/a3-rgs-staff-benchmark-2024.json",
     ROOT / "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
     ROOT / "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
@@ -254,6 +255,9 @@ def main() -> None:
             if not isinstance(metric, dict):
                 raise RuntimeError(f"{metric_id}: metrica pubblica assente")
             public_rows(metric, metric_id)
+            if metric_id == 'municipalEmployeesPer1000':
+                from acquire_a3_benchmark_rgs_staff_per_resident import validate_snapshot
+                validate_snapshot(metric, snapshot)
             if metric_id in ('motorization','pollutingCars'):
                 from acquire_a3_benchmark_aci_istat_annual import validate_snapshot
                 validate_snapshot(metric, snapshot, metrics['population'])
@@ -323,7 +327,7 @@ def main() -> None:
                 "source": snapshot.get("publisher"),
                 "url": source_url,
                 "sourceSnapshot": snapshot_ref,
-                "note": (snapshot["scope"]["note"] if metric_id in ('motorization','pollutingCars','accreditedRsaCount','pharmaciesPer1000','blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements','incomeVsInflation','tourismBeds','tourismBedsPer1000','tourismStructuresPer1000') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
+                "note": (snapshot["scope"]["note"] if metric_id in ('municipalEmployeesPer1000','motorization','pollutingCars','accreditedRsaCount','pharmaciesPer1000','blueFlagBeaches','waterNetworkLosses','earlyChildhoodPotentialCapacityRate','hydraulicWorksCensusElements','incomeVsInflation','tourismBeds','tourismBedsPer1000','tourismStructuresPer1000') else "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."),
             }
             published.append(metric_id)
 

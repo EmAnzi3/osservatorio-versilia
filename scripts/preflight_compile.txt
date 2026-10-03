@@ -31,6 +31,9 @@ scripts/materialize_a3_benchmark_demography.py
 scripts/test_a3_publication_adapter.py
 scripts/a3_publication_gap_audit.py
 scripts/test_a3_publication_contract.py
+scripts/acquire_a3_benchmark_rgs_conto_annuale_annual.py
+scripts/acquire_a3_benchmark_rgs_staff_per_resident.py
+scripts/test_a3_benchmark_rgs_identity.py
 scripts/apply_enrichment_evidence.py
 scripts/enrichment_source_audit.py
 scripts/test_enrichment_source_audit.py
