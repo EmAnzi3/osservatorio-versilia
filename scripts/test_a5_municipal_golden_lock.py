@@ -158,6 +158,40 @@ def pixel_difference(baseline: bytes, current: bytes, channel_threshold: int = 3
     }
 
 
+def history_view_state(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const shell=document.querySelector('#town-topic > .history-panel.a5-shared-chart .ux-view-shell');
+          const button=shell?.querySelector('[data-view-mode="history"]');
+          const pane=shell?.querySelector('[data-view-pane="history"]');
+          const text=(pane?.textContent || '').trim();
+          return {
+            buttonExists:Boolean(button),
+            paneExists:Boolean(pane),
+            disabled:Boolean(button?.disabled),
+            unavailable:Boolean(
+              pane?.querySelector('.ux-history-unavailable')
+              || /serie storica non disponibile/i.test(text)
+            ),
+            contentLength:text.length,
+          };
+        }"""
+    )
+
+
+def set_history_button_disabled(page, disabled: bool) -> None:
+    page.evaluate(
+        """disabled => {
+          const button=document.querySelector(
+            '#town-topic > .history-panel.a5-shared-chart [data-view-mode="history"]'
+          );
+          if (!button) throw new Error('history toggle missing');
+          button.disabled=disabled;
+        }""",
+        disabled,
+    )
+
+
 def capture(page):
     return page.evaluate(
         """() => {
@@ -261,6 +295,7 @@ def main():
 
     failures=[]
     checked=0
+    allowed_history_upgrades=[]
 
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True)
@@ -316,6 +351,49 @@ def main():
 
                     base_state=capture(base_page)
                     cur_state=capture(cur_page)
+                    base_history=history_view_state(base_page)
+                    cur_history=history_view_state(cur_page)
+                    history_upgrade = (
+                        base_history["buttonExists"]
+                        and base_history["paneExists"]
+                        and base_history["disabled"]
+                        and cur_history["buttonExists"]
+                        and cur_history["paneExists"]
+                        and not cur_history["disabled"]
+                        and not cur_history["unavailable"]
+                        and cur_history["contentLength"] > 0
+                    )
+                    if (
+                        base_history["buttonExists"]
+                        and not base_history["disabled"]
+                        and cur_history["buttonExists"]
+                        and cur_history["disabled"]
+                    ):
+                        failures.append({
+                            "key":key,
+                            "kind":"history-availability-regression",
+                            "baseline":base_history,
+                            "current":cur_history,
+                        })
+                    if (
+                        base_history["buttonExists"]
+                        and base_history["disabled"]
+                        and cur_history["buttonExists"]
+                        and not cur_history["disabled"]
+                        and not history_upgrade
+                    ):
+                        failures.append({
+                            "key":key,
+                            "kind":"history-enabled-without-public-content",
+                            "baseline":base_history,
+                            "current":cur_history,
+                        })
+                    if history_upgrade:
+                        allowed_history_upgrades.append({
+                            "key":key,
+                            "baseline":base_history,
+                            "current":cur_history,
+                        })
                     checked += 1
 
                     # Fixed golden semantics: 2 active nav pills + 1 active metric, all opaque.
@@ -357,7 +435,14 @@ def main():
                             })
                             continue
                         bp=b.screenshot()
-                        cp=c.screenshot()
+                        if region_name == "toolbar" and history_upgrade:
+                            set_history_button_disabled(cur_page, True)
+                            try:
+                                cp=c.screenshot()
+                            finally:
+                                set_history_button_disabled(cur_page, False)
+                        else:
+                            cp=c.screenshot()
                         region_diff=pixel_difference(bp,cp)
                         if (not region_diff["same_size"]) or region_diff["ratio"] > 0.0005:
                             bpath=report_dir/f"{key}-{region_name}-baseline.png"
@@ -384,7 +469,8 @@ def main():
         "metrics":list(METRICS),
         "viewports":[{"name":n,"width":w,"height":h} for n,w,h in VIEWPORTS],
         "locked_regions":[r for r,_ in LOCK_REGIONS],
-        "source_contract":"JS/data/renderers are byte-frozen to checkpoint by a5-change-scope; pixel lock covers deterministic municipal regions.",
+        "source_contract":"JS/data/renderers are byte-frozen to checkpoint by a5-change-scope; pixel lock covers deterministic municipal regions. A baseline-disabled history toggle may become enabled only when the current renderer exposes non-empty public history; that availability-only state is normalized for the toolbar pixel comparison.",
+        "allowed_history_upgrades":allowed_history_upgrades,
         "failure_count":len(failures),
         "failures":failures,
     }

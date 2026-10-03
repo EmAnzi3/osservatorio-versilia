@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-agriculture-benchmark-2020-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Istat — 7° Censimento generale dell’agricoltura 2020",
+  "sourceProfileId": "istat-agriculture-census-2020",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+  "qualityGate": {
+    "status": "PASS",
+    "publicSnapshotReconciliation": "2 metrics × 7/7 towns PASS",
+    "officialTotalsControl": "HO + center SAU Tuscany/Italy PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "agriculturalFarms": {
+      "year": "2020",
+      "unit": "number",
+      "formula": "somma aziende agricole comunali",
+      "tuscany": 52337,
+      "italy": 1133006
+    },
+    "averageAgriculturalFarmSize": {
+      "year": "2020",
+      "unit": "hectaresPerFarm",
+      "formula": "Σ SAU per centro aziendale / Σ aziende con SAU",
+      "tuscany": 12.619562387400478,
+      "italy": 11.094835645388148
+    }
+  },
+  "components": {
+    "tuscany": {
+      "farms": 52337,
+      "sauCenterHa": 651434.43,
+      "farmsWithSau": 51621,
+      "municipalityCoverage": 273
+    },
+    "italy": {
+      "farms": 1133006,
+      "sauCenterHa": 12431807.72,
+      "farmsWithSau": 1120504,
+      "municipalityCoverage": 7888
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36934854982,
+    "artifactId": 11197148706,
+    "head": "c205bdf2835101dd3cdc6b590b54b3aa4722aa96"
+  }
+}

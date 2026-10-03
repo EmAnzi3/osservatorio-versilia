@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import copy
 import json
 import re
 import struct
@@ -492,18 +493,71 @@ def capture_history_families(reg: Regression, page: Page, base: str, data: dict,
     cfg = contract["samples"]["historyFamilies"]
     page.set_viewport_size(viewport(contract, cfg["viewport"]))
     for variant in cfg["variants"]:
-        key = history_candidate(data, variant)
-        open_metric(page, base, data, key)
-        activate_history(page, "#compare-bars")
-        card = page.locator(cfg["selector"]).first
-        card.wait_for(state="visible")
-        stable_page(page)
-        image = screenshot_locator(card)
-        reg.check(
-            f"history--{slug(variant['id'])}--{cfg['viewport']}",
-            image,
-            {"kind": "history-family", "family": variant["id"], "metric": key, "viewport": cfg["viewport"]},
-        )
+        original_page = page
+        fixture = None
+        handler = None
+        fixture_context = None
+        route_pattern = "**/data/site-data.json*"
+        if variant["id"] == "two-point":
+            # Identity of the approved two-point visual sample, not a second
+            # catalog inventory. Enrichment must not replace this sample with
+            # another metric just because its historical coverage has grown.
+            key = "tourismPresences"
+            fixture = copy.deepcopy(data)
+            metric = fixture["metrics"][key]
+            require(len(metric.get("rows") or []) == 7, "Two-point fixture: copertura != 7 Comuni")
+            require(len({row.get("code") for row in metric["rows"]}) == 7,
+                    "Two-point fixture: codici comunali duplicati")
+            for row in metric["rows"]:
+                series = row.get("series") or {}
+                years, values = series.get("years"), series.get("values")
+                require(isinstance(years, list) and isinstance(values, list)
+                        and len(years) == len(values) and len(years) >= 2,
+                        "Two-point fixture: serie nativa incompleta")
+                require([str(year) for year in years[-2:]] == ["2024", "2025"],
+                        "Two-point fixture: coppia nativa 2024/2025 assente")
+                require(all(isinstance(value, (int, float)) and not isinstance(value, bool)
+                            for value in values[-2:]) and values[-1] == row.get("value"),
+                        "Two-point fixture: valori nativi o ultimo anno incoerenti")
+                series["years"], series["values"] = years[-2:], values[-2:]
+                require(len(series["values"]) == 2, "Two-point fixture: punti != 2")
+            aggregate_series = (metric.get("aggregate") or {}).get("series")
+            if aggregate_series:
+                require([str(year) for year in aggregate_series.get("years", [])[-2:]] == ["2024", "2025"],
+                        "Two-point fixture: periodo aggregato diverso")
+                aggregate_series["years"] = aggregate_series["years"][-2:]
+                aggregate_series["values"] = aggregate_series["values"][-2:]
+            require(series_points(metric) == int(variant["seriesPoints"]),
+                    "Two-point fixture: famiglia diversa dal contratto")
+            # ux-history caches its catalog per document and persists view mode.
+            # A fresh context confines the fixture and its state to this
+            # sample; the other cases continue to use the real catalog.
+            fixture_context = original_page.context.browser.new_context(
+                viewport=viewport(contract, cfg["viewport"]),
+                color_scheme="light", reduced_motion="reduce", locale="it-IT",
+            )
+            page = fixture_context.new_page()
+            handler = lambda route: route.fulfill(json=fixture)
+            page.route(route_pattern, handler)
+        else:
+            key = history_candidate(data, variant)
+        try:
+            open_metric(page, base, fixture or data, key)
+            activate_history(page, "#compare-bars")
+            card = page.locator(cfg["selector"]).first
+            card.wait_for(state="visible")
+            stable_page(page)
+            image = screenshot_locator(card)
+            reg.check(
+                f"history--{slug(variant['id'])}--{cfg['viewport']}",
+                image,
+                {"kind": "history-family", "family": variant["id"], "metric": key, "viewport": cfg["viewport"]},
+            )
+        finally:
+            if handler is not None:
+                page.unroute(route_pattern, handler)
+                fixture_context.close()
+                page = original_page
 
 
 def capture_town_history(reg: Regression, page: Page, base: str, data: dict, contract: dict) -> None:

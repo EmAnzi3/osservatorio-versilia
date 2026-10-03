@@ -30,7 +30,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 2
+      - id: diff
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "pull_request" || "${{ github.event.action }}" != "synchronize" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only HEAD^ HEAD > /tmp/changed-files
+          if grep -Eq '^(scripts/source_monitor_runner\.py|scripts/source_monitor_strategy\.py|scripts/materialize_source_monitor_snapshot\.py|scripts/monthly_data_check\.py|scripts/monthly_data_check_coverage\.py|scripts/monthly_data_check_status\.py|scripts/source_policy\.py|scripts/test_source_monitor_depth\.py|scripts/test_source_monitor_strategy\.py|ci/build-materialization-contract\.json|data/source-registry\.json|data/source-monitor-state\.json|data/site-data\.json)' /tmp/changed-files; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat /tmp/changed-files
+
   check:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: "1"

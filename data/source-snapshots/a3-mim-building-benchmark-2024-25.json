@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-mim-building-benchmark-2024-25-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "MIM — Portale unico dei dati della scuola",
+  "sourceProfileId": "mim-school-year",
+  "schoolYear": "2024/25",
+  "provenance": {
+    "workflowRun": 36893717739,
+    "artifactId": 11178547996,
+    "artifact": "a3-benchmark-bulk-mim-school-year",
+    "headSha": "f0128c4653cac7a6055baea1aae9a088b8703a46"
+  },
+  "registryOverrides": {
+    "TPEE816022": {
+      "region": "SICILIA",
+      "town": "MARSALA",
+      "source": "https://tp.usr.sicilia.it/download/1333/10758/10761/tabella-posti-sostegno-o-d-2025-2026.pdf",
+      "reason": "Codice presente nei dataset edilizia ma assente dal join anagrafico 2024/25; verificato fuori Toscana."
+    }
+  },
+  "sources": {
+    "schoolBuildingSafetyDocs": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120242520250806.csv",
+    "schoolBuildingAccessibility": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120242520250806.csv",
+    "schoolBuildingFacilities": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120242520250806.csv",
+    "schoolBuildingAge": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120242520250806.csv",
+    "schoolBuildingTransport": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120242520250806.csv"
+  },
+  "raw": {
+    "schoolBuildingSafetyDocs": {
+      "field": "agibilita",
+      "tuscany": {
+        "buildings": 2581,
+        "statuses": {
+          "NO": 1506,
+          "SI": 967,
+          "IN PARTE": 36,
+          "NON DEFINITO": 72
+        }
+      },
+      "italy": {
+        "buildings": 39351,
+        "statuses": {
+          "NO": 23218,
+          "SI": 14656,
+          "NON DEFINITO": 1119,
+          "IN PARTE": 358
+        }
+      }
+    },
+    "schoolBuildingAccessibility": {
+      "field": "accessibilita",
+      "tuscany": {
+        "buildings": 2581,
+        "statuses": {
+          "SI": 2285,
+          "NON DEFINITO": 161,
+          "NO": 135
+        }
+      },
+      "italy": {
+        "buildings": 39351,
+        "statuses": {
+          "SI": 32637,
+          "NO": 2273,
+          "NON DEFINITO": 4441
+        }
+      }
+    },
+    "schoolBuildingFacilities": {
+      "field": "mensa",
+      "tuscany": {
+        "buildings": 2581,
+        "statuses": {
+          "NO": 1033,
+          "SI": 1526,
+          "NON DEFINITO": 22
+        }
+      },
+      "italy": {
+        "buildings": 39351,
+        "statuses": {
+          "SI": 14362,
+          "NO": 24711,
+          "NON DEFINITO": 278
+        }
+      }
+    },
+    "schoolBuildingAge": {
+      "field": "periodoCostruzione",
+      "tuscany": {
+        "buildings": 2581,
+        "statuses": {
+          "tra il 1900 e il 1933": 190,
+          "tra il 1950 e il 1970": 806,
+          "tra il 1934 e il 1949": 124,
+          "tra il 1976 e il 1992": 550,
+          "tra il 2009 e il 2017": 98,
+          "tra il 1997 e il 2008": 141,
+          "tra il 1800 e il 1899": 78,
+          "non definito": 234,
+          "prima del 1800": 65,
+          "tra il 1971 e il 1975": 229,
+          "dal 2018 in poi": 33,
+          "tra il 1993 e il 1996": 33
+        }
+      },
+      "italy": {
+        "buildings": 39351,
+        "statuses": {
+          "tra il 1976 e il 1992": 9162,
+          "tra il 1950 e il 1970": 10042,
+          "non definito": 5793,
+          "tra il 1993 e il 1996": 885,
+          "tra il 1900 e il 1933": 2584,
+          "tra il 1971 e il 1975": 3580,
+          "tra il 1997 e il 2008": 2750,
+          "tra il 1800 e il 1899": 979,
+          "tra il 1934 e il 1949": 1396,
+          "tra il 2009 e il 2017": 1186,
+          "dal 2018 in poi": 429,
+          "prima del 1800": 565
+        }
+      }
+    },
+    "schoolBuildingTransport": {
+      "field": "scuolabus",
+      "tuscany": {
+        "buildings": 2581,
+        "statuses": {
+          "NO": 636,
+          "SI": 1919,
+          "NON DEFINITO": 26
+        }
+      },
+      "italy": {
+        "buildings": 39351,
+        "statuses": {
+          "SI": 27857,
+          "NO": 11072,
+          "NON DEFINITO": 422
+        }
+      }
+    }
+  },
+  "benchmarks": {
+    "schoolBuildingSafetyDocs": {
+      "unit": "percent",
+      "schoolYear": "2024/25",
+      "tuscany": 38.541251494619374,
+      "italy": 38.33437957731743
+    },
+    "schoolBuildingAccessibility": {
+      "unit": "percent",
+      "schoolYear": "2024/25",
+      "tuscany": 94.42148760330579,
+      "italy": 93.4889716413635
+    },
+    "schoolBuildingFacilities": {
+      "unit": "percent",
+      "schoolYear": "2024/25",
+      "tuscany": 59.63266901133255,
+      "italy": 36.756839761472115
+    },
+    "schoolBuildingAge": {
+      "unit": "percent",
+      "schoolYear": "2024/25",
+      "tuscany": 53.8133787814231,
+      "italy": 46.38536265570058
+    },
+    "schoolBuildingTransport": {
+      "unit": "percent",
+      "schoolYear": "2024/25",
+      "tuscany": 75.10763209393346,
+      "italy": 71.55847825528527
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "unmappedSchoolRows": 0,
+    "conflictCount": 0,
+    "reconciledMetrics": [
+      "schoolBuildingSafetyDocs",
+      "schoolBuildingAccessibility",
+      "schoolBuildingFacilities",
+      "schoolBuildingAge",
+      "schoolBuildingTransport"
+    ],
+    "note": "5/5 metriche riconciliate 7/7 con lo snapshot governato dei 109 edifici Versilia; NON DEFINITO resta escluso dai denominatori delle risposte definite e non viene convertito in NO."
+  }
+}

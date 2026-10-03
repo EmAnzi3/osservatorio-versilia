@@ -6,6 +6,7 @@ import argparse
 import contextlib
 import json
 import threading
+from decimal import Decimal, ROUND_HALF_UP
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -43,11 +44,15 @@ def wait_town(page: Page, metric_key: str) -> None:
     page.wait_for_timeout(350)
 
 
-def expected_relative(metric: dict, town: str) -> str:
+def expected_rate_difference(metric: dict, town: str, choice: str = "totale") -> str:
     row = next(item for item in metric["rows"] if item["town"] == town)
-    value = ((float(row["value"]) / float(metric["aggregate"]["value"])) - 1) * 100
-    sign = "+" if value > 0 else "−" if value < 0 else ""
-    return f"{sign}{abs(value):.1f}%".replace(".", ",")
+    local = part_by_key(row, choice)
+    aggregate = part_by_key(metric["aggregate"], choice)
+    assert local["unit"] == aggregate["unit"] == "per100k"
+    assert local["measurement"] == aggregate["measurement"] == "standardized"
+    value = float(local["value"]) - float(aggregate["value"])
+    sign = "+" if value > 0 else ""
+    return f"{sign}{italian_decimal(value)} ogni 100.000"
 
 
 def expected_share(metric: dict, town: str) -> str:
@@ -57,7 +62,9 @@ def expected_share(metric: dict, town: str) -> str:
 
 
 def italian_decimal(value: float, decimals: int = 2) -> str:
-    text = f"{float(value):,.{decimals}f}"
+    # Match Intl.NumberFormat at native decimal ties (for example 30.755).
+    rounded = Decimal(str(value)).quantize(Decimal(1).scaleb(-decimals), rounding=ROUND_HALF_UP)
+    text = f"{rounded:,.{decimals}f}"
     return text.replace(",", "§").replace(".", ",").replace("§", ".")
 
 
@@ -169,16 +176,18 @@ def main() -> int:
         text = panel.inner_text()
         normalized = text.casefold()
         assert "rispetto al valore ars versilia" in normalized, text
-        assert expected_relative(data["metrics"][key], "Viareggio") in text, text
+        assert expected_rate_difference(data["metrics"][key], "Viareggio") in text, text
         assert "media versilia" not in normalized, text
         assert "aggregato ufficiale zona versilia" in normalized, text
-        assert page.get_by_text("Dettaglio per sesso", exact=True).count() == 1
         sex_select = town_sex_select(page)
         assert {option.get_attribute("value") for option in sex_select.locator("option").all()} == {"totale", "maschi", "femmine"}
         assert_tuscany_visible(page)
+        assert_demographic_benchmark(panel, data["metrics"][key], "totale", "Totale")
         sex_select.select_option("femmine")
         page.wait_for_timeout(150)
         assert "Toscana · Femmine" in panel.inner_text()
+        assert expected_rate_difference(data["metrics"][key], "Viareggio", "femmine") in panel.inner_text()
+        assert_demographic_benchmark(panel, data["metrics"][key], "femmine", "Femmine")
         assert_no_footer_overlap(page)
         assert page.get_by_text("Dettagli sanitari aggiuntivi", exact=True).count() == 0
         page.screenshot(path=str(screenshots / "viareggio-mortalita-circolatoria-sesso.png"), full_page=True)
@@ -187,18 +196,36 @@ def main() -> int:
         # MaCro: age x sex selectors and Tuscany update with the chosen demographic slice.
         key = "hypertensionPrevalence"
         open_metric(page, base, key)
-        assert page.get_by_text("Dettaglio per fascia d’età e sesso", exact=True).count() == 1
         age_select = town_age_select(page)
         gender_select = town_gender_select(page)
         assert [option.get_attribute("value") for option in age_select.locator("option").all()] == ["totale", "16-44", "45-64", "65-84", "85+"]
         assert {option.get_attribute("value") for option in gender_select.locator("option").all()} == {"totale", "maschi", "femmine"}
-        table_text = page.locator("#town-topic .health-demographic-table").inner_text()
-        table_folded = table_text.casefold()
-        for label in ("16–44 anni", "45–64 anni", "65–84 anni", "85+ anni", "Totale", "Maschi", "Femmine"):
-            assert label.casefold() in table_folded, (label, table_text)
-        # Structural standardized zeroes from the ARS export must never be rendered
-        # as actual age-specific rates: the materializer uses misura_grezza here.
-        assert "0,00 ogni 1.000" not in table_text, table_text
+        # A5 exposes demographic cells through the shared controls. Exercise
+        # every cell, including the raw age-specific measures replacing native
+        # structural standardized zeroes, against its source-backed component.
+        metric = data["metrics"][key]
+        row = next(item for item in metric["rows"] if item["town"] == "Viareggio")
+        ages = [(option.get_attribute("value"), option.inner_text())
+                for option in age_select.locator("option").all()]
+        genders = [(option.get_attribute("value"), option.inner_text())
+                   for option in gender_select.locator("option").all()]
+        for age, age_label in ages:
+            age_select.select_option(age)
+            for gender, gender_label in genders:
+                gender_select.select_option(gender)
+                page.wait_for_timeout(150)
+                choice = f"{age}|{gender}"
+                part = part_by_key(row, choice)
+                assert part["unit"] == "per1000"
+                if age != "totale":
+                    assert part["measurement"] == "raw"
+                    assert part["value"] == part["raw"]
+                primary_text = page.locator("#town-topic .town-metric-primary").inner_text()
+                assert f"{italian_decimal(part['value'])} ogni 1.000" in primary_text, primary_text
+                assert_demographic_benchmark(
+                    page.locator("#town-topic .versilia-position"), metric,
+                    choice, f"{age_label} · {gender_label}",
+                )
         assert_tuscany_visible(page)
         age_select.select_option("65-84")
         gender_select.select_option("femmine")
@@ -217,10 +244,12 @@ def main() -> int:
         # Legacy ARS metric: enrichment must also apply to indicators already in the catalogue.
         key = "diabetes"
         open_metric(page, base, key)
-        assert page.get_by_text("Dettaglio per fascia d’età e sesso", exact=True).count() == 1
         town_age_select(page)
         town_gender_select(page)
-        assert "0,00 ogni 1.000" not in page.locator("#town-topic .health-demographic-table").inner_text()
+        assert_demographic_benchmark(
+            page.locator("#town-topic .versilia-position"), data["metrics"][key],
+            "totale|totale", "Totale · Totale",
+        )
         assert_tuscany_visible(page)
         page.screenshot(path=str(screenshots / "viareggio-diabete-demografia.png"), full_page=True)
         report["checks"].append({key: "legacy-age-sex-Tuscany-pass"})
@@ -228,12 +257,29 @@ def main() -> int:
         # Life expectancy already had sex history: enrichment must preserve it and add Tuscany.
         key = "lifeExpectancy"
         open_metric(page, base, key)
-        assert page.get_by_text("Dettaglio per sesso", exact=True).count() == 1
-        assert page.get_by_text("Storico · Totale", exact=True).count() == 1
+        history = page.locator("#town-topic .history-panel .ux-view-shell")
+        assert history.locator('[data-view-mode="history"]').is_enabled()
+        history.locator('[data-view-mode="history"]').click()
+        assert history.locator('[data-view-pane="history"]').is_visible()
+        expected_towns = {row["slug"] for row in data["metrics"][key]["rows"]} | {"versilia"}
+        history_towns = history.locator(".ux-series-group").evaluate_all(
+            "els => els.map(el => el.dataset.historyTown)"
+        )
+        assert len(history_towns) == len(expected_towns) and set(history_towns) == expected_towns
+        years = data["metrics"][key]["rows"][0]["series"]["years"]
+        assert part_by_key(data["metrics"][key]["aggregate"], "totale")["series"]["years"] == years
+        assert f"{years[0]}–{years[-1]}" in history.locator(".ux-history-head").inner_text()
+        history.locator('[data-view-mode="current"]').click()
+        assert_demographic_benchmark(
+            page.locator("#town-topic .versilia-position"), data["metrics"][key], "totale", "Totale"
+        )
         sex_select = town_sex_select(page)
         sex_select.select_option("femmine")
         page.wait_for_timeout(150)
         assert "Toscana · Femmine" in page.locator("#town-topic .versilia-position").inner_text()
+        assert_demographic_benchmark(
+            page.locator("#town-topic .versilia-position"), data["metrics"][key], "femmine", "Femmine"
+        )
         page.screenshot(path=str(screenshots / "viareggio-speranza-vita-sesso.png"), full_page=True)
         report["checks"].append({key: "existing-sex-history-Tuscany-pass"})
 

@@ -1,0 +1,76 @@
+name: A3 Benchmark candidate acquisition fan-out
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: a3-benchmark-candidate-acquisition-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - profile: istat-business-annual
+            script: scripts/acquire_a3_benchmark_frame_sbs_candidates.py
+          - profile: mim-school-year
+            script: scripts/acquire_a3_benchmark_mim_candidates.py
+          - profile: mef-irpef-annual
+            script: scripts/acquire_a3_benchmark_mef_candidates.py
+          - profile: istat-demography-annual
+            script: scripts/acquire_a3_benchmark_demography_candidates.py
+          - profile: istat-census-annual
+            script: scripts/acquire_a3_benchmark_census_candidates.py
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install acquisition dependencies
+        run: python -m pip install requests openpyxl
+      - name: Compile acquisition parser
+        run: python -m py_compile "${{ matrix.script }}"
+      - name: Acquire candidate benchmark snapshot
+        run: |
+          mkdir -p reports/a3-benchmark-candidates
+          python "${{ matrix.script }}" \
+            --output "reports/a3-benchmark-candidates/${{ matrix.profile }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-candidate-${{ matrix.profile }}
+          path: reports/a3-benchmark-candidates/${{ matrix.profile }}.json
+          if-no-files-found: error
+
+  fan-in:
+    needs: acquire
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: a3-benchmark-candidate-*
+          path: /tmp/a3-benchmark-candidates
+          merge-multiple: true
+      - name: Build candidate acquisition summary
+        run: |
+          mkdir -p reports
+          python scripts/a3_candidate_acquisition_summary.py \
+            --input-dir /tmp/a3-benchmark-candidates \
+            --json-output reports/a3-benchmark-candidate-summary.json \
+            --markdown-output reports/A3_BENCHMARK_CANDIDATE_SUMMARY.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-candidate-summary
+          path: |
+            reports/a3-benchmark-candidate-summary.json
+            reports/A3_BENCHMARK_CANDIDATE_SUMMARY.md
+          if-no-files-found: error

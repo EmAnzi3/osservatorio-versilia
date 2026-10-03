@@ -52,8 +52,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 2
+      - id: diff
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "pull_request" || "${{ github.event.action }}" != "synchronize" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only HEAD^ HEAD > /tmp/changed-files
+          if grep -Eq '^(scripts/monthly_data_check\.py|scripts/monthly_data_check_coverage\.py|scripts/monthly_data_check_status\.py|scripts/source_monitor_runner\.py|scripts/source_monitor_strategy\.py|scripts/materialize_source_monitor_snapshot\.py|scripts/build_static_brand\.py|scripts/build_static_brand_impl\.py|scripts/data_status_model\.py|scripts/pnrr_toscana_audit\.py|scripts/source_policy\.py|scripts/test_monthly_data_check\.py|scripts/test_source_monitor_public_partial\.py|scripts/test_source_monitor_depth\.py|scripts/test_source_monitor_strategy\.py|scripts/test_pnrr_toscana_audit\.py|scripts/test_pnrr_status_integration\.py|scripts/restore_partial_agcom_metrics\.py|ci/build-materialization-contract\.json|data/source-registry\.json|data/source-monitor-state\.json|data/site-data\.json)' /tmp/changed-files; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat /tmp/changed-files
+
   check:
-    if: github.event_name != 'workflow_dispatch' || inputs.run_check == true
+    needs: changes
+    if: needs.changes.outputs.run == 'true' && (github.event_name != 'workflow_dispatch' || inputs.run_check == true)
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

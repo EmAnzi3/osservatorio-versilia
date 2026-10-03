@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Istat — Spesa dei Comuni per i servizi sociali",
+  "profileId": "istat-social-services-annual",
+  "referenceYear": 2022,
+  "status": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.istat.it/comunicato-stampa/la-spesa-dei-comuni-per-i-servizi-sociali-anno-2022/",
+  "municipalDataUrl": "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx",
+  "benchmarkDataUrl": "https://www.istat.it/wp-content/uploads/2025/09/Tavole_2022_spesa_comuni-1.xlsx",
+  "benchmarks": {
+    "socialSpendingPerResident": {
+      "year": "2022",
+      "unit": "eurPerResident",
+      "formula": "spesa per interventi e servizi sociali dei comuni singoli e associati / popolazione residente media",
+      "tuscany": 167,
+      "italy": 150
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "1 metric × 7/7 towns PASS against Istat A misura di Comune",
+    "officialBenchmarkRows": "Toscana + Italia PASS from Tav. 1, municipal social expenditure only",
+    "definitionControl": "includes early-childhood educational services, matching public metric caveat",
+    "errors": []
+  },
+  "evidence": {
+    "municipalRows": {
+      "Massarosa": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4414,
+        "value": 97.68949478749
+      },
+      "Viareggio": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4427,
+        "value": 180.39130684381
+      },
+      "Camaiore": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4403,
+        "value": 135.761135953558
+      },
+      "Pietrasanta": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4420,
+        "value": 132.287484510533
+      },
+      "Seravezza": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4424,
+        "value": 132.229263971654
+      },
+      "Forte dei Marmi": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4410,
+        "value": 278.554478367819
+      },
+      "Stazzema": {
+        "sheet": "Tav. 2.1 Comuni",
+        "row": 4425,
+        "value": 84.7036587480492
+      }
+    },
+    "benchmarkRows": {
+      "tuscany": {
+        "sheet": "Tav. 1",
+        "row": 14,
+        "values": [
+          "Toscana",
+          null,
+          null,
+          611729248,
+          494089116,
+          167,
+          135,
+          null
+        ]
+      },
+      "italy": {
+        "sheet": "Tav. 1",
+        "row": 31,
+        "values": [
+          "ITALIA",
+          null,
+          null,
+          8868716939,
+          7505966200,
+          150,
+          127,
+          null
+        ]
+      }
+    },
+    "municipalBytes": 1449160,
+    "benchmarkBytes": 365089
+  },
+  "blocked": {
+    "socialSpendingByUserArea": "metrica composita a 7 aree di utenza; meta.benchmark scalare unico non è compatibile con il selettore per componente"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-ispra-environment-benchmark-2024-v2",
+  "retrieved": "2026-10-02",
+  "publisher": "ISPRA — Catasto Nazionale Rifiuti",
+  "sourceProfileId": "ispra-environment-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "4 metrics × 7/7 towns PASS",
+    "nationalControl": "107 righe provinciali ufficiali ISPRA 2024 riconciliate",
+    "errors": []
+  },
+  "benchmarks": {
+    "recycling": {
+      "year": "2024",
+      "unit": "percent",
+      "formula": "Σ RD / Σ RU × 100, aggregazione quantità provinciali ISPRA",
+      "tuscany": 68.06818821756305,
+      "italy": 67.68674612460485
+    },
+    "wastePerResident": {
+      "year": "2024",
+      "unit": "kgPerResident",
+      "formula": "Σ RU (t) × 1000 / Σ popolazione, aggregazione provinciale ISPRA",
+      "tuscany": 589.9885520621804,
+      "italy": 507.9021049364955
+    },
+    "residualWaste": {
+      "year": "2024",
+      "unit": "kgPerResident",
+      "formula": "(Σ RU - Σ RD) (t) × 1000 / Σ popolazione, aggregazione provinciale ISPRA",
+      "tuscany": 188.39403398242044,
+      "italy": 164.1196966066057
+    }
+  },
+  "components": {
+    "tuscany": {
+      "population": 3660834,
+      "rdTonnes": 1470170.866,
+      "ruTonnes": 2159850.151
+    },
+    "italy": {
+      "population": 58934177,
+      "rdTonnes": 20260533.302,
+      "ruTonnes": 29932792.551,
+      "provinceCount": 107
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36968639730,
+    "artifactId": 11210583238,
+    "head": "0a147f1fe1a154cf6e3ec86f48c4803b557c3da6"
+  }
+}

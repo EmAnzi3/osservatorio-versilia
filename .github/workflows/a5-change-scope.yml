@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   scope-lock:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'feat/a5-controlled-iteration'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
