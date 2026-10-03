@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/salute-v140-gate.yml'
       - 'scripts/acquire_a3_benchmark_istat_tourism_annual.py'
+      - 'scripts/acquire_a3_benchmark_regione_toscana_tourism_annual.py'
+      - 'data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json'
       - 'scripts/materialize_a3_benchmark_fanin_pass.py'
       - 'data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json'
       - 'scripts/materialize_salute_v140.py'

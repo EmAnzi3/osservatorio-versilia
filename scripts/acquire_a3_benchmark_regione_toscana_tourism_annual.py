@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, io, json, math, zipfile
+import argparse, hashlib, io, json, math, zipfile
 from pathlib import Path
 from typing import Any
 import requests
@@ -140,9 +140,128 @@ def capacity_component(
         raise RuntimeError(f"{metric_id}: aggregato Toscana non univoco col={col}, values={distinct[:30]}")
     return {"column":col,"townAbsolute":values,"tuscanyAbsolute":distinct[0]}
 
+HISTORY_SNAPSHOT = "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json"
+HISTORY_URLS = {
+    2023: "https://www.regione.toscana.it/documents/10180/11976751/Movimento%2Bper%2Bcomune%2B2023.xlsx/68162001-ccd5-6879-81c9-99639ee947bb?t=1709731593776",
+    2024: "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2024-ods",
+    2025: URLS["movement"],
+}
+HISTORY_METRICS = ("tourismArrivals", "tourismPresences", "tourismAverageStay", "foreignTourismShare")
+
+
+def parse_movement_history(bodies: dict[int, bytes], towns: dict[str, str]) -> dict:
+    """Read three small municipal tables; preserve the native counts and provenance."""
+    if set(bodies) != set(HISTORY_URLS):
+        raise RuntimeError("Movement history source periods mismatch")
+    annual = {}
+    sources = {}
+    for year, body in sorted(bodies.items()):
+        if year == 2023:
+            from openpyxl import load_workbook
+            book = load_workbook(io.BytesIO(body), read_only=True, data_only=True)
+            try:
+                rows = [list(row) for row in book.active.iter_rows(values_only=True)]
+            finally:
+                book.close()
+        else:
+            rows = ods_rows(body)
+        header = " ".join(str(cell or "") for row in rows[:6] for cell in row).casefold()
+        if str(year) not in header or "al netto delle locazioni" not in header:
+            raise RuntimeError("Movement history source scope/year mismatch")
+        annual[str(year)] = {}
+        for code, town in towns.items():
+            hits = [row for row in rows if len(row) >= 8 and str(row[1] or "").strip().casefold() == town.casefold()]
+            if len(hits) != 1:
+                raise RuntimeError(f"Movement history municipality not unique: {year}/{town}")
+            counts = []
+            for value in hits[0][2:8]:
+                x = number(value, f"{year}/{town}")
+                if x < 0 or not x.is_integer():
+                    raise RuntimeError("Movement history count invalid")
+                counts.append(int(x))
+            ai, af, arrivals, pi, pf, presences = counts
+            if ai + af != arrivals or pi + pf != presences or arrivals <= 0 or presences <= 0:
+                raise RuntimeError("Movement history component totals mismatch")
+            annual[str(year)][code] = {"arrivals": arrivals, "presences": presences, "foreignPresences": pf}
+        sources[str(year)] = {"url": HISTORY_URLS[year], "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body)}
+    return {"years": sorted(bodies), "scope": "al netto delle locazioni", "sources": sources, "countsByYear": annual}
+
+
+def apply_movement_history(metric: dict, snapshot: dict) -> None:
+    history = snapshot.get("municipalMovementHistory")
+    if history is None:
+        return
+    mid = metric["meta"]["key"]
+    if mid not in HISTORY_METRICS or str(metric["meta"]["year"]) != "2025":
+        raise RuntimeError("Movement history metric/year mismatch")
+    years = history.get("years")
+    if years != [2023, 2024, 2025] or history.get("scope") != "al netto delle locazioni":
+        raise RuntimeError("Movement history period/scope mismatch")
+    rows = metric["rows"]
+    codes = {r["code"] for r in rows}
+    if len(rows) != 7 or len(codes) != 7 or set(history["countsByYear"]) != {str(y) for y in years}:
+        raise RuntimeError("Movement history public scope mismatch")
+    values = {code: [] for code in codes}
+    aggregate_values = []
+    for year in years:
+        provenance = history["sources"][str(year)]
+        if provenance["url"] != HISTORY_URLS[year] or len(provenance["sha256"]) != 64 or any(c not in "0123456789abcdef" for c in provenance["sha256"]) or provenance["bytes"] <= 0:
+            raise RuntimeError("Movement history provenance invalid")
+        counts = history["countsByYear"][str(year)]
+        if set(counts) != codes:
+            raise RuntimeError("Movement history annual coverage mismatch")
+        for code, components in counts.items():
+            if set(components) != {"arrivals", "presences", "foreignPresences"}:
+                raise RuntimeError("Movement history components missing")
+            a, p, f = (components[k] for k in ("arrivals", "presences", "foreignPresences"))
+            if any(isinstance(v, bool) or not isinstance(v, int) or v < 0 for v in (a, p, f)) or a <= 0 or p <= 0 or f > p:
+                raise RuntimeError("Movement history components invalid")
+            values[code].append({"tourismArrivals": a, "tourismPresences": p,
+                                 "tourismAverageStay": p / a, "foreignTourismShare": round(f / p * 100, 1)}[mid])
+        total_a = sum(c["arrivals"] for c in counts.values())
+        total_p = sum(c["presences"] for c in counts.values())
+        # The current public foreign share weights municipal percentages rounded to one decimal.
+        aggregate_values.append({"tourismArrivals": total_a, "tourismPresences": total_p,
+                                 "tourismAverageStay": total_p / total_a,
+                                 "foreignTourismShare": sum(values[code][-1] * counts[code]["presences"] for code in codes) / total_p}[mid])
+    metadata = {"source": snapshot["publisher"], "sourceUrl": snapshot["sourceUrl"],
+                "sourceSnapshot": HISTORY_SNAPSHOT,
+                "note": "Movimento turistico 2023–2025 al netto delle locazioni; tavole regionali provvisorie fino alla diffusione Istat. Quota estera comunale arrotondata a un decimale; quota Versilia ponderata sulle presenze con lo stesso criterio del valore corrente."}
+    candidates = [(row, values[row["code"]]) for row in rows] + [(metric["aggregate"], aggregate_values)]
+    for holder, observations in candidates:
+        if not math.isclose(observations[-1], holder["value"], rel_tol=0, abs_tol=1e-9):
+            raise RuntimeError("Movement history latest public value mismatch")
+        existing = holder.get("series") or {}
+        old_years, old_values = existing.get("years", []), existing.get("values", [])
+        if len(old_years) != len(old_values) or any(y not in years or not math.isclose(v, observations[years.index(y)], rel_tol=0, abs_tol=1e-9) for y, v in zip(old_years, old_values)):
+            raise RuntimeError("Movement history conflicts with existing public series")
+    for holder, observations in candidates:
+        holder["series"] = {"years": years, "values": observations, **metadata}
+
+
+def acquire_movement_history(site: dict) -> dict:
+    bodies = {}
+    for year, url in HISTORY_URLS.items():
+        response = requests.get(url, timeout=45)
+        response.raise_for_status()
+        if len(response.content) > 2 * 1024 * 1024:
+            raise RuntimeError("Movement history source exceeds simple-table size limit")
+        bodies[year] = response.content
+    towns = {row["code"]: row["town"] for row in site["metrics"]["tourismArrivals"]["rows"]}
+    return parse_movement_history(bodies, towns)
+
+
 def main()->None:
-    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); a=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); ap.add_argument("--history-only", action="store_true"); a=ap.parse_args()
     site=json.loads(SITE.read_text(encoding="utf-8"))
+    if a.history_only:
+        payload = json.loads((ROOT / HISTORY_SNAPSHOT).read_text(encoding="utf-8"))
+        payload["municipalMovementHistory"] = acquire_movement_history(site)
+        for mid in HISTORY_METRICS:
+            apply_movement_history(site["metrics"][mid], payload)
+        Path(a.output).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print("Movement history PASS: 2023–2025 × 7 municipalities; four metrics reconciled")
+        return
     demo=json.loads(DEMO.read_text(encoding="utf-8"))
     movement,mb=fetch(URLS["movement"]); monthly,monb=fetch(URLS["monthly"]); capacity,capb=fetch(URLS["capacity"]); rentals,renb=fetch(URLS["rentals"])
     mi=find_rows(movement); mo=find_rows(monthly)
