@@ -65,3 +65,5 @@ scripts/test_visual_regression.py
 scripts/opportunity_shadow_compare.py
 scripts/test_opportunity_shadow_compare.py
 scripts/test_opportunity_daily_v2_shadow.py
+scripts/materialize_a3_simple_rcs_history.py
+scripts/materialize_a3_simple_mef_history.py

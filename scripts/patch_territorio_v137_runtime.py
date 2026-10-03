@@ -333,15 +333,18 @@ def main() -> None:
     ux_history = patch_function(ux_history, "refreshTownCompositeCurrent", lambda b: edit_line_once(b, "includes(metric?.meta?.compositeType)) return;", lambda line: line.replace("'sexBreakdown']", "'sexBreakdown','soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile']", 1), "refresh corrente territorio"))
 
     def ux_enhance_compare(b: str) -> str:
-        return edit_line_once(b, "const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown'", lambda line: line.replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico compare territorio")
+        return edit_line_once(b, "const selectedChoice =", lambda line: line.replace("hasComponentHistory(selected.metric) ? currentCompositeChoice() : null", "(hasComponentHistory(selected.metric) || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1).replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico compare territorio")
     ux_history = patch_function(ux_history, "enhanceCompare", ux_enhance_compare)
 
     def ux_enhance_town(b: str) -> str:
-        b = edit_line_once(b, "const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown'", lambda line: line.replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico town territorio")
+        b = edit_line_once(b, "const selectedChoice =", lambda line: line.replace("hasComponentHistory(selected.metric) ? currentCompositeChoice() : null", "(hasComponentHistory(selected.metric) || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1).replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico town territorio")
         return insert_after_line(b, "wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);", "    panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\n", "tooltip fixed detail territorio")
     ux_history = patch_function(ux_history, "enhanceTown", ux_enhance_town)
 
-    ux_history = replace_once(ux_history, "      if (metric.meta?.compositeType === 'sexBreakdown') {\n", "      if (metric.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(metric)) {\n", "aggiorna storico town al cambio lettura territorio")
+    if "      if (hasComponentHistory(metric)) {\n" in ux_history:
+        ux_history = replace_once(ux_history, "      if (hasComponentHistory(metric)) {\n", "      if (hasComponentHistory(metric) || isTerritoryProfileHistoryMetric(metric)) {\n", "aggiorna storico town al cambio lettura territorio")
+    else:
+        ux_history = replace_once(ux_history, "      if (metric.meta?.compositeType === 'sexBreakdown') {\n", "      if (metric.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(metric)) {\n", "aggiorna storico town al cambio lettura territorio")
 
     APP00.write_text(app00, encoding="utf-8")
     APP03.write_text(app03, encoding="utf-8")

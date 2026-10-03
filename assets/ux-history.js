@@ -310,7 +310,7 @@
     }
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const selectedChoice = hasComponentHistory(selected.metric) ? currentCompositeChoice() : null;
     const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : selectedChoice;
     const historyView = historyMetric(historyChoice ? compositeChoiceMetric(selected.metric, historyChoice) : selected.metric);
     const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
@@ -403,8 +403,10 @@
       clone.rows = metric.rows.map(row => {
         const value = Number(count ? row.count : row.value);
         const formatted = !Number.isFinite(value) ? 'n.d.' : count ? whole0.format(value) : `${percent1.format(value)}%`;
-        return { ...row, value, formatted };
+        const series = row.componentSeries?.[count ? 'count' : 'share'] || (count ? null : row.series);
+        return { ...row, value, formatted, series };
       });
+      clone.aggregate = { ...metric.aggregate, value:count ? metric.aggregate?.count : metric.aggregate?.value, series:metric.aggregate?.componentSeries?.[count ? 'count' : 'share'] || (count ? null : metric.aggregate?.series) };
       return clone;
     }
     if (metric.meta.compositeType === 'omi') {
@@ -454,8 +456,12 @@
     currentPane.dataset.compositeChoice = resolvedChoice;
   }
 
+  function hasComponentHistory(metric) {
+    return metric?.meta?.compositeType === 'sexBreakdown' || Boolean(metric?.rows?.some(row => row.componentSeries));
+  }
+
   function currentCompositeChoice() {
-    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || 'summary';
+    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || document.querySelector('button[data-composite-choice].active')?.dataset.compositeChoice || 'summary';
   }
 
   function withOfficialVersiliaSeries(metric, series) {
@@ -520,7 +526,7 @@
     }
 
     const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
-    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const selectedChoice = hasComponentHistory(selected.metric) ? currentCompositeChoice() : null;
     const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
     const selectedRow = historyView.rows?.find(row => (row.slug || '') === selectedTown);
     const series = selectedRow?.notApplicable
@@ -570,7 +576,7 @@
       if (!metric || !shell) return;
       const choice = event.detail?.choice || 'summary';
       refreshTownCompositeCurrent(data, metric, shell, document.body.dataset.town || '', choice);
-      if (metric.meta?.compositeType === 'sexBreakdown') {
+      if (hasComponentHistory(metric)) {
         const selectedTown = document.body.dataset.town || '';
         const historyView = historyMetric(compositeChoiceMetric(metric, choice));
         const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));

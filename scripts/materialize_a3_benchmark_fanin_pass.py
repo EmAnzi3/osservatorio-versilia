@@ -228,6 +228,10 @@ def main() -> None:
     site = load(SITE)
     validate_agriculture_public(site)
     metrics = site.get("metrics") or {}
+    from materialize_a3_simple_rcs_history import apply_history as apply_rcs_history
+    from materialize_a3_simple_mef_history import apply_history as apply_mef_history
+    apply_rcs_history(site)
+    apply_mef_history(site)
     published: list[str] = []
     already_present: list[str] = []
 
