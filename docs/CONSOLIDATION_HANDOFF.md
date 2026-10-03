@@ -4,7 +4,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 ## Lotto semplice storici — 03-10-2026
 
-- Branch `feat/a3-simple-histories`, derivato dall'head verde `008e005` della #304. La #304 resta OPEN/DRAFT/non mergiata e non viene riaperta con nuove modifiche.
+- Branch `feat/a3-simple-histories`, PR #318 OPEN/DRAFT, derivato dall'head verde `008e005` della #304. La #304 resta OPEN/DRAFT/non mergiata e non viene riaperta con nuove modifiche. Il gate canonico esistente include nei filtri i tre file A3 del lotto, per verificarne automaticamente aggiornamenti di codice e snapshot.
 - Primo candidato verificato: `tourismBeds`, 23 annualità native Istat 2002–2024 × 7 Comuni; ultimo anno riconciliato esattamente 7/7 e totale Versilia invariato. ZIP originale SHA `5de31720aa38b30ee03f74d79e0d6ed878111b4e36c2ab7ce0b40d3d47420ce1`, già certificato per il benchmark. Fonte/snapshot vengono propagati alla serie pubblica tramite il fan-in esistente; nessun nuovo renderer.
 - Esclusi dal lotto semplice `cohabitingHouseholds` e `householdSize`: i rifiuti già documentati nello snapshot Istat 2021/2023 impediscono un raccordo esatto. Non ricostruire. Fasce d'età storiche: lo snapshot conserva bande più larghe di quelle pubbliche, quindi non concatenare.
 - Nessun nuovo benchmark acquisito. Le densità turistiche storiche restano escluse da questo lotto: richiedono popolazioni annuali coerenti. Il 2025 dei posti letto resta escluso per cambio di perimetro.

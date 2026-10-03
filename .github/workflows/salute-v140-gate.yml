@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - '.github/workflows/salute-v140-gate.yml'
+      - 'scripts/acquire_a3_benchmark_istat_tourism_annual.py'
+      - 'scripts/materialize_a3_benchmark_fanin_pass.py'
+      - 'data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json'
       - 'scripts/materialize_salute_v140.py'
       - 'scripts/materialize_salute_demographics_v140.py'
       - 'scripts/patch_salute_v140_runtime.py'
