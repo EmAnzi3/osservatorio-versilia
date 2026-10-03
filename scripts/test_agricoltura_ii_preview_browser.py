@@ -23,7 +23,7 @@ def assert_no_simple_mean_benchmark(text: str) -> None:
 def compare_row(page, town: str):
     """Return a live locator for a town row across chart re-renders."""
     label = page.locator("#compare-bars .bar-row .bar-town").filter(
-        has_text=re.compile(rf"^\\s*{re.escape(town)}\\s*$")
+        has_text=re.compile(rf"^\s*{re.escape(town)}\s*$")
     ).first
     label.wait_for(state="visible")
     return label.locator(
@@ -36,7 +36,7 @@ def town_current_row(page, town: str):
         '.history-panel [data-view-pane="current"] .bar-row .bar-town, '
         '.history-panel [data-view-pane="current"] .ux-bar-row .ux-bar-town'
     ).filter(
-        has_text=re.compile(rf"^\\s*{re.escape(town)}\\s*$")
+        has_text=re.compile(rf"^\s*{re.escape(town)}\s*$")
     ).first
     label.wait_for(state="visible")
     return label.locator(
