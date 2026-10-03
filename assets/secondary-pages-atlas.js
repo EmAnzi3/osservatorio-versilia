@@ -52,8 +52,8 @@
     .atlas-export-actions button{
       min-height:30px!important;display:inline-flex!important;align-items:center!important;
       justify-content:center!important;border:1px solid #c9d3d1!important;
-      border-radius:7px!important;background:#fbf7f0!important;color:#102f45!important;
-      padding:5px 8px!important;font-size:7px!important;font-weight:760!important;
+      border-radius:9px!important;background:#fbf7f0!important;color:#102f45!important;
+      padding:9px 11px!important;font-size:10px!important;font-weight:760!important;
       line-height:1!important;white-space:nowrap!important
     }
     .atlas-export-actions button:hover,.atlas-export-actions button:focus-visible{
