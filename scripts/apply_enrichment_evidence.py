@@ -487,6 +487,16 @@ EVIDENCE.update(
             },
         },
         "istat-tourism-annual": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Il workbook ufficiale Istat Capacità comunale 2002-2025.xlsx, identificato per hash nello snapshot a3-istat-tourism-capacity-benchmark-2024.json, contiene anni e codici comunali per posti letto e consistenza degli esercizi. Le densità comunali pubbliche sono riconciliate sul 2024 e residenti 01-01-2026; una serie annuale richiede raccordo territoriale e denominatori espliciti ed è ancora da materializzare. Il perimetro ampliato dal 2025 non va concatenato senza controllo.",
+                "sourceReference": "https://esploradati.istat.it/databrowser/DWL/Servizi/DCSC%20Capacity%20of%20tourist%20accommodation%20municipal.zip",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "Il workbook ufficiale Istat Capacità comunale 2002-2025.xlsx contiene consistenza e posti letto per tipologia, inclusi totali alberghieri ed extra-alberghieri verificati dal parser nativo. Nel pannello 2024 congelato hotelBeds + otherBeds coincide con beds in tutti i 7.899 record. Le due densità pubbliche usano oggi il totale: i rapporti per categoria, con lo stesso denominatore demografico esplicito, non sono materializzati nella loro metrica.",
+                "sourceReference": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+            },
             "frequenza_infra_annuale": {
                 "state": UNAVAILABLE,
                 "evidence": "La rilevazione Istat sulla Capacità degli esercizi ricettivi è definita con periodicità annuale e misura la capacità lorda riferita all'anno. Non pubblica una misura infra-annuale equivalente dei posti letto della stessa rilevazione.",
@@ -564,13 +574,13 @@ METRIC_EVIDENCE.update(
         "tourismStructuresPer1000": {
             "assoluto_normalizzato": {
                 "state": AVAILABLE,
-                "evidence": "Regione Toscana pubblica per il 2025 la consistenza delle strutture ricettive per Comune e tipologia. La pipeline conserva la densità 2025 ogni 1.000 residenti, mentre il conteggio strutturato presente nel dettaglio canonico è riferito al 2024 e non è quindi un assoluto comparabile già acquisito per il target 2025.",
-                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+                "evidence": "Il pannello comunale Istat 2024 congelato per il benchmark contiene i conteggi delle strutture ricettive. La densità pubblica è riconciliata 7/7 con tali conteggi / residenti al 01-01-2026; l'assoluto 2024 deve essere esposto come componente della stessa metrica prima di dichiararlo acquisito, senza usare il perimetro ampliato 2025.",
+                "sourceReference": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
             },
             "numeratore_denominatore": {
                 "state": AVAILABLE,
-                "evidence": "La tabella ufficiale Toscana 2025 espone la consistenza delle strutture ricettive per Comune e tipologia, quindi il numeratore 2025 è disponibile alla fonte; il denominatore demografico è governato separatamente. La pipeline non conserva oggi il numeratore 2025 come componente strutturata della metrica.",
-                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+                "evidence": "Il pannello Istat 2024 verificato contiene il numeratore strutture e lo snapshot demografico governato contiene residenti 01-01-2026. Entrambi riconciliano la densità pubblica 7/7, ma non sono ancora esposti come componenti strutturate della metrica; la mera presenza nel pannello di benchmark non equivale all'acquisizione pubblica della dimensione.",
+                "sourceReference": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
             },
         },
         "roadFinesPerResident": {

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-frame-sbs-benchmark-2023-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "Istat",
+  "sourceUrl": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+  "archiveUrl": "https://www.istat.it/wp-content/uploads/2026/01/Tavole.zip",
+  "archiveMember": "Tavole/1. Appendice Statistica Frame territoriale.xlsx",
+  "sheet": "Tav.1 Regioni",
+  "title": "Tavola 1 - Principali aggregati e indicatori economici per regione. Anno 2023",
+  "unitScope": "Totale attività economiche del Frame SBS Territoriale, coerente con le metriche pubbliche del lotto Economia prodotta.",
+  "raw": {
+    "columns": [
+      "Regione",
+      "Numero unità locali",
+      "Addetti",
+      "Dipendenti",
+      "Retribuzioni (migliaia di euro)",
+      "Costo del lavoro (migliaia di euro)",
+      "Valore aggiunto (migliaia di euro)",
+      "Fatturato (migliaia di euro)",
+      "Acquisti di beni e servizi (migliaia di euro)",
+      "Valore aggiunto per addetto (migliaia di euro)",
+      "Valore aggiunto sul fatturato (%)",
+      "Acquisti di beni e servizi sul fatturato (%)",
+      "Retribuzione sul valore aggiunto (%)",
+      "Retribuzione per dipendente (migliaia di euro)"
+    ],
+    "Toscana": [
+      "Toscana",
+      356940,
+      1248484,
+      890028,
+      23947481,
+      33340461,
+      69672281,
+      253618756,
+      183373317,
+      55.805,
+      27.5,
+      72.3,
+      34.4,
+      26.906
+    ],
+    "Italia": [
+      "ITALIA",
+      5002251,
+      18106468,
+      13386864,
+      382185935,
+      529752138,
+      1073432866,
+      4217974284,
+      3091693367,
+      59.284,
+      25.4,
+      73.3,
+      35.6,
+      28.549
+    ]
+  },
+  "benchmarks": {
+    "businessTurnover": {
+      "unit": "millionCurrency",
+      "tuscany": 253618.756,
+      "italy": 4217974.284,
+      "derivation": "Fatturato (migliaia di euro) / 1.000"
+    },
+    "businessValueAdded": {
+      "unit": "millionCurrency",
+      "tuscany": 69672.281,
+      "italy": 1073432.866,
+      "derivation": "Valore aggiunto (migliaia di euro) / 1.000"
+    },
+    "labourCost": {
+      "unit": "millionCurrency",
+      "tuscany": 33340.461,
+      "italy": 529752.138,
+      "derivation": "Costo del lavoro (migliaia di euro) / 1.000"
+    },
+    "grossOperatingMargin": {
+      "unit": "millionCurrency",
+      "tuscany": 36331.82,
+      "italy": 543680.728,
+      "derivation": "(Valore aggiunto - costo del lavoro) / 1.000"
+    },
+    "turnoverPerPersonEmployed": {
+      "unit": "currency",
+      "tuscany": 203141.374659,
+      "italy": 232954.007596,
+      "derivation": "Fatturato (migliaia di euro) / addetti × 1.000"
+    },
+    "valueAddedTurnoverShare": {
+      "unit": "percent",
+      "tuscany": 27.5,
+      "italy": 25.4,
+      "derivation": "Valore ufficiale Istat: valore aggiunto sul fatturato (%)"
+    },
+    "averageGrossRemunerationPerEmployee": {
+      "unit": "currency",
+      "tuscany": 26906,
+      "italy": 28549,
+      "derivation": "Retribuzione per dipendente (migliaia di euro) × 1.000"
+    }
+  }
+}

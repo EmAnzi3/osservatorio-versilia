@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-famiglie-benchmark-2023-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "Istat",
+  "sourceUrl": "https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx",
+  "sheet": "Tav. 4.2 Province e regioni",
+  "title": "Numero medio di componenti per famiglia, provincia e regione. Anni 2018-2023",
+  "benchmark": {
+    "metricId": "householdSize",
+    "year": 2023,
+    "unit": "decimal",
+    "tuscany": 2.16614307090404,
+    "italy": null,
+    "sourceRow": [
+      "Centro",
+      "09",
+      "Toscana",
+      "TOTALE",
+      2.25172880307879,
+      2.23925573588827,
+      2.19459610054501,
+      2.19069948164713,
+      2.1759546003808,
+      2.16614307090404
+    ],
+    "note": "Il workbook ufficiale espone il totale regionale Toscana; non espone una riga nazionale Italia nella stessa tavola."
+  }
+}

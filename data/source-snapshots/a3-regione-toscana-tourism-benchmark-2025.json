@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-regione-toscana-tourism-benchmark-2025-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+  "sourceProfileId": "regione-toscana-tourism-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+  "sources": {
+    "movement": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+    "monthly": "https://www.regione.toscana.it/documents/d/guest/5-movimento-comune_mese-2025-agg-maggio-2026-"
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "6 metrics × 7/7 towns PASS",
+    "regionalRows": "movement + monthly Toscana PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "tourismArrivals": {
+      "year": "2025",
+      "unit": "number",
+      "tuscany": 15141534,
+      "italy": null
+    },
+    "tourismPresences": {
+      "year": "2025",
+      "unit": "number",
+      "tuscany": 45769090,
+      "italy": null
+    },
+    "tourismAverageStay": {
+      "year": "2025",
+      "unit": "nights",
+      "formula": "presenze / arrivi",
+      "tuscany": 3.022751195486534,
+      "italy": null
+    },
+    "foreignTourismShare": {
+      "year": "2025",
+      "unit": "percent",
+      "formula": "presenze straniere / presenze totali × 100",
+      "tuscany": 57.948436379224496,
+      "italy": null
+    },
+    "tourismSeasonality": {
+      "year": "2025",
+      "unit": "percent",
+      "formula": "tre mesi con più presenze / presenze annue × 100",
+      "tuscany": 48.24943209489199,
+      "italy": null
+    },
+    "tourismIntensity": {
+      "year": "2025",
+      "unit": "decimal",
+      "formula": "presenze 2025 / popolazione benchmark 2026",
+      "tuscany": 12.507874624715308,
+      "italy": null
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36935227152,
+    "artifactId": 11197591337,
+    "head": "dde26ea2e0ae1599a818ca72b712d6d2a7e6bc35"
+  }
+}

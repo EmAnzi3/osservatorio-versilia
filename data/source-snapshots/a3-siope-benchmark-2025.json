@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-siope-benchmark-2025-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "Ragioneria Generale dello Stato — OpenBDAP/SIOPE",
+  "sourceProfileId": "siope-monthly",
+  "referenceYear": 2025,
+  "sources": {
+    "spesaToscana": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/74533d22-b1c2-4d89-b1b9-b98e6c9713ff.csv",
+    "entrataToscana": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/4dbef43d-72fa-4fe2-a716-45986be658f2.csv",
+    "spesaBytes": 98028860,
+    "entrataBytes": 53007584
+  },
+  "benchmarks": {
+    "siopePayments": {
+      "year": "2025",
+      "unit": "currency",
+      "tuscany": 1958.1191725618178,
+      "italy": null
+    },
+    "currentPayments": {
+      "year": "2025",
+      "unit": "currency",
+      "tuscany": 1157.8154600138448,
+      "italy": null
+    },
+    "capitalPayments": {
+      "year": "2025",
+      "unit": "currency",
+      "tuscany": 403.926991778476,
+      "italy": null
+    },
+    "fiscalRecoveryActivity": {
+      "year": "2025",
+      "unit": "currency",
+      "tuscany": 55.21456523961948,
+      "italy": null,
+      "part": "Incassi da verifica e controllo per residente"
+    }
+  },
+  "rawTuscany": {
+    "residentPopulation2026": 3659222,
+    "siopePopulationSpesa": 3657716,
+    "siopePopulationEntrata": 3657716,
+    "municipalitiesSpesa": 273,
+    "municipalitiesEntrata": 273
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "4 metrics × 7/7 towns PASS",
+    "spesaSelectedRows": 32246,
+    "entrataSelectedRows": 16650
+  },
+  "italyPolicy": "Italia resta n.d. in questo blocco: OpenBDAP pubblica il flusso per regione; il nazionale richiede aggregazione dei dataset regionali separati.",
+  "provenance": {
+    "workflowRun": 36932987020,
+    "artifactId": 11197251074,
+    "headSha": "292d09ca199db6a115c48e08160a6fc8af36e9af"
+  }
+}

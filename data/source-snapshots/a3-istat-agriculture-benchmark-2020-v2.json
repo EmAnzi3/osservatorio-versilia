@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-agriculture-benchmark-2020-v2",
+  "retrieved": "2026-10-02",
+  "publisher": "Istat — 7° Censimento generale dell’agricoltura 2020",
+  "sourceProfileId": "istat-agriculture-census-2020",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+  "qualityGate": {
+    "status": "PASS",
+    "publicSnapshotReconciliation": "4 metrics × 7/7 towns PASS",
+    "officialTotalsControl": "localized SAU + irrigated area direct Tuscany/Italy aggregates PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "agriculturalUsedArea": {
+      "year": "2020",
+      "unit": "hectares",
+      "formula": "ARU/ALL/TOT — SAU localizzata fisicamente nel territorio",
+      "tuscany": 667001.03,
+      "italy": 12431785.2
+    },
+    "irrigatedAgriculturalArea": {
+      "year": "2020",
+      "unit": "hectares",
+      "formula": "IA — superficie irrigata delle aziende per centro aziendale",
+      "tuscany": 32736.14,
+      "italy": 2358259.76
+    }
+  },
+  "components": {
+    "tuscany": {
+      "sauLocalizedHa": 667001.03,
+      "irrigatedAreaHa": 32736.14,
+      "municipalityCoverage": 273
+    },
+    "italy": {
+      "sauLocalizedHa": 12431785.2,
+      "irrigatedAreaHa": 2358259.76
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36968639730,
+    "artifactId": 11209939069,
+    "head": "0a147f1fe1a154cf6e3ec86f48c4803b557c3da6"
+  }
+}

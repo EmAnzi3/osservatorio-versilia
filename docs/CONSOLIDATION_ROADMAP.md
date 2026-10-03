@@ -108,6 +108,8 @@ Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti 
 - [x] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
 - [x] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
 
+Nota perimetro benchmark — 03-10-2026: il proprietario limita questa fase ai valori Toscana/Italia ufficiali direttamente fruibili e agli storici già disponibili. Le ricostruzioni di pannelli territoriali, il recupero oneroso di fotografie storiche e il calcolo di aggregati mancanti non rientrano nel lavoro residuo. La fase può concludersi con confronti mancanti esplicitamente documentati: le coppie mantengono la classificazione reale della matrice e non diventano ACQUIRED o SOURCE_UNAVAILABLE per una scelta di priorità. Il residual audit continua a descrivere la copertura completa delle fonti; il suo closureReady=false non richiede ulteriori acquisizioni fuori da questo perimetro. Approvazione e merge restano necessari per la chiusura formale.
+
 Nota A3.1: la tassonomia e la semantica dei quattro stati sono definite in `docs/A3_ENRICHMENT_AUDIT.md`. Il documento è metodologico e non introduce un secondo catalogo o una matrice manuale di indicatori.
 
 Nota A3.2: la chiusura è governata dalla matrice strict derivata dall'Effective Public Catalog: 225 indicatori × 9 dimensioni = 2.025 coppie, con `unclassifiedPairCount = 0`. Il gate A3 verifica inoltre le evidenze strutturali e tutte le classificazioni esplicite; nessun `ACQUIRED` è dichiarato manualmente.

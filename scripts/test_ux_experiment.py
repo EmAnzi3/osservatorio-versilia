@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-DATA = ROOT / "data" / "site-data.json"
+DATA = DIST / "data" / "site-data.json"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -62,7 +62,8 @@ def common_years(metric: dict) -> list[str]:
         sets.append(valid)
     if not sets:
         return []
-    return sorted(set.intersection(*sets), key=lambda value: int(value))
+    # The effective catalog also carries native multi-year periods and dates.
+    return sorted(set.intersection(*sets), key=lambda value: (int(value[:4]), value))
 
 
 def static_assertions(data: dict) -> int:
@@ -102,7 +103,7 @@ def static_assertions(data: dict) -> int:
     return len(comparable)
 
 
-def browser_assertions() -> None:
+def browser_assertions(data: dict) -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args = {"headless": True}
     if chromium_path:
@@ -198,8 +199,27 @@ def browser_assertions() -> None:
             wait_until="networkidle",
         )
         page.wait_for_selector(".ux-view-shell")
+        rigid_years = common_years(data["metrics"]["rigidExpenditureShare"])
+        require(len(rigid_years) >= 2,
+                "Spese rigide: serie acquisita assente dal catalogo pubblico")
+        require(not page.locator('[data-view-mode="history"]').is_disabled(),
+                "Spese rigide: la serie acquisita deve essere consultabile")
+        page.locator('[data-view-mode="history"]').click()
+        require(page.locator(".ux-series-group").count() == 7,
+                "Spese rigide: storico comparato incompleto")
+        require(f"Andamento {rigid_years[0]}–{rigid_years[-1]}" in
+                page.locator(".ux-history-head").inner_text(),
+                "Spese rigide: intervallo diverso dalla serie pubblicata")
+
+        unavailable = next((key for key in data["themes"]["bilanci"]["metrics"]
+                            if len(common_years(data["metrics"][key])) < 2), None)
+        require(unavailable is not None,
+                "Bilanci: manca un caso senza storico per il controllo negativo")
+        page.goto(base + f"confronta/bilanci/?indicatore={unavailable}",
+                  wait_until="networkidle")
+        page.wait_for_selector(".ux-view-shell")
         require(page.locator('[data-view-mode="history"]').is_disabled(),
-                "Spese rigide: la vista storica deve restare disabilitata")
+                f"{unavailable}: storico abilitato senza due anni comuni")
 
         page.goto(
             base + "comuni/massarosa/?tema=demografia&indicatore=population",
@@ -259,7 +279,7 @@ def browser_assertions() -> None:
 def main() -> None:
     data = json.loads(DATA.read_text(encoding="utf-8"))
     comparable_count = static_assertions(data)
-    browser_assertions()
+    browser_assertions(data)
     print(
         "Esperimento UX validato: sezioni espandibili, vista attuale e storico comparato "
         f"su {comparable_count} indicatori."

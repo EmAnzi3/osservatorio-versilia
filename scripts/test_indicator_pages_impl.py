@@ -149,7 +149,7 @@ def static_checks() -> None:
 
 
 def browser_checks() -> None:
-    data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    data = json.loads((DIST / "data" / "site-data.json").read_text(encoding="utf-8"))
     unemployment_slug = slugify(data["metrics"]["unemploymentRate"]["meta"]["label"])
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
@@ -171,8 +171,28 @@ def browser_checks() -> None:
 
         page.goto(base + "indicatori/persone-con-almeno-una-patologia-cronica/", wait_until="networkidle")
         page.wait_for_selector(".indicator-page")
-        assert page.locator(".indicator-history-empty").count() == 1
+        chronic_rows = data["metrics"]["chronicTotal"]["rows"]
+        chronic_years = [str(year) for year in chronic_rows[0]["series"]["years"]]
+        assert len(chronic_years) >= 2
+        assert all([str(year) for year in row["series"]["years"]] == chronic_years
+                   for row in chronic_rows)
+        assert page.locator(".indicator-history-empty").count() == 0
+        assert page.locator(".indicator-history-table tbody tr").count() == 7
+        assert page.locator(".indicator-history-table thead th").all_text_contents() == [
+            "Comune", *chronic_years
+        ]
         assert page.locator(".benchmark-grid").count() == 1
+
+        unavailable = next(metric for metric in data["metrics"].values()
+                           if metric.get("rows") and not metric.get("dataStorage")
+                           and not metric["meta"].get("compositeType")
+                           and all(not (row.get("series") or {}).get("years")
+                                   for row in metric["rows"]))
+        page.goto(base + "indicatori/" + slugify(unavailable["meta"]["label"]) + "/",
+                  wait_until="networkidle")
+        page.wait_for_selector(".indicator-page")
+        assert page.locator(".indicator-history-empty").count() == 1
+        assert page.locator(".indicator-history-table").count() == 0
 
         page.goto(base, wait_until="networkidle")
         page.locator(".global-search-trigger").click()
