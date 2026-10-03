@@ -23044,7 +23044,7 @@
         "source": "ACI / Istat — parco veicolare",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
         {
           "town": "Massarosa",
@@ -23125,9 +23125,10 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "autovetture / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
-        "coverage": "7/7"
+        "formula": "Autovetture ACI 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Autovetture 2024 rapportate ai residenti al 1° gennaio 2026: il numeratore e il denominatore hanno periodi distinti, dichiarati e applicati anche ai benchmark.",
+        "coverage": "7/7",
+        "note": "Parco autovetture 2024 ACI Autoritratto. Il rapporto conserva la popolazione pubblica Istat al 1° gennaio 2026; stessa annualità del denominatore per Comuni, Toscana e Italia. Valori comunali riconciliati al decimale senza modificarli."
       }
     },
     "pollutingCars": {
@@ -23142,7 +23143,7 @@
         "source": "ACI / Istat — parco veicolare",
         "polarity": "negative"
       },
-      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
         {
           "town": "Massarosa",
@@ -23224,7 +23225,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "autovetture Euro 0–3 / autovetture totali × 100",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "Quota Euro 0–3 sul totale delle autovetture ACI 2024, incluse nel denominatore le classi non contemplate e non definite.",
         "coverage": "7/7"
       }
     },
