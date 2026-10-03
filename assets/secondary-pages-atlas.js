@@ -52,8 +52,8 @@
     .atlas-export-actions button{
       min-height:30px!important;display:inline-flex!important;align-items:center!important;
       justify-content:center!important;border:1px solid #c9d3d1!important;
-      border-radius:7px!important;background:#fbf7f0!important;color:#102f45!important;
-      padding:5px 8px!important;font-size:7px!important;font-weight:760!important;
+      border-radius:9px!important;background:#fbf7f0!important;color:#102f45!important;
+      padding:9px 11px!important;font-size:10px!important;font-weight:760!important;
       line-height:1!important;white-space:nowrap!important
     }
     .atlas-export-actions button:hover,.atlas-export-actions button:focus-visible{
@@ -83,6 +83,10 @@
   function apply() {
     const root = host.shadowRoot;
     if (!root) return false;
+    // The component first creates a temporary loading shadow tree and only
+    // later replaces root.innerHTML with the final Atlas markup.  Applying
+    // the adapter before .hero exists would be wiped by that replacement.
+    if (!root.querySelector(".hero")) return false;
     if (root.querySelector("#secondary-pages-atlas-ui")) return true;
     const style = document.createElement("style");
     style.id = "secondary-pages-atlas-ui";
@@ -93,10 +97,21 @@
 
   if (apply()) return;
   customElements.whenDefined("ov-economy-atlas").then(() => {
-    let tries = 0;
-    const timer = window.setInterval(() => {
-      tries += 1;
-      if (apply() || tries > 80) window.clearInterval(timer);
-    }, 50);
+    const watchFinalRender = () => {
+      if (apply()) return;
+      const root = host.shadowRoot;
+      if (!root) {
+        window.requestAnimationFrame(watchFinalRender);
+        return;
+      }
+      const observer = new MutationObserver(() => {
+        if (apply()) observer.disconnect();
+      });
+      observer.observe(root, { childList: true, subtree: true });
+      // Cover the small window between the root becoming available and the
+      // observer attachment.
+      apply();
+    };
+    watchFinalRender();
   });
 })();
