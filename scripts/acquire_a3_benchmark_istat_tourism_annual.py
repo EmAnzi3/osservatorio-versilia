@@ -17,12 +17,75 @@ def numeric(value):
     if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value<0 or value!=int(value): raise RuntimeError('Capacity missing/noninteger observation')
     return int(value)
 
+def apply_capacity_history(metric, snapshot):
+    """Publish only native municipal beds; never infer annual population ratios."""
+    history = snapshot.get('municipalBedsHistory')
+    if history is None:
+        return
+    years = history.get('years')
+    values = history.get('valuesByCode')
+    if years != list(range(2002, 2025)) or not isinstance(values, dict):
+        raise RuntimeError('Capacity history period/schema mismatch')
+    rows = metric['rows']
+    if metric['meta']['key'] != METRIC or {r['code'] for r in rows} != set(values):
+        raise RuntimeError('Capacity history municipal scope mismatch')
+    if history.get('archiveSha256') != snapshot['source']['archiveSha256']:
+        raise RuntimeError('Capacity history archive provenance mismatch')
+    for row in rows:
+        observations = values[row['code']]
+        if not isinstance(observations, list) or len(observations) != len(years):
+            raise RuntimeError('Capacity history incomplete municipality')
+        for value in observations:
+            numeric(value)
+        if observations[-1] != row['value']:
+            raise RuntimeError('Capacity history latest public value mismatch')
+    aggregate = metric['aggregate']
+    totals = [sum(values[r['code']][i] for r in rows) for i in range(len(years))]
+    if aggregate.get('label') != 'Totale Versilia' or totals[-1] != aggregate['value']:
+        raise RuntimeError('Capacity history public aggregate mismatch')
+    metadata = {'source': snapshot['publisher'], 'sourceUrl': snapshot['source']['archiveUrl'],
+                'sourceSnapshot': 'data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json',
+                'note': 'Posti letto alberghieri ed extralberghieri nella rilevazione Istat 2002–2024. Il 2025 è escluso per ampliamento del perimetro agli alloggi privati non imprenditoriali.'}
+    for holder, observations in [(r, values[r['code']]) for r in rows] + [(aggregate, totals)]:
+        candidate = {'years': years, 'values': observations, **metadata}
+        existing = holder.get('series')
+        if existing not in (None, {}) and existing != candidate:
+            raise RuntimeError('Capacity history conflicts with existing public series')
+        holder['series'] = candidate
+
 def fetch():
     request=urllib.request.Request(URL,headers={'User-Agent':'OsservatorioVersilia-A3-capacity/1.0'})
     with urllib.request.urlopen(request,timeout=300) as response:
         body=response.read(80*1024*1024+1)
     if len(body)>80*1024*1024: raise RuntimeError('Capacity archive exceeds 80 MiB')
     return body
+
+def parse_capacity_history(body, codes):
+    """Read the seven native time series, with no territorial reconstruction."""
+    from openpyxl import load_workbook
+    with zipfile.ZipFile(io.BytesIO(body)) as archive:
+        workbook = load_workbook(io.BytesIO(archive.read('Capacità comunale 2002-2025.xlsx')),
+                                 read_only=True, data_only=True)
+    years = list(range(2002, 2025))
+    values = {code: {} for code in codes}
+    try:
+        for row in workbook.active.iter_rows(min_row=7, max_col=56, values_only=True):
+            year, code = row[0], str(row[7])
+            if not isinstance(year, int) or year not in years or code not in values:
+                continue
+            if year in values[code]:
+                raise RuntimeError('Capacity history duplicate municipal observation')
+            hotel, other, total = [numeric(row[i]) for i in (33, 53, 55)]
+            if hotel + other != total:
+                raise RuntimeError('Capacity history component total mismatch')
+            values[code][year] = total
+    finally:
+        workbook.close()
+    if any(set(observations) != set(years) for observations in values.values()):
+        raise RuntimeError('Capacity history incomplete native series')
+    return {'years': years,
+            'valuesByCode': {code: [values[code][year] for year in years] for code in sorted(codes)},
+            'archiveSha256': hashlib.sha256(body).hexdigest()}
 
 def parse_archive(body):
     from openpyxl import load_workbook
@@ -112,7 +175,7 @@ def validate_snapshot(metric,snapshot,population=None):
         if isinstance(row['value'],bool) or not math.isclose(row['value'],expected,rel_tol=0,abs_tol=1e-9):raise RuntimeError('Capacity public value mismatch')
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--input-zip',type=Path);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--input-zip',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--include-history',action='store_true');args=p.parse_args()
     body=args.input_zip.read_bytes() if args.input_zip else fetch();records,provinces,national,source=parse_archive(body)
     site=json.loads((ROOT/'data/site-data.json').read_text());metric=site['metrics'][METRIC];source['archiveUrl']=URL
     by_code={r[0]:r for r in records};proof={r['code']:{'hotelBeds':by_code[r['code']][2],'otherBeds':by_code[r['code']][3],'beds':by_code[r['code']][4],'structures':by_code[r['code']][5]} for r in metric['rows']}
@@ -126,6 +189,9 @@ def main():
         'qualityGate':{'status':'PASS','errors':[],'publicReconciliation':'3 metrics × 7/7 PASS'}}
     snapshot['scope']['note']+=' Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia.'
     for target in METRICS:validate_snapshot(site['metrics'][target],snapshot,site['metrics']['population'])
+    if args.include_history:
+        snapshot['municipalBedsHistory'] = parse_capacity_history(body, set(proof))
+        apply_capacity_history(metric, snapshot)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n')
     print(f'Capacity candidates PASS: {benchmarks}; 7899 records; 107 provinces and 3 metrics × 7/7 public. Not ACQUIRED before publication gate.')
 

@@ -2,6 +2,15 @@
 
 Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata al consolidamento.
 
+## Lotto semplice storici — 03-10-2026
+
+- Branch `feat/a3-simple-histories`, derivato dall'head verde `008e005` della #304. La #304 resta OPEN/DRAFT/non mergiata e non viene riaperta con nuove modifiche.
+- Primo candidato verificato: `tourismBeds`, 23 annualità native Istat 2002–2024 × 7 Comuni; ultimo anno riconciliato esattamente 7/7 e totale Versilia invariato. ZIP originale SHA `5de31720aa38b30ee03f74d79e0d6ed878111b4e36c2ab7ce0b40d3d47420ce1`, già certificato per il benchmark. Fonte/snapshot vengono propagati alla serie pubblica tramite il fan-in esistente; nessun nuovo renderer.
+- Esclusi dal lotto semplice `cohabitingHouseholds` e `householdSize`: i rifiuti già documentati nello snapshot Istat 2021/2023 impediscono un raccordo esatto. Non ricostruire. Fasce d'età storiche: lo snapshot conserva bande più larghe di quelle pubbliche, quindi non concatenare.
+- Nessun nuovo benchmark acquisito. Le densità turistiche storiche restano escluse da questo lotto: richiedono popolazioni annuali coerenti. Il 2025 dei posti letto resta escluso per cambio di perimetro.
+- Verifica locale: sei casi sorgente invalidi respinti; valori correnti/aggregato invariati; browser desktop/mobile PASS con sette linee e nessun overflow; gate pubblicazione **112/112 storici e 137/137 benchmark PASS**. Quick eseguito: prima esecuzione arrestata dalla guardia checkout per due metadati di versione cambiati, ripristinati esattamente; ricontrollo sequenziale dei gate canonici non riproduce la mutazione. Seconda esecuzione arrestata dal controllo PNRR sull'output intermedio, poi materializzato e verificato. Tutti i passaggi rimanenti eseguiti: PNRR, coerenza 250 pagine e sette stemmi PASS; resta solo il limite locale Percorsi/Leaflet CDN già noto. Non dichiarare Quick completo verde e non indebolire controlli.
+- Prossima azione: verificare la PR draft separata su GitHub; non Ready/merge/deploy. Le tavole regionali del movimento 2023 XLSX e 2024 ODS sono state lette: arrivi e presenze diretti 7/7, entrambe al netto delle locazioni. Verificare il raccordo con il 2025 prima di acquisire insieme arrivi, presenze, permanenza e quota estera. Abbandonare fonti che richiedono ricostruzioni onerose.
+
 ## Fase A3 benchmark — consolidamento finale, PR #304
 
 - Branch `feat/a3-benchmark-available-missing`, base `fix/a3-enrichment-publication-gap`, PR #304 **OPEN/DRAFT**, non mergiata. A5 resta congelata.

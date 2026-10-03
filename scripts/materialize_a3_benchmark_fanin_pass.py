@@ -280,8 +280,10 @@ def main() -> None:
             if metric_id == 'hydraulicWorksCensusElements':
                 validate_hydraulic_public(metric, snapshot)
             if metric_id in ('tourismBeds','tourismBedsPer1000','tourismStructuresPer1000'):
-                from acquire_a3_benchmark_istat_tourism_annual import validate_snapshot
+                from acquire_a3_benchmark_istat_tourism_annual import validate_snapshot, apply_capacity_history
                 validate_snapshot(metric, snapshot, site['metrics']['population'])
+                if metric_id == 'tourismBeds':
+                    apply_capacity_history(metric, snapshot)
             if metric_id in ('inboundCommuters','outboundCommuters','commuterBalance','inboundCommutersRate','outboundCommutersRate','commuterBalanceRate','selfContainment'):
                 from acquire_a3_benchmark_istat_commuting_irregular import validate_snapshot
                 validate_snapshot(metric, snapshot, site['metrics']['population'])
