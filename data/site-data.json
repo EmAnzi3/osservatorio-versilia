@@ -23042,7 +23042,16 @@
         "unit": "per1000",
         "year": "2024",
         "source": "ACI / Istat — parco veicolare",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 744.1215646386034,
+          "italy": 701.366347742935,
+          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+        }
       },
       "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
@@ -23141,7 +23150,16 @@
         "unit": "percent",
         "year": "2024",
         "source": "ACI / Istat — parco veicolare",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 17.166108561955497,
+          "italy": 23.822150647563276,
+          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+        }
       },
       "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
