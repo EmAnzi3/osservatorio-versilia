@@ -593,7 +593,6 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 753, backlog['summary']
           assert backlog['summary']['availableMissingPairCount'] == matrix['summary']['state_AVAILABLE_MISSING']
           assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
           print(
@@ -791,9 +790,6 @@ jobs:
               ('emsResponseTimeP75', 'categorie_specifiche'),
           }
           official_available_missing_expected = {
-              ('tourismBeds', 'serie_storica'),
-              ('tourismBeds', 'dettaglio_territoriale'),
-              ('tourismBeds', 'benchmark_toscana_italia'),
               ('tourismBeds', 'categorie_specifiche'),
               ('economyActivityAtlas', 'frequenza_infra_annuale'),
           }
@@ -888,6 +884,12 @@ jobs:
           final_structured_category_expected = {
               ('foreignResidents', 'categorie_specifiche'),
           }
+          a3_acquired_expected = {
+              ('tourismBeds', 'serie_storica'): 'structured:rows.0.series',
+              ('tourismBeds', 'benchmark_toscana_italia'): 'structured:meta.benchmark',
+              ('tourismBeds', 'dettaglio_territoriale'): 'structured:meta.benchmark.italy',
+              ('incomeVsInflation', 'benchmark_toscana_italia'): 'structured:meta.benchmark',
+          }
           frame_sbs_acquired_expected = {
               ('businessTurnover', 'categorie_specifiche'): 'frameSbsCategories',
               ('businessValueAdded', 'categorie_specifiche'): 'frameSbsCategories',
@@ -911,7 +913,6 @@ jobs:
               ('averageGrossRemunerationPerEmployee', 'numeratore_denominatore'): 'frameSbsRatioComponents',
           }
           final_available_missing_expected = {
-              ('incomeVsInflation', 'benchmark_toscana_italia'),
               ('incomeVsInflation', 'numeratore_denominatore'),
               ('forestCoverIndex', 'dettaglio_territoriale'),
               ('voterTurnout', 'benchmark_toscana_italia'),
@@ -1133,6 +1134,12 @@ jobs:
               assert row['evidence'].startswith('structured:'), (pair, row)
               assert 'foreignOrigins' in row['evidence'], (pair, row)
 
+          for pair, evidence_prefix in sorted(a3_acquired_expected.items()):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith(evidence_prefix), (pair, row)
+
           for pair, evidence_token in sorted(frame_sbs_acquired_expected.items()):
               row = rows[pair]
               assert row['state'] == 'ACQUIRED', (pair, row)
@@ -1194,6 +1201,7 @@ jobs:
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 4 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable + 1 final structured category + 20 Frame SBS structured + 8 final available-missing + 24 final source-unavailable + 7 final N/A pairs verified.'
+              'all declared closure cohorts verified; '
+              f'{len(a3_acquired_expected)} additional A3 pairs structurally ACQUIRED.'
           )
           PY
