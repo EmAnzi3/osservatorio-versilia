@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse, hashlib, io, json, math, zipfile
 from pathlib import Path
 from typing import Any
-import requests
 from xml.etree import ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -49,6 +48,7 @@ def ods_rows(blob:bytes)->list[list[Any]]:
     return rows
 
 def fetch(url:str)->tuple[list[list[Any]],int]:
+    import requests
     r=requests.get(url,timeout=180,headers={"User-Agent":"OsservatorioVersilia-A3-tourism/2.0"}); r.raise_for_status()
     return ods_rows(r.content),len(r.content)
 
@@ -240,6 +240,7 @@ def apply_movement_history(metric: dict, snapshot: dict) -> None:
 
 
 def acquire_movement_history(site: dict) -> dict:
+    import requests
     bodies = {}
     for year, url in HISTORY_URLS.items():
         response = requests.get(url, timeout=45)

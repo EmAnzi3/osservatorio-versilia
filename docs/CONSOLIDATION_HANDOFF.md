@@ -16,6 +16,10 @@
 - La build pubblica deve continuare a usare `scripts/build_public_site.py`, inclusa l'applicazione finale di `apply_secondary_pages_ui.py` alle sole sette route approvate. Non usare il solo prerender del preflight come prova della UI pubblicata.
 - Schede comunali/tematiche e golden A5 restano protetti; route speciali Meteo/clima, Atlante e Affluenza mantengono le proprie eccezioni.
 
+## Correzione integrazione monitor
+
+La PR #322 integra la combinazione completa, primo head e4e9dd37469da8e7f56c836ff90452e2d98fb01c. I monitor light/deep hanno fallito sul replay turistico per import anticipato di requests; causa riprodotta localmente con Python -S. La dipendenza HTTP viene caricata soltanto nelle funzioni di acquisizione. Test di replay nativo delle quattro serie senza requests PASS; materializzazione completa del monitor con sola standard library PASS: 225 indicatori, 221 inline, 4 esterni, 69 profili. Nessun dato/UI cambiato. Verificare i nuovi run dopo la correzione; i verdi del primo head non certificano il nuovo head.
+
 ## Prossima azione esatta
 
 1. Controlli locali conclusi: pubblicazione 123/123 e 137/137, browser nuove serie 44/44, baseline A4 40/40, 105 intestazioni su 25 pagine, coerenza 250 pagine, integrità del sito pubblico completo PASS. Confronto diretto con main delle sette UI finali: 14/14 banner desktop/mobile PASS, zero differenze pixel significative e stessa geometria/stile. Tutti i 225 indicatori, 1.547 valori comunali e aggregati correnti sono identici alla build main. Quick eseguito: primo output locale incompleto della finalizzazione brand/PWA, rimaterializzato prima dei controlli finali; rimane il limite Percorsi/Leaflet CDN. Quick completo e Full locale non dichiarati verdi; nessuna guardia aggirata.
