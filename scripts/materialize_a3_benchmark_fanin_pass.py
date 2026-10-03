@@ -284,6 +284,9 @@ def main() -> None:
                 validate_snapshot(metric, snapshot, site['metrics']['population'])
                 if metric_id == 'tourismBeds':
                     apply_capacity_history(metric, snapshot)
+            if metric_id in ('tourismArrivals','tourismPresences','tourismAverageStay','foreignTourismShare'):
+                from acquire_a3_benchmark_regione_toscana_tourism_annual import apply_movement_history
+                apply_movement_history(metric, snapshot)
             if metric_id in ('inboundCommuters','outboundCommuters','commuterBalance','inboundCommutersRate','outboundCommutersRate','commuterBalanceRate','selfContainment'):
                 from acquire_a3_benchmark_istat_commuting_irregular import validate_snapshot
                 validate_snapshot(metric, snapshot, site['metrics']['population'])
