@@ -2,13 +2,12 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37110013527,
+    "workflowRun": 37117443259,
     "headSha": "f981ef97810872e014dc5c3287c7de145431d06a",
     "publicBenchmarks": "137/137",
     "publicationGap": 0,
     "availableMissing": 76,
-    "artifactId": 11272062994,
-    "runId": 37117443259
+    "artifactId": 11272062994
   },
   "selectedProfileCount": 1,
   "selectedPairCount": 1,
