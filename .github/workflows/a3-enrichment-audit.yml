@@ -249,24 +249,33 @@ jobs:
           summary = report['summary']
           ms = matrix['summary']
 
-          assert summary['classifiedPairCount'] == 2025, summary
-          assert summary['unclassifiedPairCount'] == 0, summary
-          assert summary['totalPairCount'] == 2025, summary
-          assert summary['acquiredPairCount'] == 543, summary
-          assert summary['availableMissingPairCount'] == 753, summary
-          assert summary['eligiblePairCount'] == 1296, summary
-          assert summary['sourceUnavailablePairCount'] == 374, summary
-          assert summary['notApplicablePairCount'] == 355, summary
+          # Acquisition counts evolve with the effective catalog; the matrix
+          # remains the source of truth, rather than a frozen release baseline.
+          assert summary['classifiedPairCount'] == ms['classifiedPairCount'] == ms['pairCount'], (summary, ms)
+          assert summary['unclassifiedPairCount'] == ms['unclassifiedPairCount'] == 0, (summary, ms)
+          assert summary['totalPairCount'] == ms['pairCount'] == len(matrix['rows']), (summary, ms)
           assert summary['acquiredPairCount'] == ms['state_ACQUIRED'], (summary, ms)
           assert summary['availableMissingPairCount'] == ms['state_AVAILABLE_MISSING'], (summary, ms)
           assert summary['sourceUnavailablePairCount'] == ms['state_SOURCE_UNAVAILABLE'], (summary, ms)
           assert summary['notApplicablePairCount'] == ms['state_NOT_APPLICABLE'], (summary, ms)
-          assert math.isclose(summary['coveragePercent'], 41.898148148148145, abs_tol=1e-12), summary
+          eligible = ms['state_ACQUIRED'] + ms['state_AVAILABLE_MISSING']
+          assert summary['eligiblePairCount'] == eligible, (summary, ms)
+          assert (
+              eligible + ms['state_SOURCE_UNAVAILABLE'] + ms['state_NOT_APPLICABLE']
+              == summary['totalPairCount']
+          ), (summary, ms)
+          if eligible:
+              expected_ratio = ms['state_ACQUIRED'] / eligible
+              assert math.isclose(summary['coverageRatio'], expected_ratio, rel_tol=0, abs_tol=1e-12), summary
+              assert math.isclose(summary['coveragePercent'], expected_ratio * 100, rel_tol=0, abs_tol=1e-12), summary
+          else:
+              assert summary['coverageRatio'] is None and summary['coveragePercent'] is None, summary
+          coverage_label = 'n.a.' if not eligible else f"{summary['coveragePercent']:.1f}%"
 
           print(
               'A3.6 coverage gate: '
               f"{summary['acquiredPairCount']}/{summary['eligiblePairCount']} = "
-              f"{summary['coveragePercent']:.1f}% · "
+              f"{coverage_label} · "
               f"{summary['availableMissingPairCount']} opportunities remain governed by A3.4."
           )
           PY
