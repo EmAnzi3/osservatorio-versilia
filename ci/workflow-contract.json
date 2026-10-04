@@ -10,7 +10,9 @@
     "commands": {
       "quick": "python scripts/preflight.py --quick",
       "full": "python scripts/preflight.py --full --skip-quick",
-      "buildSmoke": "python scripts/test_site_consistency.py"
+      "buildSmoke": "python scripts/test_site_consistency.py",
+      "previewBuild": "python scripts/build_public_site.py --validate-only",
+      "previewUI": "python scripts/apply_secondary_pages_ui.py"
     },
     "liveStatusContext": "ov-pages-live",
     "quickChecks": [
