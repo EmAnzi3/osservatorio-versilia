@@ -51,6 +51,7 @@ def normalize_baseline_town_order(page) -> None:
 
 
 REVIEW_METRICS = {
+    "territorialClassification",
     "population",
     "incomeDistribution",
     "employmentRate",
@@ -260,6 +261,71 @@ def native_benchmark_period(native: dict, source: dict) -> str:
     if len(periods) != 1:
         raise AssertionError(f'Native benchmark period absent or ambiguous: {periods}')
     return periods.pop()
+
+
+@contextmanager
+def approved_classification_toolbar(base_page, cur_page, before: dict, after: dict,
+                                    *, comparison=False):
+    """Project only the owner-approved toolbar on the immutable reference DOM."""
+    if after.get('meta', {}).get('key') != 'territorialClassification':
+        yield
+        return
+    reference = json.loads((Path(__file__).resolve().parents[1]
+                           / 'ci/a5-approved-classification-toolbar.json').read_text())
+    if (reference['approvedCommit'] != '896383d3180169ec905d5e2acdd6be48cc03a766'
+            or hashlib.sha256((reference['compare']['html'] + reference['town']).encode()).hexdigest() != 'c58c8b2a3cb71b6329cd83197e6f5627c5935443f9ac03a0a57c54767b083c88'
+            or reference['metric'] != after['meta']['key']
+            or before != after):
+        raise AssertionError('Classification approval/source identity changed')
+    native = '.territorial-classification-shell' if comparison else '.territorial-classification-grid'
+    if base_page.locator(native).inner_html() != cur_page.locator(native).inner_html():
+        raise AssertionError('Classification native content changed')
+    toolbar = cur_page.locator('#compare-bars .ux-view-toolbar' if comparison
+                              else '#town-topic .a5-special-renderer-toolbar')
+    actions = toolbar.locator(':scope > .data-actions')
+    if toolbar.count() != 1 or not toolbar.is_visible() or actions.count() != 1:
+        raise AssertionError('Classification canonical toolbar absent')
+    for selector in ('[data-download]', '[data-print]', 'a[href*="/indicatori/"]'):
+        control = actions.locator(selector)
+        if control.count() != 1 or not control.is_visible():
+            raise AssertionError('Classification canonical action absent: ' + selector)
+        if selector == 'a[href*="/indicatori/"]':
+            if control.evaluate('e=>new URL(e.href).pathname') != '/indicatori/classificazioni-territoriali/':
+                raise AssertionError('Classification indicator link changed')
+        else:
+            if control.evaluate("e=>getComputedStyle(e,'::before').backgroundImage") == 'none':
+                raise AssertionError('Classification action icon absent: ' + selector)
+    base_page.evaluate("""({reference,comparison}) => {
+      if (window.__approvedClassificationRestore) throw new Error('Classification projection nested');
+      if (comparison) {
+        const host=document.querySelector('#compare-bars');
+        const children=[...host.childNodes];
+        const actions=document.querySelector('.compare-panel-heading > .data-actions');
+        const parent=actions?.parentNode,next=actions?.nextSibling;
+        actions?.remove();
+        const native=host.querySelector('.territorial-classification-shell').innerHTML;
+        host.innerHTML=reference.compare.html;
+        host.querySelector('.territorial-classification-shell').innerHTML=native;
+        window.__approvedClassificationRestore=()=>{host.replaceChildren(...children);if(actions)parent.insertBefore(actions,next)};
+      } else {
+        const chart=document.querySelector('#town-topic > .history-panel.a5-shared-chart');
+        const actions=document.querySelector('#town-topic > .town-data-actions.a5-town-fallback-actions');
+        if (!actions || chart.querySelector('.a5-special-renderer-toolbar')) throw new Error('Unexpected classification baseline');
+        const parent=actions.parentNode,next=actions.nextSibling;
+        chart.insertAdjacentHTML('afterbegin',reference.town);
+        const toolbar=chart.firstElementChild;
+        actions.remove();
+        window.__approvedClassificationRestore=()=>{toolbar.remove();parent.insertBefore(actions,next)};
+      }
+    }""", {'reference': reference, 'comparison': comparison})
+    try:
+        yield
+    finally:
+        base_page.evaluate("""() => {
+          window.__approvedClassificationRestore();
+          delete window.__approvedClassificationRestore;
+          window.scrollTo(0,0);
+        }""")
 
 
 @contextmanager
@@ -564,52 +630,54 @@ def main() -> None:
                     choose(base_page, metric)
                     choose(cur_page, metric)
                     key = f"{viewport}:{theme}:{metric}"
-                    baseline_raw = state(base_page)
-                    current_raw = state(cur_page)
-                    if "a5-municipal-rollout" not in current_raw.get("classes", []):
-                        failures.append({
-                            "key": key,
-                            "kind": "camaiore-rollout-marker-missing",
-                            "classes": current_raw.get("classes", []),
-                        })
-                    baseline_state = canonical_state(baseline_raw)
-                    current_state = canonical_state(current_raw)
-                    checked += 1
-
-                    if baseline_state != current_state:
-                        allowed_upgrade, history_detail = verified_history_upgrade(
-                            baseline_state,
-                            current_state,
-                            base_page,
-                            cur_page,
-                        )
-                        if allowed_upgrade:
-                            allowed_history_upgrades.append({
-                                "key": key,
-                                **history_detail,
-                            })
-                        else:
+                    with approved_classification_toolbar(base_page, cur_page,
+                            baseline_metrics[metric], current_metrics[metric]):
+                        baseline_raw = state(base_page)
+                        current_raw = state(cur_page)
+                        if "a5-municipal-rollout" not in current_raw.get("classes", []):
                             failures.append({
                                 "key": key,
-                                "kind": "camaiore-computed-golden-diff",
-                                "baseline": baseline_state,
-                                "current": current_state,
+                                "kind": "camaiore-rollout-marker-missing",
+                                "classes": current_raw.get("classes", []),
                             })
+                        baseline_state = canonical_state(baseline_raw)
+                        current_state = canonical_state(current_raw)
+                        checked += 1
 
-                    if metric == metrics[0] or metric in REVIEW_METRICS:
-                        with screenshot_enrichment_normalization(
-                                base_page, cur_page, baseline_metrics[metric],
-                                current_metrics[metric], source_evidence,
-                                diagnostic_dir=folder) as allowances:
-                            allowed_screenshot_enrichments.extend({'key': key, **a} for a in allowances)
-                            compare_screenshot(
+                        if baseline_state != current_state:
+                            allowed_upgrade, history_detail = verified_history_upgrade(
+                                baseline_state,
+                                current_state,
                                 base_page,
                                 cur_page,
-                                "#town-topic",
-                                f"{viewport}-{theme}-{metric}",
-                                folder,
-                                failures,
                             )
+                            if allowed_upgrade:
+                                allowed_history_upgrades.append({
+                                    "key": key,
+                                    **history_detail,
+                                })
+                            else:
+                                failures.append({
+                                    "key": key,
+                                    "kind": "camaiore-computed-golden-diff",
+                                    "baseline": baseline_state,
+                                    "current": current_state,
+                                })
+
+                        if metric == metrics[0] or metric in REVIEW_METRICS:
+                            with screenshot_enrichment_normalization(
+                                    base_page, cur_page, baseline_metrics[metric],
+                                    current_metrics[metric], source_evidence,
+                                    diagnostic_dir=folder) as allowances:
+                                allowed_screenshot_enrichments.extend({'key': key, **a} for a in allowances)
+                                compare_screenshot(
+                                    base_page,
+                                    cur_page,
+                                    "#town-topic",
+                                    f"{viewport}-{theme}-{metric}",
+                                    folder,
+                                    failures,
+                                )
 
             if baseline_errors:
                 failures.append({"key": viewport, "kind": "baseline-page-errors", "errors": baseline_errors})

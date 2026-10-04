@@ -418,7 +418,7 @@ def corrected_native_descriptions(a,b,before,after,catalog,sources):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--current-base",required=True); ap.add_argument("--baseline-base",required=True); ap.add_argument("--config",required=True); ap.add_argument("--report-dir",required=True); args=ap.parse_args()
-    from test_a5_camaiore_full_golden_lock import load_enrichment_evidence, screenshot_enrichment_normalization
+    from test_a5_camaiore_full_golden_lock import load_enrichment_evidence, screenshot_enrichment_normalization, approved_classification_toolbar
     cfg=json.loads(Path(args.config).read_text()); folder=Path(args.report_dir); folder.mkdir(parents=True,exist_ok=True); fail=[]; allowed_history_upgrades=[]; allowed_enrichments=[]
     with sync_playwright() as p:
         browser=p.chromium.launch()
@@ -435,7 +435,7 @@ def main():
         request.dispose()
         @contextmanager
         def normalization(a,b,metric):
-            with corrected_tourism_metadata(a,b,baseline_metrics[metric],current_metrics[metric],current_metrics,source_evidence) as metadata, corrected_native_descriptions(a,b,baseline_metrics[metric],current_metrics[metric],current_metrics,source_evidence) as descriptions:
+            with approved_classification_toolbar(a,b,baseline_metrics[metric],current_metrics[metric],comparison=True), corrected_tourism_metadata(a,b,baseline_metrics[metric],current_metrics[metric],current_metrics,source_evidence) as metadata, corrected_native_descriptions(a,b,baseline_metrics[metric],current_metrics[metric],current_metrics,source_evidence) as descriptions:
                 with screenshot_enrichment_normalization(a,b,baseline_metrics[metric],current_metrics[metric],source_evidence,
                     benchmark_selector="#compare-benchmark",note_selector="#compare-bars .ux-view-shell > .ux-view-note",
                     benchmark_verifier=verify_thematic_benchmark,diagnostic_dir=folder) as additions:
