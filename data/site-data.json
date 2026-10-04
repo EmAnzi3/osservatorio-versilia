@@ -46099,16 +46099,7 @@
         "unit": "people",
         "year": "2023",
         "source": "ISTAT — ASIA unità locali",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "2023",
-          "tuscany": 1283739.83,
-          "italy": 18644421.78,
-          "source": "Istat — ASIA Unità Locali",
-          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46325,16 +46316,7 @@
         "unit": "decimal",
         "year": "2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "2023",
-          "tuscany": 3.5014014717594564,
-          "italy": 3.624159202034335,
-          "source": "Istat — ASIA Unità Locali",
-          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46551,16 +46533,7 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "2018–2023",
-          "tuscany": 5.22243491687211,
-          "italy": 8.082484588553985,
-          "source": "Istat — ASIA Unità Locali",
-          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46658,16 +46631,7 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "2018–2023",
-          "tuscany": 5.794256622268157,
-          "italy": 7.846713682131012,
-          "source": "Istat — ASIA Unità Locali",
-          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46765,16 +46729,7 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "31 dicembre 2025",
-          "tuscany": 73.22531610387755,
-          "italy": 82.89952077416727,
-          "source": "AGCOM — Broadband Map, reportistica comunale",
-          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
@@ -47068,16 +47023,7 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral",
-        "benchmark": {
-          "year": "31 dicembre 2025",
-          "tuscany": 64.58685444439853,
-          "italy": 74.25960016740227,
-          "source": "AGCOM — Broadband Map, reportistica comunale",
-          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
-          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
-        }
+        "polarity": "neutral"
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
