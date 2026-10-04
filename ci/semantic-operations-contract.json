@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "scope": "A6.2-A6.3 eligibility; A6.4 calculators/adapters pending",
+  "descriptorFields": [
+    "metric",
+    "dimension",
+    "unit",
+    "population",
+    "definition",
+    "method",
+    "frequency",
+    "geography",
+    "period",
+    "source",
+    "evidence"
+  ],
+  "operations": {
+    "compare": {
+      "formula": "values with coverage; no implicit aggregation",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 2
+    },
+    "series": {
+      "formula": "ordered declared observations; no interpolation",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "geography"
+      ],
+      "minimumObservations": 1
+    },
+    "absolute_change": {
+      "formula": "end - start",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "geography"
+      ],
+      "minimumObservations": 2
+    },
+    "relative_change": {
+      "formula": "(end - start) / start * 100",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "geography"
+      ],
+      "minimumObservations": 2
+    },
+    "percentage_points": {
+      "formula": "end_percent - start_percent",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "geography"
+      ],
+      "minimumObservations": 2
+    },
+    "benchmark_gap": {
+      "formula": "municipal_value - benchmark_value",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 2
+    },
+    "rank": {
+      "formula": "descending values; equal values share rank, gaps retained",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 2
+    },
+    "trend": {
+      "formula": "OLS slope against explicit elapsed time; gaps retained",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "geography"
+      ],
+      "minimumObservations": 3
+    },
+    "correlation": {
+      "formula": "Pearson linear or Spearman average-tie ranks; explicit paired observations",
+      "equalFields": [],
+      "minimumObservations": 6
+    },
+    "anomaly": {
+      "formula": "declared reference distribution and rule; no automatic anomaly from rank",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 3
+    },
+    "weighted_ratio": {
+      "formula": "sum(numerators) / sum(denominators) * scale",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 2
+    }
+  },
+  "rounding": "retain input precision; round only displayed result",
+  "missing": "never zero-fill; explicit partial coverage opt-in",
+  "interpretation": [
+    "observation",
+    "calculation",
+    "association",
+    "hypothesis",
+    "policy_proposal"
+  ]
+}

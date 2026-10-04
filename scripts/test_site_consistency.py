@@ -11,6 +11,7 @@ from site_consistency_impl import *  # noqa: F401,F403
 from workflow_contract import validate_workflow_contract
 from visualization_content_contract import validate_visual_runtime_contract, validate_visualization_content_contract
 from semantic_model_contract import validate_semantic_model_contract
+from semantic_operations import coverage_matrix
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -24,6 +25,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
 
     validate_visualization_content_contract(catalog_path)
     effective_semantic = validate_semantic_model_contract(catalog_path, layer="effective")
+    operation_matrix = coverage_matrix(json.loads(catalog_path.read_text(encoding="utf-8")))
+    assert len(operation_matrix) == effective_semantic["metrics"]
     print(
         "A6 semantic model effective catalog: "
         f"{effective_semantic['metrics']} indicatori pubblici · "
