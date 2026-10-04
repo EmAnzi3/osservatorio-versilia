@@ -182,8 +182,26 @@
         "label": "A4 visualization/content contract",
         "script": "scripts/test_visualization_content_contract.py",
         "args": []
+      },
+      {
+        "label": "source monitor runtime and periods",
+        "script": "scripts/test_source_monitor_runtime_snapshot.py",
+        "args": []
       }
-    ]
+    ],
+    "monitorRuntime": {
+      "workflows": [
+        ".github/workflows/monthly-data-refresh.yml",
+        ".github/workflows/source-monitor-light.yml"
+      ],
+      "allowedEvents": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "branch": "main",
+      "selector": "scripts/source_monitor_runtime_snapshot.py",
+      "updates": "monitoring state only; catalog and values remain on main"
+    }
   },
   "workflows": [
     {

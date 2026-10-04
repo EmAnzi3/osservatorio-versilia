@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 
 import materialize_costa_mare_v123 as coast_materializer
+from data_status_model import compare_periods
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -239,7 +240,12 @@ def assert_registry_and_ui(data: dict) -> None:
     monitor = load("data/source-monitor-state.json")
     for key in KEYS:
         assert key in registry["metricOverrides"]
-        assert monitor["metrics"][key]["status"] == "current"
+        operational = monitor["metrics"][key]
+        # Il materiale del lotto resta protetto dagli assert sui dati e dal
+        # fixture iniziale sopra; lo stato live può cambiare nei run successivi.
+        if operational["status"] == "current":
+            assert compare_periods(operational["publishedPeriod"], operational["observedLatestPeriod"]) == 0
+            assert operational.get("periodVerifiedAt") or operational.get("checkedAt")
     assert len(data["themes"]) == 11
     environment = data["themes"]["ambiente"]
     assert any(section["key"] == "costa-mare" and section["metrics"] == list(KEYS) for section in environment["sections"])

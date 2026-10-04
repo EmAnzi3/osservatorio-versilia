@@ -201,8 +201,21 @@ jobs:
         if: ${{ steps.live_scan.outcome == 'success' && steps.validate_snapshot.outcome == 'success' }}
         continue-on-error: true
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          cp data/source-monitor-state.json /tmp/source-monitor-radar-repository.json
+          trap 'cp /tmp/source-monitor-radar-repository.json data/source-monitor-state.json' EXIT
+          if [[ "${{ github.ref }}" == "refs/heads/main" && "${{ github.event_name }}" != "pull_request" ]]; then
+            python scripts/materialize_source_monitor_snapshot.py --output-dir /tmp/source-monitor-radar-catalog
+            python scripts/source_monitor_runtime_snapshot.py \
+              --repo "$GITHUB_REPOSITORY" \
+              --data /tmp/source-monitor-radar-catalog/site-data.json \
+              --registry /tmp/source-monitor-radar-catalog/source-registry.json \
+              --state /tmp/source-monitor-radar-repository.json \
+              --output data/source-monitor-state.json
+          fi
           python scripts/build_public_site.py
           python scripts/test_affluenza_release.py
           python scripts/test_site_consistency.py

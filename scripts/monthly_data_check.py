@@ -10,6 +10,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import http.client
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import BoundedSemaphore
 import json
 import os
 import socket
@@ -456,7 +459,7 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
             result["status"] = exc.code
             result["error"] = f"HTTP {exc.code}"
             return result
-    except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+    except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
         result["error"] = str(exc)
         return result
 
@@ -467,7 +470,7 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
             result["status"] = exc.code
             result["error"] = f"HTTP {exc.code}"
             return result
-        except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+        except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
             result["error"] = str(exc)
             return result
 
@@ -501,7 +504,7 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
                     digest, mode = semantics.semantic_content_hash(bytes(payload))
                     result["contentSha256"] = digest
                     result["contentHashMode"] = mode
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
             result["error"] = f"Metadati raggiungibili, hash non disponibile: {exc}"
     return result
 
@@ -763,6 +766,29 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def probe_sources(source_map: dict, registry: dict, mode: str) -> dict:
+    """Quattro richieste globali, al massimo due sullo stesso portale."""
+    urls = sorted(source_map)
+    if mode == "offline":
+        return {url: offline_source(url) for url in urls}
+    hosts = {urllib.parse.urlsplit(url).netloc for url in urls}
+    limits = {host: BoundedSemaphore(2) for host in hosts}
+
+    def check(url):
+        with limits[urllib.parse.urlsplit(url).netloc]:
+            return probe_source(url, registry)
+
+    results = {}
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(check, url): url for url in urls}
+        for future in as_completed(futures):
+            url = futures[future]
+            results[url] = future.result()
+            if len(results) % 10 == 0 or len(results) == len(urls):
+                print(f"Source monitor: {len(results)}/{len(urls)} fonti controllate", flush=True)
+    return {url: results[url] for url in urls}
+
+
 def main() -> int:
     args = parse_args()
     data = load_json(args.data)
@@ -771,9 +797,9 @@ def main() -> int:
     checked_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     findings, source_map, summary = validate_dataset(data, registry)
-    probes: dict[str, dict[str, Any]] = {}
+    probes: dict[str, dict[str, Any]] = probe_sources(source_map, registry, args.mode)
     for url, source in sorted(source_map.items()):
-        probe = offline_source(url) if args.mode == "offline" else probe_source(url, registry)
+        probe = probes[url]
         probe["metrics"] = sorted(source["metrics"])
         probe["roles"] = sorted(source["roles"])
         probe["profileIds"] = sorted(source.get("profileIds", []))

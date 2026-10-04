@@ -88,6 +88,8 @@ I workflow specializzati sono registrati in `ci/workflow-contract.json`: un nuov
 
 Il controllo periodico delle fonti è separato dalla pubblicazione: può rilevare cambiamenti, registrare una nuova baseline o aprire una PR di revisione, ma non modifica né pubblica automaticamente dati senza passare dai gate del repository.
 
+Stato dati può aggiornare automaticamente gli esiti diagnostici dei run live riusciti su `main`, sia quotidiani sia mensili. Pages e il publisher Radar verificano provenienza, date, copertura e digest del catalogo prima di importare lo stato; non importano valori o codice dai report. La data di controllo della fonte resta distinta dalla data di verifica del periodo. Le modifiche ai valori continuano a richiedere revisione e approvazione.
+
 ## Indicizzazione
 
 Le schede indicatore autonome includono URL canonica, fonte, metodo, dati strutturati e breadcrumb; la build aggiorna sitemap e metadata per il dominio ufficiale. I quattro indicatori climatici esterni restano collegati agli approfondimenti storici dedicati senza duplicare nel catalogo principale dataset più pesanti.

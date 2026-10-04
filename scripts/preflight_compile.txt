@@ -68,3 +68,6 @@ scripts/test_opportunity_daily_v2_shadow.py
 scripts/materialize_a3_simple_rcs_history.py
 scripts/materialize_a3_simple_mef_history.py
 scripts/materialize_a3_istat_history_extension.py
+
+scripts/source_monitor_runtime_snapshot.py
+scripts/test_source_monitor_runtime_snapshot.py

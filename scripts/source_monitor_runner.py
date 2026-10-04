@@ -12,6 +12,7 @@ from typing import Any, Iterator
 import monthly_data_check as base
 import monthly_data_check_status as status
 import source_monitor_strategy as strategy
+from data_status_model import catalog_digest
 
 DEPTH_LABELS = {
     "light": "light — raggiungibilità, redirect e struttura; senza hash o verifiche semantiche profonde",
@@ -124,6 +125,11 @@ def annotate_outputs(forwarded: list[str], depth: str) -> None:
     report_md = _option_path(forwarded, "--report-md")
     _write_json_depth(report_json, depth)
     _write_json_depth(next_state, depth)
+    if report_json and report_json.is_file():
+        data_path = _option_path(forwarded, "--data", Path("data/site-data.json"))
+        payload = _load_json(report_json)
+        payload["catalogSha256"] = catalog_digest(_load_json(data_path))
+        report_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     _annotate_markdown(report_md, depth)
 
     output_path = os.environ.get("GITHUB_OUTPUT")

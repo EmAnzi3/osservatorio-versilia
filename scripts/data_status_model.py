@@ -11,6 +11,10 @@ Questo modulo non inventa annualità né date di rilascio.
 from __future__ import annotations
 
 import urllib.parse
+import re
+import hashlib
+import json
+from datetime import date
 from typing import Any
 
 from source_policy import resolve_metric_policy
@@ -61,6 +65,10 @@ ALLOWED_RELEASE_BASES = {
 }
 
 
+def catalog_digest(data: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(data, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+
+
 def canonical_url(value: str) -> str:
     parsed = urllib.parse.urlsplit(str(value or "").strip())
     pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
@@ -109,12 +117,41 @@ def safe_next_release(value: Any) -> dict[str, Any] | None:
 
 
 def period_key(value: str) -> tuple[int, ...] | None:
-    text = str(value or "").strip()
-    if text.isdigit():
+    text = str(value or "").strip().casefold()
+    if re.fullmatch(r"\d{4}", text):
         return (int(text),)
-    if len(text) == 7 and text[4] == "-" and text[:4].isdigit() and text[5:].isdigit():
-        return (int(text[:4]), int(text[5:]))
+    if re.fullmatch(r"\d{4}-\d{2}", text):
+        year, month = map(int, text.split("-"))
+        if 1 <= month <= 12:
+            return (year, month)
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+        try:
+            parsed = date.fromisoformat(text)
+            return (parsed.year, parsed.month, parsed.day)
+        except ValueError:
+            return None
+    months = "gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre".split()
+    match = re.fullmatch(r"(?:(\d{1,2})\s+)?([a-z]+)\s+(\d{4})", text)
+    if match and match[2] in months:
+        year, month = int(match[3]), months.index(match[2]) + 1
+        if match[1] is None:
+            return (year, month)
+        try:
+            parsed = date(year, month, int(match[1]))
+            return (parsed.year, parsed.month, parsed.day)
+        except ValueError:
+            return None
     return None
+
+
+def compare_periods(published: str, observed: str) -> int | None:
+    """Confronta solo periodi con la stessa precisione, senza inferire date."""
+    if published and published == observed:
+        return 0
+    left, right = period_key(published), period_key(observed)
+    if left is None or right is None or len(left) != len(right):
+        return None
+    return (right > left) - (right < left)
 
 
 def derive_status(
@@ -145,11 +182,10 @@ def derive_status(
         return "source_unavailable"
     observed = str(operational.get("observedLatestPeriod") or "")
     if observed:
-        published_key = period_key(published)
-        observed_key = period_key(observed)
-        if observed == published:
+        comparison = compare_periods(published, observed)
+        if comparison == 0:
             return "current"
-        if published_key is not None and observed_key is not None and observed_key > published_key:
+        if comparison == 1:
             return "release_detected"
         return "verification_required"
     return "source_checked"
@@ -211,6 +247,7 @@ def build_public_status(
                 "frequencyLabel": str(policy.get("frequencyLabel") or "Secondo la fonte"),
                 "cadenceNote": str(policy.get("expectedRelease") or ""),
                 "lastChecked": row_checked_at,
+                "lastPeriodVerified": str(operational.get("periodVerifiedAt") or ""),
                 "observedLatestPeriod": str(operational.get("observedLatestPeriod") or ""),
                 "nextExpectedRelease": next_release,
                 "status": status,
@@ -239,6 +276,7 @@ def build_public_status(
             "sourceMonitorSchema": state.get("schemaVersion"),
         },
         "lastGeneralCheck": checked_at,
+        "lastDeepCheck": str(state.get("lastDeepCheck") or (checked_at if state.get("depth") == "deep" else "")),
         "metricCount": len(rows),
         "counts": counts,
         "metrics": rows,
