@@ -329,6 +329,12 @@ def main() -> None:
                     require(direct.count() == 1 and direct.is_visible(),
                             f'A5.5 bulk {theme_key}/{metric_key}: renderer rischio invisibile')
                 if metric_key == 'fuelPrices':
+                    # The history adapter runs in the next animation frame after
+                    # the sidebar selection; the active tab alone is not ready.
+                    page.wait_for_function("""() => {
+                      const buttons = document.querySelectorAll('#compare-bars [data-view-mode="history"]');
+                      return buttons.length === 1 && !buttons[0].disabled;
+                    }""", timeout=5000)
                     history_button = page.locator('#compare-bars [data-view-mode="history"]').first
                     require(history_button.count() == 1 and not history_button.is_disabled(),
                             'A5.5 bulk mobilita/fuelPrices: storico carburanti non disponibile')
