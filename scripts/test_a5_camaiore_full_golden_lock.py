@@ -490,8 +490,17 @@ def compare_screenshot(base_page, cur_page, selector: str, key: str, folder: Pat
             "currentCount": cur_loc.count(),
         })
         return
-    before = base_loc.screenshot(animations="disabled")
-    after = cur_loc.screenshot(animations="disabled")
+    def capture(page, locator):
+        # Locator screenshots scroll. Start and finish both surfaces at the same
+        # position so a previous capture cannot leave only one sticky header visible.
+        page.evaluate("() => window.scrollTo(0,0)")
+        try:
+            return locator.screenshot(animations="disabled")
+        finally:
+            page.evaluate("() => window.scrollTo(0,0)")
+
+    before = capture(base_page, base_loc)
+    after = capture(cur_page, cur_loc)
     diff = pixel_difference(before, after)
     if (not diff["same_size"]) or diff["ratio"] > 0.0005:
         bpath = folder / f"{key}-baseline.png"
