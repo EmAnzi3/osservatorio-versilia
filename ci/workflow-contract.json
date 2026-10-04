@@ -10,7 +10,9 @@
     "commands": {
       "quick": "python scripts/preflight.py --quick",
       "full": "python scripts/preflight.py --full --skip-quick",
-      "buildSmoke": "python scripts/test_site_consistency.py"
+      "buildSmoke": "python scripts/test_site_consistency.py",
+      "previewBuild": "python scripts/build_public_site.py --validate-only",
+      "previewUI": "python scripts/apply_secondary_pages_ui.py"
     },
     "liveStatusContext": "ov-pages-live",
     "quickChecks": [
@@ -167,6 +169,11 @@
         "args": []
       },
       {
+        "label": "A3 RGS benchmark employer identity",
+        "script": "scripts/test_a3_benchmark_rgs_identity.py",
+        "args": []
+      },
+      {
         "label": "A3.6 enrichment coverage",
         "script": "scripts/test_enrichment_coverage.py",
         "args": []
@@ -177,11 +184,29 @@
         "args": []
       },
       {
+        "label": "source monitor runtime and periods",
+        "script": "scripts/test_source_monitor_runtime_snapshot.py",
+        "args": []
+      },
+      {
         "label": "A6 semantic model contract",
         "script": "scripts/test_semantic_model_contract.py",
         "args": []
       }
-    ]
+    ],
+    "monitorRuntime": {
+      "workflows": [
+        ".github/workflows/monthly-data-refresh.yml",
+        ".github/workflows/source-monitor-light.yml"
+      ],
+      "allowedEvents": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "branch": "main",
+      "selector": "scripts/source_monitor_runtime_snapshot.py",
+      "updates": "monitoring state only; catalog and values remain on main"
+    }
   },
   "workflows": [
     {
@@ -362,7 +387,7 @@
     {
       "path": ".github/workflows/a5-change-scope.yml",
       "category": "specialized-gate",
-      "status": "retired"
+      "status": "active"
     },
     {
       "path": ".github/workflows/a5-municipal-golden-lock.yml",
@@ -381,6 +406,36 @@
     },
     {
       "path": ".github/workflows/a5-municipal-rollout-cohort.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-available-missing.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-bulk-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-candidate-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-fanin-materialize.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-parallel-fanout.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-source-probes.yml",
       "category": "specialized-gate",
       "status": "active"
     }

@@ -19,7 +19,7 @@ La fonte canonica resta `data/site-data.json`, ma A6 distingue due livelli: il *
 | Comune | codice Istat | `data.towns[].code`, nome da `data.towns[].name` |
 | Tema | chiave tema | chiave di `data.themes`; appartenenza indicatori da `theme.metrics` |
 | Indicatore | chiave metrica | chiave di `data.metrics`; tema da `metric.meta.theme` |
-| Periodo | token/anno dichiarato | corrente da `metric.meta.year`; storico da `series.years` |
+| Periodo | token/anno dichiarato | corrente da `metric.meta.year`; storico dagli assi `years` / `values` espliciti |
 | Dimensione | facet esplicita | solo strutture source-backed già presenti: parts, detailParts, normalized, ratioComponents |
 | Fonte | etichetta + URL | `metric.meta.source` + `metric.sourceUrl` |
 | Benchmark | riferimento esterno | `metric.meta.benchmark`, separato dall'osservazione comunale |
@@ -46,7 +46,7 @@ Ogni osservazione utilizzabile dal futuro motore A6 deve poter restituire almeno
 
 1. **Nessun inventario parallelo.** Comuni, temi e indicatori sono sempre derivati dal catalogo.
 2. **Nessuna dimensione dedotta dal testo.** Una dimensione esiste solo se il catalogo espone una struttura dati esplicita.
-3. **Periodo esplicito.** Il dato corrente usa `meta.year`; una serie storica usa esclusivamente i periodi dichiarati in `series.years`.
+3. **Periodo esplicito.** Il dato corrente usa `meta.year`; le serie usano i periodi dichiarati nei propri assi. Anni scolastici, mesi, date e riferimenti compositi restano token dichiarati: il validatore non li converte arbitrariamente in anni né presume che siano confrontabili.
 4. **Fonte obbligatoria.** Etichetta e URL della fonte devono essere disponibili per ogni indicatore.
 5. **Benchmark separato.** Toscana/Italia o altri riferimenti non diventano righe comunali.
 6. **Missing data invariati.** `n.d.` e `n.a.` restano semanticamente distinti.
@@ -66,6 +66,20 @@ Ogni osservazione utilizzabile dal futuro motore A6 deve poter restituire almeno
 - presenza di unità esplicite per i valori numerici;
 - forma minima dei benchmark;
 - presenza delle sole dimensioni già source-backed.
+
+Il controllo è bidirezionale anche per l'appartenenza ai temi: una metrica non può essere aggiunta a un altro tema senza modificarne il tema canonico. Ogni identità comunale dichiarata deve risolvere al catalogo; un codice valido non copre un nome errato, né viceversa. Le righe comunali correnti non possono duplicare lo stesso Comune.
+
+I valori correnti, storici e benchmark devono essere numerici finiti oppure mancanti: booleani, infinito e NaN sono rifiutati. L'unità del valore primario deve essere dichiarata in `meta.unit` o `meta.summaryUnit`; l'unità di un companion normalizzato non può sostituirla.
+
+Le serie `componentSeries`, `longSeries`, `nominalSeries`, `realSeries` e gli altri nodi con entrambi gli assi `years` / `values` sono verificati con lo stesso criterio: assi allineati, periodi presenti e univoci, valori numerici finiti o null. Una serie con entrambi gli assi vuoti rappresenta assenza di osservazioni, viene contata separatamente e non produce punti né valori zero. I valori null nelle serie rimangono null.
+
+Per le righe correnti, `notApplicable` distingue n.a. da n.d.; `dataUnavailable` non può coesistere con n.a. o con un valore numerico. Il report deriva i conteggi `availableRows`, `missingRows` e `notApplicableRows`, senza modificarne il dato.
+
+## Strutture specializzate e limiti
+
+Le strutture senza una coppia di assi `years` / `values` (per esempio `accountingSeries` ERP con assi `issued` / `arrears`, archivi per sesso o file esterni MIMIT) restano nei loro percorsi governati e mantengono i test/materializzatori già esistenti. A6.1 non le dichiara automaticamente osservazioni interrogabili: il motore successivo dovrà usare adattatori espliciti che conservino periodo, unità, dimensione e provenienza. Anche la fonte di un benchmark resta distinta dalla fonte del valore comunale.
+
+L'esito del validatore è una prova strutturale del catalogo, non una prova di acquisizione live, freschezza, comparabilità tra periodi o correttezza causale. I controlli del monitor e le evidenze A3 conservano i propri ruoli. Nessun catalogo duplicato o nuova superficie UI viene prodotto da questo lotto.
 
 ## Confine A6.1
 

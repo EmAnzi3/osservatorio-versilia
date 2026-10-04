@@ -30,7 +30,8 @@
     },
     "period": {
       "current": "metrics.<key>.meta.year",
-      "historical": "*.series.years"
+      "historical": "explicit years/values nodes, including componentSeries, longSeries, nominalSeries and realSeries",
+      "interpretation": "preserve declared period tokens; comparability requires A6.3 rules"
     },
     "dimension": {
       "policy": "explicit-source-backed-only",
@@ -75,7 +76,12 @@
       "unit",
       "source"
     ],
-    "nullPolicy": "preserve-missing-vs-not-applicable"
+    "nullPolicy": "preserve-missing-vs-not-applicable",
+    "availabilityStates": [
+      "available",
+      "missing",
+      "not_applicable"
+    ]
   },
   "rules": {
     "themeMembershipMustBeBidirectional": true,
@@ -85,7 +91,11 @@
     "seriesYearsValuesMustAlign": true,
     "dimensionMustNeverBeInferredFromLabelsAlone": true,
     "benchmarkMustRemainSeparateFromMunicipalObservation": true,
-    "effectivePublicCatalogMustBeValidated": true
+    "effectivePublicCatalogMustBeValidated": true,
+    "municipalRowsMustBeUnique": true,
+    "numericValuesMustBeFinite": true,
+    "primaryUnitMustNotComeFromCompanion": true,
+    "missingStatesMustNotConflictWithValues": true
   },
   "layers": {
     "source": {

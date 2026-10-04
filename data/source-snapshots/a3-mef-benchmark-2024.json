@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-mef-benchmark-2024-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "MEF — Dipartimento Finanze",
+  "sourceProfileId": "mef-irpef-annual",
+  "declarationYear": 2025,
+  "taxYear": 2024,
+  "sources": {
+    "calc": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/REG_calcolo_irpef_2025.csv?d=1615465800",
+    "type": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/REG_tipo_reddito_2025.csv?d=1615465800",
+    "page": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+  },
+  "definitions": {
+    "incomeSourceProfile": "ammontare redditi da lavoro dipendente / contribuenti che dichiarano quella fonte",
+    "pensionIncomeShare": "ammontare redditi da pensione / reddito complessivo × 100"
+  },
+  "components": {
+    "tuscany": {
+      "totalIncomeFrequency": 2751243,
+      "totalIncomeAmountEuro": 72596205890,
+      "employmentIncomeFrequency": 1574703,
+      "employmentIncomeAmountEuro": 37702910670,
+      "pensionIncomeAmountEuro": 22488689820
+    },
+    "italy": {
+      "totalIncomeFrequency": 41691768,
+      "totalIncomeAmountEuro": 1076317796252,
+      "employmentIncomeFrequency": 24127859,
+      "employmentIncomeAmountEuro": 584471878059,
+      "pensionIncomeAmountEuro": 325309810501
+    }
+  },
+  "benchmarks": {
+    "incomeSourceProfile": {
+      "unit": "currency",
+      "year": "2024",
+      "part": "Lavoro dipendente e assimilati",
+      "tuscany": 23942.870922326307,
+      "italy": 24223.942872801104
+    },
+    "pensionIncomeShare": {
+      "unit": "percent",
+      "year": "2024",
+      "tuscany": 30.97777568992456,
+      "italy": 30.224327018823598
+    }
+  },
+  "acquisitionGate": {
+    "status": "PASS",
+    "note": "Benchmark Toscana/Italia ricostruiti dalle classi regionali MEF 2025 (a.i. 2024). Sono pubblicate solo incomeSourceProfile e pensionIncomeShare, entrambe riconciliabili 7/7 con lo snapshot comunale MEF già versionato. income, incomeDistribution e taxpayersAdultPopulationRate restano esclusi finché non superano il rispettivo gate semantico."
+  }
+}

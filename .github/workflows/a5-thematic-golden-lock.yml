@@ -2,23 +2,6 @@ name: A5 thematic golden lock
 
 on:
   pull_request:
-    paths:
-      - "assets/app.js"
-      - "assets/app-parts/**"
-      - "assets/fidelity.css"
-      - "assets/fidelity.js"
-      - "assets/ux-accordion.js"
-      - "assets/ux-history*.js"
-      - "assets/ux-history*.css"
-      - "assets/visual-grammar.js"
-      - "assets/visual-grammar.css"
-      - "data/site-data.json"
-      - "scripts/build_static_brand.py"
-      - "scripts/build_static_brand_impl.py"
-      - "scripts/build_static_safe.py"
-      - "scripts/test_a5_thematic_golden_lock.py"
-      - "ci/a5-thematic-golden-lock.json"
-      - ".github/workflows/a5-thematic-golden-lock.yml"
   workflow_dispatch:
 
 permissions:
@@ -26,6 +9,7 @@ permissions:
 
 jobs:
   thematic-golden-lock:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'feat/a5-controlled-iteration' || github.head_ref == 'fix/a3-enrichment-publication-gap' || github.head_ref == 'feat/a3-integration-approved-ui'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

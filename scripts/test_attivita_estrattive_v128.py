@@ -6,6 +6,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from data_status_model import compare_periods
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data/site-data.json"
 REGISTRY = ROOT / "data/source-registry.json"
@@ -155,8 +157,23 @@ def main() -> None:
     assert snapshot["prc"]["crs"] == "EPSG:3003"
     assert "non esaustiva" in snapshot["prc"]["sedNote"]
 
-    assert state["metrics"]["extractiveSites"]["status"] == "current"
-    assert state["metrics"]["extractiveProduction"]["observedLatestPeriod"] == "2025"
+    # Il contratto del lotto protegge il periodo pubblicato; una sonda successiva
+    # non può certificare un giorno usando soltanto un mese osservato.
+    assert sites["meta"]["year"] == "2 settembre 2026"
+    assert production["meta"]["year"] == "2025"
+    for key in ("extractiveSites", "extractiveProduction", "extractivePlanning"):
+        operational = state["metrics"][key]
+        comparison = compare_periods(operational["publishedPeriod"], operational["observedLatestPeriod"])
+        probe = state["sources"].get(site["metrics"][key]["sourceUrl"], {})
+        if comparison is None and probe.get("ok") and not probe.get("automationLimited"):
+            if probe.get("releaseVerification") in {"not_performed", "catalogue_only"}:
+                assert operational["status"] == "source_checked"
+                assert probe.get("releaseCheck"), "Percorso e metodo di verifica devono essere dichiarati"
+            else:
+                assert operational["status"] == "verification_required"
+        if operational["status"] == "current":
+            assert comparison == 0
+        assert operational["periodVerifiedAt"]
     assert registry["metricOverrides"]["extractiveSites"]["profile"] == "regione-toscana-rtcave-continuous"
 
     app0 = (ROOT / "assets/app-parts/00.txt").read_text(encoding="utf-8")

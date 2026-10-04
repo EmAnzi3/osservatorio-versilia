@@ -4422,7 +4422,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio interno"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 0.9608859827887721,
+          "italy": 0,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "rows": [
@@ -5172,7 +5181,16 @@
         "longHistoryYears": "2011–2024",
         "longHistorySource": "Dipartimento delle Finanze — MEF",
         "longHistorySourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
-        "longHistoryNote": "Valore corrente e storico usano la stessa definizione MEF: «Reddito imponibile — Ammontare / Frequenza». Il «Reddito complessivo medio dichiarato» della distribuzione per fasce è una misura diversa e non viene mescolata a questa serie."
+        "longHistoryNote": "Valore corrente e storico usano la stessa definizione MEF: «Reddito imponibile — Ammontare / Frequenza». Il «Reddito complessivo medio dichiarato» della distribuzione per fasce è una misura diversa e non viene mescolata a questa serie.",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 25165.940514961083,
+          "italy": 24893.038478016195,
+          "source": "MEF — Dipartimento delle Finanze",
+          "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-mef-taxable-income-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "rows": [
@@ -7860,6 +7878,15 @@
           "label": "Presenze turistiche per residente",
           "description": "Notti trascorse nelle strutture ricettive rapportate alla popolazione residente.",
           "unit": "decimal"
+        },
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 45769090,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
@@ -8065,6 +8092,15 @@
           "label": "Posti letto ogni 1.000 residenti",
           "description": "Capacità ricettiva rapportata alla popolazione residente.",
           "unit": "per1000"
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 617143,
+          "italy": 5498773,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025."
         }
       },
       "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
@@ -8207,6 +8243,15 @@
           "label": "Unità locali ogni 1.000 residenti",
           "description": "Unità locali attive rapportate alla popolazione residente.",
           "unit": "per1000"
+        },
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 366636,
+          "italy": 5144482,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
@@ -8463,7 +8508,16 @@
         "unit": "percent",
         "year": "2023",
         "source": "Istat — ASIA unità locali",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 93.96622262952901,
+          "italy": 94.22052599270442,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
       "rows": [
@@ -22423,11 +22477,20 @@
         "theme": "salute",
         "label": "Farmacie ogni 1.000 residenti",
         "shortLabel": "Densità farmacie",
-        "description": "Farmacie aperte nel comune rapportate alla popolazione residente.",
+        "description": "Farmacie aperte al pubblico al 31 dicembre 2025 secondo gli intervalli di validità ministeriali, incluse succursali e dispensari, rapportate ai residenti al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2025",
         "source": "Ministero della Salute — Open data farmacie",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 0.3470683112421165,
+          "italy": 0.3516967322979481,
+          "source": "Ministero della Salute",
+          "url": "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20251231.csv",
+          "sourceSnapshot": "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
+          "note": "Farmacie aperte al 31 dicembre 2025 secondo intervalli nativi di validità, incluse ordinarie, succursali, dispensari e dispensari stagionali. Una sola sede valida per codice ministeriale, nessuna somma delle righe storiche. Denominatore pubblico: residenti al 1° gennaio 2026, applicato anche a Toscana/Italia. Il CSV 2026 non sostituisce la fotografia storica 2025."
+        }
       },
       "sourceUrl": "https://www.dati.salute.gov.it/",
       "rows": [
@@ -22510,8 +22573,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "farmacie / popolazione residente × 1.000",
-        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "formula": "Sedi con codice ministeriale univoco valide al 31 dicembre 2025 / popolazione residente al 1° gennaio 2026 × 1.000.",
+        "caveat": "Include ordinarie, succursali, dispensari e dispensari stagionali della fotografia ministeriale 2025. Esclude registrazioni cessate e con validità futura; non conta tutte le righe storiche.",
         "coverage": "7/7"
       }
     },
@@ -22761,13 +22824,22 @@
         "theme": "mobilita",
         "label": "Autocontenimento del lavoro",
         "shortLabel": "Lavoro nel comune",
-        "description": "Quota di occupati residenti che lavora nel proprio comune.",
+        "description": "Quota dei pendolari residenti per lavoro il cui Comune di lavoro coincide con quello di residenza, secondo la matrice Istat 2021.",
         "unit": "percent",
         "year": "2021",
         "source": "Istat — Censimento permanente, mobilità",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 51.617194295052556,
+          "italy": 50.10672700048984,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
-      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
         {
           "town": "Massarosa",
@@ -22848,8 +22920,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "formula": "flussi interni al Comune / (flussi interni + flussi in uscita) × 100",
+        "caveat": "Matrice Istat per lavoro 2021: occupati che raggiungono il luogo abituale di lavoro almeno tre giorni a settimana e rientrano giornalmente. Le quote comunali pubblicate sono arrotondate a un decimale; i benchmark sono ricavati dalle componenti aggregate.",
         "coverage": "7/7"
       }
     },
@@ -22863,7 +22935,16 @@
         "unit": "number",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 641790,
+          "italy": 9762022,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -22961,9 +23042,18 @@
         "unit": "per1000",
         "year": "2024",
         "source": "ACI / Istat — parco veicolare",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 744.1215646386034,
+          "italy": 701.366347742935,
+          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+        }
       },
-      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
         {
           "town": "Massarosa",
@@ -23044,9 +23134,10 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "autovetture / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
-        "coverage": "7/7"
+        "formula": "Autovetture ACI 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Autovetture 2024 rapportate ai residenti al 1° gennaio 2026: il numeratore e il denominatore hanno periodi distinti, dichiarati e applicati anche ai benchmark.",
+        "coverage": "7/7",
+        "note": "Parco autovetture 2024 ACI Autoritratto. Il rapporto conserva la popolazione pubblica Istat al 1° gennaio 2026; stessa annualità del denominatore per Comuni, Toscana e Italia. Valori comunali riconciliati al decimale senza modificarli."
       }
     },
     "pollutingCars": {
@@ -23059,9 +23150,18 @@
         "unit": "percent",
         "year": "2024",
         "source": "ACI / Istat — parco veicolare",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 17.166108561955497,
+          "italy": 23.822150647563276,
+          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+        }
       },
-      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
       "rows": [
         {
           "town": "Massarosa",
@@ -23143,7 +23243,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "autovetture Euro 0–3 / autovetture totali × 100",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "Quota Euro 0–3 sul totale delle autovetture ACI 2024, incluse nel denominatore le classi non contemplate e non definite.",
         "coverage": "7/7"
       }
     },
@@ -24201,7 +24301,16 @@
         "unit": "hectares",
         "year": "2024",
         "source": "ISPRA — Consumo di suolo",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 264.72,
+          "italy": 7850.369999999999,
+          "source": "ISPRA — Consumo di suolo",
+          "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-soil-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
       "rows": [
@@ -24701,6 +24810,15 @@
           "publisher": "Istat",
           "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
           "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 52337,
+          "italy": 1133006,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -24801,6 +24919,15 @@
           "label": "Quota della superficie comunale occupata da SAU",
           "description": "SAU localizzata nel Comune divisa per la superficie comunale Istat-SITUAS al 31 dicembre 2020.",
           "unit": "percent"
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 667001.03,
+          "italy": 12431785.2,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -24946,6 +25073,15 @@
           "publisher": "Istat",
           "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
           "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 12.619562387400478,
+          "italy": 11.094835645388148,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -25451,6 +25587,15 @@
           "label": "Quota di SAU irrigata",
           "description": "Superficie irrigata divisa per la SAU delle aziende con centro nel Comune.",
           "unit": "percent"
+        },
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 32736.14,
+          "italy": 2358259.76,
+          "source": "Istat — 7° Censimento generale dell’agricoltura 2020",
+          "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-agriculture-benchmark-2020-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
@@ -26353,6 +26498,15 @@
         "sourceMeta": {
           "snapshot": "data/source-snapshots/costa-mare-v123.json",
           "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "benchmark": {
+          "year": "2026",
+          "tuscany": 45,
+          "italy": 524,
+          "source": "FEE Italia — Programma Bandiera Blu",
+          "url": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+          "sourceSnapshot": "data/source-snapshots/a3-fee-blue-flag-benchmark-2026.json",
+          "note": "Elenco nazionale FEE spiagge, incluse acque interne; località separate da virgole esterne alle parentesi, barre conservate; riconoscimenti revocati esclusi."
         }
       },
       "sourceUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
@@ -26963,7 +27117,16 @@
         "comparisonDifference": "percentagePoints",
         "comparisonLabel": "quota Versilia",
         "comparisonOverline": "Rispetto alla quota Versilia",
-        "comparisonNote": "La quota Versilia è il rapporto tra i chilometri complessivamente protetti e la costa complessiva dei quattro Comuni costieri; non è la media semplice delle percentuali comunali."
+        "comparisonNote": "La quota Versilia è il rapporto tra i chilometri complessivamente protetti e la costa complessiva dei quattro Comuni costieri; non è la media semplice delle percentuali comunali.",
+        "benchmark": {
+          "year": "2020",
+          "tuscany": 12.8343943672,
+          "italy": 18.20385170208589,
+          "source": "ISPRA — Costa protetta",
+          "url": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-coast-benchmark-2020.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
       "rows": [
@@ -28853,6 +29016,15 @@
         "sourceMeta": {
           "snapshot": "data/source-snapshots/ambiente-acqua-v124-data.json",
           "note": "2018 è l’ultimo dato comunale pubblico disponibile nel dataflow verificato; nessuna interpolazione."
+        },
+        "benchmark": {
+          "year": "2018",
+          "tuscany": 42.8,
+          "italy": 42.0,
+          "source": "Istat — Censimento delle acque per uso civile",
+          "url": "https://www.istat.it/storage/ASI/2021/capitoli/C02.pdf",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-water-benchmark-2018.json",
+          "note": "Perdite totali sulle reti comunali di distribuzione nel 2018. Percentuali ufficiali Istat arrotondate a un decimale, verificate sui volumi regionali/nazionali; non è una media delle percentuali comunali."
         }
       },
       "sourceUrl": "https://esploradati.istat.it/",
@@ -38365,7 +38537,16 @@
         "unit": "kg",
         "year": "2024",
         "source": "ISPRA — Catasto rifiuti",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 589.9885520621804,
+          "italy": 507.9021049364955,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -38806,7 +38987,16 @@
         "unit": "percent",
         "year": "2024",
         "source": "ISPRA — Catasto rifiuti",
-        "polarity": "positive"
+        "polarity": "positive",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 68.06818821756305,
+          "italy": 67.68674612460485,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -39803,7 +39993,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data Regione Toscana",
         "formula": "somma importo_finanziato_pnrr / popolazione residente",
-        "caveat": "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. Il valore è finanziamento PNRR censito, non importo erogato o speso.",
+        "caveat": "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. Il valore è finanziamento PNRR censito, non importo erogato o speso.",
         "coverage": "7/7"
       }
     },
@@ -39822,7 +40012,7 @@
         "comparisonDifference": "percentagePoints",
         "comparisonLabel": "quota Versilia",
         "comparisonOverline": "Rispetto alla quota Versilia",
-        "comparisonNote": "Il riferimento Versilia è la quota complessiva di progetti conclusi (74 su 101); non è la media semplice delle sette percentuali comunali."
+        "comparisonNote": "Il riferimento Versilia è la quota complessiva di progetti conclusi (78 su 101); non è la media semplice delle sette percentuali comunali."
       },
       "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
       "rows": [
@@ -39850,31 +40040,31 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 62.5,
-          "formatted": "62,5%",
+          "value": 68.75,
+          "formatted": "68,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 62.5
+          "benchmarkValue": 68.75
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 75.0,
-          "formatted": "75,0%",
+          "value": 83.33333333333334,
+          "formatted": "83,3%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 75.0
+          "benchmarkValue": 83.33333333333334
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 66.66666666666666,
-          "formatted": "66,7%",
+          "value": 75.0,
+          "formatted": "75,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 66.66666666666666
+          "benchmarkValue": 75.0
         },
         {
           "town": "Forte dei Marmi",
@@ -39890,23 +40080,23 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 81.81818181818183,
-          "formatted": "81,8%",
+          "value": 90.9090909090909,
+          "formatted": "90,9%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 81.81818181818183
+          "benchmarkValue": 90.9090909090909
         }
       ],
       "aggregate": {
-        "value": 73.26732673267327,
-        "label": "Versilia · 74 su 101",
-        "note": "74 progetti su 101 risultano nella macrofase ReGiS 5. conclusione nella fotografia dell'11 agosto 2026."
+        "value": 77.22772277227723,
+        "label": "Versilia · 78 su 101",
+        "note": "78 progetti su 101 risultano nella macrofase ReGiS 5. conclusione nella fotografia del 25 settembre 2026."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su open data Regione Toscana / ReGiS",
         "formula": "progetti con fase_avanzamento_da_regis = 5. conclusione / progetti selezionati × 100",
-        "caveat": "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. La fase ReGiS è uno stato amministrativo di avanzamento e non equivale, da sola, a collaudo concluso.",
+        "caveat": "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. La fase ReGiS è uno stato amministrativo di avanzamento e non equivale, da sola, a collaudo concluso.",
         "coverage": "7/7"
       }
     },
@@ -40018,7 +40208,16 @@
         "unit": "percent",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico mensile",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 48.24943209489199,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -40116,7 +40315,16 @@
         "unit": "percent",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 57.948436379224496,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -40214,7 +40422,16 @@
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": -0.34174008527254585,
+          "italy": 0.0,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
@@ -40298,7 +40515,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "(pendolari in entrata - pendolari in uscita) / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Denominatore: popolazione censita al 1° gennaio 2021, distinto dalla popolazione 2026 usata nei tassi di entrata e uscita.",
         "coverage": "7/7"
       }
     },
@@ -40312,7 +40529,16 @@
         "unit": "kg",
         "year": "2024",
         "source": "Elaborazione Osservatorio su dati ISPRA",
-        "polarity": "negative"
+        "polarity": "negative",
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 188.39403398242044,
+          "italy": 164.1196966066057,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&pg=provincia",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024-v2.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
       "rows": [
@@ -40886,7 +41112,16 @@
         "unit": "decimal",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 12.507874624715308,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -40980,13 +41215,27 @@
         "theme": "economia",
         "label": "Posti letto turistici ogni 1.000 residenti",
         "shortLabel": "Posti letto / residenti",
-        "description": "Capacità ricettiva rapportata alla popolazione residente.",
+        "description": "Posti letto Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2025",
-        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
-        "polarity": "neutral"
+        "year": "2024",
+        "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
+        "polarity": "neutral",
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
+          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 168.65415653928622,
+          "italy": 93.28994190777546,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+        }
       },
-      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
       "rows": [
         {
           "town": "Massarosa",
@@ -41067,8 +41316,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "posti letto / popolazione residente × 1.000",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "formula": "posti letto Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },
@@ -41078,13 +41327,27 @@
         "theme": "economia",
         "label": "Strutture ricettive ogni 1.000 residenti",
         "shortLabel": "Strutture ricettive",
-        "description": "Strutture ricettive rapportate alla popolazione residente.",
+        "description": "Strutture ricettive Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2025",
-        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
-        "polarity": "neutral"
+        "year": "2024",
+        "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
+        "polarity": "neutral",
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
+          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.115780895501831,
+          "italy": 4.50129403360151,
+          "source": "Istat — Capacità degli esercizi ricettivi",
+          "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+        }
       },
-      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
       "rows": [
         {
           "town": "Massarosa",
@@ -41165,8 +41428,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "strutture ricettive / popolazione residente × 1.000",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "formula": "strutture ricettive Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },
@@ -41176,11 +41439,20 @@
         "theme": "mobilita",
         "label": "Pendolari in uscita ogni 1.000 residenti",
         "shortLabel": "Pendolari in uscita",
-        "description": "Residenti che lavorano fuori Comune, rapportati alla popolazione.",
+        "description": "Residenti che lavorano fuori Comune, rapportati alla popolazione. Il rapporto usa la popolazione residente al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 175.73462337076023,
+          "italy": 165.61848712111336,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -41264,7 +41536,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "pendolari in uscita / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Numeratore: flussi Istat 2021; denominatore: popolazione al 1° gennaio 2026, anche per Toscana/Italia.",
         "coverage": "7/7"
       }
     },
@@ -41274,11 +41546,20 @@
         "theme": "mobilita",
         "label": "Pendolari in entrata ogni 1.000 residenti",
         "shortLabel": "Pendolari in entrata / residenti",
-        "description": "Lavoratori provenienti da altri Comuni, rapportati alla popolazione.",
+        "description": "Lavoratori provenienti da altri Comuni, rapportati alla popolazione. Il rapporto usa la popolazione residente al 1° gennaio 2026.",
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 175.38974131659683,
+          "italy": 165.61848712111336,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -41362,7 +41643,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "pendolari in entrata / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Numeratore: flussi Istat 2021; denominatore: popolazione al 1° gennaio 2026, anche per Toscana/Italia.",
         "coverage": "7/7"
       }
     },
@@ -42284,7 +42565,16 @@
         "unit": "number",
         "year": "2025",
         "source": "Regione Toscana — movimento turistico comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 15141534,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -42382,7 +42672,16 @@
         "unit": "nights",
         "year": "2025",
         "source": "Elaborazione Osservatorio su dati Regione Toscana",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2025",
+          "tuscany": 3.022751195486534,
+          "italy": null,
+          "source": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+          "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
       "rows": [
@@ -42480,7 +42779,16 @@
         "unit": "people",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 643052,
+          "italy": 9762022,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -42578,7 +42886,16 @@
         "unit": "people",
         "year": "2021",
         "source": "Elaborazione Osservatorio su matrice Istat",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": -1262,
+          "italy": 0,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
@@ -45782,7 +46099,16 @@
         "unit": "people",
         "year": "2023",
         "source": "ISTAT — ASIA unità locali",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 1283739.83,
+          "italy": 18644421.78,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -45999,7 +46325,16 @@
         "unit": "decimal",
         "year": "2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2023",
+          "tuscany": 3.5014014717594564,
+          "italy": 3.624159202034335,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46216,7 +46551,16 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2018–2023",
+          "tuscany": 5.22243491687211,
+          "italy": 8.082484588553985,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46314,7 +46658,16 @@
         "unit": "percent",
         "year": "2018–2023",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2018–2023",
+          "tuscany": 5.794256622268157,
+          "italy": 7.846713682131012,
+          "source": "Istat — ASIA Unità Locali",
+          "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
       "rows": [
@@ -46412,7 +46765,16 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "31 dicembre 2025",
+          "tuscany": 73.22531610387755,
+          "italy": 82.89952077416727,
+          "source": "AGCOM — Broadband Map, reportistica comunale",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
@@ -46706,7 +47068,16 @@
         "unit": "percent",
         "year": "31 dicembre 2025",
         "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "31 dicembre 2025",
+          "tuscany": 64.58685444439853,
+          "italy": 74.25960016740227,
+          "source": "AGCOM — Broadband Map, reportistica comunale",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://maps.agcom.it/",
       "rows": [
@@ -48855,7 +49226,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 5.800023666873182,
+          "italy": 4.4554243595798155,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
@@ -49610,7 +49990,16 @@
           "iscritti",
           "cancellati",
           "saldo migratorio"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.760909649661954,
+          "italy": 4.4554243595798155,
+          "source": "Istat — Bilancio demografico comunale P02",
+          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
@@ -55122,7 +55511,7 @@
         "shortLabel": "Prezzi carburanti",
         "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
         "unit": "eurliter",
-        "year": "2026-08-28",
+        "year": "2026-10-03",
         "source": "MIMIT — Osservaprezzi carburanti",
         "polarity": "neutral",
         "compositeType": "securityMeasures",
@@ -55140,29 +55529,35 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.018,
+          "value": 2.097,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.018
+              1.987,
+              2.018,
+              2.018,
+              2.097
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.018,
+          "benchmarkValue": 2.097,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.018,
+              "value": 2.097,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.147,
+              "value": 2.299,
               "unit": "eurliter"
             }
           ],
@@ -55170,18 +55565,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.018
+                1.987,
+                2.018,
+                2.018,
+                2.097
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.147
+                2.088,
+                2.147,
+                2.147,
+                2.299
               ]
             }
           }
@@ -55190,29 +55597,35 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 2.019,
+          "value": 1.994,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.019
+              1.994,
+              2.019,
+              2.019,
+              1.994
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.019,
+          "benchmarkValue": 1.994,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.019,
+              "value": 1.994,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.141,
+              "value": 2.194,
               "unit": "eurliter"
             }
           ],
@@ -55220,18 +55633,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.019
+                1.994,
+                2.019,
+                2.019,
+                1.994
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.141
+                2.099,
+                2.144,
+                2.141,
+                2.194
               ]
             }
           }
@@ -55240,29 +55665,35 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.029,
+          "value": 2.079,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.029
+              1.999,
+              2.029,
+              2.029,
+              2.079
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.029,
+          "benchmarkValue": 2.079,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.029,
+              "value": 2.079,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.139,
+              "value": 2.299,
               "unit": "eurliter"
             }
           ],
@@ -55270,18 +55701,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.029
+                1.999,
+                2.029,
+                2.029,
+                2.079
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.139
+                2.089,
+                2.139,
+                2.139,
+                2.299
               ]
             }
           }
@@ -55290,29 +55733,35 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2.019,
+          "value": 1.999,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.019
+              1.999,
+              2.019,
+              2.019,
+              1.999
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.019,
+          "benchmarkValue": 1.999,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.019,
+              "value": 1.999,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.149,
+              "value": 2.199,
               "unit": "eurliter"
             }
           ],
@@ -55320,18 +55769,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.019
+                1.999,
+                2.019,
+                2.019,
+                1.999
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.149
+                2.099,
+                2.149,
+                2.149,
+                2.199
               ]
             }
           }
@@ -55340,29 +55801,35 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1.999,
+          "value": 2.03,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              1.999
+              1.994,
+              1.999,
+              1.999,
+              2.03
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 2.03,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 2.03,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.144,
+              "value": 2.23,
               "unit": "eurliter"
             }
           ],
@@ -55370,18 +55837,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                1.999
+                1.994,
+                1.999,
+                1.999,
+                2.03
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.144
+                2.079,
+                2.144,
+                2.144,
+                2.23
               ]
             }
           }
@@ -55390,29 +55869,35 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 1.999,
+          "value": 2.03,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              1.999
+              1.979,
+              2.009,
+              1.999,
+              2.03
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 2.03,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 2.03,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.129,
+              "value": 2.215,
               "unit": "eurliter"
             }
           ],
@@ -55420,18 +55905,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                1.999
+                1.979,
+                2.009,
+                1.999,
+                2.03
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.129
+                2.089,
+                2.134,
+                2.129,
+                2.215
               ]
             }
           }
@@ -55444,9 +55941,15 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
+              null,
+              null,
+              null,
               null
             ]
           },
@@ -55470,17 +55973,29 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
+                null,
+                null,
+                null,
                 null
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
+                null,
+                null,
+                null,
                 null
               ]
             }
@@ -55488,20 +56003,20 @@
         }
       ],
       "aggregate": {
-        "value": 2.0138333333333334,
+        "value": 2.0381666666666667,
         "label": "Media delle mediane comunali disponibili",
         "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
         "parts": [
           {
             "label": "Benzina self",
             "selectorLabel": "Benzina self",
-            "value": 2.0138333333333334,
+            "value": 2.0381666666666667,
             "unit": "eurliter"
           },
           {
             "label": "Gasolio self",
             "selectorLabel": "Gasolio self",
-            "value": 2.1415,
+            "value": 2.239333333333333,
             "unit": "eurliter"
           }
         ]
@@ -55510,7 +56025,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data MIMIT",
         "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
-        "caveat": "Fotografia del 28 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "caveat": "Ultima fotografia: 3 ottobre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
         "coverage": "6/7"
       }
     },
@@ -55529,7 +56044,16 @@
           "costo rifiuti",
           "ctotab",
           "igiene urbana"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 297.74,
+          "italy": 214.39,
+          "source": "ISPRA — Catasto Nazionale Rifiuti",
+          "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&advice=si&pg=costiregione",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-environment-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
       "rows": [
@@ -55683,7 +56207,16 @@
           "reddito reale",
           "nic",
           "prezzi"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 1.1133958655057397,
+          "italy": 1.8557286489092162,
+          "source": "MEF — Dipartimento Finanze / Istat NIC",
+          "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+          "sourceSnapshot": "data/source-snapshots/a3-mef-real-income-benchmark-2024.json",
+          "note": "Variazione reale 2016–2024 del reddito imponibile medio per dichiarante. Per Toscana e Italia: somma degli importi / somma delle frequenze su tutte le righe dei rispettivi archivi comunali MEF, poi stesso NIC nazionale del pubblico. Italia include la riga esplicita Mancante/errata (Non indicato nel 2016); nessuna cella mancante riempita. Non è una media dei redditi medi comunali. Le medie comunali sono arrotondate al centesimo, come nel contratto pubblico; gli aggregati regionali/nazionali mantengono i rapporti esatti."
+        }
       },
       "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "secondarySourceUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
@@ -56334,7 +56867,16 @@
           "personale comune",
           "dipendenti per abitante",
           "organico comunale"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 6.352905180397374,
+          "italy": null,
+          "source": "RGS — Conto Annuale / Istat / PIAO comunali",
+          "url": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
+          "sourceSnapshot": "data/source-snapshots/a3-rgs-staff-benchmark-2024.json",
+          "note": "Toscana: personale alle dipendenze dei Comuni al 31 dicembre 2024 / residenti Istat al 1° gennaio 2024 × 1.000, come nei sette valori comunali. Copertura 273/273: 271 enti RGS e zero dipendenti esplicitamente dichiarati nei PIAO 2025–2027 di Londa e San Godenzo. Personale dipendente dalle Unioni escluso. Italia non disponibile: copertura e corrispondenza territoriale del pannello nazionale ancora da certificare."
+        }
       },
       "sourceUrl": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
       "rows": [
@@ -56480,8 +57022,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su dati ufficiali RGS e popolazione Istat già materializzata",
-        "formula": "dipendenti al 31 dicembre / residenti 2024 × 1.000",
-        "caveat": "La consistenza del personale dipende anche da esternalizzazioni, gestioni associate e organizzazione dei servizi. Un valore maggiore non è automaticamente migliore. La pagina RGS pubblica lo stesso concetto di indicatore; il controllo di parità sul denominatore della tabella dedicata resta separato dalla materializzazione.",
+        "formula": "dipendenti comunali al 31 dicembre 2024 / residenti Istat al 1° gennaio 2024 × 1.000",
+        "caveat": "La consistenza del personale dipende anche da esternalizzazioni, gestioni associate e organizzazione dei servizi. Un valore maggiore non è automaticamente migliore. Personale alle dipendenze dei Comuni: dipendenti delle Unioni esclusi. Stock al 31 dicembre 2024 rapportato ai residenti al 1° gennaio 2024, denominatore riconciliato con la fonte nativa Istat. Il benchmark Toscana copre 273/273 Comuni; per Londa e San Godenzo lo zero è dichiarato espressamente nei PIAO 2025–2027, non imputato da assenza in RGS. Italia non disponibile per copertura territoriale ancora da certificare.",
         "coverage": "7/7"
       }
     },
@@ -59825,7 +60367,16 @@
           "servizi sociali",
           "spesa per abitante",
           "assistenza sociale"
-        ]
+        ],
+        "benchmark": {
+          "year": "2022",
+          "tuscany": 167,
+          "italy": 150,
+          "source": "Istat — Spesa dei Comuni per i servizi sociali",
+          "url": "https://www.istat.it/comunicato-stampa/la-spesa-dei-comuni-per-i-servizi-sociali-anno-2022/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-social-services-benchmark-2022.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx",
       "rows": [
@@ -60575,6 +61126,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 0.66,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
@@ -61028,6 +61588,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 7.5,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
@@ -61477,6 +62046,15 @@
           "publisher": "Regione Toscana",
           "snapshot": "data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json",
           "note": "Indicatori IFLA comunali ufficiali; mancanti conservati come n.d. senza stime."
+        },
+        "benchmark": {
+          "year": "2024",
+          "tuscany": 33.16,
+          "italy": null,
+          "source": "Regione Toscana — Monitoraggio biblioteche pubbliche",
+          "url": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+          "sourceSnapshot": "data/source-snapshots/a3-regione-toscana-libraries-benchmark-2024.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
@@ -61656,7 +62234,16 @@
           "posti nido",
           "ricettività",
           "servizi educativi"
-        ]
+        ],
+        "benchmark": {
+          "year": "2024/25",
+          "tuscany": 47.546230440967285,
+          "italy": null,
+          "source": "Regione Toscana — Servizi educativi per la prima infanzia",
+          "url": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv",
+          "sourceSnapshot": "data/source-snapshots/a3-toscana-early-childhood-benchmark-2024-25.json",
+          "note": "Totale regionale esplicito 2024/25: 28.077 posti potenziali / 59.052 bambini di 3–36 mesi × 100. Include nidi e servizi integrativi; non è l’Indicatore di Lisbona. Italia non disponibile nella fonte regionale; celle vuote e righe delle Unioni non sono trasformate in zero né sommate due volte."
+        }
       },
       "sourceUrl": "https://dati.toscana.it/dataset/serviziprimainfanzia",
       "rows": [
@@ -61989,7 +62576,7 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Conteggio da Allegato A-1 PAB 2026",
-        "formula": "Conteggio dei codici univoci 2026CB1E… associati ai sette Comuni.",
+        "formula": "Conteggio dei codici univoci 2026CB1E… e 2026CB1P… dell’Allegato A-1 associati ai sette Comuni.",
         "caveat": "Programmazione approvata; non misura lo stato di avanzamento.",
         "coverage": "7/7",
         "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
@@ -62243,6 +62830,15 @@
         "sourceMeta": {
           "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
           "note": "È un conteggio di elementi censiti, non una stima del numero di cantieri o interventi. Una feature che attraversa più Comuni compare in ciascuna scheda comunale."
+        },
+        "benchmark": {
+          "year": "2021",
+          "tuscany": 3666,
+          "italy": null,
+          "source": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+          "url": "https://www.regione.toscana.it/documents/10180/22470380/shp%2Bfiles%2Bcensimento%2Bopere%2Bidrauliche.zip/de6d5e57-de9f-4555-7e55-52ff32654a0e?t=1636713609857",
+          "sourceSnapshot": "data/source-snapshots/a3-toscana-hydraulic-features-benchmark-2021.json",
+          "note": "Feature del censimento regionale DGRT 1155/2021 che intersecano la Toscana: 82 areali, 2.572 lineari, 1.012 puntuali, contate una volta per record sorgente e layer. Esclusi i tratti del reticolo DCR 81/2021. Non è un conteggio di cantieri o strutture fisiche; Italia non disponibile nella fonte regionale."
         }
       },
       "sourceUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
@@ -66590,8 +67186,8 @@
         "publicWorks": 254,
         "publicWorksValue": 22671881,
         "pnrrProjects": 16,
-        "pnrrConcluded": 10,
-        "pnrrInProgress": 6,
+        "pnrrConcluded": 11,
+        "pnrrInProgress": 5,
         "pnrrFunding": 3270511.41,
         "contracts": 39,
         "contractsValue": 1024340,
@@ -67524,8 +68120,8 @@
         "publicWorks": 184,
         "publicWorksValue": 46509295,
         "pnrrProjects": 12,
-        "pnrrConcluded": 9,
-        "pnrrInProgress": 3,
+        "pnrrConcluded": 10,
+        "pnrrInProgress": 2,
         "pnrrFunding": 9478237.98,
         "contracts": 36,
         "contractsValue": 1320737,
@@ -68378,8 +68974,8 @@
         "publicWorks": 135,
         "publicWorksValue": 27677665,
         "pnrrProjects": 12,
-        "pnrrConcluded": 8,
-        "pnrrInProgress": 4,
+        "pnrrConcluded": 9,
+        "pnrrInProgress": 3,
         "pnrrFunding": 2485485.63,
         "contracts": 9,
         "contractsValue": 140018,
@@ -69846,8 +70442,8 @@
         "publicWorks": 99,
         "publicWorksValue": 11228401,
         "pnrrProjects": 11,
-        "pnrrConcluded": 9,
-        "pnrrInProgress": 2,
+        "pnrrConcluded": 10,
+        "pnrrInProgress": 1,
         "pnrrFunding": 2055502.34,
         "contracts": 3,
         "contractsValue": 58611,
@@ -70648,16 +71244,16 @@
   },
   "pnrrDeepDive": {
     "title": "Dentro il PNRR",
-    "snapshot": "11 agosto 2026",
-    "snapshotDate": "2026-08-11",
+    "snapshot": "25 settembre 2026",
+    "snapshotDate": "2026-09-25",
     "source": "Regione Toscana — Open Data PNRR",
     "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
     "methodNote": "Perimetro: area PNRR o PNRR-PNC, PNC puro escluso, uno dei sette Comuni come soggetto attuatore, deduplicazione su id_progetto. La macrofase ReGiS 5. conclusione non equivale automaticamente a opera collaudata.",
     "totals": {
       "projects": 101,
-      "concluded": 74,
-      "execution": 26,
-      "contracting": 1,
+      "concluded": 78,
+      "execution": 23,
+      "contracting": 0,
       "funding": 36683107.64
     },
     "towns": [
@@ -70665,8 +71261,8 @@
         "code": "046005",
         "town": "Camaiore",
         "projects": 16,
-        "concluded": 10,
-        "concludedPercent": 62.5,
+        "concluded": 11,
+        "concludedPercent": 68.75,
         "funding": 3270511.41
       },
       {
@@ -70689,24 +71285,24 @@
         "code": "046024",
         "town": "Pietrasanta",
         "projects": 12,
-        "concluded": 9,
-        "concludedPercent": 75.0,
+        "concluded": 10,
+        "concludedPercent": 83.33333333333334,
         "funding": 9478237.98
       },
       {
         "code": "046028",
         "town": "Seravezza",
         "projects": 12,
-        "concluded": 8,
-        "concludedPercent": 66.66666666666666,
+        "concluded": 9,
+        "concludedPercent": 75.0,
         "funding": 2485485.63
       },
       {
         "code": "046030",
         "town": "Stazzema",
         "projects": 11,
-        "concluded": 9,
-        "concludedPercent": 81.81818181818183,
+        "concluded": 10,
+        "concludedPercent": 90.9090909090909,
         "funding": 2055502.34
       },
       {
@@ -70725,13 +71321,13 @@
       "statusSummary": [
         {
           "status": "Collaudo completato",
-          "count": 7,
-          "funding": 5830474.87
+          "count": 18,
+          "funding": 20972273.03
         },
         {
           "status": "Collaudo avviato",
-          "count": 12,
-          "funding": 18593970.29
+          "count": 3,
+          "funding": 5387172.13
         },
         {
           "status": "Lavori in esecuzione",
@@ -70740,13 +71336,13 @@
         },
         {
           "status": "Contratto stipulato",
-          "count": 1,
-          "funding": 1440000.0
+          "count": 0,
+          "funding": 0
         },
         {
           "status": "Stipula in corso",
-          "count": 1,
-          "funding": 495000.0
+          "count": 0,
+          "funding": 0
         }
       ],
       "works": [
@@ -70760,28 +71356,28 @@
         {
           "town": "Camaiore",
           "title": "Nuovo intervento per asili nido / prima infanzia",
-          "status": "Contratto stipulato",
+          "status": "Collaudo completato",
           "funding": 1440000.0,
           "cup": "D35E24000010006"
         },
         {
           "town": "Camaiore",
           "title": "Cucina nido d'infanzia Mafalda",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 170000.0,
           "cup": "D38H22000110006"
         },
         {
           "town": "Forte dei Marmi",
           "title": "Nuova mensa scuola Don Milani",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 304640.0,
           "cup": "F21B22000330008"
         },
         {
           "town": "Forte dei Marmi",
           "title": "Nuovi spazi mensa scuola Guidi",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 499200.0,
           "cup": "F25E22000440006"
         },
@@ -70809,35 +71405,35 @@
         {
           "town": "Pietrasanta",
           "title": "Nuovo polo scolastico Marina di Pietrasanta",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 5705263.79,
           "cup": "G43H17000050004"
         },
         {
           "town": "Pietrasanta",
           "title": "Rigenerazione Ex-Camp",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 2803289.07,
           "cup": "G44E21000590004"
         },
         {
           "town": "Seravezza",
           "title": "Nuova palestra scuole Frediani",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 948022.0,
           "cup": "B81B22000710006"
         },
         {
           "town": "Seravezza",
           "title": "Nuovo nido d'infanzia",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 1250000.0,
           "cup": "B81B22000730006"
         },
         {
           "town": "Stazzema",
           "title": "Accessibilità Museo e Parco nazionale della Pace di Sant'Anna",
-          "status": "Stipula in corso",
+          "status": "Collaudo completato",
           "funding": 495000.0,
           "cup": "H17B22000430006"
         },
@@ -70865,7 +71461,7 @@
         {
           "town": "Viareggio",
           "title": "Riqualificazione Marina di Torre del Lago",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 1131347.78,
           "cup": "B43D21001420004"
         },
@@ -70886,7 +71482,7 @@
         {
           "town": "Viareggio",
           "title": "Recupero piazza Piave",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 395035.52,
           "cup": "B43D21001450004"
         },

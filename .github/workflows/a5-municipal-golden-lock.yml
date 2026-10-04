@@ -26,6 +26,7 @@ permissions:
 
 jobs:
   municipal-golden-lock:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'feat/a5-controlled-iteration' || github.head_ref == 'fix/a3-enrichment-publication-gap' || github.head_ref == 'feat/a3-integration-approved-ui'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current PR head

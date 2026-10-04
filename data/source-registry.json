@@ -612,7 +612,8 @@
     "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular",
     "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
-    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual"
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
+    "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -821,6 +822,12 @@
     },
     "financialDebtProfile": {
       "profile": "openbdap-annual"
+    },
+    "tourismBedsPer1000": {
+      "profile": "istat-tourism-annual"
+    },
+    "tourismStructuresPer1000": {
+      "profile": "istat-tourism-annual"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -892,6 +899,232 @@
     "https://sira.arpat.toscana.it/apex/f?p=SISBON%3AREPORT_PER_RT%3A%3ACSV%3AIR_REPORT_GEOSCOPIO": {
       "redirectChange": "informational",
       "reason": "Endpoint SISBON ARPAT: il passaggio tecnico dal dominio sira.arpat.toscana.it al portale www.arpat.toscana.it/sira non equivale a un nuovo rilascio; periodo e dati restano verificati separatamente."
+    }
+  },
+  "sourceProbePolicies": {
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": {
+      "role": "data_export",
+      "retired": true,
+      "reason": "Il vecchio SISBON 1.0 è ritirato; SISBON 2.0 è il servizio regionale corrente. Lo snapshot 29 agosto 2026 non certifica il servizio live.",
+      "alternatives": [
+        {
+          "url": "https://sisbon.regione.toscana.it/",
+          "role": "service_landing"
+        },
+        {
+          "url": "https://www.regione.toscana.it/-/dal-primo-ottobre-2025-attivo-il-nuovo-sistema-sisbon-2.0-per-le-bonifiche",
+          "role": "information"
+        }
+      ],
+      "acquisition": {
+        "method": "versioned_snapshot",
+        "path": "data/source-snapshots/ambiente-acqua-v124-sisbon.json.gz.b64",
+        "materializer": "scripts/materialize_ambiente_acqua_v124.py:fetch_sisbon",
+        "publishedReference": "29 agosto 2026"
+      },
+      "releaseCheck": "Verificare export pubblico SISBON 2.0 e riconciliare codici regionali/stato iter; la landing non prova il funzionamento del download.",
+      "retirementEvidenceUrl": "https://www.arpat.toscana.it/banca-dati/banca-dati-dei-siti-interessati-da-processo-di-bonifica/"
+    },
+    "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": {
+      "role": "interactive_search",
+      "alternatives": [
+        {
+          "url": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+          "role": "release_catalog"
+        }
+      ],
+      "acquisition": {
+        "method": "manual_snapshot",
+        "path": "data/site-data.json:metrics.thirdSector",
+        "publishedReference": "2025",
+        "rawSnapshot": "not_versioned"
+      },
+      "releaseCheck": "Leggere la data della riga Enti iscritti (formato Excel) nella Lista enti; scaricare il file tramite il controllo ufficiale e contare sedi comunali. Il registro non certifica il denominatore demografico.",
+      "catalogueUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+      "releasePattern": "Enti iscritti(?: \\(formato Excel\\))?\\s*</td>.*?(\\d{2}/\\d{2}/\\d{4})"
+    },
+    "https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/": {
+      "role": "release_catalog",
+      "alternatives": [
+        {
+          "url": "https://serviziostatistico.invalsi.it/download/1024/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/14204/report_generale_unito_dispersione_e_eccellenti_agg_2025.csv",
+          "role": "data_download"
+        }
+      ],
+      "acquisition": {
+        "method": "official_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/invalsi-v138-b64/",
+        "materializer": "scripts/materialize_invalsi_v138_payload.py",
+        "fileName": "Report_generale_unito_dispersione_e_eccellenti_agg_2025.csv",
+        "sha256": "d6e1889464d40c851e22d4bccc4d2749e4b4b13f0ad1635d188a34f7cb60bff9",
+        "publishedReference": "2024/2025",
+        "downloadUrl": "https://serviziostatistico.invalsi.it/download/1024/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/14204/report_generale_unito_dispersione_e_eccellenti_agg_2025.csv"
+      },
+      "releaseCheck": "Verificare nome/annualità del CSV nella pagina dedicata e SHA-256 del download, poi perimetro comunale/prova. Ultimo aggiornamento pagina non equivale ad anno scolastico.",
+      "catalogueUrl": "https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/",
+      "releasePattern": "report_generale_unito_dispersione_e_eccellenti_agg_\\d{4}\\.csv"
+    },
+    "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": {
+      "role": "release_catalog",
+      "alternatives": [
+        {
+          "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip",
+          "role": "data_download"
+        },
+        {
+          "url": "https://aci.gov.it/app/uploads/2025/06/Autoritratto-2024-Parco-Veicolare.zip",
+          "role": "data_download"
+        }
+      ],
+      "acquisition": {
+        "method": "official_zip_to_versioned_snapshot",
+        "path": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+        "validator": "scripts/acquire_a3_benchmark_aci_istat_annual.py",
+        "publishedReference": "2024"
+      },
+      "releaseCheck": "Verificare la nuova annualità nella pagina Autoritratto; il download 2024 è un fallback di acquisibilità, non prova che non esista una release successiva. Conservare il denominatore demografico pubblicato.",
+      "catalogueUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+      "releasePattern": "Autoritratto[-_\\s]*\\d{4}[^\"<>]*?\\.zip",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source aci ARCHIVE.zip"
+    },
+    "https://elezionistorico.interno.gov.it/eligendo/opendata.php": {
+      "role": "release_catalog",
+      "alternatives": [],
+      "acquisition": {
+        "method": "official_archive_to_versioned_snapshot",
+        "path": "data/affluenza/archive-v2-*.b64",
+        "materializer": "scripts/materialize_affluenza_release.py",
+        "publishedReference": "2026"
+      },
+      "releaseCheck": "Verificare ogni consultazione disponibile in Eligendo e scaricare l’archivio pertinente; un 403 è accesso negato al client, non prova fonte offline."
+    },
+    "https://www.regione.toscana.it/sistema-aree-naturali-protette": {
+      "role": "information",
+      "alternatives": [
+        {
+          "url": "https://www.regione.toscana.it/parchi-e-aree-protette",
+          "role": "information"
+        }
+      ],
+      "acquisition": {
+        "method": "official_wfs_to_versioned_gis_snapshot",
+        "path": "data/source-snapshots/territorio-v137-official.json",
+        "generator": "scripts/generate_territorio_v137_snapshot.py",
+        "serviceUrl": "https://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms",
+        "publishedReference": "snapshot v1.37.0 del 12 settembre 2026"
+      },
+      "releaseCheck": "Confrontare i layer WFS e relativi hash nello snapshot, non la data della pagina informativa. Nessuna nuova elaborazione GIS in questo lotto."
+    },
+    "https://www.regione.toscana.it/piano-regionale-cave": {
+      "role": "information",
+      "alternatives": [],
+      "acquisition": {
+        "method": "official_service_to_versioned_snapshot",
+        "path": "data/source-snapshots/attivita-estrattive-v128.json"
+      },
+      "releaseCheck": "Confrontare atto/variante e download ufficiale con i riferimenti nello snapshot; mantenere distinti periodo normativo e data dei confini Istat."
+    },
+    "https://cave.regione.toscana.it/api/v1/cave_public": {
+      "role": "data_service",
+      "alternatives": [],
+      "acquisition": {
+        "method": "official_service_to_versioned_snapshot",
+        "path": "data/source-snapshots/attivita-estrattive-v128.json"
+      },
+      "releaseCheck": "Confrontare i record RTCave per identificativo e contenuto con lo snapshot 2 settembre 2026; non confrontare la data snapshot con un mese generico."
+    },
+    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": {
+      "role": "information",
+      "alternatives": [],
+      "acquisition": {
+        "method": "official_service_to_versioned_snapshot",
+        "path": "data/source-snapshots/territorio-v137-official.json"
+      },
+      "releaseCheck": "Confrontare atto/variante e download ufficiale con i riferimenti nello snapshot; mantenere distinti periodo normativo e data dei confini Istat."
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-salute-11-v140.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 255 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=268": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-salute-11-v140.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 268 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=269": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-salute-11-v140.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 269 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=270": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-a3-5-legacy-history.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 270 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=271": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-a3-5-legacy-history.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 271 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=272": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-salute-11-v140.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 272 ARCHIVE.zip"
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=273": {
+      "role": "data_export",
+      "deepRequestTimeoutSeconds": 90,
+      "acquisition": {
+        "method": "official_zip_csv_to_versioned_snapshot",
+        "path": "data/source-snapshots/ars-salute-11-v140.json",
+        "publishedReference": "2025",
+        "timeoutSeconds": 120
+      },
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 273 ARCHIVE.zip"
     }
   }
 }

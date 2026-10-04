@@ -1,0 +1,174 @@
+{
+  "checkedAt": "2026-10-04",
+  "method": "operator_supplied_files_and_browser_screenshots",
+  "downloads": [
+    {
+      "method": "operator_supplied_official_download",
+      "fileName": "Autoritratto-2024-Parco-Veicolare.zip",
+      "archiveSha256": "733dd5877d127d9e55a202ea444044e2b789c975c670a07204f8f966e352372c",
+      "archiveBytes": 8092741,
+      "liveAcquisitionVerified": false,
+      "latestReleaseVerified": false,
+      "sourceUrl": "https://aci.gov.it//app/uploads/2025/06/Autoritratto-2024-Parco-Veicolare.zip",
+      "metricKeys": [
+        "motorization",
+        "pollutingCars"
+      ],
+      "referencePeriod": "2024",
+      "member": "Autoritratto2024_Parco_veicolare/Circolante_Copert_2024.xlsx",
+      "memberSha256": "700e7fbc0a1f3d68502aec979a11fc6d25f4c07ecc563fc356ee9d610b77dabc",
+      "memberBytes": 4563520,
+      "matchesPublishedSnapshot": true,
+      "snapshotPath": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+      "verdict": "published_snapshot_revalidated"
+    },
+    {
+      "method": "operator_supplied_official_download",
+      "fileName": "255-dati_indicatori.zip",
+      "archiveSha256": "1872dbf428265acc48cf28c941d32f650f154d8cf916efbf9a9d08018c118580",
+      "archiveBytes": 821677,
+      "liveAcquisitionVerified": false,
+      "latestReleaseVerified": false,
+      "sourceUrl": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+      "metricKeys": [
+        "hypertensionPrevalence"
+      ],
+      "referencePeriod": "2025",
+      "periods": [
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "records": 50320,
+      "member": "dati.csv",
+      "memberSha256": "3af05ca683f059b15f75895df669d7f74bbb2e39181b3f3357ad25db6beb1f46",
+      "memberBytes": 4769433,
+      "matchesPublishedSnapshot": true,
+      "snapshotPath": "data/source-snapshots/ars-salute-11-v140.json",
+      "verdict": "published_snapshot_revalidated"
+    }
+  ],
+  "browserObservations": [
+    {
+      "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+      "observation": "Owner browser displays official page; automated probe still failed",
+      "metricKeys": [
+        "motorization",
+        "pollutingCars"
+      ]
+    },
+    {
+      "sourceUrl": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "observation": "Owner browser displays official page; automated probe still failed",
+      "metricKeys": [
+        "voterTurnout"
+      ]
+    },
+    {
+      "sourceUrl": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/",
+      "observation": "Owner browser displays official page; automated probe still failed",
+      "metricKeys": [
+        "bathingWaterQuality"
+      ]
+    }
+  ],
+  "releaseCandidates": [
+    {
+      "metricKeys": [
+        "motorization",
+        "pollutingCars"
+      ],
+      "publishedPeriod": "2024",
+      "candidatePeriod": "2025",
+      "resourceUrl": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip",
+      "evidence": "Link in official Autoritratto catalogue independently retrieved; owner screenshot shows 2025 selected",
+      "automatedDownloadStatus": 503,
+      "acquired": false
+    }
+  ],
+  "liveHarvesterCheck": {
+    "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+    "method": "harvester_GET_120s",
+    "ok": true,
+    "seconds": 33.52,
+    "csvSha256": "3af05ca683f059b15f75895df669d7f74bbb2e39181b3f3357ad25db6beb1f46",
+    "bytes": 4769433
+  },
+  "deepProbeAfterTimeoutCorrection": {
+    "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+    "ok": true,
+    "status": 200,
+    "finalUrl": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+    "contentType": "application/zip",
+    "contentLength": "821677",
+    "etag": "",
+    "lastModified": "",
+    "contentSha256": "54b55e4a1abf4b49371abd4861d641c4ac6f89d358c5d73111085d68d44caccc",
+    "contentHashMode": "zip-members",
+    "contentChangePolicy": "",
+    "contentChangeReason": "",
+    "redirectChangePolicy": "",
+    "redirectChangeReason": "",
+    "hashTruncated": false,
+    "error": "",
+    "attempts": [
+      {
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+        "method": "HEAD",
+        "httpStatus": 200,
+        "ok": true,
+        "error": "",
+        "finalUrl": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255"
+      },
+      {
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255",
+        "method": "GET",
+        "httpStatus": 200,
+        "ok": true,
+        "error": "",
+        "finalUrl": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255"
+      }
+    ],
+    "probeMethod": "urllib",
+    "failureKind": "reachable",
+    "requestTimeoutSeconds": 90.0,
+    "directReachable": true,
+    "endpointRole": "data_export",
+    "acquisition": {
+      "method": "official_zip_csv_to_versioned_snapshot",
+      "path": "data/source-snapshots/ars-salute-11-v140.json",
+      "publishedReference": "2025",
+      "timeoutSeconds": 120
+    },
+    "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
+    "releaseVerification": "not_performed",
+    "acquisitionVerified": false,
+    "checkedAt": "2026-10-04T16:59:37.631058+00:00",
+    "metrics": [
+      "hypertensionPrevalence"
+    ],
+    "roles": [
+      "source:export"
+    ],
+    "profileIds": [
+      "ars-toscana-mixed"
+    ],
+    "frequencies": [
+      "annual_or_irregular"
+    ],
+    "lastSuccessfulCheck": "2026-10-04T16:59:37.631058+00:00",
+    "lastSuccessfulContent": {
+      "contentSha256": "54b55e4a1abf4b49371abd4861d641c4ac6f89d358c5d73111085d68d44caccc",
+      "contentHashMode": "zip-members",
+      "checkedAt": "2026-10-04T16:59:37.631058+00:00"
+    }
+  }
+}

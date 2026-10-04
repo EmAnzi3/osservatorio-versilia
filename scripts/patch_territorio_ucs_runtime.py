@@ -192,7 +192,12 @@ def patch_auxiliary_runtime() -> None:
         if history.count(needle) != 2:
             raise RuntimeError(f"v1.36 runtime: bypass ux-history non patchabile ({history.count(needle)} occorrenze).")
         replacement = UX_HISTORY_MARKER + "\n    if (['drinkingWaterQuality','remediationProceedings','financialProfile','hydroRisk','territorialClassification','landCoverProfile'].includes(selected.metric?.meta?.compositeType)) return;"
-        history = history.replace(needle, replacement)
+        # Classifications keep their native table inside the standard compare
+        # shell so its export actions can join the canonical toolbar. Towns
+        # retain the dedicated classification detail and use the A5 fallback.
+        compare_replacement = replacement.replace("'territorialClassification',", "")
+        history = history.replace(needle, compare_replacement, 1)
+        history = history.replace(needle, replacement, 1)
         UX_HISTORY.write_text(history, encoding="utf-8")
 
     grammar = VISUAL_GRAMMAR.read_text(encoding="utf-8")

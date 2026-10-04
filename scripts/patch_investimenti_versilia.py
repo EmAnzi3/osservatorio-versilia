@@ -42,7 +42,7 @@ CONFIG = {
         "comparisonOverline": "Rispetto alla quota Versilia",
         "comparisonNote": (
             "Il riferimento Versilia è la quota complessiva di progetti conclusi "
-            "(74 su 101); non è la media semplice delle sette percentuali comunali."
+            "(78 su 101); non è la media semplice delle sette percentuali comunali."
         ),
     },
 }

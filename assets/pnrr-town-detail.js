@@ -70,7 +70,7 @@
       : `<div class="pnrr-town-empty"><strong>Nessuna opera fisica nel sottoinsieme selezionato.</strong><p>Il Comune può comunque essere soggetto attuatore di servizi, acquisti o altri progetti PNRR.</p></div>`;
 
     return `<section class="topic-deep-dive pnrr-town-detail" data-pnrr-town-detail="true">
-      <div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>PNRR a ${escapeHtml(town.town)}</h3></div><p>Progetti con il Comune come soggetto attuatore nella fotografia Regione Toscana dell'11 agosto 2026.</p></div>
+      <div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>PNRR a ${escapeHtml(town.town)}</h3></div><p>Progetti con il Comune come soggetto attuatore nella fotografia Regione Toscana del 25 settembre 2026.</p></div>
       <div class="pnrr-town-summary-grid">
         <article><span>Progetti</span><strong>${number0.format(town.projects)}</strong><small>PNRR / PNRR-PNC</small></article>
         <article><span>Fase 5</span><strong>${number0.format(town.concluded)}</strong><small>${number1.format(concludedPercent)}% dei progetti</small></article>

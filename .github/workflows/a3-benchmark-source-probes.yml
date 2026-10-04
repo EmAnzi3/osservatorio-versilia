@@ -1,0 +1,125 @@
+name: A3 Benchmark source probes
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-source-probes.yml"
+      - "scripts/probe_a3_benchmark_istat_business.py"
+      - "scripts/probe_bilanci_v139_sources.py"
+      - "scripts/probe_a3_istat_misura_comune.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 2
+      - id: diff
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "pull_request" || "${{ github.event.action }}" != "synchronize" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only HEAD^ HEAD > /tmp/changed-files
+          if grep -Eq '^(scripts/probe_a3_benchmark_istat_business\.py|scripts/probe_bilanci_v139_sources\.py|scripts/probe_a3_istat_misura_comune\.py)' /tmp/changed-files; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat /tmp/changed-files
+
+  istat-business:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install probe dependencies
+        run: python -m pip install requests openpyxl
+      - name: Probe official ISTAT Frame-SBS regional tables
+        run: |
+          python scripts/probe_a3_benchmark_istat_business.py             --output /tmp/a3-benchmark-istat-business.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-istat-business-probe
+          path: /tmp/a3-benchmark-istat-business.json
+          if-no-files-found: error
+
+  openbdap:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install probe dependencies
+        run: python -m pip install requests
+      - name: Probe official OpenBDAP Toscana archives
+        id: openbdap_probe
+        continue-on-error: true
+        run: |
+          python scripts/probe_bilanci_v139_sources.py             --output reports/a3-benchmark-openbdap-source-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a3-benchmark-openbdap-probe
+          path: reports/a3-benchmark-openbdap-source-audit.json
+          if-no-files-found: error
+
+  istat-misura-comune:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - slug: famiglie
+            url: https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx
+          - slug: istruzione
+            url: https://www.istat.it/storage/misura-comune/4-Istruzione.xlsx
+          - slug: lavoro
+            url: https://www.istat.it/storage/misura-comune/5-Lavoro.xlsx
+          - slug: social-tipologia
+            url: https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx
+          - slug: social-abitante
+            url: https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx
+          - slug: turismo
+            url: https://www.istat.it/storage/misura-comune/14-Turismo.xlsx
+          - slug: mobilita
+            url: https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx
+          - slug: economia
+            url: https://www.istat.it/storage/misura-comune/12a-Economia-insediata-rapporti-caratteristici.xlsx
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install workbook probe dependencies
+        run: python -m pip install requests openpyxl
+      - name: Probe Istat A misura di Comune workbook
+        run: |
+          python scripts/probe_a3_istat_misura_comune.py \
+            --slug "${{ matrix.slug }}" \
+            --url "${{ matrix.url }}" \
+            --output "reports/a3-istat-misura-${{ matrix.slug }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-istat-misura-${{ matrix.slug }}
+          path: reports/a3-istat-misura-${{ matrix.slug }}.json
+          if-no-files-found: error

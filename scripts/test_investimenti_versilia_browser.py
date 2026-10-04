@@ -11,7 +11,7 @@ from playwright.sync_api import Page, sync_playwright
 EXPECTED_COMPARE = {
     "publicWorks": ("1.409", "2.659"),
     "pnrrFunding": ("231", "306"),
-    "pnrrConcluded": ("73,3%", "74,1%"),
+    "pnrrConcluded": ("77,2%", "74,1%"),
 }
 
 
@@ -58,7 +58,7 @@ def assert_compare(page: Page, base: str) -> None:
         if key in {"publicWorks", "pnrrFunding"}:
             assert "Valore pro capite Versilia" in legend_text
         else:
-            assert "Versilia · 74 su 101" in legend_text
+            assert "Versilia · 78 su 101" in legend_text
 
 
 def assert_town_position(
@@ -103,7 +103,7 @@ def assert_towns(page: Page, base: str) -> None:
         page,
         base,
         "pnrrConcluded",
-        ("Rispetto alla quota Versilia", "+17,6%", "Versilia · 74 su 101", "73,3%"),
+        ("Rispetto alla quota Versilia", "+13,7%", "Versilia · 78 su 101", "77,2%"),
         ("+16,8", "74,1%", "punti", "p.p."),
     )
 

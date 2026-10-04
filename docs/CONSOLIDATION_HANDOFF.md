@@ -1,43 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente
+## Stato corrente — 4 ottobre 2026
 
-- **Programma:** consolidamento Osservatorio Versilia
-- **Workstream attivo:** A6 — Semantic Data Layer e interrogazione deterministica
-- **Step attivo:** A6.1 — modello semantico minimo
-- **Stato:** IN_PROGRESS
-- **Main di partenza A6:** `a98b89995e01cd12f2ab8422a0a6ed6aa81b5578`
-- **A5:** DONE — PR #280 mergiata il 30/09/2026
-- **Branch:** `feat/a6-semantic-model`
-- **PR:** #301 — Ready, OPEN
-- **A0–A5:** DONE
-- **A7:** NOT_STARTED
+- Main pubblicato: `ae86950c80be23b3658624d7071791b957988b40` (#328); deploy `37229898824` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
+- Workstream attivo: **A6**, step **A6.1**; branch `feat/a6-semantic-model`, PR **#301** ripresa e riallineata al main. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
+- Perimetro del lotto: documentazione, contratto e validazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
-## Contratto A6.1
+## Dati e monitor pubblicati
 
-La fonte canonica resta `data/site-data.json`, ma A6 deve validare anche l’Effective Public Catalog materializzato in `dist/data/site-data.json`. Nella release corrente i due layer contengono rispettivamente 181 e 225 indicatori. Non creare inventari paralleli: entrambi i conteggi devono essere derivati.
+- #327: carburanti puntuali 3 ottobre; PNRR snapshot 25 settembre (78/101 conclusioni, finanziamenti invariati); monitor con ruoli dei percorsi ufficiali, tentativi/esiti e separazione rete/rilascio/acquisizione. Errori non cancellano dati o ultime evidenze valide.
+- #328: MIMIT mensile 57 mesi gennaio 2022–settembre 2026, JSON pubblico verificato identico al candidato. Luglio 31/31, agosto 31/31, settembre 29/30; 5 settembre assente nell'archivio ufficiale, nessuna stima. Provenienza e SHA in `reports/data-checks/mimit-monthly-2026-q3.md`.
+- Monitor profondo mensile il 5; prossimo schedule 5 ottobre. Snapshot e artifact del monitor alimentano Stato Dati tramite selezione canonica. Nessuna pubblicazione automatica di nuovi numeri.
 
-Il modello minimo deve derivare e governare:
-- Comune;
-- indicatore;
-- tema;
-- periodo;
-- dimensione esplicita/source-backed;
-- fonte;
-- benchmark separato dall'osservazione comunale;
-- copertura semantica completa dell’Effective Public Catalog, non soltanto del catalogo sorgente.
+## Manutenzioni separate, non bloccanti per A6
 
-Il contratto machine-readable è `ci/semantic-model-contract.json`; la specifica è `docs/A6_SEMANTIC_MODEL.md`.
+- #329: refresh ASIA/AGCOM senza nuovi dati eliminava sei `meta.benchmark`; #324 chiusa senza merge. Correggere preservazione dei metadati e rilevamento dei no-op nel suo lotto.
+- #306: diagnostica Radar; #117: proposta watchdog Cloudflare. Restano aperte; non incorporarli in A6.
+- SISBON mappa pubblica: `https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv` HTTP 200; lo snapshot versionato non prova il live. Integrare il controllo periodico della mappa nel lotto monitor, separato dall'export autenticato `export_mosaico`.
+- ARS: sette export ottenuti con attesa 33–57 secondi, hash invariati; ARPAT CSV ottenuto/hash invariato. RUNTS Excel ottenuto, estrazione comunale non acquisita. ACI ed Eligendo restano da verificare con percorsi pertinenti/harvester; gli errori 503/403 del nostro ambiente non dimostrano indisponibilità della fonte o nuovi dati.
+- Pulizia conclusa: 11 PR superate chiuse e 39 issue storiche archiviate con motivazione; cronologia e branch conservati. Registro #11 e attività correnti conservati.
 
-## Gate legacy A5
+## Prossima azione
 
-- `a5-change-scope.yml` è ritirato dopo la chiusura A5: il suo checkpoint non può governare i workstream successivi.
-- I golden A5 restano attivi solo su modifiche UI/renderer pertinenti.
-
-## Prossima azione esatta
-
-1. Validare il contratto A6.1 nel Quick preflight.
-2. Correggere solo eventuali incompatibilità reali con il catalogo canonico, senza rilassare il contratto per ottenere verde.
-3. Eseguire Full sulla stessa PR.
-4. Se Quick e Full sono verdi, marcare A6.1 DONE e preparare A6.2 — operazioni deterministiche.
-5. Non introdurre ancora UI o linguaggio naturale.
+Concludere Quick/Full locale e GitHub nella #301 e riportare esiti reali nel corpo PR. Chiudere formalmente A6.1 solo dopo merge autorizzato; proseguire con operazioni consentite e regole di comparabilità A6.2/A6.3 sullo stesso catalogo effettivo, prima di esporre nuove funzioni pubbliche.

@@ -108,6 +108,8 @@ Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti 
 - [x] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
 - [x] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
 
+Nota perimetro benchmark — 03-10-2026: il proprietario limita questa fase ai valori Toscana/Italia ufficiali direttamente fruibili e agli storici già disponibili. Le ricostruzioni di pannelli territoriali, il recupero oneroso di fotografie storiche e il calcolo di aggregati mancanti non rientrano nel lavoro residuo. La fase può concludersi con confronti mancanti esplicitamente documentati: le coppie mantengono la classificazione reale della matrice e non diventano ACQUIRED o SOURCE_UNAVAILABLE per una scelta di priorità. Il residual audit continua a descrivere la copertura completa delle fonti; il suo closureReady=false non richiede ulteriori acquisizioni fuori da questo perimetro. Approvazione e merge restano necessari per la chiusura formale.
+
 Nota A3.1: la tassonomia e la semantica dei quattro stati sono definite in `docs/A3_ENRICHMENT_AUDIT.md`. Il documento è metodologico e non introduce un secondo catalogo o una matrice manuale di indicatori.
 
 Nota A3.2: la chiusura è governata dalla matrice strict derivata dall'Effective Public Catalog: 225 indicatori × 9 dimensioni = 2.025 coppie, con `unclassifiedPairCount = 0`. Il gate A3 verifica inoltre le evidenze strutturali e tutte le classificazioni esplicite; nessun `ACQUIRED` è dichiarato manualmente.
@@ -137,6 +139,8 @@ Nota chiusura A3.5: il consolidamento non richiede l'azzeramento del backlog `AV
 Nota A3.6: `scripts/enrichment_coverage.py` deriva dalla matrice strict la copertura `ACQUIRED / (ACQUIRED + AVAILABLE_MISSING)`, globale, per dimensione e per source profile, ed esclude dal denominatore `SOURCE_UNAVAILABLE` e `NOT_APPLICABLE`. La baseline post-#267 è 544 / 1.296 opportunità acquisibili = 42,0%, con 752 opportunità residue. Il valore è diagnostico e non costituisce un punteggio di qualità né un target implicito del 100%.
 
 Nota chiusura A3: tassonomia, matrice strict, audit fonte-per-fonte, backlog prioritizzato, percorso di acquisizione controllato e copertura enrichment sono tutti derivati dalle fonti canoniche e verificati automaticamente. Le future acquisizioni del backlog A3.4 sono miglioramenti di prodotto e non riaprono il workstream salvo modifica della metodologia o dei contratti.
+
+Nota pubblicazione A3 — 04-10-2026: i lotti disponibili e approvati sono stati incorporati nella #322 e pubblicati; i successivi #327/#328 aggiornano fonti e MIMIT. Il checkpoint corrente espone 225 indicatori, 124 storici e 137 confronti verificati dal Quick. Il backlog oneroso resta escluso dal perimetro autorizzato, con classificazioni reali conservate. Le vecchie PR stacked sono state archiviate; non rappresentano lavori ancora da mergiare.
 
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
@@ -205,7 +209,7 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 - [ ] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota avvio A6.1: il modello viene definito come contratto derivato da `data/site-data.json`, senza inventari paralleli di Comuni, temi o indicatori. Il primo lotto introduce documentazione, contratto machine-readable e validatore nel Quick preflight; nessuna UI e nessun valore pubblico vengono modificati.
+Nota ripresa A6.1 — 04-10-2026: la PR #301 viene riallineata al main pubblicato `ae86950` dopo la chiusura A3 (#322), il refresh fonti (#327) e lo storico MIMIT (#328). Il contratto valida catalogo sorgente ed effettivo nel Quick, senza inventari paralleli, e verifica identità comunali, appartenenze tematiche, unità primarie, fonti/benchmark, stati mancanti e serie esplicite. A6.1 resta da chiudere formalmente dopo verifica e merge della PR; A6.2–A6.6 non sono ancora implementati. Nessuna UI o dato pubblico modificato.
 - [ ] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [ ] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.

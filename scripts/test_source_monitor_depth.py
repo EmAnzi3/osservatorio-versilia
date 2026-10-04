@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -111,7 +113,37 @@ def test_operational_summary() -> None:
     assert summary["unchangedSources"] == 1
 
 
+def test_native_tourism_replay_without_http_dependencies() -> None:
+    # The monitor materializes frozen observations with the standard library.
+    # Python -S reproduces its environment without optional HTTP packages.
+    root = Path(__file__).resolve().parents[1]
+    code = """
+import copy, json, math, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+sys.path.insert(0, str(root / 'scripts'))
+from acquire_a3_benchmark_regione_toscana_tourism_annual import HISTORY_METRICS, apply_movement_history
+site = json.loads((root / 'data/site-data.json').read_text())
+snapshot = json.loads((root / 'data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json').read_text())
+for key in HISTORY_METRICS:
+    metric = copy.deepcopy(site['metrics'][key])
+    before = [row['value'] for row in metric['rows']]
+    aggregate = metric['aggregate']['value']
+    apply_movement_history(metric, snapshot)
+    assert [row['value'] for row in metric['rows']] == before
+    assert metric['aggregate']['value'] == aggregate
+    assert len(metric['rows']) == 7
+    for row in metric['rows']:
+        assert row['series']['years'] == [2023, 2024, 2025]
+        assert len(row['series']['values']) == 3
+        assert all(math.isfinite(value) for value in row['series']['values'])
+assert 'requests' not in sys.modules
+"""
+    subprocess.run([sys.executable, '-S', '-c', code, str(root)], check=True)
+
+
 if __name__ == "__main__":
+    test_native_tourism_replay_without_http_dependencies()
     test_runtime_switch()
     test_output_annotation()
     test_operational_summary()

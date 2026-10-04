@@ -86,6 +86,46 @@ def main() -> None:
         bad["metrics"]["population"]["rows"][0]["code"] = "002"
         expect_failure(bad, path, contract, "Town/code incoerenti")
 
+        # Each rejection protects a concrete future query from silently using
+        # the wrong municipality, period, unit, value or missing-data status.
+        cases = [
+            ("Nome Comune sconosciuto", lambda m: m["rows"][0].update(town="Unknown")),
+            ("Codice Comune sconosciuto", lambda m: m["rows"][0].update(code="999")),
+            ("Riga comunale senza identità", lambda m: m["rows"][0].update(town="", code="")),
+            ("Riga comunale duplicata", lambda m: m["rows"].append(copy.deepcopy(m["rows"][0]))),
+            ("Valore comunale non numerico/finito", lambda m: m["rows"][0].update(value=float("nan"))),
+            ("Valore comunale non numerico/finito", lambda m: m["rows"][0].update(value=True)),
+            ("Stato mancante con valore", lambda m: m["rows"][0].update(notApplicable=True)),
+            ("Stati mancanti contraddittori", lambda m: m["rows"][0].update(value=None, notApplicable=True, dataUnavailable=True)),
+            ("Unità semantica non esplicita", lambda m: m["meta"].pop("unit")),
+            ("Periodo storico mancante", lambda m: m["rows"][0]["series"].update(years=[None, 2025])),
+            ("Periodi duplicati", lambda m: m["rows"][0]["series"].update(years=[2025, "2025"])),
+            ("Valore storico non numerico/finito", lambda m: m["rows"][0]["series"].update(values=[98, float("inf")])),
+            ("Serie years/values disallineata", lambda m: m["rows"][0].update(componentSeries={"female": {"years": [2024, 2025], "values": [98]}})),
+            ("Serie incompleta", lambda m: m["rows"][0].update(longSeries={"years": [2024, 2025]})),
+            ("URL benchmark non valido", lambda m: m["meta"]["benchmark"].update(url="invalid")),
+            ("Valore benchmark non finito", lambda m: m["meta"]["benchmark"].update(italy=float("inf"))),
+        ]
+        for needle, mutate in cases:
+            bad = copy.deepcopy(payload)
+            mutate(bad["metrics"]["population"])
+            expect_failure(bad, path, contract, needle)
+
+        bad = copy.deepcopy(payload)
+        bad["themes"]["other"] = {"label": "Altro", "metrics": ["population"]}
+        expect_failure(bad, path, contract, "Appartenenza tema non bidirezionale")
+
+        missing = copy.deepcopy(payload)
+        missing["metrics"]["population"]["rows"][0].update(value=None, notApplicable=True)
+        missing["metrics"]["population"]["rows"][1].update(value=None, dataUnavailable=True)
+        missing["metrics"]["population"]["meta"]["year"] = "2024/25"
+        missing["metrics"]["population"]["rows"][1]["componentSeries"] = {"unavailable": {"years": [], "values": []}}
+        path.write_text(json.dumps(missing), encoding="utf-8")
+        for layer in ("source", "effective"):
+            result = validate_semantic_model_contract(path, contract, layer=layer)
+            assert result["availability"] == {"availableRows": 0, "missingRows": 1, "notApplicableRows": 1}
+            assert result["emptySeries"] == 1
+
     canonical_path = root / "data" / "site-data.json"
     canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
     real = validate_semantic_model_contract(canonical_path, contract, layer="source")

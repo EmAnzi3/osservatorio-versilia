@@ -22,7 +22,7 @@ def load_json(path: Path | str) -> dict[str, Any]:
 
 
 def _present(value: Any) -> bool:
-    return value not in (None, "")
+    return bool(value.strip()) if isinstance(value, str) else value is not None
 
 
 def _finite(value: Any) -> bool:
@@ -31,12 +31,17 @@ def _finite(value: Any) -> bool:
 
 def _series_nodes(node: Any, path: str = "$") -> Iterable[tuple[str, dict[str, Any]]]:
     if isinstance(node, dict):
-        series = node.get("series")
-        if isinstance(series, dict):
-            yield f"{path}.series", series
+        # Component, nominal and long series use the same axes without always
+        # being named "series". Spatial sample values have no years axis.
+        if "years" in node and "values" in node:
+            yield path, node
         for key, value in node.items():
-            if key == "series":
-                continue
+            if key in ("series", "longSeries", "nominalSeries", "realSeries", "inflationSeries") and value is not None:
+                assert isinstance(value, dict) and "years" in value and "values" in value, f"Serie incompleta: {path}.{key}"
+            if key == "componentSeries" and value is not None:
+                assert isinstance(value, dict), f"Serie componenti non-oggetto: {path}.{key}"
+                for component, series in value.items():
+                    assert isinstance(series, dict) and "years" in series and "values" in series, f"Serie incompleta: {path}.{key}.{component}"
             yield from _series_nodes(value, f"{path}.{key}")
     elif isinstance(node, list):
         for index, value in enumerate(node):
@@ -61,24 +66,8 @@ def _dimension_counts(metric: dict[str, Any], counts: Counter[str]) -> None:
 
 def _metric_has_unit(metric: dict[str, Any]) -> bool:
     meta = metric.get("meta") or {}
-    if _present(meta.get("unit")) or _present(meta.get("summaryUnit")):
-        return True
-    aggregate = metric.get("aggregate")
-    if isinstance(aggregate, dict):
-        for part in aggregate.get("parts") or []:
-            if isinstance(part, dict) and _present(part.get("unit")):
-                return True
-    for row in metric.get("rows") or []:
-        if not isinstance(row, dict):
-            continue
-        normalized = row.get("normalized")
-        if isinstance(normalized, dict) and _present(normalized.get("unit")):
-            return True
-        for key in ("parts", "detailParts"):
-            for part in row.get(key) or []:
-                if isinstance(part, dict) and _present(part.get("unit")):
-                    return True
-    return False
+    # A companion's unit cannot supply the unit of the primary observation.
+    return _present(meta.get("unit")) or _present(meta.get("summaryUnit"))
 
 
 def validate_semantic_model_contract(
@@ -106,6 +95,7 @@ def validate_semantic_model_contract(
     assert layers["source"].get("querySurface") is False
     assert layers["effective"].get("querySurface") is True
     assert layers["effective"].get("derived") is True
+    assert all(value is True for value in contract.get("rules", {}).values()), "Regole semantiche disabilitate"
 
     towns = data.get("towns")
     themes = data.get("themes")
@@ -134,7 +124,10 @@ def validate_semantic_model_contract(
         assert isinstance(members, list) and members, f"Tema senza metrics: {theme_id}"
         for metric_id in members:
             assert metric_id in metrics, f"Tema {theme_id}: indicatore inesistente {metric_id}"
+            assert metrics[metric_id].get("meta", {}).get("theme") in themes, f"Tema semantico sconosciuto: {metric_id}"
+            assert metrics[metric_id].get("meta", {}).get("theme") == theme_id, f"Appartenenza tema non bidirezionale: {theme_id} -> {metric_id}"
             theme_metric_refs.add(str(metric_id))
+        assert len(members) == len(set(members)), f"Indicatori duplicati nel tema: {theme_id}"
 
     counts: Counter[str] = Counter()
     sources: set[tuple[str, str]] = set()
@@ -153,6 +146,7 @@ def validate_semantic_model_contract(
         )
         assert str(meta.get("label") or "").strip(), f"Indicatore senza label: {metric_id}"
 
+        assert isinstance(meta.get("year"), (str, int)) and not isinstance(meta.get("year"), bool), f"Periodo corrente non scalare: {metric_id}"
         current_period = str(meta.get("year") or "").strip()
         assert current_period, f"Periodo corrente mancante: {metric_id}"
         periods.add(current_period)
@@ -166,23 +160,35 @@ def validate_semantic_model_contract(
         rows = metric.get("rows")
         assert isinstance(rows, list), f"Rows non-lista: {metric_id}"
         numeric_rows = 0
+        row_towns: set[str] = set()
         for index, row in enumerate(rows):
             assert isinstance(row, dict), f"Riga non-oggetto {metric_id}[{index}]"
             value = row.get("value")
+            assert value is None or _finite(value), f"Valore comunale non numerico/finito: {metric_id}[{index}]"
+            assert not (row.get("notApplicable") and row.get("dataUnavailable")), f"Stati mancanti contraddittori: {metric_id}[{index}]"
+            assert not ((row.get("notApplicable") or row.get("dataUnavailable")) and value is not None), f"Stato mancante con valore: {metric_id}[{index}]"
+            counts["notApplicableRows" if row.get("notApplicable") else "missingRows" if value is None else "availableRows"] += 1
             if _finite(value):
                 numeric_rows += 1
             town_name = str(row.get("town") or "").strip()
             town_code = str(row.get("code") or "").strip()
+            assert town_name or town_code, f"Riga comunale senza identità: {metric_id}[{index}]"
             if town_name or town_code:
                 resolved_by_name = town_by_name.get(town_name) if town_name else None
                 resolved_by_code = town_by_code.get(town_code) if town_code else None
                 assert resolved_by_name or resolved_by_code, (
                     f"Riga comunale non risolta {metric_id}[{index}]: town={town_name!r} code={town_code!r}"
                 )
+                assert not town_name or resolved_by_name, f"Nome Comune sconosciuto: {metric_id}[{index}]: {town_name}"
+                assert not town_code or resolved_by_code, f"Codice Comune sconosciuto: {metric_id}[{index}]: {town_code}"
                 if resolved_by_name and resolved_by_code:
                     assert str(resolved_by_name.get("code")) == str(resolved_by_code.get("code")), (
                         f"Town/code incoerenti {metric_id}[{index}]: {town_name}/{town_code}"
                     )
+                resolved = resolved_by_code or resolved_by_name
+                code = str(resolved["code"])
+                assert code not in row_towns, f"Riga comunale duplicata: {metric_id}: {code}"
+                row_towns.add(code)
                 counts["municipalRows"] += 1
 
         if numeric_rows:
@@ -194,7 +200,9 @@ def validate_semantic_model_contract(
             spec = contract.get("entities", {}).get("benchmark", {})
             for field in spec.get("requiredFields") or []:
                 assert _present(benchmark.get(field)), f"Benchmark incompleto {metric_id}: {field}"
+            assert str(benchmark.get("url") or "").startswith(("https://", "http://")), f"URL benchmark non valido: {metric_id}"
             value_fields = spec.get("valueFields") or []
+            assert all(benchmark.get(field) is None or _finite(benchmark[field]) for field in value_fields), f"Valore benchmark non finito: {metric_id}"
             assert any(_finite(benchmark.get(field)) for field in value_fields), (
                 f"Benchmark senza valori numerici: {metric_id}"
             )
@@ -204,10 +212,15 @@ def validate_semantic_model_contract(
             years = series.get("years")
             values = series.get("values")
             assert isinstance(years, list) and isinstance(values, list), f"Serie incompleta: {series_path}"
-            assert len(years) == len(values) and years, (
+            assert len(years) == len(values), (
                 f"Serie years/values disallineata: {series_path} ({len(years)}/{len(values)})"
             )
-            tokens = [str(year) for year in years]
+            if not years:
+                counts["emptySeries"] += 1
+                continue
+            tokens = [str(year).strip() for year in years]
+            assert all(year is not None and not isinstance(year, bool) and str(year).strip() for year in years), f"Periodo storico mancante: {series_path}"
+            assert all(value is None or _finite(value) for value in values), f"Valore storico non numerico/finito: {series_path}"
             assert len(tokens) == len(set(tokens)), f"Periodi duplicati: {series_path}"
             periods.update(tokens)
             counts["historicalSeries"] += 1
@@ -226,9 +239,11 @@ def validate_semantic_model_contract(
         "themes": len(themes),
         "metrics": int(counts["metrics"]),
         "municipalRows": int(counts["municipalRows"]),
+        "availability": {key: int(counts[key]) for key in ("availableRows", "missingRows", "notApplicableRows")},
         "sources": len(sources),
         "periods": len(periods),
         "historicalSeries": int(counts["historicalSeries"]),
+        "emptySeries": int(counts["emptySeries"]),
         "benchmarkMetrics": int(counts["benchmarkMetrics"]),
         "dimensionCarriers": dict(sorted(dimensions.items())),
     }

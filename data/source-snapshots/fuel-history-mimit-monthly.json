@@ -5,7 +5,7 @@
   "statistic": "media mensile delle mediane comunali giornaliere, self-service",
   "method": "Per ogni giorno si calcola la mediana tra gli impianti attivi del Comune; il valore mensile è la media aritmetica delle mediane giornaliere.",
   "periodStart": "2022-01",
-  "periodEnd": "2026-06",
+  "periodEnd": "2026-09",
   "towns": [
     "Camaiore",
     "Forte dei Marmi",
@@ -2989,6 +2989,171 @@
           "gasolioDays": 30
         }
       }
+    },
+    {
+      "referenceDate": "2026-07",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.921,
+          "benzinaDays": 31,
+          "gasolio": 2.042,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.901,
+          "benzinaDays": 31,
+          "gasolio": 2.04,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.899,
+          "benzinaDays": 31,
+          "gasolio": 2.018,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.909,
+          "benzinaDays": 31,
+          "gasolio": 2.037,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.914,
+          "benzinaDays": 31,
+          "gasolio": 2.039,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.915,
+          "benzinaDays": 31,
+          "gasolio": 2.041,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-08",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 2.009,
+          "benzinaDays": 31,
+          "gasolio": 2.105,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.989,
+          "benzinaDays": 31,
+          "gasolio": 2.103,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.998,
+          "benzinaDays": 31,
+          "gasolio": 2.104,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 2.007,
+          "benzinaDays": 31,
+          "gasolio": 2.118,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.996,
+          "benzinaDays": 31,
+          "gasolio": 2.103,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 2.004,
+          "benzinaDays": 31,
+          "gasolio": 2.112,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-09",
+      "observationDays": 29,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 29,
+          "benzina": 2.155,
+          "benzinaDays": 29,
+          "gasolio": 2.292,
+          "gasolioDays": 29
+        },
+        "Forte dei Marmi": {
+          "observationDays": 29,
+          "benzina": 2.102,
+          "benzinaDays": 29,
+          "gasolio": 2.27,
+          "gasolioDays": 29
+        },
+        "Massarosa": {
+          "observationDays": 29,
+          "benzina": 2.112,
+          "benzinaDays": 29,
+          "gasolio": 2.266,
+          "gasolioDays": 29
+        },
+        "Pietrasanta": {
+          "observationDays": 29,
+          "benzina": 2.117,
+          "benzinaDays": 29,
+          "gasolio": 2.277,
+          "gasolioDays": 29
+        },
+        "Seravezza": {
+          "observationDays": 29,
+          "benzina": 2.104,
+          "benzinaDays": 29,
+          "gasolio": 2.266,
+          "gasolioDays": 29
+        },
+        "Stazzema": {
+          "observationDays": 29,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 29,
+          "benzina": 2.123,
+          "benzinaDays": 29,
+          "gasolio": 2.278,
+          "gasolioDays": 29
+        }
+      }
     }
   ],
   "provenance": [
@@ -3117,6 +3282,19 @@
       "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2026/2026_2_tr.tar.gz",
       "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2026/2026_2_tr.tar.gz",
       "priceDaysUsed": 91
+    },
+    {
+      "year": 2026,
+      "quarter": 3,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2026/2026_3_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2026/2026_3_tr.tar.gz",
+      "priceDaysUsed": 91,
+      "anagraficaArchiveSha256": "41f4c0d9c3b89cba3c6534f1d688c1bf1db3988425630d92c44b1d0365fe351f",
+      "prezziArchiveSha256": "6ec064ec4fe74f2381345df9762aaa5004422fb9871a30dc95c4d411077967a2",
+      "priceDaysExpected": 92,
+      "missingPriceDates": [
+        "2026-09-05"
+      ]
     }
   ]
 }

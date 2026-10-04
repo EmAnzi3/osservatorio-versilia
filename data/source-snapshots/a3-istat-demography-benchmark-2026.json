@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-demography-benchmark-2026-v2",
+  "retrieved": "2026-10-01",
+  "publisher": "Istat",
+  "sourceProfileId": "istat-demography-annual",
+  "sources": {
+    "posas2026": {
+      "url": "https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip",
+      "title": "Popolazione residente per età e sesso al 1° gennaio 2026 (stima)"
+    },
+    "p2_2019": {
+      "url": "https://demo.istat.it/data/p2/P2_2019_it_Comuni.zip",
+      "title": "Bilancio demografico e popolazione residente al 31 dicembre 2019"
+    },
+    "p2_2025": {
+      "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+      "title": "Bilancio demografico e popolazione residente al 31 dicembre 2025"
+    },
+    "rcs_2025": {
+      "url": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip",
+      "archiveMember": "Dati_cittadinanza_2025.csv",
+      "title": "Popolazione residente per cittadinanza al 1° gennaio 2025"
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "populationPosasP02Reconciled": true,
+    "ageBandsExhaustive": true,
+    "note": "Aggregati Toscana/Italia costruiti sui Comuni del perimetro Istat. Tassi, quote e indici sono ricalcolati su numeratori e denominatori aggregati; la riga POSAS Età=999 è usata solo come controllo del totale e non sommata alle età. foreignResidents usa RCS cittadinanza 2025, riconciliato 7/7 con i valori comunali pubblici e con la popolazione P02 al 1° gennaio 2025.",
+    "foreignResidentsRcs7of7Reconciled": true
+  },
+  "benchmarks": {
+    "population": {
+      "unit": "number",
+      "year": "2026",
+      "tuscany": 3659222,
+      "italy": 58942828
+    },
+    "populationChange": {
+      "unit": "percent",
+      "year": "2019–2026",
+      "tuscany": -1.1379923449407419,
+      "italy": -1.4608719545468536
+    },
+    "ageDistribution": {
+      "unit": "percent",
+      "year": "2026",
+      "defaultPart": "20–34 anni",
+      "tuscany": 14.897401688118403,
+      "italy": 15.763626068297912
+    },
+    "dependencyIndices": {
+      "unit": "per100",
+      "year": "2026",
+      "defaultPart": "Indice di dipendenza strutturale",
+      "tuscany": 60.80675356179193,
+      "italy": 58.14958091432742
+    },
+    "naturalDemographicDynamics": {
+      "unit": "per1000",
+      "year": "2025",
+      "defaultPart": "Saldo naturale",
+      "tuscany": -6.485773147182606,
+      "italy": -5.02848965679572
+    },
+    "foreignResidents": {
+      "unit": "percent",
+      "year": "2025",
+      "tuscany": 11.84840485155217,
+      "italy": 9.112547236789476
+    }
+  },
+  "components": {
+    "tuscany": {
+      "populationChange": {
+        "start2019": 3701343,
+        "end2026": 3659222
+      },
+      "ageDistribution": {
+        "population": 3659222,
+        "bands": {
+          "0-14": 393459,
+          "15-19": 174624,
+          "20-34": 545129,
+          "35-49": 666408,
+          "50-64": 889379,
+          "65-79": 659370,
+          "80-84": 147052,
+          "85+": 183801
+        },
+        "age0_14": 393459,
+        "age15_64": 2275540,
+        "age65plus": 990223
+      },
+      "naturalDemographicDynamics": {
+        "births": 19907,
+        "deaths": 43635,
+        "naturalBalance": -23728,
+        "meanPopulation": 3658469
+      }
+    },
+    "italy": {
+      "populationChange": {
+        "start2019": 59816673,
+        "end2026": 58942828
+      },
+      "ageDistribution": {
+        "population": 58942828,
+        "bands": {
+          "0-14": 6852025,
+          "15-19": 2926618,
+          "20-34": 9291527,
+          "35-49": 10973606,
+          "50-64": 14078552,
+          "65-79": 10205847,
+          "80-84": 2103261,
+          "85+": 2511392
+        },
+        "age0_14": 6852025,
+        "age15_64": 37270303,
+        "age65plus": 14820500
+      },
+      "naturalDemographicDynamics": {
+        "births": 355435,
+        "deaths": 651830,
+        "naturalBalance": -296395,
+        "meanPopulation": 58943146
+      }
+    }
+  },
+  "excluded": {
+    "internalResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02.",
+    "foreignResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02.",
+    "totalResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02."
+  },
+  "rcs": {
+    "source": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip",
+    "archiveMember": "Dati_cittadinanza_2025.csv",
+    "validation": "7/7 public rows reconciled; population cross-check with P02 1/1/2025",
+    "scopes": {
+      "tuscany": {
+        "foreign": 433381,
+        "population": 3657716,
+        "share": 11.84840485155217,
+        "municipalityCount": 273
+      },
+      "italy": {
+        "foreign": 5371251,
+        "population": 58943464,
+        "share": 9.112547236789476,
+        "municipalityCount": 7896
+      }
+    }
+  }
+}

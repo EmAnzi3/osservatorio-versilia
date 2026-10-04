@@ -128,7 +128,7 @@ def build_page(status: dict[str, Any]) -> str:
               <th scope="row"><a href="{metric_href(row)}">{html.escape(row['label'])}</a><small>{html.escape(row['themeLabel'])}</small></th>
               <td>{html.escape(row['publishedPeriod'] or '—')}</td>
               <td><span class="status-badge status-{html.escape(row['statusTone'])}">{html.escape(row['statusLabel'])}</span>{next_release_markup(row)}</td>
-              <td>{html.escape(fmt_date(row['lastChecked']))}</td>
+              <td title="{html.escape("Controllo fonte: " + fmt_date(row['lastChecked']) + "; verifica periodo: " + fmt_date(row.get('lastPeriodVerified', '')), quote=True)}">{html.escape(fmt_date(row['lastChecked']))}</td>
             </tr>'''
         )
 

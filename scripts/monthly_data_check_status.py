@@ -21,7 +21,7 @@ import monthly_data_check_coverage as coverage  # noqa: E402
 import monitor_semantic_checks as semantics  # noqa: E402
 import pnrr_toscana_audit  # noqa: E402
 import update_fuel_prices_mimit as fuel_mimit  # noqa: E402
-from data_status_model import canonical_url, published_period  # noqa: E402
+from data_status_model import canonical_url, published_period, compare_periods  # noqa: E402
 
 PNRR_METRICS = ("pnrrFunding", "pnrrConcluded")
 FUEL_METRIC = "fuelPrices"
@@ -78,34 +78,37 @@ def build_metric_state(
 
         item: dict[str, Any] = {
             "publishedPeriod": published_period(metric),
-            "checkedAt": checked_at if probe is not None else str(old.get("checkedAt") or ""),
+            "checkedAt": checked_at if probe is not None else "",
             "observedLatestPeriod": str(old.get("observedLatestPeriod") or ""),
             "status": str(old.get("status") or ""),
+            # Raggiungere di nuovo la fonte non rinnova una verifica del periodo.
+            "periodVerifiedAt": str(old.get("periodVerifiedAt") or (old.get("checkedAt") if old.get("observedLatestPeriod") else "") or ""),
         }
         if isinstance(old.get("nextExpectedRelease"), dict):
             item["nextExpectedRelease"] = old["nextExpectedRelease"]
-        if old.get("releaseEvidence"):
+        same_publication = compare_periods(str(old.get("publishedPeriod") or ""), item["publishedPeriod"]) == 0
+        if old.get("releaseEvidence") and same_publication:
             item["releaseEvidence"] = old["releaseEvidence"]
         if old.get("verificationEvidence"):
             item["verificationEvidence"] = old["verificationEvidence"]
 
         if probe is None:
             item["status"] = "verification_required"
+        elif probe.get("retiredSource"):
+            item["status"] = "verification_required"
         elif probe.get("automationLimited"):
             item["status"] = "source_access_limited"
         elif not probe.get("ok"):
             item["status"] = "source_unavailable"
+        elif item.get("releaseEvidence"):
+            item["status"] = "release_detected"
         elif source_key in changed:
-            if item["observedLatestPeriod"] and item["observedLatestPeriod"] != item["publishedPeriod"]:
-                item["status"] = "release_detected"
-            else:
-                item["status"] = "verification_required"
+            item["status"] = "verification_required"
+        elif probe.get("releaseVerification") in {"not_performed", "catalogue_only"}:
+            item["status"] = "source_checked"
         elif item["observedLatestPeriod"]:
-            item["status"] = (
-                "current"
-                if item["observedLatestPeriod"] == item["publishedPeriod"]
-                else "release_detected"
-            )
+            comparison = compare_periods(item["publishedPeriod"], item["observedLatestPeriod"])
+            item["status"] = {0: "current", 1: "release_detected"}.get(comparison, "verification_required")
         else:
             item["status"] = "source_checked"
         result[key] = item
@@ -130,6 +133,7 @@ def apply_fuel_verification_result(
         "towns": live.get("towns", {}),
     }
     item["checkedAt"] = checked_at or str(item.get("checkedAt") or "")
+    item["periodVerifiedAt"] = checked_at
     item["observedLatestPeriod"] = observed
     item["verificationEvidence"] = evidence
     if observed and published and observed > published:
@@ -163,7 +167,7 @@ def run_fuel_verification(
         return None, ""
     source_key = canonical_url(str(metric.get("sourceUrl") or ""))
     run_trigger = str(os.environ.get("MONITOR_RUN_TRIGGER") or "").strip()
-    needs_semantic_check = run_trigger == "schedule" or source_key in changed_urls(report) or str(item.get("status") or "") in {
+    needs_semantic_check = os.environ.get("MONITOR_CHECK_DEPTH") == "deep" or run_trigger == "schedule" or source_key in changed_urls(report) or str(item.get("status") or "") in {
         "verification_required",
         "release_detected",
     }
@@ -240,6 +244,7 @@ def apply_pnrr_verification_result(
         evidence = verification_evidence(audit_result, key)
         verdict = str(metric_verdicts.get(key) or audit_result.get("verdict") or "")
         item["checkedAt"] = checked_at or str(item.get("checkedAt") or "")
+        item["periodVerifiedAt"] = checked_at
         item["verificationEvidence"] = evidence
         if verdict == "match":
             item["observedLatestPeriod"] = str(item.get("publishedPeriod") or "")

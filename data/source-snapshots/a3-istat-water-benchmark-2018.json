@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Istat — Censimento delle acque per uso civile",
+  "sourceProfileId": "istat-water-irregular",
+  "sourceUrl": "https://www.istat.it/storage/ASI/2021/capitoli/C02.pdf",
+  "sources": {
+    "municipalData": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,12_60_DF_DCCV_CONSACQUA_2,1.0/all?startPeriod=2018&endPeriod=2018",
+    "officialAggregateTable": "https://www.istat.it/storage/ASI/2021/capitoli/C02.pdf",
+    "csvSha256": "e0554c67ee9e3db2b63cad4f13286661c6080e8b5d613882c1a2104e10a1d64b",
+    "pdfSha256": "df1bf53317c17af91b937859c5e0433e1294097da8e1ac73bcf8af9e5b34f017",
+    "table": "ASI 2021, Tavola 2.17, righe Toscana e ITALIA, anno 2018"
+  },
+  "raw": {
+    "tuscany": {
+      "immessa": 412482,
+      "erogata": 235878,
+      "lossPercent": 42.8
+    },
+    "italy": {
+      "immessa": 8182729,
+      "erogata": 4748670,
+      "lossPercent": 42.0
+    }
+  },
+  "municipalReconciliation": {
+    "046005": {
+      "immessa": 4343,
+      "erogata": 2695,
+      "value": 37.94612019341469
+    },
+    "046013": {
+      "immessa": 2763,
+      "erogata": 1648,
+      "value": 40.3546869344915
+    },
+    "046018": {
+      "immessa": 2689,
+      "erogata": 1560,
+      "value": 41.98586835254742
+    },
+    "046024": {
+      "immessa": 3839,
+      "erogata": 2197,
+      "value": 42.771555092472
+    },
+    "046028": {
+      "immessa": 1660,
+      "erogata": 795,
+      "value": 52.108433734939766
+    },
+    "046030": {
+      "immessa": 389,
+      "erogata": 173,
+      "value": 55.52699228791774
+    },
+    "046033": {
+      "immessa": 6819,
+      "erogata": 4369,
+      "value": 35.929021850711244
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "errors": [],
+    "publicReconciliation": "7/7 exact municipal volume pairs",
+    "nationalReconciliation": "Official table = SDMX national volume pair"
+  },
+  "benchmarks": {
+    "waterNetworkLosses": {
+      "year": "2018",
+      "unit": "percent",
+      "tuscany": 42.8,
+      "italy": 42.0
+    }
+  },
+  "scope": {
+    "note": "Perdite totali sulle reti comunali di distribuzione nel 2018. Percentuali ufficiali Istat arrotondate a un decimale, verificate sui volumi regionali/nazionali; non è una media delle percentuali comunali."
+  }
+}

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 
 from playwright.sync_api import expect, sync_playwright
 
@@ -20,35 +21,30 @@ def assert_no_simple_mean_benchmark(text: str) -> None:
 
 
 def compare_row(page, town: str):
-    page.wait_for_function(
-        """town => [...document.querySelectorAll('#compare-bars .bar-row')]
-          .some(row => row.querySelector('.bar-town')?.textContent.trim() === town)""",
-        arg=town,
+    """Return a live locator for a town row across chart re-renders."""
+    label = page.locator("#compare-bars .bar-row .bar-town").filter(
+        has_text=re.compile(rf"^\s*{re.escape(town)}\s*$")
+    ).first
+    label.wait_for(state="visible")
+    return label.locator(
+        "xpath=ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' bar-row ')][1]"
     )
-    rows = page.locator("#compare-bars .bar-row")
-    for index in range(rows.count()):
-        row = rows.nth(index)
-        if row.locator(".bar-town").inner_text().strip() == town:
-            return row
-    raise AssertionError(f"Riga confronto non trovata dopo attesa: {town}")
 
 
 def town_current_row(page, town: str):
-    page.wait_for_function(
-        """town => [...document.querySelectorAll('.history-panel [data-view-pane="current"] .bar-row, .history-panel [data-view-pane="current"] .ux-bar-row')]
-          .some(row => (row.querySelector('.bar-town, .ux-bar-town')?.textContent || '').trim() === town)""",
-        arg=town,
+    label = page.locator(
+        '.history-panel [data-view-pane="current"] .bar-row .bar-town, '
+        '.history-panel [data-view-pane="current"] .ux-bar-row .ux-bar-town'
+    ).filter(
+        has_text=re.compile(rf"^\s*{re.escape(town)}\s*$")
+    ).first
+    label.wait_for(state="visible")
+    return label.locator(
+        "xpath=ancestor::*["
+        "contains(concat(' ', normalize-space(@class), ' '), ' bar-row ') "
+        "or contains(concat(' ', normalize-space(@class), ' '), ' ux-bar-row ')"
+        "][1]"
     )
-    rows = page.locator(
-        '.history-panel [data-view-pane="current"] .bar-row, '
-        '.history-panel [data-view-pane="current"] .ux-bar-row'
-    )
-    for index in range(rows.count()):
-        row = rows.nth(index)
-        label = row.locator(".bar-town, .ux-bar-town").first
-        if label.count() and label.inner_text().strip() == town:
-            return row
-    raise AssertionError(f"Riga grafico comunale non trovata dopo attesa: {town}")
 
 
 def visual_left(locator) -> float:

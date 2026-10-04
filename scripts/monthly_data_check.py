@@ -10,6 +10,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import http.client
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import BoundedSemaphore
 import json
 import os
 import socket
@@ -446,28 +449,44 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
         "redirectChangeReason": "",
         "hashTruncated": False,
         "error": "",
+        "attempts": [],
     }
+
+    def request(method, headers=None):
+        attempt = {"url": url, "method": method, "httpStatus": None, "ok": False, "error": ""}
+        result["attempts"].append(attempt)
+        try:
+            response = open_request(url, method, timeout, headers)
+            attempt.update(httpStatus=getattr(response, "status", response.getcode()),
+                           finalUrl=response.geturl(), ok=True)
+            return response
+        except urllib.error.HTTPError as exc:
+            attempt.update(httpStatus=exc.code, error=f"HTTP {exc.code}")
+            raise
+        except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
+            attempt["error"] = str(exc)
+            raise
 
     response = None
     try:
-        response = open_request(url, "HEAD", timeout)
+        response = request("HEAD")
     except urllib.error.HTTPError as exc:
         if exc.code not in {403, 405, 501}:
             result["status"] = exc.code
             result["error"] = f"HTTP {exc.code}"
             return result
-    except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+    except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
         result["error"] = str(exc)
         return result
 
     if response is None:
         try:
-            response = open_request(url, "GET", timeout, {"Range": "bytes=0-0"})
+            response = request("GET", {"Range": "bytes=0-0"})
         except urllib.error.HTTPError as exc:
             result["status"] = exc.code
             result["error"] = f"HTTP {exc.code}"
             return result
-        except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+        except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
             result["error"] = str(exc)
             return result
 
@@ -484,7 +503,7 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
 
     if result["ok"] and should_hash(result["finalUrl"], result["contentType"], registry):
         try:
-            with open_request(url, "GET", timeout) as content_response:
+            with request("GET") as content_response:
                 payload = bytearray()
                 total = 0
                 while total <= max_bytes:
@@ -501,7 +520,7 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
                     digest, mode = semantics.semantic_content_hash(bytes(payload))
                     result["contentSha256"] = digest
                     result["contentHashMode"] = mode
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError, http.client.HTTPException) as exc:
             result["error"] = f"Metadati raggiungibili, hash non disponibile: {exc}"
     return result
 
@@ -594,6 +613,13 @@ def compare_states(previous: dict[str, Any], current: dict[str, dict[str, Any]])
             changes["unreachable"].append({"url": url, "error": item.get("error", "")})
         if not old.get("ok") and item.get("ok"):
             changes["recovered"].append({"url": url})
+        old = {**old.get("lastSuccessfulContent", {}), **{k: v for k, v in old.items() if v not in (None, "")}}
+        old_catalogue = old.get("releaseCatalogue", {})
+        if not old_catalogue.get("fingerprint"):
+            old_catalogue = old.get("lastSuccessfulReleaseCatalogue", {})
+        new_catalogue = item.get("releaseCatalogue", {})
+        if old_catalogue.get("fingerprint") and new_catalogue.get("fingerprint") and old_catalogue["fingerprint"] != new_catalogue["fingerprint"]:
+            changes["content"].append({"url": url, "reason": "Cambiati i marcatori del catalogo rilasci; acquisizione ancora da validare"})
         old_mode = str(old.get("contentHashMode") or "raw")
         new_mode = str(item.get("contentHashMode") or "raw")
         if (
@@ -731,6 +757,18 @@ def build_report(
                     "",
                 ]
             )
+    diagnostics = [item for item in probes.values() if item.get("attempts")]
+    if diagnostics:
+        lines.extend(["### Diagnostica dei percorsi ufficiali", "",
+                      "La raggiungibilità non certifica il rilascio né l’acquisizione. Un timeout descrive il tentativo, non lo stato del sito.", ""])
+        for item in diagnostics:
+            if item.get("ok") and len(item["attempts"]) == 1 and not item.get("acquisition"):
+                continue
+            lines.append(f"- Fonte: `{item['url']}`; ruolo: `{item.get('endpointRole', 'unspecified')}`; esito: `{item.get('failureKind', '')}`")
+            if item.get("releaseCheck"):
+                lines.append(f"  - Verifica rilascio: {item['releaseCheck']}")
+            for attempt in item["attempts"]:
+                lines.append(f"  - `{attempt['url']}` — {attempt['method']}, HTTP {attempt.get('httpStatus') or 'n.d.'}, {attempt.get('error') or 'raggiungibile'}")
     lines.extend(
         [
             "### Regola di pubblicazione",
@@ -763,6 +801,29 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def probe_sources(source_map: dict, registry: dict, mode: str) -> dict:
+    """Quattro richieste globali, al massimo due sullo stesso portale."""
+    urls = sorted(source_map)
+    if mode == "offline":
+        return {url: offline_source(url) for url in urls}
+    hosts = {urllib.parse.urlsplit(url).netloc for url in urls}
+    limits = {host: BoundedSemaphore(2) for host in hosts}
+
+    def check(url):
+        with limits[urllib.parse.urlsplit(url).netloc]:
+            return probe_source(url, registry)
+
+    results = {}
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(check, url): url for url in urls}
+        for future in as_completed(futures):
+            url = futures[future]
+            results[url] = future.result()
+            if len(results) % 10 == 0 or len(results) == len(urls):
+                print(f"Source monitor: {len(results)}/{len(urls)} fonti controllate", flush=True)
+    return {url: results[url] for url in urls}
+
+
 def main() -> int:
     args = parse_args()
     data = load_json(args.data)
@@ -771,9 +832,9 @@ def main() -> int:
     checked_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     findings, source_map, summary = validate_dataset(data, registry)
-    probes: dict[str, dict[str, Any]] = {}
+    probes: dict[str, dict[str, Any]] = probe_sources(source_map, registry, args.mode)
     for url, source in sorted(source_map.items()):
-        probe = offline_source(url) if args.mode == "offline" else probe_source(url, registry)
+        probe = probes[url]
         probe["metrics"] = sorted(source["metrics"])
         probe["roles"] = sorted(source["roles"])
         probe["profileIds"] = sorted(source.get("profileIds", []))
@@ -786,6 +847,24 @@ def main() -> int:
             probe["redirectChangeReason"] = source_policy.get("reason", "")
         probes[url] = probe
 
+    # Preserve the last successful evidence across failed probes. Do not turn it
+    # into a current success or use it as a live-service availability claim.
+    for url, item in probes.items():
+        old = previous.get("sources", {}).get(url, {})
+        item["lastSuccessfulCheck"] = str(old.get("lastSuccessfulCheck") or (previous.get("checkedAt") if previous.get("mode") == "live" and old.get("ok") else "") or "")
+        if args.mode == "live" and item.get("ok") and not item.get("automationLimited") and not item.get("retiredSource"):
+            item["lastSuccessfulCheck"] = checked_at
+        catalogue = item.get("releaseCatalogue", {})
+        if catalogue.get("ok") and catalogue.get("fingerprint"):
+            item["lastSuccessfulReleaseCatalogue"] = catalogue
+        elif old.get("lastSuccessfulReleaseCatalogue") or old.get("releaseCatalogue", {}).get("fingerprint"):
+            item["lastSuccessfulReleaseCatalogue"] = old.get("lastSuccessfulReleaseCatalogue") or old["releaseCatalogue"]
+        if item.get("contentSha256") and not item.get("hashTruncated"):
+            item["lastSuccessfulContent"] = {"contentSha256": item["contentSha256"], "contentHashMode": item.get("contentHashMode", "raw"), "checkedAt": checked_at}
+        elif old.get("lastSuccessfulContent"):
+            item["lastSuccessfulContent"] = old["lastSuccessfulContent"]
+        elif old.get("contentSha256") and not old.get("hashTruncated"):
+            item["lastSuccessfulContent"] = {"contentSha256": old["contentSha256"], "contentHashMode": old.get("contentHashMode", "raw"), "checkedAt": item["lastSuccessfulCheck"]}
     changes = compare_states(previous, probes)
     errors = [item for item in findings if item["level"] == "error"]
     substantial = any(changes[key] for key in ("added", "removed", "content", "redirect"))
