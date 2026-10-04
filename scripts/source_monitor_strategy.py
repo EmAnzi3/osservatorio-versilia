@@ -74,7 +74,7 @@ def last_check_state(
     last_success = _fallback_success(previous, old)
 
     if isinstance(item, dict):
-        if current_mode == "live" and item.get("ok"):
+        if current_mode == "live" and item.get("ok") and not item.get("retiredSource"):
             last_success = checked_at
         if current_mode == "offline":
             result = "offline_validation"
@@ -181,6 +181,8 @@ def build_strategy_from_source_map(
                 "redirect": change_policy.get("redirectChange") or "substantial",
                 "reason": change_policy.get("reason") or "",
             },
+            "probePolicy": next((v for k, v in registry.get("sourceProbePolicies", {}).items() if coverage.canonical_url(k) == url), {}),
+            "acquisitionMethods": _unique(policy.get("acquisitionMethod") for policy in policies),
             "lastCheck": last_check_state(url, current_state, previous_state),
         }
 

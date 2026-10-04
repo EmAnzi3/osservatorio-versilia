@@ -25,14 +25,14 @@ def main() -> int:
         general.wait_for(timeout=15000)
         general_text = general.inner_text()
         assert "101" in general_text
-        assert "74" in general_text
+        assert "78" in general_text
         assert "22" in general_text
         assert "36.683.108" in general_text or "36.683.107" in general_text
         assert general.locator('a[href="../../pnrr/"]').count() == 1
 
         body_text = page.locator("body").inner_text()
-        assert "Versilia · 74 su 101" in body_text
-        assert "73,3%" in body_text
+        assert "Versilia · 78 su 101" in body_text
+        assert "77,2%" in body_text
         assert "Quota Versilia\n50,0%" not in body_text
 
         page.goto(base + "pnrr/", wait_until="networkidle")
@@ -52,6 +52,7 @@ def main() -> int:
         town.wait_for(timeout=15000)
         text = town.inner_text()
         assert "PNRR a Massarosa" in text
+        assert "25 settembre 2026" in text
         assert "11" in text
         assert "10" in text
         assert "90,9%" in text

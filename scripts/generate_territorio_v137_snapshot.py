@@ -508,7 +508,7 @@ def main() -> None:
                 },
                 "regioneProtectedAreas": {
                     "publisher": "Regione Toscana",
-                    "page": "https://www.regione.toscana.it/-/il-sistema-delle-aree-naturali-protette",
+                    "page": "https://www.regione.toscana.it/sistema-aree-naturali-protette",
                     "reference": "Archivi geografici ufficiali aree protette, Natura 2000 e Ramsar",
                     "layers": protected_provenance,
                 },

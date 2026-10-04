@@ -26,7 +26,7 @@ SOCIAL_IMAGE_ALT = "Viareggio e le Alpi Apuane, immagine di Osservatorio Versili
 TWITTER_SITE = "@OssVersilia"
 PAGE_TITLE = "Dentro il PNRR · Osservatorio Versilia"
 PAGE_DESCRIPTION = "Progetti PNRR dei sette Comuni della Versilia, avanzamento ReGiS e dettaglio delle opere fisiche."
-SOCIAL_DESCRIPTION = "101 progetti, avanzamento ReGiS e 22 opere fisiche nella fotografia Regione Toscana dell'11 agosto 2026."
+SOCIAL_DESCRIPTION = "101 progetti, avanzamento ReGiS e 22 opere fisiche nella fotografia Regione Toscana del 25 settembre 2026."
 
 
 def slugify(value: str) -> str:
@@ -206,7 +206,7 @@ def build_page(data: dict[str, Any]) -> str:
         <li class="pnrr-phase-card"><span>4. Esecuzione</span><strong>{totals['execution']}</strong><small>Progetti nella fase esecutiva</small></li>
         <li class="pnrr-phase-card"><span>3. Stipula</span><strong>{totals['contracting']}</strong><small>Progetto ancora nella fase di stipula</small></li>
       </ol>
-      <div class="pnrr-method-note"><p><strong>Perché non scriviamo “74 progetti realizzati”?</strong> Per le opere fisiche il dettaglio ReGiS mostra che molte sono già nella macrofase 5 ma hanno ancora il collaudo avviato. Per questo il sito mantiene distinta la fase amministrativa dallo stato effettivo dell'opera.</p></div>
+      <div class="pnrr-method-note"><p><strong>Perché non scriviamo “78 progetti realizzati”?</strong> Per le opere fisiche il dettaglio ReGiS mostra che la macrofase 5 può precedere il collaudo completato. Per questo il sito mantiene distinta la fase amministrativa dallo stato effettivo dell'opera.</p></div>
     </section>
 
     <section class="method-detail page-width" aria-labelledby="pnrr-opere-title">
@@ -230,7 +230,7 @@ def build_page(data: dict[str, Any]) -> str:
 
 
 def teaser_markup() -> str:
-    return '''<section class="pnrr-deep-dive-teaser page-width" data-pnrr-deep-dive-teaser="true"><div><span class="overline">Approfondimento</span><h2>Dentro il PNRR</h2><p>101 progetti, 74 in fase 5 e 22 opere fisiche lette con lo stato ReGiS di dettaglio. La macrofase “conclusione” resta distinta dal collaudo effettivo.</p></div><a class="button-link" href="../../pnrr/">Apri l'approfondimento <span>→</span></a></section>'''
+    return '''<section class="pnrr-deep-dive-teaser page-width" data-pnrr-deep-dive-teaser="true"><div><span class="overline">Approfondimento</span><h2>Dentro il PNRR</h2><p>101 progetti, 78 in fase 5 e 22 opere fisiche lette con lo stato ReGiS di dettaglio. La macrofase “conclusione” resta distinta dal collaudo effettivo.</p></div><a class="button-link" href="../../pnrr/">Apri l'approfondimento <span>→</span></a></section>'''
 
 
 def inject_indicator_teasers(data: dict[str, Any]) -> None:

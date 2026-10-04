@@ -180,6 +180,8 @@ def derive_status(
         return "source_access_limited"
     if not probe.get("ok"):
         return "source_unavailable"
+    if probe.get("releaseVerification") in {"not_performed", "catalogue_only"}:
+        return "source_checked"
     observed = str(operational.get("observedLatestPeriod") or "")
     if observed:
         comparison = compare_periods(published, observed)

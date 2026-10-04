@@ -31,7 +31,7 @@ def main() -> None:
     close(metrics["pnrrConcluded"]["aggregate"]["value"], pnrr_concluded / pnrr_projects * 100)
     assert (public_works_total, total_population) == (223_384_943, 158_520)
     assert math.isclose(pnrr_funding_total, 36_683_107.64, abs_tol=0.001)
-    assert (pnrr_concluded, pnrr_projects) == (74, 101)
+    assert (pnrr_concluded, pnrr_projects) == (78, 101)
 
     for key in ("publicWorks", "pnrrFunding", "pnrrConcluded"):
         meta = metrics[key]["meta"]

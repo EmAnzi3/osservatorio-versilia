@@ -49,7 +49,7 @@ def main() -> int:
     total_concluded = int(totals["concluded"])
     total_funding = float(totals["funding"])
 
-    if total_projects != 101 or total_concluded != 74:
+    if total_projects != 101 or total_concluded != 78:
         raise RuntimeError(
             f"Perimetro PNRR inatteso: {total_projects} progetti / {total_concluded} fase 5"
         )
@@ -86,10 +86,10 @@ def main() -> int:
     concluded.update(
         {
             "value": total_concluded / total_projects * 100.0,
-            "label": "Versilia · 74 su 101",
+            "label": "Versilia · 78 su 101",
             "note": (
-                "74 progetti su 101 risultano nella macrofase ReGiS 5. conclusione "
-                "nella fotografia dell'11 agosto 2026."
+                "78 progetti su 101 risultano nella macrofase ReGiS 5. conclusione "
+                "nella fotografia del 25 settembre 2026."
             ),
         }
     )

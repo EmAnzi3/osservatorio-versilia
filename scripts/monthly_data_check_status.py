@@ -94,6 +94,8 @@ def build_metric_state(
 
         if probe is None:
             item["status"] = "verification_required"
+        elif probe.get("retiredSource"):
+            item["status"] = "verification_required"
         elif probe.get("automationLimited"):
             item["status"] = "source_access_limited"
         elif not probe.get("ok"):
@@ -102,6 +104,8 @@ def build_metric_state(
             item["status"] = "release_detected"
         elif source_key in changed:
             item["status"] = "verification_required"
+        elif probe.get("releaseVerification") in {"not_performed", "catalogue_only"}:
+            item["status"] = "source_checked"
         elif item["observedLatestPeriod"]:
             comparison = compare_periods(item["publishedPeriod"], item["observedLatestPeriod"])
             item["status"] = {0: "current", 1: "release_detected"}.get(comparison, "verification_required")

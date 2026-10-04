@@ -39993,7 +39993,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data Regione Toscana",
         "formula": "somma importo_finanziato_pnrr / popolazione residente",
-        "caveat": "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. Il valore è finanziamento PNRR censito, non importo erogato o speso.",
+        "caveat": "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. Il valore è finanziamento PNRR censito, non importo erogato o speso.",
         "coverage": "7/7"
       }
     },
@@ -40012,7 +40012,7 @@
         "comparisonDifference": "percentagePoints",
         "comparisonLabel": "quota Versilia",
         "comparisonOverline": "Rispetto alla quota Versilia",
-        "comparisonNote": "Il riferimento Versilia è la quota complessiva di progetti conclusi (74 su 101); non è la media semplice delle sette percentuali comunali."
+        "comparisonNote": "Il riferimento Versilia è la quota complessiva di progetti conclusi (78 su 101); non è la media semplice delle sette percentuali comunali."
       },
       "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
       "rows": [
@@ -40040,31 +40040,31 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 62.5,
-          "formatted": "62,5%",
+          "value": 68.75,
+          "formatted": "68,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 62.5
+          "benchmarkValue": 68.75
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 75.0,
-          "formatted": "75,0%",
+          "value": 83.33333333333334,
+          "formatted": "83,3%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 75.0
+          "benchmarkValue": 83.33333333333334
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 66.66666666666666,
-          "formatted": "66,7%",
+          "value": 75.0,
+          "formatted": "75,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 66.66666666666666
+          "benchmarkValue": 75.0
         },
         {
           "town": "Forte dei Marmi",
@@ -40080,23 +40080,23 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 81.81818181818183,
-          "formatted": "81,8%",
+          "value": 90.9090909090909,
+          "formatted": "90,9%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 81.81818181818183
+          "benchmarkValue": 90.9090909090909
         }
       ],
       "aggregate": {
-        "value": 73.26732673267327,
-        "label": "Versilia · 74 su 101",
-        "note": "74 progetti su 101 risultano nella macrofase ReGiS 5. conclusione nella fotografia dell'11 agosto 2026."
+        "value": 77.22772277227723,
+        "label": "Versilia · 78 su 101",
+        "note": "78 progetti su 101 risultano nella macrofase ReGiS 5. conclusione nella fotografia del 25 settembre 2026."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su open data Regione Toscana / ReGiS",
         "formula": "progetti con fase_avanzamento_da_regis = 5. conclusione / progetti selezionati × 100",
-        "caveat": "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. La fase ReGiS è uno stato amministrativo di avanzamento e non equivale, da sola, a collaudo concluso.",
+        "caveat": "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. La fase ReGiS è uno stato amministrativo di avanzamento e non equivale, da sola, a collaudo concluso.",
         "coverage": "7/7"
       }
     },
@@ -55511,7 +55511,7 @@
         "shortLabel": "Prezzi carburanti",
         "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
         "unit": "eurliter",
-        "year": "2026-08-28",
+        "year": "2026-10-03",
         "source": "MIMIT — Osservaprezzi carburanti",
         "polarity": "neutral",
         "compositeType": "securityMeasures",
@@ -55529,29 +55529,35 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.018,
+          "value": 2.097,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.018
+              1.987,
+              2.018,
+              2.018,
+              2.097
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.018,
+          "benchmarkValue": 2.097,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.018,
+              "value": 2.097,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.147,
+              "value": 2.299,
               "unit": "eurliter"
             }
           ],
@@ -55559,18 +55565,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.018
+                1.987,
+                2.018,
+                2.018,
+                2.097
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.147
+                2.088,
+                2.147,
+                2.147,
+                2.299
               ]
             }
           }
@@ -55579,29 +55597,35 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 2.019,
+          "value": 1.994,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.019
+              1.994,
+              2.019,
+              2.019,
+              1.994
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.019,
+          "benchmarkValue": 1.994,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.019,
+              "value": 1.994,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.141,
+              "value": 2.194,
               "unit": "eurliter"
             }
           ],
@@ -55609,18 +55633,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.019
+                1.994,
+                2.019,
+                2.019,
+                1.994
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.141
+                2.099,
+                2.144,
+                2.141,
+                2.194
               ]
             }
           }
@@ -55629,29 +55665,35 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.029,
+          "value": 2.079,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.029
+              1.999,
+              2.029,
+              2.029,
+              2.079
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.029,
+          "benchmarkValue": 2.079,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.029,
+              "value": 2.079,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.139,
+              "value": 2.299,
               "unit": "eurliter"
             }
           ],
@@ -55659,18 +55701,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.029
+                1.999,
+                2.029,
+                2.029,
+                2.079
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.139
+                2.089,
+                2.139,
+                2.139,
+                2.299
               ]
             }
           }
@@ -55679,29 +55733,35 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2.019,
+          "value": 1.999,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              2.019
+              1.999,
+              2.019,
+              2.019,
+              1.999
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.019,
+          "benchmarkValue": 1.999,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.019,
+              "value": 1.999,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.149,
+              "value": 2.199,
               "unit": "eurliter"
             }
           ],
@@ -55709,18 +55769,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.019
+                1.999,
+                2.019,
+                2.019,
+                1.999
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.149
+                2.099,
+                2.149,
+                2.149,
+                2.199
               ]
             }
           }
@@ -55729,29 +55801,35 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1.999,
+          "value": 2.03,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              1.999
+              1.994,
+              1.999,
+              1.999,
+              2.03
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 2.03,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 2.03,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.144,
+              "value": 2.23,
               "unit": "eurliter"
             }
           ],
@@ -55759,18 +55837,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                1.999
+                1.994,
+                1.999,
+                1.999,
+                2.03
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.144
+                2.079,
+                2.144,
+                2.144,
+                2.23
               ]
             }
           }
@@ -55779,29 +55869,35 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 1.999,
+          "value": 2.03,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
-              1.999
+              1.979,
+              2.009,
+              1.999,
+              2.03
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 2.03,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 2.03,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.129,
+              "value": 2.215,
               "unit": "eurliter"
             }
           ],
@@ -55809,18 +55905,30 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                1.999
+                1.979,
+                2.009,
+                1.999,
+                2.03
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
-                2.129
+                2.089,
+                2.134,
+                2.129,
+                2.215
               ]
             }
           }
@@ -55833,9 +55941,15 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-28"
+              "2026-08-14",
+              "2026-08-27",
+              "2026-08-28",
+              "2026-10-03"
             ],
             "values": [
+              null,
+              null,
+              null,
               null
             ]
           },
@@ -55859,17 +55973,29 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
+                null,
+                null,
+                null,
                 null
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-28"
+                "2026-08-14",
+                "2026-08-27",
+                "2026-08-28",
+                "2026-10-03"
               ],
               "values": [
+                null,
+                null,
+                null,
                 null
               ]
             }
@@ -55877,20 +56003,20 @@
         }
       ],
       "aggregate": {
-        "value": 2.0138333333333334,
+        "value": 2.0381666666666667,
         "label": "Media delle mediane comunali disponibili",
         "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
         "parts": [
           {
             "label": "Benzina self",
             "selectorLabel": "Benzina self",
-            "value": 2.0138333333333334,
+            "value": 2.0381666666666667,
             "unit": "eurliter"
           },
           {
             "label": "Gasolio self",
             "selectorLabel": "Gasolio self",
-            "value": 2.1415,
+            "value": 2.239333333333333,
             "unit": "eurliter"
           }
         ]
@@ -55899,7 +56025,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data MIMIT",
         "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
-        "caveat": "Fotografia del 28 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "caveat": "Ultima fotografia: 3 ottobre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
         "coverage": "6/7"
       }
     },
@@ -67060,8 +67186,8 @@
         "publicWorks": 254,
         "publicWorksValue": 22671881,
         "pnrrProjects": 16,
-        "pnrrConcluded": 10,
-        "pnrrInProgress": 6,
+        "pnrrConcluded": 11,
+        "pnrrInProgress": 5,
         "pnrrFunding": 3270511.41,
         "contracts": 39,
         "contractsValue": 1024340,
@@ -67994,8 +68120,8 @@
         "publicWorks": 184,
         "publicWorksValue": 46509295,
         "pnrrProjects": 12,
-        "pnrrConcluded": 9,
-        "pnrrInProgress": 3,
+        "pnrrConcluded": 10,
+        "pnrrInProgress": 2,
         "pnrrFunding": 9478237.98,
         "contracts": 36,
         "contractsValue": 1320737,
@@ -68848,8 +68974,8 @@
         "publicWorks": 135,
         "publicWorksValue": 27677665,
         "pnrrProjects": 12,
-        "pnrrConcluded": 8,
-        "pnrrInProgress": 4,
+        "pnrrConcluded": 9,
+        "pnrrInProgress": 3,
         "pnrrFunding": 2485485.63,
         "contracts": 9,
         "contractsValue": 140018,
@@ -70316,8 +70442,8 @@
         "publicWorks": 99,
         "publicWorksValue": 11228401,
         "pnrrProjects": 11,
-        "pnrrConcluded": 9,
-        "pnrrInProgress": 2,
+        "pnrrConcluded": 10,
+        "pnrrInProgress": 1,
         "pnrrFunding": 2055502.34,
         "contracts": 3,
         "contractsValue": 58611,
@@ -71118,16 +71244,16 @@
   },
   "pnrrDeepDive": {
     "title": "Dentro il PNRR",
-    "snapshot": "11 agosto 2026",
-    "snapshotDate": "2026-08-11",
+    "snapshot": "25 settembre 2026",
+    "snapshotDate": "2026-09-25",
     "source": "Regione Toscana — Open Data PNRR",
     "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
     "methodNote": "Perimetro: area PNRR o PNRR-PNC, PNC puro escluso, uno dei sette Comuni come soggetto attuatore, deduplicazione su id_progetto. La macrofase ReGiS 5. conclusione non equivale automaticamente a opera collaudata.",
     "totals": {
       "projects": 101,
-      "concluded": 74,
-      "execution": 26,
-      "contracting": 1,
+      "concluded": 78,
+      "execution": 23,
+      "contracting": 0,
       "funding": 36683107.64
     },
     "towns": [
@@ -71135,8 +71261,8 @@
         "code": "046005",
         "town": "Camaiore",
         "projects": 16,
-        "concluded": 10,
-        "concludedPercent": 62.5,
+        "concluded": 11,
+        "concludedPercent": 68.75,
         "funding": 3270511.41
       },
       {
@@ -71159,24 +71285,24 @@
         "code": "046024",
         "town": "Pietrasanta",
         "projects": 12,
-        "concluded": 9,
-        "concludedPercent": 75.0,
+        "concluded": 10,
+        "concludedPercent": 83.33333333333334,
         "funding": 9478237.98
       },
       {
         "code": "046028",
         "town": "Seravezza",
         "projects": 12,
-        "concluded": 8,
-        "concludedPercent": 66.66666666666666,
+        "concluded": 9,
+        "concludedPercent": 75.0,
         "funding": 2485485.63
       },
       {
         "code": "046030",
         "town": "Stazzema",
         "projects": 11,
-        "concluded": 9,
-        "concludedPercent": 81.81818181818183,
+        "concluded": 10,
+        "concludedPercent": 90.9090909090909,
         "funding": 2055502.34
       },
       {
@@ -71195,13 +71321,13 @@
       "statusSummary": [
         {
           "status": "Collaudo completato",
-          "count": 7,
-          "funding": 5830474.87
+          "count": 18,
+          "funding": 20972273.03
         },
         {
           "status": "Collaudo avviato",
-          "count": 12,
-          "funding": 18593970.29
+          "count": 3,
+          "funding": 5387172.13
         },
         {
           "status": "Lavori in esecuzione",
@@ -71210,13 +71336,13 @@
         },
         {
           "status": "Contratto stipulato",
-          "count": 1,
-          "funding": 1440000.0
+          "count": 0,
+          "funding": 0
         },
         {
           "status": "Stipula in corso",
-          "count": 1,
-          "funding": 495000.0
+          "count": 0,
+          "funding": 0
         }
       ],
       "works": [
@@ -71230,28 +71356,28 @@
         {
           "town": "Camaiore",
           "title": "Nuovo intervento per asili nido / prima infanzia",
-          "status": "Contratto stipulato",
+          "status": "Collaudo completato",
           "funding": 1440000.0,
           "cup": "D35E24000010006"
         },
         {
           "town": "Camaiore",
           "title": "Cucina nido d'infanzia Mafalda",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 170000.0,
           "cup": "D38H22000110006"
         },
         {
           "town": "Forte dei Marmi",
           "title": "Nuova mensa scuola Don Milani",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 304640.0,
           "cup": "F21B22000330008"
         },
         {
           "town": "Forte dei Marmi",
           "title": "Nuovi spazi mensa scuola Guidi",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 499200.0,
           "cup": "F25E22000440006"
         },
@@ -71279,35 +71405,35 @@
         {
           "town": "Pietrasanta",
           "title": "Nuovo polo scolastico Marina di Pietrasanta",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 5705263.79,
           "cup": "G43H17000050004"
         },
         {
           "town": "Pietrasanta",
           "title": "Rigenerazione Ex-Camp",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 2803289.07,
           "cup": "G44E21000590004"
         },
         {
           "town": "Seravezza",
           "title": "Nuova palestra scuole Frediani",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 948022.0,
           "cup": "B81B22000710006"
         },
         {
           "town": "Seravezza",
           "title": "Nuovo nido d'infanzia",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 1250000.0,
           "cup": "B81B22000730006"
         },
         {
           "town": "Stazzema",
           "title": "Accessibilità Museo e Parco nazionale della Pace di Sant'Anna",
-          "status": "Stipula in corso",
+          "status": "Collaudo completato",
           "funding": 495000.0,
           "cup": "H17B22000430006"
         },
@@ -71335,7 +71461,7 @@
         {
           "town": "Viareggio",
           "title": "Riqualificazione Marina di Torre del Lago",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 1131347.78,
           "cup": "B43D21001420004"
         },
@@ -71356,7 +71482,7 @@
         {
           "town": "Viareggio",
           "title": "Recupero piazza Piave",
-          "status": "Collaudo avviato",
+          "status": "Collaudo completato",
           "funding": 395035.52,
           "cup": "B43D21001450004"
         },

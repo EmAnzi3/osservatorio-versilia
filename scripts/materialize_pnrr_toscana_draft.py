@@ -2,8 +2,7 @@
 """Materializza la bozza PNRR Regione Toscana per il solo preview di PR.
 
 Lo script aggiorna la working copy, non scarica dati e non pubblica nulla. I valori
-sono la fotografia Regione Toscana dell'11 agosto 2026 già validata dal workflow
-forense della PR #75. Serve a vedere il risultato nel preview prima di rendere
+sono la fotografia Regione Toscana del 25 settembre 2026 validata dal CSV ufficiale nel lotto del 4 ottobre. Serve a vedere il risultato nel preview prima di rendere
 canonico l'aggiornamento.
 """
 from __future__ import annotations
@@ -16,22 +15,22 @@ from typing import Any
 DATASET_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
 RESOURCE_URL = "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv"
 SOURCE_LABEL = "Regione Toscana — Open Data PNRR"
-SNAPSHOT_LABEL = "11 agosto 2026"
-SNAPSHOT_DATE = "2026-08-11"
-AUDIT_CHECKED_AT = "2026-08-18T16:58:50+00:00"
-SNAPSHOT_SHA256 = "f7d4e46f4973efe92eef00a9fb9b41e95e5824600046c4b9fa57b16e932091db"
+SNAPSHOT_LABEL = "25 settembre 2026"
+SNAPSHOT_DATE = "2026-09-25"
+AUDIT_CHECKED_AT = "2026-10-04T15:56:00+00:00"
+SNAPSHOT_SHA256 = "bee81f4fd82272700bf8a9caec36e4481fd0b08a9f7cb7fddf873e059a5b512f"
 PROFILE_KEY = "regione-toscana-pnrr-monthly"
 
 # Fotografia validata: area PNRR o PNRR-PNC; PNC puro escluso; Comune soggetto
 # attuatore; deduplicazione su id_progetto; importo = importo_finanziato_pnrr;
 # concluso = fase_avanzamento_da_regis == "5. conclusione".
 PNRR = {
-    "046005": {"town": "Camaiore", "projects": 16, "concluded": 10, "funding": 3270511.41},
+    "046005": {"town": "Camaiore", "projects": 16, "concluded": 11, "funding": 3270511.41},
     "046013": {"town": "Forte dei Marmi", "projects": 15, "concluded": 10, "funding": 1337644.46},
     "046018": {"town": "Massarosa", "projects": 11, "concluded": 10, "funding": 5965208.14},
-    "046024": {"town": "Pietrasanta", "projects": 12, "concluded": 9, "funding": 9478237.98},
-    "046028": {"town": "Seravezza", "projects": 12, "concluded": 8, "funding": 2485485.63},
-    "046030": {"town": "Stazzema", "projects": 11, "concluded": 9, "funding": 2055502.34},
+    "046024": {"town": "Pietrasanta", "projects": 12, "concluded": 10, "funding": 9478237.98},
+    "046028": {"town": "Seravezza", "projects": 12, "concluded": 9, "funding": 2485485.63},
+    "046030": {"town": "Stazzema", "projects": 11, "concluded": 10, "funding": 2055502.34},
     "046033": {"town": "Viareggio", "projects": 24, "concluded": 18, "funding": 12090517.68},
 }
 
@@ -40,25 +39,25 @@ PNRR = {
 # viene mai trasformato automaticamente nella parola "realizzata".
 PHYSICAL_WORKS = [
     {"town": "Camaiore", "title": "Efficientamento energetico del Teatro dell'Olivo", "status": "Collaudo completato", "funding": 240000.00, "cup": "D34H22000110001"},
-    {"town": "Camaiore", "title": "Nuovo intervento per asili nido / prima infanzia", "status": "Contratto stipulato", "funding": 1440000.00, "cup": "D35E24000010006"},
-    {"town": "Camaiore", "title": "Cucina nido d'infanzia Mafalda", "status": "Collaudo avviato", "funding": 170000.00, "cup": "D38H22000110006"},
-    {"town": "Forte dei Marmi", "title": "Nuova mensa scuola Don Milani", "status": "Collaudo avviato", "funding": 304640.00, "cup": "F21B22000330008"},
-    {"town": "Forte dei Marmi", "title": "Nuovi spazi mensa scuola Guidi", "status": "Collaudo avviato", "funding": 499200.00, "cup": "F25E22000440006"},
+    {"town": "Camaiore", "title": "Nuovo intervento per asili nido / prima infanzia", "status": "Collaudo completato", "funding": 1440000.00, "cup": "D35E24000010006"},
+    {"town": "Camaiore", "title": "Cucina nido d'infanzia Mafalda", "status": "Collaudo completato", "funding": 170000.00, "cup": "D38H22000110006"},
+    {"town": "Forte dei Marmi", "title": "Nuova mensa scuola Don Milani", "status": "Collaudo completato", "funding": 304640.00, "cup": "F21B22000330008"},
+    {"town": "Forte dei Marmi", "title": "Nuovi spazi mensa scuola Guidi", "status": "Collaudo completato", "funding": 499200.00, "cup": "F25E22000440006"},
     {"town": "Massarosa", "title": "Asilo nido Girotondo a Piano di Mommio", "status": "Collaudo avviato", "funding": 1374750.00, "cup": "C75E22000250006"},
     {"town": "Massarosa", "title": "Piscina comunale G. Frati", "status": "Collaudo avviato", "funding": 3762422.13, "cup": "C78E22000040006"},
     {"town": "Pietrasanta", "title": "Efficientamento Teatro Comunale", "status": "Collaudo avviato", "funding": 250000.00, "cup": "G42H22000020001"},
-    {"town": "Pietrasanta", "title": "Nuovo polo scolastico Marina di Pietrasanta", "status": "Collaudo avviato", "funding": 5705263.79, "cup": "G43H17000050004"},
-    {"town": "Pietrasanta", "title": "Rigenerazione Ex-Camp", "status": "Collaudo avviato", "funding": 2803289.07, "cup": "G44E21000590004"},
-    {"town": "Seravezza", "title": "Nuova palestra scuole Frediani", "status": "Collaudo avviato", "funding": 948022.00, "cup": "B81B22000710006"},
-    {"town": "Seravezza", "title": "Nuovo nido d'infanzia", "status": "Collaudo avviato", "funding": 1250000.00, "cup": "B81B22000730006"},
-    {"town": "Stazzema", "title": "Accessibilità Museo e Parco nazionale della Pace di Sant'Anna", "status": "Stipula in corso", "funding": 495000.00, "cup": "H17B22000430006"},
+    {"town": "Pietrasanta", "title": "Nuovo polo scolastico Marina di Pietrasanta", "status": "Collaudo completato", "funding": 5705263.79, "cup": "G43H17000050004"},
+    {"town": "Pietrasanta", "title": "Rigenerazione Ex-Camp", "status": "Collaudo completato", "funding": 2803289.07, "cup": "G44E21000590004"},
+    {"town": "Seravezza", "title": "Nuova palestra scuole Frediani", "status": "Collaudo completato", "funding": 948022.00, "cup": "B81B22000710006"},
+    {"town": "Seravezza", "title": "Nuovo nido d'infanzia", "status": "Collaudo completato", "funding": 1250000.00, "cup": "B81B22000730006"},
+    {"town": "Stazzema", "title": "Accessibilità Museo e Parco nazionale della Pace di Sant'Anna", "status": "Collaudo completato", "funding": 495000.00, "cup": "H17B22000430006"},
     {"town": "Stazzema", "title": "Mitigazione rischio idrogeologico Rio delle Vigne di Pomezzana", "status": "Collaudo completato", "funding": 290000.00, "cup": "H17C20000010001"},
     {"town": "Stazzema", "title": "Scuola materna Martiri di Mulina", "status": "Collaudo completato", "funding": 1080000.00, "cup": "H18E18000010001"},
     {"town": "Viareggio", "title": "Recupero Stadio comunale dei Pini", "status": "Collaudo completato", "funding": 2249875.73, "cup": "B43D21001410004"},
-    {"town": "Viareggio", "title": "Riqualificazione Marina di Torre del Lago", "status": "Collaudo avviato", "funding": 1131347.78, "cup": "B43D21001420004"},
+    {"town": "Viareggio", "title": "Riqualificazione Marina di Torre del Lago", "status": "Collaudo completato", "funding": 1131347.78, "cup": "B43D21001420004"},
     {"town": "Viareggio", "title": "Riqualificazione Belvedere Torre del Lago", "status": "Collaudo completato", "funding": 570606.86, "cup": "B43D21001430004"},
     {"town": "Viareggio", "title": "Recupero area pubblica via Mazzini", "status": "Collaudo completato", "funding": 1149992.28, "cup": "B43D21001440004"},
-    {"town": "Viareggio", "title": "Recupero piazza Piave", "status": "Collaudo avviato", "funding": 395035.52, "cup": "B43D21001450004"},
+    {"town": "Viareggio", "title": "Recupero piazza Piave", "status": "Collaudo completato", "funding": 395035.52, "cup": "B43D21001450004"},
     {"town": "Viareggio", "title": "Efficientamento Teatro Jenco", "status": "Collaudo completato", "funding": 250000.00, "cup": "B44J22000010005"},
     {"town": "Viareggio", "title": "Nuova piscina comunale", "status": "Lavori in esecuzione", "funding": 2500000.00, "cup": "B45B22000200001"},
 ]
@@ -151,8 +150,8 @@ def build_deep_dive() -> dict[str, Any]:
         "totals": {
             "projects": total_projects,
             "concluded": total_concluded,
-            "execution": 26,
-            "contracting": 1,
+            "execution": 23,
+            "contracting": 0,
             "funding": round(total_funding, 2),
         },
         "towns": [
@@ -225,7 +224,7 @@ def patch_site_data(data: dict[str, Any]) -> None:
             "type": "Elaborazione Osservatorio su open data Regione Toscana",
             "formula": "somma importo_finanziato_pnrr / popolazione residente",
             "caveat": (
-                "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune "
+                "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune "
                 "soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. Il valore è "
                 "finanziamento PNRR censito, non importo erogato o speso."
             ),
@@ -251,7 +250,7 @@ def patch_site_data(data: dict[str, Any]) -> None:
             "type": "Elaborazione Osservatorio su open data Regione Toscana / ReGiS",
             "formula": "progetti con fase_avanzamento_da_regis = 5. conclusione / progetti selezionati × 100",
             "caveat": (
-                "Fotografia Regione Toscana 11 agosto 2026. Inclusi PNRR e PNRR-PNC con Comune "
+                "Fotografia Regione Toscana 25 settembre 2026. Inclusi PNRR e PNRR-PNC con Comune "
                 "soggetto attuatore; escluso PNC puro; deduplicazione su id_progetto. La fase ReGiS "
                 "è uno stato amministrativo di avanzamento e non equivale, da sola, a collaudo concluso."
             ),
@@ -288,47 +287,30 @@ def patch_monitor_state(state: dict[str, Any]) -> None:
     soltanto nella working copy del job di preview, dopo che i valori sono stati
     materializzati dalla stessa fotografia regionale validata.
     """
-    sources = state.setdefault("sources", {})
-    sources[DATASET_URL] = {
-        "url": DATASET_URL,
-        "ok": True,
-        "status": 200,
-        "finalUrl": DATASET_URL,
-        "contentType": "text/html",
-        "contentLength": None,
-        "etag": "",
-        "lastModified": "",
-        "contentSha256": "",
-        "hashTruncated": False,
-        "error": "",
-        "directReachable": True,
-        "automationLimited": False,
-        "probeUrl": RESOURCE_URL,
-        "probeMethod": "validated-pnrr-toscana-snapshot",
-        "metrics": ["pnrrConcluded", "pnrrFunding"],
-        "roles": ["primary"],
-        "profileIds": [PROFILE_KEY],
-        "frequencies": ["monthly"],
-    }
     evidence = {
         "type": "pnrr_toscana_snapshot",
         "dataset": DATASET_URL,
         "resource": RESOURCE_URL,
         "dataElaborationDate": SNAPSHOT_DATE,
+        "dataElaborationDates": [SNAPSHOT_DATE],
         "sourceSnapshotSha256": SNAPSHOT_SHA256,
         "selectedProjects": 101,
-        "concludedProjects": 74,
+        "concludedProjects": 78,
         "fundingTotal": 36683107.64,
         "match7of7": True,
     }
     metrics = state.setdefault("metrics", {})
     for key in ("pnrrFunding", "pnrrConcluded"):
+        old = metrics.get(key, {})
+        if str(old.get("checkedAt") or "") >= AUDIT_CHECKED_AT and old.get("publishedPeriod") == "2026" and isinstance(old.get("verificationEvidence"), dict):
+            continue  # Preserve a newer live verification; snapshot is not a new probe.
         metrics[key] = {
             "publishedPeriod": "2026",
             "checkedAt": AUDIT_CHECKED_AT,
+            "periodVerifiedAt": AUDIT_CHECKED_AT,
             "observedLatestPeriod": "2026",
             "status": "current",
-            "verificationEvidence": evidence,
+            "verificationEvidence": {**evidence, "metric": key, "datasetUrl": DATASET_URL, "url": RESOURCE_URL, "verdict": "match"},
         }
 
 

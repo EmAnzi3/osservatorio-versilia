@@ -19,20 +19,18 @@ from data_status_model import build_public_status  # noqa: E402
 DATASET_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
 SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
 EXPECTED = {
-    "046005": {"projects": 16, "concluded": 10, "funding": 3270511.41},
+    "046005": {"projects": 16, "concluded": 11, "funding": 3270511.41},
     "046013": {"projects": 15, "concluded": 10, "funding": 1337644.46},
     "046018": {"projects": 11, "concluded": 10, "funding": 5965208.14},
-    "046024": {"projects": 12, "concluded": 9, "funding": 9478237.98},
-    "046028": {"projects": 12, "concluded": 8, "funding": 2485485.63},
-    "046030": {"projects": 11, "concluded": 9, "funding": 2055502.34},
+    "046024": {"projects": 12, "concluded": 10, "funding": 9478237.98},
+    "046028": {"projects": 12, "concluded": 9, "funding": 2485485.63},
+    "046030": {"projects": 11, "concluded": 10, "funding": 2055502.34},
     "046033": {"projects": 24, "concluded": 18, "funding": 12090517.68},
 }
 EXPECTED_WORK_STATUS = {
-    "Collaudo completato": (7, 5830474.87),
-    "Collaudo avviato": (12, 18593970.29),
-    "Lavori in esecuzione": (1, 2500000.00),
-    "Contratto stipulato": (1, 1440000.00),
-    "Stipula in corso": (1, 495000.00),
+    'Collaudo completato': (18, 20972273.03),
+    'Collaudo avviato': (3, 5387172.13),
+    'Lavori in esecuzione': (1, 2500000.00),
 }
 SOCIAL_META_TOKENS = (
     'property="og:title"',
@@ -88,9 +86,9 @@ def validate_deep_dive(data):
     works = deep["physicalWorks"]
     assert totals == {
         "projects": 101,
-        "concluded": 74,
-        "execution": 26,
-        "contracting": 1,
+        "concluded": 78,
+        "execution": 23,
+        "contracting": 0,
         "funding": 36683107.64,
     }
     assert len(deep["towns"]) == 7
@@ -172,6 +170,20 @@ def main():
     assert metrics["pnrrFunding"]["sourceUrl"] == DATASET_URL
     assert metrics["pnrrConcluded"]["sourceUrl"] == DATASET_URL
 
+    # Recompute the acquisition from the minimal native panel independently of
+    # materializer constants; reject stale per-town counts and detailed phases.
+    import pnrr_toscana_audit as audit
+    import materialize_pnrr_toscana_draft as materializer
+    frozen = json.loads(Path("data/source-snapshots/pnrr-toscana-2026-09-25.json").read_text())
+    assert frozen["sourceSnapshotSha256"] == "bee81f4fd82272700bf8a9caec36e4481fd0b08a9f7cb7fddf873e059a5b512f"
+    assert len(frozen["records"]) == 101
+    check = audit.audit_records(data, frozen["records"])
+    assert check["fundingMatch7of7"] and check["concludedMatch7of7"]
+    assert check["dataElaborationDates"] == ["2026-09-25"]
+    phase_labels = {"COLLAUDO completata": "Collaudo completato", "COLLAUDO avviata": "Collaudo avviato", "ESECUZIONE LAVORI avviata": "Lavori in esecuzione"}
+    native = {row["cup"]: row for row in frozen["records"]}
+    for work in materializer.PHYSICAL_WORKS:
+        assert work["status"] == phase_labels[native[work["cup"]]["fase_regis"]]
     for code, expected in EXPECTED.items():
         population = float(pop[code]["value"])
         expected_per_resident = expected["funding"] / population
@@ -181,7 +193,7 @@ def main():
         assert count_summary_matches(data, expected) >= 1
 
     assert sum(v["projects"] for v in EXPECTED.values()) == 101
-    assert sum(v["concluded"] for v in EXPECTED.values()) == 74
+    assert sum(v["concluded"] for v in EXPECTED.values()) == 78
     assert math.isclose(sum(v["funding"] for v in EXPECTED.values()), 36683107.64, abs_tol=0.01)
     validate_deep_dive(data)
 

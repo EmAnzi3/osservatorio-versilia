@@ -166,7 +166,11 @@ def main() -> None:
         comparison = compare_periods(operational["publishedPeriod"], operational["observedLatestPeriod"])
         probe = state["sources"].get(site["metrics"][key]["sourceUrl"], {})
         if comparison is None and probe.get("ok") and not probe.get("automationLimited"):
-            assert operational["status"] == "verification_required"
+            if probe.get("releaseVerification") in {"not_performed", "catalogue_only"}:
+                assert operational["status"] == "source_checked"
+                assert probe.get("releaseCheck"), "Percorso e metodo di verifica devono essere dichiarati"
+            else:
+                assert operational["status"] == "verification_required"
         if operational["status"] == "current":
             assert comparison == 0
         assert operational["periodVerifiedAt"]

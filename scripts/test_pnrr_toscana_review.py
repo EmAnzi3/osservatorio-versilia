@@ -25,10 +25,10 @@ def main() -> int:
     deep = data["pnrrDeepDive"]
 
     concluded = metrics["pnrrConcluded"]["aggregate"]
-    expected_concluded = 74 / 101 * 100.0
+    expected_concluded = 78 / 101 * 100.0
     assert math.isclose(float(concluded["value"]), expected_concluded, abs_tol=1e-12)
-    assert concluded["label"] == "Versilia · 74 su 101"
-    assert "74 progetti su 101" in concluded["note"]
+    assert concluded["label"] == "Versilia · 78 su 101"
+    assert "78 progetti su 101" in concluded["note"]
     assert not math.isclose(float(concluded["value"]), 50.0, abs_tol=1e-12)
 
     population = sum(float(row["value"]) for row in metrics["population"]["rows"])
@@ -39,7 +39,7 @@ def main() -> int:
     assert 231.40 < float(funding["value"]) < 231.42
 
     assert deep["totals"]["projects"] == 101
-    assert deep["totals"]["concluded"] == 74
+    assert deep["totals"]["concluded"] == 78
     assert deep["physicalWorks"]["count"] == 22
     counts = Counter(work["town"] for work in deep["physicalWorks"]["works"])
     assert dict(counts) == EXPECTED_TOWN_WORKS
@@ -74,7 +74,7 @@ def main() -> int:
             assert "assets/pnrr-town-detail.js" in text
 
     print(
-        "OK: benchmark Versilia 74/101, €231,41/residente, "
+        "OK: benchmark Versilia 78/101, €231,41/residente, "
         "22 opere fisiche e separazione BDAP/PNRR verificati"
     )
     return 0
