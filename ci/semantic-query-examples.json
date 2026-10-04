@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "examples": [
+    {"id": "residenti_correnti", "query": {"operation": "compare", "selectors": [{"metric": "population"}]}},
+    {"id": "residenti_massarosa_2019_2026", "query": {"operation": "absolute_change", "selectors": [{"metric": "population", "towns": ["046018"], "periods": ["2019", "2026"]}]}},
+    {"id": "reddito_massarosa_2011_2024", "query": {"operation": "relative_change", "selectors": [{"metric": "income", "towns": ["046018"], "periods": ["2011", "2024"]}]}},
+    {"id": "trend_reddito_massarosa", "query": {"operation": "trend", "selectors": [{"metric": "income", "towns": ["046018"], "periods": ["2011", "2014", "2018", "2024"]}]}},
+    {"id": "associazione_periodi_correnti_rifiutata", "query": {"operation": "correlation", "selectors": [{"metric": "population"}, {"metric": "income"}], "axis": "municipalities", "method": "pearson", "purpose": "Verifica tecnica del rifiuto di periodi differenti; nessuna inferenza di politica"}},
+    {"id": "associazione_2024_descrittiva", "query": {"operation": "correlation", "selectors": [{"metric": "population", "periods": ["2024"]}, {"metric": "income", "periods": ["2024"]}], "axis": "municipalities", "method": "spearman", "purpose": "Esempio tecnico di allineamento comunale 2024: residenti al 1 gennaio e imponibile medio nell'anno fiscale, universi differenti espliciti; non dimostra una relazione causale o una priorità di intervento"}}
+  ]
+}
