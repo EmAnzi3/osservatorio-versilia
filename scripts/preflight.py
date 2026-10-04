@@ -50,6 +50,7 @@ JSON_CONTRACTS = (
     "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
     "ci/workflow-contract.json",
     "ci/visualization-content-contract.json",
+    "ci/semantic-model-contract.json",
     "ci/visual-regression-contract.json",
 )
 

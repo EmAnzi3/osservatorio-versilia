@@ -10,6 +10,7 @@ from ephemeral_build_workspace import validate_build_materialization_contract
 from site_consistency_impl import *  # noqa: F401,F403
 from workflow_contract import validate_workflow_contract
 from visualization_content_contract import validate_visual_runtime_contract, validate_visualization_content_contract
+from semantic_model_contract import validate_semantic_model_contract
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -22,6 +23,12 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     build_catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
 
     validate_visualization_content_contract(catalog_path)
+    effective_semantic = validate_semantic_model_contract(catalog_path, layer="effective")
+    print(
+        "A6 semantic model effective catalog: "
+        f"{effective_semantic['metrics']} indicatori pubblici · "
+        f"{effective_semantic['sources']} fonti · {effective_semantic['periods']} periodi."
+    )
 
     previous_expected_pages = _impl.expected_pages
     _impl.expected_pages = lambda: _expected_pages(build_catalog)
@@ -36,6 +43,7 @@ def main() -> None:
     workflows = validate_workflow_contract()
     build_workspace = validate_build_materialization_contract()
     visualization = validate_visualization_content_contract()
+    semantic_source = validate_semantic_model_contract(layer="source")
     runtime_visualization = validate_visual_runtime_contract()
     _impl.SPECIAL_PUBLIC_PAGES = configured_paths("builderTraceExceptions")
     _impl.NO_SHELL_PAGES = configured_paths("noShell")
@@ -47,6 +55,7 @@ def main() -> None:
         f"{content['metrics']} indicatori, {content['pages']} route, {workflows['workflows']} workflow, "
         f"{build_workspace['allowed_mutations']} mutazioni build transitorie dichiarate, "
         f"{visualization['unitCount']} unità visuali governate nel catalogo sorgente, "
+        f"{semantic_source['metrics']} indicatori nel Source Catalog A6, "
         f"{len(runtime_visualization)} invarianti runtime visuali."
     )
     _impl.main()
