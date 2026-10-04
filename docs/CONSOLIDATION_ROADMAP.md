@@ -207,9 +207,9 @@ Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e 
 
 Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre conclusioni causali non supportate.
 
-- [ ] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
+- [x] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota ripresa A6.1 — 04-10-2026: la PR #301 viene riallineata al main pubblicato `ae86950` dopo la chiusura A3 (#322), il refresh fonti (#327) e lo storico MIMIT (#328). Il contratto valida catalogo sorgente ed effettivo nel Quick, senza inventari paralleli, e verifica identità comunali, appartenenze tematiche, unità primarie, fonti/benchmark, stati mancanti e serie esplicite. A6.1 resta da chiudere formalmente dopo verifica e merge della PR; A6.2–A6.6 non sono ancora implementati. Nessuna UI o dato pubblico modificato.
+Nota A6 — 04-10-2026: A6.1 chiusa con #301, Quick/Full locali e GitHub verdi, deploy `37235624195` SUCCESS. A6.2–A6.3 in corso in #330: contratto delle operazioni, precondizioni eseguibili e matrice strutturale, senza UI o dati modificati. Adapter e calcolatori A6.4 restano successivi; la presenza di un input non certifica comparabilità o disponibilità di un calcolo.
 - [ ] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [ ] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.

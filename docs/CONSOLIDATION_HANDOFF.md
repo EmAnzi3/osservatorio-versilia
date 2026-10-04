@@ -2,9 +2,9 @@
 
 ## Stato corrente — 4 ottobre 2026
 
-- Main pubblicato: `ae86950c80be23b3658624d7071791b957988b40` (#328); deploy `37229898824` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- Main pubblicato: `5abab28dbb3b82fbb76eb9fee5ef4ca5c1a5f79c` (#301); deploy `37235624195` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.1**; branch `feat/a6-semantic-model`, PR **#301** ripresa e riallineata al main. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.2–A6.3**, issue **#330**, branch `feat/a6-operations-comparability`. A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: documentazione, contratto e validazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -24,4 +24,4 @@
 
 ## Prossima azione
 
-Concludere Quick/Full locale e GitHub nella #301 e riportare esiti reali nel corpo PR. Chiudere formalmente A6.1 solo dopo merge autorizzato; proseguire con operazioni consentite e regole di comparabilità A6.2/A6.3 sullo stesso catalogo effettivo, prima di esporre nuove funzioni pubbliche.
+Verificare il lotto A6.2–A6.3 (contratto operazioni, guardie di ammissibilità, matrice strutturale derivata e regressioni; `docs/A6_OPERATIONS_COMPARABILITY.md`). Esiti e limiti nel corpo della nuova PR. A6.4 richiede ancora adapter, calcolatori e provenienza completa; nessuna nuova funzione pubblica prima di quei controlli. Non mergiare questo lotto senza autorizzazione specifica.
