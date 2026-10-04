@@ -6,6 +6,7 @@ import math
 import re
 import sys
 import unicodedata
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -193,12 +194,24 @@ def main():
     public_by_key = {item["key"]: item for item in public["metrics"]}
     for key in ("pnrrFunding", "pnrrConcluded"):
         item = public_by_key[key]
-        assert item["status"] == "current"
+        evidence = item["verificationSource"]
+        # Le cifre pubblicate restano fissate da EXPECTED. Il monitor può
+        # osservare una fotografia successiva e deve segnalarla correttamente.
+        assert evidence == state["metrics"][key]["verificationEvidence"]
+        assert evidence["metric"] == key
+        assert evidence["datasetUrl"] == DATASET_URL
+        assert evidence["url"] == "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv"
+        verdict = evidence["verdict"]
+        assert verdict in {"match", "different_current_snapshot"}
+        assert item["status"] == {"match": "current", "different_current_snapshot": "release_detected"}[verdict]
         assert item["sourceAutomationLimited"] is False
         assert item["sourceReachable"] is True
         assert item["observedLatestPeriod"] == "2026"
-        assert item["verificationSource"]["dataElaborationDate"] == "2026-08-11"
-        assert item["verificationSource"]["match7of7"] is True
+        observed_date = date.fromisoformat(evidence["dataElaborationDate"])
+        checked_date = date.fromisoformat(state["metrics"][key]["checkedAt"][:10])
+        assert date(2026, 8, 11) <= observed_date <= checked_date
+        assert evidence["dataElaborationDate"] == evidence["dataElaborationDates"][-1]
+        assert evidence["match7of7"] is (verdict == "match")
 
     validate_built_preview(data)
     print(f"OK: bozza PNRR Toscana + Dentro il PNRR coerenti, {expected_count} indicatori canonici")

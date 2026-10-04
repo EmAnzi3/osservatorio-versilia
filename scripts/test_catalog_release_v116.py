@@ -15,7 +15,7 @@ def formatted_strings(value,path='root'):
     elif isinstance(value,list):
         for index,item in enumerate(value): yield from formatted_strings(item,f'{path}[{index}]')
 def main():
-    site=load(ROOT/'data/site-data.json'); registry=load(ROOT/'data/source-registry.json'); state=load(ROOT/'data/source-monitor-state.json')
+    site=load(ROOT/'data/site-data.json'); registry=load(ROOT/'data/source-registry.json')
     snap=load(ROOT/'data/source-snapshots/bonifica-rischio-v126.json'); gis=load(ROOT/'data/source-snapshots/bonifica-rischio-v126-gis.json'); status=load(ROOT/'data/source-snapshots/bonifica-rischio-v126-status.json')
     assert site['version']==VERSION and site['updated']==UPDATED
     assert len(site['towns'])==EXPECTED_TOWNS and len(site['themes'])==EXPECTED_THEMES and len(site['metrics'])==EXPECTED_METRICS
@@ -39,7 +39,9 @@ def main():
       'pabInProgressOperationalGrossValue':({'Massarosa':9024.94,'Viareggio':0.0,'Camaiore':246984.54,'Pietrasanta':132058.98,'Seravezza':102166.89,'Forte dei Marmi':0.0,'Stazzema':154272.8},644508.15,'2026'),
       'pabCompletedOperationalGrossValue':({'Massarosa':12003.72,'Viareggio':0.0,'Camaiore':329096.89,'Pietrasanta':205685.93,'Seravezza':67506.08,'Forte dei Marmi':19604.17,'Stazzema':60084.34},693981.13,'2026')}
     for k,(vals,total,period) in expected.items():
-        m=site['metrics'][k]; got={r['town']:r['value'] for r in m['rows']}; assert got==vals; assert abs(m['aggregate']['value']-total)<1e-6; assert state['metrics'][k]['publishedPeriod']==period; assert k in registry['metricOverrides']
+        # Questo gate protegge il sorgente v1.29; il monitor controlla invece il
+        # catalogo pubblico materializzato. Il loro periodo può differire.
+        m=site['metrics'][k]; got={r['town']:r['value'] for r in m['rows']}; assert got==vals; assert abs(m['aggregate']['value']-total)<1e-6; assert str(m['meta']['year'])==period; assert k in registry['metricOverrides']
     assert site['metrics']['pabProgrammedInterventionLength']['meta']['unit']=='km'
     assert site['metrics']['managedReticulumLength']['meta']['unit']=='km'
     assert site['metrics']['pabInProgressOperationalGrossValue']['meta']['unit']=='currency2'

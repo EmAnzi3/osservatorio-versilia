@@ -23,6 +23,8 @@ on:
       - "scripts/monthly_data_check_coverage.py"
       - "scripts/monthly_data_check_status.py"
       - "scripts/source_monitor_runner.py"
+      - "scripts/test_source_monitor_runtime_snapshot.py"
+      - "scripts/source_monitor_runtime_snapshot.py"
       - "scripts/source_monitor_strategy.py"
       - "scripts/materialize_source_monitor_snapshot.py"
       - "scripts/build_static_brand.py"
@@ -69,7 +71,7 @@ jobs:
             exit 0
           fi
           git diff --name-only HEAD^ HEAD > /tmp/changed-files
-          if grep -Eq '^(scripts/monthly_data_check\.py|scripts/monthly_data_check_coverage\.py|scripts/monthly_data_check_status\.py|scripts/source_monitor_runner\.py|scripts/source_monitor_strategy\.py|scripts/materialize_source_monitor_snapshot\.py|scripts/build_static_brand\.py|scripts/build_static_brand_impl\.py|scripts/data_status_model\.py|scripts/pnrr_toscana_audit\.py|scripts/source_policy\.py|scripts/test_monthly_data_check\.py|scripts/test_source_monitor_public_partial\.py|scripts/test_source_monitor_depth\.py|scripts/test_source_monitor_strategy\.py|scripts/test_pnrr_toscana_audit\.py|scripts/test_pnrr_status_integration\.py|scripts/restore_partial_agcom_metrics\.py|ci/build-materialization-contract\.json|data/source-registry\.json|data/source-monitor-state\.json|data/site-data\.json)' /tmp/changed-files; then
+          if grep -Eq '^(scripts/monthly_data_check\.py|scripts/monthly_data_check_coverage\.py|scripts/monthly_data_check_status\.py|scripts/source_monitor_runner\.py|scripts/source_monitor_runtime_snapshot\.py|scripts/test_source_monitor_runtime_snapshot\.py|scripts/data_status_model\.py|scripts/source_monitor_strategy\.py|scripts/materialize_source_monitor_snapshot\.py|scripts/build_static_brand\.py|scripts/build_static_brand_impl\.py|scripts/data_status_model\.py|scripts/pnrr_toscana_audit\.py|scripts/source_policy\.py|scripts/test_monthly_data_check\.py|scripts/test_source_monitor_public_partial\.py|scripts/test_source_monitor_depth\.py|scripts/test_source_monitor_strategy\.py|scripts/test_pnrr_toscana_audit\.py|scripts/test_pnrr_status_integration\.py|scripts/restore_partial_agcom_metrics\.py|ci/build-materialization-contract\.json|data/source-registry\.json|data/source-monitor-state\.json|data/site-data\.json)' /tmp/changed-files; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -108,6 +110,7 @@ jobs:
           python scripts/test_source_monitor_public_partial.py
           python scripts/test_source_monitor_depth.py
           python scripts/test_source_monitor_strategy.py
+          python scripts/test_source_monitor_runtime_snapshot.py
           python scripts/test_pnrr_toscana_audit.py
           python scripts/test_pnrr_status_integration.py
           python -m py_compile \

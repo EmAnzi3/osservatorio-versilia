@@ -10,7 +10,7 @@ SCRIPT_DIR = ROOT / "scripts"
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from data_status_model import ALLOWED_RELEASE_BASES, build_public_status, derive_status  # noqa: E402
+from data_status_model import ALLOWED_RELEASE_BASES, build_public_status, derive_status, compare_periods, published_period  # noqa: E402
 
 
 def load(path: Path):
@@ -69,12 +69,15 @@ def main() -> None:
     assert sample_status["lastChecked"] == "", "La data generale non è una prova per-metrica"
 
     for metric in public["metrics"]:
+        operational = state.get("metrics", {}).get(metric["key"], {})
+        if state.get("runContext", {}).get("catalogSha256"):
+            assert operational.get("publishedPeriod") == published_period(data["metrics"][metric["key"]])
         release = metric.get("nextExpectedRelease")
         if release:
             assert release["basis"] in ALLOWED_RELEASE_BASES
             assert release.get("value")
         if metric["status"] == "current":
-            assert metric["observedLatestPeriod"] == metric["publishedPeriod"]
+            assert compare_periods(metric["publishedPeriod"], metric["observedLatestPeriod"]) == 0
         if metric["status"] == "source_access_limited":
             assert metric["sourceAutomationLimited"] is True
             assert metric["sourceReachable"] is False
