@@ -344,16 +344,16 @@ def main() -> None:
                             'A5.5 bulk mobilita/fuelPrices: storico carburanti non visibile')
                     require(history_pane.locator('.ux-history-legend button').count() == 6,
                             'A5.5 bulk mobilita/fuelPrices: storico deve contenere i 6 Comuni con impianti')
-                    require(history_pane.locator('[data-history-town] .chart-point').count() == 6 * 54,
-                            'A5.5 bulk mobilita/fuelPrices: attesi 54 mesi per ciascuno dei 6 Comuni')
+                    require(history_pane.locator('[data-history-town] .chart-point').count() == 6 * 57,
+                            'A5.5 bulk mobilita/fuelPrices: attesi 57 mesi per ciascuno dei 6 Comuni')
                     massarosa_points = history_pane.locator('[data-history-town="massarosa"] .chart-point')
-                    require(massarosa_points.count() == 54,
-                            'A5.5 bulk mobilita/fuelPrices: serie Massarosa non contiene 54 mesi')
+                    require(massarosa_points.count() == 57,
+                            'A5.5 bulk mobilita/fuelPrices: serie Massarosa non contiene 57 mesi')
                     require('2022-01' in (massarosa_points.first.get_attribute('aria-label') or '')
                             and '1,764 €/l' in (massarosa_points.first.get_attribute('aria-label') or ''),
                             'A5.5 bulk mobilita/fuelPrices: primo valore mensile benzina non coerente')
-                    require('2026-06' in (massarosa_points.nth(53).get_attribute('aria-label') or ''),
-                            'A5.5 bulk mobilita/fuelPrices: ultimo mese atteso 2026-06 assente')
+                    require('2026-09' in (massarosa_points.nth(56).get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: ultimo mese atteso 2026-09 assente')
                     page.locator('#compare-bars [data-view-mode="current"]').first.click()
                     selector = page.locator('#compare-bars select[data-composite-component]:visible').first
                     require(selector.count() == 1 and selector.locator('option').count() >= 2,
