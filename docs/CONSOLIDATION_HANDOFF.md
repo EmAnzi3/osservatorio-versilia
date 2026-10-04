@@ -2,6 +2,9 @@
 
 ## Stato corrente — 4 ottobre 2026
 
+- MIMIT storico: lotto `fix/mimit-monthly-2026-q3`, 57 mesi gennaio 2022–settembre 2026. Q3 acquisito dagli archivi ufficiali del 1° ottobre: 31/31 giorni luglio, 31/31 agosto, 29/30 settembre (manca 5 settembre alla fonte, nessuna stima). I 54 mesi precedenti e fotografia del 3 ottobre invariati. Evidenze/hash: `reports/data-checks/mimit-monthly-2026-q3.md`; verifiche e pubblicazione da certificare nella PR.
+- #327 mergiata e pubblicata su autorizzazione: commit `73c03c4`, deploy `37224826452` SUCCESS. Nuove prove live e percorsi operativi sono nella PR: sette export ARS e ARPAT CSV ottenuti/hash invariati; RUNTS Excel scaricato; SISBON mappa pubblica espone `https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv` HTTP 200. L'autenticazione riguarda `export_mosaico`, non il CSV della mappa.
+
 - Main iniziale `311f71e`: #322 e #326 già mergiate/pubblicate. A3 conclusa: 123 storici, 137 confronti, 225 indicatori; le 76 opportunità costose restano escluse. #144 usa il vecchio catalogo e non va mergiata alla cieca.
 - Lavoro autorizzato corrente: `fix/source-monitor-acquisition-routes`. MIMIT acquisito 3 ottobre (6/7); PNRR CSV 25 settembre validato: 78/101 conclusioni, finanziamenti invariati, 22 opere con stati ReGiS riallineati. Pannello nativo minimo e SHA-256 versionati; nessuna ricostruzione.
 - Monitor: percorsi ufficiali e ruoli, diagnostica di tutti i tentativi, alternative limitate, fingerprint dei cataloghi RUNTS/INVALSI/ACI, rete separata da rilascio/acquisizione. Vecchio SISBON ritirato; build legge snapshot e non prova il live. URL aree protette corretto alla fonte. Errori non cancellano valori o ultime evidenze valide.
