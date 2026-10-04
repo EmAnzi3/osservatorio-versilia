@@ -23,6 +23,11 @@
 
 - Audit delle PR recenti: #309, #312, #313, #314 e #315 già integrate e byte-identiche a main nei rispettivi file, salvo ux-history A3. La preview Quick caricata da Pages non eseguiva la build pubblica finale: mancavano gli adapter della UI secondaria. Il workflow ora completa il dist già materializzato dal Quick con apply_secondary_pages_ui.py, poi esegue build_public_site.py --validate-only e consistenza prima dell’upload. Il contratto impone Quick → UI finale → validazione pubblica → upload, evitando una seconda build integrale e la rimaterializzazione parziale dell’Atlante. Preview locale dal dist GitHub 0fa9f6b: adapter ufficiale, sole sette pagine modificate, dati/asset/tematiche/comuni byte-invariati; homepage desktop/mobile verificata con immagini locali e senza overflow. La preview precedente non certifica la homepage approvata.
 
+## Correzione richiesta dal proprietario — Classificazioni
+
+- Difetto riprodotto negli screenshot: Classificazioni bypassava la shell confronto e non era inclusa nei renderer comunali con toolbar standard. Correzione limitata all’indicatore territorialClassification: shell attuale/storico standard nel confronto, fallback A5 esistente nelle schede comunali; CSS, contenuto delle classificazioni e dati invariati. Verifica mirata sui due cambiamenti runtime: 16 casi toolbar (confronto + sette Comuni, desktop/mobile), icone/CSV/stampa e assenza di overflow PASS; sei casi storici Lavoro PASS con sette serie e cinque punti ciascuna. Regressione toolbar aggiunta al gate export esistente. Quick locale precedente interrotto dal ripristino del browser dopo manutenzione del workspace; validazione finale da completare.
+- Lavoro: la selezione iniziale 25–64 Totale non ha lo storico acquisito. Le tre nuove serie si consultano scegliendo 15 anni e oltre, Totale (2019, 2021–2024); nessun cambio del perimetro o del valore iniziale.
+
 ## Prossima azione esatta
 
 1. Caricare la correzione del test e questo handoff, dopo il Quick locale già GREEN. Mantenere Draft e concludere il Full locale con Lighthouse 13.4.1 già presente nel runtime; poi verificare Quick e Full canonici sul nuovo head prima del merge. Non dichiarare verde un controllo non concluso.
