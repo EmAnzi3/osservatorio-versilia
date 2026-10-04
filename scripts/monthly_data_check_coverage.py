@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import os
 import re
 import shutil
 import subprocess
@@ -181,13 +183,41 @@ def _curl_probe(url: str, registry: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
+def _failure_kind(result: dict[str, Any]) -> str:
+    if result.get("ok"):
+        return "reachable"
+    status = result.get("status")
+    if status in {401, 403, 429}:
+        return "access_denied"  # HTTP alone does not prove an anti-bot block.
+    if status in {404, 410}:
+        return "path_missing"
+    if status and int(status) >= 500:
+        return "server_error"
+    error = str(result.get("error") or "").lower()
+    if "timed out" in error or "timeout" in error:
+        return "network_timeout"
+    return "transport_error"
+
+
+def _attempt_record(url: str, method: str, result: dict[str, Any]) -> dict[str, Any]:
+    return {"url": url, "method": method, "httpStatus": result.get("status"),
+            "finalUrl": result.get("finalUrl") or url, "ok": bool(result.get("ok")),
+            "error": str(result.get("error") or ""), "result": _failure_kind(result)}
+
+
 def _attempt_probe(url: str, registry: dict[str, Any]) -> dict[str, Any]:
     result = ORIGINAL_PROBE_SOURCE(url, registry)
-    if result.get("ok"):
-        return result
-    fallback = _curl_probe(url, registry)
-    if fallback is not None and fallback.get("ok"):
-        return fallback
+    result.setdefault("probeMethod", "urllib")
+    attempts = list(result.get("attempts") or [_attempt_record(url, "urllib", result)])
+    # Exactly one alternative transport per endpoint; no retry storms.
+    if not result.get("ok"):
+        fallback = _curl_probe(url, registry)
+        if fallback is not None:
+            attempts.append(_attempt_record(url, "curl-range", fallback))
+            if fallback.get("ok"):
+                result = fallback
+    result["attempts"] = attempts
+    result["failureKind"] = _failure_kind(result)
     return result
 
 
@@ -206,6 +236,8 @@ def _as_official_fallback(
     method = str(result.get("probeMethod") or "urllib")
     prepared["probeMethod"] = f"official-fallback:{method}"
     prepared["directReachable"] = False
+    prepared["probeContentSha256"] = prepared.get("contentSha256", "")
+    prepared["contentSha256"] = ""  # Different endpoint; not comparable to the primary route.
     return prepared
 
 
@@ -225,25 +257,87 @@ def _as_automation_limited(source_url: str, result: dict[str, Any]) -> dict[str,
     return prepared
 
 
-def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
-    """Prova la fonte, poi client alternativo e infine un endpoint ufficiale gemello."""
-    result = _attempt_probe(url, registry)
-    if result.get("ok"):
-        return result
+def _catalogue_check(policy: dict[str, Any], registry: dict[str, Any]) -> dict[str, Any]:
+    """Read only the relevant release markers, never unrelated page dates."""
+    url = str(policy.get("catalogueUrl") or "")
+    pattern = str(policy.get("releasePattern") or "")
+    if not url or not pattern:
+        return {}
+    result = {"url": url, "method": "GET-release-catalogue", "httpStatus": None, "ok": False, "error": ""}
+    try:
+        with base.open_request(url, "GET", float(registry.get("requestTimeoutSeconds", 20))) as response:
+            result["httpStatus"] = getattr(response, "status", response.getcode())
+            result["finalUrl"] = response.geturl()
+            raw = response.read(1_048_577)
+        if len(raw) > 1_048_576:
+            raise RuntimeError("Catalogo oltre il limite di 1 MiB: verifica non conclusa")
+        markers = sorted(set(re.findall(pattern, raw.decode("utf-8", errors="replace"), re.I)))
+        if not markers:
+            raise RuntimeError("Marcatori del rilascio assenti: possibile schema cambiato o pagina di blocco")
+        result["ok"] = True
+        result["markers"] = markers
+        result["fingerprint"] = hashlib.sha256("\n".join(markers).encode()).hexdigest()
+    except Exception as exc:
+        if hasattr(exc, "code"):
+            result["httpStatus"] = exc.code
+        result["error"] = f"{type(exc).__name__}: {exc}"
+    return result
 
+
+def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
+    """Bounded probes of registered official routes, separate from acquisition."""
     source_key = canonical_url(url)
+    policies = registry.get("sourceProbePolicies", {})
+    policy = next((v for k, v in policies.items() if canonical_url(k) == source_key), {})
+    if policy.get("retired"):
+        result = {"url": url, "finalUrl": url, "ok": False, "status": None,
+                  "error": policy.get("reason", "Endpoint ritirato"),
+                  "failureKind": "obsolete_path", "probeMethod": "retired-route",
+                  "attempts": [{"url": url, "method": "not-requested-retired", "httpStatus": None,
+                                "ok": False, "error": policy.get("reason", ""), "result": "obsolete_path"}]}
+    else:
+        probe_registry = registry
+        if os.environ.get("MONITOR_CHECK_DEPTH") == "deep" and policy.get("deepRequestTimeoutSeconds"):
+            probe_registry = dict(registry)
+            probe_registry["requestTimeoutSeconds"] = min(120, max(20, float(policy["deepRequestTimeoutSeconds"])))
+        result = _attempt_probe(url, probe_registry)
+        result["requestTimeoutSeconds"] = probe_registry.get("requestTimeoutSeconds", 20)
+    direct_ok = bool(result.get("ok"))
+    attempts = list(result.get("attempts", []))
+    routes = policy.get("alternatives", [])
     template = OFFICIAL_PROBE_FALLBACKS.get(source_key)
     if template:
-        year = datetime.now(timezone.utc).year
-        fallback_url = template.format(year=year)
-        fallback_result = _attempt_probe(fallback_url, registry)
-        if fallback_result.get("ok"):
-            return _as_official_fallback(url, fallback_url, fallback_result)
-
+        routes = [*routes, {"url": template.format(year=datetime.now(timezone.utc).year), "role": "information"}]
+    if not result.get("ok"):
+        for route in routes[:2]:
+            fallback_url = str(route["url"])
+            fallback_result = _attempt_probe(fallback_url, registry)
+            attempts.extend(fallback_result.get("attempts", []))
+            if fallback_result.get("ok"):
+                result = _as_official_fallback(url, fallback_url, fallback_result)
+                result["endpointRole"] = route.get("role", "information")
+                break
     limited = AUTOMATION_LIMITED_SOURCES.get(source_key)
-    status = result.get("status")
-    if limited and status in {401, 403, 429}:
-        return _as_automation_limited(url, result)
+    if limited and result.get("status") in {401, 403, 429}:
+        result = _as_automation_limited(url, result)
+    result["attempts"] = attempts
+    result["directReachable"] = direct_ok
+    result.setdefault("endpointRole", policy.get("role", "unspecified"))
+    result["failureKind"] = "obsolete_path" if policy.get("retired") else _failure_kind(result)
+    if policy:
+        result["acquisition"] = policy.get("acquisition", {})
+        result["releaseCheck"] = policy.get("releaseCheck", "")
+        result["releaseVerification"] = "not_performed"
+        result["acquisitionVerified"] = False
+        if policy.get("retired"):
+            result["retiredSource"] = True
+            result["error"] = str(policy.get("reason", ""))
+    if policy and os.environ.get("MONITOR_CHECK_DEPTH") == "deep":
+        catalogue = _catalogue_check(policy, registry)
+        if catalogue:
+            result["releaseCatalogue"] = catalogue
+            result["attempts"].append({k: v for k, v in catalogue.items() if k not in {"markers", "fingerprint"}})
+            result["releaseVerification"] = "catalogue_only" if catalogue.get("ok") else "not_performed"
     return result
 
 

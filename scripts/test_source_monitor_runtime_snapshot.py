@@ -76,6 +76,11 @@ def main():
     deep_previous["metrics"]["sample"].update(observedLatestPeriod="2026-09", periodVerifiedAt="2026-10-03T10:00:00+00:00")
     assert reconcile(data, deep_previous, legacy, {})["metrics"]["sample"]["observedLatestPeriod"] == "2026-09", "Light non cancella una verifica deep più recente"
 
+    previous_source = copy.deepcopy(previous)
+    previous_source["sources"] = {"https://example.org/": {"lastSuccessfulCheck": "2026-10-03", "lastSuccessfulContent": {"contentSha256": "valid"}, "releaseCatalogue": {"ok": True, "fingerprint": "valid", "markers": ["dataset_2025.csv"]}}}
+    preserved = reconcile(data, previous_source, legacy, {})["sources"]["https://example.org/"]
+    assert preserved["lastSuccessfulContent"]["contentSha256"] == "valid"
+    assert preserved["lastSuccessfulReleaseCatalogue"]["markers"] == ["dataset_2025.csv"]
     root = Path(__file__).resolve().parents[1]
     catalog = json.loads((root / "data/site-data.json").read_text())
     registry = json.loads((root / "data/source-registry.json").read_text())

@@ -94,6 +94,13 @@ def reconcile(data, previous, current, report):
                     if key in observation["metrics"]:
                         observation["metrics"][key]["periodVerifiedAt"] = current["checkedAt"]
     result = json.loads(json.dumps(current))
+    for url, item in result.get("sources", {}).items():
+        old_source = previous.get("sources", {}).get(url, {})
+        for field in ("lastSuccessfulCheck", "lastSuccessfulContent", "lastSuccessfulReleaseCatalogue"):
+            if not item.get(field) and old_source.get(field):
+                item[field] = old_source[field]
+        if not item.get("releaseCatalogue", {}).get("fingerprint") and old_source.get("releaseCatalogue", {}).get("fingerprint"):
+            item.setdefault("lastSuccessfulReleaseCatalogue", old_source["releaseCatalogue"])
     result["metrics"] = build_metric_state(data, observation, result, report)
     if current.get("depth") == "deep":
         for report_key, keys in (("fuelMimitVerification", ("fuelPrices",)), ("pnrrToscanaVerification", ("pnrrFunding", "pnrrConcluded"))):

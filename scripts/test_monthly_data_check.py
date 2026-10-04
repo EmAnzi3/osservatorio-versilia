@@ -400,5 +400,62 @@ def main() -> None:
     print("Monthly data monitor tests passed.")
 
 
+def test_official_route_diagnostics():
+    from unittest.mock import patch
+    import monthly_data_check_coverage as coverage
+    import monthly_data_check_status as status
+    from data_status_model import derive_status
+
+    def fail(url, registry):
+        return {"url": url, "ok": False, "status": 403, "error": "HTTP 403", "finalUrl": url}
+    def alternate(url, registry):
+        return {"url": url, "ok": url.endswith("catalog"), "status": 200 if url.endswith("catalog") else 503,
+                "error": "" if url.endswith("catalog") else "HTTP 503", "finalUrl": url}
+    registry = {"sourceProbePolicies": {"https://official/source": {
+        "role": "data_export", "alternatives": [{"url": "https://official/catalog", "role": "information"}],
+        "acquisition": {"method": "versioned_snapshot"}, "releaseCheck": "download and compare"}}}
+    with patch.object(coverage, "ORIGINAL_PROBE_SOURCE", side_effect=fail), patch.object(coverage, "_curl_probe", side_effect=alternate):
+        result = coverage.probe_source("https://official/source", registry)
+    assert result["ok"] and result["directReachable"] is False
+    assert len(result["attempts"]) == 4
+    assert [v["httpStatus"] for v in result["attempts"]] == [403, 503, 403, 200]
+    assert result["endpointRole"] == "information" and result["acquisitionVerified"] is False
+    assert derive_status("2025", result, {"observedLatestPeriod": "2025", "status": "source_checked"}) == "source_checked"
+    previous = {"metrics": {"m": {"publishedPeriod": "2025", "observedLatestPeriod": "2025", "periodVerifiedAt": "2025-01-01"}}}
+    data = {"metrics": {"m": {"meta": {"year": "2025"}, "sourceUrl": "https://official/source"}}}
+    output = status.build_metric_state(data, previous, {"checkedAt": "2026-10-04", "sources": {"https://official/source": result}}, {})
+    assert output['m']['status'] == 'source_checked' and output['m']['periodVerifiedAt'] == '2025-01-01'
+    registry['sourceProbePolicies']['https://official/source']['retired'] = True
+    with patch.object(coverage, "ORIGINAL_PROBE_SOURCE", side_effect=lambda url, registry: {"url": url, "ok": True, "status": 200, "finalUrl": url}) as request:
+        retired = coverage.probe_source('https://official/source', registry)
+        assert all(call.args[0] != 'https://official/source' for call in request.call_args_list)
+    assert retired['retiredSource'] and retired['failureKind'] == 'obsolete_path'
+    assert retired['attempts'][0]['method'] == 'not-requested-retired'
+    assert coverage._failure_kind({'ok': False, 'error': 'timed out'}) == 'network_timeout'
+    old = {'sources': {'https://official/data': {'ok': False, 'contentSha256': '', 'lastSuccessfulContent': {'contentSha256': 'old', 'contentHashMode': 'raw'}}}}
+    changes = coverage.compare_states(old, {'https://official/data': {'ok': True, 'contentSha256': 'new', 'contentHashMode': 'raw'}})
+    assert changes['content'] == [{'url': 'https://official/data'}]
+    import os
+    ars_url = 'https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255'
+    timeout_registry = {'requestTimeoutSeconds': 20, 'sourceProbePolicies': {ars_url: {'deepRequestTimeoutSeconds': 90}}}
+    def reachable(url, registry):
+        return {'url': url, 'ok': True, 'status': 200, 'finalUrl': url}
+    with patch.object(coverage, 'ORIGINAL_PROBE_SOURCE', side_effect=reachable) as request:
+        with patch.dict(os.environ, {'MONITOR_CHECK_DEPTH': 'light'}):
+            assert coverage.probe_source(ars_url, timeout_registry)['requestTimeoutSeconds'] == 20
+            assert request.call_args.args[1]['requestTimeoutSeconds'] == 20
+        with patch.dict(os.environ, {'MONITOR_CHECK_DEPTH': 'deep'}):
+            assert coverage.probe_source(ars_url, timeout_registry)['requestTimeoutSeconds'] == 90
+            assert request.call_args.args[1]['requestTimeoutSeconds'] == 90
+    import re
+    policies = json.loads((ROOT / 'data/source-registry.json').read_text())['sourceProbePolicies']
+    pattern = policies['https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/']['releasePattern']
+    assert re.findall(pattern, 'Autoritratto2025_Parco_veicolare.zip') == ['Autoritratto2025_Parco_veicolare.zip']
+    assert re.findall(pattern, 'Autoritratto-2024-Parco-Veicolare.zip') == ['Autoritratto-2024-Parco-Veicolare.zip']
+    assert not re.findall(pattern, 'unrelated-2025.zip')
+    print('Official routes: bounded attempts, denied access, snapshot separation and recovery PASS')
+
+
 if __name__ == "__main__":
+    test_official_route_diagnostics()
     main()
