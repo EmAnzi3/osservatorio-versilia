@@ -10,7 +10,9 @@
     "commands": {
       "quick": "python scripts/preflight.py --quick",
       "full": "python scripts/preflight.py --full --skip-quick",
-      "buildSmoke": "python scripts/test_site_consistency.py"
+      "buildSmoke": "python scripts/test_site_consistency.py",
+      "previewBuild": "python scripts/build_public_site.py --validate-only",
+      "previewUI": "python scripts/apply_secondary_pages_ui.py"
     },
     "liveStatusContext": "ov-pages-live",
     "quickChecks": [
@@ -164,6 +166,11 @@
       {
         "label": "A3.5 official structural companions",
         "script": "scripts/test_a3_5_official_companions.py",
+        "args": []
+      },
+      {
+        "label": "A3 RGS benchmark employer identity",
+        "script": "scripts/test_a3_benchmark_rgs_identity.py",
         "args": []
       },
       {
@@ -376,6 +383,36 @@
     },
     {
       "path": ".github/workflows/a5-municipal-rollout-cohort.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-available-missing.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-bulk-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-candidate-acquisition.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-fanin-materialize.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-parallel-fanout.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a3-benchmark-source-probes.yml",
       "category": "specialized-gate",
       "status": "active"
     }

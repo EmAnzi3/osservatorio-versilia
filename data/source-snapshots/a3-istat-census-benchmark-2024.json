@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Istat — Censimento permanente della popolazione",
+  "profileId": "istat-census-annual",
+  "referenceYear": 2024,
+  "source": {
+    "api": "https://esploradati.istat.it/SDMXWS/rest",
+    "labourDataflow": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
+    "educationDataflow": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
+    "labourKey": "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.ALL.1+12+22+99..",
+    "educationKey": "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.ALL+NED+PSE+LSE+USE_IF+BL+ML_RDD.99..",
+    "referenceSnapshot": "data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json"
+  },
+  "method": "Aggregazione dei conteggi comunali SDMX 2024 sulle classi 25–49 e 50–64. Toscana e Italia sono ottenute sommando i conteggi prima del calcolo dei tassi; mai come media di percentuali. Celle omesse sono poste a zero solo quando l'identità additiva o la partizione ufficiale si chiude esattamente.",
+  "qualityGate": {
+    "status": "PASS",
+    "publicMetricReconciliation": "4/4 metrics × 7/7 towns PASS",
+    "commonMunicipalities": 7896,
+    "tuscanyMunicipalities": 273,
+    "labourInvalidMunicipalities": 0,
+    "educationInvalidMunicipalities": 0,
+    "labourZeroCellsFilled": 7,
+    "educationZeroCellsFilled": 2994,
+    "artifactRun": 36922566801,
+    "artifactId": 11193176269
+  },
+  "components": {
+    "tuscany": {
+      "labour": {
+        "population": 1926971,
+        "employed": 1475939,
+        "unemployed": 77868.01972474864,
+        "active": 1553807.019724748
+      },
+      "education": {
+        "population": 1926971,
+        "tertiary": 465160
+      }
+    },
+    "italy": {
+      "labour": {
+        "population": 31431840,
+        "employed": 22366889,
+        "unemployed": 1527095.8917268584,
+        "active": 23893984.8917269
+      },
+      "education": {
+        "population": 31431840,
+        "tertiary": 7427356
+      }
+    }
+  },
+  "benchmarks": {
+    "employmentRate": {
+      "year": 2024,
+      "unit": "percent",
+      "formula": "employed / population × 100",
+      "tuscany": 76.5937318205619,
+      "italy": 71.1599734536699
+    },
+    "unemploymentRate": {
+      "year": 2024,
+      "unit": "percent",
+      "formula": "unemployed / active × 100",
+      "tuscany": 5.011434414715329,
+      "italy": 6.3911310677006545
+    },
+    "activityRate": {
+      "year": 2024,
+      "unit": "percent",
+      "formula": "active / population × 100",
+      "tuscany": 80.63468623683221,
+      "italy": 76.01840964998199
+    },
+    "tertiary": {
+      "year": 2024,
+      "unit": "percent",
+      "formula": "tertiary / population × 100",
+      "tuscany": 24.139439566033946,
+      "italy": 23.630038839597045
+    }
+  },
+  "publicRows": {
+    "activityRate": {
+      "Camaiore": 76.47803527732373,
+      "Forte dei Marmi": 70.22654253770573,
+      "Massarosa": 77.64552409861749,
+      "Pietrasanta": 74.79992898074237,
+      "Seravezza": 74.2452074882985,
+      "Stazzema": 70.16012535830608,
+      "Viareggio": 76.74735743176238
+    },
+    "employmentRate": {
+      "Camaiore": 72.01023731968358,
+      "Forte dei Marmi": 64.64307504575962,
+      "Massarosa": 73.37203432609793,
+      "Pietrasanta": 69.89001692047377,
+      "Seravezza": 69.34650455927051,
+      "Stazzema": 65.94663278271918,
+      "Viareggio": 71.8520363681654
+    },
+    "unemploymentRate": {
+      "Camaiore": 5.841936108111409,
+      "Forte dei Marmi": 7.950651264012125,
+      "Massarosa": 5.503845613936225,
+      "Pietrasanta": 6.564059788790274,
+      "Seravezza": 6.5980055747033415,
+      "Stazzema": 6.005537410414636,
+      "Viareggio": 6.3784881035800005
+    },
+    "tertiary": {
+      "Camaiore": 20.78873894834807,
+      "Forte dei Marmi": 29.49969493593655,
+      "Massarosa": 17.322900891805485,
+      "Pietrasanta": 22.84263959390863,
+      "Seravezza": 17.811550151975684,
+      "Stazzema": 13.087674714104194,
+      "Viareggio": 25.14634450118321
+    }
+  }
+}

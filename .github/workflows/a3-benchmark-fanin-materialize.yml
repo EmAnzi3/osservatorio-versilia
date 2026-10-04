@@ -1,0 +1,86 @@
+name: A3 Benchmark fan-in materialization
+# controlled fan-in revision 6
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-fanin-materialize.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fan-in:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile fan-in materializer
+        run: python -m py_compile scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Show pending benchmark state
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          site=json.loads(Path("data/site-data.json").read_text(encoding="utf-8"))
+          mids=[
+            "localUnits","localUnitsChange","localEmployees","localEmployeesChange","employeesPerLocalUnit",
+            "libraryActiveBorrowersPer100","libraryLoansPerResident","libraryWeeklyOpeningHours",
+            "landUse","landUseChange"
+          ]
+          for mid in mids:
+              metric=(site.get("metrics") or {}).get(mid) or {}
+              print(mid, json.dumps((metric.get("meta") or {}).get("benchmark"), ensure_ascii=False, sort_keys=True))
+          PY
+      - name: Materialize accumulated PASS candidates
+        run: python scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Restore catalog formatting
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("data/site-data.json")
+          value=json.loads(p.read_text(encoding="utf-8"))
+          p.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Verify fan-in scope
+        shell: bash
+        run: |
+          git diff --name-only > /tmp/a3-fanin-changed.txt
+          cat /tmp/a3-fanin-changed.txt
+          if [[ ! -s /tmp/a3-fanin-changed.txt ]]; then
+            echo "No catalog changes; PASS candidates already materialized" | tee /tmp/a3-fanin-stat.txt
+            exit 0
+          fi
+          test "$(cat /tmp/a3-fanin-changed.txt)" = "data/site-data.json"
+          read ADDED DELETED FILE <<< "$(git diff --numstat -- data/site-data.json)"
+          echo "added=$ADDED deleted=$DELETED file=$FILE"
+          test "$ADDED" -lt 1000
+          test "$DELETED" -lt 1000
+          git diff --stat -- data/site-data.json > /tmp/a3-fanin-stat.txt
+          cat /tmp/a3-fanin-stat.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-fanin-materialized
+          path: |
+            data/site-data.json
+            /tmp/a3-fanin-changed.txt
+            /tmp/a3-fanin-stat.txt
+          if-no-files-found: error
+      - name: Commit materialized catalog
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json
+          git diff --cached --quiet && { echo "No catalog changes to commit"; exit 0; }
+          git commit -m "A3: publish accumulated benchmark PASS candidates"
+          git push origin HEAD:feat/a3-benchmark-available-missing

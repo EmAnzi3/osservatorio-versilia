@@ -45,6 +45,13 @@ jobs:
           python scripts/preflight.py --quick
           python scripts/test_affluenza_release.py
 
+      - name: Complete approved public preview
+        run: |
+          python scripts/apply_secondary_pages_ui.py
+          python scripts/build_public_site.py --validate-only
+          python scripts/test_site_consistency.py
+          git diff --exit-code -- . ':(exclude)dist'
+
       - name: Upload verified preview
         uses: actions/upload-artifact@v4
         with:

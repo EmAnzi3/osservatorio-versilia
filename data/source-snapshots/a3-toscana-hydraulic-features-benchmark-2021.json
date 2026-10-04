@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+  "sourceProfileId": "regione-toscana-opere-idrauliche-2021",
+  "sourceUrl": "https://www.regione.toscana.it/documents/10180/22470380/shp%2Bfiles%2Bcensimento%2Bopere%2Bidrauliche.zip/de6d5e57-de9f-4555-7e55-52ff32654a0e?t=1636713609857",
+  "sources": {
+    "istatBoundaries": {
+      "label": "Istat — Confini delle unità amministrative al 1 gennaio 2026, versione generalizzata",
+      "url": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip",
+      "sizeBytes": 10450609,
+      "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6"
+    },
+    "reticulum": {
+      "label": "Regione Toscana — Reticolo idrografico e di gestione DCRT 24/2025",
+      "url": "https://www.regione.toscana.it/documents/d/guest/infrastruttura_rev25-zip",
+      "sizeBytes": 48706934,
+      "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122"
+    },
+    "hydraulicWorks": {
+      "label": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+      "url": "https://www.regione.toscana.it/documents/10180/22470380/shp%2Bfiles%2Bcensimento%2Bopere%2Bidrauliche.zip/de6d5e57-de9f-4555-7e55-52ff32654a0e?t=1636713609857",
+      "sizeBytes": 1116181,
+      "sha256": "532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560"
+    }
+  },
+  "raw": {
+    "tuscany": {
+      "area": 82,
+      "line": 2572,
+      "point": 1012
+    }
+  },
+  "municipalReconciliation": {
+    "046005": {
+      "town": "Camaiore",
+      "counts": {
+        "area": 2,
+        "line": 37,
+        "point": 4
+      },
+      "value": 43
+    },
+    "046013": {
+      "town": "Forte dei Marmi",
+      "counts": {
+        "area": 0,
+        "line": 5,
+        "point": 0
+      },
+      "value": 5
+    },
+    "046018": {
+      "town": "Massarosa",
+      "counts": {
+        "area": 0,
+        "line": 11,
+        "point": 0
+      },
+      "value": 11
+    },
+    "046024": {
+      "town": "Pietrasanta",
+      "counts": {
+        "area": 2,
+        "line": 54,
+        "point": 8
+      },
+      "value": 64
+    },
+    "046028": {
+      "town": "Seravezza",
+      "counts": {
+        "area": 0,
+        "line": 73,
+        "point": 2
+      },
+      "value": 75
+    },
+    "046030": {
+      "town": "Stazzema",
+      "counts": {
+        "area": 0,
+        "line": 67,
+        "point": 23
+      },
+      "value": 90
+    },
+    "046033": {
+      "town": "Viareggio",
+      "counts": {
+        "area": 0,
+        "line": 10,
+        "point": 0
+      },
+      "value": 10
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "errors": [],
+    "publicReconciliation": "7/7 exact per-layer GIS intersections",
+    "sourceHashes": "Both official archives exactly match governed snapshot",
+    "invalidSourceGeometries": 1,
+    "invalidGeometryCheck": "Intersection membership unchanged after make_valid for Tuscany and all seven municipalities"
+  },
+  "benchmarks": {
+    "hydraulicWorksCensusElements": {
+      "year": "2021",
+      "unit": "number",
+      "tuscany": 3666,
+      "italy": null
+    }
+  },
+  "scope": {
+    "note": "Feature del censimento regionale DGRT 1155/2021 che intersecano la Toscana: 82 areali, 2.572 lineari, 1.012 puntuali, contate una volta per record sorgente e layer. Esclusi i tratti del reticolo DCR 81/2021. Non è un conteggio di cantieri o strutture fisiche; Italia non disponibile nella fonte regionale."
+  }
+}

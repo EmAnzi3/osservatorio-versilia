@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-regione-toscana-indicators-benchmark-2024-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "Regione Toscana — Indicatori comunali per le politiche locali",
+  "sourceProfileId": "regione-toscana-indicatori-comunali",
+  "source": {
+    "url": "https://www.regione.toscana.it/documents/d/guest/indicatori-2024-1",
+    "landing": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+    "artifactRun": 36932020687,
+    "artifactId": 11196476572,
+    "bytes": 87403
+  },
+  "note": "Il CSV ufficiale 2024 contiene una riga aggregata Toscana. Per ind18 il valore definitivo resta riferito al 31/12/2022, come documentato dalla fonte. La stessa fonte non fornisce un aggregato Italia semanticamente omogeneo: Italy resta null.",
+  "benchmarks": {
+    "youthOtherStatus": {
+      "sourceCode": "ind05",
+      "year": "2024",
+      "unit": "percent",
+      "tuscany": 5.8305374855463,
+      "italy": null
+    },
+    "foreignBornSoleProprietorShare": {
+      "sourceCode": "ind10",
+      "year": "2024",
+      "unit": "percent",
+      "tuscany": 24.0749483313925,
+      "italy": null
+    },
+    "emsResponseTimeP75": {
+      "sourceCode": "ind14",
+      "year": "2024",
+      "unit": "minutes",
+      "tuscany": 14.9,
+      "italy": null
+    },
+    "disability064Per1000": {
+      "sourceCode": "ind16",
+      "year": "2024",
+      "unit": "per1000",
+      "tuscany": 5.73,
+      "italy": null
+    },
+    "municipalOnlineServicesAdvanced": {
+      "sourceCode": "ind18",
+      "year": "2022",
+      "unit": "percent",
+      "tuscany": 33.6538461538462,
+      "italy": null
+    },
+    "innovationBusinessShare": {
+      "sourceCode": "ind19",
+      "year": "2024",
+      "unit": "percent",
+      "tuscany": 8.9178377031752,
+      "italy": null
+    },
+    "organicAgriculturalAreaShare": {
+      "sourceCode": "ind20",
+      "year": "2024",
+      "unit": "percent",
+      "tuscany": 33.57,
+      "italy": null
+    }
+  },
+  "publicRows": {
+    "youthOtherStatus": {
+      "Massarosa": 6.01649783701882,
+      "Viareggio": 6.7105179355484,
+      "Camaiore": 6.20175997079088,
+      "Pietrasanta": 6.96695107846779,
+      "Seravezza": 6.73719009172747,
+      "Forte dei Marmi": 7.88433291387651,
+      "Stazzema": 7.75701353743076
+    },
+    "foreignBornSoleProprietorShare": {
+      "Massarosa": 12.861136999068,
+      "Viareggio": 19.5686647637171,
+      "Camaiore": 9.56569543705333,
+      "Pietrasanta": 11.7123795404003,
+      "Seravezza": 14.3533123028391,
+      "Forte dei Marmi": 7.4235807860262,
+      "Stazzema": 13.4328358208955
+    },
+    "emsResponseTimeP75": {
+      "Massarosa": 13.7666666666667,
+      "Viareggio": 7.58333333333333,
+      "Camaiore": 10.8166666666667,
+      "Pietrasanta": 9.03333333333333,
+      "Seravezza": 8.7,
+      "Forte dei Marmi": 7.5,
+      "Stazzema": 21.2166666666667
+    },
+    "disability064Per1000": {
+      "Massarosa": 8.71112201705417,
+      "Viareggio": 8.02992973811479,
+      "Camaiore": 6.64996977286467,
+      "Pietrasanta": 7.48098321493682,
+      "Seravezza": 7.84893641223979,
+      "Forte dei Marmi": 5.27160210864084,
+      "Stazzema": 10.3499260719566
+    },
+    "municipalOnlineServicesAdvanced": {
+      "Camaiore": 75,
+      "Forte dei Marmi": 35.294117647,
+      "Massarosa": 33.333333333,
+      "Pietrasanta": 95,
+      "Seravezza": 6.6666666667,
+      "Stazzema": 54.545454545,
+      "Viareggio": 56.25
+    },
+    "innovationBusinessShare": {
+      "Massarosa": 8.70818915801615,
+      "Viareggio": 10.1537097250961,
+      "Camaiore": 6.98158051099228,
+      "Pietrasanta": 6.27537836840162,
+      "Seravezza": 5.4421768707483,
+      "Forte dei Marmi": 5.71151984511133,
+      "Stazzema": 5.23809523809524
+    },
+    "organicAgriculturalAreaShare": {
+      "Massarosa": 4.30272899101345,
+      "Viareggio": 4.08454773885472,
+      "Camaiore": 6.25655376895405,
+      "Pietrasanta": 6.86842706193545,
+      "Seravezza": 8.10702094156546,
+      "Forte dei Marmi": 1.51614991696822,
+      "Stazzema": 9.66115955114865
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "regionalRowCount": 1,
+    "municipalReconciliation": "7 metrics × 7/7 towns PASS",
+    "italyPolicy": "NOT_AVAILABLE_SAME_SOURCE"
+  }
+}

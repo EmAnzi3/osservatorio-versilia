@@ -55,6 +55,16 @@ def validate_workflow_contract() -> dict[str, Any]:
         assert f"\n  {check}:\n" in pages, f"Job canonico assente: {check}"
     for name, command in canonical["commands"].items():
         assert command in pages, f"Comando canonico {name} assente da {pages_path}: {command}"
+    quick_job = pages.split("\n  quick:\n", 1)[1].split("\n  full:\n", 1)[0]
+    preview_build = canonical["commands"]["previewBuild"]
+    preview_ui = canonical["commands"]["previewUI"]
+    upload_preview = "name: Upload verified preview"
+    assert preview_build in quick_job, "Preview priva della validazione pubblica completa"
+    assert preview_ui in quick_job, "Preview priva della UI approvata"
+    assert upload_preview in quick_job, "Upload preview canonico assente"
+    assert quick_job.index(canonical["commands"]["quick"]) < quick_job.index(preview_ui) < quick_job.index(preview_build) < quick_job.index(upload_preview), (
+        "La preview deve essere completata dopo Quick e prima dell'upload"
+    )
     assert "needs.build.result == 'success'" in pages, "Deploy non vincolato al successo del build"
 
     reporter_path = ROOT / canonical["liveStatusWorkflow"]

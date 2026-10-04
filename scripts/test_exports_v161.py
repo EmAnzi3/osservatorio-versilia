@@ -104,6 +104,30 @@ def main() -> None:
         browser = playwright.chromium.launch(**launch_args)
         page = browser.new_page(viewport={"width": 1440, "height": 950}, accept_downloads=True)
 
+        classification_routes = [
+            "confronta/ambiente/?indicatore=territorialClassification",
+            *[f"comuni/{town}/?tema=ambiente&indicatore=territorialClassification"
+              for town in ("camaiore", "massarosa", "viareggio", "pietrasanta", "seravezza", "stazzema", "forte-dei-marmi")],
+        ]
+        for width in (1440, 390):
+            page.set_viewport_size({"width": width, "height": 950})
+            for route in classification_routes:
+                page.goto(base + route, wait_until="networkidle")
+                host = "#compare-bars" if route.startswith("confronta/") else "#town-topic > .history-panel.a5-shared-chart"
+                toolbar = page.locator(f"{host} .ux-view-toolbar").first
+                toolbar.wait_for(state="visible")
+                actions = toolbar.locator(":scope > .data-actions")
+                require(actions.count() == 1, f"Classificazioni {route}: toolbar standard assente/duplicata")
+                for selector in ("[data-download]", "[data-print]", 'a[href*="indicatori/"]'):
+                    control = actions.locator(selector)
+                    require(control.count() == 1 and control.is_visible(), f"Classificazioni {route}: comando {selector} assente")
+                for selector in ("[data-download]", "[data-print]"):
+                    require(page.locator(f"{selector}:visible").count() == 1, f"Classificazioni {route}: comando duplicato")
+                    icon = actions.locator(selector).evaluate("el => getComputedStyle(el, '::before').backgroundImage")
+                    require(icon != "none", f"Classificazioni {route}: icona {selector} assente")
+                require(page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Classificazioni {route}: overflow {width}px")
+        page.set_viewport_size({"width": 1440, "height": 950})
+
         page.goto(base + "confronta/demografia/?indicatore=population", wait_until="networkidle")
         page.wait_for_selector(".ux-view-shell")
         population = download_csv(page, str(temp / "population.csv"))

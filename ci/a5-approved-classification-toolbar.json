@@ -1,0 +1,23 @@
+{
+  "approvedCommit": "896383d3180169ec905d5e2acdd6be48cc03a766",
+  "approvedAt": "2026-10-04",
+  "metric": "territorialClassification",
+  "compare": {
+    "html": "<div class=\"ux-view-shell\" data-view-shell=\"ux-view-1\"><div class=\"ux-view-toolbar\"><div class=\"ux-view-toolbar-copy\"><small class=\"a5-toolbar-overline\">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class=\"data-actions\"><a href=\"/indicatori/classificazioni-territoriali/\">Scheda indicatore</a><button type=\"button\" data-download=\"\">Scarica CSV</button><button type=\"button\" data-print=\"\">Stampa / PDF</button></div><div class=\"ux-view-toggle\" role=\"tablist\" aria-label=\"Vista dell’indicatore\"><button id=\"ux-view-1-tab-current\" type=\"button\" role=\"tab\" aria-controls=\"ux-view-1-current\" data-view-mode=\"current\" class=\"active\" aria-selected=\"true\" tabindex=\"0\">Valore attuale</button><button id=\"ux-view-1-tab-history\" type=\"button\" role=\"tab\" aria-controls=\"ux-view-1-history\" data-view-mode=\"history\" disabled=\"\" aria-selected=\"false\" tabindex=\"-1\">Storico</button></div></div><p class=\"ux-view-note\">Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.</p><div id=\"ux-view-1-current\" class=\"ux-view-pane\" role=\"tabpanel\" aria-labelledby=\"ux-view-1-tab-current\" data-view-pane=\"current\"><div class=\"topic-bars composite-topic-bars\"><div class=\"territorial-classification-shell\">__NATIVE_CLASSIFICATIONS__</div></div></div><div id=\"ux-view-1-history\" class=\"ux-view-pane\" role=\"tabpanel\" aria-labelledby=\"ux-view-1-tab-history\" data-view-pane=\"history\" hidden=\"\"><div class=\"ux-history-unavailable\"><strong>Serie storica non disponibile</strong><p>Servono almeno due anni omogenei e comuni a tutti e sette i territori.</p></div></div></div>",
+    "attributes": [
+      [
+        "id",
+        "compare-bars"
+      ],
+      [
+        "class",
+        "a5-shared-chart"
+      ],
+      [
+        "data-age-pyramid-delegated",
+        "1"
+      ]
+    ]
+  },
+  "town": "<div class=\"ux-view-toolbar a5-special-renderer-toolbar\"><div class=\"ux-view-toolbar-copy\"><small class=\"a5-toolbar-overline\">Confronto tra Comuni della Versilia</small><strong>Lettura dell’indicatore</strong><span>Dettaglio disponibile per il Comune e strumenti di esportazione coerenti con il resto della scheda.</span></div><div class=\"data-actions a5-toolbar-actions\"><a href=\"/indicatori/classificazioni-territoriali/\">Scheda indicatore</a><button type=\"button\" data-download=\"\">Scarica CSV</button><button type=\"button\" data-print=\"\">Stampa / PDF</button></div><div class=\"ux-view-toggle a5-special-view-toggle\" role=\"tablist\" aria-label=\"Vista dell’indicatore\"><button type=\"button\" role=\"tab\" class=\"active\" aria-selected=\"true\" data-view-mode=\"current\">Valore attuale</button><button type=\"button\" role=\"tab\" aria-selected=\"false\" data-view-mode=\"history\" disabled=\"\">Storico</button></div></div>"
+}
