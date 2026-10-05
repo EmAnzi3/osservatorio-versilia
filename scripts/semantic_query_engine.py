@@ -18,9 +18,10 @@ from semantic_query_adapters import CENSUS, census_context, census_observation, 
 import semantic_query_territorial_adapters as territorial
 import semantic_query_ars_adapters as ars
 import semantic_query_business_adapters as business
+import semantic_query_census_adapters as census
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '6'
+VERSION = '7'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -49,6 +50,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in census.KEYS:return census.dimensions(key)
     if key in business.KEYS:return business.dimensions(key)
     if key in ars.KEYS:return ars.dimensions(key)
     if key=='ageDistribution':return list(AGE_BANDS)
@@ -58,6 +60,8 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in census.KEYS:
+        return [o for o in SUPPORTED if (o!='weighted_ratio' or key in census.RATIOS) and (o!='benchmark_gap' or census.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='householdSize' and o in TEMPORAL) and not (key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and o=='trend')]
     if key in business.KEYS:
         return [o for o in SUPPORTED if (o!='weighted_ratio' or key in business.RATIOS) and (o!='benchmark_gap' or business.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='microUnits' and o in TEMPORAL) and not (key in business.CHANGES and o=='trend')]
     if key in ars.KEYS:
@@ -218,6 +222,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in census.KEYS:return census.context(metric,key,dimension)
         if key in business.KEYS:return business.context(metric,key,dimension)
         if key in ars.KEYS:return ars.context(metric,key,dimension)
         if key in territorial.NEW_KEYS or (key=='population' and dimension!='total'):
@@ -239,6 +244,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in census.KEYS:return census.observation(self,key,row_index,dimension,period,historical)
         if key in business.KEYS:return business.observation(self,key,row_index,dimension,period,historical)
         if key in ars.KEYS:return ars.observation(self,key,row_index,dimension,period,historical)
         metric = self._catalog['metrics'][key]
@@ -335,6 +341,7 @@ class QueryEngine:
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
+        if key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and operation=='trend':raise ValueError('census_method_break_trend_not_supported')
         if key in business.CHANGES and operation=='trend':raise ValueError('business_cumulative_trend_not_supported')
         if key=='microUnits' and operation in TEMPORAL:raise ValueError('business_series_not_available')
         if key in ars.KEYS and operation in TEMPORAL:
@@ -353,7 +360,8 @@ class QueryEngine:
         if historical and periods is None:
             if len(towns) != 1:
                 raise ValueError('temporal_query_requires_one_geography')
-            if key in business.KEYS:periods=business.available_periods(self,key,dimension,rows[towns[0]][1])
+            if key in census.KEYS:periods=census.available_periods(self,key,dimension,rows[towns[0]][1])
+            elif key in business.KEYS:periods=business.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in ars.KEYS:periods=ars.available_periods(self,key,dimension)
             else:
                 series = rows[towns[0]][1].get('series')
@@ -364,6 +372,7 @@ class QueryEngine:
         if not isinstance(periods,list) or not periods:
             raise ValueError('empty_period_selection')
         periods = [period_token(key,p) for p in periods]
+        if key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and operation in ('absolute_change','relative_change','percentage_points') and '2024' in periods and any(int(p)<2024 for p in periods):raise ValueError('census_method_break_change_not_supported')
         if len(periods) != len(set(periods)):
             raise ValueError('duplicate_period')
         if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=business.order if key in business.KEYS else ars.order if key in ars.KEYS else int)):
@@ -375,7 +384,7 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                use_history=historical and not (key in (*ars.KEYS,*business.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
+                use_history=historical and not (key in (*ars.KEYS,*business.KEYS,*census.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
                 observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
@@ -385,6 +394,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'censusAdapterSha256':digest((ROOT/'scripts/semantic_query_census_adapters.py').read_bytes()),
                   'businessAdapterSha256':digest((ROOT/'scripts/semantic_query_business_adapters.py').read_bytes()),
                   'arsAdapterSha256':digest((ROOT/'scripts/semantic_query_ars_adapters.py').read_bytes()),
                   'territorialAdapterSha256':digest((ROOT/'scripts/semantic_query_territorial_adapters.py').read_bytes()),
@@ -420,13 +430,13 @@ class QueryEngine:
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
                 key=selectors[0]['metric']
-                adapter=business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                adapter=census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
                 observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
             if operation == 'weighted_ratio':
-                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS:
+                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS and selectors[0]['metric'] not in census.RATIOS:
                     raise ValueError('verified_ratio_adapter_required')
                 policy['disjointPopulationEvidence'] = {'method':('distinct workplace municipality codes; additive ASIA/Frame components in the selected economic scope' if selectors[0]['metric'] in business.KEYS else 'distinct official municipality codes; additive source counts by residence'),
                     'geographies':[o['geography'] for o in observations],
@@ -452,6 +462,7 @@ class QueryEngine:
                 if operation == 'trend':
                     policy['timeAxis'] = [int(o['period']) for o in temporal_usable]
             if operation == 'correlation':
+                if request.get('axis')=='periods' and any(o['metric']=='diplomaPlus' and o['dimension'] in ('total','age:25-64|sex:total') for o in observations):raise ValueError('census_method_break_temporal_correlation_not_supported')
                 if request.get('axis')=='periods' and any(o['metric'] in business.CHANGES for o in observations):raise ValueError('business_cumulative_temporal_correlation_not_supported')
                 if any(o['metric'] in business.KEYS for o in observations):notes.append('economic_universes_and_shared_components_require_interpretation')
                 if request.get('axis')=='periods' and any(o['frequency'].startswith('rolling_') for o in observations):
@@ -507,7 +518,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix

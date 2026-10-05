@@ -1,8 +1,8 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `72dec95a7d5ede047deaa8e44420d07aa53282ab53ced990db9ccb12f5621fbb`.
+Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `36c832f96814d7f7bda181363e4c9a95d6e7700bfe9d117e089d391bc14df832`.
 
-225 indicatori censiti; 45 con adapter e 180 senza adapter. 63 profili fonte.
+225 indicatori censiti; 56 con adapter e 169 senza adapter. 63 profili fonte.
 
 La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
 
@@ -12,7 +12,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 |---|---|---|---|---|---|---|---|
 | accreditedRsaCount | salute | regione-toscana-rsa | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | activeTplAccessPoints | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
-| activityRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| activityRate | lavoro | istat-census-annual | 2024 | istat-census-carriers/activityRate/v1 | total, age:15-24\|sex:total, age:15-24\|sex:men, age:15-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:15plus\|sex:total, age:15plus\|sex:men, age:15plus\|sex:women | 64 / 90 | 8 |
 | ageDistribution | demografia | istat-demography-annual | 2026 | istat-posas-age-band/v1 | age:0-14, age:15-19, age:20-34, age:35-49, age:50-64, age:65-79, age:80-84, age:85+ | 48 / 0 | 7 |
 | agriculturalDiversificationAndModernization | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 3 |
 | agriculturalFarms | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 2 |
@@ -37,7 +37,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | climateTemperatureTrend50y | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | climateTmaxTrend | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | climateTminTrend | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
-| cohabitingHouseholds | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 4 |
+| cohabitingHouseholds | abitare | istat-census-annual | 2023 | istat-census-carriers/cohabitingHouseholds/v1 | total | 6 / 5 | 4 |
 | commuterBalance | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
 | commuterBalanceRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
 | copdPrevalence | salute | ars-toscana-mixed | 2025 | ars-268-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
@@ -52,7 +52,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | dependencyIndices | demografia | istat-demography-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 8 |
 | diabetes | salute | ars-toscana-mixed | 2025 | ars-271-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | diagnosticImagingServices | salute | ars-toscana-mixed | 2025 | ars-1325-reviewed/v1 | total, sex:men, sex:women | 19 / 0 | 7 |
-| diplomaPlus | istruzione | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| diplomaPlus | istruzione | istat-census-annual | 2024 | istat-census-carriers/diplomaPlus/v1 | total, age:9-24\|sex:total, age:9-24\|sex:men, age:9-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:9plus\|sex:total, age:9plus\|sex:men, age:9plus\|sex:women | 64 / 86 | 8 |
 | disability064Per1000 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | drinkingWaterQuality | ambiente | gaia-quality-semiannual | 2° semestre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | earlyChildhoodPotentialCapacityRate | istruzione | regione-toscana-early-childhood | 2024/25 | tuscany-child-capacity/v1 | total | 5 / 0 | 3 |
@@ -62,8 +62,8 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | elderlyHomeCare | salute | ars-toscana-mixed | 2024 | ars-260-standardized-sex/v1 | sex:total, sex:men, sex:women | 15 / 0 | 7 |
 | emergencyAccess | salute | ars-toscana-mixed | 2025 | ars-1657-reviewed/v1 | total, sex:men, sex:women | 19 / 0 | 7 |
 | employeesPerLocalUnit | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 10 / 0 | 5 |
-| employmentGenderGap | lavoro | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
-| employmentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| employmentGenderGap | lavoro | istat-census-annual | 2023 | istat-census-carriers/employmentGenderGap/v1 | total | 8 / 1 | 5 |
+| employmentRate | lavoro | istat-census-annual | 2024 | istat-census-carriers/employmentRate/v1 | total, age:15-24\|sex:total, age:15-24\|sex:men, age:15-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:15plus\|sex:total, age:15plus\|sex:men, age:15plus\|sex:women | 64 / 90 | 8 |
 | emsResponseTimeP75 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | environmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | erpArrears | abitare | erp-lucca-annual-balance-sheet | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -92,7 +92,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | heartFailurePrevalence | salute | ars-toscana-mixed | 2025 | ars-272-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | hospitalizedAll | salute | ars-toscana-mixed | 2021–2025 | ars-1332-reviewed/v1 | total | 7 / 0 | 2 |
 | hospitals | salute | health-ministry-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
-| householdSize | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 1 |
+| householdSize | abitare | istat-census-annual | 2023 | istat-census-carriers/householdSize/v1 | total | 3 / 0 | 1 |
 | housingStockPer1000 | abitare | istat-census-annual | 2023 | istat-census-housingStockPer1000/v1 | total | 9 / 1 | 5 |
 | hydraulicWorksCensusElements | ambiente | regione-toscana-opere-idrauliche-2021 | 2021 | adapter_not_implemented | — | 0 / 0 | 1 |
 | hypertensionPrevalence | salute | ars-toscana-mixed | 2025 | ars-255-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
@@ -149,7 +149,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | municipalSurface | ambiente | istat-geografia-comunale-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
 | naturalDemographicDynamics | demografia | istat-demography-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 7 |
 | nonOccupiedHomesPer1000 | abitare | istat-census-annual | 2023 | istat-census-nonOccupiedHomesPer1000/v1 | total | 9 / 1 | 5 |
-| oldAgeIndex | demografia | istat-census-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 5 |
+| oldAgeIndex | demografia | istat-census-annual | 2026 | istat-census-carriers/oldAgeIndex/v1 | total | 7 / 0 | 5 |
 | omiResidential | abitare | agenzia-entrate-omi-semestral | 2° semestre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | organicAgriculturalAreaShare | ambiente | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | outboundCommuters | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -195,7 +195,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | securityMissionExpenditurePerResident | sicurezza | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | selfContainment | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
 | shorelineDynamics | ambiente | ispra-coast-irregular | 2006–2020 | adapter_not_implemented | — | 0 / 0 | 3 |
-| singleHouseholds | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| singleHouseholds | abitare | istat-census-annual | 2023 | istat-census-carriers/singleHouseholds/v1 | total | 9 / 1 | 5 |
 | siopePayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | slowMobilityBici | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | slowMobilityCammini | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
@@ -212,7 +212,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | taxpayersAdultPopulationRate | economia | mef-irpef-annual | MEF a.i. 2024 · residenti 1.1.2026 | adapter_not_implemented | — | 0 / 0 | 4 |
 | territorialClassification | ambiente | istat-geografie-funzionali-2021 | 2021 | adapter_not_implemented | — | 0 / 0 | 0 |
 | territorialPlanningMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
-| tertiary | istruzione | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| tertiary | istruzione | istat-census-annual | 2024 | istat-census-carriers/tertiary/v1 | total, age:9-24\|sex:total, age:9-24\|sex:men, age:9-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:9plus\|sex:total, age:9plus\|sex:men, age:9plus\|sex:women | 64 / 90 | 8 |
 | thirdSector | comunita | runts-continuous | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | totalResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
 | tourismArrivals | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
@@ -226,8 +226,8 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | tourismStructuresPer1000 | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | tplServiceSpan | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | turnoverPerPersonEmployed | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 26 / 0 | 6 |
-| unemploymentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
-| vacantHomes | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| unemploymentRate | lavoro | istat-census-annual | 2024 | istat-census-carriers/unemploymentRate/v1 | total, age:15-24\|sex:total, age:15-24\|sex:men, age:15-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:15plus\|sex:total, age:15plus\|sex:men, age:15plus\|sex:women | 64 / 90 | 8 |
+| vacantHomes | abitare | istat-census-annual | 2023 | istat-census-carriers/vacantHomes/v1 | total | 9 / 1 | 5 |
 | valueAddedTurnoverShare | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 26 / 0 | 6 |
 | voterTurnout | comunita | dait-eligendo-irregular | 2026 | adapter_not_implemented | — | 0 / 0 | 6 |
 | wastePerResident | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -240,6 +240,9 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 
 | Collegamento | Tipo | Verifica | Associazione |
 |---|---|---|---|
+| maleEmploymentRate → employmentGenderGap | derived_difference | components_reconciled | Non richiesta: dipendenza matematica |
+| diplomaPlus → employmentRate | context | observations_available_context_only | computed:  |
+| singleHouseholds → vacantHomes | context | observations_available_context_only | computed:  |
 | localUnits → employeesPerLocalUnit | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
 | localEmployees → employeesPerLocalUnit | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
 | businessTurnover → turnoverPerPersonEmployed | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
@@ -294,7 +297,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 
 | Profilo | Indicatori senza adapter | Dimensioni A3 già acquisite su questi indicatori |
 |---|---|---|
-| istat-census-annual | 11 | 65 |
 | openbdap-annual | 24 | 57 |
 | istat-demography-annual | 7 | 50 |
 | mim-school-year | 9 | 36 |

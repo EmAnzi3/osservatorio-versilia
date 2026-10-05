@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "catalogSha256": "b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4",
+  "engineSha256": "36c832f96814d7f7bda181363e4c9a95d6e7700bfe9d117e089d391bc14df832",
+  "adapterImplementationHashes": {
+    "adapterImplementationSha256": "988d1d32a0a754c0707a8c7b0acc4c3af1218bb7548ea824fd2ab6df71a1ff52",
+    "censusAdapterSha256": "528c7e1e2e66c2490eeef4419dd08f2d05790fc13ca58bfdf34cb369495bd96e",
+    "businessAdapterSha256": "5b1f9c79a0558523cadc802e16060fb98558d0bac1a665e6a230b0ce161e6523",
+    "arsAdapterSha256": "6b13af3d84f9313adf9aff0b39f6338fc2a227981053ca7748d54d348b47ef6f",
+    "territorialAdapterSha256": "403f4143cf5557763af3b90f0b122afe33ee6db8d3270a3299e51e482576b465"
+  },
+  "questionManifestSha256": "af548709f0360bb2523642399e962ba7c0041fa8544c8870ceba2356f5407aaa",
+  "correctnessSuite": {
+    "questions": 69,
+    "passed": 69,
+    "computed": 43,
+    "refused": 26
+  },
+  "environment": {
+    "python": "3.12.14",
+    "implementation": "CPython",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "visibleCpuCount": 9,
+    "cpuQuota": "800000 100000",
+    "clock": "perf_counter_ns",
+    "clockResolutionSeconds": 1e-09
+  },
+  "engineConstruction": {
+    "samples": 5,
+    "minMs": 143.135315,
+    "medianMs": 147.340786,
+    "p95Ms": 195.805735,
+    "maxMs": 207.22685
+  },
+  "workloads": [
+    {
+      "id": "population_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.451705,
+        "medianMs": 1.884366,
+        "p95Ms": 2.2372677999999997,
+        "maxMs": 2.273322
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.244007,
+        "medianMs": 0.326336,
+        "p95Ms": 0.58046295,
+        "maxMs": 0.84379
+      }
+    },
+    {
+      "id": "female_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.838151,
+        "medianMs": 1.083411,
+        "p95Ms": 1.1670146000000001,
+        "maxMs": 1.174538
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.413242,
+        "medianMs": 0.5213245,
+        "p95Ms": 0.7744963999999999,
+        "maxMs": 0.99672
+      }
+    },
+    {
+      "id": "ars_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "elderlyHomeCare",
+            "dimension": "sex:total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.16159,
+        "medianMs": 3.414741,
+        "p95Ms": 6.851744199999999,
+        "maxMs": 7.703088
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.23917,
+        "medianMs": 0.2764215,
+        "p95Ms": 0.4760937999999998,
+        "maxMs": 0.593363
+      }
+    },
+    {
+      "id": "aligned_association",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.996701,
+        "medianMs": 3.160809,
+        "p95Ms": 9.607696999999998,
+        "maxMs": 11.059616
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.905954,
+        "medianMs": 1.1697865,
+        "p95Ms": 1.56962315,
+        "maxMs": 1.93927
+      }
+    },
+    {
+      "id": "mismatched_association",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.086361,
+        "medianMs": 2.395566,
+        "p95Ms": 5.3572834,
+        "maxMs": 5.985952
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.626703,
+        "medianMs": 0.8601099999999999,
+        "p95Ms": 1.136444,
+        "maxMs": 1.322821
+      }
+    },
+    {
+      "id": "ars_hypertension_age",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "age:65-84|total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.269502,
+        "medianMs": 3.748063,
+        "p95Ms": 7.822731199999999,
+        "maxMs": 8.728591
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.32576,
+        "medianMs": 0.48193050000000004,
+        "p95Ms": 0.7150276999999999,
+        "maxMs": 0.842218
+      }
+    },
+    {
+      "id": "ars_mortality_window_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "mortalityAll",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.261009,
+        "medianMs": 4.235917,
+        "p95Ms": 8.093104,
+        "maxMs": 8.979819
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.282746,
+        "medianMs": 0.3619245,
+        "p95Ms": 0.6572676999999997,
+        "maxMs": 1.010581
+      }
+    },
+    {
+      "id": "business_frame_industry_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "turnoverPerPersonEmployed",
+            "dimension": "sector:industry"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.839219,
+        "medianMs": 2.002845,
+        "p95Ms": 2.2610441999999997,
+        "maxMs": 2.29811
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.467403,
+        "medianMs": 0.67764,
+        "p95Ms": 1.2867087499999998,
+        "maxMs": 2.201665
+      }
+    },
+    {
+      "id": "business_endpoint_refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "localUnitsChange",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.437649,
+        "medianMs": 0.468175,
+        "p95Ms": 0.7014402000000001,
+        "maxMs": 0.705953
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.122905,
+        "medianMs": 0.139695,
+        "p95Ms": 0.3462004499999999,
+        "maxMs": 0.449887
+      }
+    },
+    {
+      "id": "census_young_employment",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "age:15-24|sex:total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.630505,
+        "medianMs": 1.976084,
+        "p95Ms": 2.2944383999999998,
+        "maxMs": 2.361275
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.27237,
+        "medianMs": 0.382846,
+        "p95Ms": 0.6017153,
+        "maxMs": 0.687004
+      }
+    },
+    {
+      "id": "census_diploma_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.36567,
+        "medianMs": 0.377688,
+        "p95Ms": 0.6923866000000001,
+        "maxMs": 0.711211
+      },
+      "warmQuery": {
+        "samples": 50,
+        "minMs": 0.120381,
+        "medianMs": 0.125669,
+        "p95Ms": 0.24695184999999997,
+        "maxMs": 0.415996
+      }
+    }
+  ],
+  "pythonAllocationBytes": {
+    "retained": 11222226,
+    "peak": 24119939,
+    "scope": "one fresh engine plus 11 representative queries; tracemalloc, excludes native allocations"
+  },
+  "notes": [
+    "Local sequential microbenchmark; not a production concurrency or load test",
+    "Fresh engine means no application snapshot cache; operating-system filesystem cache is uncontrolled",
+    "Warm query includes normal provenance/output construction, not network acquisition",
+    "p95 uses linear interpolation at (n-1)*0.95; small samples are descriptive",
+    "No hardware-independent latency threshold or completeness claim; compare runs in equivalent environments"
+  ]
+}

@@ -1,6 +1,6 @@
 # A6 — domande con risultati verificati
 
-Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `75efe3803e947f0b8f97efce9329fcd67f26ff8759ce07593f2f8239a0100822`. Esito: **PASS**.
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `af548709f0360bb2523642399e962ba7c0041fa8544c8870ceba2356f5407aaa`. Esito: **PASS**.
 
 Le aspettative sono versionate e controllate contro riferimenti aritmetici/record dichiarati; non vengono riscritte automaticamente con la risposta del motore. Le domande sono casi di prova riutilizzabili, non un interprete di linguaggio naturale.
 
@@ -56,5 +56,24 @@ Le aspettative sono versionate e controllate contro riferimenti aritmetici/recor
 | business_sector_benchmark_refused: Posso confrontare industria comunale con il benchmark regionale totale? | PASS | business_benchmark_scope_or_dimension_not_available | Snapshot benchmark letto congela totale industria e servizi; settore regionale non equivalente |
 | business_cumulative_correlation_refused: Posso correlare nel tempo due variazioni cumulate dal 2018? | PASS | business_cumulative_temporal_correlation_not_supported | Le sequenze cumulate condividono la baseline e non diventano variazioni annuali indipendenti |
 | business_current_tourism_refused: Posso correlare automaticamente unità locali correnti e presenze turistiche correnti? | PASS | paired_period_mismatch | ASIA 2023 e presenze 2025 non sono la medesima fotografia temporale |
+| census_employment_primary: Qual è il tasso iniziale di occupazione residente 25–64 a Massarosa nel 2024? | PASS | /observations/0/value: 73.4 | Valore pubblicato 73,4%; snapshot 8.721/11.886 ×100 riconciliato alla precisione di un decimale |
+| census_vacancy: La quota di abitazioni non occupate da residenti è una quota di case necessariamente vuote? | PASS | /observations/0/value: 17.9 | Massarosa 2023: 1.975/11.003 ×100, valore pubblicato 17,9%; include occupazione di non residenti |
+| census_single: Quante famiglie unipersonali in percentuale a Massarosa? | PASS | /observations/0/value: 29.2 | 2023: 2.664/9.108 ×100, pubblicato 29,2%; non misura diretta della solitudine |
+| census_size: Qual è la dimensione media della famiglia pubblicata a Massarosa? | PASS | /observations/0/value: 2.38 | Carrier ufficiale pubblicato 2023: 2,38; componenti grezzi non riconciliati, nessuna ricostruzione |
+| census_ageing: Quanti residenti anziani ogni 100 giovani a Massarosa nel 2026? | PASS | /observations/0/value: 257.2 | POSAS 1 gennaio 2026: 5.691/2.213 ×100, arrotondato 257,2; indice e non quota di popolazione |
+| census_young_employment: Qual è l’occupazione dei residenti 15–24 a Massarosa? | PASS | /observations/0/value: 23.48158775705404 | Snapshot 2024: 491 occupati/2.091 residenti ×100; universo 15–24 |
+| census_diploma_native: Qual è la quota 25–49 con diploma o più a Massarosa? | PASS | /observations/0/value: 72.00332502078139 | Snapshot nativo 2024: 4.331/6.015 ×100; non il totale iniziale 25–64 |
+| census_cohabiting_weighted: Qual è la quota di famiglie coabitanti nei sette Comuni? | PASS | /result/value: 2.3346197379007516 | Somma PF9=1.712, somma PF1=73.331; 2023, rapporto delle somme |
+| census_gender_gap: Qual è il divario di occupazione maschile meno femminile 15–64 a Massarosa? | PASS | /observations/0/value: 16.81241352612966 | 2023: (5.197/7.095 − 3.937/6.976) ×100; punti percentuali |
+| census_tertiary_gap: Qual è lo scostamento del titolo terziario 25–64 di Massarosa da Toscana 2024? | PASS | /result/value: -6.8394395660339455 | Carrier comunale arrotondato 17,3 meno benchmark regionale 465.160/1.926.971 ×100; punti, precisioni dichiarate |
+| census_primary_history_refused: Posso usare lo storico 15+ come storico del totale iniziale 25–64? | PASS | census_historical_dimension_not_available | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_diploma_trend_refused: Posso stimare un trend omogeneo dai censimenti tradizionali e permanente del diploma? | PASS | census_method_break_trend_not_supported | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_rounded_weighting_refused: Posso ponderare automaticamente le percentuali pubblicate arrotondate di case non occupate? | PASS | verified_ratio_adapter_required | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_education_bench_refused: Posso abbinare automaticamente al diploma censuario il benchmark da indagine sulle forze di lavoro? | PASS | census_benchmark_scope_dimension_or_method_not_reviewed | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_age_bench_refused: Posso usare un benchmark 2024 per l’indice di vecchiaia comunale 2026? | PASS | census_benchmark_scope_dimension_or_method_not_reviewed | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_dimension_bench_refused: Posso abbinare al titolo terziario 25–49 il benchmark 25–64? | PASS | census_benchmark_scope_dimension_or_method_not_reviewed | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_size_history_refused: Posso ricostruire lo storico della dimensione familiare con componenti non riconciliati? | PASS | census_historical_dimension_not_available | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_young_history_refused: Posso inferire lo storico occupazione femminile 15–24 da un totale 15+? | PASS | census_historical_dimension_not_available | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
+| census_diploma_change_refused: Posso calcolare automaticamente la variazione del diploma tra censimento tradizionale 1991 e permanente 2024? | PASS | census_method_break_change_not_supported | Discontinuità di rilevazione non attestata come confrontabile; serie consultabile, calcolo congiunto rifiutato. |
 
 Il JSON conserva query, risultati, formula, fonti, periodi, copertura ed esclusioni. Un rifiuto atteso è una verifica riuscita del limite, non una capacità di risposta numerica. Nessuna conclusione causale o raccomandazione automatica.

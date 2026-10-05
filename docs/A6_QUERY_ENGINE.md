@@ -106,3 +106,7 @@ Dopo la #337, il lotto ARS aggiunge 18 indicatori e porta la copertura effettiva
 ## Estensione business v6
 
 Il lotto successivo alla #339 abilita 16 indicatori ASIA/Frame già acquisiti: totale, industria/servizi, storici e benchmark riconciliati. Periodi cumulati 2018–endpoint conservati; misure ufficiali arrotondate non sostituite da rapporti grezzi. Copertura effettiva 45/225; 50 domande verificate. Metodo e residui in `docs/A6_BUSINESS_ADAPTERS.md`; nuove prestazioni separate in `reports/a6-business/performance.*`. Dati, UI e golden preservati.
+
+## Estensione censimento v7
+
+Undici carrier aggiuntivi, 56/225 effettivi e 69 domande verificate; dimensioni età/sesso, periodi nativi, precisione, benchmark e discontinuità sono governati da `docs/A6_CENSUS_ADAPTERS.md`. I dati pubblicati e la UI restano invariati.
