@@ -33,16 +33,24 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     assert len(query_coverage) == effective_semantic["metrics"]
     for item in query_coverage:
         if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
-            result = query_engine.query({"operation": "compare", "selectors": [{"metric": item["metric"]}]})
+            selector={"metric":item["metric"],"dimension":item["engine"]["dimensions"][0]}
+            result = query_engine.query({"operation": "compare", "selectors": [selector]})
             assert result["status"] == "computed", result
             if 'weighted_ratio' in item['engine']['operations']:
-                result = query_engine.query({'operation':'weighted_ratio','selectors':[{'metric':item['metric']}]})
+                result = query_engine.query({'operation':'weighted_ratio','selectors':[selector]})
                 assert result['status']=='computed', result
             if 'benchmark_gap' in item['engine']['operations']:
                 for scope in ('tuscany','italy'):
                     result = query_engine.query({'operation':'benchmark_gap','benchmark':scope,
                         'selectors':[{'metric':item['metric'],'towns':['046018']}]})
                     assert result['status']=='computed', result
+    age_coverage=next(x for x in query_coverage if x['metric']=='ageDistribution')
+    for dimension in age_coverage['engine']['dimensions']:
+        result=query_engine.query({'operation':'weighted_ratio','selectors':[{'metric':'ageDistribution','dimension':dimension}]})
+        assert result['status']=='computed',result
+    result=query_engine.query({'operation':'anomaly','selectors':[{'metric':'income'}],
+        'rule':'tukey_1_5_iqr','reference':'selected_municipalities','purpose':'Effective catalog descriptive regression'})
+    assert result['status']=='computed',result
     print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")
     print(
         "A6 semantic model effective catalog: "

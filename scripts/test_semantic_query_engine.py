@@ -8,7 +8,7 @@ from fractions import Fraction
 from pathlib import Path
 
 from semantic_query_engine import QueryEngine, ROOT, SNAPSHOT, calculate, coefficient, ranks
-from semantic_query_adapters import CENSUS, CENSUS_PATH, CENSUS_BENCHMARK, MEF_BENCHMARK
+from semantic_query_adapters import CENSUS, CENSUS_PATH, CENSUS_BENCHMARK, MEF_BENCHMARK, AGE_BANDS
 
 
 def request(operation, metric='population', **selection):
@@ -201,16 +201,117 @@ def ratio_regressions():
         rejected(altered,dict(request('benchmark_gap','income',towns=['046018']),benchmark='italy'),'benchmark_mef_definition_changed')
 
 
+
+def anomaly_request(metric='income', **selection):
+    return dict(request('anomaly',metric,**selection),rule='tukey_1_5_iqr',
+                reference='selected_municipalities',purpose='Descriptive technical peer screening; no policy priority')
+
+
+def age_anomaly_regressions():
+    engine=QueryEngine(ROOT/'data/site-data.json')
+    for dimension in AGE_BANDS:
+        q=request('weighted_ratio','ageDistribution',dimension=dimension,periods=['2026'])
+        result=engine.query(q)
+        assert result['status']=='computed',result
+        source=json.loads((ROOT/SNAPSHOT).read_text())['posas']['ageSex2026']
+        _,lo,hi=AGE_BANDS[dimension]
+        numerator=sum(x['total'] for rows in source.values() for x in rows if lo<=x['age']<=hi)
+        denominator=sum(x['total'] for rows in source.values() for x in rows)
+        assert result['result']['numerator']==numerator and result['result']['denominator']==denominator
+        assert math.isclose(result['result']['value'],float(Fraction(numerator,denominator)*100),abs_tol=1e-12)
+        assert all('/parts/' in x['evidence'][0]['valuePointer'] for x in result['observations'])
+    r=engine.query(request('compare','ageDistribution',dimension='age:0-14',towns=['046018','046005']))
+    massarosa=next(o for o in r['observations'] if o['geography']=='046018')
+    assert massarosa['numerator']==2213 and massarosa['denominator']==21782
+    assert math.isclose(massarosa['value'],float(Fraction(2213,21782)*100),abs_tol=1e-12)
+    rejected(engine,request('compare','ageDistribution'),'explicit_age_band_required')
+    rejected(engine,request('compare','ageDistribution',dimension='age:80+'),'explicit_age_band_required')
+    rejected(engine,request('series','ageDistribution',dimension='age:0-14',towns=['046018']),'historical_dimension_not_available')
+    rejected(engine,request('compare','ageDistribution',dimension='age:0-14',periods=['2025']),'current_period_mismatch')
+    corr={'operation':'correlation','selectors':[{'metric':'ageDistribution','dimension':'age:0-14'},
+        {'metric':'ageDistribution','dimension':'age:85+'}], 'method':'spearman','axis':'municipalities',
+        'purpose':'Technical pairing of two dimensions; same denominator, compositional relation'}
+    c=engine.query(corr)
+    assert c['status']=='computed' and c['result']['n']==7,c
+    assert 'compositional_age_shares_share_denominator' in c['warnings']
+    assert all(pair['x']['dimension']=='age:0-14' and pair['y']['dimension']=='age:85+' for pair in c['result']['pairs'])
+    # Independent quartile reference: [0,1,2,3,4,5,100] -> Q1=1.5 Q3=4.5.
+    rows=[dict(value=v,geography=str(i),unit='number') for i,v in enumerate([0,1,2,3,4,5,100])]
+    a=calculate('anomaly',rows,{})
+    assert (a['q1'],a['q3'],a['iqr'],a['lowerFence'],a['upperFence'])==(1.5,4.5,3,-3,9)
+    assert a['observations'][-1]['classification']=='above_fence'
+    # Exact fence values are inside: [0,1,2,7] has upper fence 7.
+    a=calculate('anomaly',[dict(value=v,geography=str(i),unit='number') for i,v in enumerate([0,1,2,7])],{})
+    assert a['q1']==.75 and a['q3']==3.25 and a['upperFence']==7
+    assert a['observations'][-1]['classification']=='within_fences'
+    a=engine.query(anomaly_request())
+    assert a['status']=='computed' and a['result']['n']==7,a
+    assert a==engine.query(anomaly_request())
+    assert a['policy']['referenceDistributionEvidence']['catalogSha256']==engine.catalog_hash
+    assert 'reference_selection_changes_fences' in a['warnings']
+    rejected(engine,request('anomaly','income'),'supported_anomaly_rule_and_reference')
+    rejected(engine,dict(anomaly_request(),rule='zscore'),'supported_anomaly_rule_and_reference')
+    rejected(engine,dict(anomaly_request(),reference='italy'),'supported_anomaly_rule_and_reference')
+    rejected(engine,dict(anomaly_request(),purpose=''),'explicit_anomaly_purpose')
+    rejected(engine,anomaly_request(towns=['046018','046005','046024']),'four_usable')
+    rejected(engine,dict(request('rank','income'),rule='tukey_1_5_iqr'),'fields_not_applicable')
+    rejected(engine,dict(anomaly_request(),referenceDistributionEvidence='caller evidence'),'invalid_query_fields')
+    with tempfile.TemporaryDirectory(prefix='a6-age-anomaly-') as temporary:
+        root=Path(temporary);snapshot=root/SNAPSHOT;snapshot.parent.mkdir(parents=True)
+        snapshot.write_bytes((ROOT/SNAPSHOT).read_bytes());path=root/'catalog.json'
+        catalog=engine.catalog
+        catalog['metrics']['ageDistribution']['rows'][0]['parts'][0]['value']=None
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        q=request('weighted_ratio','ageDistribution',dimension='age:0-14')
+        rejected(altered,q,'partial_coverage_requires_opt_in')
+        a=altered.query(dict(q,allowPartial=True))
+        assert a['status']=='computed' and len(a['result']['geographies'])==6
+        assert '046018' not in a['result']['geographies']
+        # An explicit current year must preserve the carrier's n.a. flag.
+        catalog=engine.catalog;catalog['metrics']['ageDistribution']['rows'][0]['notApplicable']=True
+        catalog['metrics']['ageDistribution']['rows'][0]['value']=None
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,request('compare','ageDistribution',dimension='age:0-14',periods=['2026']),'partial_coverage_requires_opt_in')
+        catalog=engine.catalog;catalog['metrics']['ageDistribution']['rows'][0]['parts'][0]['count']+=1
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,q,'age_band_count_mismatch')
+        catalog=engine.catalog;path.write_text(json.dumps(catalog))
+        raw=json.loads(snapshot.read_text());raw['posas']['ageSex2026']['Massarosa'][0]['women']+=1
+        snapshot.write_text(json.dumps(raw));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,q,'age_snapshot_invalid_counts')
+        snapshot.write_bytes((ROOT/SNAPSHOT).read_bytes())
+        raw=json.loads(snapshot.read_text());raw['posas']['ageSex2026']['Massarosa'].pop()
+        snapshot.write_text(json.dumps(raw));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,q,'age_snapshot_non_exhaustive')
+        catalog=engine.catalog
+        catalog['metrics']['income']['rows'][0]['value']=None
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,anomaly_request(),'partial_coverage_requires_opt_in')
+        a=altered.query(dict(anomaly_request(),allowPartial=True))
+        assert a['status']=='computed' and a['result']['n']==6 and len(a['excluded'])==1
+        for row in catalog['metrics']['income']['rows']:row['value']=1
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,anomaly_request(),'zero_interquartile_range')
+        # A future raw point cannot inherit an attestation scoped to 2021/2023.
+        snap=root/CENSUS_PATH
+        source=json.loads((ROOT/CENSUS_PATH).read_text())
+        for item in source['acceptedIndicators']:item['years']=[2021]
+        snap.write_text(json.dumps(source));path.write_text(json.dumps(engine.catalog))
+        altered=QueryEngine(path,repository_root=root)
+        rejected(altered,request('compare','femaleEmploymentRate'),'census_comparability_not_attested')
+
+
 def audit(path, layer):
     engine=QueryEngine(path,layer=layer)
     matrix=engine.coverage()
     assert len(matrix)==len(engine.catalog['metrics'])
     assert {r['metric'] for r in matrix}==set(engine.catalog['metrics'])
     adapters=[r['metric'] for r in matrix if r['engine']['status']=='adapter_present_query_preconditions_apply']
-    assert set(adapters)=={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000'}
+    assert set(adapters)=={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000','ageDistribution'}
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:
-        report=engine.query(request('compare',key))
+        dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
+        report=engine.query(request('compare',key,dimension=dimensions[0]))
         assert report['status']=='computed',report
         assert report['coverage']['requested']==7
         if key in CENSUS:
@@ -227,6 +328,7 @@ def audit(path, layer):
 def main():
     regressions()
     ratio_regressions()
+    age_anomaly_regressions()
     audit(ROOT/'data/site-data.json','source')
     if (ROOT/'dist/data/site-data.json').exists():
         audit(ROOT/'dist/data/site-data.json','effective')

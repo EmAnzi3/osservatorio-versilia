@@ -38,7 +38,7 @@ def census_context(metric, key):
 
 def census_observation(engine, key, row, period, value):
     snapshot,ref = engine.file(CENSUS_PATH)
-    if snapshot['comparabilityCheck']['result'] != 'accepted' or key not in {x['key'] for x in snapshot['acceptedIndicators']}:
+    if snapshot['comparabilityCheck']['result'] != 'accepted' or not any(x['key']==key and int(period) in x['years'] for x in snapshot['acceptedIndicators']):
         raise ValueError('census_comparability_not_attested')
     records = [(i,r) for i,r in enumerate(snapshot['raw'].get(period,[])) if str(r['code']) == str(row['code'])]
     if len(records) != 1 or records[0][1]['town'] != row['town']:
@@ -101,3 +101,63 @@ def benchmark_observation(engine, key, scope, municipal):
     return dict(engine.context(key),metric=key,dimension='total',geography=scope,period=municipal['period'],
                 value=value,source=source,evidence=evidence,provenance=evidence,
                 numerator=numerator,denominator=denominator,scale=scale,notApplicable=False,dataUnavailable=False)
+
+
+# Explicit non-overlapping published dimensions; never interpret primary value
+# (20–34 share) as the whole distribution or as mean age.
+AGE_BANDS = {
+    'age:0-14': ('0–14',0,14), 'age:15-19': ('15–19',15,19),
+    'age:20-34': ('20–34',20,34), 'age:35-49': ('35–49',35,49),
+    'age:50-64': ('50–64',50,64), 'age:65-79': ('65–79',65,79),
+    'age:80-84': ('80–84',80,84), 'age:85+': ('85+',85,100),
+}
+AGE_SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
+
+
+def age_context(metric, dimension):
+    meta = metric['meta']
+    if meta.get('unit')!='percent' or meta.get('compositeType')!='distribution' or metric.get('sourceUrl')!='https://demo.istat.it/app/?a=2025&i=POS' or '1° gennaio 2026' not in metric.get('method',{}).get('caveat',''):
+        raise ValueError('age_distribution_definition_changed')
+    if dimension not in AGE_BANDS:
+        raise ValueError('explicit_age_band_required')
+    return dict(unit='percent',population='resident population at January 1',
+                definition=f'residents {dimension} / all residents * 100',
+                method='Istat POSAS single-age additive counts',frequency='annual',
+                periodBasis='stock at January 1 of reference year',adapter='istat-posas-age-band/v1')
+
+
+def age_observation(engine, row, period, dimension):
+    if period!='2026':
+        raise ValueError('age_snapshot_period_not_available')
+    snapshot,ref = engine.file(AGE_SNAPSHOT)
+    detail = snapshot['posas']['ageSex2026'][row['town']]
+    # Age 100 is the official open terminal class; validate completeness and sex totals.
+    if len(detail)!=101 or {x['age'] for x in detail}!=set(range(101)):
+        raise ValueError('age_snapshot_non_exhaustive_or_duplicate')
+    for item in detail:
+        if any(type(item.get(k)) is not int or item[k]<0 for k in ('age','men','women','total')) or item['men']+item['women']!=item['total']:
+            raise ValueError('age_snapshot_invalid_counts')
+    total=sum(x['total'] for x in detail)
+    records=[r for r in snapshot['posas']['towns'][row['town']] if str(r['year'])==period]
+    sources=[s for s in snapshot['posas']['sources'] if str(s['year'])==period]
+    if len(records)!=1 or len(sources)!=1 or records[0]['population']!=total or total<=0:
+        raise ValueError('age_population_or_source_mismatch')
+    parts=row.get('parts')
+    if not isinstance(parts,list) or len(parts)!=len(AGE_BANDS) or {x.get('selectorLabel') for x in parts}!={v[0] for v in AGE_BANDS.values()}:
+        raise ValueError('age_catalog_non_exhaustive_or_duplicate')
+    # Reconcile every band, not just the selected one; nulls remain null.
+    for label,lo,hi in AGE_BANDS.values():
+        part=next(x for x in parts if x['selectorLabel']==label)
+        count=sum(x['total'] for x in detail if lo<=x['age']<=hi)
+        if type(part.get('count')) is not int or part['count']!=count:
+            raise ValueError('age_band_count_mismatch')
+        if part.get('value') is not None:
+            reconcile(part['value'],ratio(count,total,100))
+    label,lo,hi=AGE_BANDS[dimension]
+    index=next(i for i,p in enumerate(parts) if p['selectorLabel']==label)
+    count=parts[index]['count']
+    evidence=dict(ref,kind='source_snapshot',record=f'posas.ageSex2026.{row["town"]}',
+                  ageRange=[lo,hi],terminalClass='100 = 100 years and over',
+                  numerator=count,denominator=total,generatedAt=snapshot.get('generatedAt'),
+                  status=snapshot.get('status'),sourceUrl=sources[0]['url'])
+    return parts[index].get('value'),index,dict(numerator=count,denominator=total,scale=100),evidence,sources[0]['url']

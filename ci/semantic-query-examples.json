@@ -177,6 +177,44 @@
           }
         ]
       }
+    },
+    {
+      "id": "giovani_0_14_confronto",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ageDistribution",
+            "dimension": "age:0-14"
+          }
+        ]
+      }
+    },
+    {
+      "id": "residenti_85plus_versilia_ponderati",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ageDistribution",
+            "dimension": "age:85+"
+          }
+        ]
+      }
+    },
+    {
+      "id": "imponibile_screening_iqr",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "income"
+          }
+        ],
+        "rule": "tukey_1_5_iqr",
+        "reference": "selected_municipalities",
+        "purpose": "Screening descrittivo dei sette comuni; non identifica errori, qualità o priorità di politica"
+      }
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 Catalogo: `data/site-data.json`, SHA-256 `2a1f1ba0ee2ba4de98e12c00fe7e09c6a30d6edca2505f12587aefde1889a12b`.
 
-Output derivato dal motore v1 e dalle query in `ci/semantic-query-examples.json`. Numeri della tabella arrotondati solo per leggibilità; JSON conserva la precisione degli input e dei calcoli. Non è una lettura di politica pubblica.
+Output derivato dal motore v3 e dalle query in `ci/semantic-query-examples.json`. Numeri della tabella arrotondati solo per leggibilità; JSON conserva la precisione degli input e dei calcoli. Non è una lettura di politica pubblica.
 
 | Esempio | Esito | Risultato / motivo |
 |---|---|---|
@@ -47,3 +47,15 @@ La media semplice dei sette tassi comunali di occupazione femminile è 53,566300
 Snapshot distinti e versionati: `istat-sections-history-v1.8.0.json` per comuni 2021/2023; `a3-istat-census-benchmark-2023.json` per Toscana/Italia 2023; `a3-mef-taxable-income-benchmark-2024.json` per imponibile regionale/nazionale 2024. L'output conserva URL/record/colonne, SHA-256, metodi e periodi. Questi file non provano la disponibilità del servizio live. Il benchmark censuario 2021, quello residenti senza adapter e una media imponibile territoriale senza componenti comunali verificati vengono rifiutati.
 
 Questi esempi costituiscono evidenza tecnica per A6.5, non una diagnosi causale o una proposta di politica. Lo scostamento da Toscana/Italia non misura automaticamente una priorità; il patrimonio non occupato da residenti include usi diversi, da chiarire con altri dati. Per una proposta territoriale occorrono bisogno misurato, destinatari osservabili, ipotesi dichiarate, contesto e indicatori di risultato.
+
+
+## Terzo lotto — età e screening descrittivo
+
+| Domanda tecnica | Periodo | Risultato | Evidenza e limite |
+|---|---|---|---|
+| Quota 0–14 a Massarosa nel confronto comunale | 2026 | 10,159765% | 2.213 / 21.782 residenti; `parts`, non valore primario 20–34 |
+| Residenti 85+ dei sette Comuni, rapporto di somme | 2026 | 4,929977% | 7.815 / 158.520 residenti × 100; snapshot POSAS, otto fasce esaurienti |
+| Imponibile medio: screening IQR sui sette Comuni | 2024 | Q1 22.141,84; Q3 25.389,325; IQR 3.247,485 euro | Intervallo 17.270,6125–30.260,5525 euro; quartili lineari type 7 |
+| Forte dei Marmi nello screening precedente | 2024 | 40.248,59 euro, sopra il limite superiore | Valore esterno al gruppo di confronto; non prova errore, qualità o priorità |
+
+Le quote territoriali hanno come peso la popolazione, non uguale peso per Comune. Le fasce non dispongono di uno storico verificato dal motore: ogni richiesta temporale è rifiutata. Screening riferito agli input versionati e al gruppo selezionato; esclusioni cambiano il riferimento e richiedono opt-in. La regola non è una diagnosi territoriale e non legittima da sola una politica mirata. Il limite sugli archivi grezzi comunali MEF rimane dichiarato. Nessun servizio live o nuovo dato acquisito in questo lotto.

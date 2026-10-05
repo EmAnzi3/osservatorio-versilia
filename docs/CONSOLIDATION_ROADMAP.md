@@ -209,7 +209,7 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 - [x] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota A6 — 05-10-2026: A6.1 pubblicata con #301; contratti A6.2–A6.3 con #331; primo motore A6.4 pubblicato con #332, merge manuale `265c3613` e deploy `37258610516` SUCCESS. Secondo lotto A6.4: quattro adapter censuari con conteggi 2021/2023, rapporti ponderati, punti percentuali e benchmark separati Toscana/Italia (Censimento/MEF), audit sorgente/effettivo. Sei adapter e dieci operazioni con supporto esplicito; anomalie, altri adapter/dimensioni e letture A6.5 restano aperti. Nessuna UI o dato modificato.
+Nota A6 — 05-10-2026: A6.1 pubblicata con #301; contratti A6.2–A6.3 con #331; motore A6.4 e rapporti/benchmark pubblicati con #332/#333 (ultimo merge manuale `84bbadec`, deploy `37271484406` SUCCESS). Terzo lotto A6.4: otto fasce d’età POSAS 2026 riconciliate ai conteggi versionati, rapporti ponderati per fascia, pairing dimensionale e anomalie IQR con gruppo/regola espliciti e quartili documentati. Sette adapter e undici operazioni con supporto parziale dichiarato, audit sorgente/effettivo. Altri adapter/dimensioni, rapporti arrotondati e letture A6.5 restano aperti. Nessuna UI o dato modificato.
 - [x] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [x] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.
