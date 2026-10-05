@@ -2,17 +2,17 @@
 
 ## Stato e perimetro
 
-Dopo il merge manuale di #331 (`a3574070`, deploy `37240258981` SUCCESS), il motore `scripts/semantic_query_engine.py` esegue query strutturate sui dati già pubblicati. Questo primo lotto supporta **residenti POSAS** e **reddito imponibile medio MEF**, dimensione `total`. La copertura rimane parziale: A6.4 non è chiusa e non abilita A7 o nuove superfici pubbliche. Contratto A6.2–A6.3, interfaccia, dati e golden preservati.
+Dopo #331 e il merge manuale di #332 (`265c3613`, deploy `37258610516` SUCCESS), il motore `scripts/semantic_query_engine.py` esegue query strutturate sui dati già pubblicati. Il motore supporta **residenti POSAS**, **reddito imponibile medio MEF** e quattro rapporti censuari: occupazione femminile/maschile 15–64 anni, abitazioni totali e non occupate da residenti ogni 1.000 abitanti. Dimensione `total`: i due indicatori di occupazione hanno già un universo per sesso esplicito; non sono un adapter generico dei carrier sesso. La copertura rimane parziale: A6.4 non è chiusa e non abilita A7 o nuove superfici pubbliche. Contratto A6.2–A6.3, interfaccia, dati e golden preservati.
 
-Operazioni implementate: confronto, serie, variazione assoluta/relativa, rango, trend OLS e correlazione Pearson/Spearman. Benchmark, punti percentuali, rapporti ponderati e anomalie rimangono **operation_not_implemented**; altri indicatori e dimensioni richiedono adapter espliciti. Non estendere automaticamente un adapter da `unit` o dal nome dell'indicatore.
+Dieci operazioni implementate: confronto, serie, variazione assoluta/relativa, punti percentuali, scostamento dal benchmark, rapporto ponderato, rango, trend OLS e correlazione Pearson/Spearman. Anomalie rimangono **operation_not_implemented**; altri indicatori e dimensioni richiedono adapter espliciti. Supporto per operazione derivato dagli adapter: non tutte le dieci operazioni sono valide per tutte le sei metriche. Non estendere automaticamente un adapter da `unit` o dal nome dell'indicatore.
 
 ## Input e selezione
 
 Una query contiene `operation` e uno o due `selectors` (due per correlazione). Ogni selettore specifica `metric`, opzionalmente `dimension` (solo `total`), codici comunali `towns` e `periods`. Nessun metadato di metodo/unità/definizione può essere iniettato dal chiamante: deriva dagli adapter controllati. Campi sconosciuti o non pertinenti sono rifiutati. I codici devono appartenere al catalogo validato A6.1, senza duplicati.
 
-Per confronto e rango si seleziona un periodo. Senza periodi espliciti si usa il dato corrente; con periodi espliciti si usa il punto storico realmente presente. Per serie/trend/variazioni si seleziona un comune; i periodi annuali di questi adapter hanno esattamente quattro cifre, sono univoci e crescenti. Il motore non converte anni scolastici, mesi, date o norme composite in anni. Altri adapter potranno usare altre frequenze, con regole proprie. Senza periodi espliciti una query temporale usa gli anni disponibili, ordinati, senza interpolazione.
+Per confronto, rango, rapporto ponderato e scostamento dal benchmark si seleziona un periodo. Senza periodi espliciti si usa il dato corrente; con periodi espliciti si usa il punto storico realmente presente. Per serie/trend/variazioni si seleziona un comune; i periodi annuali di questi adapter hanno esattamente quattro cifre, sono univoci e crescenti. Il motore non converte anni scolastici, mesi, date o norme composite in anni. Altri adapter potranno usare altre frequenze, con regole proprie. Senza periodi espliciti una query temporale usa gli anni disponibili, ordinati, senza interpolazione.
 
-La selezione non elimina silenziosamente territori o periodi richiesti ma assenti: restituisce motivo di non calcolabilità. Nessuna aggregazione territoriale o denominatore ricostruito dal dato medio.
+La selezione non elimina silenziosamente territori o periodi richiesti ma assenti: restituisce motivo di non calcolabilità. Nessuna aggregazione implicita o denominatore ricostruito dal dato medio.
 
 ## Adapter, fonte e versione
 
@@ -32,7 +32,7 @@ Null, n.d. e n.a. non diventano zero. Le esclusioni richiedono `allowPartial: tr
 
 ## Calcoli e interpretazione
 
-Il motore applica prima `semantic_operations.assess`. Rango decrescente con pari merito e salti, ordinamento stabile per codice; non è un giudizio di qualità. Trend = pendenza OLS sul vero asse annuale, unità per anno, senza previsione. Le variazioni hanno unità originale o `percent_change`, distinto dai punti percentuali.
+Il motore applica prima `semantic_operations.assess`. Rango decrescente con pari merito e salti, ordinamento stabile per codice; non è un giudizio di qualità. Trend = pendenza OLS sul vero asse annuale, unità per anno, senza previsione. Le variazioni relative hanno unità `percent_change`. Differenze di tassi percentuali, compresi scostamenti dal benchmark, hanno unità `percentage_points`; le pendenze di tassi hanno unità `percentage_points/year`. Per gli altri valori le differenze conservano l'unità originale.
 
 Correlazioni: due variabili selezionate, `method` Pearson/Spearman, `axis` municipalities/periods e `purpose` esplicito. Stesso periodo/frequenza per coppia; nelle serie temporali stesso comune e contesto coerente per ogni variabile. Pairing per codice o periodo, mai posizione negli array. Coefficienti Spearman su ranghi medi per i pari. Variabili costanti e coppie insufficienti vengono rifiutate; gli errori numerici non producono NaN/Infinity pubblicabili.
 
@@ -55,3 +55,19 @@ Esempi realmente eseguiti: `reports/a6-query-engine.md`; richieste riproducibili
 Regressioni numeriche indipendenti: Pearson con riferimento algebrico, Spearman con pari merito, pendenza su intervalli irregolari, variazione percentuale e rango. API: periodi/geografie/duplicati/campi impropri, adapter assenti, versione/hash/puntatori, input congelati, zero base, mancanti/esclusioni/pairing, costanti, selezione di periodi incompatibili e omogeneità corrente/storico. Audit Quick sul sorgente e dopo build sul catalogo effettivo, senza workflow nuovo.
 
 Proseguire A6.4 con dimensioni versionate, benchmark e componenti/denominatori, adapter esterni, precisione/arrotondamenti espliciti e altre formule; aggiornare la matrice derivata e i test numerici per ogni estensione. A6.5 richiede domande territoriali e revisione del metodo prima di formulare proposte; A6.6 porta limiti dentro le letture pubbliche. L'AI di A7 dovrà esprimere risultati verificati del motore, con riferimenti e limiti conservati.
+
+## Rapporti censuari e benchmark — secondo lotto
+
+Gli adapter `istat-census-<metric>/v1` leggono lo snapshot `istat-sections-history-v1.8.0.json` (2021 e 2023), controllano identità codice/nome, definizione/unità/fonte, attestazione di comparabilità, conteggi finiti non negativi e denominatori positivi. Ogni punto corrente/storico selezionato viene riconciliato al rapporto originale entro 1e-8 assoluto, senza aumentare la tolleranza delle guardie A6.3 o usare dati arrotondati per ricostruire conteggi. URL annuale, record/colonne, hash del workbook e del file snapshot restano visibili. Il censimento non è equiparato allo stock POSAS al 1 gennaio.
+
+`weighted_ratio` è abilitata solo per questi quattro rapporti: somma dei numeratori / somma dei denominatori × scala. Comuni ufficiali distinti e conteggi additivi per residenza costituiscono l'evidenza del perimetro disgiunto; mai sommare Toscana/Italia ai Comuni. Non è la media dei valori comunali. Si restituiscono somme, scala, periodo e codici effettivamente inclusi. Una selezione con dati mancanti richiede opt-in e rimane parziale: non viene etichettata come intera Versilia. Residenti e reddito non hanno un adapter di rapporto comunale verificato e vengono rifiutati da questa operazione. I conteggi in snapshot non riempiono automaticamente valori null pubblicati.
+
+`percentage_points` richiede due punti percentuali dello stesso indicatore, Comune, universo e metodo, in ordine temporale. Non confronta implicitamente due metriche diverse o unità monetarie/per-mille. La variazione relativa resta distinta: 50% → 55% = +5 punti, +10% relativo.
+
+`benchmark_gap` richiede un solo Comune e `benchmark: tuscany | italy` esplicito. Supporta i quattro rapporti censuari nel 2023 e imponibile MEF nel 2024. Non sceglie automaticamente un benchmark o un anno alternativo; il 2021 censuario è rifiutato. Le evidenze comunali e regionali/nazionali sono distinte. Snapshot censuario: profilo, anno, unità/formula, gate, 20 workbook regionali, stesso workbook Toscana del dato comunale; si ricalcola il benchmark dai conteggi. Snapshot MEF: imponibile/frequenza corrispondente, anno d'imposta, archivi/hash/gate e scope nazionale dichiarato; non viene mescolato al reddito complessivo. Il limite sugli archivi storici comunali MEF non cambia. Se il catalogo effettivo contiene il benchmark, anno/path/valore devono riconciliarsi allo snapshot: un carrier obsoleto non viene ignorato.
+
+`sourceSnapshot` è un'evidenza versionata, non una prova live. Questi calcoli non acquisiscono nuovi dati e non sostituiscono il monitor. Il modulo adapter ha un proprio SHA-256 nell'output; input esterni non possono iniettare attestazioni, formule, scale o denominatori.
+
+Regressioni: rapporto di somme con pesi diseguali e riferimento razionale indipendente; 2021/2023 su quattro adapter; punti vs variazione relativa; due scope benchmark su cinque adapter; mancanti con/senza opt-in e perimetro ridotto; zero denominatore, valore pubblico alterato, benchmark alterato/obsoleto, periodo diverso, scope ignoto e iniezione. Dopo build il gate ripete confronto, aggregazione e benchmark sul catalogo effettivo. Nessun nuovo workflow.
+
+Restano anomalie, altri adapter, carrier sesso/età compositi, benchmark di altri profili e rapporti con precisione pubblicata arrotondata. Non estendere gli adapter ai rapporti arrotondati senza una regola esplicita di riconciliazione. A6.4 rimane parziale; A6.5 e A6.6 devono trasformare domande ed evidenze in letture territoriali revisionabili, distinguendo contesti e calcoli congiunti.

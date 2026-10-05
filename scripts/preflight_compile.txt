@@ -77,3 +77,4 @@ scripts/semantic_operations.py
 scripts/test_semantic_operations.py
 scripts/semantic_query_engine.py
 scripts/test_semantic_query_engine.py
+scripts/semantic_query_adapters.py

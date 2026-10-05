@@ -13,11 +13,12 @@ from urllib.parse import urlparse
 
 from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import assess, coverage_matrix, finite
+from semantic_query_adapters import CENSUS, census_context, census_observation, benchmark_observation
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1'
-SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation')
-TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend')
+VERSION = '2'
+SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap')
+TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 
 
@@ -80,16 +81,30 @@ def calculate(operation, observations, policy):
         for i, o in enumerate(ordered, 1):
             value_rank.setdefault(o['value'], i)
         return {'ranking': [{'geography': o['geography'], 'value': o['value'], 'rank': value_rank[o['value']]} for o in ordered], 'direction':'descending', 'ties':'competition'}
-    if operation in ('absolute_change', 'relative_change'):
+    if operation in ('absolute_change', 'relative_change', 'percentage_points'):
         delta = values[1] - values[0]
-        return {'value': delta if operation == 'absolute_change' else delta / values[0] * 100,
-                'unit': usable[0]['unit'] if operation == 'absolute_change' else 'percent_change',
+        return {'value': delta / values[0] * 100 if operation == 'relative_change' else delta,
+                'unit': 'percent_change' if operation == 'relative_change' else 'percentage_points' if usable[0]['unit']=='percent' else usable[0]['unit'],
                 'startPeriod':usable[0]['period'], 'endPeriod':usable[1]['period']}
+    if operation == 'weighted_ratio':
+        numerator = math.fsum(o['numerator'] for o in usable)
+        denominator = math.fsum(o['denominator'] for o in usable)
+        return {'value':numerator / denominator * usable[0]['scale'], 'unit':usable[0]['unit'],
+                'numerator':numerator, 'denominator':denominator, 'scale':usable[0]['scale'],
+                'geographies':[o['geography'] for o in usable], 'period':usable[0]['period'],
+                'aggregation':'ratio of sums; not mean of municipal ratios'}
+    if operation == 'benchmark_gap':
+        municipal,benchmark = usable
+        return {'value':municipal['value']-benchmark['value'],
+                'unit':'percentage_points' if municipal['unit']=='percent' else municipal['unit'],
+                'municipalValue':municipal['value'], 'benchmarkValue':benchmark['value'],
+                'geography':municipal['geography'], 'benchmarkScope':benchmark['geography'],
+                'period':municipal['period'], 'direction':'municipal minus benchmark'}
     if operation == 'trend':
         axis = policy['timeAxis']
         mx, my = mean(axis), mean(values)
         slope = math.fsum((x-mx)*(y-my) for x,y in zip(axis,values)) / math.fsum((x-mx)**2 for x in axis)
-        return {'slope':slope, 'unit':usable[0]['unit']+'/year', 'n':len(values), 'timeAxis':axis,
+        return {'slope':slope, 'unit':('percentage_points' if usable[0]['unit']=='percent' else usable[0]['unit'])+'/year', 'n':len(values), 'timeAxis':axis,
                 'method':'OLS slope', 'forecast':False}
     if operation == 'correlation':
         groups = {}
@@ -144,6 +159,8 @@ class QueryEngine:
     def context(self, key):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in CENSUS:
+            return census_context(metric,key)
         if key == 'population':
             if meta.get('unit') != 'number' or metric.get('sourceUrl') != 'https://demo.istat.it/' or 'gennaio' not in meta.get('description','').lower():
                 raise ValueError('population_definition_changed')
@@ -183,7 +200,13 @@ class QueryEngine:
                      'valuePointer':pointer,'periodPointer':period_pointer}]
         warnings = []
         source = metric['sourceUrl']
-        if key == 'population':
+        components = {}
+        if key in CENSUS:
+            components,ref,source = census_observation(self,key,row,period,value)
+            evidence.append(ref)
+            if key == 'nonOccupiedHomesPer1000':
+                warnings.append('non_resident_occupied_homes_are_not_necessarily_vacant')
+        elif key == 'population':
             snapshot, ref = self.file(SNAPSHOT)
             records = snapshot['posas']['towns'][row['town']]
             records = [r for r in records if annual(r['year']) == period]
@@ -202,7 +225,7 @@ class QueryEngine:
             # and the explicit homogeneity note are the available evidence.
             evidence.append({'kind':'published_method_note','pointer':'/metrics/income/meta/longHistoryNote','text':meta['longHistoryNote'], 'sha256':self.catalog_hash})
             warnings.extend(['nominal_income_not_purchasing_power','raw_income_archive_not_verified_by_adapter'])
-        obs = dict(context, metric=key, dimension='total', geography=str(row['code']), period=period,
+        obs = dict(context, **components, metric=key, dimension='total', geography=str(row['code']), period=period,
                    value=value, source=source, evidence=evidence, provenance=evidence,
                    notApplicable=bool(row.get('notApplicable')) if not historical else False,
                    dataUnavailable=bool(row.get('dataUnavailable')) if not historical else value is None)
@@ -239,7 +262,7 @@ class QueryEngine:
             raise ValueError('duplicate_period')
         if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=int)):
             raise ValueError('temporal_query_requires_ordered_periods_and_one_geography')
-        if operation in ('compare','rank') and len(periods)!=1:
+        if operation in ('compare','rank','weighted_ratio','benchmark_gap') and len(periods)!=1:
             raise ValueError('cross_section_requires_one_period')
         result,warnings = [],[]
         for code in sorted(towns):
@@ -254,18 +277,21 @@ class QueryEngine:
         # Copy prevents mutation of a request from changing a returned result.
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
+                  'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
                   'policySha256':self.policy_hash, 'eligibilitySha256':digest((ROOT/'scripts/semantic_operations.py').read_bytes()),
                   'catalogSha256':self.catalog_hash, 'catalogPath':self.catalog_path,
                   'query':request, 'status':'not_computable','reasons':[], 'warnings':[],
                   'observations':[], 'excluded':[], 'result':None,
                   'interpretationLevel':'calculation'}
         try:
-            if not isinstance(request,dict) or set(request)-{'operation','selectors','allowPartial','method','axis','purpose'}:
+            if not isinstance(request,dict) or set(request)-{'operation','selectors','allowPartial','method','axis','purpose','benchmark'}:
                 raise ValueError('invalid_query_fields')
             operation = request.get('operation')
             if operation not in SUPPORTED:
                 raise ValueError('operation_not_implemented')
             if operation != 'correlation' and set(request)&{'method','axis','purpose'}:
+                raise ValueError('fields_not_applicable_to_operation')
+            if operation != 'benchmark_gap' and 'benchmark' in request:
                 raise ValueError('fields_not_applicable_to_operation')
             selectors = request.get('selectors')
             if not isinstance(selectors,list) or len(selectors)!=(2 if operation=='correlation' else 1):
@@ -276,8 +302,23 @@ class QueryEngine:
             for selector in selectors:
                 selected,warnings = self.select(selector,operation)
                 observations.extend(selected);notes.extend(warnings)
+            if operation == 'benchmark_gap':
+                if len(observations)!=1:
+                    raise ValueError('benchmark_query_requires_one_municipality')
+                observations.append(benchmark_observation(self,selectors[0]['metric'],request.get('benchmark'),observations[0]))
+                notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
+            if operation == 'weighted_ratio':
+                if selectors[0]['metric'] not in CENSUS:
+                    raise ValueError('verified_ratio_adapter_required')
+                policy['disjointPopulationEvidence'] = {'method':'distinct official census municipality codes; additive counts by residence',
+                    'geographies':[o['geography'] for o in observations],
+                    'snapshotSha256':observations[0]['evidence'][1]['sha256']}
+            if operation == 'benchmark_gap':
+                policy['benchmarkComparabilityEvidence'] = {'adapter':observations[0]['adapter'],
+                    'period':observations[0]['period'], 'benchmarkSnapshot':observations[1]['evidence'][0],
+                    'universe':observations[0]['population'],'definition':observations[0]['definition']}
             if operation in TEMPORAL:
                 temporal_usable = [o for o in observations if finite(o.get('value')) and not o['notApplicable'] and not o['dataUnavailable']]
                 policy['periodOrder'] = [o['period'] for o in temporal_usable]
@@ -321,7 +362,10 @@ class QueryEngine:
         for entry in matrix:
             try:
                 context = self.context(entry['metric'])
-                entry['engine'] = {'adapter':context['adapter'], 'dimensions':['total'], 'operations':list(SUPPORTED),
+                operations = [o for o in SUPPORTED if (o != 'weighted_ratio' or entry['metric'] in CENSUS) and
+                              (o != 'benchmark_gap' or entry['metric'] in CENSUS or entry['metric']=='income') and
+                              (o != 'percentage_points' or context['unit']=='percent')]
+                entry['engine'] = {'adapter':context['adapter'], 'dimensions':['total'], 'operations':operations,
                                    'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}

@@ -2,9 +2,9 @@
 
 ## Stato corrente — 5 ottobre 2026
 
-- Main pubblicato: `a357407083e7ec4ffa7cb4a605528f966eae026b` (#331); deploy `37240258981` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- Main pubblicato: `265c3613925ca55ddf50c92d06d273719153c03d` (#332); deploy `37258610516` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.4**, issue **#330**, branch `feat/a6-query-engine`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.4**, issue **#330**, branch `feat/a6-ratios-benchmarks`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: motore deterministico, test e documentazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -24,4 +24,4 @@
 
 ## Prossima azione
 
-Verificare il primo lotto A6.4: `docs/A6_QUERY_ENGINE.md`, motore con adapter POSAS residenti/MEF imponibile, sette operazioni, provenienza e matrice delle esclusioni. Esempi in `reports/a6-query-engine.md`. A6.4 resta parziale: altri indicatori/dimensioni, benchmark, rapporti, punti percentuali e anomalie richiedono adapter/calcolatori. Esiti Quick/Full nella nuova PR; nessuna nuova UI o lettura di politica pubblicata. Merge successivo solo su autorizzazione specifica.
+Verificare il secondo lotto A6.4: sei adapter totali, quattro rapporti censuari 2021/2023 riconciliati ai conteggi versionati, punti percentuali, aggregato come rapporto di somme, scostamenti da Toscana/Italia con benchmark e provenienza distinti. Specifica `docs/A6_QUERY_ENGINE.md`, undici richieste riproducibili e report tecnico `reports/a6-query-engine.md`. A6.4 resta parziale: anomalie, altri indicatori/carrier/dimensioni e rapporti arrotondati richiedono regole esplicite; A6.5–A6.6 e A7 non sono chiusi. Quick/Full nella nuova PR; nessuna nuova UI/dato o lettura di politica pubblicata. Merge solo su istruzione specifica.

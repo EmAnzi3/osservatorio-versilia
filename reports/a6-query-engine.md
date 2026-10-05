@@ -29,3 +29,21 @@ python scripts/semantic_query_engine.py --coverage --output /tmp/a6-query-covera
 ```
 
 Per il catalogo effettivo usare `--catalog dist/data/site-data.json --layer effective` dopo build. Gli hash dei due cataloghi sono distinti; ogni osservazione conserva il suo JSON Pointer. La matrice effettiva comprende tutti gli indicatori pubblici e segnala gli adapter ancora mancanti.
+
+## Secondo lotto — rapporti e confronti verificati
+
+Richieste aggiunte allo stesso manifest; valori calcolati dal motore, arrotondati qui solo per leggibilità. Il catalogo numerico non cambia.
+
+| Domanda tecnica | Periodo | Risultato | Base ed evidenza |
+|---|---|---|---|
+| Occupazione femminile dei sette Comuni, rapporto di somme | 2023 | 55,264889% | 27.717 occupate / 50.153 residenti donne 15–64 × 100; snapshot censuario |
+| Variazione Massarosa, occupazione femminile | 2021→2023 | +3,052464 punti percentuali | Stesse variabili censuarie; non +3,05% relativo |
+| Massarosa meno Toscana, occupazione femminile | 2023 | −5,771613 punti percentuali | Comune 56,436353%; Toscana 62,207967%; evidenze comunali/benchmark distinte |
+| Massarosa meno Italia, imponibile medio | 2024 | −2.542,438478 euro nominali | Benchmark nazionale imponibile/frequenza; non reddito complessivo o potere d'acquisto |
+| Abitazioni non occupate da residenti dei sette Comuni, rapporto di somme | 2023 | 238,626739 ogni 1.000 residenti | 38.034 abitazioni / 159.387 residenti × 1.000; non implica 38.034 abitazioni vuote |
+
+La media semplice dei sette tassi comunali di occupazione femminile è 53,566300%; il rapporto territoriale è 55,264889%. La prima descrive il Comune medio con uguale peso; il secondo le residenti di 15–64 anni del perimetro selezionato. Non sostituirli né attribuire il risultato a sottogruppi non osservati. Se un Comune è escluso per dato mancante, il risultato riporta i codici rimasti e non descrive più tutti i sette Comuni.
+
+Snapshot distinti e versionati: `istat-sections-history-v1.8.0.json` per comuni 2021/2023; `a3-istat-census-benchmark-2023.json` per Toscana/Italia 2023; `a3-mef-taxable-income-benchmark-2024.json` per imponibile regionale/nazionale 2024. L'output conserva URL/record/colonne, SHA-256, metodi e periodi. Questi file non provano la disponibilità del servizio live. Il benchmark censuario 2021, quello residenti senza adapter e una media imponibile territoriale senza componenti comunali verificati vengono rifiutati.
+
+Questi esempi costituiscono evidenza tecnica per A6.5, non una diagnosi causale o una proposta di politica. Lo scostamento da Toscana/Italia non misura automaticamente una priorità; il patrimonio non occupato da residenti include usi diversi, da chiarire con altri dati. Per una proposta territoriale occorrono bisogno misurato, destinatari osservabili, ipotesi dichiarate, contesto e indicatori di risultato.
