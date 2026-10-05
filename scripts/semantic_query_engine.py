@@ -8,16 +8,17 @@ import hashlib
 import json
 import math
 import re
+from statistics import median
 from pathlib import Path
 from urllib.parse import urlparse
 
 from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import assess, coverage_matrix, finite
-from semantic_query_adapters import CENSUS, census_context, census_observation, benchmark_observation
+from semantic_query_adapters import CENSUS, census_context, census_observation, benchmark_observation, AGE_BANDS, age_context, age_observation
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '2'
-SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap')
+VERSION = '3'
+SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 
@@ -100,6 +101,25 @@ def calculate(operation, observations, policy):
                 'municipalValue':municipal['value'], 'benchmarkValue':benchmark['value'],
                 'geography':municipal['geography'], 'benchmarkScope':benchmark['geography'],
                 'period':municipal['period'], 'direction':'municipal minus benchmark'}
+    if operation == 'anomaly':
+        ordered=sorted(values)
+        def quantile(p):
+            position=(len(ordered)-1)*p
+            lo=math.floor(position);hi=math.ceil(position)
+            return ordered[lo]*(hi-position)+ordered[hi]*(position-lo) if lo!=hi else ordered[lo]
+        if len(ordered)<4:
+            raise ValueError('anomaly_requires_four_usable_observations')
+        q1,q3=quantile(.25),quantile(.75)
+        iqr=q3-q1
+        if iqr<=0:
+            raise ValueError('anomaly_zero_interquartile_range')
+        lower,upper=q1-1.5*iqr,q3+1.5*iqr
+        return dict(n=len(values),q1=q1,q3=q3,median=median(ordered),iqr=iqr,
+                    lowerFence=lower,upperFence=upper,unit=usable[0]['unit'],
+                    rule='tukey_1_5_iqr',quantileMethod='linear interpolation: (n-1)*p, type 7',
+                    observations=[dict(geography=o['geography'],value=o['value'],
+                        classification='below_fence' if o['value']<lower else 'above_fence' if o['value']>upper else 'within_fences') for o in usable],
+                    inference='descriptive peer screen; no error, quality or policy-priority claim')
     if operation == 'trend':
         axis = policy['timeAxis']
         mx, my = mean(axis), mean(values)
@@ -156,9 +176,11 @@ class QueryEngine:
             self.files[relative] = (json.loads(body), {'path':relative,'sha256':digest(body)})
         return self.files[relative]
 
-    def context(self, key):
+    def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key == 'ageDistribution':
+            return age_context(metric,dimension)
         if key in CENSUS:
             return census_context(metric,key)
         if key == 'population':
@@ -173,13 +195,20 @@ class QueryEngine:
                         method='MEF published taxable mean income', frequency='annual', periodBasis='income tax year; distinct from publication year', adapter='mef-taxable-income/v1')
         raise ValueError('adapter_not_implemented')
 
-    def observation(self, key, row_index, period, *, historical):
+    def observation(self, key, row_index, period, *, historical, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
         row = metric['rows'][row_index]
-        context = self.context(key)
+        context = self.context(key,dimension)
         pointer = f'/metrics/{key}/rows/{row_index}'
-        if historical:
+        if key == 'ageDistribution':
+            if annual(meta['year'])!=period:
+                raise ValueError('current_period_mismatch')
+            historical=False # Explicit 2026 selection still uses the current composite carrier.
+            value,index,components,ref,source=age_observation(self,row,period,dimension)
+            pointer += f'/parts/{index}/value'
+            period_pointer=f'/metrics/{key}/meta/year'
+        elif historical:
             series = row.get('series')
             if not isinstance(series,dict):
                 raise ValueError('series_not_available')
@@ -199,8 +228,11 @@ class QueryEngine:
         evidence = [{'kind':'catalog_snapshot','sha256':self.catalog_hash,'path':self.catalog_path,
                      'valuePointer':pointer,'periodPointer':period_pointer}]
         warnings = []
-        source = metric['sourceUrl']
-        components = {}
+        if key == 'ageDistribution':
+            evidence.append(ref)
+        else:
+            source = metric['sourceUrl']
+            components = {}
         if key in CENSUS:
             components,ref,source = census_observation(self,key,row,period,value)
             evidence.append(ref)
@@ -218,14 +250,14 @@ class QueryEngine:
             source = sources[0]['url']
             evidence.append(dict(ref,kind='source_snapshot',record=f'posas.towns.{row["town"]}.year={period}',
                                  generatedAt=snapshot.get('generatedAt'),status=snapshot.get('status'),sourceUrl=source))
-        else:
+        elif key != 'ageDistribution':
             if historical and period == str(meta['year']) and finite(value) and finite(row.get('value')) and value != row['value']:
                 raise ValueError('published_current_series_mismatch')
             # Historical raw archives are not versioned here: published series
             # and the explicit homogeneity note are the available evidence.
             evidence.append({'kind':'published_method_note','pointer':'/metrics/income/meta/longHistoryNote','text':meta['longHistoryNote'], 'sha256':self.catalog_hash})
             warnings.extend(['nominal_income_not_purchasing_power','raw_income_archive_not_verified_by_adapter'])
-        obs = dict(context, **components, metric=key, dimension='total', geography=str(row['code']), period=period,
+        obs = dict(context, **components, metric=key, dimension=dimension, geography=str(row['code']), period=period,
                    value=value, source=source, evidence=evidence, provenance=evidence,
                    notApplicable=bool(row.get('notApplicable')) if not historical else False,
                    dataUnavailable=bool(row.get('dataUnavailable')) if not historical else value is None)
@@ -237,9 +269,12 @@ class QueryEngine:
         key = selector.get('metric')
         if key not in self._catalog['metrics']:
             raise ValueError('unknown_metric')
-        self.context(key)
-        if selector.get('dimension','total') != 'total':
+        dimension=selector.get('dimension','total')
+        self.context(key,dimension)
+        if key!='ageDistribution' and dimension != 'total':
             raise ValueError('dimension_adapter_not_implemented')
+        if key=='ageDistribution' and operation in TEMPORAL:
+            raise ValueError('age_historical_dimension_not_available')
         towns = selector.get('towns',sorted(self.codes))
         if not isinstance(towns,list) or not towns or any(not isinstance(c,str) or c not in self.codes for c in towns) or len(towns)!=len(set(towns)):
             raise ValueError('unknown_or_duplicate_geography')
@@ -262,14 +297,14 @@ class QueryEngine:
             raise ValueError('duplicate_period')
         if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=int)):
             raise ValueError('temporal_query_requires_ordered_periods_and_one_geography')
-        if operation in ('compare','rank','weighted_ratio','benchmark_gap') and len(periods)!=1:
+        if operation in ('compare','rank','weighted_ratio','benchmark_gap','anomaly') and len(periods)!=1:
             raise ValueError('cross_section_requires_one_period')
         result,warnings = [],[]
         for code in sorted(towns):
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                observation,notes = self.observation(key,rows[code][0],period,historical=historical)
+                observation,notes = self.observation(key,rows[code][0],period,historical=historical,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
 
@@ -284,12 +319,16 @@ class QueryEngine:
                   'observations':[], 'excluded':[], 'result':None,
                   'interpretationLevel':'calculation'}
         try:
-            if not isinstance(request,dict) or set(request)-{'operation','selectors','allowPartial','method','axis','purpose','benchmark'}:
+            if not isinstance(request,dict) or set(request)-{'operation','selectors','allowPartial','method','axis','purpose','benchmark','rule','reference'}:
                 raise ValueError('invalid_query_fields')
             operation = request.get('operation')
             if operation not in SUPPORTED:
                 raise ValueError('operation_not_implemented')
-            if operation != 'correlation' and set(request)&{'method','axis','purpose'}:
+            if operation != 'correlation' and set(request)&{'method','axis'}:
+                raise ValueError('fields_not_applicable_to_operation')
+            if operation not in ('correlation','anomaly') and 'purpose' in request:
+                raise ValueError('fields_not_applicable_to_operation')
+            if operation != 'anomaly' and set(request)&{'rule','reference'}:
                 raise ValueError('fields_not_applicable_to_operation')
             if operation != 'benchmark_gap' and 'benchmark' in request:
                 raise ValueError('fields_not_applicable_to_operation')
@@ -310,21 +349,34 @@ class QueryEngine:
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
             if operation == 'weighted_ratio':
-                if selectors[0]['metric'] not in CENSUS:
+                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution':
                     raise ValueError('verified_ratio_adapter_required')
-                policy['disjointPopulationEvidence'] = {'method':'distinct official census municipality codes; additive counts by residence',
+                policy['disjointPopulationEvidence'] = {'method':'distinct official municipality codes; additive source counts by residence',
                     'geographies':[o['geography'] for o in observations],
                     'snapshotSha256':observations[0]['evidence'][1]['sha256']}
             if operation == 'benchmark_gap':
                 policy['benchmarkComparabilityEvidence'] = {'adapter':observations[0]['adapter'],
                     'period':observations[0]['period'], 'benchmarkSnapshot':observations[1]['evidence'][0],
                     'universe':observations[0]['population'],'definition':observations[0]['definition']}
+            if operation == 'anomaly':
+                if request.get('rule')!='tukey_1_5_iqr' or request.get('reference')!='selected_municipalities':
+                    raise ValueError('explicit_supported_anomaly_rule_and_reference_required')
+                if not isinstance(request.get('purpose'),str) or not request['purpose'].strip():
+                    raise ValueError('explicit_anomaly_purpose_required')
+                policy.update(anomalyRule='tukey_1_5_iqr',referenceDistributionEvidence={
+                    'scope':'selected_municipalities','purpose':request['purpose'],
+                    'selectedGeographies':[o['geography'] for o in observations],
+                    'catalogSha256':self.catalog_hash,'valueEvidence':[o['evidence'] for o in observations],
+                    'exclusionsRequireOptIn':True})
+                notes.extend(['small_peer_group_no_inferential_claim','anomaly_is_not_data_error_or_policy_priority','reference_selection_changes_fences'])
             if operation in TEMPORAL:
                 temporal_usable = [o for o in observations if finite(o.get('value')) and not o['notApplicable'] and not o['dataUnavailable']]
                 policy['periodOrder'] = [o['period'] for o in temporal_usable]
                 if operation == 'trend':
                     policy['timeAxis'] = [int(o['period']) for o in temporal_usable]
             if operation == 'correlation':
+                if all(s['metric']=='ageDistribution' for s in selectors):
+                    notes.append('compositional_age_shares_share_denominator')
                 if len({o['periodBasis'] for o in observations}) > 1:
                     notes.append('stock_and_flow_reference_periods_differ')
                 purpose = request.get('purpose')
@@ -341,7 +393,7 @@ class QueryEngine:
                 field = 'geography' if policy['axis']=='municipalities' else 'period'
                 groups = []
                 for selector in selectors:
-                    groups.append({o[field]:o for o in observations if o['metric']==selector['metric'] and finite(o.get('value')) and not o['notApplicable'] and not o['dataUnavailable']})
+                    groups.append({o[field]:o for o in observations if o['metric']==selector['metric'] and o['dimension']==selector.get('dimension','total') and finite(o.get('value')) and not o['notApplicable'] and not o['dataUnavailable']})
                 common = set(groups[0])&set(groups[1])
                 union = set(o[field] for o in observations)
                 result['pairCoverage'] = {'requested':len(union),'paired':len(common),'excludedKeys':sorted(union-common)}
@@ -361,11 +413,13 @@ class QueryEngine:
         matrix = coverage_matrix(self.catalog)
         for entry in matrix:
             try:
-                context = self.context(entry['metric'])
-                operations = [o for o in SUPPORTED if (o != 'weighted_ratio' or entry['metric'] in CENSUS) and
+                dimensions=list(AGE_BANDS) if entry['metric']=='ageDistribution' else ['total']
+                context = self.context(entry['metric'],dimensions[0])
+                operations = [o for o in SUPPORTED if (o != 'weighted_ratio' or (entry['metric'] in CENSUS or entry['metric']=='ageDistribution')) and
                               (o != 'benchmark_gap' or entry['metric'] in CENSUS or entry['metric']=='income') and
-                              (o != 'percentage_points' or context['unit']=='percent')]
-                entry['engine'] = {'adapter':context['adapter'], 'dimensions':['total'], 'operations':operations,
+                              (o != 'percentage_points' or context['unit']=='percent') and
+                              (entry['metric']!='ageDistribution' or o not in TEMPORAL)]
+                entry['engine'] = {'adapter':context['adapter'], 'dimensions':dimensions, 'operations':operations,
                                    'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
