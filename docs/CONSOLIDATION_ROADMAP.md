@@ -209,7 +209,7 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 - [x] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota A6 — 05-10-2026: #301 e #331–341 pubblicate, main `58f67993`, deploy `37347103475` e status live SUCCESS. Business v6: 45/225 con adapter e 50 domande. Lotto censimento v7 in corso: 11 carrier aggiuntivi, copertura effettiva 56/225 e 69 domande; età/sesso, arrotondamenti, periodi nativi, benchmark e discontinuità espliciti. Metodo `docs/A6_CENSUS_ADAPTERS.md`; audit, mappa e baseline separata. Nessuna acquisizione o modifica dati/UI/golden. A6.4–A6.6 aperte; A7 non avviata.
+Nota A6 — 05-10-2026: #342 pubblicata, main `29f11f28`, deploy `37361574176` e verifica live `37362454243` SUCCESS. Censimento v7: 56/225 con adapter, 69 domande. Lotto finanza v8 in corso: 25 carrier aggiuntivi, copertura effettiva 81/225, 84 domande (52 calcoli/32 rifiuti); Rendiconto/SIOPE e date dei denominatori distinti, rapporti da componenti congelati, revisioni e limiti delle estrazioni normalizzate espliciti. Metodo `docs/A6_FINANCE_ADAPTERS.md`; audit, mappa e baseline separata. Nessuna acquisizione/modifica dati/UI/golden. A6.4–A6.6 aperte; A7 non avviata.
 - [x] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [x] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.

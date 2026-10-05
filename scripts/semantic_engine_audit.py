@@ -123,6 +123,9 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('finance_cash_balance','cashReceiptsPerResident','cashBalancePerResident','derived_difference','Annual December cash balance is receipts minus payments on the same next-January resident denominator'),
+        ('finance_cash_accrual','cashReceiptsPerResident','currentRevenueAccruedPerResident','context','Cash receipts and current accruals have different accounting coverage and resident dates; descriptive only'),
+        ('finance_mission_mix','educationMissionExpenditurePerResident','socialMissionExpenditurePerResident','context','Accounting commitments by mission share a population denominator; not service outputs'),
         ('census_gender_difference','maleEmploymentRate','employmentGenderGap','derived_difference','Resident employment gap is male minus female 15–64 rates in the same census year'),
         ('education_employment','diplomaPlus','employmentRate','context','Resident qualification and employment, 25–64 in 2024; association is not job matching or a policy effect'),
         ('household_housing','singleHouseholds','vacantHomes','context','Resident household composition and censused homes; not direct loneliness or vacant property availability'),
@@ -155,7 +158,12 @@ def connections(engine, coverage):
                 import math
                 assert set(a)==set(b)
                 factor=1_000_000 if identity=='frame_turnover_numerator' else 1
-                if identity=='census_gender_difference':
+                if identity=='finance_cash_balance':
+                    payments=engine.query({'operation':'compare','selectors':[{'metric':'siopePayments'}]})
+                    results.append(payments);p={o['geography']:o for o in payments['observations']}
+                    if payments['status']=='computed' and set(a)==set(p) and all(a[c]['period']==b[c]['period']==p[c]['period'] and a[c]['denominatorPeriod']==b[c]['denominatorPeriod']==p[c]['denominatorPeriod'] and math.isclose(a[c]['value']-p[c]['value'],b[c]['value'],rel_tol=0,abs_tol=1e-7) for c in a):verification='components_reconciled'
+                    else:reasons=['formula_components_or_periods_not_reconciled']
+                elif identity=='census_gender_difference':
                     female=engine.query({'operation':'compare','selectors':[{'metric':'femaleEmploymentRate'}]})
                     results.append(female)
                     f={o['geography']:o for o in female['observations']}
