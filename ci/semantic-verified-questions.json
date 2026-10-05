@@ -756,6 +756,311 @@
         ]
       },
       "reference": "Dati/archivio MIMIT presenti; adapter esterno mensile ancora mancante"
+    },
+    {
+      "id": "ars_hypertension_current",
+      "question": "Qual è il tasso standardizzato di ipertensione a Massarosa nel 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 245.595
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "per1000"
+          }
+        ],
+        "warnings": [
+          "standardized_rate_not_crude_ratio"
+        ]
+      },
+      "reference": "ARS 255, Massarosa/totale/tutte le età: misura_standardizzata 245,595; export congelato v1.40"
+    },
+    {
+      "id": "ars_hypertension_age",
+      "question": "Qual è il tasso specifico di ipertensione tra i 65–84 anni a Massarosa nel 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "age:65-84|total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 681.808
+          },
+          {
+            "path": "/observations/0/evidence/1/ci95Low",
+            "value": null
+          }
+        ],
+        "warnings": [
+          "age_specific_raw_rate_not_standardized"
+        ]
+      },
+      "reference": "ARS 255, Massarosa/65-84/totale: misura_grezza 681,808; standardized=0 strutturale, IC 0–0 non pubblicabile"
+    },
+    {
+      "id": "ars_diabetes_gap",
+      "question": "Quanto differisce il tasso standardizzato di diabete di Massarosa dalla Toscana nel 2025?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "diabetes",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              49668,
+              10000
+            ]
+          },
+          {
+            "path": "/result/benchmarkValue",
+            "value": 62.0662
+          }
+        ]
+      },
+      "reference": "ARS 271: 67,0330 − 62,0662 = 4,9668 ogni 1.000; stessa misura e stesso periodo"
+    },
+    {
+      "id": "ars_life_women_change",
+      "question": "Come cambia la speranza di vita femminile di Massarosa tra 2008 e 2022?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "lifeExpectancy",
+            "dimension": "sex:women",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2008",
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              170,
+              100
+            ]
+          },
+          {
+            "path": "/result/unit",
+            "value": "years"
+          }
+        ]
+      },
+      "reference": "ARS 1290: serie pubblicata arrotondata 84,19 − 82,49 = 1,70 anni; dati grezzi 84,1899 e 82,4881"
+    },
+    {
+      "id": "ars_mortality_window_gap",
+      "question": "Quanto differisce la mortalità standardizzata di Massarosa dalla Toscana nel periodo 2013–2022?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "mortalityAll",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              107034,
+              1000
+            ]
+          },
+          {
+            "path": "/result/period",
+            "value": "2013-2022"
+          }
+        ],
+        "warnings": [
+          "overlapping_windows_not_independent_years"
+        ]
+      },
+      "reference": "ARS 1438: 945,211 − 838,177 = 107,034 ogni 100.000; intera finestra decennale"
+    },
+    {
+      "id": "ars_rsa_change",
+      "question": "Come cambia il tasso standardizzato di anziani assistiti in RSA a Massarosa dal 2016 al 2024?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "permanentRsaAssisted",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2016",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              179,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "ARS 261: valori pubblicati arrotondati 6,11 − 4,32 = 1,79 ogni 1.000; uso del servizio, non bisogno insoddisfatto"
+    },
+    {
+      "id": "ars_mortality_endpoint_refused",
+      "question": "Posso usare il solo 2022 al posto del periodo di mortalità 2013–2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "mortalityAll",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "ars_history_period_not_available"
+        ]
+      },
+      "reference": "Guardia: il dato decennale non diventa un dato annuale del suo anno finale"
+    },
+    {
+      "id": "ars_window_trend_refused",
+      "question": "Posso stimare un trend annuale dai periodi decennali sovrapposti della mortalità?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "mortalityAll",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "ars_window_trend_not_supported"
+        ]
+      },
+      "reference": "Guardia: nessuna conversione implicita in anni indipendenti"
+    },
+    {
+      "id": "ars_raw_weighting_refused",
+      "question": "Posso aggregare i tassi grezzi per fascia d’età usando automaticamente i conteggi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "age:65-84|total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Guardia: nessuna aggregazione di conteggi senza contratto di additività e universo verificati"
+    },
+    {
+      "id": "ars_age_history_refused",
+      "question": "Posso ottenere una serie storica 65–84 anni per ipertensione dai dati acquisiti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "age:65-84|total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "ars_historical_dimension_not_available"
+        ]
+      },
+      "reference": "Guardia: snapshot delle fasce è corrente; serie totale non sostituisce la fascia"
     }
   ]
 }

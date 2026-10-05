@@ -16,9 +16,10 @@ from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import assess, coverage_matrix, finite
 from semantic_query_adapters import CENSUS, census_context, census_observation, benchmark_observation, AGE_BANDS, age_context, age_observation
 import semantic_query_territorial_adapters as territorial
+import semantic_query_ars_adapters as ars
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '4'
+VERSION = '5'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -36,6 +37,7 @@ def annual(period):
 
 
 def period_token(key, period):
+    if key in ars.KEYS:return ars.token(period)
     if key=='earlyChildhoodPotentialCapacityRate':
         token=str(period)
         if not re.fullmatch(r'[0-9]{4}/[0-9]{2}',token):
@@ -45,6 +47,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in ars.KEYS:return ars.dimensions(key)
     if key=='ageDistribution':return list(AGE_BANDS)
     if key=='population':return ['total','sex:men','sex:women']
     if key=='elderlyHomeCare':return list(territorial.SEX)
@@ -52,6 +55,10 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in ars.KEYS:
+        rolling='-' in ars._SPECS[key]['period']
+        historical=key=='lifeExpectancy' or dimension=='total'
+        return [o for o in SUPPORTED if o not in ('weighted_ratio','percentage_points') and (historical or o not in TEMPORAL) and not (rolling and o=='trend')]
     current_only=key=='ageDistribution' or key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total')
     return [o for o in SUPPORTED if
         (o!='weighted_ratio' or key in CENSUS or key=='ageDistribution' or key in territorial.RATIOS) and
@@ -206,6 +213,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in ars.KEYS:return ars.context(metric,key,dimension)
         if key in territorial.NEW_KEYS or (key=='population' and dimension!='total'):
             return territorial.context(metric,key,dimension)
         if key == 'ageDistribution':
@@ -225,6 +233,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in ars.KEYS:return ars.observation(self,key,row_index,dimension,period,historical)
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
         row = metric['rows'][row_index]
@@ -319,6 +328,9 @@ class QueryEngine:
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
+        if key in ars.KEYS and operation in TEMPORAL:
+            if 'age:' in dimension or (dimension!='total' and key!='lifeExpectancy'):raise ValueError('ars_historical_dimension_not_available')
+            if operation=='trend' and '-' in ars._SPECS[key]['period']:raise ValueError('ars_window_trend_not_supported')
         if key=='ageDistribution' and operation in TEMPORAL:
             raise ValueError('age_historical_dimension_not_available')
         if (key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total')) and operation in TEMPORAL:
@@ -332,10 +344,11 @@ class QueryEngine:
         if historical and periods is None:
             if len(towns) != 1:
                 raise ValueError('temporal_query_requires_one_geography')
-            series = rows[towns[0]][1].get('series')
-            if not isinstance(series,dict):
-                raise ValueError('series_not_available')
-            periods = sorted((period_token(key,p) for p in series['years']),key=int)
+            if key in ars.KEYS:periods=ars.available_periods(self,key,dimension)
+            else:
+                series = rows[towns[0]][1].get('series')
+                if not isinstance(series,dict):raise ValueError('series_not_available')
+                periods = sorted((period_token(key,p) for p in series['years']),key=int)
         elif periods is None:
             periods = [period_token(key,self._catalog['metrics'][key]['meta']['year'])]
         if not isinstance(periods,list) or not periods:
@@ -343,7 +356,7 @@ class QueryEngine:
         periods = [period_token(key,p) for p in periods]
         if len(periods) != len(set(periods)):
             raise ValueError('duplicate_period')
-        if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=int)):
+        if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=ars.order if key in ars.KEYS else int)):
             raise ValueError('temporal_query_requires_ordered_periods_and_one_geography')
         if operation in ('compare','rank','weighted_ratio','benchmark_gap','anomaly') and len(periods)!=1:
             raise ValueError('cross_section_requires_one_period')
@@ -352,7 +365,8 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                observation,notes = self.observation(key,rows[code][0],period,historical=historical,dimension=dimension)
+                use_history=historical and not (key in ars.KEYS and operation not in TEMPORAL and period==ars.token(self._catalog['metrics'][key]['meta']['year']))
+                observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
 
@@ -361,6 +375,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'arsAdapterSha256':digest((ROOT/'scripts/semantic_query_ars_adapters.py').read_bytes()),
                   'territorialAdapterSha256':digest((ROOT/'scripts/semantic_query_territorial_adapters.py').read_bytes()),
                   'policySha256':self.policy_hash, 'eligibilitySha256':digest((ROOT/'scripts/semantic_operations.py').read_bytes()),
                   'catalogSha256':self.catalog_hash, 'catalogPath':self.catalog_path,
@@ -394,7 +409,7 @@ class QueryEngine:
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
                 key=selectors[0]['metric']
-                adapter=territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                adapter=ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
                 observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
@@ -426,6 +441,8 @@ class QueryEngine:
                 if operation == 'trend':
                     policy['timeAxis'] = [int(o['period']) for o in temporal_usable]
             if operation == 'correlation':
+                if request.get('axis')=='periods' and any(o['frequency'].startswith('rolling_') for o in observations):
+                    raise ValueError('ars_overlapping_window_correlation_not_supported')
                 if all(s['metric']=='ageDistribution' for s in selectors):
                     notes.append('compositional_age_shares_share_denominator')
                 if len({o['periodBasis'] for o in observations}) > 1:
@@ -477,7 +494,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(['tuscany','versilia'] if entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix

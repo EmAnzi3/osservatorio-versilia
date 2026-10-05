@@ -85,3 +85,5 @@ scripts/semantic_engine_audit.py
 scripts/semantic_question_suite.py
 scripts/semantic_engine_benchmark.py
 scripts/test_semantic_engine_audit.py
+scripts/semantic_query_ars_adapters.py
+scripts/test_semantic_ars_adapters.py

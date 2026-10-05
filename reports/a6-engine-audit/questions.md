@@ -1,6 +1,6 @@
 # A6 — domande con risultati verificati
 
-Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `d713c80aaebb844a166ea24e880a8a192b2ddee723df912ce5496a3bbf4d094f`. Esito: **PASS**.
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `8305df308acd70f5c392eae94e40c26a8cbf2c2c30d8624eda00ee54a2713c7b`. Esito: **PASS**.
 
 Le aspettative sono versionate e controllate contro riferimenti aritmetici/record dichiarati; non vengono riscritte automaticamente con la risposta del motore. Le domande sono casi di prova riutilizzabili, non un interprete di linguaggio naturale.
 
@@ -31,5 +31,15 @@ Le aspettative sono versionate e controllate contro riferimenti aritmetici/recor
 | duplicate_towns: Possiamo contare due volte Massarosa in un aggregato? | PASS | unknown_or_duplicate_geography | Unicità delle geografie, nessun doppio conteggio |
 | unknown_metric: Possiamo interrogare un indicatore inventato? | PASS | unknown_metric | Il catalogo canonico determina gli ID consentiti |
 | fuel_adapter_missing: I carburanti pubblicati sono già interrogabili da questo motore? | PASS | adapter_not_implemented | Dati/archivio MIMIT presenti; adapter esterno mensile ancora mancante |
+| ars_hypertension_current: Qual è il tasso standardizzato di ipertensione a Massarosa nel 2025? | PASS | /observations/0/value: 245.595; /observations/0/unit: per1000 | ARS 255, Massarosa/totale/tutte le età: misura_standardizzata 245,595; export congelato v1.40 |
+| ars_hypertension_age: Qual è il tasso specifico di ipertensione tra i 65–84 anni a Massarosa nel 2025? | PASS | /observations/0/value: 681.808; /observations/0/evidence/1/ci95Low: None | ARS 255, Massarosa/65-84/totale: misura_grezza 681,808; standardized=0 strutturale, IC 0–0 non pubblicabile |
+| ars_diabetes_gap: Quanto differisce il tasso standardizzato di diabete di Massarosa dalla Toscana nel 2025? | PASS | /result/value: 4.966799999999999; /result/benchmarkValue: 62.0662 | ARS 271: 67,0330 − 62,0662 = 4,9668 ogni 1.000; stessa misura e stesso periodo |
+| ars_life_women_change: Come cambia la speranza di vita femminile di Massarosa tra 2008 e 2022? | PASS | /result/value: 1.7000000000000028; /result/unit: years | ARS 1290: serie pubblicata arrotondata 84,19 − 82,49 = 1,70 anni; dati grezzi 84,1899 e 82,4881 |
+| ars_mortality_window_gap: Quanto differisce la mortalità standardizzata di Massarosa dalla Toscana nel periodo 2013–2022? | PASS | /result/value: 107.03399999999999; /result/period: 2013-2022 | ARS 1438: 945,211 − 838,177 = 107,034 ogni 100.000; intera finestra decennale |
+| ars_rsa_change: Come cambia il tasso standardizzato di anziani assistiti in RSA a Massarosa dal 2016 al 2024? | PASS | /result/value: 1.79 | ARS 261: valori pubblicati arrotondati 6,11 − 4,32 = 1,79 ogni 1.000; uso del servizio, non bisogno insoddisfatto |
+| ars_mortality_endpoint_refused: Posso usare il solo 2022 al posto del periodo di mortalità 2013–2022? | PASS | ars_history_period_not_available | Guardia: il dato decennale non diventa un dato annuale del suo anno finale |
+| ars_window_trend_refused: Posso stimare un trend annuale dai periodi decennali sovrapposti della mortalità? | PASS | ars_window_trend_not_supported | Guardia: nessuna conversione implicita in anni indipendenti |
+| ars_raw_weighting_refused: Posso aggregare i tassi grezzi per fascia d’età usando automaticamente i conteggi? | PASS | verified_ratio_adapter_required | Guardia: nessuna aggregazione di conteggi senza contratto di additività e universo verificati |
+| ars_age_history_refused: Posso ottenere una serie storica 65–84 anni per ipertensione dai dati acquisiti? | PASS | ars_historical_dimension_not_available | Guardia: snapshot delle fasce è corrente; serie totale non sostituisce la fascia |
 
 Il JSON conserva query, risultati, formula, fonti, periodi, copertura ed esclusioni. Un rifiuto atteso è una verifica riuscita del limite, non una capacità di risposta numerica. Nessuna conclusione causale o raccomandazione automatica.
