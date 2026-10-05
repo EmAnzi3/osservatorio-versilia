@@ -12,6 +12,7 @@ from workflow_contract import validate_workflow_contract
 from visualization_content_contract import validate_visual_runtime_contract, validate_visualization_content_contract
 from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import coverage_matrix
+from semantic_query_engine import QueryEngine
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -27,6 +28,14 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     effective_semantic = validate_semantic_model_contract(catalog_path, layer="effective")
     operation_matrix = coverage_matrix(json.loads(catalog_path.read_text(encoding="utf-8")))
     assert len(operation_matrix) == effective_semantic["metrics"]
+    query_engine = QueryEngine(catalog_path, layer="effective")
+    query_coverage = query_engine.coverage()
+    assert len(query_coverage) == effective_semantic["metrics"]
+    for item in query_coverage:
+        if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
+            result = query_engine.query({"operation": "compare", "selectors": [{"metric": item["metric"]}]})
+            assert result["status"] == "computed", result
+    print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")
     print(
         "A6 semantic model effective catalog: "
         f"{effective_semantic['metrics']} indicatori pubblici · "

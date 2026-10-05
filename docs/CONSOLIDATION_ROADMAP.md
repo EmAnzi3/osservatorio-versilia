@@ -209,9 +209,9 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 - [x] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota A6 — 04-10-2026: A6.1 chiusa con #301, Quick/Full locali e GitHub verdi, deploy `37235624195` SUCCESS. A6.2–A6.3 in corso in #330: contratto delle operazioni, precondizioni eseguibili e matrice strutturale, senza UI o dati modificati. Adapter e calcolatori A6.4 restano successivi; la presenza di un input non certifica comparabilità o disponibilità di un calcolo.
-- [ ] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
-- [ ] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
+Nota A6 — 05-10-2026: A6.1 pubblicata con #301; contratto e guardie A6.2–A6.3 pubblicati con #331, merge manuale del proprietario e deploy `37240258981` SUCCESS. A6.4 in corso: primo motore limitato a residenti POSAS e imponibile MEF, sette operazioni e provenienza completa dei file letti; gli altri adapter/calcoli restano esplicitamente non supportati. La fase A6 non è chiusa; nessuna UI o dato modificato.
+- [x] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
+- [x] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.
 - [ ] **A6.5** Produrre prime letture territoriali riproducibili e verificabili.
 - [ ] **A6.6** Inserire avvertenze metodologiche esplicite per correlazione vs causalità.

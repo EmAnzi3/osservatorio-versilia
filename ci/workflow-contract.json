@@ -197,6 +197,11 @@
         "label": "A6 operations and comparability",
         "script": "scripts/test_semantic_operations.py",
         "args": []
+      },
+      {
+        "label": "A6 deterministic query engine",
+        "script": "scripts/test_semantic_query_engine.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
