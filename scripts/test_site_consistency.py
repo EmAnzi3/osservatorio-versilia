@@ -53,6 +53,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     assert result['status']=='computed',result
     from test_semantic_territorial_readings import regressions
     regressions(catalog_path)
+    from test_semantic_engine_audit import regressions as engine_audit_regressions
+    engine_audit_regressions(catalog_path)
     print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")
     print(
         "A6 semantic model effective catalog: "

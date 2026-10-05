@@ -1,0 +1,354 @@
+# A6 — audit completo del motore
+
+Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `c1f8eef297a89ef7b532dc669a3614ac188d646113c851e3d520f879818cfcc6`.
+
+225 indicatori censiti; 11 con adapter e 214 senza adapter. 63 profili fonte.
+
+La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
+
+Una prova può essere rifiutata anche con adapter presente: per esempio un trend con soli due punti non soddisfa il minimo di osservazioni. I conteggi sono derivati e vanno letti insieme alle query.
+
+| Indicatore | Tema | Profilo fonte | Periodo | Adapter / motivo | Dimensioni abilitate | Prove calcolate / rifiutate | Dimensioni A3 acquisite |
+|---|---|---|---|---|---|---|---|
+| accreditedRsaCount | salute | regione-toscana-rsa | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| activeTplAccessPoints | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
+| activityRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| ageDistribution | demografia | istat-demography-annual | 2026 | istat-posas-age-band/v1 | age:0-14, age:15-19, age:20-34, age:35-49, age:50-64, age:65-79, age:80-84, age:85+ | 48 / 0 | 7 |
+| agriculturalDiversificationAndModernization | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 3 |
+| agriculturalFarms | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 2 |
+| agriculturalRenewalAndLeadership | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 3 |
+| agriculturalUsedArea | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
+| altitudeProfile | ambiente | istat-geografia-comunale-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
+| availableAdministrationResultPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| averageAgriculturalFarmSize | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
+| averageGrossRemunerationPerEmployee | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| bathingNonCompliantSamples | ambiente | arpat-bathing-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| bathingWaterQuality | ambiente | arpat-bathing-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| blueFlagBeaches | ambiente | fee-blue-flag-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
+| businessTurnover | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| businessValueAdded | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| capitalExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| capitalPayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| cashBalancePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| cashReceiptsPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| chronicTotal | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| civilProtectionMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| climatePrecipitationTrend50y | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| climateTemperatureTrend50y | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| climateTmaxTrend | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| climateTminTrend | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| cohabitingHouseholds | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 4 |
+| commuterBalance | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
+| commuterBalanceRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
+| copdPrevalence | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| cropProfile | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 1 |
+| cultureSportMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| currentCollectionCapacity | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| currentExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| currentPaymentCapacity | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| currentPayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| currentRevenueAccruedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| dementia | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| dependencyIndices | demografia | istat-demography-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 8 |
+| diabetes | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| diagnosticImagingServices | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 7 |
+| diplomaPlus | istruzione | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| disability064Per1000 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| drinkingWaterQuality | ambiente | gaia-quality-semiannual | 2° semestre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| earlyChildhoodPotentialCapacityRate | istruzione | regione-toscana-early-childhood | 2024/25 | tuscany-child-capacity/v1 | total | 5 / 0 | 3 |
+| economicDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| economyActivityAtlas | economia | regione-toscana-infocamere-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 6 |
+| educationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| elderlyHomeCare | salute | ars-toscana-mixed | 2024 | ars-260-standardized-sex/v1 | sex:total, sex:men, sex:women | 15 / 0 | 7 |
+| emergencyAccess | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 7 |
+| employeesPerLocalUnit | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| employmentGenderGap | lavoro | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| employmentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| emsResponseTimeP75 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| environmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| erpArrears | abitare | erp-lucca-annual-balance-sheet | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| essentialServicesAccessibility | ambiente | istat-fragility-2022 | 2019 | adapter_not_implemented | — | 0 / 0 | 2 |
+| evPoints | mobilita | pun-continuous | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| extractivePlanning | ambiente | regione-toscana-prc-annual | PRC vigente · variante 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| extractiveProduction | ambiente | regione-toscana-prc-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| extractiveSites | ambiente | regione-toscana-rtcave-continuous | 2 settembre 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
+| fcdePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| femaleEmploymentRate | lavoro | istat-census-annual | 2023 | istat-census-femaleEmploymentRate/v1 | total | 10 / 1 | 8 |
+| financialDebtProfile | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| fiscalRecoveryActivity | economia | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| floodExposure | ambiente | ispra-idrogeo-risk | 2020 | adapter_not_implemented | — | 0 / 0 | 1 |
+| foreignBornSoleProprietorShare | economia | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| foreignResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
+| foreignResidents | demografia | istat-demography-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| foreignTourismShare | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| forestCoverIndex | ambiente | pefc-sinfor-foreste-in-comune-2026 | CFI 2020 · aggiornamento 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| ftthCoverage20m | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| ftthCoverageDesi | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| ftthReachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| ftthUnreachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| fuelPrices | mobilita | mimit-fuel-daily | 2026-10-03 | adapter_not_implemented | — | 0 / 0 | 3 |
+| generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| grossOperatingMargin | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| heartFailurePrevalence | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| hospitalizedAll | salute | ars-toscana-mixed | 2021–2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| hospitals | salute | health-ministry-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| householdSize | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 1 |
+| housingStockPer1000 | abitare | istat-census-annual | 2023 | istat-census-housingStockPer1000/v1 | total | 9 / 1 | 5 |
+| hydraulicWorksCensusElements | ambiente | regione-toscana-opere-idrauliche-2021 | 2021 | adapter_not_implemented | — | 0 / 0 | 1 |
+| hypertensionPrevalence | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| inboundCommuters | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
+| inboundCommutersRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
+| income | economia | mef-irpef-annual | 2024 | mef-taxable-income/v1 | total | 9 / 0 | 3 |
+| incomeDistribution | economia | mef-irpef-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| incomeSourceProfile | economia | mef-irpef-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 6 |
+| incomeVsInflation | economia | mef-istat-real-income-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| industryValueAddedShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| industryWorkerShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| innovationBusinessShare | economia | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| internalResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
+| invalsiAcademicExcellence | istruzione | invalsi-open-dispersione-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| invalsiCompetence | istruzione | invalsi-open-risultati-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| invalsiImplicitDispersion | istruzione | invalsi-open-dispersione-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| invalsiResults | istruzione | invalsi-open-risultati-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| irrigatedAgriculturalArea | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
+| ischemicHeartDiseasePrevalence | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| labourCost | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| labourProductivity | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| landCoverProfile | ambiente | regione-toscana-ucs-2007-2019 | 2007–2019 | adapter_not_implemented | — | 0 / 0 | 4 |
+| landUse | ambiente | ispra-consumo-suolo-2024 | 2006, 2012, 2015–2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| landUseChange | ambiente | ispra-consumo-suolo-2024 | 2012, 2015–2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| landslideExposure | ambiente | ispra-idrogeo-risk | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| libraryActiveBorrowersPer100 | comunita | regione-toscana-biblioteche-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| libraryLoansPerResident | comunita | regione-toscana-biblioteche-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| libraryWeeklyOpeningHours | comunita | regione-toscana-biblioteche-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| lifeExpectancy | salute | ars-toscana-mixed | 2022 | adapter_not_implemented | — | 0 / 0 | 5 |
+| localEmployees | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 3 |
+| localEmployeesChange | economia | istat-business-annual | 2018–2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| localUnits | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 4 |
+| localUnitsChange | economia | istat-business-annual | 2018–2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| lowProductivityEmployment | economia | istat-fragility-2022 | 2022 | adapter_not_implemented | — | 0 / 0 | 1 |
+| maleEmploymentRate | lavoro | istat-census-annual | 2023 | istat-census-maleEmploymentRate/v1 | total | 10 / 1 | 8 |
+| managedReticulumLength | ambiente | regione-toscana-reticolo-v137 | DCRT 24/2025 · confini Istat 1 gennaio 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
+| maritimeConcessionFeesDue | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
+| maritimeConcessions | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
+| microUnits | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 2 |
+| mobilityMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| mortalityAll | salute | ars-toscana-mixed | 2013–2022 | adapter_not_implemented | — | 0 / 0 | 7 |
+| mortalityCancer | salute | ars-toscana-mixed | 2013–2022 | adapter_not_implemented | — | 0 / 0 | 7 |
+| mortalityCirculatory | salute | ars-toscana-mixed | 2013–2022 | adapter_not_implemented | — | 0 / 0 | 7 |
+| mortalityRespiratory | salute | ars-toscana-mixed | 2013–2022 | adapter_not_implemented | — | 0 / 0 | 7 |
+| motorization | mobilita | aci-istat-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| municipalEmployeesPer1000 | bilanci | rgs-conto-annuale-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| municipalFragility | ambiente | istat-fragility-2022 | 2022 | adapter_not_implemented | — | 0 / 0 | 1 |
+| municipalImuStandard | economia | mef-municipal-tax-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| municipalIrpef | economia | mef-municipal-irpef-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| municipalOnlineServicesAdvanced | bilanci | regione-toscana-indicatori-comunali | 2022 | adapter_not_implemented | — | 0 / 0 | 2 |
+| municipalStaffAgeStructure | bilanci | rgs-conto-annuale-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| municipalStaffTraining | bilanci | rgs-conto-annuale-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| municipalStaffTurnover | bilanci | rgs-conto-annuale-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| municipalSurface | ambiente | istat-geografia-comunale-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
+| naturalDemographicDynamics | demografia | istat-demography-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 7 |
+| nonOccupiedHomesPer1000 | abitare | istat-census-annual | 2023 | istat-census-nonOccupiedHomesPer1000/v1 | total | 9 / 1 | 5 |
+| oldAgeIndex | demografia | istat-census-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 5 |
+| omiResidential | abitare | agenzia-entrate-omi-semestral | 2° semestre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| organicAgriculturalAreaShare | ambiente | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| outboundCommuters | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
+| outboundCommutersRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
+| outsideMunicipality | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 0 |
+| ownRevenueShare | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| pabCompletedOperationalGrossValue | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabInProgressOperationalGrossValue | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabInterventionsCompleted | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabInterventionsInProgress | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabProgrammedInterventionLength | ambiente | cb1-pmo-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabProgrammedInterventions | ambiente | regione-toscana-pab-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pabProgrammedMaintenanceValue | ambiente | regione-toscana-pab-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pensionIncomeShare | economia | mef-irpef-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 5 |
+| permanentRsaAssisted | salute | ars-toscana-mixed | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
+| pharmaciesPer1000 | salute | health-ministry-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| pnrrConcluded | comunita | regione-toscana-pnrr-monthly | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pnrrFunding | comunita | regione-toscana-pnrr-monthly | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| pollutingCars | mobilita | aci-istat-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| population | demografia | istat-demography-annual | 2026 | istat-posas-population/v1 | total, sex:men, sex:women | 13 / 0 | 6 |
+| populationChange | demografia | istat-demography-annual | 2019–2026 | adapter_not_implemented | — | 0 / 0 | 6 |
+| populationDensity | ambiente | istat-geografia-comunale-2021 | 2026 | adapter_not_implemented | — | 0 / 0 | 4 |
+| primaryFullTimeShare | istruzione | mim-school-year | a.s. 2024/25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| priorStrokePrevalence | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 8 |
+| protectedNaturalAreas | ambiente | regione-toscana-aree-protette-v137 | archivi geografici ufficiali Regione Toscana · consultati 12 settembre 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
+| publicWorks | comunita | openbdap-continuous | 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
+| recycling | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| remediationProceedings | ambiente | sisbon-weekly | 29 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
+| residualWaste | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| rigidDefenceProtectedCoast | ambiente | ispra-coast-irregular | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
+| rigidExpenditureShare | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| roadFinesPerResident | sicurezza | istat-road-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| roadNetworkProfile | mobilita | regione-toscana-iternet-448 | 2022 | adapter_not_implemented | — | 0 / 0 | 3 |
+| roadSafety | sicurezza | istat-road-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| scheduledTplTripsPer1000 | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
+| schoolBuildingAccessibility | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
+| schoolBuildingAge | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
+| schoolBuildingFacilities | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
+| schoolBuildingSafetyDocs | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
+| schoolBuildingTransport | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
+| schoolSites | istruzione | mim-school-year | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| schoolStudents | istruzione | mim-school-year | a.s. 2024/25 | adapter_not_implemented | — | 0 / 0 | 2 |
+| securityMissionExpenditurePerResident | sicurezza | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| selfContainment | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
+| shorelineDynamics | ambiente | ispra-coast-irregular | 2006–2020 | adapter_not_implemented | — | 0 / 0 | 3 |
+| singleHouseholds | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| siopePayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| slowMobilityBici | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| slowMobilityCammini | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| slowMobilityMtb | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| slowMobilityRoutes | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| slowMobilityTrekking | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| socialMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| socialSpendingByUserArea | comunita | istat-social-services-annual | 2022 | adapter_not_implemented | — | 0 / 0 | 1 |
+| socialSpendingPerResident | comunita | istat-social-services-annual | 2022 | adapter_not_implemented | — | 0 / 0 | 3 |
+| specialistVisits7Psr | salute | ars-toscana-mixed | 2025 | adapter_not_implemented | — | 0 / 0 | 7 |
+| statisticalCoastlineLength | ambiente | istat-geografie-funzionali-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
+| studentsPerClass | istruzione | mim-school-year | a.s. 2024/25 | adapter_not_implemented | — | 0 / 0 | 4 |
+| tariStandardHousehold | economia | mef-municipal-tax-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
+| taxpayersAdultPopulationRate | economia | mef-irpef-annual | MEF a.i. 2024 · residenti 1.1.2026 | adapter_not_implemented | — | 0 / 0 | 4 |
+| territorialClassification | ambiente | istat-geografie-funzionali-2021 | 2021 | adapter_not_implemented | — | 0 / 0 | 0 |
+| territorialPlanningMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| tertiary | istruzione | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| thirdSector | comunita | runts-continuous | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| totalResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
+| tourismArrivals | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| tourismAverageStay | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
+| tourismBeds | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| tourismBedsPer1000 | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
+| tourismDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| tourismIntensity | economia | regione-toscana-tourism-annual | 2025 | tuscany-tourismIntensity/v1 | total | 5 / 0 | 3 |
+| tourismPresences | economia | regione-toscana-tourism-annual | 2025 | tuscany-tourismPresences/v1 | total | 7 / 0 | 3 |
+| tourismSeasonality | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| tourismStructuresPer1000 | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| tplServiceSpan | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| turnoverPerPersonEmployed | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| unemploymentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
+| vacantHomes | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| valueAddedTurnoverShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| voterTurnout | comunita | dait-eligendo-irregular | 2026 | adapter_not_implemented | — | 0 / 0 | 6 |
+| wastePerResident | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
+| wasteServiceCost | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+| waterNetworkLosses | ambiente | istat-water-irregular | 2018 | adapter_not_implemented | — | 0 / 0 | 3 |
+| yearEndCashFundPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| youthOtherStatus | lavoro | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
+
+## Collegamenti tipizzati
+
+| Collegamento | Tipo | Verifica | Associazione |
+|---|---|---|---|
+| population → ageDistribution | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
+| tourismPresences → tourismIntensity | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
+| population → tourismIntensity | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
+| ageDistribution → elderlyHomeCare | context | observations_available_context_only | not_computable: paired_period_mismatch |
+| femaleEmploymentRate → earlyChildhoodPotentialCapacityRate | context | observations_available_context_only | not_computable: paired_frequency_mismatch, paired_period_mismatch |
+
+## Collegamenti companion A3 già governati
+
+Derivati dal contratto esistente e ricontrollati con il suo resolver. Una prova A3 non abilita automaticamente query A6 o confronti fra periodi.
+
+| Indicatore | Riferimenti | Relazione | Dimensioni | Verifica / motivo |
+|---|---|---|---|---|
+| population | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| populationChange | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| naturalDemographicDynamics | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| internalResidentialMobility | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| foreignResidentialMobility | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| totalResidentialMobility | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| foreignResidents | companionMetricId=ageDistribution | age_breakdown | eta | a3_companion_evidence_verified |
+| tourismIntensity | numeratorMetricId=tourismPresences, denominatorMetricId=population | ratio_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| commuterBalanceRate | numeratorMetricId=commuterBalance, denominatorMetricId=population | ratio_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| populationChange | companionMetricId=population | series_change_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| dependencyIndices | companionMetricId=ageDistribution | parts_ratio_formula | eta, assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| inboundCommutersRate | numeratorMetricId=inboundCommuters, denominatorMetricId=population | ratio_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| outboundCommutersRate | numeratorMetricId=outboundCommuters, denominatorMetricId=population | ratio_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| tourismBedsPer1000 | numeratorMetricId=tourismBeds, denominatorMetricId=population | ratio_formula | assoluto_normalizzato, numeratore_denominatore | a3_companion_evidence_verified |
+| municipalStaffTurnover | companionMetricId=municipalStaffAgeStructure | age_breakdown | eta | a3_companion_evidence_verified |
+| municipalStaffTurnover | companionMetricId=municipalStaffAgeStructure | target_fields_ratio_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| municipalEmployeesPer1000 | companionMetricId=municipalStaffAgeStructure | age_breakdown | eta | a3_companion_evidence_verified |
+| commuterBalance | normalizedMetricId=commuterBalanceRate, denominatorMetricId=population | normalized_companion_formula | assoluto_normalizzato | a3_companion_evidence_verified |
+| inboundCommuters | normalizedMetricId=inboundCommutersRate, denominatorMetricId=population | normalized_companion_formula | assoluto_normalizzato | a3_companion_evidence_verified |
+| outboundCommuters | normalizedMetricId=outboundCommutersRate, denominatorMetricId=population | normalized_companion_formula | assoluto_normalizzato | a3_companion_evidence_verified |
+| internalResidentialMobility | companionMetricId=population | part_count_average_population_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| foreignResidentialMobility | companionMetricId=population | part_count_average_population_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| totalResidentialMobility | companionMetricId=population | part_count_average_population_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| naturalDemographicDynamics | companionMetricId=population | part_count_average_population_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| currentPayments | denominatorMetricId=population | canonical_field_ratio_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| capitalPayments | denominatorMetricId=population | canonical_field_ratio_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| siopePayments | denominatorMetricId=population | canonical_field_ratio_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| publicWorks | denominatorMetricId=population | canonical_field_ratio_formula | numeratore_denominatore | a3_companion_evidence_verified |
+| population | normalizedMetricId=populationDensity, denominatorMetricId=municipalSurface | normalized_companion_formula | assoluto_normalizzato | a3_companion_evidence_verified |
+
+I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-relazioni. Nel JSON ogni collegamento esplicito conserva osservazioni, fonti, hash, componenti e periodi. Nessun collegamento causale.
+
+## Opportunità di riuso degli adapter
+
+| Profilo | Indicatori senza adapter | Dimensioni A3 già acquisite su questi indicatori |
+|---|---|---|
+| ars-toscana-mixed | 18 | 121 |
+| istat-business-annual | 16 | 80 |
+| istat-census-annual | 11 | 65 |
+| openbdap-annual | 24 | 57 |
+| istat-demography-annual | 7 | 50 |
+| mim-school-year | 9 | 36 |
+| istat-commuting-irregular | 8 | 23 |
+| istat-agriculture-census-2020 | 7 | 21 |
+| mef-irpef-annual | 4 | 18 |
+| regione-toscana-indicatori-comunali | 7 | 14 |
+| rgs-conto-annuale-annual | 4 | 14 |
+| siope-monthly | 4 | 12 |
+| ispra-environment-annual | 4 | 11 |
+| istat-tourism-annual | 3 | 10 |
+| istat-geografia-comunale-2021 | 3 | 9 |
+| invalsi-open-dispersione-2025 | 2 | 8 |
+| invalsi-open-risultati-2025 | 2 | 8 |
+| ispra-consumo-suolo-2024 | 2 | 8 |
+| regione-toscana-tourism-annual | 4 | 7 |
+| ispra-coast-irregular | 2 | 7 |
+| istat-road-annual | 2 | 7 |
+| regione-toscana-biblioteche-annual | 3 | 6 |
+| dait-eligendo-irregular | 1 | 6 |
+| regione-toscana-infocamere-annual | 1 | 6 |
+| lamma-copernicus-climate | 4 | 5 |
+| agcom-quarterly | 4 | 4 |
+| istat-fragility-2022 | 3 | 4 |
+| aci-istat-annual | 2 | 4 |
+| arpat-bathing-annual | 2 | 4 |
+| istat-social-services-annual | 2 | 4 |
+| mit-sid-demanio-irregular | 2 | 4 |
+| regione-toscana-ucs-2007-2019 | 1 | 4 |
+| health-ministry-annual | 2 | 3 |
+| ispra-idrogeo-risk | 2 | 3 |
+| erp-lucca-annual-balance-sheet | 1 | 3 |
+| fee-blue-flag-annual | 1 | 3 |
+| istat-water-irregular | 1 | 3 |
+| mef-istat-real-income-annual | 1 | 3 |
+| mimit-fuel-daily | 1 | 3 |
+| regione-toscana-aree-protette-v137 | 1 | 3 |
+| regione-toscana-iternet-448 | 1 | 3 |
+| regione-toscana-reticolo-v137 | 1 | 3 |
+| regione-toscana-gtfs-scheduled | 3 | 2 |
+| istat-geografie-funzionali-2021 | 2 | 2 |
+| regione-toscana-prc-annual | 2 | 2 |
+| mef-municipal-irpef-annual | 1 | 2 |
+| pefc-sinfor-foreste-in-comune-2026 | 1 | 2 |
+| regione-toscana-rtcave-continuous | 1 | 2 |
+| openbdap-continuous | 1 | 1 |
+| regione-toscana-opere-idrauliche-2021 | 1 | 1 |
+| regione-toscana-rsa | 1 | 1 |
+| runts-continuous | 1 | 1 |
+| sisbon-weekly | 1 | 1 |
+| percorsi-curated | 5 | 0 |
+| cb1-pmo-status-2026 | 4 | 0 |
+| mef-municipal-tax-annual | 2 | 0 |
+| regione-toscana-pab-annual | 2 | 0 |
+| regione-toscana-pnrr-monthly | 2 | 0 |
+| agenzia-entrate-omi-semestral | 1 | 0 |
+| cb1-pmo-2026 | 1 | 0 |
+| gaia-quality-semiannual | 1 | 0 |
+| pun-continuous | 1 | 0 |
+
+Ordine diagnostico per riuso di dati acquisiti, non priorità politica o stima di costo. Le lacune di acquisizione A3 restano distinte dalle lacune del motore. Nessuna nuova acquisizione, UI o modifica dei dati.
