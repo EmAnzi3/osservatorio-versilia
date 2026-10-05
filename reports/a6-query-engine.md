@@ -2,7 +2,7 @@
 
 Catalogo: `data/site-data.json`, SHA-256 `2a1f1ba0ee2ba4de98e12c00fe7e09c6a30d6edca2505f12587aefde1889a12b`.
 
-Output derivato dal motore v3 e dalle query in `ci/semantic-query-examples.json`. Numeri della tabella arrotondati solo per leggibilità; JSON conserva la precisione degli input e dei calcoli. Non è una lettura di politica pubblica.
+Output derivato dal motore v4 e dalle query in `ci/semantic-query-examples.json`. Numeri della tabella arrotondati solo per leggibilità; JSON conserva la precisione degli input e dei calcoli. Non è una lettura di politica pubblica.
 
 | Esempio | Esito | Risultato / motivo |
 |---|---|---|
@@ -59,3 +59,7 @@ Questi esempi costituiscono evidenza tecnica per A6.5, non una diagnosi causale 
 | Forte dei Marmi nello screening precedente | 2024 | 40.248,59 euro, sopra il limite superiore | Valore esterno al gruppo di confronto; non prova errore, qualità o priorità |
 
 Le quote territoriali hanno come peso la popolazione, non uguale peso per Comune. Le fasce non dispongono di uno storico verificato dal motore: ogni richiesta temporale è rifiutata. Screening riferito agli input versionati e al gruppo selezionato; esclusioni cambiano il riferimento e richiedono opt-in. La regola non è una diagnosi territoriale e non legittima da sola una politica mirata. Il limite sugli archivi grezzi comunali MEF rimane dichiarato. Nessun servizio live o nuovo dato acquisito in questo lotto.
+
+## Quarto lotto
+
+Le tre letture territoriali e i 21 record comunali riproducibili sono in `a6-territorial-readings.md`, sul catalogo effettivo pubblicato con #334. Le query originarie restano valide; copertura e nuovi adapter sono descritti in `docs/A6_QUERY_ENGINE.md`. Il tasso ARS standardizzato non viene aggregato con i suoi conteggi grezzi; anni educativi e rapporto turistico 2025/2026 conservano le basi temporali. Nessun nuovo dato acquisito.
