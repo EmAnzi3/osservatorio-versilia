@@ -30,7 +30,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
     make=lambda:QueryEngine(catalog_path,layer='effective')
     engine=make();suite=run_suite(engine)
     if suite['status']!='PASS':raise ValueError('correctness_suite_failed_before_benchmark')
-    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap','business_frame_industry_weighted','business_endpoint_refused']
+    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap','business_frame_industry_weighted','business_endpoint_refused','census_young_employment','census_diploma_trend_refused']
     cases={r['id']:r for r in suite['results']};construction=[]
     for _ in range(initialization_rounds):
         start=time.perf_counter_ns();sample=make();construction.append((time.perf_counter_ns()-start)/1e6)

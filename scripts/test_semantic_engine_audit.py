@@ -47,11 +47,11 @@ def regressions(catalog_path):
         if edge['kind']!='context':assert edge['verification']=='components_reconciled'
         else:
             assert edge['verification']=='observations_available_context_only'
-            if edge['id']=='workplace_resident_employment':
+            if edge['id'] in ('workplace_resident_employment','education_employment','household_housing'):
                 assert edge['associationAttempt']['status']=='computed'
                 assert edge['associationAttempt']['result']['n']==7
                 assert 'association_not_causation' in edge['associationAttempt']['warnings']
-                assert 'workplace_activity_not_resident_employment' in edge['associationAttempt']['warnings']
+                if edge['id']=='workplace_resident_employment':assert 'workplace_activity_not_resident_employment' in edge['associationAttempt']['warnings']
             else:
                 assert edge['associationAttempt']['status']=='not_computable'
                 assert 'paired_period_mismatch' in edge['associationAttempt']['reasons']

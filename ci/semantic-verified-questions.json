@@ -1534,6 +1534,513 @@
         ]
       },
       "reference": "ASIA 2023 e presenze 2025 non sono la medesima fotografia temporale"
+    },
+    {
+      "id": "census_employment_primary",
+      "question": "Qual è il tasso iniziale di occupazione residente 25–64 a Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 73.4
+          }
+        ],
+        "warnings": [
+          "published_rounding_preserved_no_implicit_weighting"
+        ]
+      },
+      "reference": "Valore pubblicato 73,4%; snapshot 8.721/11.886 ×100 riconciliato alla precisione di un decimale"
+    },
+    {
+      "id": "census_vacancy",
+      "question": "La quota di abitazioni non occupate da residenti è una quota di case necessariamente vuote?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "vacantHomes",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 17.9
+          }
+        ],
+        "warnings": [
+          "non_resident_occupied_homes_are_not_necessarily_vacant"
+        ]
+      },
+      "reference": "Massarosa 2023: 1.975/11.003 ×100, valore pubblicato 17,9%; include occupazione di non residenti"
+    },
+    {
+      "id": "census_single",
+      "question": "Quante famiglie unipersonali in percentuale a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "singleHouseholds",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 29.2
+          }
+        ],
+        "warnings": [
+          "single_household_not_direct_measure_of_loneliness"
+        ]
+      },
+      "reference": "2023: 2.664/9.108 ×100, pubblicato 29,2%; non misura diretta della solitudine"
+    },
+    {
+      "id": "census_size",
+      "question": "Qual è la dimensione media della famiglia pubblicata a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "householdSize",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.38
+          }
+        ],
+        "warnings": [
+          "household_size_raw_components_not_reconciled"
+        ]
+      },
+      "reference": "Carrier ufficiale pubblicato 2023: 2,38; componenti grezzi non riconciliati, nessuna ricostruzione"
+    },
+    {
+      "id": "census_ageing",
+      "question": "Quanti residenti anziani ogni 100 giovani a Massarosa nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "oldAgeIndex",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 257.2
+          }
+        ],
+        "warnings": [
+          "old_age_index_not_share_of_population"
+        ]
+      },
+      "reference": "POSAS 1 gennaio 2026: 5.691/2.213 ×100, arrotondato 257,2; indice e non quota di popolazione"
+    },
+    {
+      "id": "census_young_employment",
+      "question": "Qual è l’occupazione dei residenti 15–24 a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "age:15-24|sex:total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              49100,
+              2091
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot 2024: 491 occupati/2.091 residenti ×100; universo 15–24"
+    },
+    {
+      "id": "census_diploma_native",
+      "question": "Qual è la quota 25–49 con diploma o più a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "dimension": "age:25-49|sex:total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              433100,
+              6015
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot nativo 2024: 4.331/6.015 ×100; non il totale iniziale 25–64"
+    },
+    {
+      "id": "census_cohabiting_weighted",
+      "question": "Qual è la quota di famiglie coabitanti nei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "cohabitingHouseholds",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              171200,
+              73331
+            ]
+          }
+        ]
+      },
+      "reference": "Somma PF9=1.712, somma PF1=73.331; 2023, rapporto delle somme"
+    },
+    {
+      "id": "census_gender_gap",
+      "question": "Qual è il divario di occupazione maschile meno femminile 15–64 a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "employmentGenderGap",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              41606285,
+              2474736
+            ]
+          }
+        ],
+        "warnings": [
+          "gender_gap_in_percentage_points_not_relative_percent"
+        ]
+      },
+      "reference": "2023: (5.197/7.095 − 3.937/6.976) ×100; punti percentuali"
+    },
+    {
+      "id": "census_tertiary_gap",
+      "question": "Qual è lo scostamento del titolo terziario 25–64 di Massarosa da Toscana 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tertiary",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -6.8394395660339455
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Carrier comunale arrotondato 17,3 meno benchmark regionale 465.160/1.926.971 ×100; punti, precisioni dichiarate"
+    },
+    {
+      "id": "census_primary_history_refused",
+      "question": "Posso usare lo storico 15+ come storico del totale iniziale 25–64?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_historical_dimension_not_available"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_diploma_trend_refused",
+      "question": "Posso stimare un trend omogeneo dai censimenti tradizionali e permanente del diploma?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_method_break_trend_not_supported"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_rounded_weighting_refused",
+      "question": "Posso ponderare automaticamente le percentuali pubblicate arrotondate di case non occupate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "vacantHomes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_education_bench_refused",
+      "question": "Posso abbinare automaticamente al diploma censuario il benchmark da indagine sulle forze di lavoro?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_benchmark_scope_dimension_or_method_not_reviewed"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_age_bench_refused",
+      "question": "Posso usare un benchmark 2024 per l’indice di vecchiaia comunale 2026?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "oldAgeIndex",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_benchmark_scope_dimension_or_method_not_reviewed"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_dimension_bench_refused",
+      "question": "Posso abbinare al titolo terziario 25–49 il benchmark 25–64?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tertiary",
+            "dimension": "age:25-49|sex:total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_benchmark_scope_dimension_or_method_not_reviewed"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_size_history_refused",
+      "question": "Posso ricostruire lo storico della dimensione familiare con componenti non riconciliati?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "householdSize",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_historical_dimension_not_available"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_young_history_refused",
+      "question": "Posso inferire lo storico occupazione femminile 15–24 da un totale 15+?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "age:15-24|sex:women",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_historical_dimension_not_available"
+        ]
+      },
+      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+    },
+    {
+      "id": "census_diploma_change_refused",
+      "question": "Posso calcolare automaticamente la variazione del diploma tra censimento tradizionale 1991 e permanente 2024?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "1991",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "census_method_break_change_not_supported"
+        ]
+      },
+      "reference": "Discontinuità di rilevazione non attestata come confrontabile; serie consultabile, calcolo congiunto rifiutato."
     }
   ]
 }

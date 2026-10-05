@@ -209,7 +209,7 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 - [x] **A6.1** Definire modello semantico minimo: comune, indicatore, tema, periodo, dimensione, fonte, benchmark.
 
-Nota A6 — 05-10-2026: #301 e #331–339 pubblicate, main `4775c587`, deploy `37333698457` e status live SUCCESS. Motore ARS v5: 29 indicatori con adapter effettivo/196 senza, 35 domande, audit e baseline verificati; tre domande territoriali × sette Comuni restano governate. Lotto business v6 in corso: 16 adapter aggiuntivi ASIA/Frame, copertura effettiva 45/225, 50 domande e baseline separata. Totale/settori, periodi cumulati, universi economici e precisione ufficiale espliciti; benchmark e ponderazioni senza evidenza rifiutati. Metodo `docs/A6_BUSINESS_ADAPTERS.md`. Nessuna acquisizione, dati pubblicati, UI o golden cambiati. A6.4–A6.6 rimangono aperte; A7 non avviata.
+Nota A6 — 05-10-2026: #301 e #331–341 pubblicate, main `58f67993`, deploy `37347103475` e status live SUCCESS. Business v6: 45/225 con adapter e 50 domande. Lotto censimento v7 in corso: 11 carrier aggiuntivi, copertura effettiva 56/225 e 69 domande; età/sesso, arrotondamenti, periodi nativi, benchmark e discontinuità espliciti. Metodo `docs/A6_CENSUS_ADAPTERS.md`; audit, mappa e baseline separata. Nessuna acquisizione o modifica dati/UI/golden. A6.4–A6.6 aperte; A7 non avviata.
 - [x] **A6.2** Definire operazioni deterministiche: confronto, serie, trend, variazione, scostamento, rango, correlazione, anomalia.
 - [x] **A6.3** Stabilire regole di comparabilità temporale, territoriale e metodologica.
 - [ ] **A6.4** Implementare un motore che restituisca sempre indicatori usati, periodi, unità, metodo e fonti.

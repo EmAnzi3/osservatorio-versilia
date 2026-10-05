@@ -10,6 +10,7 @@ from enrichment_audit_matrix import build_matrix, validate_matrix
 from enrichment_companion_evidence import companion_acquired_evidence
 from semantic_query_engine import QueryEngine, ROOT, SUPPORTED, TEMPORAL
 import semantic_query_business_adapters as business
+import semantic_query_census_adapters as census
 
 
 def compact(result):
@@ -26,7 +27,10 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         data=catalog if catalog is not None else engine.catalog
         row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
         years = (row.get('series') or {}).get('years', [])
-        if key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
+        if key in census.KEYS:
+            try:years=census.available_periods(engine,key,dimension,row)
+            except ValueError:years=[]
+        elif key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
     if operation == 'benchmark_gap':
@@ -119,6 +123,9 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('census_gender_difference','maleEmploymentRate','employmentGenderGap','derived_difference','Resident employment gap is male minus female 15–64 rates in the same census year'),
+        ('education_employment','diplomaPlus','employmentRate','context','Resident qualification and employment, 25–64 in 2024; association is not job matching or a policy effect'),
+        ('household_housing','singleHouseholds','vacantHomes','context','Resident household composition and censused homes; not direct loneliness or vacant property availability'),
         ('asia_units_denominator','localUnits','employeesPerLocalUnit','ratio_component','ASIA units are the denominator of average employment per unit'),
         ('asia_employment_numerator','localEmployees','employeesPerLocalUnit','shared_numerator','ASIA annual average workplace employment is the numerator'),
         ('frame_turnover_numerator','businessTurnover','turnoverPerPersonEmployed','shared_numerator','Frame turnover in million euros converts to euros in the ratio numerator'),
@@ -148,7 +155,13 @@ def connections(engine, coverage):
                 import math
                 assert set(a)==set(b)
                 factor=1_000_000 if identity=='frame_turnover_numerator' else 1
-                if not all(component in b[c] and math.isclose(a[c]['value']*factor, b[c][component], rel_tol=0, abs_tol=1e-8)
+                if identity=='census_gender_difference':
+                    female=engine.query({'operation':'compare','selectors':[{'metric':'femaleEmploymentRate'}]})
+                    results.append(female)
+                    f={o['geography']:o for o in female['observations']}
+                    if female['status']=='computed' and set(a)==set(f) and all(a[c]['period']==b[c]['period']==f[c]['period'] and math.isclose(a[c]['value']-f[c]['value'],b[c]['value'],rel_tol=0,abs_tol=1e-8) for c in a):verification='components_reconciled'
+                    else:reasons=['formula_components_or_periods_not_reconciled']
+                elif not all(component in b[c] and math.isclose(a[c]['value']*factor, b[c][component], rel_tol=0, abs_tol=1e-8)
                     and a[c]['period']==b[c].get(period_key,b[c]['period']) for c in a):
                     reasons=['formula_components_or_periods_not_reconciled']
                 else: verification='components_reconciled'
