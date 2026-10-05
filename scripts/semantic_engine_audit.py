@@ -9,6 +9,7 @@ from pathlib import Path
 from enrichment_audit_matrix import build_matrix, validate_matrix
 from enrichment_companion_evidence import companion_acquired_evidence
 from semantic_query_engine import QueryEngine, ROOT, SUPPORTED, TEMPORAL
+import semantic_query_business_adapters as business
 
 
 def compact(result):
@@ -25,6 +26,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         data=catalog if catalog is not None else engine.catalog
         row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
         years = (row.get('series') or {}).get('years', [])
+        if key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
     if operation == 'benchmark_gap':
@@ -117,6 +119,12 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('asia_units_denominator','localUnits','employeesPerLocalUnit','ratio_component','ASIA units are the denominator of average employment per unit'),
+        ('asia_employment_numerator','localEmployees','employeesPerLocalUnit','shared_numerator','ASIA annual average workplace employment is the numerator'),
+        ('frame_turnover_numerator','businessTurnover','turnoverPerPersonEmployed','shared_numerator','Frame turnover in million euros converts to euros in the ratio numerator'),
+        ('workplace_resident_employment','localEmployees','femaleEmploymentRate','context','Workplace employment and resident female employment are distinct universes; no individual matching'),
+        ('business_tourism','localUnits','tourismPresences','context','Economic establishments and recorded tourist nights; periods and coverage must be explicit'),
+        ('production_income','businessValueAdded','income','context','Workplace production and resident taxable income; neither municipal GDP nor a causal effect'),
         ('age_partition', 'population', 'ageDistribution', 'ratio_component', 'POSAS 2026 residents are the denominator of each explicit age band'),
         ('tourism_numerator', 'tourismPresences', 'tourismIntensity', 'shared_numerator', 'Nights 2025 are the numerator of intensity 2025/2026'),
         ('tourism_denominator', 'population', 'tourismIntensity', 'ratio_component', 'POSAS 2026 residents are the denominator of nights 2025'),
@@ -139,7 +147,8 @@ def connections(engine, coverage):
                 period_key = 'numeratorPeriod' if component=='numerator' else 'denominatorPeriod'
                 import math
                 assert set(a)==set(b)
-                if not all(component in b[c] and math.isclose(a[c]['value'], b[c][component], rel_tol=0, abs_tol=1e-8)
+                factor=1_000_000 if identity=='frame_turnover_numerator' else 1
+                if not all(component in b[c] and math.isclose(a[c]['value']*factor, b[c][component], rel_tol=0, abs_tol=1e-8)
                     and a[c]['period']==b[c].get(period_key,b[c]['period']) for c in a):
                     reasons=['formula_components_or_periods_not_reconciled']
                 else: verification='components_reconciled'
@@ -148,7 +157,7 @@ def connections(engine, coverage):
         pair = engine.query(dict(operation='correlation', selectors=qs, method='spearman',
             axis='municipalities', purpose=meaning)) if kind=='context' else None
         edges.append(dict(id=identity, left=left, right=right, kind=kind, meaning=meaning,
-            verification=verification, reasons=reasons, permitsCausalClaim=False,
+            verification=verification, reasons=reasons, unitConversionFactor=1_000_000 if identity=='frame_turnover_numerator' else 1, permitsCausalClaim=False,
             permitsAutomaticCorrelation=False, observations=results,
             associationAttempt=pair, caveat='Context may be read side by side; joint calculations need coherent periods and universes'
             if kind=='context' else 'Mathematical dependence is not independent statistical evidence'))

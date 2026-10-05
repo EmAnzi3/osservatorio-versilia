@@ -312,6 +312,8 @@ def audit(path, layer):
     from semantic_query_ars_adapters import KEYS, LEGACY_ONLY
     catalog=engine.catalog
     expected.update(k for k in KEYS if k in catalog['metrics'] and ((k in LEGACY_ONLY and all(isinstance(r.get('series'),dict) and r['series'].get('sourceSnapshot')=='data/source-snapshots/ars-a3-5-legacy-history.json' for r in catalog['metrics'][k]['rows'])) or catalog['metrics'][k]['meta'].get('demographicSource')))
+    import semantic_query_business_adapters as business
+    expected.update(k for k in business.KEYS if k in catalog['metrics'] and (k not in business.FRAME_FIELDS or all(isinstance(r.get('economicScopes'),dict) for r in catalog['metrics'][k]['rows'])))
     assert set(adapters)==expected
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:

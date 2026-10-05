@@ -1,6 +1,6 @@
 # A6 — domande con risultati verificati
 
-Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `8305df308acd70f5c392eae94e40c26a8cbf2c2c30d8624eda00ee54a2713c7b`. Esito: **PASS**.
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `75efe3803e947f0b8f97efce9329fcd67f26ff8759ce07593f2f8239a0100822`. Esito: **PASS**.
 
 Le aspettative sono versionate e controllate contro riferimenti aritmetici/record dichiarati; non vengono riscritte automaticamente con la risposta del motore. Le domande sono casi di prova riutilizzabili, non un interprete di linguaggio naturale.
 
@@ -41,5 +41,20 @@ Le aspettative sono versionate e controllate contro riferimenti aritmetici/recor
 | ars_window_trend_refused: Posso stimare un trend annuale dai periodi decennali sovrapposti della mortalità? | PASS | ars_window_trend_not_supported | Guardia: nessuna conversione implicita in anni indipendenti |
 | ars_raw_weighting_refused: Posso aggregare i tassi grezzi per fascia d’età usando automaticamente i conteggi? | PASS | verified_ratio_adapter_required | Guardia: nessuna aggregazione di conteggi senza contratto di additività e universo verificati |
 | ars_age_history_refused: Posso ottenere una serie storica 65–84 anni per ipertensione dai dati acquisiti? | PASS | ars_historical_dimension_not_available | Guardia: snapshot delle fasce è corrente; serie totale non sostituisce la fascia |
+| business_asia_employment: Quanti addetti medi annui lavorano nelle unità locali di Massarosa nel 2023? | PASS | /observations/0/value: 4938.33 | ASIA snapshot AgID: 4938,33 addetti medi annui, per luogo di lavoro; non residenti occupati |
+| business_asia_weighted: Qual è la dimensione media delle unità locali dei sette Comuni nel 2023? | PASS | /result/value: 3.027337340680136; /result/denominator: 17967.0 | ASIA: 54.392,17 addetti medi annui / 17.967 unità locali; rapporto delle somme |
+| business_asia_cumulative: Quanto sono cambiate le unità locali di Massarosa tra 2018 e 2023? | PASS | /observations/0/value: 6.991260923845188; /observations/0/period: 2018-2023 | ASIA: (1714 − 1602) / 1602 × 100 = variazione cumulata del periodo completo |
+| business_frame_industry_va: Qual è il valore aggiunto industriale di Massarosa nel 2023? | PASS | /observations/0/value: 92.849 | Frame SBS: 92.849 migliaia di euro / 1.000 = 92,849 milioni; non PIL comunale |
+| business_frame_industry_weighted: Qual è il fatturato per addetto industriale dei sette Comuni? | PASS | /result/value: 198480.1844996055; /result/denominator: 16477.0 | Frame 2023: somma fatturato industriale 3.270.358 migliaia × 1.000 / somma 16.477 addetti |
+| business_frame_productivity_gap: Quanto dista la produttività nominale di Massarosa dal riferimento Toscana 2023? | PASS | /result/value: -2800.0 | Frame ufficiale: 53.005 − 55.805 = −2.800 euro per addetto; misura ufficiale arrotondata preservata |
+| business_frame_services_history: Quanto cresce nominalmente il valore aggiunto dei servizi a Massarosa dal 2015 al 2023? | PASS | /result/value: 71.917074 | Frame pubblicato: 165,941 − 94,023926 = 71,917074 milioni; non crescita reale |
+| business_frame_industry_wages: Qual è la retribuzione lorda per dipendente industriale a Massarosa? | PASS | /observations/0/value: 31226.0 | Frame 2023: misura ufficiale 31,226 migliaia × 1.000 = 31.226 euro per dipendente |
+| business_micro_share: Qual è la quota di unità locali 0–9 addetti a Massarosa? | PASS | /observations/0/value: 95.45 | ASIA 2023: 1636/1714 × 100, pubblicato arrotondato 95,45%; nessuno storico inferito |
+| business_resident_workplace_association: Come si associano addetti sul luogo di lavoro e occupazione femminile residente nel 2023? | PASS | /result/coefficient: 0.6785714285714286; /result/n: 7 | Ranghi per Massarosa, Viareggio, Camaiore, Pietrasanta, Seravezza, Forte, Stazzema: x=[4,7,6,5,2,3,1], y=[7,6,5,4,3,1,2]; somma differenze²=18; rho=1−108/336=19/28 |
+| business_endpoint_refused: Posso chiamare 2023 la variazione cumulata 2018–2023? | PASS | business_explicit_baseline_interval_required | Il riferimento completo è 2018–2023; anno finale non equivalente |
+| business_rounded_weighting_refused: Posso ponderare automaticamente la produttività ufficiale arrotondata? | PASS | verified_ratio_adapter_required | I rapporti ufficiali arrotondati non vengono sostituiti dal rapporto ricalcolato dai conteggi |
+| business_sector_benchmark_refused: Posso confrontare industria comunale con il benchmark regionale totale? | PASS | business_benchmark_scope_or_dimension_not_available | Snapshot benchmark letto congela totale industria e servizi; settore regionale non equivalente |
+| business_cumulative_correlation_refused: Posso correlare nel tempo due variazioni cumulate dal 2018? | PASS | business_cumulative_temporal_correlation_not_supported | Le sequenze cumulate condividono la baseline e non diventano variazioni annuali indipendenti |
+| business_current_tourism_refused: Posso correlare automaticamente unità locali correnti e presenze turistiche correnti? | PASS | paired_period_mismatch | ASIA 2023 e presenze 2025 non sono la medesima fotografia temporale |
 
 Il JSON conserva query, risultati, formula, fonti, periodi, copertura ed esclusioni. Un rifiuto atteso è una verifica riuscita del limite, non una capacità di risposta numerica. Nessuna conclusione causale o raccomandazione automatica.
