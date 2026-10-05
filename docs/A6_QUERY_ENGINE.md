@@ -97,3 +97,8 @@ Base pubblicata #334, main `c0e018d8`, deploy `37276777611` SUCCESS. Motore v4: 
 - ARS 260: tasso domiciliare standardizzato 2024, totale/uomini/donne, dal carrier effettivo e dallo snapshot; valori non arrotondati, benchmark ufficiali Toscana/Versilia. Numeratori e denominatori grezzi restano evidenze del tasso grezzo: non sono pesi del tasso standardizzato. Aggregazione e storico per sesso vengono rifiutati.
 
 `semantic_query_territorial_adapters.py` ha SHA-256 separato nell’output. Nessuna nuova acquisizione live: sono controllati gli input versionati. Le regressioni post-build includono componenti alterate, carrier obsoleti, mancanti, periodi non allineati e benchmark assenti. Il prototipo A6.5 è documentato in `docs/A6_TERRITORIAL_READINGS.md` e generato in `reports/a6-territorial-readings.md`. A6.4 resta parziale e A6.5–A6.6 richiedono revisione; A7 non è avviata.
+
+
+## Estensione v5 — ARS acquisiti
+
+Dopo la #337, il lotto ARS aggiunge 18 indicatori e porta la copertura effettiva a 29 su 225. Dimensioni, precisione, periodi completi, benchmark e rifiuti sono documentati in [A6_ARS_ADAPTERS.md](A6_ARS_ADAPTERS.md). Il totale ARS usa `total`, le fasce richiedono età e sesso espliciti; i tassi standardizzati non vengono aggregati dai componenti grezzi. Audit e domande restano derivati/verificati sui dati pubblicati; nessuna nuova acquisizione o UI. A6.4 resta parziale.

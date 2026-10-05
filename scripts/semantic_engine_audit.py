@@ -24,7 +24,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         selector['towns'] = [code]
         data=catalog if catalog is not None else engine.catalog
         row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
-        years = row.get('series', {}).get('years', [])
+        years = (row.get('series') or {}).get('years', [])
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
     if operation == 'benchmark_gap':
@@ -195,7 +195,7 @@ def markdown(coverage, graph):
     for r in coverage['metrics']:
         e=r['engine']; counts=Counter(p['status'] for p in r['probes'])
         lines.append('| '+' | '.join([r['metric'],r['theme'],r['sourceProfileId'],r['period'],e.get('adapter',e.get('reason','')),
-            ', '.join(e.get('dimensions',[])) or '—',f"{counts['computed']} / {counts['not_computable']}",
+            ', '.join(e.get('dimensions',[])).replace('|', '\\|') or '—',f"{counts['computed']} / {counts['not_computable']}",
             str(sum(d['state']=='ACQUIRED' for d in r['enrichment']))])+' |')
     lines+=['','## Collegamenti tipizzati','', '| Collegamento | Tipo | Verifica | Associazione |','|---|---|---|---|']
     for e in graph['edges']:

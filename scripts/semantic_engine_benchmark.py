@@ -30,7 +30,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
     make=lambda:QueryEngine(catalog_path,layer='effective')
     engine=make();suite=run_suite(engine)
     if suite['status']!='PASS':raise ValueError('correctness_suite_failed_before_benchmark')
-    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association']
+    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap']
     cases={r['id']:r for r in suite['results']};construction=[]
     for _ in range(initialization_rounds):
         start=time.perf_counter_ns();sample=make();construction.append((time.perf_counter_ns()-start)/1e6)
@@ -61,7 +61,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
             platform=platform.platform(),machine=platform.machine(),visibleCpuCount=os.cpu_count(),
             cpuQuota=cpu_quota,clock='perf_counter_ns',clockResolutionSeconds=time.get_clock_info('perf_counter').resolution),
         engineConstruction=summarize(construction),workloads=measurements,
-        pythonAllocationBytes=dict(retained=retained,peak=peak,scope='one fresh engine plus five representative queries; tracemalloc, excludes native allocations'),
+        pythonAllocationBytes=dict(retained=retained,peak=peak,scope=f'one fresh engine plus {len(ids)} representative queries; tracemalloc, excludes native allocations'),
         notes=['Local sequential microbenchmark; not a production concurrency or load test',
             'Fresh engine means no application snapshot cache; operating-system filesystem cache is uncontrolled',
             'Warm query includes normal provenance/output construction, not network acquisition',

@@ -2,9 +2,9 @@
 
 ## Stato corrente — 5 ottobre 2026
 
-- Main pubblicato: `f909a6b865ea74a737dbea7362411e6e1aa06c10` (#336); deploy `37286195083` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- Main pubblicato: `bdd88c98bbd2ea9af62a5eb07d16c2d2a84ab6b9` (#337); deploy `37317246047` e verifica live `37318284217` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.4 e prototipo A6.5**, issue **#330**, branch `feat/a6-engine-audit`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.4 e prototipo A6.5**, issue **#330**, branch `feat/a6-ars-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: motore deterministico, test e documentazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -24,4 +24,4 @@
 
 ## Prossima azione
 
-Verificare il lotto audit A6 autorizzato: copertura derivata dei 225 indicatori e nove dimensioni A3, prove per operazione/dimensione, profili e backlog adapter; mappa completa dei nodi, gruppi tema/fonte, companion A3 ricontrollati e collegamenti analitici tipizzati. Raccolta di 25 domande con aspettative indipendenti (17 calcoli, 8 rifiuti), baseline locale di avvio/query/cache/memoria. Specifica `docs/A6_ENGINE_AUDIT.md`; report in `reports/a6-engine-audit/`. Nessun nuovo dato, UI, golden o workflow. Gate post-build, Quick/Full locali e CI richiesti; merge solo su istruzione specifica. A6.4 resta parziale (11 indicatori con adapter/214 senza al checkpoint); A6.5–A6.6 aperte alla revisione, A7 non avviata.
+Concludere il lotto ARS autorizzato: 18 indicatori aggiuntivi sui dati acquisiti, 29 con adapter effettivo/196 senza. Dimensioni sesso e fasce MaCro esplicite, benchmark ufficiali, storici totali e vita per sesso; finestre pluriennali preservate e trend/correlazioni temporali impropri rifiutati. Specifica `docs/A6_ARS_ADAPTERS.md`; audit e 35 domande (23 calcoli, 12 rifiuti) aggiornati, nuova baseline prestazioni separata dalla #337. Nessuna acquisizione, UI, asset, golden o workflow. Gate mirati, Quick/Full locali e GitHub prima della prontezza; merge solo su istruzione specifica. Residui: altre famiglie adapter, storico dimensioni ARS non congelate, benchmark Toscana cronicità/ricoveri non interrogati dal nuovo adapter (restano pubblicati), storico assistenza domiciliare non esteso. A6.4 parziale; A6.5–A6.6 aperte, A7 non avviata.

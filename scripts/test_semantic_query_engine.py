@@ -309,6 +309,9 @@ def audit(path, layer):
     adapters=[r['metric'] for r in matrix if r['engine']['status']=='adapter_present_query_preconditions_apply']
     expected={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000','ageDistribution','earlyChildhoodPotentialCapacityRate','tourismPresences','tourismIntensity'}
     if engine.catalog['metrics']['elderlyHomeCare']['meta'].get('demographicSource'):expected.add('elderlyHomeCare')
+    from semantic_query_ars_adapters import KEYS, LEGACY_ONLY
+    catalog=engine.catalog
+    expected.update(k for k in KEYS if k in catalog['metrics'] and ((k in LEGACY_ONLY and all(isinstance(r.get('series'),dict) and r['series'].get('sourceSnapshot')=='data/source-snapshots/ars-a3-5-legacy-history.json' for r in catalog['metrics'][k]['rows'])) or catalog['metrics'][k]['meta'].get('demographicSource')))
     assert set(adapters)==expected
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:
