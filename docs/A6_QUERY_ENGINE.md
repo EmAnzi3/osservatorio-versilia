@@ -102,3 +102,7 @@ Base pubblicata #334, main `c0e018d8`, deploy `37276777611` SUCCESS. Motore v4: 
 ## Estensione v5 — ARS acquisiti
 
 Dopo la #337, il lotto ARS aggiunge 18 indicatori e porta la copertura effettiva a 29 su 225. Dimensioni, precisione, periodi completi, benchmark e rifiuti sono documentati in [A6_ARS_ADAPTERS.md](A6_ARS_ADAPTERS.md). Il totale ARS usa `total`, le fasce richiedono età e sesso espliciti; i tassi standardizzati non vengono aggregati dai componenti grezzi. Audit e domande restano derivati/verificati sui dati pubblicati; nessuna nuova acquisizione o UI. A6.4 resta parziale.
+
+## Estensione business v6
+
+Il lotto successivo alla #339 abilita 16 indicatori ASIA/Frame già acquisiti: totale, industria/servizi, storici e benchmark riconciliati. Periodi cumulati 2018–endpoint conservati; misure ufficiali arrotondate non sostituite da rapporti grezzi. Copertura effettiva 45/225; 50 domande verificate. Metodo e residui in `docs/A6_BUSINESS_ADAPTERS.md`; nuove prestazioni separate in `reports/a6-business/performance.*`. Dati, UI e golden preservati.

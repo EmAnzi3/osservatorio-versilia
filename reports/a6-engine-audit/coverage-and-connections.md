@@ -1,8 +1,8 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `aa83f7d08e110b16075b65328f88d2b69270f4d15f0e84ca71ffdd72e58194b1`.
+Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `72dec95a7d5ede047deaa8e44420d07aa53282ab53ced990db9ccb12f5621fbb`.
 
-225 indicatori censiti; 29 con adapter e 196 senza adapter. 63 profili fonte.
+225 indicatori censiti; 45 con adapter e 180 senza adapter. 63 profili fonte.
 
 La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
 
@@ -21,12 +21,12 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | altitudeProfile | ambiente | istat-geografia-comunale-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
 | availableAdministrationResultPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | averageAgriculturalFarmSize | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
-| averageGrossRemunerationPerEmployee | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| averageGrossRemunerationPerEmployee | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 6 |
 | bathingNonCompliantSamples | ambiente | arpat-bathing-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | bathingWaterQuality | ambiente | arpat-bathing-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | blueFlagBeaches | ambiente | fee-blue-flag-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
-| businessTurnover | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
-| businessValueAdded | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| businessTurnover | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
+| businessValueAdded | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
 | capitalExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | capitalPayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | cashBalancePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -61,7 +61,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | educationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | elderlyHomeCare | salute | ars-toscana-mixed | 2024 | ars-260-standardized-sex/v1 | sex:total, sex:men, sex:women | 15 / 0 | 7 |
 | emergencyAccess | salute | ars-toscana-mixed | 2025 | ars-1657-reviewed/v1 | total, sex:men, sex:women | 19 / 0 | 7 |
-| employeesPerLocalUnit | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| employeesPerLocalUnit | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 10 / 0 | 5 |
 | employmentGenderGap | lavoro | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
 | employmentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
 | emsResponseTimeP75 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
@@ -88,7 +88,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | ftthUnreachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | fuelPrices | mobilita | mimit-fuel-daily | 2026-10-03 | adapter_not_implemented | — | 0 / 0 | 3 |
 | generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
-| grossOperatingMargin | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| grossOperatingMargin | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
 | heartFailurePrevalence | salute | ars-toscana-mixed | 2025 | ars-272-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | hospitalizedAll | salute | ars-toscana-mixed | 2021–2025 | ars-1332-reviewed/v1 | total | 7 / 0 | 2 |
 | hospitals | salute | health-ministry-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
@@ -102,8 +102,8 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | incomeDistribution | economia | mef-irpef-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | incomeSourceProfile | economia | mef-irpef-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 6 |
 | incomeVsInflation | economia | mef-istat-real-income-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
-| industryValueAddedShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
-| industryWorkerShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| industryValueAddedShare | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total | 9 / 0 | 6 |
+| industryWorkerShare | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total | 9 / 0 | 6 |
 | innovationBusinessShare | economia | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | internalResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
 | invalsiAcademicExcellence | istruzione | invalsi-open-dispersione-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
@@ -112,8 +112,8 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | invalsiResults | istruzione | invalsi-open-risultati-2025 | 2024-25 | adapter_not_implemented | — | 0 / 0 | 4 |
 | irrigatedAgriculturalArea | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
 | ischemicHeartDiseasePrevalence | salute | ars-toscana-mixed | 2025 | ars-269-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
-| labourCost | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
-| labourProductivity | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| labourCost | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
+| labourProductivity | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 6 |
 | landCoverProfile | ambiente | regione-toscana-ucs-2007-2019 | 2007–2019 | adapter_not_implemented | — | 0 / 0 | 4 |
 | landUse | ambiente | ispra-consumo-suolo-2024 | 2006, 2012, 2015–2024 | adapter_not_implemented | — | 0 / 0 | 4 |
 | landUseChange | ambiente | ispra-consumo-suolo-2024 | 2012, 2015–2024 | adapter_not_implemented | — | 0 / 0 | 4 |
@@ -122,16 +122,16 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | libraryLoansPerResident | comunita | regione-toscana-biblioteche-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | libraryWeeklyOpeningHours | comunita | regione-toscana-biblioteche-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | lifeExpectancy | salute | ars-toscana-mixed | 2022 | ars-1290-reviewed/v1 | total, sex:men, sex:women | 27 / 0 | 5 |
-| localEmployees | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 3 |
-| localEmployeesChange | economia | istat-business-annual | 2018–2023 | adapter_not_implemented | — | 0 / 0 | 5 |
-| localUnits | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 4 |
-| localUnitsChange | economia | istat-business-annual | 2018–2023 | adapter_not_implemented | — | 0 / 0 | 5 |
+| localEmployees | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 9 / 0 | 3 |
+| localEmployeesChange | economia | istat-business-annual | 2018–2023 | istat-business/asia/v1 | total | 8 / 1 | 5 |
+| localUnits | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 9 / 0 | 4 |
+| localUnitsChange | economia | istat-business-annual | 2018–2023 | istat-business/asia/v1 | total | 8 / 1 | 5 |
 | lowProductivityEmployment | economia | istat-fragility-2022 | 2022 | adapter_not_implemented | — | 0 / 0 | 1 |
 | maleEmploymentRate | lavoro | istat-census-annual | 2023 | istat-census-maleEmploymentRate/v1 | total | 10 / 1 | 8 |
 | managedReticulumLength | ambiente | regione-toscana-reticolo-v137 | DCRT 24/2025 · confini Istat 1 gennaio 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
 | maritimeConcessionFeesDue | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
 | maritimeConcessions | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
-| microUnits | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 2 |
+| microUnits | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 5 / 0 | 2 |
 | mobilityMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
 | mortalityAll | salute | ars-toscana-mixed | 2013–2022 | ars-1438-reviewed/v1 | total, sex:men, sex:women | 18 / 0 | 7 |
 | mortalityCancer | salute | ars-toscana-mixed | 2013–2022 | ars-1499-reviewed/v1 | total, sex:men, sex:women | 18 / 0 | 7 |
@@ -225,10 +225,10 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | tourismSeasonality | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | tourismStructuresPer1000 | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | tplServiceSpan | mobilita | regione-toscana-gtfs-scheduled | 26 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
-| turnoverPerPersonEmployed | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| turnoverPerPersonEmployed | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 26 / 0 | 6 |
 | unemploymentRate | lavoro | istat-census-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 8 |
 | vacantHomes | abitare | istat-census-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 5 |
-| valueAddedTurnoverShare | economia | istat-business-annual | 2023 | adapter_not_implemented | — | 0 / 0 | 6 |
+| valueAddedTurnoverShare | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 26 / 0 | 6 |
 | voterTurnout | comunita | dait-eligendo-irregular | 2026 | adapter_not_implemented | — | 0 / 0 | 6 |
 | wastePerResident | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | wasteServiceCost | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
@@ -240,6 +240,12 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 
 | Collegamento | Tipo | Verifica | Associazione |
 |---|---|---|---|
+| localUnits → employeesPerLocalUnit | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
+| localEmployees → employeesPerLocalUnit | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
+| businessTurnover → turnoverPerPersonEmployed | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
+| localEmployees → femaleEmploymentRate | context | observations_available_context_only | computed:  |
+| localUnits → tourismPresences | context | observations_available_context_only | not_computable: paired_period_mismatch |
+| businessValueAdded → income | context | observations_available_context_only | not_computable: paired_period_mismatch |
 | population → ageDistribution | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
 | tourismPresences → tourismIntensity | shared_numerator | components_reconciled | Non richiesta: dipendenza matematica |
 | population → tourismIntensity | ratio_component | components_reconciled | Non richiesta: dipendenza matematica |
@@ -288,7 +294,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 
 | Profilo | Indicatori senza adapter | Dimensioni A3 già acquisite su questi indicatori |
 |---|---|---|
-| istat-business-annual | 16 | 80 |
 | istat-census-annual | 11 | 65 |
 | openbdap-annual | 24 | 57 |
 | istat-demography-annual | 7 | 50 |

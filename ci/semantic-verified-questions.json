@@ -1061,6 +1061,479 @@
         ]
       },
       "reference": "Guardia: snapshot delle fasce è corrente; serie totale non sostituisce la fascia"
+    },
+    {
+      "id": "business_asia_employment",
+      "question": "Quanti addetti medi annui lavorano nelle unità locali di Massarosa nel 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "localEmployees",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              493833,
+              100
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "workplace_activity_not_resident_employment"
+        ]
+      },
+      "reference": "ASIA snapshot AgID: 4938,33 addetti medi annui, per luogo di lavoro; non residenti occupati"
+    },
+    {
+      "id": "business_asia_weighted",
+      "question": "Qual è la dimensione media delle unità locali dei sette Comuni nel 2023?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "employeesPerLocalUnit"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              5439217,
+              1796700
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/denominator",
+            "fraction": [
+              17967,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ASIA: 54.392,17 addetti medi annui / 17.967 unità locali; rapporto delle somme"
+    },
+    {
+      "id": "business_asia_cumulative",
+      "question": "Quanto sono cambiate le unità locali di Massarosa tra 2018 e 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "localUnitsChange",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              11200,
+              1602
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018-2023"
+          }
+        ],
+        "warnings": [
+          "cumulative_baseline_change_not_year_on_year"
+        ]
+      },
+      "reference": "ASIA: (1714 − 1602) / 1602 × 100 = variazione cumulata del periodo completo"
+    },
+    {
+      "id": "business_frame_industry_va",
+      "question": "Qual è il valore aggiunto industriale di Massarosa nel 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "businessValueAdded",
+            "dimension": "sector:industry",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              92849,
+              1000
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "frame_value_added_not_municipal_gdp"
+        ]
+      },
+      "reference": "Frame SBS: 92.849 migliaia di euro / 1.000 = 92,849 milioni; non PIL comunale"
+    },
+    {
+      "id": "business_frame_industry_weighted",
+      "question": "Qual è il fatturato per addetto industriale dei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "turnoverPerPersonEmployed",
+            "dimension": "sector:industry"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3270358000,
+              16477
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/denominator",
+            "fraction": [
+              16477,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frame 2023: somma fatturato industriale 3.270.358 migliaia × 1.000 / somma 16.477 addetti"
+    },
+    {
+      "id": "business_frame_productivity_gap",
+      "question": "Quanto dista la produttività nominale di Massarosa dal riferimento Toscana 2023?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "labourProductivity",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -2800,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "official_rounded_measure_preserved_no_implicit_weighting"
+        ]
+      },
+      "reference": "Frame ufficiale: 53.005 − 55.805 = −2.800 euro per addetto; misura ufficiale arrotondata preservata"
+    },
+    {
+      "id": "business_frame_services_history",
+      "question": "Quanto cresce nominalmente il valore aggiunto dei servizi a Massarosa dal 2015 al 2023?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "businessValueAdded",
+            "dimension": "sector:services",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2015",
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              71917074,
+              1000000
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "nominal_economic_values_not_real_growth"
+        ]
+      },
+      "reference": "Frame pubblicato: 165,941 − 94,023926 = 71,917074 milioni; non crescita reale"
+    },
+    {
+      "id": "business_frame_industry_wages",
+      "question": "Qual è la retribuzione lorda per dipendente industriale a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "averageGrossRemunerationPerEmployee",
+            "dimension": "sector:industry",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              31226,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frame 2023: misura ufficiale 31,226 migliaia × 1.000 = 31.226 euro per dipendente"
+    },
+    {
+      "id": "business_micro_share",
+      "question": "Qual è la quota di unità locali 0–9 addetti a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "microUnits",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              9545,
+              100
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "micro_unit_share_rounded_no_inferred_counts"
+        ]
+      },
+      "reference": "ASIA 2023: 1636/1714 × 100, pubblicato arrotondato 95,45%; nessuno storico inferito"
+    },
+    {
+      "id": "business_resident_workplace_association",
+      "question": "Come si associano addetti sul luogo di lavoro e occupazione femminile residente nel 2023?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "localEmployees"
+          },
+          {
+            "metric": "femaleEmploymentRate"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva di due universi distinti; nessun matching individuale o effetto causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              19,
+              28
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation",
+          "workplace_activity_not_resident_employment",
+          "small_sample_no_inferential_claim"
+        ]
+      },
+      "reference": "Ranghi per Massarosa, Viareggio, Camaiore, Pietrasanta, Seravezza, Forte, Stazzema: x=[4,7,6,5,2,3,1], y=[7,6,5,4,3,1,2]; somma differenze²=18; rho=1−108/336=19/28"
+    },
+    {
+      "id": "business_endpoint_refused",
+      "question": "Posso chiamare 2023 la variazione cumulata 2018–2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "localUnitsChange",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "business_explicit_baseline_interval_required"
+        ]
+      },
+      "reference": "Il riferimento completo è 2018–2023; anno finale non equivalente"
+    },
+    {
+      "id": "business_rounded_weighting_refused",
+      "question": "Posso ponderare automaticamente la produttività ufficiale arrotondata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "labourProductivity"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "I rapporti ufficiali arrotondati non vengono sostituiti dal rapporto ricalcolato dai conteggi"
+    },
+    {
+      "id": "business_sector_benchmark_refused",
+      "question": "Posso confrontare industria comunale con il benchmark regionale totale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "businessValueAdded",
+            "dimension": "sector:industry",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "business_benchmark_scope_or_dimension_not_available"
+        ]
+      },
+      "reference": "Snapshot benchmark letto congela totale industria e servizi; settore regionale non equivalente"
+    },
+    {
+      "id": "business_cumulative_correlation_refused",
+      "question": "Posso correlare nel tempo due variazioni cumulate dal 2018?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "localUnitsChange",
+            "towns": [
+              "046018"
+            ]
+          },
+          {
+            "metric": "localEmployeesChange",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "periods",
+        "purpose": "Verifica rifiuto di intervalli con baseline condivisa"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "business_cumulative_temporal_correlation_not_supported"
+        ]
+      },
+      "reference": "Le sequenze cumulate condividono la baseline e non diventano variazioni annuali indipendenti"
+    },
+    {
+      "id": "business_current_tourism_refused",
+      "question": "Posso correlare automaticamente unità locali correnti e presenze turistiche correnti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "localUnits"
+          },
+          {
+            "metric": "tourismPresences"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Verifica allineamento: anni correnti diversi"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "ASIA 2023 e presenze 2025 non sono la medesima fotografia temporale"
     }
   ]
 }

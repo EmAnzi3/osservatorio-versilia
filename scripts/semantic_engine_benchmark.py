@@ -30,7 +30,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
     make=lambda:QueryEngine(catalog_path,layer='effective')
     engine=make();suite=run_suite(engine)
     if suite['status']!='PASS':raise ValueError('correctness_suite_failed_before_benchmark')
-    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap']
+    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap','business_frame_industry_weighted','business_endpoint_refused']
     cases={r['id']:r for r in suite['results']};construction=[]
     for _ in range(initialization_rounds):
         start=time.perf_counter_ns();sample=make();construction.append((time.perf_counter_ns()-start)/1e6)
@@ -56,6 +56,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
     try:cpu_quota=Path('/sys/fs/cgroup/cpu.max').read_text().strip()
     except OSError:cpu_quota='not_available'
     return dict(schemaVersion=1,catalogSha256=engine.catalog_hash,engineSha256=engine.module_hash,
+        adapterImplementationHashes={k:v for k,v in suite['results'][0]['actual'].items() if k.endswith('AdapterSha256') or k=='adapterImplementationSha256'},
         questionManifestSha256=suite['manifestSha256'],correctnessSuite=suite['summary'],
         environment=dict(python=platform.python_version(),implementation=platform.python_implementation(),
             platform=platform.platform(),machine=platform.machine(),visibleCpuCount=os.cpu_count(),
@@ -72,6 +73,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
 def markdown(report):
     env=report['environment'];lines=['# A6 — baseline delle prestazioni','',
         f"Catalogo `{report['catalogSha256']}`; motore `{report['engineSha256']}`; domande `{report['questionManifestSha256']}`.",'',
+        'Hash degli adapter: '+json.dumps(report.get('adapterImplementationHashes',{}),sort_keys=True)+'.','',
         f"Ambiente: Python {env['python']} {env['implementation']}, {env['platform']}, {env['machine']}; CPU visibili {env['visibleCpuCount']}, quota cgroup `{env['cpuQuota']}`.",'',
         'Suite di correttezza PASS prima delle misure. Millisecondi; p95 interpolato. Esecuzione sequenziale locale: non è uno stress test o una promessa di latenza in produzione. Cache filesystem non controllata.','',
         '| Carico | Campioni | Mediana ms | p95 ms | Massimo ms |','|---|---|---|---|---|']

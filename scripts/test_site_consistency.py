@@ -55,6 +55,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     regressions(catalog_path)
     from test_semantic_ars_adapters import regressions as ars_regressions
     ars_regressions(catalog_path)
+    from test_semantic_business_adapters import regressions as business_regressions
+    business_regressions(catalog_path)
     from test_semantic_engine_audit import regressions as engine_audit_regressions
     engine_audit_regressions(catalog_path)
     print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")

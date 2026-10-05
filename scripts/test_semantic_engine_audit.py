@@ -47,8 +47,14 @@ def regressions(catalog_path):
         if edge['kind']!='context':assert edge['verification']=='components_reconciled'
         else:
             assert edge['verification']=='observations_available_context_only'
-            assert edge['associationAttempt']['status']=='not_computable'
-            assert 'paired_period_mismatch' in edge['associationAttempt']['reasons']
+            if edge['id']=='workplace_resident_employment':
+                assert edge['associationAttempt']['status']=='computed'
+                assert edge['associationAttempt']['result']['n']==7
+                assert 'association_not_causation' in edge['associationAttempt']['warnings']
+                assert 'workplace_activity_not_resident_employment' in edge['associationAttempt']['warnings']
+            else:
+                assert edge['associationAttempt']['status']=='not_computable'
+                assert 'paired_period_mismatch' in edge['associationAttempt']['reasons']
     assert all(g['permitsCalculation'] is False for g in graph['groups'])
     contract=json.loads((ROOT/'data/enrichment-companion-contract.json').read_text())
     assert len(graph['companionLinks'])==len(contract['relationships'])
