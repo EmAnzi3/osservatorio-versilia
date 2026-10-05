@@ -307,7 +307,9 @@ def audit(path, layer):
     assert len(matrix)==len(engine.catalog['metrics'])
     assert {r['metric'] for r in matrix}==set(engine.catalog['metrics'])
     adapters=[r['metric'] for r in matrix if r['engine']['status']=='adapter_present_query_preconditions_apply']
-    assert set(adapters)=={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000','ageDistribution'}
+    expected={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000','ageDistribution','earlyChildhoodPotentialCapacityRate','tourismPresences','tourismIntensity'}
+    if engine.catalog['metrics']['elderlyHomeCare']['meta'].get('demographicSource'):expected.add('elderlyHomeCare')
+    assert set(adapters)==expected
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']

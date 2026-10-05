@@ -40,9 +40,9 @@ def _build_assertions_from_dist_catalog(dist) -> None:
                 result = query_engine.query({'operation':'weighted_ratio','selectors':[selector]})
                 assert result['status']=='computed', result
             if 'benchmark_gap' in item['engine']['operations']:
-                for scope in ('tuscany','italy'):
+                for scope in item['engine']['benchmarkScopes']:
                     result = query_engine.query({'operation':'benchmark_gap','benchmark':scope,
-                        'selectors':[{'metric':item['metric'],'towns':['046018']}]})
+                        'selectors':[dict(selector,towns=['046018'])]})
                     assert result['status']=='computed', result
     age_coverage=next(x for x in query_coverage if x['metric']=='ageDistribution')
     for dimension in age_coverage['engine']['dimensions']:
@@ -51,6 +51,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     result=query_engine.query({'operation':'anomaly','selectors':[{'metric':'income'}],
         'rule':'tukey_1_5_iqr','reference':'selected_municipalities','purpose':'Effective catalog descriptive regression'})
     assert result['status']=='computed',result
+    from test_semantic_territorial_readings import regressions
+    regressions(catalog_path)
     print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")
     print(
         "A6 semantic model effective catalog: "

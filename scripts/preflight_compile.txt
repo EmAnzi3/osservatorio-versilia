@@ -78,3 +78,6 @@ scripts/test_semantic_operations.py
 scripts/semantic_query_engine.py
 scripts/test_semantic_query_engine.py
 scripts/semantic_query_adapters.py
+scripts/semantic_query_territorial_adapters.py
+scripts/semantic_territorial_readings.py
+scripts/test_semantic_territorial_readings.py

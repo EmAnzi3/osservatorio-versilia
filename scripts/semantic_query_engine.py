@@ -15,9 +15,10 @@ from urllib.parse import urlparse
 from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import assess, coverage_matrix, finite
 from semantic_query_adapters import CENSUS, census_context, census_observation, benchmark_observation, AGE_BANDS, age_context, age_observation
+import semantic_query_territorial_adapters as territorial
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '3'
+VERSION = '4'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -32,6 +33,30 @@ def annual(period):
     if not re.fullmatch(r'[0-9]{4}', token):
         raise ValueError(f'unsupported_annual_period:{token}')
     return token
+
+
+def period_token(key, period):
+    if key=='earlyChildhoodPotentialCapacityRate':
+        token=str(period)
+        if not re.fullmatch(r'[0-9]{4}/[0-9]{2}',token):
+            raise ValueError('educational_year_token_required')
+        return token
+    return annual(period)
+
+
+def dimensions(key):
+    if key=='ageDistribution':return list(AGE_BANDS)
+    if key=='population':return ['total','sex:men','sex:women']
+    if key=='elderlyHomeCare':return list(territorial.SEX)
+    return ['total']
+
+
+def operations(key, dimension, unit):
+    current_only=key=='ageDistribution' or key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total')
+    return [o for o in SUPPORTED if
+        (o!='weighted_ratio' or key in CENSUS or key=='ageDistribution' or key in territorial.RATIOS) and
+        (o!='benchmark_gap' or key in CENSUS or key=='income' or key=='ageDistribution' or key in territorial.RATIOS or key=='elderlyHomeCare') and
+        (o!='percentage_points' or unit=='percent') and (not current_only or o not in TEMPORAL)]
 
 
 def mean(values):
@@ -93,14 +118,16 @@ def calculate(operation, observations, policy):
         return {'value':numerator / denominator * usable[0]['scale'], 'unit':usable[0]['unit'],
                 'numerator':numerator, 'denominator':denominator, 'scale':usable[0]['scale'],
                 'geographies':[o['geography'] for o in usable], 'period':usable[0]['period'],
-                'aggregation':'ratio of sums; not mean of municipal ratios'}
+                'aggregation':'ratio of sums; not mean of municipal ratios',
+                **{k:usable[0][k] for k in ('numeratorPeriod','denominatorPeriod') if k in usable[0]}}
     if operation == 'benchmark_gap':
         municipal,benchmark = usable
         return {'value':municipal['value']-benchmark['value'],
                 'unit':'percentage_points' if municipal['unit']=='percent' else municipal['unit'],
                 'municipalValue':municipal['value'], 'benchmarkValue':benchmark['value'],
                 'geography':municipal['geography'], 'benchmarkScope':benchmark['geography'],
-                'period':municipal['period'], 'direction':'municipal minus benchmark'}
+                'period':municipal['period'], 'direction':'municipal minus benchmark',
+                **{k:municipal[k] for k in ('numeratorPeriod','denominatorPeriod') if k in municipal}}
     if operation == 'anomaly':
         ordered=sorted(values)
         def quantile(p):
@@ -179,6 +206,8 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in territorial.NEW_KEYS or (key=='population' and dimension!='total'):
+            return territorial.context(metric,key,dimension)
         if key == 'ageDistribution':
             return age_context(metric,dimension)
         if key in CENSUS:
@@ -201,7 +230,13 @@ class QueryEngine:
         row = metric['rows'][row_index]
         context = self.context(key,dimension)
         pointer = f'/metrics/{key}/rows/{row_index}'
-        if key == 'ageDistribution':
+        if key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total'):
+            if period_token(key,meta['year'])!=period:
+                raise ValueError('current_period_mismatch')
+            historical=False
+            value=row.get('value');pointer+='/value'
+            period_pointer=f'/metrics/{key}/meta/year'
+        elif key == 'ageDistribution':
             if annual(meta['year'])!=period:
                 raise ValueError('current_period_mismatch')
             historical=False # Explicit 2026 selection still uses the current composite carrier.
@@ -228,12 +263,23 @@ class QueryEngine:
         evidence = [{'kind':'catalog_snapshot','sha256':self.catalog_hash,'path':self.catalog_path,
                      'valuePointer':pointer,'periodPointer':period_pointer}]
         warnings = []
-        if key == 'ageDistribution':
+        if key in territorial.NEW_KEYS:
+            value,suffix,components,refs,source,notes=territorial.observation(self,key,row,dimension,period,value)
+            if suffix:pointer=f'/metrics/{key}/rows/{row_index}'+suffix
+            evidence[0]['valuePointer']=pointer
+            evidence.extend(refs);warnings.extend(notes)
+        elif key=='population' and dimension!='total':
+            value,suffix,components,refs,source,notes=territorial.population_sex(self,metric,row,dimension,period)
+            evidence[0]['valuePointer']=f'/metrics/{key}/rows/{row_index}'+suffix
+            evidence.extend(refs);warnings.extend(notes)
+        elif key == 'ageDistribution':
             evidence.append(ref)
         else:
             source = metric['sourceUrl']
             components = {}
-        if key in CENSUS:
+        if key in territorial.NEW_KEYS or (key=='population' and dimension!='total'):
+            pass
+        elif key in CENSUS:
             components,ref,source = census_observation(self,key,row,period,value)
             evidence.append(ref)
             if key == 'nonOccupiedHomesPer1000':
@@ -270,11 +316,13 @@ class QueryEngine:
         if key not in self._catalog['metrics']:
             raise ValueError('unknown_metric')
         dimension=selector.get('dimension','total')
+        if dimension not in dimensions(key):
+            raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
-        if key!='ageDistribution' and dimension != 'total':
-            raise ValueError('dimension_adapter_not_implemented')
         if key=='ageDistribution' and operation in TEMPORAL:
             raise ValueError('age_historical_dimension_not_available')
+        if (key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total')) and operation in TEMPORAL:
+            raise ValueError('historical_dimension_not_available')
         towns = selector.get('towns',sorted(self.codes))
         if not isinstance(towns,list) or not towns or any(not isinstance(c,str) or c not in self.codes for c in towns) or len(towns)!=len(set(towns)):
             raise ValueError('unknown_or_duplicate_geography')
@@ -287,12 +335,12 @@ class QueryEngine:
             series = rows[towns[0]][1].get('series')
             if not isinstance(series,dict):
                 raise ValueError('series_not_available')
-            periods = sorted(map(annual,series['years']),key=int)
+            periods = sorted((period_token(key,p) for p in series['years']),key=int)
         elif periods is None:
-            periods = [annual(self._catalog['metrics'][key]['meta']['year'])]
+            periods = [period_token(key,self._catalog['metrics'][key]['meta']['year'])]
         if not isinstance(periods,list) or not periods:
             raise ValueError('empty_period_selection')
-        periods = list(map(annual,periods))
+        periods = [period_token(key,p) for p in periods]
         if len(periods) != len(set(periods)):
             raise ValueError('duplicate_period')
         if operation in TEMPORAL and (len(towns)!=1 or periods!=sorted(periods,key=int)):
@@ -313,6 +361,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'territorialAdapterSha256':digest((ROOT/'scripts/semantic_query_territorial_adapters.py').read_bytes()),
                   'policySha256':self.policy_hash, 'eligibilitySha256':digest((ROOT/'scripts/semantic_operations.py').read_bytes()),
                   'catalogSha256':self.catalog_hash, 'catalogPath':self.catalog_path,
                   'query':request, 'status':'not_computable','reasons':[], 'warnings':[],
@@ -344,12 +393,14 @@ class QueryEngine:
             if operation == 'benchmark_gap':
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
-                observations.append(benchmark_observation(self,selectors[0]['metric'],request.get('benchmark'),observations[0]))
+                key=selectors[0]['metric']
+                adapter=territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
             if operation == 'weighted_ratio':
-                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution':
+                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS:
                     raise ValueError('verified_ratio_adapter_required')
                 policy['disjointPopulationEvidence'] = {'method':'distinct official municipality codes; additive source counts by residence',
                     'geographies':[o['geography'] for o in observations],
@@ -413,14 +464,20 @@ class QueryEngine:
         matrix = coverage_matrix(self.catalog)
         for entry in matrix:
             try:
-                dimensions=list(AGE_BANDS) if entry['metric']=='ageDistribution' else ['total']
-                context = self.context(entry['metric'],dimensions[0])
-                operations = [o for o in SUPPORTED if (o != 'weighted_ratio' or (entry['metric'] in CENSUS or entry['metric']=='ageDistribution')) and
-                              (o != 'benchmark_gap' or entry['metric'] in CENSUS or entry['metric']=='income') and
-                              (o != 'percentage_points' or context['unit']=='percent') and
-                              (entry['metric']!='ageDistribution' or o not in TEMPORAL)]
-                entry['engine'] = {'adapter':context['adapter'], 'dimensions':dimensions, 'operations':operations,
-                                   'status':'adapter_present_query_preconditions_apply'}
+                declared=dimensions(entry['metric'])
+                self.context(entry['metric'],declared[0])
+                contexts={};states={}
+                for d in declared:
+                    try:
+                        contexts[d]=self.context(entry['metric'],d)
+                        states[d]={'status':'adapter_present_query_preconditions_apply'}
+                    except ValueError as exc:
+                        states[d]={'status':'not_supported','reason':str(exc)}
+                per_dimension={d:operations(entry['metric'],d,c['unit']) for d,c in contexts.items()}
+                dims=list(contexts)
+                entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
+                    'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
+                    'dimensionStatus':states,'benchmarkScopes':(['tuscany','versilia'] if entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix
