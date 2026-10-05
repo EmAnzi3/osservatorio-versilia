@@ -4,9 +4,11 @@ import copy
 import json
 import math
 import tempfile
+from fractions import Fraction
 from pathlib import Path
 
 from semantic_query_engine import QueryEngine, ROOT, SNAPSHOT, calculate, coefficient, ranks
+from semantic_query_adapters import CENSUS, CENSUS_PATH, CENSUS_BENCHMARK, MEF_BENCHMARK
 
 
 def request(operation, metric='population', **selection):
@@ -58,7 +60,7 @@ def regressions():
     rejected(engine,request('compare',towns=['unknown']),'unknown_or_duplicate_geography')
     rejected(engine,request('compare',towns=['046018','046018']),'unknown_or_duplicate_geography')
     rejected(engine,request('series',towns=['046018'],periods=['2018']),'period_not_available')
-    rejected(engine,request('percentage_points'),'operation_not_implemented')
+    rejected(engine,request('percentage_points',towns=['046018'],periods=['2019','2026']),'percentage_unit_required')
     rejected(engine,dict(request('compare'),allowPartial='yes'),'allowPartial_must_be_boolean')
     rejected(engine,dict(request('compare'),method='ignored'),'fields_not_applicable')
     rejected(engine,dict(request('compare'),definition='injected'),'invalid_query_fields')
@@ -123,23 +125,108 @@ def regressions():
         rejected(altered,request('series',towns=['046018'],periods=['2026']),'period_not_available')
 
 
+def ratio_regressions():
+    # Unequal denominators: 110/1100*100 = 10; the mean of 20% and 9% is 14.5%.
+    rows=[dict(value=20,numerator=20,denominator=100,scale=100,unit='percent',geography='a',period='2023'),
+          dict(value=9,numerator=90,denominator=1000,scale=100,unit='percent',geography='b',period='2023')]
+    assert calculate('weighted_ratio',rows,{})['value']==10
+    assert calculate('percentage_points',[dict(value=50,unit='percent',period='2021'),dict(value=55,unit='percent',period='2023')],{})['value']==5
+    engine=QueryEngine(ROOT/'data/site-data.json')
+    weighted=request('weighted_ratio','femaleEmploymentRate')
+    r=engine.query(weighted)
+    assert r['status']=='computed' and math.isclose(r['result']['value'],float(Fraction(27717,50153)*100),abs_tol=1e-12),r
+    assert r['result']['numerator']==27717 and r['result']['denominator']==50153
+    assert len(r['result']['geographies'])==7 and 'disjointPopulationEvidence' in r['policy']
+    pp=engine.query(request('percentage_points','femaleEmploymentRate',towns=['046018'],periods=['2021','2023']))
+    # Use the frozen municipal counts as a separate arithmetic reference.
+    source=json.loads((ROOT/CENSUS_PATH).read_text())
+    raw=next(x for x in source['raw']['2023'] if x['code']=='046018')
+    expected=float((Fraction(3937,6976)-Fraction(3731,6989))*100)
+    assert pp['status']=='computed' and pp['result']['unit']=='percentage_points'
+    assert math.isclose(pp['result']['value'],expected,abs_tol=1e-12)
+    gap=dict(request('benchmark_gap','femaleEmploymentRate',towns=['046018']),benchmark='tuscany')
+    r=engine.query(gap)
+    expected=float(Fraction(raw['P103'],raw['female1564'])*100-Fraction(707029,1136557)*100)
+    assert r['status']=='computed' and math.isclose(r['result']['value'],expected,abs_tol=1e-12),r
+    assert r['result']['unit']=='percentage_points'
+    assert r['observations'][0]['evidence'][1]['path']==CENSUS_PATH
+    assert r['observations'][1]['evidence'][0]['path']==CENSUS_BENCHMARK
+    assert r['observations'][1]['geography']=='tuscany'
+    assert len(r['adapterImplementationSha256'])==64
+    rejected(engine,dict(gap,benchmark='unknown'),'benchmark_scope_not_supported')
+    rejected(engine,dict(request('compare'),benchmark='tuscany'),'fields_not_applicable')
+    rejected(engine,dict(request('benchmark_gap','femaleEmploymentRate'),benchmark='tuscany'),'one_municipality')
+    rejected(engine,dict(request('benchmark_gap','femaleEmploymentRate',towns=['046018'],periods=['2021']),benchmark='tuscany'),'period_unit_or_quality')
+    rejected(engine,dict(request('benchmark_gap','population',towns=['046018']),benchmark='italy'),'benchmark_adapter_not_implemented')
+    rejected(engine,request('weighted_ratio','income'),'verified_ratio_adapter_required')
+    rejected(engine,request('weighted_ratio','femaleEmploymentRate',towns=['046018','046018']),'duplicate_geography')
+    rejected(engine,request('percentage_points','housingStockPer1000',towns=['046018'],periods=['2021','2023']),'percentage_unit_required')
+    rejected(engine,dict(weighted,disjointPopulationEvidence='injected'),'invalid_query_fields')
+    with tempfile.TemporaryDirectory(prefix='a6-ratios-') as temporary:
+        root=Path(temporary)
+        for relative in [CENSUS_PATH,CENSUS_BENCHMARK,MEF_BENCHMARK]:
+            dest=root/relative;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes((ROOT/relative).read_bytes())
+        path=root/'catalog.json'
+        catalog=engine.catalog
+        catalog['metrics']['femaleEmploymentRate']['rows'][0]['value']=None
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,weighted,'partial_coverage_requires_opt_in')
+        partial=altered.query(dict(weighted,allowPartial=True))
+        assert partial['status']=='computed' and partial['coverage']['usable']==6
+        assert len(partial['result']['geographies'])==6 and '046018' not in partial['result']['geographies']
+        assert partial['result']['denominator']==50153-raw['female1564']
+        rejected(altered,dict(gap,allowPartial=True),'explicit_benchmark_comparability_required')
+        catalog=engine.catalog
+        catalog['metrics']['femaleEmploymentRate']['rows'][0]['value']+=1
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,weighted,'source_ratio_reconciliation_failed')
+        catalog=engine.catalog;path.write_text(json.dumps(catalog))
+        snapshot=json.loads((root/CENSUS_PATH).read_text())
+        snapshot['raw']['2023'][0]['female1564']=0
+        (root/CENSUS_PATH).write_text(json.dumps(snapshot));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,weighted,'invalid_source_ratio_components')
+        (root/CENSUS_PATH).write_bytes((ROOT/CENSUS_PATH).read_bytes())
+        benchmark=json.loads((root/CENSUS_BENCHMARK).read_text())
+        benchmark['benchmarks']['femaleEmploymentRate']['tuscany']+=1
+        (root/CENSUS_BENCHMARK).write_text(json.dumps(benchmark));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,gap,'source_ratio_reconciliation_failed')
+        (root/CENSUS_BENCHMARK).write_bytes((ROOT/CENSUS_BENCHMARK).read_bytes())
+        catalog['metrics']['femaleEmploymentRate']['meta']['benchmark']={'year':2021,'sourceSnapshot':CENSUS_BENCHMARK,'tuscany':0,'italy':0,'source':'Istat','url':'https://www.istat.it/notizia/dati-per-sezioni-di-censimento/'}
+        path.write_text(json.dumps(catalog));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,gap,'published_benchmark_context_mismatch')
+        catalog=engine.catalog;path.write_text(json.dumps(catalog))
+        mef=json.loads((root/MEF_BENCHMARK).read_text())
+        mef['source']['amountHeader']='Reddito complessivo - Ammontare in euro'
+        (root/MEF_BENCHMARK).write_text(json.dumps(mef));altered=QueryEngine(path,repository_root=root)
+        rejected(altered,dict(request('benchmark_gap','income',towns=['046018']),benchmark='italy'),'benchmark_mef_definition_changed')
+
+
 def audit(path, layer):
     engine=QueryEngine(path,layer=layer)
     matrix=engine.coverage()
     assert len(matrix)==len(engine.catalog['metrics'])
     assert {r['metric'] for r in matrix}==set(engine.catalog['metrics'])
     adapters=[r['metric'] for r in matrix if r['engine']['status']=='adapter_present_query_preconditions_apply']
-    assert set(adapters)=={'population','income'}
+    assert set(adapters)=={'population','income','femaleEmploymentRate','maleEmploymentRate','housingStockPer1000','nonOccupiedHomesPer1000'}
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:
         report=engine.query(request('compare',key))
         assert report['status']=='computed',report
         assert report['coverage']['requested']==7
+        if key in CENSUS:
+            for year in ['2021','2023']:
+                r=engine.query(request('weighted_ratio',key,periods=[year]))
+                assert r['status']=='computed' and len(r['result']['geographies'])==7,r
+        if key in CENSUS or key=='income':
+            for scope in ['tuscany','italy']:
+                r=engine.query(dict(request('benchmark_gap',key,towns=['046018']),benchmark=scope))
+                assert r['status']=='computed',r
     print(f'A6.4 query audit {layer}: {len(matrix)} indicators, {len(adapters)} adapters; remaining exclusions explicit')
 
 
 def main():
     regressions()
+    ratio_regressions()
     audit(ROOT/'data/site-data.json','source')
     if (ROOT/'dist/data/site-data.json').exists():
         audit(ROOT/'dist/data/site-data.json','effective')

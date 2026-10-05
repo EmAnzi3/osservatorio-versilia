@@ -35,6 +35,14 @@ def _build_assertions_from_dist_catalog(dist) -> None:
         if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
             result = query_engine.query({"operation": "compare", "selectors": [{"metric": item["metric"]}]})
             assert result["status"] == "computed", result
+            if 'weighted_ratio' in item['engine']['operations']:
+                result = query_engine.query({'operation':'weighted_ratio','selectors':[{'metric':item['metric']}]})
+                assert result['status']=='computed', result
+            if 'benchmark_gap' in item['engine']['operations']:
+                for scope in ('tuscany','italy'):
+                    result = query_engine.query({'operation':'benchmark_gap','benchmark':scope,
+                        'selectors':[{'metric':item['metric'],'towns':['046018']}]})
+                    assert result['status']=='computed', result
     print(f"A6.4 effective query coverage: {len(query_coverage)} indicatori; adapter e limiti derivati.")
     print(
         "A6 semantic model effective catalog: "
