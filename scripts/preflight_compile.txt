@@ -81,3 +81,7 @@ scripts/semantic_query_adapters.py
 scripts/semantic_query_territorial_adapters.py
 scripts/semantic_territorial_readings.py
 scripts/test_semantic_territorial_readings.py
+scripts/semantic_engine_audit.py
+scripts/semantic_question_suite.py
+scripts/semantic_engine_benchmark.py
+scripts/test_semantic_engine_audit.py

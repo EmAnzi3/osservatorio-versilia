@@ -1,0 +1,761 @@
+{
+  "schemaVersion": 1,
+  "questions": [
+    {
+      "id": "population_current",
+      "question": "Quanti residenti ha Massarosa al 1 gennaio 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              21782,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS 2026: record comunale 21782; snapshot demografico"
+    },
+    {
+      "id": "population_change",
+      "question": "Come cambiano i residenti di Massarosa dal 2019 al 2026?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2019",
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              86,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS: 21782 − 21696 = 86"
+    },
+    {
+      "id": "income_change",
+      "question": "Quanto cresce nominalmente l’imponibile medio 2011–2024 di Massarosa?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "income",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2011",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              517499,
+              100
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Serie MEF pubblicata: differenza 5174,99 euro; archivi grezzi comunali non verificati dall’adapter"
+    },
+    {
+      "id": "female_weighted",
+      "question": "Qual è il tasso territoriale di occupazione femminile 2023?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2771700,
+              50153
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/numerator",
+            "fraction": [
+              27717,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/denominator",
+            "fraction": [
+              50153,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Conteggi censuari: 27717 occupate / 50153 donne 15–64 × 100"
+    },
+    {
+      "id": "female_pp",
+      "question": "Come cambia l’occupazione femminile di Massarosa 2021–2023?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2021",
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3052464,
+              1000000
+            ],
+            "tolerance": 1e-06
+          },
+          {
+            "path": "/result/unit",
+            "value": "percentage_points"
+          }
+        ]
+      },
+      "reference": "Differenza dei rapporti censuari: +3,052464 punti; riferimento arrotondato a 6 decimali, tolleranza 1e-6"
+    },
+    {
+      "id": "female_benchmark",
+      "question": "Quanto dista Massarosa dal tasso femminile toscano 2023?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5771613,
+              1000000
+            ],
+            "tolerance": 1e-06
+          }
+        ]
+      },
+      "reference": "Rapporti censuari comunale e Toscana 2023: −5,771613 punti; tolleranza 1e-6"
+    },
+    {
+      "id": "housing_weighted",
+      "question": "Quante abitazioni non occupate da residenti per 1000 abitanti nel territorio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "nonOccupiedHomesPer1000",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              38034000,
+              159387
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "38034 abitazioni / 159387 residenti × 1000; non equivale a case vuote"
+    },
+    {
+      "id": "age85_mass",
+      "question": "Qual è la quota di residenti 85+ a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ageDistribution",
+            "dimension": "age:85+",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              89200,
+              21782
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS 2026 per età: 892 / 21782 × 100"
+    },
+    {
+      "id": "age85_weighted",
+      "question": "Qual è la quota 85+ dei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ageDistribution",
+            "dimension": "age:85+"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              781500,
+              158520
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Somme POSAS: 7815 / 158520 × 100"
+    },
+    {
+      "id": "sex_men",
+      "question": "Quanti residenti uomini ha Massarosa nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "sex:men",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10736,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Somma record POSAS per età/sesso: 10736 uomini"
+    },
+    {
+      "id": "child_weighted",
+      "question": "Qual è la ricettività educativa potenziale dei sette Comuni nel 2024/25?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "earlyChildhoodPotentialCapacityRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              103100,
+              2217
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/period",
+            "value": "2024/25"
+          }
+        ]
+      },
+      "reference": "1031 posti potenziali / 2217 residenti 3–36 mesi × 100"
+    },
+    {
+      "id": "child_zero",
+      "question": "Gli zero di ricettività a Seravezza e Stazzema sono dati effettivi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "earlyChildhoodPotentialCapacityRate",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Riconciliazione regionale: 0/168 e 0/35, anno educativo 2024/25"
+    },
+    {
+      "id": "tour_change",
+      "question": "Come cambiano le notti registrate di Massarosa dal 2023 al 2025?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "tourismPresences",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2791,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Registro movimento senza locazioni: 37898 − 35107 = 2791"
+    },
+    {
+      "id": "tour_weighted",
+      "question": "Qual è l’intensità turistica territoriale mantenendo i due periodi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "tourismIntensity",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2225932,
+              158520
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/numeratorPeriod",
+            "value": "2025"
+          },
+          {
+            "path": "/result/denominatorPeriod",
+            "value": "2026"
+          }
+        ]
+      },
+      "reference": "2225932 notti 2025 / 158520 residenti al 1 gennaio 2026"
+    },
+    {
+      "id": "ars_total",
+      "question": "Qual è il tasso domiciliare standardizzato ARS di Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "elderlyHomeCare",
+            "dimension": "sex:total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              30085,
+              1000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Export ARS 260, totale 2024: 30,085 per mille standardizzato; non rapporto grezzo"
+    },
+    {
+      "id": "ars_gap",
+      "question": "Quanto dista il tasso ARS di Massarosa dal riferimento ufficiale Versilia?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "elderlyHomeCare",
+            "dimension": "sex:total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              79823,
+              10000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ARS 260 totale 2024: 30,085 − 22,1027 = 7,9823 per mille"
+    },
+    {
+      "id": "aligned_association",
+      "question": "Qual è l’associazione descrittiva residenti/imponibile nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              3,
+              7
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni: Spearman 3/7; n=7, limiti stock/flusso e sensibilità conservati"
+    },
+    {
+      "id": "mismatched_association",
+      "question": "Si possono correlare automaticamente residenti 2026 e imponibile 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "Guardia di allineamento temporale: 2026 ≠ 2024"
+    },
+    {
+      "id": "child_italy_missing",
+      "question": "È disponibile un benchmark Italia verificato per la ricettività?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "earlyChildhoodPotentialCapacityRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "benchmark_scope_not_available"
+        ]
+      },
+      "reference": "Adapter regionale: solo Toscana; Italia non acquisita"
+    },
+    {
+      "id": "child_year_conversion",
+      "question": "Possiamo chiamare 2024 l’anno educativo 2024/25?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "earlyChildhoodPotentialCapacityRate",
+            "dimension": "total",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "educational_year_token_required"
+        ]
+      },
+      "reference": "Periodo educativo conservato, nessuna conversione implicita"
+    },
+    {
+      "id": "ars_aggregate_refused",
+      "question": "Possiamo ponderare i tassi ARS standardizzati usando i conteggi grezzi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "elderlyHomeCare",
+            "dimension": "sex:total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "I conteggi num/den descrivono il tasso grezzo, non quello standardizzato"
+    },
+    {
+      "id": "age_history_missing",
+      "question": "Possiamo ricostruire lo storico 85+ dalla fotografia corrente?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "ageDistribution",
+            "dimension": "age:85+",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "age_historical_dimension_not_available"
+        ]
+      },
+      "reference": "Una fotografia POSAS per fascia non costituisce uno storico verificato"
+    },
+    {
+      "id": "duplicate_towns",
+      "question": "Possiamo contare due volte Massarosa in un aggregato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "unknown_or_duplicate_geography"
+        ]
+      },
+      "reference": "Unicità delle geografie, nessun doppio conteggio"
+    },
+    {
+      "id": "unknown_metric",
+      "question": "Possiamo interrogare un indicatore inventato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "inventedIndicator",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "unknown_metric"
+        ]
+      },
+      "reference": "Il catalogo canonico determina gli ID consentiti"
+    },
+    {
+      "id": "fuel_adapter_missing",
+      "question": "I carburanti pubblicati sono già interrogabili da questo motore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "adapter_not_implemented"
+        ]
+      },
+      "reference": "Dati/archivio MIMIT presenti; adapter esterno mensile ancora mancante"
+    }
+  ]
+}
