@@ -13,6 +13,7 @@ Estende l'hardening h3 senza modificare classificatore o criteri di pubblicazion
 """
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 import opportunity_daily_refresh_revalidated as revalidated
@@ -54,11 +55,17 @@ def _compose_runtime_hardened() -> tuple[dict[str, Any], dict[str, Any]]:
 
     for source in config.get("discoverySources") or []:
         source_id = str(source.get("id") or "")
+        archive_template = source.get("annualArchiveUrlTemplate")
+        if archive_template:
+            archive_url = str(archive_template).format(year=date.today().year)
+            source["urls"] = list(dict.fromkeys([*(source.get("urls") or []), archive_url]))
         if source_id == "pcm-politiche-mare":
             source["urls"] = list(_MARE_OFFICIAL_URLS)
+            source["endpointRoles"] = {_MARE_OFFICIAL_URLS[1]: "supplementary"}
             source["fetchTimeoutSeconds"] = 12
         elif source_id == "pcm-politiche-giovanili-scu":
             source["urls"] = list(_SCU_OFFICIAL_URLS)
+            source["endpointRoles"] = {_SCU_OFFICIAL_URLS[1]: "supplementary"}
             source["fetchTimeoutSeconds"] = 12
     return config, coverage
 
@@ -120,6 +127,8 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
     for row in result.get("discoverySources") or []:
         runtime_by_id[str(row.get("sourceId") or "")] = str(row.get("status") or "unknown")
 
+    config, _ = _compose_runtime_hardened()
+    configs = {source["id"]: source for source in (config.get("sources") or []) + (config.get("discoverySources") or [])}
     rows: list[dict[str, Any]] = []
     fallback_successes = 0
     proxy_successes = 0
@@ -157,6 +166,7 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
                     endpoint_failures += 1
                 if endpoint.get("redirected"):
                     redirected += 1
+            endpoint["role"] = discovery.endpoint_role(configs.get(source_id, {}), url)
             endpoints.append(endpoint)
 
         rows.append({
@@ -164,6 +174,8 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
             "runtimeStatus": runtime_by_id.get(source_id, "not_run"),
             "endpointCount": len(endpoints),
             "endpointOk": sum(endpoint.get("status") == "ok" for endpoint in endpoints),
+            "coverageEndpointOk": sum(endpoint.get("status") == "ok" and endpoint["role"] == "listing" for endpoint in endpoints),
+            "supplementaryEndpointOk": sum(endpoint.get("status") == "ok" and endpoint["role"] == "supplementary" for endpoint in endpoints),
             "fallbackSuccessCount": sum(
                 endpoint.get("status") == "ok" and endpoint.get("transport") in {"chromium", "reader_proxy"}
                 for endpoint in endpoints

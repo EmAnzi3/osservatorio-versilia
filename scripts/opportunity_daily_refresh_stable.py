@@ -159,6 +159,8 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
     """
     reference = str(snapshot.get("referenceDate") or "")
     seeded: dict[str, dict[str, Any]] = {}
+    config, _ = h4._compose_runtime_hardened()
+    scoped_sources = {source["id"]: source for source in config.get("discoverySources") or [] if source.get("endpointRoles")}
 
     for row in (snapshot.get("transportAudit") or {}).get("sources") or []:
         source_id = str(row.get("sourceId") or "")
@@ -168,6 +170,16 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
         runtime = str(row.get("runtimeStatus") or "unknown")
         if not last_success and runtime in {"ok", "degraded"} and reference:
             last_success = reference
+        # Old snapshots counted supplementary reachability as national coverage.
+        # Do not carry that false success into the new grace window.
+        source = scoped_sources.get(source_id)
+        if source and "coverageEndpointOk" not in row and runtime in {"ok", "degraded"}:
+            listing_success = any(endpoint.get("status") == "ok" and
+                h4.discovery.endpoint_role(source, str(endpoint.get("url") or "")) == "listing"
+                for endpoint in row.get("endpoints") or [])
+            if not listing_success:
+                last_success = None
+                runtime = "error"
         persisted_failures = row.get("consecutiveFailures")
         if persisted_failures is None:
             persisted_failures = 0 if runtime in {"ok", "degraded"} else 1
@@ -182,6 +194,8 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
         if not source_id or source_id in seeded:
             continue
         runtime = str(row.get("runtimeStatus") or "unknown")
+        if source_id in scoped_sources:
+            runtime = "error"  # Legacy coverage rows provide no endpoint evidence.
         seeded[source_id] = {
             "lastSuccessfulFetch": reference if runtime in {"ok", "degraded"} and reference else None,
             "consecutiveFailures": 0 if runtime in {"ok", "degraded"} else 1,

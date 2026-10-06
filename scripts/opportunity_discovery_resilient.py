@@ -123,7 +123,10 @@ def _fetch_playwright_html(url: str, timeout_ms: int = 45_000) -> tuple[str, str
         )
         page = context.new_page()
         try:
-            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            response = page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            if response is None or response.status >= 400:
+                status = response.status if response is not None else 0
+                raise urllib.error.HTTPError(page.url, status, "Chromium HTTP failure", hdrs=None, fp=None)
             try:
                 page.wait_for_load_state("networkidle", timeout=8_000)
             except PlaywrightTimeoutError:
@@ -401,6 +404,24 @@ def _enforce_endpoint_content_signature(
     raise DiscoveryFetchError("Firma contenuto attesa non trovata", failed)
 
 
+def endpoint_role(source: dict[str, Any], url: str) -> str:
+    """Supplementary pages can yield candidates, never establish listing coverage."""
+    role = str((source.get("endpointRoles") or {}).get(url) or "listing")
+    if role not in {"listing", "supplementary"}:
+        raise ValueError(f"Unsupported endpoint role {role!r}: {url}")
+    return role
+
+
+def coverage_status(endpoints: list[dict[str, Any]]) -> str:
+    listings = [row for row in endpoints if row.get("role", "listing") == "listing"]
+    successful = [row for row in listings if row.get("status") == "ok"]
+    if not successful:
+        return "error"
+    if len(successful) == len(listings) and not any(row.get("proxyUsed") for row in successful):
+        return "ok"
+    return "degraded"
+
+
 def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloads: dict[str, str] | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     payloads = payloads or {}
     queue: list[dict[str, Any]] = []
@@ -412,6 +433,7 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
         endpoint_results: list[dict[str, Any]] = []
         source_candidates: list[dict[str, Any]] = []
         for url in urls:
+            role = endpoint_role(source, url)
             try:
                 if url in payloads:
                     payload = payloads[url]
@@ -431,7 +453,7 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                 payload, payload_format = normalize_discovery_payload(payload, str(diagnostics.get("resolvedUrl") or url))
                 diagnostics = {**diagnostics, "payloadFormat": payload_format}
                 endpoint_ok += 1
-                endpoint_results.append({"url": url, **diagnostics})
+                endpoint_results.append({"url": url, **diagnostics, "role": role})
                 page_url = str(diagnostics.get("resolvedUrl") or url)
                 source_candidates.extend(radar_module.discovery_candidates(source, payload, page_url))
             except Exception as exc:  # pragma: no cover
@@ -439,7 +461,8 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                 failure = str(diagnostics.get("failureClass") or classify_fetch_error(exc))
                 endpoint_errors.append(f"{url} [{failure}]: {exc}")
                 endpoint_results.append({
-                    "url": url, "status": "error", "transport": diagnostics.get("transport") or "failed",
+                    "url": url, "role": role, "httpAttempts": int(diagnostics.get("httpAttempts") or 0),
+                    "status": "error", "transport": diagnostics.get("transport") or "failed",
                     "fallbackUsed": bool(diagnostics.get("fallbackUsed")), "proxyUsed": bool(diagnostics.get("proxyUsed")),
                     "initialFailureClass": diagnostics.get("initialFailureClass"),
                     "rootFailureClass": diagnostics.get("rootFailureClass"),
@@ -459,14 +482,11 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
         source_candidates = list(unique.values())[:50]
         queue.extend(source_candidates)
         proxy_successes = sum(row.get("status") == "ok" and row.get("transport") == "reader_proxy" for row in endpoint_results)
-        if endpoint_ok == len(urls) and urls and not proxy_successes:
-            runtime = "ok"
-        elif endpoint_ok:
-            runtime = "degraded"
-        else:
-            runtime = "error"
+        runtime = coverage_status(endpoint_results)
         states.append({
             "sourceId": source["id"], "status": runtime, "endpointCount": len(urls), "endpointOk": endpoint_ok,
+            "coverageEndpointOk": sum(row.get("status") == "ok" and row["role"] == "listing" for row in endpoint_results),
+            "supplementaryEndpointOk": sum(row.get("status") == "ok" and row["role"] == "supplementary" for row in endpoint_results),
             "fallbackSuccessCount": sum(row.get("status") == "ok" and row.get("transport") in {"chromium", "reader_proxy"} for row in endpoint_results),
             "proxySuccessCount": proxy_successes,
             "failureClasses": sorted({str(row.get("failureClass")) for row in endpoint_results if row.get("failureClass")}),

@@ -154,6 +154,7 @@ def _test_failed_run_health_overrides_accepted_snapshot() -> None:
                 "runtimeStatus": "ok",
                 "lastSuccessfulFetch": "2026-09-09",
                 "consecutiveFailures": 0,
+                "endpoints": [{"url": stable.h4._MARE_OFFICIAL_URLS[0], "status": "ok"}],
             }]
         },
     }
@@ -211,7 +212,7 @@ def _test_critical_sources_use_independent_official_hosts() -> None:
     assert mare_hosts.isdisjoint(scu_hosts), (mare_hosts, scu_hosts)
 
 
-def _test_secondary_endpoint_keeps_critical_families_covered() -> None:
+def _test_supplementary_endpoint_does_not_cover_critical_families() -> None:
     discovery = stable.h4.discovery
     config, _ = stable.h4._compose_runtime_hardened()
     critical_ids = {"pcm-politiche-mare", "pcm-politiche-giovanili-scu"}
@@ -267,21 +268,23 @@ def _test_secondary_endpoint_keeps_critical_families_covered() -> None:
     by_id = {str(row.get("sourceId") or ""): row for row in states}
     for source_id in critical_ids:
         state = by_id[source_id]
-        assert state["status"] == "degraded", state
+        assert state["status"] == "error", state
         assert state["endpointCount"] == 2, state
         assert state["endpointOk"] == 1, state
+        assert state["coverageEndpointOk"] == 0, state
+        assert state["supplementaryEndpointOk"] == 1, state
 
     result = {
         "sourceCoverage": {
             "rows": [
-                {"source_id": source_id, "runtimeStatus": "degraded"}
+                {"source_id": source_id, "runtimeStatus": "error"}
                 for source_id in sorted(critical_ids)
             ]
         }
     }
     uncovered = stable.h4._runtime_uncovered_families(result)
-    assert "maritime-coastal" not in uncovered, uncovered
-    assert "youth-civic-service" not in uncovered, uncovered
+    assert "maritime-coastal" in uncovered, uncovered
+    assert "youth-civic-service" in uncovered, uncovered
 
 
 def _test_blocked_critical_families_persist_failure_diagnostic() -> None:
@@ -664,7 +667,23 @@ def _test_same_host_canonical_redirect_is_verification_grade() -> None:
     )
 
 
+def _test_legacy_supplementary_success_does_not_seed_national_health() -> None:
+    row = {"sourceId": "anci-nazionale", "runtimeStatus": "degraded",
+        "lastSuccessfulFetch": "2026-10-06", "consecutiveFailures": 0,
+        "endpoints": [{"url": "https://www.anci.piemonte.it/", "status": "ok"},
+            {"url": "https://www.anci.it/feed/", "status": "error"}]}
+    snapshot = {"referenceDate": "2026-10-06", "transportAudit": {"sources": [row]}}
+    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] is None
+    row["endpoints"][1]["status"] = "ok"
+    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] == "2026-10-06"
+    row["coverageEndpointOk"] = 0
+    row["runtimeStatus"] = "error"
+    row["lastSuccessfulFetch"] = "2026-10-05"
+    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] == "2026-10-05"
+
+
 def main() -> int:
+    _test_legacy_supplementary_success_does_not_seed_national_health()
     _test_recent_success_gives_family_grace()
     _test_legacy_error_gets_bootstrap_failure_window()
     _test_expired_grace_blocks_family()
@@ -672,7 +691,7 @@ def main() -> int:
     _test_pre_h5_snapshot_seeds_health()
     _test_failed_run_health_overrides_accepted_snapshot()
     _test_critical_sources_use_independent_official_hosts()
-    _test_secondary_endpoint_keeps_critical_families_covered()
+    _test_supplementary_endpoint_does_not_cover_critical_families()
     _test_blocked_critical_families_persist_failure_diagnostic()
     _test_base_failure_diagnostic_evaluates_runtime_and_persists_backtest()
     _test_live_open_detail_restores_listing_false_negative()

@@ -22,6 +22,7 @@
         "https://sistemacomunidigitali.anci.it/feed/",
         "https://www.anci.piemonte.it/"
       ],
+      "endpointRoles": {"https://www.anci.piemonte.it/": "supplementary"},
       "endpointRequiredTerms": {
         "https://www.anci.piemonte.it/": ["Notizie da ANCI Nazionale"]
       },
@@ -88,7 +89,7 @@
       "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId."
     },
     "anci-nazionale": {
-      "note": "Discovery ANCI acquisito tramite i feed nazionali e il mirror editoriale indipendente ANCI Piemonte, validato dalla firma 'Notizie da ANCI Nazionale'; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
+      "note": "Copertura ANCI nazionale misurata sui feed nazionali. Il mirror editoriale ANCI Piemonte è solo supplementare, validato dalla firma 'Notizie da ANCI Nazionale'; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
     },
     "mim-enti-locali": {
       "note": "Presidio MIM su feed ufficiale FUTURA/PNRR e comunicati ministeriali; il collector filtra edilizia e servizi scolastici con ruolo di enti locali e richiede verifica primaria prima della pubblicazione."
