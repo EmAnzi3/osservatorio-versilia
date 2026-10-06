@@ -316,6 +316,8 @@ def audit(path, layer):
     expected.update(k for k in business.KEYS if k in catalog['metrics'] and (k not in business.FRAME_FIELDS or all(isinstance(r.get('economicScopes'),dict) for r in catalog['metrics'][k]['rows'])))
     import semantic_query_finance_adapters as finance
     expected.update(k for k in finance.KEYS if k in catalog["metrics"])
+    import semantic_query_distinct_finance_adapters as distinct
+    expected.update(k for k in distinct.KEYS if k in catalog["metrics"])
     import semantic_query_census_adapters as census
     expected.update(k for k in census.KEYS if k in catalog["metrics"])
     assert set(adapters)==expected

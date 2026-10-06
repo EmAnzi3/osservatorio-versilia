@@ -1,6 +1,6 @@
 # A6 — domande con risultati verificati
 
-Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `43307cdc83567b307a1affdc1ea1a4f00bf429f8be0bee994035270d6d0a2b6e`. Esito: **PASS**.
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `959466b0c41384db21621be0f132d4a41b81f461b5b1e09763e043554b4da811`. Esito: **PASS**.
 
 Le aspettative sono versionate e controllate contro riferimenti aritmetici/record dichiarati; non vengono riscritte automaticamente con la risposta del motore. Le domande sono casi di prova riutilizzabili, non un interprete di linguaggio naturale.
 
@@ -90,5 +90,24 @@ Le aspettative sono versionate e controllate contro riferimenti aritmetici/recor
 | finance_cash_benchmark_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | finance_benchmark_components_or_complete_scope_not_frozen | Benchmark SIOPE pubblico conservato; importi regionali non congelati per riconciliazione raw. |
 | finance_period_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | finance_period_not_available | Riga assente non imputata a zero; anno escluso resta escluso. |
 | finance_dimension_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | dimension_adapter_not_implemented | Destinatari effettivi non osservati dalla classificazione contabile. |
+| distinct_debt_current: Qual è il debito finanziario D1 di Massarosa per residente nel 2025? | PASS | /observations/0/value: 465.49354306154265; /observations/0/denominatorReferenceDate: 1 gennaio 2025 | D1 10.150.552,20 € / 21.806 residenti; snapshot salute finanziaria e bilanci. Non include tutte le passività OSL. |
+| distinct_interest_current: Qual è il peso degli interessi sulle entrate correnti di Massarosa? | PASS | /observations/0/value: 4.382324198197816 | 1.382.657,67 / 31.550.784,64 × 100; componenti congelati. |
+| distinct_pdi_scale: Come viene letto il PDI 10.3 Camaiore 2023? | PASS | /observations/0/value: 9.64; /observations/0/evidence/1/annualProvenance: pdi_scale_normalized | 964 ufficiale normalizzato /100 nella revisione già congelata; nessuna correzione nuova. |
+| distinct_pdi_verified_zero: Lo zero PDI 10.3 di Forte dei Marmi 2025 è un mancante? | PASS | /observations/0/value: 0.0; /observations/0/dataUnavailable: False | Interessi e rimborso capitale verificati pari a zero; reconstructed_components, non imputazione. |
+| distinct_debt_weighted: Qual è il rapporto territoriale D1/residenti nel 2025? | PASS | /result/value: 707.9067531993607 | Riferimento territoriale congelato 707,9067531993607, riconciliato a somma D1/somma popolazione; lordo non consolidato. |
+| distinct_recovery_current: Qual è il recupero locale per residente di Massarosa, senza cambiare denominatore? | PASS | /observations/0/value: 31.509160322846924; /observations/0/denominator: 21806 | 687.088,75 / campo populationIstat 21.806; non i 21.782 usati da altri carrier SIOPE. |
+| distinct_recovery_total: Quali incassi locali da verifica e controllo ha Massarosa nel dicembre 2025? | PASS | /observations/0/value: 687088.75 | Somma categorie 435805,78 + 228690,78 + 258 + 22334,19; cumulato 2025/12. |
+| distinct_recovery_weighted: Qual è il recupero locale territoriale per popolazione SIOPE? | PASS | /result/value: 93.48164365979187 | Totale 14.857.785,48; somma campi populationIstat=158938; non media dei tassi. |
+| distinct_dait_period: Quale riferimento temporale ha il contributo DAIT attribuito a Massarosa? | PASS | /observations/0/value: 0.0; /observations/0/numeratorPeriod: 2024; /observations/0/allocationPeriod: 2025 | 0 € nell’elenco beneficiari congelato; contributo 2025 riferito a riscossioni erariali 2024, non assenza di evasione. |
+| distinct_security_current: Quanto vale il carrier normalizzato Missione 03 di Massarosa? | PASS | /observations/0/value: 55.38237686875173 | 55,38237686875173 dal carrier canonico, senza certificazione di importi grezzi non congelati. |
+| distinct_works_current: Quanto vale lo stock opere monitorate per residente di Massarosa? | PASS | /observations/0/value: 1409.3119089156185 | 1409,3119089156185 dal carrier canonico 2026; non spesa annuale/progresso. |
+| distinct_debt_osl_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | distinct_finance_massarosa_osl_temporal_perimeter_not_attested | Perimetro storico ordinario/OSL non attestato omogeneo. |
+| distinct_pdi_weight_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | verified_ratio_adapter_required | Non ricostruire numeratori dai valori PDI arrotondati. |
+| distinct_works_weight_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | verified_ratio_adapter_required | Importi e CUP/perimetri disgiunti non congelati; aggregato pubblico conservato. |
+| distinct_works_series_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | distinct_finance_project_history_not_frozen | Un solo stock 2026, nessuna serie acquisita. |
+| distinct_security_weight_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | verified_ratio_adapter_required | Impegni grezzi/denominatori non congelati. |
+| distinct_recovery_trend_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | distinct_finance_only_one_fiscal_period | Un solo esercizio locale, non trend. |
+| distinct_fiscal_benchmark_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | distinct_finance_benchmark_components_or_perimeter_not_frozen | Valore Toscana pubblico preservato, componenti raw non acquisiti. |
+| distinct_dait_pair_refused: Possiamo correlare contributo DAIT e recupero locale come entrambi riferiti al 2025? | PASS | distinct_finance_dait_allocation_and_underlying_receipt_periods_not_aligned | Riscossioni erariali 2024 e riscossioni locali 2025 distinte; nessun effetto dedotto. |
 
 Il JSON conserva query, risultati, formula, fonti, periodi, copertura ed esclusioni. Un rifiuto atteso è una verifica riuscita del limite, non una capacità di risposta numerica. Nessuna conclusione causale o raccomandazione automatica.

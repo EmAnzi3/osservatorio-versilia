@@ -1,8 +1,8 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `5985ee4cf6b4526c8678ccd5696afa86c47ecef2e166245facea037c3ad9fdcd`.
+Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `b2e3bc6a6da361705da3df84769810359b25b7d137f6428c09c5baa2cabffb8b`.
 
-225 indicatori censiti; 81 con adapter e 144 senza adapter. 63 profili fonte.
+225 indicatori censiti; 85 con adapter e 140 senza adapter. 63 profili fonte.
 
 La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
 
@@ -74,8 +74,8 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | extractiveSites | ambiente | regione-toscana-rtcave-continuous | 2 settembre 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
 | fcdePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/fcdePerResident/v1 | total | 7 / 0 | 1 |
 | femaleEmploymentRate | lavoro | istat-census-annual | 2023 | istat-census-femaleEmploymentRate/v1 | total | 10 / 1 | 8 |
-| financialDebtProfile | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
-| fiscalRecoveryActivity | economia | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| financialDebtProfile | bilanci | openbdap-annual | 2025 | distinct-finance/financialDebtProfile/debtPerResident/v1 | total, part:debtPerResident, part:interestShare, part:debtSustainability | 33 / 0 | 2 |
+| fiscalRecoveryActivity | economia | siope-monthly | 2025 | distinct-finance/fiscalRecoveryActivity/recoveryPerResident/v1 | total, part:recoveryPerResident, part:recoveryTotal, part:daitContribution | 18 / 0 | 3 |
 | floodExposure | ambiente | ispra-idrogeo-risk | 2020 | adapter_not_implemented | — | 0 / 0 | 1 |
 | foreignBornSoleProprietorShare | economia | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | foreignResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
@@ -175,7 +175,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | primaryFullTimeShare | istruzione | mim-school-year | a.s. 2024/25 | adapter_not_implemented | — | 0 / 0 | 4 |
 | priorStrokePrevalence | salute | ars-toscana-mixed | 2025 | ars-273-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | protectedNaturalAreas | ambiente | regione-toscana-aree-protette-v137 | archivi geografici ufficiali Regione Toscana · consultati 12 settembre 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
-| publicWorks | comunita | openbdap-continuous | 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
+| publicWorks | comunita | openbdap-continuous | 2026 | distinct-finance/publicWorks/total/v1 | total | 3 / 0 | 1 |
 | recycling | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | remediationProceedings | ambiente | sisbon-weekly | 29 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
 | residualWaste | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -192,7 +192,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | schoolBuildingTransport | istruzione | mim-school-year | 2024/25 | adapter_not_implemented | — | 0 / 0 | 5 |
 | schoolSites | istruzione | mim-school-year | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | schoolStudents | istruzione | mim-school-year | a.s. 2024/25 | adapter_not_implemented | — | 0 / 0 | 2 |
-| securityMissionExpenditurePerResident | sicurezza | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| securityMissionExpenditurePerResident | sicurezza | openbdap-annual | 2025 | distinct-finance/securityMissionExpenditurePerResident/total/v1 | total | 6 / 0 | 1 |
 | selfContainment | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
 | shorelineDynamics | ambiente | ispra-coast-irregular | 2006–2020 | adapter_not_implemented | — | 0 / 0 | 3 |
 | singleHouseholds | abitare | istat-census-annual | 2023 | istat-census-carriers/singleHouseholds/v1 | total | 9 / 1 | 5 |
@@ -240,6 +240,10 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 
 | Collegamento | Tipo | Verifica | Associazione |
 |---|---|---|---|
+| financialDebtProfile → financialDebtProfile | context | observations_available_context_only | computed:  |
+| fiscalRecoveryActivity → currentRevenueAccruedPerResident | context | observations_available_context_only | computed:  |
+| publicWorks → capitalExpenditureCommittedPerResident | context | observations_available_context_only | not_computable: paired_period_mismatch |
+| securityMissionExpenditurePerResident → socialMissionExpenditurePerResident | context | observations_available_context_only | computed:  |
 | cashReceiptsPerResident → cashBalancePerResident | derived_difference | components_reconciled | Non richiesta: dipendenza matematica |
 | cashReceiptsPerResident → currentRevenueAccruedPerResident | context | observations_available_context_only | computed:  |
 | educationMissionExpenditurePerResident → socialMissionExpenditurePerResident | context | observations_available_context_only | computed:  |
@@ -329,7 +333,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | regione-toscana-ucs-2007-2019 | 1 | 4 |
 | health-ministry-annual | 2 | 3 |
 | ispra-idrogeo-risk | 2 | 3 |
-| openbdap-annual | 2 | 3 |
 | erp-lucca-annual-balance-sheet | 1 | 3 |
 | fee-blue-flag-annual | 1 | 3 |
 | istat-water-irregular | 1 | 3 |
@@ -338,14 +341,12 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | regione-toscana-aree-protette-v137 | 1 | 3 |
 | regione-toscana-iternet-448 | 1 | 3 |
 | regione-toscana-reticolo-v137 | 1 | 3 |
-| siope-monthly | 1 | 3 |
 | regione-toscana-gtfs-scheduled | 3 | 2 |
 | istat-geografie-funzionali-2021 | 2 | 2 |
 | regione-toscana-prc-annual | 2 | 2 |
 | mef-municipal-irpef-annual | 1 | 2 |
 | pefc-sinfor-foreste-in-comune-2026 | 1 | 2 |
 | regione-toscana-rtcave-continuous | 1 | 2 |
-| openbdap-continuous | 1 | 1 |
 | regione-toscana-opere-idrauliche-2021 | 1 | 1 |
 | regione-toscana-rsa | 1 | 1 |
 | runts-continuous | 1 | 1 |

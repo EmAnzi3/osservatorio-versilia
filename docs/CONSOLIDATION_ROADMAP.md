@@ -220,6 +220,9 @@ Nota A6 — 05-10-2026: #342 pubblicata, main `29f11f28`, deploy `37361574176` e
 
 ---
 
+Nota A6.4 — v9: lotto carrier distinti debito, opere monitorate, Missione 03 e recupero fiscale; 85/225 con adapter. Componenti D1/interessi e recupero locale riconciliati; PDI 10.3 senza ponderazione retro-derivata, stock opere e missione normalizzati senza falsa prova raw. DAIT assegnazione 2025/riscossioni erariali 2024 separati. Continuità ordinario/OSL Massarosa non attestata: serie leggibili, trend/cambi rifiutati. 103 domande con aspettative indipendenti; A6.4 rimane parziale, A6.5–A6.6 aperte, A7 non avviata. Metodo `docs/A6_DISTINCT_FINANCE_ADAPTERS.md`; gate obbligatori prima della revisione per merge.
+
+
 ## A7 — “Chiedi alla Versilia”
 
 **Stato:** `NOT_STARTED`

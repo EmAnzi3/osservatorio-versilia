@@ -20,9 +20,10 @@ import semantic_query_ars_adapters as ars
 import semantic_query_business_adapters as business
 import semantic_query_census_adapters as census
 import semantic_query_finance_adapters as finance
+import semantic_query_distinct_finance_adapters as distinct
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '8'
+VERSION = '9'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -51,6 +52,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in distinct.KEYS:return distinct.dimensions(key)
     if key in census.KEYS:return census.dimensions(key)
     if key in business.KEYS:return business.dimensions(key)
     if key in ars.KEYS:return ars.dimensions(key)
@@ -61,6 +63,8 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in distinct.KEYS:
+        return [o for o in SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or distinct.weighted(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key==distinct.WORKS and o in TEMPORAL) and not (key==distinct.FISCAL and o in TEMPORAL and o!='series') and not (key==distinct.SECURITY and o=='trend')]
     if key in finance.KEYS:
         return [o for o in SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or key in finance.RATIOS) and (o!='percentage_points' or unit=='percent')]
     if key in census.KEYS:
@@ -225,6 +229,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in distinct.KEYS:return distinct.context(metric,key,dimension)
         if key in finance.KEYS:return finance.context(metric,key,dimension)
         if key in census.KEYS:return census.context(metric,key,dimension)
         if key in business.KEYS:return business.context(metric,key,dimension)
@@ -248,6 +253,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in distinct.KEYS:return distinct.observation(self,key,row_index,dimension,period,historical)
         if key in finance.KEYS:return finance.observation(self,key,row_index,dimension,period,historical)
         if key in census.KEYS:return census.observation(self,key,row_index,dimension,period,historical)
         if key in business.KEYS:return business.observation(self,key,row_index,dimension,period,historical)
@@ -359,13 +365,15 @@ class QueryEngine:
         towns = selector.get('towns',sorted(self.codes))
         if not isinstance(towns,list) or not towns or any(not isinstance(c,str) or c not in self.codes for c in towns) or len(towns)!=len(set(towns)):
             raise ValueError('unknown_or_duplicate_geography')
+        if key in distinct.KEYS:distinct.selection_guard(key,dimension,operation,towns)
         periods = selector.get('periods')
         historical = periods is not None or operation in TEMPORAL
         rows = {str(r['code']):(i,r) for i,r in enumerate(self._catalog['metrics'][key]['rows'])}
         if historical and periods is None:
             if len(towns) != 1:
                 raise ValueError('temporal_query_requires_one_geography')
-            if key in finance.KEYS:periods=finance.available_periods(self,key,dimension,rows[towns[0]][1])
+            if key in distinct.KEYS:periods=distinct.available_periods(self,key,dimension,rows[towns[0]][1])
+            elif key in finance.KEYS:periods=finance.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in census.KEYS:periods=census.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in business.KEYS:periods=business.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in ars.KEYS:periods=ars.available_periods(self,key,dimension)
@@ -390,7 +398,7 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                use_history=historical and not (key in (*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
+                use_history=historical and not (key in (*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
                 observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
@@ -400,6 +408,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'distinctFinanceAdapterSha256':digest((ROOT/'scripts/semantic_query_distinct_finance_adapters.py').read_bytes()),
                   'financeAdapterSha256':digest((ROOT/'scripts/semantic_query_finance_adapters.py').read_bytes()),
                   'censusAdapterSha256':digest((ROOT/'scripts/semantic_query_census_adapters.py').read_bytes()),
                   'businessAdapterSha256':digest((ROOT/'scripts/semantic_query_business_adapters.py').read_bytes()),
@@ -437,15 +446,15 @@ class QueryEngine:
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
                 key=selectors[0]['metric']
-                adapter=finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                adapter=distinct.benchmark if key in distinct.KEYS else finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
                 observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
             if operation == 'weighted_ratio':
-                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS and selectors[0]['metric'] not in census.RATIOS and selectors[0]['metric'] not in finance.RATIOS:
+                if selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS and selectors[0]['metric'] not in census.RATIOS and selectors[0]['metric'] not in finance.RATIOS and not (selectors[0]['metric'] in distinct.KEYS and distinct.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))):
                     raise ValueError('verified_ratio_adapter_required')
-                policy['disjointPopulationEvidence'] = {'method':('distinct municipality accounting entities; additive amounts in the same exercise and denominator basis' if selectors[0]['metric'] in finance.KEYS else 'distinct workplace municipality codes; additive ASIA/Frame components in the selected economic scope' if selectors[0]['metric'] in business.KEYS else 'distinct official municipality codes; additive source counts by residence'),
+                policy['disjointPopulationEvidence'] = {'method':('distinct municipality accounting entities; additive amounts in the same exercise and denominator basis' if selectors[0]['metric'] in (*finance.KEYS,*distinct.KEYS) else 'distinct workplace municipality codes; additive ASIA/Frame components in the selected economic scope' if selectors[0]['metric'] in business.KEYS else 'distinct official municipality codes; additive source counts by residence'),
                     'geographies':[o['geography'] for o in observations],
                     'snapshotSha256':observations[0]['evidence'][1]['sha256']}
             if operation == 'benchmark_gap':
@@ -469,6 +478,8 @@ class QueryEngine:
                 if operation == 'trend':
                     policy['timeAxis'] = [int(o['period']) for o in temporal_usable]
             if operation == 'correlation':
+                distinct.correlation_guard(observations,request.get('axis'))
+                if any(o['metric'] in distinct.KEYS for o in observations):notes.append('accounting_bases_denominator_dates_and_shared_components_require_interpretation')
                 if request.get('axis')=='periods' and any(o['metric']=='diplomaPlus' and o['dimension'] in ('total','age:25-64|sex:total') for o in observations):raise ValueError('census_method_break_temporal_correlation_not_supported')
                 if request.get('axis')=='periods' and any(o['metric'] in business.CHANGES for o in observations):raise ValueError('business_cumulative_temporal_correlation_not_supported')
                 if any(o['metric'] in finance.KEYS for o in observations):notes.append('accounting_bases_denominator_dates_and_shared_components_require_interpretation')
