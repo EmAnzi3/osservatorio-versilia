@@ -7,7 +7,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Conferenza Stato-Città",
       "territory": "Italia",
       "family": "national-crosscutting",
-      "urls": ["https://www.statocitta.it/home/notizie-e-comunicati/"],
+      "urls": ["https://www.statocitta.it/home/notizie-e-comunicati/", "https://www.interno.gov.it/it/notizie/riunita-viminale-conferenza-stato-citta-e-autonomie-locali-intese-e-pareri-favorevoli-4-schemi-decreto-sulla-finanza-locale", "https://dait.interno.gov.it/finanza-locale/notizie"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["bando", "avviso", "contribut", "finanzi", "fondo", "incentiv", "candidatur", "call"],
       "municipalTerms": ["comun", "enti locali", "amministrazioni locali", "città", "municipal"]

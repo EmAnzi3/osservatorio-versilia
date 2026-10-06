@@ -102,6 +102,44 @@ def main() -> int:
     assert report["removed"][0]["title"] == "Bando scomparso"
     assert report["sourceHealth"]["contentSanitized"] == 0
 
+    transport_snapshot = _snapshot([])
+    transport_snapshot["transportAudit"]["sources"] = [{
+        "sourceId": "example-source",
+        "runtimeStatus": "degraded",
+        "effectiveStatus": "degraded",
+        "failureClasses": ["timeout_client"],
+        "endpoints": [{
+            "url": "https://example.gov.it/feed/",
+            "status": "error",
+            "transport": "failed",
+            "httpAttempts": 2,
+            "fallbackUsed": True,
+            "proxyUsed": True,
+            "initialFailureClass": "timeout_client",
+            "browserFailureClass": "timeout_client",
+            "readerFailureClass": "http_403_waf",
+            "resolvedUrl": None,
+            "redirected": False,
+            "errors": [
+                "HTTP [timeout_client]: timed out",
+                "Chromium [timeout_client]: navigation timeout",
+                "Reader [http_403_waf]: HTTP Error 403",
+            ],
+        }],
+    }]
+    transport_report = build_report(
+        _snapshot([]),
+        transport_snapshot,
+        phase_statuses={"scan": "success", "validation": "success", "build": "success"},
+    )
+    endpoint = transport_report["sourceHealth"]["attention"][0]["endpoints"][0]
+    assert endpoint["url"] == "https://example.gov.it/feed/"
+    assert endpoint["httpAttempts"] == 2
+    assert endpoint["readerFailureClass"] == "http_403_waf"
+    assert endpoint["proxyUsed"] is True
+    assert "HTTP [timeout_client]" in render_markdown(transport_report)
+    assert "Reader [http_403_waf]" in render_html(transport_report)
+
     markdown = render_markdown(report)
     page = render_html(report)
     for token in ("Bando nuovo", "Bando modificato", "Bando scaduto", "Bando scomparso", "Modificate"):
