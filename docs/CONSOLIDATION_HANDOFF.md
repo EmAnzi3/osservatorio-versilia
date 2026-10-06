@@ -2,9 +2,9 @@
 
 ## Stato corrente — 6 ottobre 2026
 
-- Main pubblicato: `29f11f28158f4b172a62c1e83f36af026978245a` (#342); deploy `37361574176` e status `ov-pages-live` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- Main pubblicato: `d4f04e77374c98756548f2a5fe48c764e9623a39` (#343); deploy `37416342215` e status `ov-pages-live` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.4 e prototipo A6.5**, issue **#330**, branch `feat/a6-openbdap-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.4 e prototipo A6.5**, issue **#330**, branch `feat/a6-distinct-finance-carriers`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: motore deterministico, test e documentazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -12,7 +12,7 @@
 
 - #327: carburanti puntuali 3 ottobre; PNRR snapshot 25 settembre (78/101 conclusioni, finanziamenti invariati); monitor con ruoli dei percorsi ufficiali, tentativi/esiti e separazione rete/rilascio/acquisizione. Errori non cancellano dati o ultime evidenze valide.
 - #328: MIMIT mensile 57 mesi gennaio 2022–settembre 2026, JSON pubblico verificato identico al candidato. Luglio 31/31, agosto 31/31, settembre 29/30; 5 settembre assente nell'archivio ufficiale, nessuna stima. Provenienza e SHA in `reports/data-checks/mimit-monthly-2026-q3.md`.
-- Monitor profondo mensile il 5; prossimo schedule 5 ottobre. Snapshot e artifact del monitor alimentano Stato Dati tramite selezione canonica. Nessuna pubblicazione automatica di nuovi numeri.
+- Monitor profondo mensile il 5; schedulazione mensile il giorno 5. Snapshot e artifact del monitor alimentano Stato Dati tramite selezione canonica. Nessuna pubblicazione automatica di nuovi numeri.
 
 ## Manutenzioni separate, non bloccanti per A6
 
@@ -24,6 +24,6 @@
 
 ## Prossima azione
 
-#343 aperta: verificare le correzioni ai due falsi negativi del browser locale (puntatore hover ereditato fra route; misura sticky durante smooth scroll). Correzioni solo nei test, asserzioni/geometria/golden invariati, nessun cambiamento pubblico. Quick CI precedente PASS; Full/A3 cancellati senza runner/step anche dopo un retry mirato, annotazioni GitHub: runner hosted non acquisito e Internal server error. Incidente Actions ufficiale del 5 ottobre risolto alle 22:49 UTC (https://stspg.io/c11dc9nb1zdq), compatibile con i job bloccati. Controlli mirati header desktop/mobile e static regression PASS. Quick locale del nuovo codice PASS; completare Full locale e nuovo run canonico prima di dichiarare pronta al merge, senza rilanci ripetuti né modifiche al workflow. Non dichiarare verde una cancellazione. Merge solo su istruzione specifica.
+#343 mergiata manualmente il 6 ottobre, main `d4f04e77374c98756548f2a5fe48c764e9623a39`, deploy #37416342215 SUCCESS e `ov-pages-live` SUCCESS. Quick/Full locali con Chromium 151 e CI GREEN; falsi negativi hover/sticky corretti nei test, soglie/golden/UI invariati.
 
-Concludere il lotto finanza v8: 25 carrier aggiuntivi, 81 con adapter/144 senza su 225; 84 domande (52 calcoli/32 rifiuti), mappa e baseline separata. Metodo `docs/A6_FINANCE_ADAPTERS.md`: Rendiconto e SIOPE distinti, residenti inizio esercizio/anno successivo, 19 rapporti con componenti verificati, PDI e cinque estrazioni normalizzate senza ponderazioni implicite. Benchmark regionali non certificati dal lotto. Nessuna acquisizione/dato/UI/asset/golden/workflow cambiato. Gate mirati, Quick/Full locali e CI; merge solo su istruzione specifica. #342 pubblicata: deploy e live SUCCESS, CI Quick/Full e A3 SUCCESS; Full locale non GREEN (A4/header/sticky, riprodotti sulla #341, timeout font tablet passato al controllo mirato). Non incorporarli nel backend. Residui debito/opere/sicurezza/fiscalità separati; poi demografia/MIM. A6.4 parziale, A6.5–A6.6 aperte, A7 non avviata.
+Lotto v9 su `feat/a6-distinct-finance-carriers`: debito, opere monitorate, Missione 03 e recupero fiscale. 85/225 con adapter, 103 domande (63 calcoli/40 rifiuti). Componenti D1/interessi/recupero locale verificati; PDI 10.3 senza ponderazioni implicite; stock opere e missione leggibili come carrier normalizzati, non prova raw. DAIT 2025/riscossioni 2024 e popolazione SIOPE senza data attestata restano distinti. Metodo `A6_DISTINCT_FINANCE_ADAPTERS.md`; mappa e baseline separata. Regressioni mirate e suite domande PASS; gli esiti finali Quick/Full locali e CI sono registrati nella PR del branch. Tutti i gate devono passare prima della revisione per merge. Nessuna modifica dati/UI/asset/golden/workflow o nuova acquisizione. A6.4 parziale, A6.5–A6.6 aperte, A7 non avviata. Dopo questo lotto: demografia/MIM già acquisiti e revisione delle letture, senza manutenzioni separate. Merge solo su istruzione specifica.

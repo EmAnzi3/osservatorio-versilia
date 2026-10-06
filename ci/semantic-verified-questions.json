@@ -2461,6 +2461,576 @@
         ]
       },
       "reference": "Destinatari effettivi non osservati dalla classificazione contabile."
+    },
+    {
+      "id": "distinct_debt_current",
+      "question": "Qual è il debito finanziario D1 di Massarosa per residente nel 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1015055220,
+              2180600
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/observations/0/denominatorReferenceDate",
+            "value": "1 gennaio 2025"
+          }
+        ],
+        "warnings": [
+          "d1_financing_debt_not_all_municipal_liabilities",
+          "massarosa_2019_distress_osl_liabilities_outside_ordinary_accounting_perimeter"
+        ]
+      },
+      "reference": "D1 10.150.552,20 € / 21.806 residenti; snapshot salute finanziaria e bilanci. Non include tutte le passività OSL."
+    },
+    {
+      "id": "distinct_interest_current",
+      "question": "Qual è il peso degli interessi sulle entrate correnti di Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "part:interestShare",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              13826576700,
+              3155078464
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "1.382.657,67 / 31.550.784,64 × 100; componenti congelati."
+    },
+    {
+      "id": "distinct_pdi_scale",
+      "question": "Come viene letto il PDI 10.3 Camaiore 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "part:debtSustainability",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              964,
+              100
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/observations/0/evidence/1/annualProvenance",
+            "value": "pdi_scale_normalized"
+          }
+        ],
+        "warnings": [
+          "pdi_10_3_rounded_or_corrected_no_implicit_weighting"
+        ]
+      },
+      "reference": "964 ufficiale normalizzato /100 nella revisione già congelata; nessuna correzione nuova."
+    },
+    {
+      "id": "distinct_pdi_verified_zero",
+      "question": "Lo zero PDI 10.3 di Forte dei Marmi 2025 è un mancante?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "part:debtSustainability",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/observations/0/dataUnavailable",
+            "value": false
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Interessi e rimborso capitale verificati pari a zero; reconstructed_components, non imputazione."
+    },
+    {
+      "id": "distinct_debt_weighted",
+      "question": "Qual è il rapporto territoriale D1/residenti nel 2025?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7079067531993607,
+              10000000000000
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Riferimento territoriale congelato 707,9067531993607, riconciliato a somma D1/somma popolazione; lordo non consolidato."
+    },
+    {
+      "id": "distinct_recovery_current",
+      "question": "Qual è il recupero locale per residente di Massarosa, senza cambiare denominatore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              68708875,
+              2180600
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/observations/0/denominator",
+            "fraction": [
+              21806,
+              1
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": [
+          "siope_dataset_population_date_not_attested_no_next_january_substitution",
+          "verification_control_receipts_not_tax_evasion_rate_or_office_effectiveness"
+        ]
+      },
+      "reference": "687.088,75 / campo populationIstat 21.806; non i 21.782 usati da altri carrier SIOPE."
+    },
+    {
+      "id": "distinct_recovery_total",
+      "question": "Quali incassi locali da verifica e controllo ha Massarosa nel dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "part:recoveryTotal",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              68708875,
+              100
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Somma categorie 435805,78 + 228690,78 + 258 + 22334,19; cumulato 2025/12."
+    },
+    {
+      "id": "distinct_recovery_weighted",
+      "question": "Qual è il recupero locale territoriale per popolazione SIOPE?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1485778548,
+              15893800
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Totale 14.857.785,48; somma campi populationIstat=158938; non media dei tassi."
+    },
+    {
+      "id": "distinct_dait_period",
+      "question": "Quale riferimento temporale ha il contributo DAIT attribuito a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "part:daitContribution",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/observations/0/numeratorPeriod",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/allocationPeriod",
+            "value": "2025"
+          }
+        ],
+        "warnings": [
+          "dait_2025_grant_underlying_state_tax_receipts_2024"
+        ]
+      },
+      "reference": "0 € nell’elenco beneficiari congelato; contributo 2025 riferito a riscossioni erariali 2024, non assenza di evasione."
+    },
+    {
+      "id": "distinct_security_current",
+      "question": "Quanto vale il carrier normalizzato Missione 03 di Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "securityMissionExpenditurePerResident",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5538237686875173,
+              100000000000000
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": [
+          "published_normalized_carrier_no_frozen_raw_components_or_weighting",
+          "mission_03_commitments_not_crime_staff_or_delivered_security"
+        ]
+      },
+      "reference": "55,38237686875173 dal carrier canonico, senza certificazione di importi grezzi non congelati."
+    },
+    {
+      "id": "distinct_works_current",
+      "question": "Quanto vale lo stock opere monitorate per residente di Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "publicWorks",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              14093119089156185,
+              10000000000000
+            ],
+            "tolerance": 1e-07
+          }
+        ],
+        "warnings": [
+          "monitored_projects_not_annual_spend_progress_or_disjoint_cups"
+        ]
+      },
+      "reference": "1409,3119089156185 dal carrier canonico 2026; non spesa annuale/progresso."
+    },
+    {
+      "id": "distinct_debt_osl_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "distinct_finance_massarosa_osl_temporal_perimeter_not_attested"
+        ]
+      },
+      "reference": "Perimetro storico ordinario/OSL non attestato omogeneo."
+    },
+    {
+      "id": "distinct_pdi_weight_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "part:debtSustainability"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Non ricostruire numeratori dai valori PDI arrotondati."
+    },
+    {
+      "id": "distinct_works_weight_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "publicWorks",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Importi e CUP/perimetri disgiunti non congelati; aggregato pubblico conservato."
+    },
+    {
+      "id": "distinct_works_series_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "publicWorks",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "distinct_finance_project_history_not_frozen"
+        ]
+      },
+      "reference": "Un solo stock 2026, nessuna serie acquisita."
+    },
+    {
+      "id": "distinct_security_weight_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "securityMissionExpenditurePerResident",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Impegni grezzi/denominatori non congelati."
+    },
+    {
+      "id": "distinct_recovery_trend_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "distinct_finance_only_one_fiscal_period"
+        ]
+      },
+      "reference": "Un solo esercizio locale, non trend."
+    },
+    {
+      "id": "distinct_fiscal_benchmark_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "distinct_finance_benchmark_components_or_perimeter_not_frozen"
+        ]
+      },
+      "reference": "Valore Toscana pubblico preservato, componenti raw non acquisiti."
+    },
+    {
+      "id": "distinct_dait_pair_refused",
+      "question": "Possiamo correlare contributo DAIT e recupero locale come entrambi riferiti al 2025?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "part:daitContribution"
+          },
+          {
+            "metric": "fiscalRecoveryActivity",
+            "dimension": "part:recoveryTotal"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Riferimenti fiscali separati"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "distinct_finance_dait_allocation_and_underlying_receipt_periods_not_aligned"
+        ]
+      },
+      "reference": "Riscossioni erariali 2024 e riscossioni locali 2025 distinte; nessun effetto dedotto."
     }
   ]
 }

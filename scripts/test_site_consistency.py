@@ -59,6 +59,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     business_regressions(catalog_path)
     from test_semantic_census_adapters import regressions as census_regressions
     census_regressions(catalog_path)
+    from test_semantic_distinct_finance_adapters import regressions as distinct_finance_regressions
+    distinct_finance_regressions(catalog_path)
     from test_semantic_finance_adapters import regressions as finance_regressions
     finance_regressions(catalog_path)
     from test_semantic_engine_audit import regressions as engine_audit_regressions

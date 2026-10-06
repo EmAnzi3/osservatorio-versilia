@@ -114,3 +114,7 @@ Undici carrier aggiuntivi, 56/225 effettivi e 69 domande verificate; dimensioni 
 ## v8 — finanza comunale
 
 Gli adattatori Rendiconto/SIOPE conservano esercizi, basi contabili, date distinte dei residenti e revisioni degli archivi. Rapporti delle somme solo da componenti congelati; PDI arrotondato e cinque estrazioni normalizzate senza ponderazioni ricostruite. Benchmark non riconciliabili rifiutati; dati e benchmark pubblici preservati. Metodo e residui: `A6_FINANCE_ADAPTERS.md`.
+
+## v9 — carrier contabili distinti
+
+Quattro indicatori aggiuntivi (85 con adapter / 140 senza su 225), con dimensioni selezionate per debito e recupero fiscale. Metodo e limitazioni in `A6_DISTINCT_FINANCE_ADAPTERS.md`. Il supporto dei carrier normalizzati opere/Missione 03 certifica la lettura pubblicata, non importi grezzi, denominatori o disponibilità live.

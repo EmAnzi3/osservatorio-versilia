@@ -11,6 +11,7 @@ from enrichment_companion_evidence import companion_acquired_evidence
 from semantic_query_engine import QueryEngine, ROOT, SUPPORTED, TEMPORAL
 import semantic_query_business_adapters as business
 import semantic_query_census_adapters as census
+import semantic_query_distinct_finance_adapters as distinct
 
 
 def compact(result):
@@ -27,7 +28,10 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         data=catalog if catalog is not None else engine.catalog
         row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
         years = (row.get('series') or {}).get('years', [])
-        if key in census.KEYS:
+        if key in distinct.KEYS:
+            try:years=distinct.available_periods(engine,key,dimension,row)
+            except ValueError:years=[]
+        elif key in census.KEYS:
             try:years=census.available_periods(engine,key,dimension,row)
             except ValueError:years=[]
         elif key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
@@ -123,6 +127,10 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('debt_interest_context','financialDebtProfile','financialDebtProfile','context','Year-end D1 debt and interest share are distinct accounting dimensions; shared financing components, no causal claim'),
+        ('recovery_current_revenue','fiscalRecoveryActivity','currentRevenueAccruedPerResident','context','Verification/control cash receipts and current accruals use distinct population bases; neither tax evasion nor office effectiveness'),
+        ('works_capital_context','publicWorks','capitalExpenditureCommittedPerResident','context','Monitored project stock 2026 versus annual capital commitments 2025; no joint calculation across reference periods'),
+        ('security_social_context','securityMissionExpenditurePerResident','socialMissionExpenditurePerResident','context','Mission commitments are resource classifications, not crime or delivered services'),
         ('finance_cash_balance','cashReceiptsPerResident','cashBalancePerResident','derived_difference','Annual December cash balance is receipts minus payments on the same next-January resident denominator'),
         ('finance_cash_accrual','cashReceiptsPerResident','currentRevenueAccruedPerResident','context','Cash receipts and current accruals have different accounting coverage and resident dates; descriptive only'),
         ('finance_mission_mix','educationMissionExpenditurePerResident','socialMissionExpenditurePerResident','context','Accounting commitments by mission share a population denominator; not service outputs'),
@@ -146,6 +154,7 @@ def connections(engine, coverage):
         if left not in catalog['metrics'] or right not in catalog['metrics']: continue
         ld = 'age:85+' if left=='ageDistribution' else 'total'
         rd = 'age:85+' if right=='ageDistribution' else 'sex:total' if right=='elderlyHomeCare' else 'total'
+        if identity=='debt_interest_context':ld,rd='part:debtPerResident','part:interestShare'
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
         results = [engine.query({'operation':'compare','selectors':[s]}) for s in qs]
         verification = 'not_verified'; reasons = []
