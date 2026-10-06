@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 from urllib.parse import urljoin
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
 def body_text(page) -> str:
@@ -14,11 +14,13 @@ def body_text(page) -> str:
 
 
 def check_page(page, url: str, required: list[str]) -> None:
-    response = page.goto(url, wait_until="networkidle")
+    # Remote decorative photos can stay pending after the ERP view is usable.
+    # Assert the tested content, then wait for fonts before measuring geometry.
+    response = page.goto(url, wait_until="domcontentloaded")
     assert response is None or response.ok, (url, response.status if response else None)
-    text = body_text(page)
     for token in required:
-        assert token in text, (url, token)
+        expect(page.locator("body")).to_contain_text(token, timeout=15000)
+    page.wait_for_function("document.fonts.status === 'loaded'", timeout=15000)
     assert page.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), f"Overflow orizzontale: {url}"
 
 
