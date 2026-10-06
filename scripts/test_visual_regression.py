@@ -14,6 +14,8 @@ from urllib.parse import quote, urljoin
 
 from playwright.sync_api import Locator, Page, sync_playwright
 
+from browser_view_readiness import goto_reading_view
+
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 CONTRACT_PATH = ROOT / "ci" / "visual-regression-contract.json"
@@ -101,7 +103,7 @@ def stable_page(page: Page) -> None:
 
 
 def open_metric(page: Page, base: str, data: dict, metric_key: str) -> None:
-    response = page.goto(metric_url(base, data, metric_key), wait_until="networkidle")
+    response = goto_reading_view(page, metric_url(base, data, metric_key))
     require(response is None or response.ok, f"Route non disponibile per {metric_key}")
     # La vista corrente o storico può persistere tra metriche. Il contenitore
     # deve esistere, ma può essere intenzionalmente nascosto se lo storico è attivo.
@@ -111,6 +113,8 @@ def open_metric(page: Page, base: str, data: dict, metric_key: str) -> None:
 
 def screenshot_locator(locator: Locator) -> bytes:
     locator.wait_for(state="visible")
+    for image_element in locator.locator("img").all():
+        locator.page.wait_for_function("img => img.complete && img.naturalWidth > 0", arg=image_element.element_handle())
     image = locator.screenshot(animations="disabled", type="png")
     require(image[:8] == b"\x89PNG\r\n\x1a\n", "Playwright non ha restituito uno screenshot PNG")
     return image
@@ -577,7 +581,7 @@ def capture_town_history(reg: Regression, page: Page, base: str, data: dict, con
     theme = metric_theme(data, key)
     page.set_viewport_size(viewport(contract, cfg["viewport"]))
     url = urljoin(base, f"comuni/{quote(town_slug)}/?tema={quote(theme)}&indicatore={quote(key)}")
-    response = page.goto(url, wait_until="networkidle")
+    response = goto_reading_view(page, url)
     require(response is None or response.ok, f"Route comunale non disponibile: {url}")
     panel = page.locator(cfg["selector"]).first
     panel.wait_for(state="visible")
