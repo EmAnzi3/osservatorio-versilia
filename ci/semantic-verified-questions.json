@@ -3824,6 +3824,572 @@
         ]
       },
       "reference": "Set completo dei sette comuni sul periodo nativo esplicito; verifica di copertura, nessuna prova di effetto politico"
+    },
+    {
+      "id": "commuting_inboundCommuters",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di inboundCommuters per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "inboundCommuters",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": 1815,
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_outboundCommuters",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di outboundCommuters per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outboundCommuters",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": 5568,
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_commuterBalance",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di commuterBalance per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "commuterBalance",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": -3753,
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_inboundCommutersRate",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di inboundCommutersRate per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": 83.325681755578,
+            "tolerance": 1e-08,
+            "fraction": [
+              1815000,
+              21782
+            ]
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_outboundCommutersRate",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di outboundCommutersRate per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outboundCommutersRate",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": 255.62390965016985,
+            "tolerance": 1e-08,
+            "fraction": [
+              5568000,
+              21782
+            ]
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_commuterBalanceRate",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di commuterBalanceRate per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "commuterBalanceRate",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": -170.97170971709716,
+            "tolerance": 1e-08,
+            "fraction": [
+              -3753000,
+              21951
+            ]
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_selfContainment",
+      "question": "Confrontando Camaiore e Massarosa, qual è il valore verificato di selfContainment per Massarosa nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "selfContainment",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/observations/1/value",
+            "value": 28.615384615384613,
+            "tolerance": 1e-08,
+            "fraction": [
+              223200,
+              7800
+            ]
+          },
+          {
+            "path": "/result/observations/1/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_pooled_inboundCommutersRate",
+      "question": "Qual è il rapporto dalle componenti sommate dei sette comuni per inboundCommutersRate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 157.5952561191017,
+            "tolerance": 1e-08,
+            "fraction": [
+              24982000,
+              158520
+            ]
+          },
+          {
+            "path": "/result/numerator",
+            "value": 24982
+          },
+          {
+            "path": "/result/denominator",
+            "value": 158520
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_pooled_outboundCommutersRate",
+      "question": "Qual è il rapporto dalle componenti sommate dei sette comuni per outboundCommutersRate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "outboundCommutersRate"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 169.5685087055261,
+            "tolerance": 1e-08,
+            "fraction": [
+              26880000,
+              158520
+            ]
+          },
+          {
+            "path": "/result/numerator",
+            "value": 26880
+          },
+          {
+            "path": "/result/denominator",
+            "value": 158520
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_pooled_commuterBalanceRate",
+      "question": "Qual è il rapporto dalle componenti sommate dei sette comuni per commuterBalanceRate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "commuterBalanceRate"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -11.806786725140743,
+            "tolerance": 1e-08,
+            "fraction": [
+              -1898000,
+              160755
+            ]
+          },
+          {
+            "path": "/result/numerator",
+            "value": -1898
+          },
+          {
+            "path": "/result/denominator",
+            "value": 160755
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_pooled_selfContainment",
+      "question": "Qual è il rapporto dalle componenti sommate dei sette comuni per selfContainment?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "selfContainment"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 50.14929248344801,
+            "tolerance": 1e-08,
+            "fraction": [
+              2704100,
+              53921
+            ]
+          },
+          {
+            "path": "/result/numerator",
+            "value": 27041
+          },
+          {
+            "path": "/result/denominator",
+            "value": 53921
+          }
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_history_refused",
+      "question": "Possiamo descrivere un trend di pendolarismo da una sola fotografia 2021?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "inboundCommuters",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "commuting_history_not_frozen"
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_2026_refused",
+      "question": "Possiamo trattare i flussi congelati 2021 come movimenti 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "inboundCommuters",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "commuting_only_2021_frozen"
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_absolute_benchmark_refused",
+      "question": "Il numero assoluto di ingressi comunale è comparabile per scostamento al totale toscano?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "inboundCommuters",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "commuting_absolute_volume_benchmark_gap_not_supported"
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_census_share_refused",
+      "question": "Lavoratori fuori comune è ricostruibile dal complemento dell’autocontenimento per lavoro?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "adapter_not_implemented"
+        ]
+      },
+      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+    },
+    {
+      "id": "commuting_hybrid_pair_refused",
+      "question": "Come si associano inboundCommutersRate e commuterBalanceRate con basi verificate?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate"
+          },
+          {
+            "metric": "commuterBalanceRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Descrizione trasparente di sette comuni, componenti condivise esplicite, nessuna inferenza causale"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "commuting_hybrid_denominator_pair_not_aligned"
+        ]
+      },
+      "reference": "Copertura delle coppie e avvertenze verificate, nessuna spiegazione causale"
+    },
+    {
+      "id": "commuting_gross_pair",
+      "question": "Come si associano inboundCommutersRate e outboundCommutersRate con basi verificate?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate"
+          },
+          {
+            "metric": "outboundCommutersRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Descrizione trasparente di sette comuni, componenti condivise esplicite, nessuna inferenza causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/n",
+            "value": 7
+          },
+          {
+            "path": "/result/coefficient",
+            "value": -0.6071428571428571,
+            "tolerance": 1e-12,
+            "fraction": [
+              -17,
+              28
+            ]
+          }
+        ],
+        "warnings": [
+          "association_not_causation",
+          "commuting_counts_and_ratios_share_components_and_population_size"
+        ]
+      },
+      "reference": "Ranghi indipendenti (ordine dei codici): entrate [5,7,2,6,4,1,3], uscite [4,2,7,3,5,6,1]; somma differenze al quadrato 90; Spearman = -17/28. Densità 2021/2026 e componenti condivise, nessuna causalità."
+    },
+    {
+      "id": "commuting_retention_balance",
+      "question": "Come si associano selfContainment e commuterBalance con basi verificate?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "selfContainment"
+          },
+          {
+            "metric": "commuterBalance"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Descrizione trasparente di sette comuni, componenti condivise esplicite, nessuna inferenza causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/n",
+            "value": 7
+          },
+          {
+            "path": "/result/coefficient",
+            "value": 0.6428571428571429,
+            "tolerance": 1e-12,
+            "fraction": [
+              9,
+              14
+            ]
+          }
+        ],
+        "warnings": [
+          "association_not_causation",
+          "commuting_counts_and_ratios_share_components_and_population_size"
+        ]
+      },
+      "reference": "Ranghi indipendenti (ordine dei codici): autocontenimento [6,4,1,5,3,2,7], saldo [4,7,1,6,2,3,5]; somma differenze al quadrato 20; Spearman = 9/14. Componenti condivise, nessuna spiegazione causale."
     }
   ]
 }

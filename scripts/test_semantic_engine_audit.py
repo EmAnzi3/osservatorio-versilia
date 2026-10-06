@@ -47,14 +47,14 @@ def regressions(catalog_path):
         if edge['kind']!='context':assert edge['verification']=='components_reconciled'
         else:
             assert edge['verification']=='observations_available_context_only'
-            if edge['id'] in ('workplace_resident_employment','education_employment','household_housing','finance_cash_accrual','finance_mission_mix','debt_interest_context','recovery_current_revenue','security_social_context','demography_natural_transfers','school_fulltime_canteen','school_access_transport'):
+            if edge['id'] in ('commuting_gross_context','workplace_resident_employment','education_employment','household_housing','finance_cash_accrual','finance_mission_mix','debt_interest_context','recovery_current_revenue','security_social_context','demography_natural_transfers','school_fulltime_canteen','school_access_transport'):
                 assert edge['associationAttempt']['status']=='computed'
                 assert edge['associationAttempt']['result']['n']==7
                 assert 'association_not_causation' in edge['associationAttempt']['warnings']
                 if edge['id']=='workplace_resident_employment':assert 'workplace_activity_not_resident_employment' in edge['associationAttempt']['warnings']
             else:
                 assert edge['associationAttempt']['status']=='not_computable'
-                expected='demography_school_site_observation_dates_not_attested_for_pairing' if edge['id']=='school_sites_pupils' else 'paired_period_mismatch'
+                expected='commuting_hybrid_denominator_pair_not_aligned' if edge['id']=='commuting_hybrid_context' else 'demography_school_site_observation_dates_not_attested_for_pairing' if edge['id']=='school_sites_pupils' else 'paired_period_mismatch'
                 assert expected in edge['associationAttempt']['reasons']
     assert all(g['permitsCalculation'] is False for g in graph['groups'])
     contract=json.loads((ROOT/'data/enrichment-companion-contract.json').read_text())

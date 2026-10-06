@@ -97,4 +97,7 @@ scripts/semantic_query_distinct_finance_adapters.py
 scripts/test_semantic_distinct_finance_adapters.py
 scripts/semantic_query_demography_school_adapters.py
 scripts/test_semantic_demography_school_adapters.py
+
+scripts/semantic_query_commuting_adapters.py
+scripts/test_semantic_commuting_adapters.py
 scripts/browser_view_readiness.py
