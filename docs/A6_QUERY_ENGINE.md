@@ -110,3 +110,7 @@ Il lotto successivo alla #339 abilita 16 indicatori ASIA/Frame già acquisiti: t
 ## Estensione censimento v7
 
 Undici carrier aggiuntivi, 56/225 effettivi e 69 domande verificate; dimensioni età/sesso, periodi nativi, precisione, benchmark e discontinuità sono governati da `docs/A6_CENSUS_ADAPTERS.md`. I dati pubblicati e la UI restano invariati.
+
+## v8 — finanza comunale
+
+Gli adattatori Rendiconto/SIOPE conservano esercizi, basi contabili, date distinte dei residenti e revisioni degli archivi. Rapporti delle somme solo da componenti congelati; PDI arrotondato e cinque estrazioni normalizzate senza ponderazioni ricostruite. Benchmark non riconciliabili rifiutati; dati e benchmark pubblici preservati. Metodo e residui: `A6_FINANCE_ADAPTERS.md`.

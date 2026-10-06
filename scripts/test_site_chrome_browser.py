@@ -39,6 +39,9 @@ def require(condition: bool, message: str) -> None:
 
 
 def open_page(page: Page, base: str, route: str) -> None:
+    # assert_search leaves the pointer over Cerca. A navigation retains its
+    # coordinates, so compare resting headers before exercising hover/click.
+    page.mouse.move(0, 0)
     page.goto(urljoin(base, route), wait_until="domcontentloaded")
     page.wait_for_selector(".site-header .global-search-trigger", state="visible")
     page.wait_for_function("document.fonts ? document.fonts.status === 'loaded' : true")

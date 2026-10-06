@@ -47,7 +47,7 @@ def regressions(catalog_path):
         if edge['kind']!='context':assert edge['verification']=='components_reconciled'
         else:
             assert edge['verification']=='observations_available_context_only'
-            if edge['id'] in ('workplace_resident_employment','education_employment','household_housing'):
+            if edge['id'] in ('workplace_resident_employment','education_employment','household_housing','finance_cash_accrual','finance_mission_mix'):
                 assert edge['associationAttempt']['status']=='computed'
                 assert edge['associationAttempt']['result']['n']==7
                 assert 'association_not_causation' in edge['associationAttempt']['warnings']

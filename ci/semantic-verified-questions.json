@@ -2041,6 +2041,426 @@
         ]
       },
       "reference": "Discontinuità di rilevazione non attestata come confrontabile; serie consultabile, calcolo congiunto rifiutato."
+    },
+    {
+      "id": "finance_revenue",
+      "question": "Qual è la misura contabile di Massarosa con il denominatore dichiarato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "currentRevenueAccruedPerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "nominal_finance_values_not_real_growth"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3155078464,
+              2180600
+            ],
+            "tolerance": 1e-07
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query."
+    },
+    {
+      "id": "finance_own",
+      "question": "Qual è la misura contabile di Massarosa con il denominatore dichiarato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ownRevenueShare",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "accounting_ratio_not_service_outcome"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              301499607800,
+              3155078464
+            ],
+            "tolerance": 1e-07
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query."
+    },
+    {
+      "id": "finance_social",
+      "question": "Qual è la misura contabile di Massarosa con il denominatore dichiarato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialMissionExpenditurePerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "mission_commitments_include_current_and_capital_not_delivered_services"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              428451636,
+              2180600
+            ],
+            "tolerance": 1e-07
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query."
+    },
+    {
+      "id": "finance_balance",
+      "question": "Qual è la misura contabile di Massarosa con il denominatore dichiarato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "cashBalancePerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "annual_cash_balance_not_year_end_cash_stock"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              -237571277,
+              2178200
+            ],
+            "tolerance": 1e-07
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query."
+    },
+    {
+      "id": "finance_negative_result",
+      "question": "Qual è la misura contabile di Massarosa con il denominatore dichiarato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "availableAdministrationResultPerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2019"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              -1421754210,
+              2169600
+            ],
+            "tolerance": 1e-07
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query."
+    },
+    {
+      "id": "finance_cash_weighted",
+      "question": "Quali incassi per residente per Massarosa e Camaiore insieme?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "cashReceiptsPerResident",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              14133245548,
+              5354500
+            ],
+            "tolerance": 1e-07
+          },
+          {
+            "path": "/result/denominatorPeriod",
+            "value": "2026"
+          }
+        ]
+      },
+      "reference": "SIOPE 2025: (105058904,44 + 36273551,04)/(31763+21782); residenti al primo gennaio 2026."
+    },
+    {
+      "id": "finance_fcde",
+      "question": "Qual è il valore ufficiale comunale e quale limite ha?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fcdePerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "fcde_is_prudential_reserve_not_measured_bad_debt",
+          "finance_raw_amount_not_frozen_no_implicit_weighting"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5080258616894433,
+              10000000000000
+            ]
+          }
+        ]
+      },
+      "reference": "Estrazione normalizzata bilanci-v139: 508,0258616894433; importo originale non congelato."
+    },
+    {
+      "id": "finance_rigid",
+      "question": "Qual è il valore ufficiale comunale e quale limite ha?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "rigidExpenditureShare",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "official_rounded_pdi_no_implicit_weighting"
+        ],
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2066,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "PDI 01.01 2025, bilanci-v1.6.0: 20,66; denominatore non ricostruito."
+    },
+    {
+      "id": "finance_cash_date",
+      "question": "A quale data sono riferiti i residenti usati negli incassi 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "cashReceiptsPerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/denominatorReferenceDate",
+            "value": "1 gennaio 2026"
+          }
+        ]
+      },
+      "reference": "Contratto annuale SIOPE: primo gennaio successivo; distinta dalla popolazione nel CSV SIOPE."
+    },
+    {
+      "id": "finance_fcde_weight_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fcdePerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Importi originali non congelati; vietato retro-derivare numeratori dal rapporto."
+    },
+    {
+      "id": "finance_rigid_weight_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "rigidExpenditureShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Percentuale PDI arrotondata senza componenti additivi."
+    },
+    {
+      "id": "finance_benchmark_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "currentCollectionCapacity",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "finance_benchmark_components_or_complete_scope_not_frozen"
+        ]
+      },
+      "reference": "Candidato Rendiconto Toscana 271/273 Comuni, rifiutato."
+    },
+    {
+      "id": "finance_cash_benchmark_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "siopePayments",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "finance_benchmark_components_or_complete_scope_not_frozen"
+        ]
+      },
+      "reference": "Benchmark SIOPE pubblico conservato; importi regionali non congelati per riconciliazione raw."
+    },
+    {
+      "id": "finance_period_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "civilProtectionMissionExpenditurePerResident",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2019"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "finance_period_not_available"
+        ]
+      },
+      "reference": "Riga assente non imputata a zero; anno escluso resta escluso."
+    },
+    {
+      "id": "finance_dimension_refused",
+      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialMissionExpenditurePerResident",
+            "dimension": "age:65plus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Destinatari effettivi non osservati dalla classificazione contabile."
     }
   ]
 }

@@ -1,8 +1,8 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `36c832f96814d7f7bda181363e4c9a95d6e7700bfe9d117e089d391bc14df832`.
+Catalogo SHA-256 `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `5985ee4cf6b4526c8678ccd5696afa86c47ecef2e166245facea037c3ad9fdcd`.
 
-225 indicatori censiti; 56 con adapter e 169 senza adapter. 63 profili fonte.
+225 indicatori censiti; 81 con adapter e 144 senza adapter. 63 profili fonte.
 
 La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
 
@@ -19,7 +19,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | agriculturalRenewalAndLeadership | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 3 |
 | agriculturalUsedArea | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
 | altitudeProfile | ambiente | istat-geografia-comunale-2021 | 31 dicembre 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
-| availableAdministrationResultPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| availableAdministrationResultPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/availableAdministrationResultPerResident/v1 | total | 8 / 0 | 3 |
 | averageAgriculturalFarmSize | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
 | averageGrossRemunerationPerEmployee | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 6 |
 | bathingNonCompliantSamples | ambiente | arpat-bathing-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
@@ -27,12 +27,12 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | blueFlagBeaches | ambiente | fee-blue-flag-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 3 |
 | businessTurnover | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
 | businessValueAdded | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
-| capitalExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| capitalPayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| cashBalancePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| cashReceiptsPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| capitalExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/capitalExpenditureCommittedPerResident/v1 | total | 8 / 0 | 3 |
+| capitalPayments | bilanci | siope-monthly | 2025 | rgs-finance/capitalPayments/v1 | total | 8 / 0 | 3 |
+| cashBalancePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/cashBalancePerResident/v1 | total | 8 / 0 | 3 |
+| cashReceiptsPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/cashReceiptsPerResident/v1 | total | 8 / 0 | 3 |
 | chronicTotal | salute | ars-toscana-mixed | 2025 | ars-275-reviewed/v1 | total | 8 / 0 | 2 |
-| civilProtectionMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| civilProtectionMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/civilProtectionMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | climatePrecipitationTrend50y | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 2 |
 | climateTemperatureTrend50y | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | climateTmaxTrend | ambiente | lamma-copernicus-climate | 1975–2025 | adapter_not_implemented | — | 0 / 0 | 1 |
@@ -42,12 +42,12 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | commuterBalanceRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
 | copdPrevalence | salute | ars-toscana-mixed | 2025 | ars-268-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | cropProfile | ambiente | istat-agriculture-census-2020 | 2020 | adapter_not_implemented | — | 0 / 0 | 1 |
-| cultureSportMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| currentCollectionCapacity | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| currentExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| currentPaymentCapacity | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| currentPayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
-| currentRevenueAccruedPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| cultureSportMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/cultureSportMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
+| currentCollectionCapacity | bilanci | openbdap-annual | 2025 | rgs-finance/currentCollectionCapacity/v1 | total | 9 / 0 | 3 |
+| currentExpenditureCommittedPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/currentExpenditureCommittedPerResident/v1 | total | 8 / 0 | 3 |
+| currentPaymentCapacity | bilanci | openbdap-annual | 2025 | rgs-finance/currentPaymentCapacity/v1 | total | 9 / 0 | 3 |
+| currentPayments | bilanci | siope-monthly | 2025 | rgs-finance/currentPayments/v1 | total | 8 / 0 | 3 |
+| currentRevenueAccruedPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/currentRevenueAccruedPerResident/v1 | total | 8 / 0 | 3 |
 | dementia | salute | ars-toscana-mixed | 2025 | ars-270-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | dependencyIndices | demografia | istat-demography-annual | 2026 | adapter_not_implemented | — | 0 / 0 | 8 |
 | diabetes | salute | ars-toscana-mixed | 2025 | ars-271-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
@@ -56,23 +56,23 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | disability064Per1000 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | drinkingWaterQuality | ambiente | gaia-quality-semiannual | 2° semestre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | earlyChildhoodPotentialCapacityRate | istruzione | regione-toscana-early-childhood | 2024/25 | tuscany-child-capacity/v1 | total | 5 / 0 | 3 |
-| economicDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| economicDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/economicDevelopmentMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | economyActivityAtlas | economia | regione-toscana-infocamere-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 6 |
-| educationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| educationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/educationMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | elderlyHomeCare | salute | ars-toscana-mixed | 2024 | ars-260-standardized-sex/v1 | sex:total, sex:men, sex:women | 15 / 0 | 7 |
 | emergencyAccess | salute | ars-toscana-mixed | 2025 | ars-1657-reviewed/v1 | total, sex:men, sex:women | 19 / 0 | 7 |
 | employeesPerLocalUnit | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 10 / 0 | 5 |
 | employmentGenderGap | lavoro | istat-census-annual | 2023 | istat-census-carriers/employmentGenderGap/v1 | total | 8 / 1 | 5 |
 | employmentRate | lavoro | istat-census-annual | 2024 | istat-census-carriers/employmentRate/v1 | total, age:15-24\|sex:total, age:15-24\|sex:men, age:15-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:15plus\|sex:total, age:15plus\|sex:men, age:15plus\|sex:women | 64 / 90 | 8 |
 | emsResponseTimeP75 | salute | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
-| environmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| environmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/environmentMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | erpArrears | abitare | erp-lucca-annual-balance-sheet | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | essentialServicesAccessibility | ambiente | istat-fragility-2022 | 2019 | adapter_not_implemented | — | 0 / 0 | 2 |
 | evPoints | mobilita | pun-continuous | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | extractivePlanning | ambiente | regione-toscana-prc-annual | PRC vigente · variante 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | extractiveProduction | ambiente | regione-toscana-prc-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | extractiveSites | ambiente | regione-toscana-rtcave-continuous | 2 settembre 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
-| fcdePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| fcdePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/fcdePerResident/v1 | total | 7 / 0 | 1 |
 | femaleEmploymentRate | lavoro | istat-census-annual | 2023 | istat-census-femaleEmploymentRate/v1 | total | 10 / 1 | 8 |
 | financialDebtProfile | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
 | fiscalRecoveryActivity | economia | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
@@ -87,7 +87,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | ftthReachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | ftthUnreachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | fuelPrices | mobilita | mimit-fuel-daily | 2026-10-03 | adapter_not_implemented | — | 0 / 0 | 3 |
-| generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/generalAdministrationMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | grossOperatingMargin | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
 | heartFailurePrevalence | salute | ars-toscana-mixed | 2025 | ars-272-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
 | hospitalizedAll | salute | ars-toscana-mixed | 2021–2025 | ars-1332-reviewed/v1 | total | 7 / 0 | 2 |
@@ -132,7 +132,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | maritimeConcessionFeesDue | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
 | maritimeConcessions | ambiente | mit-sid-demanio-irregular | agosto 2026 | adapter_not_implemented | — | 0 / 0 | 2 |
 | microUnits | economia | istat-business-annual | 2023 | istat-business/asia/v1 | total | 5 / 0 | 2 |
-| mobilityMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| mobilityMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/mobilityMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | mortalityAll | salute | ars-toscana-mixed | 2013–2022 | ars-1438-reviewed/v1 | total, sex:men, sex:women | 18 / 0 | 7 |
 | mortalityCancer | salute | ars-toscana-mixed | 2013–2022 | ars-1499-reviewed/v1 | total, sex:men, sex:women | 18 / 0 | 7 |
 | mortalityCirculatory | salute | ars-toscana-mixed | 2013–2022 | ars-1327-reviewed/v1 | total, sex:men, sex:women | 18 / 0 | 7 |
@@ -155,7 +155,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | outboundCommuters | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 3 |
 | outboundCommutersRate | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 4 |
 | outsideMunicipality | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 0 |
-| ownRevenueShare | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| ownRevenueShare | bilanci | openbdap-annual | 2025 | rgs-finance/ownRevenueShare/v1 | total | 9 / 0 | 3 |
 | pabCompletedOperationalGrossValue | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | pabInProgressOperationalGrossValue | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | pabInterventionsCompleted | ambiente | cb1-pmo-status-2026 | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
@@ -180,7 +180,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | remediationProceedings | ambiente | sisbon-weekly | 29 agosto 2026 | adapter_not_implemented | — | 0 / 0 | 1 |
 | residualWaste | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | rigidDefenceProtectedCoast | ambiente | ispra-coast-irregular | 2020 | adapter_not_implemented | — | 0 / 0 | 4 |
-| rigidExpenditureShare | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| rigidExpenditureShare | bilanci | openbdap-annual | 2025 | rgs-finance/rigidExpenditureShare/v1 | total | 8 / 0 | 1 |
 | roadFinesPerResident | sicurezza | istat-road-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | roadNetworkProfile | mobilita | regione-toscana-iternet-448 | 2022 | adapter_not_implemented | — | 0 / 0 | 3 |
 | roadSafety | sicurezza | istat-road-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
@@ -196,13 +196,13 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | selfContainment | mobilita | istat-commuting-irregular | 2021 | adapter_not_implemented | — | 0 / 0 | 2 |
 | shorelineDynamics | ambiente | ispra-coast-irregular | 2006–2020 | adapter_not_implemented | — | 0 / 0 | 3 |
 | singleHouseholds | abitare | istat-census-annual | 2023 | istat-census-carriers/singleHouseholds/v1 | total | 9 / 1 | 5 |
-| siopePayments | bilanci | siope-monthly | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| siopePayments | bilanci | siope-monthly | 2025 | rgs-finance/siopePayments/v1 | total | 8 / 0 | 3 |
 | slowMobilityBici | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | slowMobilityCammini | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | slowMobilityMtb | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | slowMobilityRoutes | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
 | slowMobilityTrekking | mobilita | percorsi-curated | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
-| socialMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| socialMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/socialMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | socialSpendingByUserArea | comunita | istat-social-services-annual | 2022 | adapter_not_implemented | — | 0 / 0 | 1 |
 | socialSpendingPerResident | comunita | istat-social-services-annual | 2022 | adapter_not_implemented | — | 0 / 0 | 3 |
 | specialistVisits7Psr | salute | ars-toscana-mixed | 2025 | ars-1425-reviewed/v1 | total, sex:men, sex:women | 19 / 0 | 7 |
@@ -211,7 +211,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | tariStandardHousehold | economia | mef-municipal-tax-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 0 |
 | taxpayersAdultPopulationRate | economia | mef-irpef-annual | MEF a.i. 2024 · residenti 1.1.2026 | adapter_not_implemented | — | 0 / 0 | 4 |
 | territorialClassification | ambiente | istat-geografie-funzionali-2021 | 2021 | adapter_not_implemented | — | 0 / 0 | 0 |
-| territorialPlanningMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| territorialPlanningMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/territorialPlanningMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | tertiary | istruzione | istat-census-annual | 2024 | istat-census-carriers/tertiary/v1 | total, age:9-24\|sex:total, age:9-24\|sex:men, age:9-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:9plus\|sex:total, age:9plus\|sex:men, age:9plus\|sex:women | 64 / 90 | 8 |
 | thirdSector | comunita | runts-continuous | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
 | totalResidentialMobility | demografia | istat-demography-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 7 |
@@ -219,7 +219,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | tourismAverageStay | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 2 |
 | tourismBeds | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
 | tourismBedsPer1000 | economia | istat-tourism-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 4 |
-| tourismDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 3 |
+| tourismDevelopmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/tourismDevelopmentMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | tourismIntensity | economia | regione-toscana-tourism-annual | 2025 | tuscany-tourismIntensity/v1 | total | 5 / 0 | 3 |
 | tourismPresences | economia | regione-toscana-tourism-annual | 2025 | tuscany-tourismPresences/v1 | total | 7 / 0 | 3 |
 | tourismSeasonality | economia | regione-toscana-tourism-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
@@ -233,13 +233,16 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | wastePerResident | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 3 |
 | wasteServiceCost | ambiente | ispra-environment-annual | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 | waterNetworkLosses | ambiente | istat-water-irregular | 2018 | adapter_not_implemented | — | 0 / 0 | 3 |
-| yearEndCashFundPerResident | bilanci | openbdap-annual | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| yearEndCashFundPerResident | bilanci | openbdap-annual | 2025 | rgs-finance/yearEndCashFundPerResident/v1 | total | 7 / 0 | 1 |
 | youthOtherStatus | lavoro | regione-toscana-indicatori-comunali | 2024 | adapter_not_implemented | — | 0 / 0 | 2 |
 
 ## Collegamenti tipizzati
 
 | Collegamento | Tipo | Verifica | Associazione |
 |---|---|---|---|
+| cashReceiptsPerResident → cashBalancePerResident | derived_difference | components_reconciled | Non richiesta: dipendenza matematica |
+| cashReceiptsPerResident → currentRevenueAccruedPerResident | context | observations_available_context_only | computed:  |
+| educationMissionExpenditurePerResident → socialMissionExpenditurePerResident | context | observations_available_context_only | computed:  |
 | maleEmploymentRate → employmentGenderGap | derived_difference | components_reconciled | Non richiesta: dipendenza matematica |
 | diplomaPlus → employmentRate | context | observations_available_context_only | computed:  |
 | singleHouseholds → vacantHomes | context | observations_available_context_only | computed:  |
@@ -297,7 +300,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 
 | Profilo | Indicatori senza adapter | Dimensioni A3 già acquisite su questi indicatori |
 |---|---|---|
-| openbdap-annual | 24 | 57 |
 | istat-demography-annual | 7 | 50 |
 | mim-school-year | 9 | 36 |
 | istat-commuting-irregular | 8 | 23 |
@@ -305,7 +307,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | mef-irpef-annual | 4 | 18 |
 | regione-toscana-indicatori-comunali | 7 | 14 |
 | rgs-conto-annuale-annual | 4 | 14 |
-| siope-monthly | 4 | 12 |
 | ispra-environment-annual | 4 | 11 |
 | istat-tourism-annual | 3 | 10 |
 | istat-geografia-comunale-2021 | 3 | 9 |
@@ -328,6 +329,7 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | regione-toscana-ucs-2007-2019 | 1 | 4 |
 | health-ministry-annual | 2 | 3 |
 | ispra-idrogeo-risk | 2 | 3 |
+| openbdap-annual | 2 | 3 |
 | erp-lucca-annual-balance-sheet | 1 | 3 |
 | fee-blue-flag-annual | 1 | 3 |
 | istat-water-irregular | 1 | 3 |
@@ -336,6 +338,7 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | regione-toscana-aree-protette-v137 | 1 | 3 |
 | regione-toscana-iternet-448 | 1 | 3 |
 | regione-toscana-reticolo-v137 | 1 | 3 |
+| siope-monthly | 1 | 3 |
 | regione-toscana-gtfs-scheduled | 3 | 2 |
 | istat-geografie-funzionali-2021 | 2 | 2 |
 | regione-toscana-prc-annual | 2 | 2 |

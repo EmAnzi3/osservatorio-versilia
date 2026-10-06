@@ -1,6 +1,6 @@
 # A6 — domande con risultati verificati
 
-Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `af548709f0360bb2523642399e962ba7c0041fa8544c8870ceba2356f5407aaa`. Esito: **PASS**.
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; manifest `43307cdc83567b307a1affdc1ea1a4f00bf429f8be0bee994035270d6d0a2b6e`. Esito: **PASS**.
 
 Le aspettative sono versionate e controllate contro riferimenti aritmetici/record dichiarati; non vengono riscritte automaticamente con la risposta del motore. Le domande sono casi di prova riutilizzabili, non un interprete di linguaggio naturale.
 
@@ -75,5 +75,20 @@ Le aspettative sono versionate e controllate contro riferimenti aritmetici/recor
 | census_size_history_refused: Posso ricostruire lo storico della dimensione familiare con componenti non riconciliati? | PASS | census_historical_dimension_not_available | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
 | census_young_history_refused: Posso inferire lo storico occupazione femminile 15–24 da un totale 15+? | PASS | census_historical_dimension_not_available | Limite del carrier/periodo/metodo esplicito; nessun dato inferito |
 | census_diploma_change_refused: Posso calcolare automaticamente la variazione del diploma tra censimento tradizionale 1991 e permanente 2024? | PASS | census_method_break_change_not_supported | Discontinuità di rilevazione non attestata come confrontabile; serie consultabile, calcolo congiunto rifiutato. |
+| finance_revenue: Qual è la misura contabile di Massarosa con il denominatore dichiarato? | PASS | /observations/0/value: 1446.8854737228287 | Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query. |
+| finance_own: Qual è la misura contabile di Massarosa con il denominatore dichiarato? | PASS | /observations/0/value: 95.56009818461364 | Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query. |
+| finance_social: Qual è la misura contabile di Massarosa con il denominatore dichiarato? | PASS | /observations/0/value: 196.48336971475743 | Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query. |
+| finance_balance: Qual è la misura contabile di Massarosa con il denominatore dichiarato? | PASS | /observations/0/value: -109.06770590395823 | Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query. |
+| finance_negative_result: Qual è la misura contabile di Massarosa con il denominatore dichiarato? | PASS | /observations/0/value: -655.3070658185841 | Trascrizione indipendente dei componenti raw bilanci-v1.6.0 o siope-history-v1.6.0; aspettative non generate dalla query. |
+| finance_cash_weighted: Quali incassi per residente per Massarosa e Camaiore insieme? | PASS | /result/value: 2639.507992903165; /result/denominatorPeriod: 2026 | SIOPE 2025: (105058904,44 + 36273551,04)/(31763+21782); residenti al primo gennaio 2026. |
+| finance_fcde: Qual è il valore ufficiale comunale e quale limite ha? | PASS | /observations/0/value: 508.0258616894433 | Estrazione normalizzata bilanci-v139: 508,0258616894433; importo originale non congelato. |
+| finance_rigid: Qual è il valore ufficiale comunale e quale limite ha? | PASS | /observations/0/value: 20.66 | PDI 01.01 2025, bilanci-v1.6.0: 20,66; denominatore non ricostruito. |
+| finance_cash_date: A quale data sono riferiti i residenti usati negli incassi 2025? | PASS | /observations/0/denominatorReferenceDate: 1 gennaio 2026 | Contratto annuale SIOPE: primo gennaio successivo; distinta dalla popolazione nel CSV SIOPE. |
+| finance_fcde_weight_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | verified_ratio_adapter_required | Importi originali non congelati; vietato retro-derivare numeratori dal rapporto. |
+| finance_rigid_weight_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | verified_ratio_adapter_required | Percentuale PDI arrotondata senza componenti additivi. |
+| finance_benchmark_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | finance_benchmark_components_or_complete_scope_not_frozen | Candidato Rendiconto Toscana 271/273 Comuni, rifiutato. |
+| finance_cash_benchmark_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | finance_benchmark_components_or_complete_scope_not_frozen | Benchmark SIOPE pubblico conservato; importi regionali non congelati per riconciliazione raw. |
+| finance_period_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | finance_period_not_available | Riga assente non imputata a zero; anno escluso resta escluso. |
+| finance_dimension_refused: È ammessa questa lettura senza le evidenze necessarie? | PASS | dimension_adapter_not_implemented | Destinatari effettivi non osservati dalla classificazione contabile. |
 
 Il JSON conserva query, risultati, formula, fonti, periodi, copertura ed esclusioni. Un rifiuto atteso è una verifica riuscita del limite, non una capacità di risposta numerica. Nessuna conclusione causale o raccomandazione automatica.

@@ -91,3 +91,5 @@ scripts/semantic_query_business_adapters.py
 scripts/test_semantic_business_adapters.py
 scripts/semantic_query_census_adapters.py
 scripts/test_semantic_census_adapters.py
+scripts/semantic_query_finance_adapters.py
+scripts/test_semantic_finance_adapters.py
