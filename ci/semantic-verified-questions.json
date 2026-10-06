@@ -3031,6 +3031,799 @@
         ]
       },
       "reference": "Riscossioni erariali 2024 e riscossioni locali 2025 distinte; nessun effetto dedotto."
+    },
+    {
+      "id": "demography_dependency",
+      "question": "Qual è l’indice di dipendenza strutturale di Massarosa al 1 gennaio 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "dependencyIndices",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              790400,
+              13878
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS 2026: 2213 giovani + 5691 anziani; 13878 residenti 15–64"
+    },
+    {
+      "id": "demography_men_dependency",
+      "question": "Qual è la dipendenza strutturale maschile?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "dependencyIndices",
+            "dimension": "part:structural|sex:men",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              372100,
+              7015
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS per età/sesso: 1136 giovani, 2585 anziani, 7015 residenti 15–64"
+    },
+    {
+      "id": "demography_natural",
+      "question": "Qual è il saldo naturale per mille residenti nel 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "naturalDemographicDynamics",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              -160000,
+              21794
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "P02: 96 nati−256 morti; media popolazione 21794; flag p"
+    },
+    {
+      "id": "demography_internal",
+      "question": "Qual è il saldo dei trasferimenti interni nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "internalResidentialMobility",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              126000,
+              43671
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot composito: 533 iscritti−470 cancellati; media P02 21835,5"
+    },
+    {
+      "id": "demography_foreign_events",
+      "question": "Qual è il saldo dei trasferimenti con l’estero nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignResidentialMobility",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              74000,
+              43671
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Carrier congelato: 88 iscritti−51 cancellati; media P02 21835,5; non è il numero di cittadini stranieri"
+    },
+    {
+      "id": "demography_total_events",
+      "question": "Qual è il saldo complessivo dei trasferimenti nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "totalResidentialMobility",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              200000,
+              43671
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Conteggi pubblicati: 63+37=100 eventi; media P02 21835,5"
+    },
+    {
+      "id": "demography_citizenship",
+      "question": "Qual è la quota di residenti non italiani al 1 gennaio 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignResidents",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              103000,
+              21806
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "RCS: 1030 cittadini non italiani / 21806 residenti"
+    },
+    {
+      "id": "demography_citizenship_women",
+      "question": "Quante donne non italiane risiedono a Massarosa nel 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignResidents",
+            "dimension": "sex:women",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              555,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Somma 555 donne nei record RCS per cittadinanza; non quota sulla popolazione femminile"
+    },
+    {
+      "id": "demography_cumulative",
+      "question": "Qual è la variazione cumulata dal 2019 al 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "populationChange",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              8600,
+              21696
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "POSAS: 21782−21696; base 21696 al 1 gennaio 2019"
+    },
+    {
+      "id": "school_students",
+      "question": "Quanti alunni frequentano scuole localizzate a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolStudents",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1282,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "LIA MIM 2024/25: 1282 alunni; non bambini residenti"
+    },
+    {
+      "id": "school_class_size",
+      "question": "Quanti alunni per classe nel 2024/25?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "studentsPerClass",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1282,
+              72
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "LIA MIM: 1282 alunni / 72 classi"
+    },
+    {
+      "id": "school_full_time",
+      "question": "Qual è la quota di primaria a tempo pieno nel 2024/25?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "primaryFullTimeShare",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              41300,
+              747
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "LIA MIM: 413 alunni a tempo pieno / 747 primaria"
+    },
+    {
+      "id": "school_access_defined",
+      "question": "Qual è la quota di edifici con accorgimenti tra le risposte definite?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolBuildingAccessibility",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              100,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Edifici MIM: 12 SI / 12 risposte definite; 3 non definite escluse dal denominatore"
+    },
+    {
+      "id": "school_access_unknown",
+      "question": "Quanto manca nella rilevazione di accessibilità?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolBuildingAccessibility",
+            "dimension": "part:undefined",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              20,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "3 non definite / 15 edifici = 20%, non assenza di accorgimenti"
+    },
+    {
+      "id": "school_building_age",
+      "question": "Qual è la quota di edifici costruiti entro il 1970?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolBuildingAge",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              75,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "6 edifici / 8 date definite; 7 date non definite"
+    },
+    {
+      "id": "school_cpi",
+      "question": "Qual è la quota CPI tra le risposte definite?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolBuildingSafetyDocs",
+            "dimension": "part:cpi",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              50,
+              3
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "1 SI / (1 SI+5 NO) *100; 9 non definite; separato da SCIA/rinnovo"
+    },
+    {
+      "id": "demography_cumulative_trend_refused",
+      "question": "Posso trattare le variazioni cumulate come trend annuale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "populationChange",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_cumulative_trend_not_annual_growth"
+        ]
+      },
+      "reference": "Intervalli sovrapposti con base 2019: non crescita annuale"
+    },
+    {
+      "id": "demography_plain_year_refused",
+      "question": "Posso chiedere la variazione cumulata con il solo anno 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "populationChange",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_cumulative_2019_interval_required"
+        ]
+      },
+      "reference": "Endpoint ambiguo: serve intervallo 2019-2026"
+    },
+    {
+      "id": "school_calendar_year_refused",
+      "question": "Il periodo 2024 può sostituire l’anno scolastico?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "studentsPerClass",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_school_native_school_year_required"
+        ]
+      },
+      "reference": "Anno scolastico nativo 2024/25"
+    },
+    {
+      "id": "school_history_refused",
+      "question": "Qual è il trend pluriennale del tempo pieno?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "primaryFullTimeShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_school_history_not_frozen"
+        ]
+      },
+      "reference": "Un solo anno scolastico acquisito"
+    },
+    {
+      "id": "school_absolute_benchmark_refused",
+      "question": "Il numero comunale di alunni è confrontabile con il totale Toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "schoolStudents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_school_benchmark_dimension_not_frozen_or_absolute_volume_not_comparable"
+        ]
+      },
+      "reference": "Volumi assoluti su territori di dimensione diversa"
+    },
+    {
+      "id": "school_scia_unknown_refused",
+      "question": "SCIA Massarosa è zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "schoolBuildingSafetyDocs",
+            "dimension": "part:scia",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "15/15 risposte non definite: null, non zero"
+    },
+    {
+      "id": "demography_historical_weight_refused",
+      "question": "Posso ponderare trasferimenti esteri storici senza conteggi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "foreignResidentialMobility",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "ratio_components_required:0",
+          "ratio_components_required:1",
+          "ratio_components_required:2",
+          "ratio_components_required:3",
+          "ratio_components_required:4",
+          "ratio_components_required:5",
+          "ratio_components_required:6"
+        ]
+      },
+      "reference": "Storia normalizzata disponibile, numeratori eventi non congelati"
+    },
+    {
+      "id": "demography_stock_flow_refused",
+      "question": "Possiamo correlare cittadinanza e trasferimenti correnti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "foreignResidents"
+          },
+          {
+            "metric": "foreignResidentialMobility"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "Stock 2025 e eventi 2024; cittadinanza e origine del trasferimento distinti"
+    },
+    {
+      "id": "school_site_pair_refused",
+      "question": "Possiamo correlare sedi e alunni usando solo la data etichettata?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "schoolSites"
+          },
+          {
+            "metric": "schoolStudents"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "demography_school_site_observation_dates_not_attested_for_pairing"
+        ]
+      },
+      "reference": "Data stock delle sedi e denominatore normalizzato non attestati"
+    },
+    {
+      "id": "demography_aligned_events",
+      "question": "Come si associano saldi naturale e dei trasferimenti nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "naturalDemographicDynamics",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "totalResidentialMobility",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/n",
+            "value": 7
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Set completo dei sette comuni sul periodo nativo esplicito; verifica di copertura, nessuna prova di effetto politico"
+    },
+    {
+      "id": "school_fulltime_canteen",
+      "question": "Come si associano tempo pieno e presenza mensa nel 2024/25?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "primaryFullTimeShare",
+            "periods": [
+              "2024/25"
+            ]
+          },
+          {
+            "metric": "schoolBuildingFacilities",
+            "periods": [
+              "2024/25"
+            ]
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/n",
+            "value": 7
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Set completo dei sette comuni sul periodo nativo esplicito; verifica di copertura, nessuna prova di effetto politico"
     }
   ]
 }

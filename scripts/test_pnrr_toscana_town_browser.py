@@ -12,6 +12,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def goto_rendered(page, url: str, ready_selector: str) -> None:
+    # PNRR readiness is the rendered data view, not all remote decorative photos.
+    response = page.goto(url, wait_until="domcontentloaded")
+    assert response is not None and response.ok, (url, response.status if response else None)
+    page.locator(ready_selector).wait_for(state="visible", timeout=15000)
+    page.wait_for_function("document.fonts.status === 'loaded'", timeout=15000)
+
+
 def main() -> int:
     args = parse_args()
     base = args.base.rstrip("/") + "/"
@@ -20,7 +28,7 @@ def main() -> int:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
 
-        page.goto(base + "confronta/comunita/?indicatore=pnrrConcluded", wait_until="networkidle")
+        goto_rendered(page, base + "confronta/comunita/?indicatore=pnrrConcluded", '[data-pnrr-general-context="true"]')
         general = page.locator('[data-pnrr-general-context="true"]')
         general.wait_for(timeout=15000)
         general_text = general.inner_text()
@@ -35,7 +43,7 @@ def main() -> int:
         assert "77,2%" in body_text
         assert "Quota Versilia\n50,0%" not in body_text
 
-        page.goto(base + "pnrr/", wait_until="networkidle")
+        goto_rendered(page, base + "pnrr/", ".site-footer")
         assert page.locator('[data-data-status-nav="header"]').count() == 1
         assert page.locator('[data-data-status-nav="footer"]').count() == 1
         assert page.locator(".site-header").count() == 1
@@ -44,9 +52,10 @@ def main() -> int:
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"
         )
 
-        page.goto(
+        goto_rendered(
+            page,
             base + "comuni/massarosa/?tema=comunita&indicatore=pnrrConcluded",
-            wait_until="networkidle",
+            '[data-pnrr-town-detail="true"]',
         )
         town = page.locator('[data-pnrr-town-detail="true"]')
         town.wait_for(timeout=15000)
@@ -70,9 +79,10 @@ def main() -> int:
         assert town.locator('a[href="../../pnrr/"]').count() == 1
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844})
-        mobile.goto(
+        goto_rendered(
+            mobile,
             base + "comuni/massarosa/?tema=comunita&indicatore=pnrrConcluded",
-            wait_until="networkidle",
+            '[data-pnrr-town-detail="true"]',
         )
         mobile_town = mobile.locator('[data-pnrr-town-detail="true"]')
         mobile_town.wait_for(timeout=15000)
@@ -80,7 +90,7 @@ def main() -> int:
         assert fits, "Il dettaglio PNRR comunale genera overflow orizzontale su mobile"
         assert mobile_town.locator(".pnrr-town-work").count() == 2
 
-        mobile.goto(base + "pnrr/", wait_until="networkidle")
+        goto_rendered(mobile, base + "pnrr/", ".site-footer")
         assert mobile.locator('[data-data-status-nav="footer"]').count() == 1
         assert not mobile.evaluate(
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"

@@ -10,6 +10,7 @@ import socket
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -150,6 +151,38 @@ def assert_uniform_comparison_color(page, selector: str) -> None:
     assert len(set(colors)) == 1, f"Colori comunali non uniformi: {colors}"
 
 
+def goto_reading_view(page, url):
+    # Check the selected view and fonts, rather than unrelated photo traffic.
+    if not getattr(page, "_reading_hydration_observer", False):
+        page.add_init_script("""(() => {
+          let initial = null;
+          window.__readingClientRendered = false;
+          const observer = new MutationObserver(() => {
+            const child = document.querySelector('#app')?.firstElementChild;
+            if (!initial && child) initial = child;
+            else if (initial && child && child !== initial) {
+              window.__readingClientRendered = true;
+              observer.disconnect();
+            }
+          });
+          observer.observe(document, {childList:true, subtree:true});
+        })()""")
+        page._reading_hydration_observer = True
+    response = page.goto(url, wait_until="domcontentloaded")
+    assert response is not None and response.ok, f"Navigation failed: {url}"
+    # start() replaces #app only after catalog and optional climate reads.
+    page.wait_for_function("window.__readingClientRendered === true")
+    metric = parse_qs(urlparse(url).query).get("indicatore", [None])[0]
+    if metric:
+        page.locator(f'[data-metric="{metric}"].active').first.wait_for(state="visible")
+        page.locator(".reading-scale").first.wait_for(state="visible")
+    elif urlparse(url).path.rstrip("/").endswith("progetto"):
+        page.locator("#sistema-territoriale").wait_for(state="visible")
+    else:
+        page.locator("#home-explorer .comparison-dot").first.wait_for(state="visible")
+    page.wait_for_function("document.fonts.status === 'loaded'", timeout=15000)
+
+
 def browser_checks() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args = {"headless": True}
@@ -160,7 +193,7 @@ def browser_checks() -> None:
         browser = p.chromium.launch(**launch_args)
         page = browser.new_page(viewport={"width": 1280, "height": 900})
 
-        page.goto(base, wait_until="networkidle")
+        goto_reading_view(page, base)
         page.wait_for_selector("#home-explorer .comparison-dot")
         assert page.locator("#home-explorer .bar-rank").count() == 0
         assert page.locator("#home-explorer .comparison-dot").count() == 7
@@ -169,7 +202,7 @@ def browser_checks() -> None:
         assert page.locator(".system-reading-link").count() == 1
         assert_uniform_comparison_color(page, "#home-explorer .comparison-dot")
 
-        page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
+        goto_reading_view(page, base + "comuni/massarosa/?tema=demografia&indicatore=population")
         page.wait_for_selector(".versilia-position")
         population_overline = page.locator(".versilia-position .overline").inner_text().strip().lower()
         assert population_overline == "quota sulla versilia", f"Etichetta popolazione inattesa: {population_overline!r}"
@@ -183,7 +216,7 @@ def browser_checks() -> None:
         assert page.locator('[data-metric="population"]').count() == 1
         assert_reading_scale(page, "Territoriale")
 
-        page.goto(base + "confronta/istruzione/?indicatore=diplomaPlus", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/istruzione/?indicatore=diplomaPlus")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .comparison-bars").get_attribute("data-viz") == "percent-dotplot"
         axis_text = page.locator("#compare-bars .comparison-axis").inner_text().lower()
@@ -214,7 +247,7 @@ def browser_checks() -> None:
 
         assert len(low_percent_metrics) >= 15, f"Audit percentuali troppo ristretto: {len(low_percent_metrics)}"
         for metric_key, theme, observed_max in low_percent_metrics:
-            page.goto(base + f"confronta/{theme}/?indicatore={metric_key}", wait_until="networkidle")
+            goto_reading_view(page, base + f"confronta/{theme}/?indicatore={metric_key}")
             page.wait_for_selector("#compare-bars .comparison-axis")
             axis = page.locator("#compare-bars .comparison-axis")
             center = axis.locator("span").nth(1).inner_text().strip().lower()
@@ -224,7 +257,7 @@ def browser_checks() -> None:
             assert rendered_max >= observed_max, f"Scala tronca {metric_key}: {rendered_max} < {observed_max}"
             assert rendered_max < 100, f"Scala non adattata per {metric_key}: {rendered_max}"
 
-        page.goto(base + "confronta/abitare/?indicatore=cohabitingHouseholds", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/abitare/?indicatore=cohabitingHouseholds")
         page.wait_for_selector("#compare-bars .comparison-axis")
         cohab_axis = page.locator("#compare-bars .comparison-axis").inner_text().lower()
         assert "scala 0–4,0%" in cohab_axis, f"Scala Famiglie coabitanti inattesa: {cohab_axis!r}"
@@ -237,7 +270,7 @@ def browser_checks() -> None:
         # intercettare mouse/touch e focus da tastiera. Senza selezione, tutti
         # tornano interrogabili.
         page.evaluate("sessionStorage.removeItem('ov-history-town')")
-        page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/economia/?indicatore=income")
         page.locator('[data-view-mode="history"]').click()
         page.wait_for_selector(".ux-history-chart .chart-point")
         assert page.locator(".chart-point.is-tooltip-disabled").count() == 0
@@ -264,14 +297,14 @@ def browser_checks() -> None:
         assert page.locator(".chart-point.is-tooltip-disabled").count() == 0
         assert page.locator(".chart-point").evaluate_all("els => els.every(el => el.tabIndex === 0)")
 
-        page.goto(base + "confronta/economia/?indicatore=businessValueAdded", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/economia/?indicatore=businessValueAdded")
         page.locator('[data-view-mode="current"]').click()
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert_reading_scale(page, "Funzionale")
         scale_text = page.locator(".reading-scale").inner_text().lower()
         assert "supera strutturalmente i confini comunali" in scale_text
 
-        page.goto(base + "confronta/bilanci/?indicatore=currentExpenditureCommittedPerResident", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/bilanci/?indicatore=currentExpenditureCommittedPerResident")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert_reading_scale(page, "Amministrativo")
 
@@ -297,7 +330,7 @@ def browser_checks() -> None:
         assert {"currency", "percent"}.issubset(weighted_by_unit), weighted_by_unit
         for unit in ("currency", "percent"):
             metric_key, theme, expected_reference = weighted_by_unit[unit]
-            page.goto(base + f"confronta/{theme}/?indicatore={metric_key}", wait_until="networkidle")
+            goto_reading_view(page, base + f"confronta/{theme}/?indicatore={metric_key}")
             page.wait_for_selector("#compare-bars .comparison-dot")
             legend = page.locator("#compare-bars .comparison-legend").inner_text().strip().lower()
             assert expected_reference.lower() in legend, (metric_key, expected_reference, legend)
@@ -313,24 +346,24 @@ def browser_checks() -> None:
             assert expected_suffix in axis_text, (metric_key, axis_text)
 
         # Temi misti: la scala dipende dall'indicatore, non solo dal tema.
-        page.goto(base + "confronta/salute/?indicatore=lifeExpectancy", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/salute/?indicatore=lifeExpectancy")
         assert_reading_scale(page, "Territoriale")
-        page.goto(base + "confronta/salute/?indicatore=hospitals", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/salute/?indicatore=hospitals")
         assert_reading_scale(page, "Funzionale")
 
-        page.goto(base + "confronta/istruzione/?indicatore=diplomaPlus", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/istruzione/?indicatore=diplomaPlus")
         assert_reading_scale(page, "Territoriale")
-        page.goto(base + "confronta/istruzione/?indicatore=schoolSites", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/istruzione/?indicatore=schoolSites")
         assert_reading_scale(page, "Funzionale")
 
-        page.goto(base + "confronta/mobilita/?indicatore=outsideMunicipality", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/mobilita/?indicatore=outsideMunicipality")
         assert_reading_scale(page, "Funzionale")
-        page.goto(base + "confronta/mobilita/?indicatore=ftthCoverageDesi", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/mobilita/?indicatore=ftthCoverageDesi")
         assert_reading_scale(page, "Territoriale")
 
         # Il composito Sicurezza deve usare la stessa grammatica: niente podio
         # implicito, tutti i Comuni col colore del tema e Versilia ben leggibile.
-        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/sicurezza/?indicatore=roadSafety")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .bar-rank").count() == 0
         assert_uniform_comparison_color(page, "#compare-bars .comparison-dot")
@@ -347,12 +380,12 @@ def browser_checks() -> None:
         )
         assert summary_value_size >= 16, f"Valore Versilia poco evidente: {summary_value_size}px"
 
-        page.goto(base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded", wait_until="networkidle")
+        goto_reading_view(page, base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded")
         page.wait_for_selector(".town-metric-layout")
         assert_reading_scale(page, "Funzionale")
         assert_post_benchmark_tools(page, town=True)
 
-        page.goto(base + "comuni/massarosa/?tema=istruzione&indicatore=diplomaPlus", wait_until="networkidle")
+        goto_reading_view(page, base + "comuni/massarosa/?tema=istruzione&indicatore=diplomaPlus")
         page.wait_for_selector(".versilia-position")
         overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
         assert overline_text == "rispetto alla versilia", f"Etichetta inattesa: {overline_text!r}"
@@ -371,7 +404,7 @@ def browser_checks() -> None:
         )
         assert town_reference_size >= 18, f"Riferimento Versilia comunale troppo piccolo: {town_reference_size}px"
 
-        page.goto(base + "progetto/", wait_until="networkidle")
+        goto_reading_view(page, base + "progetto/")
         page.wait_for_selector("#sistema-territoriale")
         assert page.locator("#sistema-territoriale .system-reading-grid article").count() == 3
         assert page.locator(".base-size-principle").count() == 1

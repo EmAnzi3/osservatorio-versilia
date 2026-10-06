@@ -12,6 +12,7 @@ from semantic_query_engine import QueryEngine, ROOT, SUPPORTED, TEMPORAL
 import semantic_query_business_adapters as business
 import semantic_query_census_adapters as census
 import semantic_query_distinct_finance_adapters as distinct
+import semantic_query_demography_school_adapters as demography
 
 
 def compact(result):
@@ -28,7 +29,10 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         data=catalog if catalog is not None else engine.catalog
         row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
         years = (row.get('series') or {}).get('years', [])
-        if key in distinct.KEYS:
+        if key in demography.KEYS:
+            try:years=demography.available_periods(engine,key,dimension,row)
+            except ValueError:years=[]
+        elif key in distinct.KEYS:
             try:years=distinct.available_periods(engine,key,dimension,row)
             except ValueError:years=[]
         elif key in census.KEYS:
@@ -127,6 +131,11 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('demography_natural_transfers','naturalDemographicDynamics','totalResidentialMobility','context','Aligned calendar 2024 demographic events; distinct causes and statistical adjustments, no complete population accounting'),
+        ('demography_citizenship_transfers','foreignResidents','foreignResidentialMobility','context','Citizenship stock 2025 and foreign transfers 2024 are distinct populations and periods'),
+        ('school_fulltime_canteen','primaryFullTimeShare','schoolBuildingFacilities','context','Native 2024/25 pupils and building canteen declarations; no individual access, capacity or causal effect'),
+        ('school_access_transport','schoolBuildingAccessibility','schoolBuildingTransport','context','Native 2024/25 building fields with different response denominators and missingness; no delivered pupil mobility'),
+        ('school_sites_pupils','schoolSites','schoolStudents','context','Site stock exact date not attested; sites distinct from buildings and pupil locations'),
         ('debt_interest_context','financialDebtProfile','financialDebtProfile','context','Year-end D1 debt and interest share are distinct accounting dimensions; shared financing components, no causal claim'),
         ('recovery_current_revenue','fiscalRecoveryActivity','currentRevenueAccruedPerResident','context','Verification/control cash receipts and current accruals use distinct population bases; neither tax evasion nor office effectiveness'),
         ('works_capital_context','publicWorks','capitalExpenditureCommittedPerResident','context','Monitored project stock 2026 versus annual capital commitments 2025; no joint calculation across reference periods'),
@@ -156,6 +165,8 @@ def connections(engine, coverage):
         rd = 'age:85+' if right=='ageDistribution' else 'sex:total' if right=='elderlyHomeCare' else 'total'
         if identity=='debt_interest_context':ld,rd='part:debtPerResident','part:interestShare'
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
+        if identity=='demography_natural_transfers':
+            for q in qs:q['periods']=['2024']
         results = [engine.query({'operation':'compare','selectors':[s]}) for s in qs]
         verification = 'not_verified'; reasons = []
         if all(r['status']=='computed' for r in results):
