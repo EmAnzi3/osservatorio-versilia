@@ -68,16 +68,19 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
     endpoints: list[dict[str, Any]] = []
     for url in _urls(source):
         try:
-            _, diagnostics = transport.fetch_with_diagnostics(
+            payload, diagnostics = transport.fetch_with_diagnostics(
                 url,
                 timeout=min(20, int(source.get("fetchTimeoutSeconds") or 18)),
                 attempts=2,
             )
-            endpoints.append({"url": url, **diagnostics})
+            transport._enforce_endpoint_content_signature(h4.radar_module, source, url, payload, diagnostics)
+            endpoints.append({"url": url, **diagnostics, "role": transport.endpoint_role(source, url)})
         except Exception as exc:  # rete live: il report deve sopravvivere al failure
             diagnostics = dict(getattr(exc, "diagnostics", {}) or {})
             endpoints.append({
                 "url": url,
+                "role": transport.endpoint_role(source, url),
+                "httpAttempts": int(diagnostics.get("httpAttempts") or 0),
                 "status": "error",
                 "transport": diagnostics.get("transport") or "failed",
                 "fallbackUsed": bool(diagnostics.get("fallbackUsed")),
@@ -98,18 +101,15 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
         row.get("status") == "ok" and row.get("transport") == "reader_proxy"
         for row in endpoints
     )
-    if endpoints and ok == len(endpoints) and not proxy:
-        status = "ok"
-    elif ok:
-        status = "degraded"
-    else:
-        status = "error"
+    status = transport.coverage_status(endpoints)
 
     return {
         "sourceId": source_id,
         "status": status,
         "endpointCount": len(endpoints),
         "endpointOk": ok,
+        "coverageEndpointOk": sum(row.get("status") == "ok" and row["role"] == "listing" for row in endpoints),
+        "supplementaryEndpointOk": sum(row.get("status") == "ok" and row["role"] == "supplementary" for row in endpoints),
         "fallbackSuccessCount": sum(
             row.get("status") == "ok" and row.get("transport") in {"chromium", "reader_proxy"}
             for row in endpoints

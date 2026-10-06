@@ -8,6 +8,7 @@
       "territory": "Italia",
       "family": "national-crosscutting",
       "urls": ["https://www.statocitta.it/home/notizie-e-comunicati/"],
+      "annualArchiveUrlTemplate": "https://www.statocitta.it/home/notizie-e-comunicati/{year}/",
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["bando", "avviso", "contribut", "finanzi", "fondo", "incentiv", "candidatur", "call"],
       "municipalTerms": ["comun", "enti locali", "amministrazioni locali", "città", "municipal"]

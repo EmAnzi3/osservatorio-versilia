@@ -202,6 +202,11 @@
         "label": "A6 deterministic query engine",
         "script": "scripts/test_semantic_query_engine.py",
         "args": []
+      },
+      {
+        "label": "publication and refresh status semantics",
+        "script": "scripts/test_pages_live_status.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
@@ -216,7 +221,9 @@
       "branch": "main",
       "selector": "scripts/source_monitor_runtime_snapshot.py",
       "updates": "monitoring state only; catalog and values remain on main"
-    }
+    },
+    "publicRoutesContext": "ov-public-routes",
+    "radarRefreshContext": "ov-radar-refresh"
   },
   "workflows": [
     {

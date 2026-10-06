@@ -12,6 +12,8 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from browser_view_readiness import goto_reading_view
 
+from public_build_snapshot import effective_public_catalog
+
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -197,7 +199,7 @@ def browser_checks() -> None:
         # deve aderire ai dati, mantenendo sempre lo zero come origine.
         # Gli indicatori demographicBreakdown sono esclusi qui perché hanno
         # una grammatica composita dedicata e sono coperti dai test età/genere.
-        site_data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+        site_data = effective_public_catalog()
         low_percent_metrics = []
         for metric_key, metric in site_data["metrics"].items():
             meta = metric.get("meta", {})
@@ -210,13 +212,20 @@ def browser_checks() -> None:
             aggregate = metric.get("aggregate") or {}
             if isinstance(aggregate.get("value"), (int, float)):
                 values.append(float(aggregate["value"]))
+            # Benchmark cards are separate from the municipal plot domain.
             if values and min(values) >= 0 and max(values) < 60:
                 low_percent_metrics.append((metric_key, meta.get("theme"), max(values)))
 
         assert len(low_percent_metrics) >= 15, f"Audit percentuali troppo ristretto: {len(low_percent_metrics)}"
         for metric_key, theme, observed_max in low_percent_metrics:
             goto_reading_view(page, base + f"confronta/{theme}/?indicatore={metric_key}")
-            page.wait_for_selector("#compare-bars .comparison-axis")
+            page.wait_for_function("""key => {
+                const selected = document.querySelector('[data-metric="' + key + '"][aria-selected="true"]');
+                const scale = document.querySelector('#compare-tools .reading-scale');
+                const axis = document.querySelector('#compare-bars .comparison-axis');
+                return selected && scale?.dataset.readingMetric === key
+                    && axis?.querySelectorAll('span')[2]?.textContent.trim().endsWith('%');
+            }""", arg=metric_key)
             axis = page.locator("#compare-bars .comparison-axis")
             center = axis.locator("span").nth(1).inner_text().strip().lower()
             right = axis.locator("span").nth(2).inner_text().strip()

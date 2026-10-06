@@ -62,7 +62,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento della funzione pubblica",
       "territory": "Italia",
       "family": "local-administration-capacity",
-      "urls": ["https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/"],
+      "urls": ["https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/", "https://www.funzionepubblica.gov.it/it/il-dipartimento/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["avviso", "comuni", "finanzi", "risorse", "digital", "capacità amministrativa"],
       "municipalTerms": ["comun", "enti locali", "amministrazioni", "territorial"]

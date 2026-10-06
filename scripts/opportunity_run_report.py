@@ -349,6 +349,24 @@ def build_report(
             "graceUsed": bool(source.get("graceUsed")),
             "consecutiveFailures": int(source.get("consecutiveFailures") or 0),
             "failureClasses": list(source.get("failureClasses") or []),
+            "endpoints": [
+                {
+                    "url": str(endpoint.get("url") or ""),
+                    "status": str(endpoint.get("status") or "unknown"),
+                    "transport": str(endpoint.get("transport") or "unknown"),
+                    "httpAttempts": int(endpoint.get("httpAttempts") or 0),
+                    "role": endpoint.get("role") or "listing",
+                    "fallbackUsed": bool(endpoint.get("fallbackUsed")),
+                    "proxyUsed": bool(endpoint.get("proxyUsed")),
+                    "initialFailureClass": endpoint.get("initialFailureClass"),
+                    "browserFailureClass": endpoint.get("browserFailureClass"),
+                    "readerFailureClass": endpoint.get("readerFailureClass"),
+                    "resolvedUrl": endpoint.get("resolvedUrl"),
+                    "redirected": bool(endpoint.get("redirected")),
+                    "errors": [_short(error, 600) for error in endpoint.get("errors") or []],
+                }
+                for endpoint in source.get("endpoints") or []
+            ],
         })
 
     phase_failed = bool(incomplete_run_stages(phase_statuses))
@@ -360,7 +378,7 @@ def build_report(
         failure_reasons.append(diagnostic_error)
     if phase_failed or gate_failed or load_errors:
         overall = "fail"
-    elif int(transport_summary.get("sourcesInGrace") or 0) or int(transport_summary.get("unhealthySources") or 0):
+    elif source_rows or int(transport_summary.get("endpointFailures") or 0) or int(transport_summary.get("sourcesInGrace") or 0) or int(transport_summary.get("unhealthySources") or 0):
         overall = "pass_with_warnings"
     else:
         overall = "pass"
@@ -488,6 +506,29 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
                 f"{'Sì' if source['graceUsed'] else 'No'} | {source['consecutiveFailures']} | "
                 f"{', '.join(source['failureClasses']) or '—'} |"
             )
+        endpoint_rows = [
+            (source["sourceId"], endpoint)
+            for source in health["attention"]
+            for endpoint in source.get("endpoints") or []
+        ]
+        if endpoint_rows:
+            lines.extend([
+                "",
+                "### Dettaglio endpoint",
+                "",
+                "| Fonte | URL configurato | Esito | HTTP tentativi | Fallback | Redirect/destinazione | Errori trasporto |",
+                "|---|---|---|---:|---|---|---|",
+            ])
+            for source_id, endpoint in endpoint_rows:
+                destination = endpoint.get("resolvedUrl") or "—"
+                redirect = "Sì" if endpoint.get("redirected") else "No"
+                errors = "<br>".join(_markdown_cell(value, 220) for value in endpoint.get("errors") or []) or "—"
+                lines.append(
+                    f"| `{source_id}` | {_markdown_cell(endpoint.get('url'), 160)} | "
+                    f"{endpoint['status']} / {endpoint['transport']} ({endpoint['role']}) | {endpoint['httpAttempts']} | "
+                    f"{'Sì' if endpoint['fallbackUsed'] else 'No'}"
+                    f"{' (proxy)' if endpoint['proxyUsed'] else ''} | {redirect}: {_markdown_cell(destination, 120)} | {errors} |"
+                )
 
     sections = (
         ("Nuove opportunita", "added"),
@@ -567,6 +608,21 @@ def render_html(report: dict[str, Any]) -> str:
         + html.escape(", ".join(row.get("failureClasses") or []) or "—") + "</td></tr>"
         for row in health["attention"]
     ) or '<tr><td colspan="6">Nessuna fonte richiede attenzione.</td></tr>'
+    endpoint_rows = "".join(
+        "<tr><td><code>" + html.escape(str(source.get("sourceId") or "")) + "</code></td><td>"
+        + '<a href="' + html.escape(str(endpoint.get("url") or ""), quote=True) + '" target="_blank" rel="noopener noreferrer">'
+        + html.escape(str(endpoint.get("url") or "URL non disponibile")) + "</a></td><td>"
+        + html.escape(str(endpoint.get("status") or "")) + " / " + html.escape(str(endpoint.get("transport") or ""))
+        + " (" + html.escape(str(endpoint.get("role") or "listing")) + ")"
+        + "</td><td>" + html.escape(str(endpoint.get("httpAttempts") or 0)) + "</td><td>"
+        + ("Sì" if endpoint.get("fallbackUsed") else "No")
+        + (" (proxy)" if endpoint.get("proxyUsed") else "") + "</td><td>"
+        + ("Sì" if endpoint.get("redirected") else "No")
+        + (": " + html.escape(str(endpoint.get("resolvedUrl"))) if endpoint.get("resolvedUrl") else "")
+        + "</td><td><br>".join(html.escape(str(error)) for error in endpoint.get("errors") or []) + "</td></tr>"
+        for source in health["attention"]
+        for endpoint in source.get("endpoints") or []
+    ) or '<tr><td colspan="7">Nessun dettaglio endpoint disponibile.</td></tr>'
     status_class = "ok" if report["overallStatus"] == "pass" else ("warn" if report["overallStatus"] == "pass_with_warnings" else "fail")
     generated = html.escape(str(report.get("generatedAt") or ""))
     comparison_warning = "" if report.get("comparisonAvailable") else (
@@ -590,7 +646,7 @@ body{{font-family:Arial,sans-serif;color:#111827;background:#f3f6f8;line-height:
 <section><h2>Riepilogo</h2><p>Record precedenti: <strong>{counts['previous']}</strong> -> record correnti: <strong>{counts['current']}</strong><br>Record invariati: <strong>{counts['unchanged']}</strong></p></section>
 {comparison_warning}{failure_reasons}
 <section><h2>Fasi e gate</h2><table><thead><tr><th>Controllo</th><th>Esito</th><th>Dettaglio</th></tr></thead><tbody>{phase_rows}{gate_rows}</tbody></table></section>
-<section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong> · schede ripulite da contaminazioni HTML/JS <strong>{health['contentSanitized']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table></section>
+<section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong> · schede ripulite da contaminazioni HTML/JS <strong>{health['contentSanitized']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table><h3>Dettaglio endpoint</h3><table><thead><tr><th>Fonte</th><th>URL configurato</th><th>Esito/trasporto</th><th>HTTP tentativi</th><th>Fallback</th><th>Redirect/destinazione</th><th>Errori trasporto</th></tr></thead><tbody>{endpoint_rows}</tbody></table></section>
 {_html_table('Nuove opportunita', report['added'])}
 {_html_table('Record modificati', report['modified'], modified=True)}
 {_html_table('Opportunità archiviate', report['archived'])}

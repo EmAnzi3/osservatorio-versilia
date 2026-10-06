@@ -70,14 +70,17 @@ def validate_workflow_contract() -> dict[str, Any]:
     reporter_path = ROOT / canonical["liveStatusWorkflow"]
     reporter = reporter_path.read_text(encoding="utf-8")
     assert canonical["liveStatusContext"] in reporter, "Context live status non dichiarato nel reporter"
-    assert '{"deploy", "publish verified Radar"}' in reporter, (
-        "Reporter non verifica entrambi i job che possono pubblicare Pages"
-    )
     assert '"Radar Opportunità · refresh giornaliero"' in reporter, (
         "Reporter live non osserva la pubblicazione automatica del Radar"
     )
-    assert 'deploy.get("conclusion")' in reporter, "Reporter non legge la conclusione del deploy"
-    assert 'published = conclusion == "success"' in reporter, "Reporter non vincola il live status al successo del deploy"
+    assert "python scripts/pages_live_status.py" in reporter
+    status_script = (ROOT / "scripts/pages_live_status.py").read_text(encoding="utf-8")
+    assert '{"deploy", "publish verified Radar"}' in status_script
+    for context in (canonical["liveStatusContext"], canonical["publicRoutesContext"], canonical["radarRefreshContext"]):
+        assert context in status_script, f"Context non implementato: {context}"
+    assert any(check["script"] == "scripts/test_pages_live_status.py" for check in canonical["quickChecks"]), (
+        "Matrice dei context indipendenti assente dal Quick canonico"
+    )
 
     by_category = Counter(entry["category"] for entry in entries if entry["status"] == "active")
     return {"workflows": len(actual), "categories": dict(sorted(by_category.items()))}

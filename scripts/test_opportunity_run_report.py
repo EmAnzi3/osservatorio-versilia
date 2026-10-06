@@ -86,7 +86,7 @@ def main() -> int:
         current,
         phase_statuses={"scan": "success", "validation": "success", "build": "success"},
     )
-    assert report["overallStatus"] == "pass"
+    assert report["overallStatus"] == "pass_with_warnings"
     assert report["counts"] == {
         "previous": 4,
         "current": 3,
@@ -148,6 +148,27 @@ def main() -> int:
     assert ambiguous["counts"]["added"] == 2
     assert ambiguous["counts"]["removed"] == 2
     assert ambiguous["counts"]["modified"] == 0
+
+    healthy = _snapshot([])
+    healthy["transportAudit"]["summary"]["endpointFailures"] = 0
+    phases = {"scan": "success", "validation": "success", "build": "success"}
+    assert build_report(healthy, healthy, phase_statuses=phases)["overallStatus"] == "pass"
+    healthy["transportAudit"]["sources"] = [{
+        "sourceId": "anci-nazionale", "runtimeStatus": "error", "effectiveStatus": "grace",
+        "graceUsed": True, "consecutiveFailures": 1, "failureClasses": ["timeout_client"],
+        "endpoints": [{"url": "https://example.test/national", "role": "listing",
+            "status": "error", "transport": "failed", "httpAttempts": 2,
+            "fallbackUsed": True, "proxyUsed": True, "browserFailureClass": "timeout_client",
+            "readerFailureClass": "http_403_waf", "errors": ["HTTP timeout", "Chromium timeout", "Reader 403"],
+            "resolvedUrl": "https://example.test/redirect", "redirected": True}],
+    }]
+    diagnostic_report = build_report(healthy, healthy, phase_statuses=phases)
+    assert diagnostic_report["overallStatus"] == "pass_with_warnings"
+    endpoint = diagnostic_report["sourceHealth"]["attention"][0]["endpoints"][0]
+    assert endpoint["role"] == "listing" and endpoint["httpAttempts"] == 2
+    for rendered in (render_markdown(diagnostic_report), render_html(diagnostic_report)):
+        for token in ("Dettaglio endpoint", "Chromium timeout", "Reader 403", "https://example.test/redirect", "listing"):
+            assert token in rendered, token
 
     print("Rapporto run Radar: PASS")
     return 0

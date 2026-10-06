@@ -2,7 +2,7 @@
 
 ## Stato corrente — 6 ottobre 2026
 
-- Main pubblicato: `93647a10780f6afd683833a1111758a5a5d57b63` (#346); deploy `37443730287` e status `ov-pages-live` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
+- Baseline pubblicata verificata per questo lotto: `3545f1c88ce39bf90528cd3b27a2f161cf82887b` (#348); deploy `37490896493` e status `ov-pages-live` SUCCESS. #349 e #347 seguono i gate del loro albero nella rispettiva PR; non dedurre la pubblicazione da un verde PR. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
 - Workstream attivo: **A6**, step **A6.4 e letture pilota A6.5**, issue **#330**, branch `feat/a6-commuting-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
@@ -29,3 +29,11 @@ Il proprietario ha autorizzato il 6 ottobre integrazione e pubblicazione di #348
 Questo lotto estende la #349 in un commit distinto e amplia il generatore A6.5 esistente a cinque percorsi × sette comuni: invecchiamento/assistenza, lavoro/infanzia, turismo/servizi, pendolarismo e organizzazione scolastica. Due riepiloghi di gruppo usano sei rapporti da componenti sommate; periodi, universi, scopi geografici e associazioni ecologiche espliciti. Null e coperture incomplete non diventano zero: le letture comunali valide restano disponibili e i riepiloghi incompleti vengono rifiutati. Nessuna politica, effetto, graduatoria o fabbisogno di trasporto dedotto automaticamente.
 
 Metodo `docs/A6_TERRITORIAL_READINGS.md`; report riproducibile in `reports/a6-territorial-readings.md`. Catalogo, adapter v11, 108/225 effettivi, 75/181 sorgente e suite di 148 domande invariati. Nessuna acquisizione o modifica a dati, pagine, asset, renderer, golden o workflow. Gate locali/CI obbligatori prima del merge; evidenze del singolo head nella PR. Revisione metodologica delle letture e delle domande aperte ancora necessaria: A6.4 parziale, A6.5–A6.6 aperte, A7 non avviata.
+
+## Gate operativo Radar prima di riprendere A6
+
+Il proprietario ha autorizzato il 6 ottobre merge e pubblicazione #348/#349, chiarimento del Full locale #347 e correzione dell'automazione Radar/live. Il follow-up #347 riunisce nello stesso lotto le rotte ufficiali, i ruoli listing/supplementary (mirror, FAQ, singoli avvisi), la riconciliazione della memoria con i ruoli correnti e il checksum CSS Leaflet corretto. Metodo e URL residui `docs/RADAR_DISCOVERY_RECOVERY.md`.
+
+Automazione nello stesso candidato: budget finiti scan 30/build 20/job 60 minuti, concorrenza PR separata dalla produzione, context `ov-radar-refresh`, `ov-public-routes` e `ov-pages-live` indipendenti. Un deploy saltato non cancella l'evidenza precedente; HTTP/errori conservati nei log con massimo tre verifiche route. Diagnosi `docs/RADAR_RUNTIME_LIVE_STATUS.md`. Gate locali isolati e CI sul nuovo albero nella PR; dati, contenuti, layout e golden conservati, nessuna soglia ridotta. Unica modifica HTML: il checksum del CSS Leaflet approvato nella mappa Percorsi, senza ridisegno.
+
+Dopo merge/deploy: un solo refresh produttivo completo; verificare persistenza, pubblicazione e context. Riferire al proprietario prima di riprendere A6. Le 35 letture restano soggette a revisione metodologica; prossimo backlog ambientale derivato, senza acquisizioni onerose. A7 non avviata.

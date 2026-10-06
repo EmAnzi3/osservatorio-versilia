@@ -381,6 +381,7 @@ def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
             "publisher": "ANCI",
             "territory": "Italia",
             "urls": [national_feed, digital_feed, regional_mirror],
+            "endpointRoles": {regional_mirror: "supplementary"},
             "endpointRequiredTerms": {
                 regional_mirror: ["Notizie da ANCI Nazionale"],
             },
@@ -428,7 +429,9 @@ def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
         discovery.fetch_with_diagnostics = original_fetch
 
     state = states[0]
-    assert state["status"] == "degraded", state
+    assert state["status"] == "error", state
+    assert state["coverageEndpointOk"] == 0, state
+    assert state["supplementaryEndpointOk"] == 1, state
     assert state["endpointOk"] == 1, state
     assert state["endpointCount"] == 3, state
     assert state["failureClasses"] == ["timeout_client"], state
@@ -513,7 +516,89 @@ def _test_transport_audit_exposes_endpoint_health() -> None:
     assert audit["summary"]["configuredSources"] > 0, audit["summary"]
 
 
+def _test_chromium_rejects_error_document() -> None:
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from threading import Thread
+    class ErrorPage(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(503)
+            self.end_headers()
+            self.wfile.write(b"<html><body>Service unavailable</body></html>")
+        def log_message(self, *args):
+            pass
+    server = ThreadingHTTPServer(("127.0.0.1", 0), ErrorPage)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        try:
+            discovery._fetch_playwright_html(f"http://127.0.0.1:{server.server_port}/", timeout_ms=5000)
+        except urllib.error.HTTPError as exc:
+            assert exc.code == 503, exc
+        else:
+            raise AssertionError("Chromium treated an HTTP 503 error document as source coverage")
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def _test_annual_archive_follows_current_year() -> None:
+    from datetime import date
+    original_date = daily_h4.date
+    class FutureDate:
+        @staticmethod
+        def today():
+            return date(2027, 1, 1)
+    try:
+        daily_h4.date = FutureDate
+        config, _ = daily_h4._compose_runtime_hardened()
+        source = next(row for row in config["discoverySources"] if row["id"] == "pcm-stato-citta")
+        assert "https://www.statocitta.it/home/notizie-e-comunicati/2027/" in source["urls"]
+        assert not any("/2026/" in url for url in source["urls"])
+    finally:
+        daily_h4.date = original_date
+
+
+def _test_configured_detail_pages_cannot_attest_discovery() -> None:
+    config, _ = daily_h4._compose_runtime_hardened()
+    for key, listing_count in (("gse", 1), ("pcm-sport", 2), ("cinea-life", 1)):
+        source = next(row for row in config["discoverySources"] if row["id"] == key)
+        listings = [url for url in source["urls"] if discovery.endpoint_role(source, url) == "listing"]
+        supplements = [url for url in source["urls"] if discovery.endpoint_role(source, url) == "supplementary"]
+        assert len(listings) == listing_count and supplements, (key, listings, supplements)
+        audit = [{"role": "listing", "status": "error"} for _ in listings]
+        audit += [{"role": "supplementary", "status": "ok"} for _ in supplements]
+        assert discovery.coverage_status(audit) == "error", (key, audit)
+        audit[0]["status"] = "ok"
+        assert discovery.coverage_status(audit) in {"ok", "degraded"}
+
+
+def _test_listing_coverage_status() -> None:
+    secondary = {"role": "supplementary", "status": "ok", "proxyUsed": False}
+    primary = {"role": "listing", "status": "ok", "proxyUsed": False}
+    assert discovery.coverage_status([secondary]) == "error"
+    assert discovery.coverage_status([secondary, {**primary, "status": "error"}]) == "error"
+    assert discovery.coverage_status([primary, {**secondary, "status": "error"}]) == "ok"
+    assert discovery.coverage_status([primary, {**primary, "status": "error"}]) == "degraded"
+    assert discovery.coverage_status([{**primary, "proxyUsed": True}]) == "degraded"
+    import opportunity_transport_smoke as smoke
+    original = discovery.fetch_with_diagnostics
+    try:
+        discovery.fetch_with_diagnostics = lambda url, **kwargs: ("<html>unrelated content</html>",
+            {"status": "ok", "transport": "http_browser", "httpAttempts": 1})
+        result = smoke._probe_source("signature", {"urls": ["https://example.test/"],
+            "endpointRequiredTerms": {"https://example.test/": ["national news"]}})
+        assert result["status"] == "error", result
+        assert result["failureClasses"] == ["content_signature_missing"], result
+    finally:
+        discovery.fetch_with_diagnostics = original
+
+
 def main() -> int:
+    _test_annual_archive_follows_current_year()
+    _test_chromium_rejects_error_document()
+    _test_listing_coverage_status()
+    _test_configured_detail_pages_cannot_attest_discovery()
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
     _test_timeout_uses_reader_after_chromium_failure()

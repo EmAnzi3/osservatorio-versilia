@@ -42,6 +42,13 @@ def main() -> int:
     assert "Radar Opportunità · refresh giornaliero" in live_status
     assert "publish verified Radar" in live_status
 
+    assert "timeout-minutes: 60" in daily
+    assert "github.event.pull_request.number || 'production'" in daily
+    assert "id: live_scan\n        timeout-minutes: 30" in daily
+    assert "id: validate_build\n        timeout-minutes: 20" in daily
+    from test_pages_live_status import main as test_statuses
+    test_statuses()
+
     print("Workflow automatico Radar: scan -> gate -> deploy -> notifica PASS")
     return 0
 
