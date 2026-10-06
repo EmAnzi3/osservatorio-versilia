@@ -18,7 +18,8 @@
   "sourceOverrides": {
     "anci-nazionale": {
       "urls": [
-        "https://www.anci.it/feed/",
+        "https://www.anci.it/category/generico/news/",
+        "https://www.anci.it/category/generico/news/feed/",
         "https://sistemacomunidigitali.anci.it/feed/",
         "https://www.anci.piemonte.it/"
       ],
@@ -27,8 +28,8 @@
         "https://www.anci.piemonte.it/": ["Notizie da ANCI Nazionale"]
       },
       "fetchTimeoutSeconds": 18,
-      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo"],
-      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni", "città"]
+      "includeTerms": ["band", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo", "riparto", "stanziament"],
+      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni", "città", "edilizia scolastica"]
     },
     "gse": {
       "endpointRoles": {
@@ -107,7 +108,7 @@
       "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId."
     },
     "anci-nazionale": {
-      "note": "Copertura ANCI nazionale misurata sui feed nazionali. Il mirror editoriale ANCI Piemonte è solo supplementare, validato dalla firma 'Notizie da ANCI Nazionale'; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
+      "note": "Copertura ANCI nazionale misurata sull’archivio News e sul suo feed dichiarato nel sorgente ufficiale. Le anteprime di edilizia scolastica entrano solo nella coda interna, senza presumere ammissibilità comunale. Il mirror editoriale ANCI Piemonte è solo supplementare, validato dalla firma 'Notizie da ANCI Nazionale'; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
     },
     "mim-enti-locali": {
       "note": "Presidio MIM su feed ufficiale FUTURA/PNRR e comunicati ministeriali; il collector filtra edilizia e servizi scolastici con ruolo di enti locali e richiede verifica primaria prima della pubblicazione."

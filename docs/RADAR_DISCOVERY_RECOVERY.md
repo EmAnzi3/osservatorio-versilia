@@ -49,3 +49,29 @@ legacy GSE/ANCI, trasporto Chromium con HTTP 503, archivio annuale, salute e rep
 Prima del merge: Quick/Full locali e CI sul candidato riallineato a main.
 Il precedente Full locale Demografia 60/100 non viene dichiarato verde dalla CI:
 la causa deve essere chiarita dal controllo locale isolato del candidato.
+
+## ANCI News: evidenza del proprietario, 6 ottobre 2026
+
+Il sorgente e la schermata forniti dal proprietario confermano la rotta canonica
+`https://www.anci.it/category/generico/news/`, dieci articoli nella prima pagina,
+paginazione e feed dichiarato `/category/generico/news/feed/`.
+Il parser legge titoli e permalink senza richiedere rendering JavaScript.
+Questo prova la struttura della fonte, non la raggiungibilità dal runner.
+I tentativi da questo ambiente restituiscono 502 su HTML/feed; Chromium 502
+sulla lista; reader 403. Non attribuire questi errori a un disservizio generale.
+
+Il replay del sorgente con le regole precedenti conserva due segnalazioni e
+scarta due casi pertinenti: la proroga Sport/Cultura Missione Comune (`bando`
+non intercetta `bandi`) e l'avviso MIM otto per mille edilizia scolastica
+(l'anteprima non nomina i beneficiari). L'override ANCI usa `band`, intercetta
+riparti/stanziamenti con destinatari comunali e ammette le anteprime di edilizia
+scolastica alla sola coda `internal_review`. Nessuna ammissibilità, scadenza o
+pubblicazione automatica è dedotta da questi segnali. Il test ridotto verifica
+proroga, avviso MIM, riparto e l'esclusione di una notizia senza finanziamenti.
+
+ANCI Piemonte resta supplementare. MIM resta non recuperato come trasporto:
+`https://pn20212027.istruzione.it/avvisi/` è un elenco ufficiale pertinente ma
+restituisce 502 qui. Concorsando `/blog/concorsi-mim/` riguarda assunzioni,
+non opportunità di finanziamento per enti locali, e non viene configurato.
+Il sorgente allegato non viene incorporato nella scansione live né usato per
+aggiornare la memoria di salute della fonte.

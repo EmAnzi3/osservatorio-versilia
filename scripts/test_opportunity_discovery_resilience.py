@@ -448,6 +448,35 @@ def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
     assert all(row["readerFailureClass"] == "http_403_waf" for row in failed), failed
 
 
+def _test_anci_news_short_previews_preserve_discovery() -> None:
+    # Reduced cards from the owner-provided ANCI News HTML (6 October 2026).
+    # Short previews omit municipal beneficiaries: discovery must not infer
+    # eligibility, but must retain the school-building notice for review.
+    config, _ = daily_h4._compose_runtime_hardened()
+    source = next(row for row in config["discoverySources"] if row["id"] == "anci-nazionale")
+    listing = "https://www.anci.it/category/generico/news/"
+    assert listing in source["urls"]
+    assert listing + "feed/" in source["urls"]
+    assert discovery.endpoint_role(source, listing) == "listing"
+    payload = """
+    <h4><a href="/proroga-sport-cultura/">Prorogati al 5 dicembre i bandi Sport Missione Comune e Cultura Missione Comune</a></h4>
+    <p>Possono partecipare Comuni e Unioni di Comuni per richiedere mutui.</p>
+    <h4><a href="/edilizia-mim/">Edilizia scolastica, avviso MIM su risorse otto per mille per interventi urgenti e indifferibili</a></h4>
+    <p>Da oggi 5 ottobre al via alle candidature sulla piattaforma informatica dedicata.</p>
+    <h4><a href="/asacom/">Asacom 2026, intesa sul decreto riparto per Comuni e Regioni</a></h4>
+    <p>Il decreto prevede lo stanziamento di 160 milioni a favore dei Comuni.</p>
+    <h4><a href="/protocollo/">Firma del protocollo di intesa tra Anci e Comitato Paralimpico</a></h4>
+    <p>Interverranno il presidente e i sindaci.</p>
+    """
+    queue = daily_h4.radar_module.discovery_candidates(source, payload, listing)
+    assert {row["url"] for row in queue} == {
+        "https://www.anci.it/proroga-sport-cultura/",
+        "https://www.anci.it/edilizia-mim/",
+        "https://www.anci.it/asacom/",
+    }, queue
+    assert all(row["discovery_only"] and row["status"] == "internal_review" for row in queue)
+
+
 def _test_runtime_compose_replaces_stale_sources() -> None:
     config, _ = daily_h4._compose_runtime_hardened()
     primary_ids = {str(source.get("id") or "") for source in config.get("sources") or []}
@@ -611,6 +640,7 @@ def main() -> int:
     _test_probe_uses_resolved_url_for_relative_links()
     _test_endpoint_content_signature_rejects_unrelated_200_page()
     _test_anci_independent_mirror_survives_national_endpoint_failures()
+    _test_anci_news_short_previews_preserve_discovery()
     _test_runtime_compose_replaces_stale_sources()
     _test_transport_audit_exposes_endpoint_health()
     print("Discovery resiliente Radar: PASS")
