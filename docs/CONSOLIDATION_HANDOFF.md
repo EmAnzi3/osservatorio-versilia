@@ -24,7 +24,7 @@
 
 ## Prossima azione
 
-Main resta #346. #348 (manutenzione delle attese browser) e #349 (adapter pendolarismo v11) sono PR separate, non ancora mergiate al recupero dello stato. Quick→Full CI e A3 della #349 verdi sul head `ce471c75bc2a7e4fa41c4a67be967230e4be3b7a`; gli esiti locali del lotto sono riportati nella PR senza dedurli dalla CI. Merge soltanto su istruzione del proprietario.
+Il proprietario ha autorizzato il 6 ottobre integrazione e pubblicazione di #348/#349, chiarimento del gate locale #347 e correzione Radar/live prima di riprendere A6. #348 mergiata su main `3545f1c88ce39bf90528cd3b27a2f161cf82887b`; #349 riallineata conservando helper browser e adapter/letture. Gate del nuovo albero registrati nella PR. Il precedente head #349 `f29d3398` aveva Full locale e CI verdi. Non riprendere lo sviluppo A6 prima del resoconto al proprietario.
 
 Questo lotto estende la #349 in un commit distinto e amplia il generatore A6.5 esistente a cinque percorsi × sette comuni: invecchiamento/assistenza, lavoro/infanzia, turismo/servizi, pendolarismo e organizzazione scolastica. Due riepiloghi di gruppo usano sei rapporti da componenti sommate; periodi, universi, scopi geografici e associazioni ecologiche espliciti. Null e coperture incomplete non diventano zero: le letture comunali valide restano disponibili e i riepiloghi incompleti vengono rifiutati. Nessuna politica, effetto, graduatoria o fabbisogno di trasporto dedotto automaticamente.
 
