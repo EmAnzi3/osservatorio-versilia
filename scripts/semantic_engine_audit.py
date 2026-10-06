@@ -131,6 +131,12 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('commuting_entry_numerator','inboundCommuters','inboundCommutersRate','shared_numerator','Habitual work commuters 2021 are the numerator; residents 2026 are a distinct denominator date'),
+        ('commuting_exit_numerator','outboundCommuters','outboundCommutersRate','shared_numerator','Habitual work commuters 2021 are the numerator; municipal gross totals include moves within the selected group'),
+        ('commuting_net_numerator','commuterBalance','commuterBalanceRate','shared_numerator','Net work balance 2021 is the numerator, with censused residents January 1 2021'),
+        ('commuting_gross_context','inboundCommutersRate','outboundCommutersRate','context','Shared 2026 denominator and 2021 work flow universe; size and mechanical relationships are not independent causal effects'),
+        ('commuting_hybrid_context','inboundCommutersRate','commuterBalanceRate','context','2026 and 2021 denominators are distinct despite the common 2021 numerator period'),
+        ('commuting_retention_employment','selfContainment','employmentRate','context','Work retention 2021 and employment 2024 have different reference periods and universes'),
         ('demography_natural_transfers','naturalDemographicDynamics','totalResidentialMobility','context','Aligned calendar 2024 demographic events; distinct causes and statistical adjustments, no complete population accounting'),
         ('demography_citizenship_transfers','foreignResidents','foreignResidentialMobility','context','Citizenship stock 2025 and foreign transfers 2024 are distinct populations and periods'),
         ('school_fulltime_canteen','primaryFullTimeShare','schoolBuildingFacilities','context','Native 2024/25 pupils and building canteen declarations; no individual access, capacity or causal effect'),

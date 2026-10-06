@@ -62,6 +62,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     from test_semantic_distinct_finance_adapters import regressions as distinct_finance_regressions
     from test_semantic_demography_school_adapters import regressions as demography_school_regressions
     demography_school_regressions(catalog_path)
+    from test_semantic_commuting_adapters import regressions as commuting_regressions
+    commuting_regressions(catalog_path)
     distinct_finance_regressions(catalog_path)
     from test_semantic_finance_adapters import regressions as finance_regressions
     finance_regressions(catalog_path)
