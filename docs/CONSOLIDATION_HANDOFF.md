@@ -1,6 +1,6 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente — 5 ottobre 2026
+## Stato corrente — 6 ottobre 2026
 
 - Main pubblicato: `29f11f28158f4b172a62c1e83f36af026978245a` (#342); deploy `37361574176` e status `ov-pages-live` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti verificati dal Quick; conteggi sempre derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
@@ -23,5 +23,7 @@
 - Pulizia conclusa: 11 PR superate chiuse e 39 issue storiche archiviate con motivazione; cronologia e branch conservati. Registro #11 e attività correnti conservati.
 
 ## Prossima azione
+
+#343 aperta: verificare le correzioni ai due falsi negativi del browser locale (puntatore hover ereditato fra route; misura sticky durante smooth scroll). Correzioni solo nei test, asserzioni/geometria/golden invariati, nessun cambiamento pubblico. Quick CI precedente PASS; Full/A3 cancellati senza runner/step anche dopo un retry mirato, annotazioni GitHub: runner hosted non acquisito e Internal server error. Incidente Actions ufficiale del 5 ottobre risolto alle 22:49 UTC (https://stspg.io/c11dc9nb1zdq), compatibile con i job bloccati. Controlli mirati header desktop/mobile e static regression PASS. Quick locale del nuovo codice PASS; completare Full locale e nuovo run canonico prima di dichiarare pronta al merge, senza rilanci ripetuti né modifiche al workflow. Non dichiarare verde una cancellazione. Merge solo su istruzione specifica.
 
 Concludere il lotto finanza v8: 25 carrier aggiuntivi, 81 con adapter/144 senza su 225; 84 domande (52 calcoli/32 rifiuti), mappa e baseline separata. Metodo `docs/A6_FINANCE_ADAPTERS.md`: Rendiconto e SIOPE distinti, residenti inizio esercizio/anno successivo, 19 rapporti con componenti verificati, PDI e cinque estrazioni normalizzate senza ponderazioni implicite. Benchmark regionali non certificati dal lotto. Nessuna acquisizione/dato/UI/asset/golden/workflow cambiato. Gate mirati, Quick/Full locali e CI; merge solo su istruzione specifica. #342 pubblicata: deploy e live SUCCESS, CI Quick/Full e A3 SUCCESS; Full locale non GREEN (A4/header/sticky, riprodotti sulla #341, timeout font tablet passato al controllo mirato). Non incorporarli nel backend. Residui debito/opere/sicurezza/fiscalità separati; poi demografia/MIM. A6.4 parziale, A6.5–A6.6 aperte, A7 non avviata.

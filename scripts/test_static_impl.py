@@ -121,8 +121,10 @@ def browser_assertions() -> None:
         assert page.locator(".chart-y-label, .ux-history-axis-label").count() >= 3, "Valori dell'ordinata assenti"
         broken = page.evaluate("[...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src)")
         assert not broken, f"Immagini non caricate: {broken}"
-        page.evaluate("window.scrollTo(0, 1500)")
-        page.wait_for_timeout(100)
+        # The public page uses smooth scrolling: 100 ms measures an intermediate
+        # position. Set the test position explicitly, keeping the sticky bounds.
+        page.evaluate("window.scrollTo({top: 1500, behavior: 'instant'})")
+        page.wait_for_function("Math.abs(window.scrollY - 1500) <= 1")
         header_box = page.locator("#site-header-mount").bounding_box()
         context_box = page.locator(".town-context-nav").bounding_box()
         theme_box = page.locator(".town-context-nav .town-theme-row").bounding_box()
