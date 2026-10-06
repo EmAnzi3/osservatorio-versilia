@@ -131,6 +131,9 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('environment_residual_formula','wastePerResident','residualWaste','derived_product','Residual kg per resident is total kg per resident × (1 − separate collection share / 100); rounded published components, no independent causal evidence'),
+        ('environment_cost_waste','wasteServiceCost','wastePerResident','context','2024 service cost and waste quantity per resident; distinct accounting scopes and potentially shared normalization, not TARI or efficiency'),
+        ('environment_water_waste','waterNetworkLosses','wastePerResident','context','Water census 2018 and waste reporting 2024 are distinct periods and universes; no current environmental composite'),
         ('commuting_entry_numerator','inboundCommuters','inboundCommutersRate','shared_numerator','Habitual work commuters 2021 are the numerator; residents 2026 are a distinct denominator date'),
         ('commuting_exit_numerator','outboundCommuters','outboundCommutersRate','shared_numerator','Habitual work commuters 2021 are the numerator; municipal gross totals include moves within the selected group'),
         ('commuting_net_numerator','commuterBalance','commuterBalanceRate','shared_numerator','Net work balance 2021 is the numerator, with censused residents January 1 2021'),
@@ -184,7 +187,12 @@ def connections(engine, coverage):
                 import math
                 assert set(a)==set(b)
                 factor=1_000_000 if identity=='frame_turnover_numerator' else 1
-                if identity=='finance_cash_balance':
+                if identity=='environment_residual_formula':
+                    share=engine.query({'operation':'compare','selectors':[{'metric':'recycling'}]})
+                    results.append(share);p={o['geography']:o for o in share['observations']}
+                    if share['status']=='computed' and set(a)==set(p) and all(a[c]['period']==b[c]['period']==p[c]['period'] and math.isclose(a[c]['value']*(1-p[c]['value']/100),b[c]['value'],rel_tol=0,abs_tol=1e-8) for c in a):verification='components_reconciled'
+                    else:reasons=['formula_components_or_periods_not_reconciled']
+                elif identity=='finance_cash_balance':
                     payments=engine.query({'operation':'compare','selectors':[{'metric':'siopePayments'}]})
                     results.append(payments);p={o['geography']:o for o in payments['observations']}
                     if payments['status']=='computed' and set(a)==set(p) and all(a[c]['period']==b[c]['period']==p[c]['period'] and a[c]['denominatorPeriod']==b[c]['denominatorPeriod']==p[c]['denominatorPeriod'] and math.isclose(a[c]['value']-p[c]['value'],b[c]['value'],rel_tol=0,abs_tol=1e-7) for c in a):verification='components_reconciled'

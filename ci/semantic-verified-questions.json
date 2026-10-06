@@ -4390,6 +4390,520 @@
         ]
       },
       "reference": "Ranghi indipendenti (ordine dei codici): autocontenimento [6,4,1,5,3,2,7], saldo [4,7,1,6,2,3,5]; somma differenze al quadrato 20; Spearman = 9/14. Componenti condivise, nessuna spiegazione causale."
+    },
+    {
+      "id": "environment_water_current",
+      "question": "Quanta acqua immessa non risulta erogata a Massarosa nel censimento 2018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              112900,
+              2689
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "water_census_snapshot_not_current_network_condition"
+        ]
+      },
+      "reference": "Istat 2018 Massarosa: (2689−1560)/2689×100"
+    },
+    {
+      "id": "environment_water_pooled",
+      "question": "Qual è la quota di perdite dei sette comuni nel 2018, ponderata sui volumi immessi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              453250,
+              11251
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Somme indipendenti: immessa 22502, erogata 13437; (22502−13437)/22502×100"
+    },
+    {
+      "id": "environment_water_change",
+      "question": "Di quanti punti percentuali cambia la perdita idrica di Massarosa fra 2012 e 2018?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2012",
+              "2018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              71873300,
+              6348729
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Coppie Istat Massarosa 2012 2361/1637, 2018 2689/1560; differenza dei rapporti"
+    },
+    {
+      "id": "environment_water_trend",
+      "question": "Quale pendenza descrittiva emerge dai tre censimenti idrici di Massarosa?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/slope",
+            "fraction": [
+              35936650,
+              19046187
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "OLS su asse 2012,2015,2018 equispaziato: (valore 2018−valore 2012)/6; non previsione"
+    },
+    {
+      "id": "environment_water_gap",
+      "question": "Quanto differisce Massarosa dal dato Toscana sulle perdite idriche nel 2018?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -10946,
+              13445
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Quota comunale esatta meno benchmark Istat Toscana pubblicato a un decimale 42,8%"
+    },
+    {
+      "id": "environment_water_2026_refused",
+      "question": "Quali sono le perdite idriche di Massarosa nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "environment_period_not_available"
+        ]
+      },
+      "reference": "Volumi congelati soltanto 2012,2015,2018; nessuna interpolazione o extrapolazione"
+    },
+    {
+      "id": "environment_water_interpolation_refused",
+      "question": "Quali erano le perdite idriche nel 2016?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2016"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "environment_period_not_available"
+        ]
+      },
+      "reference": "Nessun periodo 2016 congelato"
+    },
+    {
+      "id": "environment_waste_current",
+      "question": "Quanti kg di rifiuti per residente risultano a Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "wastePerResident",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              603,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": []
+      },
+      "reference": "Carrier ISPRA pubblicato: 603 kg per residente; quantità grezze non congelate"
+    },
+    {
+      "id": "environment_rd_current",
+      "question": "Qual è la raccolta differenziata di Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "recycling",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1687,
+              20
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "separate_collection_not_actual_material_recycling"
+        ]
+      },
+      "reference": "Carrier ISPRA pubblicato: 84,35%; non misura il riciclo effettivo"
+    },
+    {
+      "id": "environment_residual_current",
+      "question": "Quanto rifiuto residuo per residente viene elaborato per Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "residualWaste",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              188739,
+              2000
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "residual_is_derived_from_rounded_values_not_measured_disposal_or_actual_recycling"
+        ]
+      },
+      "reference": "603×(1−84,35/100)=94,3695; componenti arrotondate, non misura di smaltimento"
+    },
+    {
+      "id": "environment_cost_current",
+      "question": "Qual è il costo del servizio rifiuti per abitante di Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "wasteServiceCost",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              6889,
+              25
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "service_cost_not_household_tax_or_service_quality"
+        ]
+      },
+      "reference": "Snapshot ISPRA CTOTab: 275,56 €/abitante, riga comunale; non bolletta TARI"
+    },
+    {
+      "id": "environment_cost_gap",
+      "question": "Quanto differisce il CTOTab Massarosa dal riferimento Toscana 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "wasteServiceCost",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1109,
+              50
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "cost_benchmark_is_reported_sample_not_full_territory_cost"
+        ]
+      },
+      "reference": "275,56−297,74 = −22,18 €/abitante; benchmark del campione ISPRA"
+    },
+    {
+      "id": "environment_residual_history",
+      "question": "Quale ultimo valore della serie di rifiuto residuo 2010–2024 è pubblicato per Massarosa?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "residualWaste",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/14/value",
+            "fraction": [
+              188739,
+              2000
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "waste_historical_series_does_not_attest_methodological_continuity"
+        ]
+      },
+      "reference": "2010–2024 pubblicati; ultimo anno 2024: 603×(1−84,35/100)"
+    },
+    {
+      "id": "environment_waste_trend_refused",
+      "question": "Il motore può certificare il trend omogeneo dei rifiuti dal 2010 al 2024?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "wastePerResident",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "environment_waste_historical_comparability_not_attested"
+        ]
+      },
+      "reference": "La serie pubblicata non attesta da sola continuità metodologica; nessun trend omogeneo dedotto"
+    },
+    {
+      "id": "environment_rd_weighting_refused",
+      "question": "Qual è la raccolta differenziata territoriale ponderata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "recycling"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Mancano le quantità comunali RD/RU, la popolazione non è il peso di questo rapporto"
+    },
+    {
+      "id": "environment_cost_weighting_refused",
+      "question": "Qual è il costo territoriale ponderato del servizio rifiuti?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "wasteServiceCost"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Costi totali e denominatori comunali grezzi non congelati"
+    },
+    {
+      "id": "environment_waste_benchmark_old_refused",
+      "question": "Come si confronta Massarosa con Toscana sui rifiuti nel 2020?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "wastePerResident",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "environment_benchmark_period_not_frozen"
+        ]
+      },
+      "reference": "Benchmark quantità provinciali congelato soltanto nel 2024"
+    },
+    {
+      "id": "environment_cost_history_refused",
+      "question": "Qual era il costo rifiuti nel 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "wasteServiceCost",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "environment_period_not_available"
+        ]
+      },
+      "reference": "CTOTab comunale congelato soltanto 2024"
     }
   ]
 }

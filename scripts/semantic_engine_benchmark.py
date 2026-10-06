@@ -30,7 +30,7 @@ def benchmark(catalog_path, *, rounds=30, initialization_rounds=5):
     make=lambda:QueryEngine(catalog_path,layer='effective')
     engine=make();suite=run_suite(engine)
     if suite['status']!='PASS':raise ValueError('correctness_suite_failed_before_benchmark')
-    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap','business_frame_industry_weighted','business_endpoint_refused','census_young_employment','census_diploma_trend_refused','finance_cash_weighted','finance_benchmark_refused','distinct_debt_weighted','distinct_debt_osl_refused','demography_dependency','school_class_size','demography_aligned_events','school_calendar_year_refused','commuting_pooled_selfContainment','commuting_pooled_commuterBalanceRate','commuting_hybrid_pair_refused']
+    ids=['population_current','female_weighted','ars_gap','aligned_association','mismatched_association','ars_hypertension_age','ars_mortality_window_gap','business_frame_industry_weighted','business_endpoint_refused','census_young_employment','census_diploma_trend_refused','finance_cash_weighted','finance_benchmark_refused','distinct_debt_weighted','distinct_debt_osl_refused','demography_dependency','school_class_size','demography_aligned_events','school_calendar_year_refused','commuting_pooled_selfContainment','commuting_pooled_commuterBalanceRate','commuting_hybrid_pair_refused','environment_water_pooled','environment_rd_weighting_refused','environment_cost_gap']
     cases={r['id']:r for r in suite['results']};construction=[]
     for _ in range(initialization_rounds):
         start=time.perf_counter_ns();sample=make();construction.append((time.perf_counter_ns()-start)/1e6)
