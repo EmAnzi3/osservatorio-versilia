@@ -173,7 +173,7 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
         # Old snapshots counted supplementary reachability as national coverage.
         # Do not carry that false success into the new grace window.
         source = scoped_sources.get(source_id)
-        if source and "coverageEndpointOk" not in row and runtime in {"ok", "degraded"}:
+        if source and runtime in {"ok", "degraded"}:
             listing_success = any(endpoint.get("status") == "ok" and
                 h4.discovery.endpoint_role(source, str(endpoint.get("url") or "")) == "listing"
                 for endpoint in row.get("endpoints") or [])

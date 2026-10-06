@@ -225,6 +225,8 @@ Nota A6.4 — v9: lotto carrier distinti debito, opere monitorate, Missione 03 e
 
 Nota A6.4 — v10 dopo #344 pubblicata: 16 adapter demografia e MIM già acquisiti; 101/225 effettivi, 68/181 sorgente, 130 domande (81 calcoli/49 rifiuti). Periodi nativi, cittadinanza/eventi, denominatori e risposte non definite espliciti. Metodo `docs/A6_DEMOGRAPHY_SCHOOL_ADAPTERS.md`; audit, collegamenti e baseline separata. Nessuna nuova acquisizione o modifica dati/UI/golden/workflow. A6.4 resta parziale, A6.5–A6.6 aperte; gate obbligatori prima del merge.
 
+Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro Istat 2021, 108/225 effettivi e 75/181 sorgente; 148 domande (94 calcoli/54 rifiuti). Componenti, basi dei denominatori 2021/2026, precisione e margini comunali espliciti; nessuna ricostruzione della matrice origine-destinazione, autocontenimento territoriale o mobilità per studio. Metodo `docs/A6_COMMUTING_ADAPTERS.md`; audit, mappa e baseline separata. Dati/UI/golden/workflow preservati. Manutenzione della prontezza browser separata. A6.4–A6.6 aperte; gate obbligatori prima del merge.
+
 ## A7 — “Chiedi alla Versilia”
 
 **Stato:** `NOT_STARTED`
@@ -260,3 +262,5 @@ Un workstream passa a `DONE` soltanto quando:
 3. il risultato è verificabile e non dipende da conteggi copiati manualmente;
 4. l'handoff è aggiornato;
 5. la PR è stata approvata e mergiata esplicitamente dal proprietario.
+
+Nota A6.5 — estensione dopo gli adapter v11 della #349: il generatore esistente produce cinque percorsi × sette comuni e due riepiloghi da componenti sommate. Pendolarismo 2021 e scuola 2024/25 conservano universi e periodi propri; associazione descrittiva ecologica fra sette comuni, rifiuti temporali, ipotesi e proposte non approvate distinti. Copertura adapter e suite generale invariate. Report e metodo `docs/A6_TERRITORIAL_READINGS.md`; nessuna nuova UI o acquisizione. A6.5–A6.6 restano aperte per revisione metodologica; A7 non avviata.

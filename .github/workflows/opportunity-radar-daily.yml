@@ -29,7 +29,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: opportunity-radar-daily
+  group: opportunity-radar-daily-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'production' }}
   # I run produttivi restano seriali e non cancellabili; sulle PR conta solo
   # l'ultimo commit, evitando code di scan live ormai obsoleti.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -37,7 +37,8 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Reserve separate finite budgets for scan and complete build/browser gates.
+    timeout-minutes: 60
     outputs:
       content_changed: ${{ steps.run_report.outputs.content_changed }}
       reference_date: ${{ steps.run_report.outputs.reference_date }}
@@ -146,6 +147,7 @@ jobs:
 
       - name: Scan live sources and build daily snapshot
         id: live_scan
+        timeout-minutes: 30
         continue-on-error: true
         shell: bash
         run: |
@@ -198,6 +200,7 @@ jobs:
 
       - name: Build and validate the public Radar before committing
         id: validate_build
+        timeout-minutes: 20
         if: ${{ steps.live_scan.outcome == 'success' && steps.validate_snapshot.outcome == 'success' }}
         continue-on-error: true
         shell: bash

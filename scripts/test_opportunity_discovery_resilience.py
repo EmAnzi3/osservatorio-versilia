@@ -559,6 +559,20 @@ def _test_annual_archive_follows_current_year() -> None:
         daily_h4.date = original_date
 
 
+def _test_configured_detail_pages_cannot_attest_discovery() -> None:
+    config, _ = daily_h4._compose_runtime_hardened()
+    for key, listing_count in (("gse", 1), ("pcm-sport", 2), ("cinea-life", 1)):
+        source = next(row for row in config["discoverySources"] if row["id"] == key)
+        listings = [url for url in source["urls"] if discovery.endpoint_role(source, url) == "listing"]
+        supplements = [url for url in source["urls"] if discovery.endpoint_role(source, url) == "supplementary"]
+        assert len(listings) == listing_count and supplements, (key, listings, supplements)
+        audit = [{"role": "listing", "status": "error"} for _ in listings]
+        audit += [{"role": "supplementary", "status": "ok"} for _ in supplements]
+        assert discovery.coverage_status(audit) == "error", (key, audit)
+        audit[0]["status"] = "ok"
+        assert discovery.coverage_status(audit) in {"ok", "degraded"}
+
+
 def _test_listing_coverage_status() -> None:
     secondary = {"role": "supplementary", "status": "ok", "proxyUsed": False}
     primary = {"role": "listing", "status": "ok", "proxyUsed": False}
@@ -584,6 +598,7 @@ def main() -> int:
     _test_annual_archive_follows_current_year()
     _test_chromium_rejects_error_document()
     _test_listing_coverage_status()
+    _test_configured_detail_pages_cannot_attest_discovery()
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
     _test_timeout_uses_reader_after_chromium_failure()

@@ -682,8 +682,23 @@ def _test_legacy_supplementary_success_does_not_seed_national_health() -> None:
     assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] == "2026-10-05"
 
 
+def _test_legacy_gse_faq_success_is_not_listing_success() -> None:
+    config, _ = stable.h4._compose_runtime_hardened()
+    source = next(row for row in config["discoverySources"] if row["id"] == "gse")
+    endpoints = [{"url": url, "status": "error" if index == 0 else "ok"}
+                 for index, url in enumerate(source["urls"])]
+    row = {"sourceId": "gse", "runtimeStatus": "degraded", "lastSuccessfulFetch": "2026-10-06", "endpoints": endpoints}
+    snapshot = {"referenceDate": "2026-10-06", "transportAudit": {"sources": [row]}}
+    assert stable._seed_previous_health(snapshot)["gse"]["lastSuccessfulFetch"] is None
+    row["coverageEndpointOk"] = 2  # previous role configuration counted both FAQs
+    assert stable._seed_previous_health(snapshot)["gse"]["lastSuccessfulFetch"] is None
+    endpoints[0]["status"] = "ok"
+    assert stable._seed_previous_health(snapshot)["gse"]["lastSuccessfulFetch"] == "2026-10-06"
+
+
 def main() -> int:
     _test_legacy_supplementary_success_does_not_seed_national_health()
+    _test_legacy_gse_faq_success_is_not_listing_success()
     _test_recent_success_gives_family_grace()
     _test_legacy_error_gets_bootstrap_failure_window()
     _test_expired_grace_blocks_family()
