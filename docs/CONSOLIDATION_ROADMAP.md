@@ -264,3 +264,5 @@ Un workstream passa a `DONE` soltanto quando:
 5. la PR è stata approvata e mergiata esplicitamente dal proprietario.
 
 Nota A6.5 — estensione dopo gli adapter v11 della #349: il generatore esistente produce cinque percorsi × sette comuni e due riepiloghi da componenti sommate. Pendolarismo 2021 e scuola 2024/25 conservano universi e periodi propri; associazione descrittiva ecologica fra sette comuni, rifiuti temporali, ipotesi e proposte non approvate distinti. Copertura adapter e suite generale invariate. Report e metodo `docs/A6_TERRITORIAL_READINGS.md`; nessuna nuova UI o acquisizione. A6.5–A6.6 restano aperte per revisione metodologica; A7 non avviata.
+
+Nota A6.4 — lotto ambientale v12: cinque adapter su carrier congelati, 113/225 effettivi e 80/181 sorgente; suite 166 domande. Rapporti idrici da volumi, rifiuti alla precisione pubblicata, costi CTOTab e benchmark con scopi espliciti. Serie rifiuti consultabili senza autorizzare confronti temporali non attestati. Metodo `docs/A6_ENVIRONMENT_ADAPTERS.md`. Restano 47 indicatori ambientali senza adapter e revisione metodologica A6.5–A6.6; nessuna chiusura di A6 o avvio A7.
