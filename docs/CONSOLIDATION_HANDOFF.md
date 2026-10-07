@@ -1,10 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente — 6 ottobre 2026
+## Stato corrente — 7 ottobre 2026
 
-- Baseline main: `ad583be860a54764924a24b8d912a3f7676eb39b`, merge #347 dopo #348/#349; pubblicazione #347 confermata dal proprietario. Albero `763cc3c3a8b4666687031efd5fcf9cdbb7317a0c`, Full locale isolato verde sul medesimo albero. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti; conteggi sempre derivati.
+- Baseline main: `9d7baa837970a19c723de219b174fa741a7e394e`, merge #353. Quick/Full CI verdi sul candidato; albero `a14442cacfffdfa7fe038e783f615f7d3475f269` identico al Full locale isolato verde. Pubblicazione da verificare sul run main, distinta dal verde PR. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti; conteggi derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.4 e letture pilota A6.5**, issue **#330**, branch `feat/a6-environment-waste-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.4 e letture pilota A6.5**, issue **#330**, branch `feat/a6-agriculture-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: motore deterministico, test e documentazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -26,6 +26,6 @@
 
 Il proprietario ha confermato #347 mergiata/pubblicata e autorizzato la ripresa di A6 il 6 ottobre. Il completamento Radar/live prosegue in un'altra chat: non incorporarlo né usarlo come blocco di A6.
 
-Lotto ambientale v12: cinque adapter per perdite idriche, raccolta differenziata, rifiuti prodotti/residui per residente e costo del servizio. Volumi idrici 2012/2015/2018 verificati; ISPRA 2024 riconciliato agli snapshot congelati. Le serie rifiuti sono consultabili; variazioni, trend e correlazioni temporali rifiutati senza attestazione della continuità metodologica. Nessuna ponderazione dei rifiuti senza componenti additive; costo CTOTab distinto da TARI e qualità. Metodo `docs/A6_ENVIRONMENT_ADAPTERS.md`, evidenze `reports/a6-environment/`.
+Lotto agricolo v13: cinque carrier Istat 2020, aziende, SAU localizzata, dimensione media, colture, superficie irrigata. Centro aziendale distinto dalla localizzazione dei terreni; rapporti da componenti native, mancanti delle colture conservati. Nessuno storico o condizione corrente 2026 inventato. Solo la dimensione media ha benchmark comparabili; ettari comunali e totali regionali non diventano misure equivalenti. Metodo `docs/A6_AGRICULTURE_ADAPTERS.md`, report `reports/a6-agriculture/`.
 
-Copertura derivata: 113/225 effettivi, 80/181 sorgente; 112 senza adapter, di cui 47 ambientali. Suite cumulativa 166 domande (105 calcoli, 61 rifiuti), 121 osservazioni ambientali indipendenti; 35 collegamenti tipizzati. Le 35 letture territoriali e due riepiloghi precedenti conservano perimetro e revisione metodologica aperta. Gate Quick/Full locali e CI sul singolo albero prima del merge, approvazione esplicita del proprietario richiesta. A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
+Copertura derivata: 118/225 effettivi, 85/181 sorgente; 107 senza adapter, di cui 42 ambientali. Suite cumulativa 182 domande (116 calcoli, 66 rifiuti), 86 osservazioni agricole indipendenti incluse quattro celle mancanti; 37 collegamenti tipizzati. Le 35 letture territoriali e due riepiloghi conservano perimetro e revisione metodologica aperta. Gate Quick/Full locali e CI sul singolo albero prima del merge, approvazione esplicita del proprietario richiesta. A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.

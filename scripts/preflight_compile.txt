@@ -105,3 +105,6 @@ scripts/pages_live_status.py
 scripts/test_pages_live_status.py
 scripts/semantic_query_environment_adapters.py
 scripts/test_semantic_environment_adapters.py
+
+scripts/semantic_query_agriculture_adapters.py
+scripts/test_semantic_agriculture_adapters.py

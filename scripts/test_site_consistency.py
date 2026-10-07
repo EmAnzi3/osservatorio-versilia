@@ -64,6 +64,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     demography_school_regressions(catalog_path)
     from test_semantic_commuting_adapters import regressions as commuting_regressions
     commuting_regressions(catalog_path)
+    from test_semantic_agriculture_adapters import regressions as agriculture_regressions
+    agriculture_regressions(catalog_path)
     from test_semantic_environment_adapters import regressions as environment_regressions
     environment_regressions(catalog_path)
     distinct_finance_regressions(catalog_path)
