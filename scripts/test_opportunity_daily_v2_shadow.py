@@ -60,6 +60,14 @@ def main() -> int:
     assert workflow.index("Compare shadow candidate with production state") < workflow.index("Upload complete shadow evidence")
     assert workflow.index("Upload complete shadow evidence") < workflow.index("Enforce complete shadow run")
 
+    assert "timeout-minutes: 60" in workflow
+    assert "id: scan\n        timeout-minutes: 30" in workflow
+    assert "id: build\n        timeout-minutes: 20" in workflow
+    comparison = workflow.split("      - name: Compare shadow candidate with production state", 1)[1].split("      - name: Build and smoke-test shadow candidate", 1)[0]
+    assert "steps.validation.outcome == 'success'" in comparison
+    assert "steps.build.outcome" not in comparison
+    assert workflow.index("Compare shadow candidate with production state") < workflow.index("Build and smoke-test shadow candidate")
+
     _failure_matrix()
     print("Workflow Radar v2 shadow e failure matrix: PASS")
     return 0

@@ -106,7 +106,7 @@
       "publisher": "Ministero dell'Agricoltura, della Sovranità alimentare e delle Foreste",
       "territory": "Italia",
       "family": "rural-territorial-development",
-      "urls": ["https://www.masaf.gov.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/11795"],
+      "urls": ["https://www.masaf.gov.it/SviluppoRurale"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["bando", "avviso", "contribut", "fondo", "territorio", "foreste", "sviluppo rurale"],
       "municipalTerms": ["comuni", "enti locali", "enti pubblici", "territorial"]

@@ -38,7 +38,7 @@ concurrency:
 jobs:
   shadow:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Checkout exact ref
         uses: actions/checkout@v4
@@ -82,6 +82,7 @@ jobs:
 
       - name: Scan live sources in shadow mode
         id: scan
+        timeout-minutes: 30
         continue-on-error: true
         shell: bash
         env:
@@ -121,8 +122,27 @@ jobs:
           assert (payload.get("counts") or {}).get("transportFailures") == int(summary.get("endpointFailures") or 0)
           PY
 
+      - name: Compare shadow candidate with production state
+        id: comparison
+        if: >-
+          ${{ steps.scan.outcome == 'success' &&
+              steps.validation.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
+        run: |
+          if [ "$FAILURE_STAGE" = "comparison" ]; then
+            echo "Failure test: comparison"
+            exit 97
+          fi
+          python scripts/opportunity_shadow_compare.py \
+            --reference /tmp/opportunity-shadow-production.json \
+            --candidate data/opportunity-daily-public.json \
+            --output-dir reports/shadow
+
       - name: Build and smoke-test shadow candidate
         id: build
+        timeout-minutes: 20
         if: ${{ steps.scan.outcome == 'success' && steps.validation.outcome == 'success' }}
         continue-on-error: true
         env:
@@ -157,25 +177,6 @@ jobs:
             --scan-status "${{ steps.scan.outcome }}" \
             --validation-status "${{ steps.validation.outcome }}" \
             --build-status "${{ steps.build.outcome }}"
-
-      - name: Compare shadow candidate with production state
-        id: comparison
-        if: >-
-          ${{ steps.scan.outcome == 'success' &&
-              steps.validation.outcome == 'success' &&
-              steps.build.outcome == 'success' }}
-        continue-on-error: true
-        env:
-          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
-        run: |
-          if [ "$FAILURE_STAGE" = "comparison" ]; then
-            echo "Failure test: comparison"
-            exit 97
-          fi
-          python scripts/opportunity_shadow_compare.py \
-            --reference /tmp/opportunity-shadow-production.json \
-            --candidate data/opportunity-daily-public.json \
-            --output-dir reports/shadow
 
       - name: Publish shadow summary
         if: always()

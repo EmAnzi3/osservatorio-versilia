@@ -58,7 +58,20 @@ def _snapshot(items: list[dict]) -> dict:
     }
 
 
+def _test_coverage_failure_names_expired_evidence() -> None:
+    from opportunity_run_report import _gate_summary
+    coverage = {"status": "fail", "residualCoverage": {"staleEvidence": ["eu-cef", "masaf-bandi"]}, "runtimeUnhealthyFamilies": ["education-school-infrastructure"]}
+    for current, diagnostic in (
+        ({"coverageAudit": coverage}, None),
+        ({}, {"coverageAudit": coverage, "gateSummary": {"coverageAuditStatus": "fail"}}),
+    ):
+        gate = next(x for x in _gate_summary(current, diagnostic) if x["name"] == "Copertura")
+        assert gate["status"] == "fail"
+        assert all(x in gate["detail"] for x in ("eu-cef", "masaf-bandi", "education-school-infrastructure"))
+
+
 def main() -> int:
+    _test_coverage_failure_names_expired_evidence()
     assert incomplete_run_stages({"scan": "success", "validation": "success"}) == {}
     assert incomplete_run_stages({"scan": "failure", "validation": "skipped"}) == {
         "scan": "failure",

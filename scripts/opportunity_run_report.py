@@ -232,6 +232,19 @@ def _is_archived(item: dict[str, Any], archive: list[dict[str, Any]]) -> bool:
     return any(not item_keys.isdisjoint(_archive_keys(row)) for row in archive)
 
 
+def _coverage_detail(coverage: dict[str, Any], uncovered_count: int = 0) -> str:
+    parts = [f"{len(coverage.get('runtimeUncoveredFamilies') or []) or uncovered_count} famiglie runtime scoperte"]
+    for key, label in (("residualCoverage", "evidenze residue"), ("sportLifeCoverage", "evidenze Sport/LIFE")):
+        audit = coverage.get(key) or {}
+        stale = audit.get("staleEvidence") or []
+        if stale:
+            parts.append(f"{label} scadute: " + ", ".join(stale))
+    unhealthy = coverage.get("runtimeUnhealthyFamilies") or []
+    if unhealthy:
+        parts.append("famiglie runtime con errori: " + ", ".join(unhealthy))
+    return "; ".join(parts)
+
+
 def _gate_summary(
     current: dict[str, Any],
     diagnostic: dict[str, Any] | None = None,
@@ -247,7 +260,7 @@ def _gate_summary(
             {
                 "name": "Copertura",
                 "status": str(summary.get("coverageAuditStatus") or "unknown"),
-                "detail": f"{int(summary.get('runtimeUncoveredFamilyCount') or 0)} famiglie runtime scoperte",
+                "detail": _coverage_detail(diagnostic.get("coverageAudit") or {}, int(summary.get("runtimeUncoveredFamilyCount") or 0)),
             },
             {
                 "name": "Regione Toscana",
@@ -278,7 +291,7 @@ def _gate_summary(
         {
             "name": "Copertura",
             "status": str(coverage.get("status") or "unknown"),
-            "detail": f"{len(coverage.get('runtimeUncoveredFamilies') or [])} famiglie runtime scoperte",
+            "detail": _coverage_detail(coverage),
         },
         {
             "name": "Regione Toscana",

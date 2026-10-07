@@ -254,6 +254,7 @@
     {
       "path": ".github/workflows/opportunity-radar-daily-v2-shadow.yml",
       "category": "automation",
+      "executionBudgetMinutes": {"job": 60, "scan": 30, "build": 20},
       "status": "active"
     },
     {
