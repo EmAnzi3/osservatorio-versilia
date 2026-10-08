@@ -741,11 +741,87 @@ def _test_expired_worker_kills_descendants() -> None:
             raise AssertionError("Expired worker left a running browser descendant")
 
 
+
+def _test_parallel_prefetch_keeps_budgets_and_cache() -> None:
+    from concurrent.futures import ThreadPoolExecutor
+    import json
+    from pathlib import Path
+    import tempfile
+    import threading
+    import time
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from opportunity_transport_budget import TransportBudget
+
+    state = {"active": 0, "peak": 0, "requests": 0}
+    lock = threading.Lock()
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            with lock:
+                state["active"] += 1
+                state["requests"] += 1
+                state["peak"] = max(state["peak"], state["active"])
+            try:
+                time.sleep(1)
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"<html>official municipal notice</html>")
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            finally:
+                with lock:
+                    state["active"] -= 1
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = True
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = {"sources": [{"id": "source-0", "url": base + "/0"}],
+              "discoverySources": [{"id": f"source-{i}", "urls": [base + f"/{i}"]} for i in range(4)]}
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            journal = Path(tmp) / "parallel.jsonl"
+            budget = TransportBudget(config, endpoint_seconds=2, source_seconds=8,
+                                     scan_seconds=3, journal=journal)
+            budget.prefetch(config)
+            rows = [json.loads(line) for line in journal.read_text().splitlines()]
+            assert len(rows) == 8 and sum(row.get("status") == "ok" for row in rows) == 4, rows
+            assert state["peak"] >= 2, "A lock must not serialize network I/O"
+            assert not budget.scan_exhausted
+            # Concurrent consumers of one URL reuse the live result exactly once.
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                results = list(pool.map(budget.fetch, [base + "/0"] * 4))
+            assert all(result[1]["status"] == "ok" for result in results)
+            assert state["requests"] == 4
+            assert len(journal.read_text().splitlines()) == 8
+            uncached = TransportBudget(config, endpoint_seconds=2, source_seconds=8,
+                                      scan_seconds=3, journal=Path(tmp) / "dedupe.jsonl")
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                results = list(pool.map(uncached.fetch, [base + "/new"] * 4))
+            assert all(result[1]["status"] == "ok" for result in results)
+            assert state["requests"] == 5, "In-flight requests must also be deduplicated"
+
+            # Two different source IDs share this host: active requests reserve
+            # its allowance, so their cumulative work cannot double the budget.
+            limited = TransportBudget({}, endpoint_seconds=2, source_seconds=.3,
+                                      scan_seconds=3, journal=Path(tmp) / "limited.jsonl")
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(limited.fetch, [base + "/a", base + "/b"]))
+            assert all(result[0] is None for result in results)
+            assert limited.host_spent[f"127.0.0.1:{server.server_port}"] < .5
+            assert sorted(result[1]["elapsedSeconds"] for result in results)[0] < .05
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
 def main() -> int:
     _test_annual_archive_follows_current_year()
     _test_chromium_rejects_error_document()
     _test_listing_coverage_status()
     _test_configured_detail_pages_cannot_attest_discovery()
+    _test_parallel_prefetch_keeps_budgets_and_cache()
     _test_expired_worker_kills_descendants()
     _test_live_transport_budget_and_journal()
     _test_403_uses_chromium_dom()

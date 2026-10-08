@@ -280,6 +280,7 @@ def main() -> int:
     daily._prepare_public = _prepare_public_hardened
     core.compose_runtime_payloads = _compose_runtime_hardened
     try:
+        discovery.LIVE_BUDGET.prefetch(config)
         return revalidated.main()
     finally:
         discovery.LIVE_BUDGET = previous_budget

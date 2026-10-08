@@ -16,6 +16,7 @@ import sys
 import threading
 import time
 from urllib.parse import urlsplit
+from concurrent.futures import ThreadPoolExecutor
 
 
 class TransportBudget:
@@ -39,60 +40,102 @@ class TransportBudget:
         self.spent = {}
         self.host_spent = {}
         self.cache = {}
-        self.lock = threading.Lock()
+        self.lock = threading.Condition()
+        self.pending = set()
+        self.source_reserved = {}
+        self.host_reserved = {}
 
     def _progress(self, row):
-        with self.journal.open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps(row, ensure_ascii=False) + "\n")
-            stream.flush()
-        print("RADAR TRANSPORT: " + json.dumps(row, ensure_ascii=False), flush=True)
+        with self.lock:
+            with self.journal.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps(row, ensure_ascii=False) + "\n")
+                stream.flush()
+            print("RADAR TRANSPORT: " + json.dumps(row, ensure_ascii=False), flush=True)
+
+    def prefetch(self, config):
+        """Fetch configured endpoints with four workers; reuse in normal collectors.
+
+        This changes only scheduling. Classifiers and verification still consume
+        the original endpoint payloads and apply their existing content gates.
+        """
+        requests = {}
+        for category, default_timeout in (("sources", 30), ("discoverySources", 25)):
+            for source in config.get(category) or []:
+                for url in [source.get("url"), *(source.get("urls") or [])]:
+                    if url:
+                        requests.setdefault(url, (int(source.get("fetchTimeoutSeconds") or default_timeout),
+                                                  int(source.get("fetchAttempts") or 2)))
+        def fetch_one(row):
+            url, (timeout, attempts) = row
+            return self.fetch(url, timeout=timeout, attempts=attempts)
+        with ThreadPoolExecutor(max_workers=4, thread_name_prefix="radar-transport") as pool:
+            # Consume every future; exceptions cannot silently disappear.
+            list(pool.map(fetch_one, requests.items()))
 
     def fetch(self, url, *, timeout=30, attempts=2, kind="discovery", options=None):
-        # Holdout threads share the same run/source budgets and cache.
-        with self.lock:
-            return self._fetch(url, timeout=timeout, attempts=attempts, kind=kind, options=options or {})
-
-    def _fetch(self, url, *, timeout, attempts, kind, options):
+        options = options or {}
         key = (kind, url, json.dumps(options, sort_keys=True))
-        if key in self.cache:
-            return self.cache[key]
         host = urlsplit(url).netloc
         ids = self.hosts.get(host, set())
         source = self.sources.get(url) or (next(iter(ids)) if len(ids) == 1 else host)
-        remaining_source = self.source_seconds - max(self.spent.get(source, 0), self.host_spent.get(host, 0))
-        remaining_scan = self.deadline - time.monotonic()
-        allowance = min(self.endpoint_seconds, remaining_source, remaining_scan)
-        scope = "scan" if remaining_scan <= min(self.endpoint_seconds, remaining_source) else (
-            "source" if remaining_source <= self.endpoint_seconds else "endpoint")
+        # Lock only shared accounting. I/O must never hold this lock.
+        with self.lock:
+            while key in self.pending:
+                self.lock.wait(timeout=max(0.01, self.deadline - time.monotonic()))
+            if key in self.cache:
+                return self.cache[key]
+            while True:
+                remaining_scan = self.deadline - time.monotonic()
+                remaining_source = self.source_seconds - max(self.spent.get(source, 0), self.host_spent.get(host, 0))
+                available = min(
+                    self.source_seconds - self.spent.get(source, 0) - self.source_reserved.get(source, 0),
+                    self.source_seconds - self.host_spent.get(host, 0) - self.host_reserved.get(host, 0),
+                )
+                wanted = min(self.endpoint_seconds, remaining_source, remaining_scan)
+                # Active requests reserve budget. Wait for their actual cost
+                # instead of prematurely failing or overspending a shared host.
+                if remaining_scan > 0 and wanted > 0 and available + 1e-6 < wanted:
+                    self.lock.wait(timeout=remaining_scan)
+                    continue
+                allowance = max(0, min(wanted, available))
+                break
+            scope = "scan" if remaining_scan <= min(self.endpoint_seconds, remaining_source) else (
+                "source" if remaining_source <= self.endpoint_seconds else "endpoint")
+            self.pending.add(key)
+            self.source_reserved[source] = self.source_reserved.get(source, 0) + allowance
+            self.host_reserved[host] = self.host_reserved.get(host, 0) + allowance
+            if scope == "scan" and allowance <= 0:
+                self.scan_exhausted = True
+            self._progress({"event": "start", "sourceId": source, "url": url,
+                            "kind": kind, "budgetSeconds": round(allowance, 3)})
         started = time.monotonic()
-        if scope == "scan" and allowance <= 0:
-            self.scan_exhausted = True
-        self._progress({"event": "start", "sourceId": source, "url": url,
-                        "kind": kind, "budgetSeconds": round(max(0, allowance), 3)})
         payload = None
         diagnostics = {"status": "error", "transport": "failed", "failureClass": "timeout_client",
                        "budgetScope": scope, "fallbackUsed": False, "proxyUsed": False,
                        "resolvedUrl": None, "errors": [f"{scope} transport budget exhausted"]}
-        if allowance > 0:
-            worker = subprocess.Popen(
-                [sys.executable, str(Path(__file__).resolve()), "--worker"],
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                text=True, start_new_session=os.name != "nt",
-            )
-            try:
+        worker = None
+        try:
+            if allowance > 0:
+                worker = subprocess.Popen(
+                    [sys.executable, str(Path(__file__).resolve()), "--worker"],
+                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    text=True, start_new_session=os.name != "nt",
+                )
                 output, error = worker.communicate(json.dumps({"url": url, "timeout": timeout,
                                                               "attempts": attempts, "kind": kind, "options": options}),
                                                    timeout=allowance)
                 if worker.returncode != 0:
                     raise RuntimeError(error[-2000:] or f"worker exit {worker.returncode}")
                 payload, diagnostics = json.loads(output)
-            except subprocess.TimeoutExpired:
-                if scope == "scan":
+        except subprocess.TimeoutExpired:
+            if scope == "scan":
+                with self.lock:
                     self.scan_exhausted = True
-            except Exception as exc:
-                diagnostics = {**diagnostics, "failureClass": "fetch_error", "errors": [str(exc)]}
-            finally:
-                # A worker can exit while descendants linger: always clean its group.
+        except Exception as exc:
+            diagnostics = {**diagnostics, "failureClass": "fetch_error", "errors": [str(exc)]}
+        finally:
+            if worker is not None:
+                # A worker can exit while descendants linger: clean its group.
                 if os.name != "nt":
                     try:
                         os.killpg(worker.pid, signal.SIGKILL)
@@ -101,12 +144,17 @@ class TransportBudget:
                 elif worker.poll() is None:
                     worker.kill()
                 worker.communicate()
-        elapsed = time.monotonic() - started
-        self.spent[source] = self.spent.get(source, 0) + elapsed
-        self.host_spent[host] = self.host_spent.get(host, 0) + elapsed
-        diagnostics = {**diagnostics, "elapsedSeconds": round(elapsed, 3), "sourceId": source}
-        self._progress({"event": "end", "url": url, "kind": kind, **diagnostics})
-        self.cache[key] = (payload, diagnostics)
+            elapsed = time.monotonic() - started
+            with self.lock:
+                self.source_reserved[source] = max(0, self.source_reserved[source] - allowance)
+                self.host_reserved[host] = max(0, self.host_reserved[host] - allowance)
+                self.spent[source] = self.spent.get(source, 0) + elapsed
+                self.host_spent[host] = self.host_spent.get(host, 0) + elapsed
+                diagnostics = {**diagnostics, "elapsedSeconds": round(elapsed, 3), "sourceId": source}
+                self._progress({"event": "end", "url": url, "kind": kind, **diagnostics})
+                self.cache[key] = (payload, diagnostics)
+                self.pending.remove(key)
+                self.lock.notify_all()
         return payload, diagnostics
 
 
