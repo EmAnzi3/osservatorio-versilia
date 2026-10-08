@@ -124,3 +124,5 @@ scripts/semantic_query_coast_adapters.py
 scripts/test_semantic_coast_adapters.py
 scripts/semantic_query_bathing_adapters.py
 scripts/test_semantic_bathing_adapters.py
+scripts/semantic_query_maritime_adapters.py
+scripts/test_semantic_maritime_adapters.py
