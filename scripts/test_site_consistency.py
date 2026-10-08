@@ -66,6 +66,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     commuting_regressions(catalog_path)
     from test_semantic_agriculture_adapters import regressions as agriculture_regressions
     agriculture_regressions(catalog_path)
+    from test_semantic_soil_adapters import regressions as soil_regressions
+    soil_regressions(catalog_path)
     from test_semantic_geography_adapters import regressions as geography_regressions
     geography_regressions(catalog_path)
     from test_semantic_environment_adapters import regressions as environment_regressions
