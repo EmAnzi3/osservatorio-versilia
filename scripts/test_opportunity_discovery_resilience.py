@@ -448,6 +448,58 @@ def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
     assert all(row["readerFailureClass"] == "http_403_waf" for row in failed), failed
 
 
+def _test_anci_news_short_previews_preserve_discovery() -> None:
+    # Reduced cards from the owner-provided ANCI News HTML (6 October 2026).
+    # Short previews omit municipal beneficiaries: discovery must not infer
+    # eligibility, but must retain the school-building notice for review.
+    config, _ = daily_h4._compose_runtime_hardened()
+    source = next(row for row in config["discoverySources"] if row["id"] == "anci-nazionale")
+    listing = "https://www.anci.it/category/generico/news/"
+    assert listing in source["urls"]
+    assert listing + "feed/" in source["urls"]
+    assert discovery.endpoint_role(source, listing) == "listing"
+    payload = """
+    <h4><a href="/proroga-sport-cultura/">Prorogati al 5 dicembre i bandi Sport Missione Comune e Cultura Missione Comune</a></h4>
+    <p>Possono partecipare Comuni e Unioni di Comuni per richiedere mutui.</p>
+    <h4><a href="/edilizia-mim/">Edilizia scolastica, avviso MIM su risorse otto per mille per interventi urgenti e indifferibili</a></h4>
+    <p>Da oggi 5 ottobre al via alle candidature sulla piattaforma informatica dedicata.</p>
+    <h4><a href="/asacom/">Asacom 2026, intesa sul decreto riparto per Comuni e Regioni</a></h4>
+    <p>Il decreto prevede lo stanziamento di 160 milioni a favore dei Comuni.</p>
+    <h4><a href="/protocollo/">Firma del protocollo di intesa tra Anci e Comitato Paralimpico</a></h4>
+    <p>Interverranno il presidente e i sindaci.</p>
+    """
+    queue = daily_h4.radar_module.discovery_candidates(source, payload, listing)
+    assert {row["url"] for row in queue} == {
+        "https://www.anci.it/proroga-sport-cultura/",
+        "https://www.anci.it/edilizia-mim/",
+        "https://www.anci.it/asacom/",
+    }, queue
+    assert all(row["discovery_only"] and row["status"] == "internal_review" for row in queue)
+
+
+def _test_rss_and_mim_table_keep_individual_notice_links() -> None:
+    config, _ = daily_h4._compose_runtime_hardened()
+    sources = {row["id"]: row for row in config["discoverySources"]}
+    feed = """<rss><channel><title>ANCI</title>
+    <item><title>Riparto fondo per Comuni</title><link>https://www.anci.it/riparto/</link><description>Risorse per Comuni e Regioni</description></item>
+    <item><title>La bandiera dei Comuni</title><link>https://www.anci.it/bandiera/</link><description>Cerimonia</description></item>
+    </channel></rss>"""
+    queue = daily_h4.radar_module.discovery_candidates(sources["anci-nazionale"], feed, "https://www.anci.it/category/generico/news/feed/")
+    assert [row["url"] for row in queue] == ["https://www.anci.it/riparto/"], queue
+    listing = "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali"
+    assert listing in sources["mim-enti-locali"]["urls"]
+    assert discovery.endpoint_role(sources["mim-enti-locali"], listing) == "listing"
+    table = """<table id="table-avvisi"><tbody>
+    <tr><td>Arredi didattici innovativi per asili nido</td><td>FESR</td><td>123</td><td>2026</td><td>Enti locali</td><td><a href="/avvisi/arredi/"><i></i></a></td></tr>
+    <tr><td>Scuole polo per la comunicazione</td><td>FSE+</td><td>456</td><td>2026</td><td>Istituti scolastici</td><td><a href="/avvisi/estate/"><i></i></a></td></tr>
+    </tbody></table>"""
+    queue = daily_h4.radar_module.discovery_candidates(sources["mim-enti-locali"], table, listing)
+    assert [row["url"] for row in queue] == ["https://pn20212027.istruzione.it/avvisi/arredi/"], queue
+    assert all(row["status"] == "internal_review" and row["discovery_only"] for row in queue)
+    empty = table.replace("Enti locali", "Istituti scolastici")
+    assert daily_h4.radar_module.discovery_candidates(sources["mim-enti-locali"], empty, listing) == []
+
+
 def _test_runtime_compose_replaces_stale_sources() -> None:
     config, _ = daily_h4._compose_runtime_hardened()
     primary_ids = {str(source.get("id") or "") for source in config.get("sources") or []}
@@ -594,11 +646,184 @@ def _test_listing_coverage_status() -> None:
         discovery.fetch_with_diagnostics = original
 
 
+
+def _test_live_transport_budget_and_journal() -> None:
+    import json
+    from pathlib import Path
+    import tempfile
+    import threading
+    import time
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from opportunity_transport_budget import TransportBudget
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == "/slow":
+                time.sleep(2)
+            try:
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"<html>official notice</html>")
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = True
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            journal = Path(tmp) / "progress.jsonl"
+            budget = TransportBudget({"sources": [{"id": "official", "url": base + "/ok"}]},
+                                     endpoint_seconds=5, source_seconds=10, scan_seconds=20,
+                                     journal=journal)
+            payload, diagnostics = budget.fetch(base + "/ok")
+            assert "official notice" in payload and diagnostics["status"] == "ok"
+            assert budget.fetch(base + "/ok")[0] == payload  # same-run cache
+            budget.endpoint_seconds = 0.3
+            started = time.monotonic()
+            payload, diagnostics = budget.fetch(base + "/slow")
+            assert payload is None and diagnostics["failureClass"] == "timeout_client"
+            assert diagnostics["budgetScope"] == "endpoint"
+            assert time.monotonic() - started < 1.5  # all retries/fallbacks bounded
+            budget.source_seconds = 0.1
+            payload, diagnostics = budget.fetch(base + "/another")
+            assert payload is None and diagnostics["budgetScope"] == "source"
+            assert diagnostics["elapsedSeconds"] < 0.1
+            budget.deadline = time.monotonic() - 1
+            payload, diagnostics = budget.fetch("http://localhost:1/not-run")
+            assert payload is None and diagnostics["budgetScope"] == "scan"
+            assert budget.scan_exhausted
+            rows = [json.loads(line) for line in journal.read_text().splitlines()]
+            assert [row["event"] for row in rows] == ["start", "end"] * 4
+            assert rows[3]["status"] == "error" and rows[3]["sourceId"] == "official"
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+
+def _test_expired_worker_kills_descendants() -> None:
+    import os
+    from pathlib import Path
+    import subprocess
+    import sys
+    import tempfile
+    import time
+    from unittest.mock import patch
+    import opportunity_transport_budget as bounded
+
+    if os.name == "nt":
+        return  # Linux Actions requires whole process-group cleanup.
+    original_popen = subprocess.Popen
+    with tempfile.TemporaryDirectory() as tmp:
+        pid_file = Path(tmp) / "descendant.pid"
+        code = ("import subprocess,time,pathlib; "
+                "p=subprocess.Popen(['" + sys.executable + "','-c','import time; time.sleep(30)']); "
+                "pathlib.Path(" + repr(str(pid_file)) + ").write_text(str(p.pid)); time.sleep(30)")
+        def stalled_worker(command, **kwargs):
+            return original_popen([sys.executable, "-c", code], **kwargs)
+        budget = bounded.TransportBudget({}, endpoint_seconds=0.5, journal=Path(tmp) / "trace.jsonl")
+        with patch.object(bounded.subprocess, "Popen", stalled_worker):
+            payload, diagnostics = budget.fetch("https://example.test/stall")
+        assert payload is None and diagnostics["failureClass"] == "timeout_client"
+        assert pid_file.exists(), "Descendant must have started before the deadline"
+        status = Path("/proc") / pid_file.read_text() / "stat"
+        for _ in range(20):
+            if not status.exists() or status.read_text().split()[2] == "Z":
+                break
+            time.sleep(0.01)
+        else:
+            raise AssertionError("Expired worker left a running browser descendant")
+
+
+
+def _test_parallel_prefetch_keeps_budgets_and_cache() -> None:
+    from concurrent.futures import ThreadPoolExecutor
+    import json
+    from pathlib import Path
+    import tempfile
+    import threading
+    import time
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from opportunity_transport_budget import TransportBudget
+
+    state = {"active": 0, "peak": 0, "requests": 0}
+    lock = threading.Lock()
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            with lock:
+                state["active"] += 1
+                state["requests"] += 1
+                state["peak"] = max(state["peak"], state["active"])
+            try:
+                time.sleep(1)
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"<html>official municipal notice</html>")
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            finally:
+                with lock:
+                    state["active"] -= 1
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = True
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = {"sources": [{"id": "source-0", "url": base + "/0"}],
+              "discoverySources": [{"id": f"source-{i}", "urls": [base + f"/{i}"]} for i in range(4)]}
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            journal = Path(tmp) / "parallel.jsonl"
+            budget = TransportBudget(config, endpoint_seconds=2, source_seconds=8,
+                                     scan_seconds=3, journal=journal)
+            budget.prefetch(config)
+            rows = [json.loads(line) for line in journal.read_text().splitlines()]
+            assert len(rows) == 8 and sum(row.get("status") == "ok" for row in rows) == 4, rows
+            assert state["peak"] >= 2, "A lock must not serialize network I/O"
+            assert not budget.scan_exhausted
+            # Concurrent consumers of one URL reuse the live result exactly once.
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                results = list(pool.map(budget.fetch, [base + "/0"] * 4))
+            assert all(result[1]["status"] == "ok" for result in results)
+            assert state["requests"] == 4
+            assert len(journal.read_text().splitlines()) == 8
+            uncached = TransportBudget(config, endpoint_seconds=2, source_seconds=8,
+                                      scan_seconds=3, journal=Path(tmp) / "dedupe.jsonl")
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                results = list(pool.map(uncached.fetch, [base + "/new"] * 4))
+            assert all(result[1]["status"] == "ok" for result in results)
+            assert state["requests"] == 5, "In-flight requests must also be deduplicated"
+
+            # Two different source IDs share this host: active requests reserve
+            # its allowance, so their cumulative work cannot double the budget.
+            limited = TransportBudget({}, endpoint_seconds=2, source_seconds=.3,
+                                      scan_seconds=3, journal=Path(tmp) / "limited.jsonl")
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(limited.fetch, [base + "/a", base + "/b"]))
+            assert all(result[0] is None for result in results)
+            assert limited.host_spent[f"127.0.0.1:{server.server_port}"] < .5
+            assert sorted(result[1]["elapsedSeconds"] for result in results)[0] < .05
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
 def main() -> int:
     _test_annual_archive_follows_current_year()
     _test_chromium_rejects_error_document()
     _test_listing_coverage_status()
     _test_configured_detail_pages_cannot_attest_discovery()
+    _test_parallel_prefetch_keeps_budgets_and_cache()
+    _test_expired_worker_kills_descendants()
+    _test_live_transport_budget_and_journal()
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
     _test_timeout_uses_reader_after_chromium_failure()
@@ -611,6 +836,8 @@ def main() -> int:
     _test_probe_uses_resolved_url_for_relative_links()
     _test_endpoint_content_signature_rejects_unrelated_200_page()
     _test_anci_independent_mirror_survives_national_endpoint_failures()
+    _test_anci_news_short_previews_preserve_discovery()
+    _test_rss_and_mim_table_keep_individual_notice_links()
     _test_runtime_compose_replaces_stale_sources()
     _test_transport_audit_exposes_endpoint_health()
     print("Discovery resiliente Radar: PASS")

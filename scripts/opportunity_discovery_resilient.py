@@ -24,6 +24,7 @@ from typing import Any
 import opportunity_daily_refresh_revalidated as transport
 
 FETCH_TRACE: dict[str, dict[str, Any]] = {}
+LIVE_BUDGET = None
 _READER_BASE = "https://r.jina.ai/"
 _GENERIC_LINK_LABELS = {
     "scopri", "scopri tutto", "leggi", "leggi tutto", "approfondisci",
@@ -286,6 +287,12 @@ def _markdown_to_discovery_html(markdown: str, page_url: str) -> str:
 
 
 def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tuple[str, dict[str, Any]]:
+    if LIVE_BUDGET is not None:
+        payload, diagnostics = LIVE_BUDGET.fetch(url, timeout=timeout, attempts=attempts)
+        _record_trace(url, diagnostics)
+        if payload is None:
+            raise DiscoveryFetchError("; ".join(diagnostics.get("errors") or []), diagnostics)
+        return payload, diagnostics
     http_attempts = max(2, int(attempts or 1))
     errors: list[str] = []
     failure_class = "fetch_error"

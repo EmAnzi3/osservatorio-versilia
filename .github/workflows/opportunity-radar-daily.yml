@@ -153,7 +153,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p reports/runtime
-          python scripts/opportunity_daily_refresh_stable.py 2>&1 \
+          python -u scripts/opportunity_daily_refresh_stable.py 2>&1 \
             | tee reports/runtime/opportunity-live-scan.log
 
       - name: Upload continuity diagnostic
@@ -283,6 +283,7 @@ jobs:
             reports/runtime/opportunity-live-scan.log
             reports/runtime/opportunity-continuity-hold.json
             reports/runtime/opportunity-publishability-diagnostic.json
+            reports/runtime/opportunity-transport-progress.jsonl
           if-no-files-found: warn
           retention-days: 90
 

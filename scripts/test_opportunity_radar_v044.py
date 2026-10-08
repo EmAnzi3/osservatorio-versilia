@@ -179,7 +179,8 @@ def main() -> int:
             ]
         }
     }
-    evidence = radar._v044_evidence_audit(mock, today)
+    evidence_date = date.fromisoformat(radar._load(radar.EVIDENCE_V044)["referenceDate"])
+    evidence = radar._v044_evidence_audit(mock, evidence_date)
     assert evidence["status"] == "pass", evidence
     assert evidence["sourcesVerified"] == evidence["sourcesExpected"] == 2
 

@@ -15,6 +15,7 @@ import argparse
 import json
 import re
 import sys
+import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -54,18 +55,49 @@ def load_rules(path: Path = DEFAULT_RULES) -> tuple[list[dict[str, Any]], dict[s
 
 def _matches_any(text: str, terms: list[str]) -> bool:
     folded = v025.fold(text)
-    return any(v025.fold(term) in folded for term in terms if term)
+    return any(
+        bool(re.search(r"\b" + re.escape(v025.fold(term)) + r"\b", folded))
+        if v025.fold(term) in {"bando", "bandi"} else v025.fold(term) in folded
+        for term in terms if term
+    )
 
 
 def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) -> list[dict[str, Any]]:
     parser = base.Cards()
     parser.feed(payload)
     parser.close()
+    cards = parser.out
+    structured_listing = False
+    try:
+        feed = ET.fromstring(payload)
+    except ET.ParseError:
+        feed = None
+    if feed is not None and feed.tag == "rss":
+        structured_listing = True
+        cards = [
+            (item.findtext("title") or "", item.findtext("link") or "", base.visible(item.findtext("description") or ""))
+            for item in feed.findall("./channel/item")
+        ]
+    elif source.get("id") == "mim-enti-locali":
+        from bs4 import BeautifulSoup
+        table = BeautifulSoup(payload, "html.parser").find("table", id="table-avvisi")
+        if table is not None:
+            structured_listing = True
+            cards = []
+            for row in table.select("tbody tr"):
+                cells = row.find_all("td")
+                link = row.find("a", href=True)
+                # Beneficiari is explicit: school-only calls must not match
+                # municipal substrings elsewhere in the row.
+                beneficiaries = cells[4].get_text(" ", strip=True) if len(cells) >= 6 else ""
+                municipal = _matches_any(beneficiaries, ["enti locali", "comuni", "province", "città metropolitane"])
+                if cells and link and municipal:
+                    cards.append((cells[0].get_text(" ", strip=True), link["href"], "Avviso: " + row.get_text(" ", strip=True)))
     include_terms = list(source.get("includeTerms") or [])
     municipal_terms = list(source.get("municipalTerms") or [])
     out: list[dict[str, Any]] = []
 
-    for title, href, body in parser.out:
+    for title, href, body in cards:
         title = base.clean(title)
         body = base.clean(body)
         if len(title) < 7:
@@ -93,7 +125,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
             }
         )
 
-    if not out:
+    if not out and not structured_listing:
         visible = base.visible(payload)
         if _matches_any(visible, include_terms) and _matches_any(visible, municipal_terms):
             title = source.get("label") or source["id"]

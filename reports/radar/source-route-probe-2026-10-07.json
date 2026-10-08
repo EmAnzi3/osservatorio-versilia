@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://anci.it/category/generico/news/",
+    "error": "HTTP Error 502: Bad Gateway",
+    "seconds": 9.0
+  },
+  {
+    "url": "https://anci.it/category/generico/news/feed/",
+    "error": "The read operation timed out",
+    "seconds": 17.0
+  },
+  {
+    "url": "https://www.anci.it/wp-json/wp/v2/posts?categories=142&per_page=10",
+    "error": "<urlopen error timed out>",
+    "seconds": 12.0
+  },
+  {
+    "url": "https://anci.it/wp-json/wp/v2/posts?categories=142&per_page=10",
+    "error": "HTTP Error 502: Bad Gateway",
+    "seconds": 13.1
+  },
+  {
+    "url": "http://www.anci.it/category/generico/news/",
+    "error": "timed out",
+    "seconds": 12.0
+  },
+  {
+    "url": "https://mim.gov.it/web/guest/comunicati",
+    "error": "<urlopen error timed out>",
+    "seconds": 12.0
+  },
+  {
+    "url": "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",
+    "error": "<urlopen error timed out>",
+    "seconds": 12.0
+  }
+]

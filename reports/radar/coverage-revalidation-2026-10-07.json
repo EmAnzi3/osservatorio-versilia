@@ -1,0 +1,118 @@
+{
+  "verifiedAt": "2026-10-07",
+  "method": "HTTP retrieval plus review of official content; source transport health is evaluated independently by each live run",
+  "rows": [
+    {
+      "id": "eu-urbact",
+      "url": "https://urbact.eu/news/apply-urbact-call-action-networks",
+      "final": "https://urbact.eu/news/apply-urbact-call-action-networks",
+      "status": 200,
+      "bytes": 51412,
+      "sha256": "c21741021380811f3c9bc94f2c9be39555616a4628c462ce2840c3b1d49df713"
+    },
+    {
+      "id": "eu-eui",
+      "url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
+      "final": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
+      "status": 200,
+      "bytes": 231549,
+      "sha256": "aa3671df52e865ff821bf6c63f3b81b670244ae34ace2032d44ee8f3e5ced6d7"
+    },
+    {
+      "id": "eu-eucf",
+      "url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+      "final": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+      "status": 200,
+      "bytes": 83567,
+      "sha256": "24147d391b36a6d587b9336e34b753d6a91f71b79fed88ace4acaa386148bc57"
+    },
+    {
+      "id": "eu-erasmus",
+      "url": "https://erasmus-plus.ec.europa.eu/document/call-for-proposals-2026-for-the-erasmus-programme",
+      "final": "https://erasmus-plus.ec.europa.eu/resources-and-tools/documents-and-guidelines/call-for-proposals-2026-for-the-erasmus-programme",
+      "status": 200,
+      "bytes": 183221,
+      "sha256": "52badd60031a60c9af160c1de657ec7de35c31e962da9a7aaec44b624050bf34"
+    },
+    {
+      "id": "eu-cef",
+      "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en",
+      "final": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en",
+      "status": 200,
+      "bytes": 95561,
+      "sha256": "70c36571535645496d2c8dc86ea95ece111a2224403090fdd943502a15323c2e"
+    },
+    {
+      "id": "eu-horizon",
+      "url": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en",
+      "final": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en",
+      "status": 200,
+      "bytes": 100586,
+      "sha256": "1be3397a45fdb9ba0f9d9da1431b7dd9073e694f5102a653b764de55bc198edd"
+    },
+    {
+      "id": "eu-digital",
+      "url": "https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital",
+      "final": "https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital",
+      "status": 200,
+      "bytes": 59931,
+      "sha256": "afcda8dd265ce6daaac66555389be87598f4e55280ba3151ed9f47f3ca59668b"
+    },
+    {
+      "id": "interreg-europe",
+      "url": "https://www.interregeurope.eu/discover-the-programme",
+      "final": "https://www.interregeurope.eu/discover-programme",
+      "status": 200,
+      "bytes": 300481,
+      "sha256": "d91c52a3ddac4c4c76ad28f51e2b5d2ae286d26a20e5cd632d4d583abff1a207"
+    },
+    {
+      "id": "dara-montagna",
+      "url": "https://www.affariregionali.it/it/aree-tematiche/montagna/",
+      "final": "https://www.affariregionali.it/it/aree-tematiche/montagna/montagna-contenuti-della-sezione/",
+      "status": 200,
+      "bytes": 102418,
+      "sha256": "3830b2ff08ef5493e03a386a69af4fcfce966cd68f1e3d5a242b89f90cad9dae"
+    },
+    {
+      "id": "protezione-civile",
+      "url": "https://www.protezionecivile.gov.it/it/normativa/decreto-cd-n-1149-del-3-aprile-2026/",
+      "final": "https://www.protezionecivile.gov.it/it/normativa/decreto-cd-n-1149-del-3-aprile-2026/",
+      "status": 200,
+      "bytes": 1015120,
+      "sha256": "cc074fe2f9ec111227c53a5eedb73bea3f2aa34dd7b3fae798169c755ba0fb57"
+    },
+    {
+      "id": "masaf-bandi",
+      "url": "https://www.masaf.gov.it/SviluppoRurale",
+      "final": "https://www.masaf.gov.it/SviluppoRurale",
+      "status": 200,
+      "bytes": 75755,
+      "sha256": "a0297e30722b140bffdf5cdd077d34e6eb9764484b113423ea68d4bbdbd7f525"
+    },
+    {
+      "id": "toscana-csr-artea-leader",
+      "url": "https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti",
+      "final": "https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti",
+      "status": 200,
+      "bytes": 208047,
+      "sha256": "2cc18417d4a98cd91bf7e72e385397b1dc89258a907423cc69deeff8d0a20bb1"
+    },
+    {
+      "id": "pcm-sport",
+      "url": "https://avvisibandi.sport.governo.it/bandi/69f9e0e94ea041522d70640b",
+      "final": "https://avvisibandi.sport.governo.it/bandi/69f9e0e94ea041522d70640b",
+      "status": 200,
+      "bytes": 69112,
+      "sha256": "4ef46818fd2e241db0f06dc096df4027d25dd9167ca959c8dd1f94a1e63aa17f"
+    },
+    {
+      "id": "cinea-life",
+      "url": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "final": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "status": 200,
+      "bytes": 107562,
+      "sha256": "f6a95b540f9ee6cd823d375b1a3e043a05318ec8fc9ff8da90a593245575e7f2"
+    }
+  ]
+}

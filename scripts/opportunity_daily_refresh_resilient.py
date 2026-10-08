@@ -92,6 +92,9 @@ def _assert_publishable_hardened(result: dict[str, Any]) -> None:
     uncovered = _runtime_uncovered_families(result)
     audit = result.setdefault("coverageAudit", {})
     audit["runtimeUncoveredFamilies"] = uncovered
+    if discovery.LIVE_BUDGET is not None and discovery.LIVE_BUDGET.scan_exhausted:
+        audit["transportBudget"] = {"status": "fail", "reason": "scan budget exhausted"}
+        audit["status"] = "fail"
     if uncovered:
         audit["status"] = "fail"
     _ORIGINAL_ASSERT(result)
@@ -244,8 +247,32 @@ def _probe_hardened(config: dict[str, Any], *, payloads: dict[str, str] | None =
     return discovery.probe_discovery_sources(radar_module, config, payloads=payloads)
 
 
+
+def _fetch_verification_bounded(url, *, kind, timeout=30, attempts=2, options=None):
+    payload, diagnostics = discovery.LIVE_BUDGET.fetch(
+        url, kind=kind, timeout=timeout, attempts=attempts, options=options)
+    discovery._record_trace(url, diagnostics)
+    if payload is None:
+        raise discovery.DiscoveryFetchError("; ".join(diagnostics.get("errors") or []), diagnostics)
+    return payload
+
+
 def main() -> int:
+    from opportunity_transport_budget import TransportBudget
+
     discovery.reset_trace()
+    previous_budget = discovery.LIVE_BUDGET
+    config, _ = _compose_runtime_hardened()
+    discovery.LIVE_BUDGET = TransportBudget(config)
+    original_http = revalidated._fetch_browser_html
+    original_browser = revalidated._fetch_playwright_text
+    original_pdf = revalidated.pdf_evidence.fetch_pdf_text
+    revalidated._fetch_browser_html = lambda url, timeout=30, attempts=3: _fetch_verification_bounded(
+        url, kind="official_http", timeout=timeout, attempts=attempts)
+    revalidated._fetch_playwright_text = lambda url, timeout_ms=45_000: _fetch_verification_bounded(
+        url, kind="official_browser", options={"timeout_ms": timeout_ms})
+    revalidated.pdf_evidence.fetch_pdf_text = lambda url, max_pages=18, max_chars=60000: _fetch_verification_bounded(
+        url, kind="official_pdf", options={"max_pages": max_pages, "max_chars": max_chars})
     radar_module.probe_discovery_sources = _probe_hardened
     radar_module.v025.v022.fetch_resilient = discovery.fetch_resilient
     radar_module.v025.v022.v02.fetch_resilient = discovery.fetch_resilient
@@ -253,8 +280,13 @@ def main() -> int:
     daily._prepare_public = _prepare_public_hardened
     core.compose_runtime_payloads = _compose_runtime_hardened
     try:
+        discovery.LIVE_BUDGET.prefetch(config)
         return revalidated.main()
     finally:
+        discovery.LIVE_BUDGET = previous_budget
+        revalidated._fetch_browser_html = original_http
+        revalidated._fetch_playwright_text = original_browser
+        revalidated.pdf_evidence.fetch_pdf_text = original_pdf
         radar_module.probe_discovery_sources = _ORIGINAL_PROBE
         radar_module.v025.v022.fetch_resilient = _ORIGINAL_V022_FETCH
         radar_module.v025.v022.v02.fetch_resilient = _ORIGINAL_V02_FETCH

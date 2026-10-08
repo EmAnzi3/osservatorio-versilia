@@ -118,7 +118,7 @@ def _all_verified_detail_fixtures() -> dict[str, str]:
     return detail_payloads
 
 
-def test_overlay_reaches_real_v044_run_and_recomputes_counts() -> None:
+def test_overlay_reaches_real_v044_run_and_recomputes_counts(*, current_evidence: bool = False) -> None:
     """Blind test sul percorso del motore, non solo sulla funzione di injection."""
     config, _ = fixed._compose_with_audit_fixes()
     payloads = {
@@ -133,6 +133,15 @@ def test_overlay_reaches_real_v044_run_and_recomputes_counts() -> None:
         for url in source.get("urls") or []
     }
     detail_payloads = _all_verified_detail_fixtures()
+    replay_date = date(2026, 9, 7)
+    if current_evidence:
+        # Historical candidates retain their original lifecycle dates; renewed
+        # coverage evidence must be checked at its own reference date.
+        replay_date = max(
+            replay_date,
+            *(date.fromisoformat(fixed.core._load(ROOT / "data" / name)["referenceDate"])
+              for name in ("opportunity-coverage-evidence-v043.json", "opportunity-coverage-evidence-v044.json")),
+        )
 
     original_compose = fixed.core.compose_runtime_payloads
     original_core_inject = fixed.core.inject_verified_v04
@@ -143,7 +152,7 @@ def test_overlay_reaches_real_v044_run_and_recomputes_counts() -> None:
         fixed.radar_module.inject_verified_v04 = fixed._inject_with_audit_fixes
     try:
         result = fixed.radar_module.run_v04(
-            date(2026, 9, 7),
+            replay_date,
             payloads=payloads,
             detail_payloads=detail_payloads,
             discovery_payloads=discovery_payloads,
@@ -156,14 +165,34 @@ def test_overlay_reaches_real_v044_run_and_recomputes_counts() -> None:
 
     by_id = {
         str(item.get("coverage_id") or ""): item
-        for item in result.get("opportunities") or []
+        for item in (result.get("opportunities") or []) + (result.get("archive") or [])
         if item.get("coverage_id")
     }
     assert C4T_ID in by_id, sorted(by_id)
     assert CERV_ID in by_id, sorted(by_id)
-    assert by_id[C4T_ID].get("eligibility") == "conditional"
+    if not current_evidence:
+        assert by_id[C4T_ID].get("eligibility") == "conditional"
+        assert {C4T_ID, CERV_ID} <= {
+            item.get("coverage_id") for item in result.get("opportunities") or []
+        }
+    else:
+        for coverage_id in (C4T_ID, CERV_ID):
+            bucket = "archive" if date.fromisoformat(by_id[coverage_id]["deadline_at"]) < replay_date else "opportunities"
+            assert coverage_id in {item.get("coverage_id") for item in result.get(bucket) or []}
     assert (result.get("counts") or {}).get("public") == len(result.get("opportunities") or [])
-    assert (result.get("coverageAudit") or {}).get("status") == "pass", result.get("coverageAudit")
+    audit = result.get("coverageAudit") or {}
+    if current_evidence:
+        assert audit.get("status") == "pass", audit
+    else:
+        # Evidence verified after the historical replay cannot attest coverage
+        # at that time. Keep the production rejection of future evidence.
+        for key in ("residualCoverage", "sportLifeCoverage"):
+            rows = (audit.get(key) or {}).get("rows") or []
+            max_age = (audit.get(key) or {}).get("maxEvidenceAgeDays", 45)
+            assert rows
+            assert all(row["fresh"] == (0 <= row["ageDays"] <= max_age) for row in rows), rows
+            if any(row["ageDays"] < 0 for row in rows):
+                assert audit[key]["status"] == "fail", audit[key]
 
 
 def test_cerv_regression_contract_is_already_active() -> None:
@@ -209,6 +238,7 @@ def main() -> int:
     test_c4t_injection_is_conditional_and_deterministic()
     test_expired_audit_entry_is_archived_without_live_probe()
     test_overlay_reaches_real_v044_run_and_recomputes_counts()
+    test_overlay_reaches_real_v044_run_and_recomputes_counts(current_evidence=True)
     test_cerv_regression_contract_is_already_active()
     test_mercati_rionali_cross_source_contract()
     print("Audit gap fixes: C4T + CERV + Mercati rionali PASS")

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import unittest
-from datetime import date
+from datetime import date, timedelta
 
 import run_opportunity_radar_v043 as v043
 
@@ -39,7 +39,8 @@ class RadarV043Test(unittest.TestCase):
                 "rows": [{"source_id": source_id} for source_id in (coverage.get("sources") or {})]
             }
         }
-        audit = v043._residual_evidence_audit(result, date(2026, 8, 23))
+        evidence = v043._load(v043.EVIDENCE_V043)
+        audit = v043._residual_evidence_audit(result, date.fromisoformat(evidence["referenceDate"]))
         self.assertEqual(audit["status"], "pass")
         self.assertEqual(audit["sourcesVerified"], 12)
         self.assertEqual(audit["sourcesExpected"], 12)
@@ -54,7 +55,9 @@ class RadarV043Test(unittest.TestCase):
                 "rows": [{"source_id": source_id} for source_id in (coverage.get("sources") or {})]
             }
         }
-        audit = v043._residual_evidence_audit(result, date(2026, 11, 1))
+        evidence = v043._load(v043.EVIDENCE_V043)
+        latest = max(date.fromisoformat(x["evidence_verified_at"]) for x in evidence["entries"])
+        audit = v043._residual_evidence_audit(result, latest + timedelta(days=evidence["maxEvidenceAgeDays"] + 1))
         self.assertEqual(audit["status"], "fail")
         self.assertEqual(len(audit["staleEvidence"]), 12)
 
@@ -69,8 +72,8 @@ class RadarV043Test(unittest.TestCase):
             with self.subTest(source_id=source_id):
                 self.assertTrue(str(row.get("evidence_url") or "").startswith("https://"))
                 verified = date.fromisoformat(str(row.get("evidence_verified_at") or ""))
-                self.assertLessEqual(verified, date(2026, 8, 23))
-                self.assertGreaterEqual(verified, date(2026, 8, 22))
+                self.assertLessEqual(verified, date.fromisoformat(evidence["referenceDate"]))
+                self.assertGreaterEqual(verified, date.fromisoformat(evidence["referenceDate"]) - timedelta(days=evidence["maxEvidenceAgeDays"]))
 
     def test_eui_city_to_city_is_verified_after_degurb_check(self):
         entry = next(
