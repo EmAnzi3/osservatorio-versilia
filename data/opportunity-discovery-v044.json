@@ -28,7 +28,7 @@
         "https://www.anci.piemonte.it/": ["Notizie da ANCI Nazionale"]
       },
       "fetchTimeoutSeconds": 18,
-      "includeTerms": ["band", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo", "riparto", "stanziament"],
+      "includeTerms": ["bando", "bandi", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo", "riparto", "stanziament"],
       "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni", "città", "edilizia scolastica"]
     },
     "gse": {
@@ -39,6 +39,7 @@
     },
     "mim-enti-locali": {
       "urls": [
+        "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",
         "https://pnrr.istruzione.it/feed/",
         "https://www.mim.gov.it/web/guest/comunicati"
       ],

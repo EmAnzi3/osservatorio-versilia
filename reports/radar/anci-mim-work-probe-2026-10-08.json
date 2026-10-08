@@ -1,0 +1,127 @@
+{
+  "checkedAt": "2026-10-08T07:52:30.879052+00:00",
+  "environment": "ChatGPT Work; not GitHub runner",
+  "rows": [
+    {
+      "sourceId": "anci-nazionale",
+      "url": "https://www.anci.it/category/generico/news/",
+      "status": "ok",
+      "transport": "http_browser",
+      "httpAttempts": 2,
+      "fallbackUsed": false,
+      "proxyUsed": false,
+      "initialFailureClass": null,
+      "rootFailureClass": null,
+      "browserFailureClass": null,
+      "readerFailureClass": null,
+      "terminalFailureClass": null,
+      "failureClass": null,
+      "resolvedUrl": "https://www.anci.it/category/generico/news/",
+      "redirected": false,
+      "errors": [],
+      "bytesUtf8": 154744,
+      "sha256Utf8": "9cb521c45b92360346f3ebd25d93ed84acfc050a2a9801c0450975eddc3e746a",
+      "candidateCount": 3,
+      "candidates": [
+        {
+          "title": "Edilizia Scolastica – Avviso MIM per interventi verifiche vulnerabilità sismica",
+          "url": "https://www.anci.it/edilizia-scolastica-avviso-mim-per-interventi-verifiche-vulnerabilita-sismica/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Mense scolastiche bio, intesa in Conferenza unificata su riparto fondo 2026",
+          "url": "https://www.anci.it/mense-scolastiche-bio-intesa-in-conferenza-unificata-su-riparto-fondo-2026/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Asacom 2026, intesa in Conferenza Unificata sul decreto riparto per Comuni e Regioni",
+          "url": "https://www.anci.it/asacom-2026-intesa-in-conferenza-unificata-sul-decreto-riparto-per-comuni-e-regioni/",
+          "status": "internal_review"
+        }
+      ]
+    },
+    {
+      "sourceId": "anci-nazionale",
+      "url": "https://www.anci.it/category/generico/news/feed/",
+      "status": "ok",
+      "transport": "http_browser",
+      "httpAttempts": 2,
+      "fallbackUsed": false,
+      "proxyUsed": false,
+      "initialFailureClass": null,
+      "rootFailureClass": null,
+      "browserFailureClass": null,
+      "readerFailureClass": null,
+      "terminalFailureClass": null,
+      "failureClass": null,
+      "resolvedUrl": "https://www.anci.it/category/generico/news/feed/",
+      "redirected": false,
+      "errors": [],
+      "bytesUtf8": 29651,
+      "sha256Utf8": "1e061718f239dfce0f3dbadacfb228959a1289d1b42a287aa4a9c70761efd6aa",
+      "candidateCount": 4,
+      "candidates": [
+        {
+          "title": "Edilizia Scolastica – Avviso MIM per interventi verifiche vulnerabilità sismica",
+          "url": "https://www.anci.it/edilizia-scolastica-avviso-mim-per-interventi-verifiche-vulnerabilita-sismica/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Disponibile il bando “Città che legge” 10ª edizione. Scadenza 30 ottobre",
+          "url": "https://www.anci.it/disponibile-il-bando-citta-che-legge-10a-edizione-scadenza-30-ottobre/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Prorogati al 5 dicembre i bandi Sport Missione Comune e Cultura Missione Comune",
+          "url": "https://www.anci.it/prorogati-al-5-dicembre-i-bandi-sport-missione-comune-e-cultura-missione-comune/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Mense scolastiche bio, intesa in Conferenza unificata su riparto fondo 2026",
+          "url": "https://www.anci.it/mense-scolastiche-bio-intesa-in-conferenza-unificata-su-riparto-fondo-2026/",
+          "status": "internal_review"
+        }
+      ]
+    },
+    {
+      "sourceId": "mim-enti-locali",
+      "url": "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",
+      "status": "ok",
+      "transport": "http_browser",
+      "httpAttempts": 2,
+      "fallbackUsed": false,
+      "proxyUsed": false,
+      "initialFailureClass": null,
+      "rootFailureClass": null,
+      "browserFailureClass": null,
+      "readerFailureClass": null,
+      "terminalFailureClass": null,
+      "failureClass": null,
+      "resolvedUrl": "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",
+      "redirected": false,
+      "errors": [],
+      "bytesUtf8": 421940,
+      "sha256Utf8": "e71e4b18266dc7d5f7532e7e2c3d80ac13288da2cce7ccf7bedd512df639f742",
+      "candidateCount": 2,
+      "candidates": [
+        {
+          "title": "Arredi didattici innovativi per asili nido e scuole dell’infanzia",
+          "url": "https://pn20212027.istruzione.it/avvisi/arredi-didattici-innovativi-per-asili-nido-e-scuole-dellinfanzia/",
+          "status": "internal_review"
+        },
+        {
+          "title": "Palestre",
+          "url": "https://pn20212027.istruzione.it/avvisi/palestre/",
+          "status": "internal_review"
+        }
+      ]
+    }
+  ],
+  "note": "HTTP/source signature verified in Work, not proof of recovery on GitHub runner. Candidates remain internal_review; archive notices do not imply open applications.",
+  "summary": {
+    "anciUniqueCandidates": 5,
+    "mimArchiveCandidates": 2,
+    "githubRunnerRecovery": "unverified",
+    "mimComunicati": "HTTP 403 in Work"
+  }
+}

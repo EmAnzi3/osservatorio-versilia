@@ -477,6 +477,29 @@ def _test_anci_news_short_previews_preserve_discovery() -> None:
     assert all(row["discovery_only"] and row["status"] == "internal_review" for row in queue)
 
 
+def _test_rss_and_mim_table_keep_individual_notice_links() -> None:
+    config, _ = daily_h4._compose_runtime_hardened()
+    sources = {row["id"]: row for row in config["discoverySources"]}
+    feed = """<rss><channel><title>ANCI</title>
+    <item><title>Riparto fondo per Comuni</title><link>https://www.anci.it/riparto/</link><description>Risorse per Comuni e Regioni</description></item>
+    <item><title>La bandiera dei Comuni</title><link>https://www.anci.it/bandiera/</link><description>Cerimonia</description></item>
+    </channel></rss>"""
+    queue = daily_h4.radar_module.discovery_candidates(sources["anci-nazionale"], feed, "https://www.anci.it/category/generico/news/feed/")
+    assert [row["url"] for row in queue] == ["https://www.anci.it/riparto/"], queue
+    listing = "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali"
+    assert listing in sources["mim-enti-locali"]["urls"]
+    assert discovery.endpoint_role(sources["mim-enti-locali"], listing) == "listing"
+    table = """<table id="table-avvisi"><tbody>
+    <tr><td>Arredi didattici innovativi per asili nido</td><td>FESR</td><td>123</td><td>2026</td><td>Enti locali</td><td><a href="/avvisi/arredi/"><i></i></a></td></tr>
+    <tr><td>Scuole polo per la comunicazione</td><td>FSE+</td><td>456</td><td>2026</td><td>Istituti scolastici</td><td><a href="/avvisi/estate/"><i></i></a></td></tr>
+    </tbody></table>"""
+    queue = daily_h4.radar_module.discovery_candidates(sources["mim-enti-locali"], table, listing)
+    assert [row["url"] for row in queue] == ["https://pn20212027.istruzione.it/avvisi/arredi/"], queue
+    assert all(row["status"] == "internal_review" and row["discovery_only"] for row in queue)
+    empty = table.replace("Enti locali", "Istituti scolastici")
+    assert daily_h4.radar_module.discovery_candidates(sources["mim-enti-locali"], empty, listing) == []
+
+
 def _test_runtime_compose_replaces_stale_sources() -> None:
     config, _ = daily_h4._compose_runtime_hardened()
     primary_ids = {str(source.get("id") or "") for source in config.get("sources") or []}
@@ -641,6 +664,7 @@ def main() -> int:
     _test_endpoint_content_signature_rejects_unrelated_200_page()
     _test_anci_independent_mirror_survives_national_endpoint_failures()
     _test_anci_news_short_previews_preserve_discovery()
+    _test_rss_and_mim_table_keep_individual_notice_links()
     _test_runtime_compose_replaces_stale_sources()
     _test_transport_audit_exposes_endpoint_health()
     print("Discovery resiliente Radar: PASS")
