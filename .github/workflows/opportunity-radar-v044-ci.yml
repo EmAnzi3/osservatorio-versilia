@@ -201,7 +201,9 @@ jobs:
         run: python scripts/materialize_opportunity_release_snapshot.py
 
       - name: Run current live discovery through production entrypoint
-        run: python -u scripts/opportunity_daily_refresh_stable.py --date "$(date -u +%F)"
+        run: |
+          python -u scripts/opportunity_transport_smoke.py --diagnose-routes
+          python -u scripts/opportunity_daily_refresh_stable.py --date "$(date -u +%F)"
 
       - name: Validate current daily snapshot
         run: python scripts/test_opportunity_snapshot_lifecycle.py --file data/opportunity-daily-public.json --mode daily
@@ -249,5 +251,6 @@ jobs:
             reports/runtime/opportunity-continuity-hold.json
             reports/runtime/opportunity-publishability-diagnostic.json
             reports/runtime/opportunity-transport-progress.jsonl
+            reports/runtime/opportunity-route-diagnostic.json
           if-no-files-found: ignore
           retention-days: 7

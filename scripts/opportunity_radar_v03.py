@@ -68,6 +68,23 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
     parser.close()
     cards = parser.out
     structured_listing = False
+    short_tuscany_listing = False
+    if source.get("id") == "anci-toscana":
+        from bs4 import BeautifulSoup
+        from urllib.parse import urlsplit
+        location = urlsplit(page_url)
+        if location.hostname in {"ancitoscana.it", "www.ancitoscana.it"}:
+            loops = BeautifulSoup(payload, "html.parser").select(".e-loop-item")
+            if loops:
+                structured_listing = True
+                short_tuscany_listing = location.path.rstrip("/") == "/categorie/bandi"
+                cards = []
+                for loop in loops:
+                    link = loop.select_one(".elementor-widget-theme-post-title a[href]")
+                    excerpt = loop.select_one(".elementor-widget-theme-post-excerpt")
+                    if link:
+                        cards.append((link.get_text(" ", strip=True), link["href"],
+                                      excerpt.get_text(" ", strip=True) if excerpt else ""))
     try:
         feed = ET.fromstring(payload)
     except ET.ParseError:
@@ -105,7 +122,9 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
         combined = f"{title}. {body}"
         if include_terms and not _matches_any(combined, include_terms):
             continue
-        if municipal_terms and not _matches_any(combined, municipal_terms):
+        # Short previews on the named regional Bandi archive are discovery
+        # leads only. Beneficiaries still require primary-document verification.
+        if municipal_terms and not _matches_any(combined, municipal_terms) and not short_tuscany_listing:
             continue
         out.append(
             {

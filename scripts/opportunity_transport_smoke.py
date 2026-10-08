@@ -14,6 +14,11 @@ verifica diretta della fonte primaria.
 from __future__ import annotations
 
 import json
+import argparse
+import os
+import subprocess
+import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -33,6 +38,56 @@ TARGET_SOURCE_IDS = (
 )
 
 REPORT_PATH = Path("reports/runtime/opportunity-transport-smoke.json")
+
+
+def diagnose_routes(config: dict[str, Any]) -> int:
+    """Read-only default/IPv4 comparison; never changes source health or snapshots."""
+    sources = _source_map(config)
+    requests = [(source_id, url, route)
+                for source_id in ("anci-toscana", "anci-nazionale", "mim-enti-locali")
+                for url in _urls(sources[source_id])
+                if source_id != "anci-toscana" or url.endswith("/categorie/bandi/")
+                for route in ("default", "ipv4")]
+
+    def probe(request):
+        source_id, url, route = request
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "body"
+            command = ["curl", "--silent", "--show-error", "--location",
+                       "--proto", "=https", "--proto-redir", "=https",
+                       "--connect-timeout", "4", "--max-time", "8",
+                       "--user-agent", transport.transport._BROWSER_UA,
+                       "--header", "Accept-Language: it-IT,it;q=0.9,en;q=0.7",
+                       "--header", "Cache-Control: no-cache",
+                       "--output", str(output), "--write-out", "%{json}"]
+            if route == "ipv4":
+                command.append("--ipv4")
+            command.append(url)
+            try:
+                result = subprocess.run(command, capture_output=True, text=True, timeout=12)
+                metrics = json.loads(result.stdout or "{}")
+                payload = output.read_text(errors="replace") if output.exists() else ""
+                candidates = h4.radar_module.discovery_candidates(sources[source_id], payload, url) if result.returncode == 0 and metrics.get("http_code") == 200 else []
+                row = {"sourceId": source_id, "url": url, "route": route,
+                       "proxyConfigured": any(os.environ.get(key) for key in ("HTTPS_PROXY", "https_proxy", "ALL_PROXY", "all_proxy")),
+                       "exitCode": result.returncode, "error": result.stderr[-1000:],
+                       "candidateCount": len(candidates),
+                       **{key: metrics.get(key) for key in (
+                           "http_code", "remote_ip", "http_version", "url_effective", "num_redirects",
+                           "time_namelookup", "time_connect", "time_appconnect", "time_starttransfer",
+                           "time_total", "size_download", "content_type", "ssl_verify_result")}}
+            except (subprocess.TimeoutExpired, OSError, ValueError) as exc:
+                row = {"sourceId": source_id, "url": url, "route": route, "error": str(exc), "exitCode": None}
+            print("RADAR ROUTE PROBE: " + json.dumps(row, ensure_ascii=False), flush=True)
+            return row
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        rows = list(pool.map(probe, requests))
+    path = Path("reports/runtime/opportunity-route-diagnostic.json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"schemaVersion": "1.0", "diagnosticOnly": True,
+                               "sources": rows}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return 0
 
 
 def _source_map(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -125,7 +180,12 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--diagnose-routes", action="store_true")
+    args = parser.parse_args()
     config, _ = h4._compose_runtime_hardened()
+    if args.diagnose_routes:
+        return diagnose_routes(config)
     sources = _source_map(config)
     transport.reset_trace()
     rows = [_probe_source(source_id, sources.get(source_id)) for source_id in TARGET_SOURCE_IDS]

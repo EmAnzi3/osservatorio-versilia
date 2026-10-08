@@ -816,7 +816,67 @@ def _test_parallel_prefetch_keeps_budgets_and_cache() -> None:
         server.server_close()
 
 
+def _test_anci_toscana_short_cards_are_isolated() -> None:
+    config, _ = daily_h4._compose_runtime_hardened()
+    source = next(row for row in config["discoverySources"] if row["id"] == "anci-toscana")
+    listing = "https://ancitoscana.it/categorie/bandi/"
+    payload = '''<div class="e-loop-item">
+      <div class="elementor-widget-theme-post-title"><h4><a href="/ccn/">Valorizzazione Centri Commerciali Naturali</a></h4></div>
+      <div class="elementor-widget-theme-post-excerpt">Contributi del 60% per eventi e digitalizzazione</div></div>
+      <div class="e-loop-item"><a href="/categorie/comuni/">Comuni</a>
+      <div class="elementor-widget-theme-post-title"><h4><a href="/jazz/">Avviso pubblico musica jazz</a></h4></div>
+      <div class="elementor-widget-theme-post-excerpt">Contributi per festival, domande entro settembre</div></div>
+      <div class="e-loop-item"><div class="elementor-widget-theme-post-title"><h4><a href="/cerimonia/">Cerimonia dei Comuni</a></h4></div>
+      <div class="elementor-widget-theme-post-excerpt">Incontro istituzionale</div></div>
+      <footer>Bandi e finanziamenti ai Comuni</footer>'''
+    rows = daily_h4.radar_module.discovery_candidates(source, payload, listing)
+    assert [row["url"] for row in rows] == ["https://ancitoscana.it/ccn/", "https://ancitoscana.it/jazz/"], rows
+    assert rows[0]["summary"] == "Contributi del 60% per eventi e digitalizzazione", rows
+    assert all(row["status"] == "internal_review" and row["discovery_only"] for row in rows), rows
+    # A generic topic page must still require municipal evidence in the card.
+    assert daily_h4.radar_module.discovery_candidates(source, payload, "https://ancitoscana.it/montagna/") == []
+    # A structured archive with no relevant cards must not fall back to its footer.
+    empty = payload[payload.index('<div class="e-loop-item"><div'):]
+    assert daily_h4.radar_module.discovery_candidates(source, empty, listing) == []
+
+
+def _test_route_diagnostics_preserve_failures_and_tls() -> None:
+    import json
+    import os
+    import tempfile
+    from pathlib import Path
+    from types import SimpleNamespace
+    import opportunity_transport_smoke as smoke
+    config, _ = daily_h4._compose_runtime_hardened()
+    original_run = smoke.subprocess.run
+    cwd = Path.cwd()
+    def simulated(command, **kwargs):
+        assert command[command.index("--proto") + 1] == "=https"
+        assert command[command.index("--proto-redir") + 1] == "=https"
+        assert "--insecure" not in command and kwargs["timeout"] == 12
+        if "--ipv4" in command:
+            return SimpleNamespace(returncode=60, stdout='{"http_code":0,"ssl_verify_result":20}', stderr="certificate failure")
+        return SimpleNamespace(returncode=0, stdout='{"http_code":403,"remote_ip":"192.0.2.1"}', stderr="")
+    try:
+        smoke.subprocess.run = simulated
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            assert smoke.diagnose_routes(config) == 0
+            report = json.loads(Path("reports/runtime/opportunity-route-diagnostic.json").read_text())
+            assert report["diagnosticOnly"] is True
+            rows = report["sources"]
+            assert {row["sourceId"] for row in rows} == {"anci-toscana", "anci-nazionale", "mim-enti-locali"}
+            assert all(row["candidateCount"] == 0 for row in rows)
+            assert all(row["http_code"] == 403 for row in rows if row["route"] == "default")
+            assert all(row["exitCode"] == 60 and row["ssl_verify_result"] == 20 for row in rows if row["route"] == "ipv4")
+    finally:
+        os.chdir(cwd)
+        smoke.subprocess.run = original_run
+
+
 def main() -> int:
+    _test_route_diagnostics_preserve_failures_and_tls()
+    _test_anci_toscana_short_cards_are_isolated()
     _test_annual_archive_follows_current_year()
     _test_chromium_rejects_error_document()
     _test_listing_coverage_status()
