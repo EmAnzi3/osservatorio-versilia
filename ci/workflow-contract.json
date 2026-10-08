@@ -370,7 +370,8 @@
     {
       "path": ".github/workflows/opportunity-radar-v044-ci.yml",
       "category": "specialized-gate",
-      "status": "active"
+      "status": "active",
+      "note": "Il dry-run conserva un confronto diagnostico curl default/IPv4 ANCI/MIM con controllo ANCI Toscana; non modifica la salute delle fonti né i gate di pubblicazione."
     },
     {
       "path": ".github/workflows/salute-finanziaria-v129-gate.yml",
