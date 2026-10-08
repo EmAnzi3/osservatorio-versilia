@@ -320,6 +320,11 @@ def audit(path, layer):
     expected.update(k for k in distinct.KEYS if k in catalog["metrics"])
     import semantic_query_census_adapters as census
     expected.update(k for k in census.KEYS if k in catalog["metrics"])
+    import semantic_query_fragility_adapters as fragility
+    for k in fragility.KEYS:
+        if k in catalog['metrics']:
+            try:fragility.context(catalog['metrics'][k],k,'total');expected.add(k)
+            except ValueError:pass
     import semantic_query_hazard_adapters as hazard
     expected.update(k for k in hazard.KEYS if k in catalog['metrics'] and all('populationBase' in r for r in catalog['metrics'][k]['rows']))
     import semantic_query_territory_adapters as territory

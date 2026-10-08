@@ -54,7 +54,7 @@ def regressions(catalog_path):
                 if edge['id']=='workplace_resident_employment':assert 'workplace_activity_not_resident_employment' in edge['associationAttempt']['warnings']
             else:
                 assert edge['associationAttempt']['status']=='not_computable'
-                expected='agriculture_localized_and_center_scopes_not_jointly_comparable' if edge['id']=='agriculture_mixed_scope' else 'commuting_hybrid_denominator_pair_not_aligned' if edge['id']=='commuting_hybrid_context' else 'demography_school_site_observation_dates_not_attested_for_pairing' if edge['id']=='school_sites_pupils' else 'paired_period_mismatch'
+                expected='fragility_ordinal_operation_not_supported' if edge['id'].startswith('ifc_') else 'agriculture_localized_and_center_scopes_not_jointly_comparable' if edge['id']=='agriculture_mixed_scope' else 'commuting_hybrid_denominator_pair_not_aligned' if edge['id']=='commuting_hybrid_context' else 'demography_school_site_observation_dates_not_attested_for_pairing' if edge['id']=='school_sites_pupils' else 'paired_period_mismatch'
                 assert expected in edge['associationAttempt']['reasons']
     assert all(g['permitsCalculation'] is False for g in graph['groups'])
     contract=json.loads((ROOT/'data/enrichment-companion-contract.json').read_text())

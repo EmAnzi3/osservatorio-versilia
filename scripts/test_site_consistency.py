@@ -66,6 +66,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     commuting_regressions(catalog_path)
     from test_semantic_agriculture_adapters import regressions as agriculture_regressions
     agriculture_regressions(catalog_path)
+    from test_semantic_fragility_adapters import regressions as fragility_regressions
+    fragility_regressions(catalog_path)
     from test_semantic_hazard_adapters import regressions as hazard_regressions
     hazard_regressions(catalog_path)
     from test_semantic_territory_adapters import regressions as territory_regressions

@@ -7044,6 +7044,737 @@
         ]
       },
       "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "ifc_municipalFragility_current",
+      "question": "Quale decile IFC ha Massarosa nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_series",
+      "question": "Quali classi pubblicate decile IFC dal 2018 al 2022?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_relative_change_refused",
+      "question": "Si può trattare il decile IFC come quantità per relative_change?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_absolute_change_refused",
+      "question": "Si può trattare il decile IFC come quantità per absolute_change?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_trend_refused",
+      "question": "Si può trattare il decile IFC come quantità per trend?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_rank_refused",
+      "question": "Si può trattare il decile IFC come quantità per rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_weighted_ratio_refused",
+      "question": "Si può trattare il decile IFC come quantità per weighted_ratio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_benchmark_gap_refused",
+      "question": "Si può trattare il decile IFC come quantità per benchmark_gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_anomaly_refused",
+      "question": "Si può trattare il decile IFC come quantità per anomaly?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_percentage_points_refused",
+      "question": "Si può trattare il decile IFC come quantità per percentage_points?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_municipalFragility_missing2020",
+      "question": "È disponibile la classe nel 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_period_not_frozen"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_current",
+      "question": "Quale ventile addetti a bassa produttività ha Massarosa nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              11,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_series",
+      "question": "Quali classi pubblicate ventile addetti a bassa produttività dal 2018 al 2022?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_relative_change_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per relative_change?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_absolute_change_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per absolute_change?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_trend_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per trend?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_rank_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_weighted_ratio_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per weighted_ratio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_benchmark_gap_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per benchmark_gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_anomaly_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per anomaly?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_percentage_points_refused",
+      "question": "Si può trattare il ventile addetti a bassa produttività come quantità per percentage_points?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_ordinal_operation_not_supported"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_missing2020",
+      "question": "È disponibile la classe nel 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_period_not_frozen"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_current",
+      "question": "Quanto dista in auto il centro comunale di Massarosa dal Polo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              171,
+              10
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_tuscany_gap",
+      "question": "Scarto del tempo comunale dalla mediana non ponderata tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -161,
+              10
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_italy_gap",
+      "question": "Scarto del tempo comunale dalla mediana non ponderata italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -10,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_series_refused",
+      "question": "È attestata l’operazione series sui tempi?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "accessibility_operation_not_attested"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_weighted_ratio_refused",
+      "question": "È attestata l’operazione weighted_ratio sui tempi?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "accessibility_operation_not_attested"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_trend_refused",
+      "question": "È attestata l’operazione trend sui tempi?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "accessibility_operation_not_attested"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "ifc_access_correlation_refused",
+      "question": "Gli export ripetuti autorizzano correlazioni temporali dei tempi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "accessibility_operation_not_attested"
+        ]
+      },
+      "reference": "effective reference 2019; pairing not reviewed"
+    },
+    {
+      "id": "ifc_access_release_refused",
+      "question": "Il tempo è riferito al 2022 della release?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "fragility_period_not_frozen"
+        ]
+      },
+      "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
     }
   ]
 }
