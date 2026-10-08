@@ -323,9 +323,11 @@ def audit(path, layer):
     import semantic_query_coast_adapters as coast
     import semantic_query_bathing_adapters as bathing
     import semantic_query_maritime_adapters as maritime
+    import semantic_query_extractive_adapters as extractive
     expected.update(k for k in coast.KEYS if k in catalog['metrics'] and str(catalog['metrics'][k]['meta']['year'])==coast.LABELS[k])
     expected.update(k for k in bathing.KEYS if k in catalog['metrics'])
     expected.update(k for k in maritime.KEYS if k in catalog['metrics'])
+    expected.update(k for k in extractive.KEYS if k in catalog['metrics'])
     import semantic_query_fragility_adapters as fragility
     for k in fragility.KEYS:
         if k in catalog['metrics']:
@@ -352,7 +354,7 @@ def audit(path, layer):
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
         query=request('compare',key,dimension=dimensions[0])
-        if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):
+        if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:
             rejected(engine,query,'partial_coverage_requires_opt_in')
             query['allowPartial']=True
         report=engine.query(query)

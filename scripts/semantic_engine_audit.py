@@ -16,6 +16,7 @@ import semantic_query_demography_school_adapters as demography
 import semantic_query_coast_adapters as coast
 import semantic_query_bathing_adapters as bathing
 import semantic_query_maritime_adapters as maritime
+import semantic_query_extractive_adapters as extractive
 
 
 def compact(result):
@@ -44,7 +45,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         elif key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
-    if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):query['allowPartial']=True
+    if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:query['allowPartial']=True
     if operation == 'benchmark_gap':
         selector['towns'] = [sorted(engine.codes)[0]]
         query['benchmark'] = scope
@@ -135,6 +136,8 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('extractive_sites_production','extractiveSites','extractiveProduction','context','RTCave records at September 2026 and extraction reported in 2025 with only two reviewed municipality correspondences are distinct universes; no extraction per active site inferred'),
+        ('extractive_sites_planning','extractiveSites','extractivePlanning','context','RTCave record counts and PRC separate planning categories are distinct; geometries do not measure excavated or authorized surfaces'),
         ('maritime_titles_due','maritimeConcessions','maritimeConcessionFeesDue','context','SID title stocks and 2026 amounts due share a frozen territorial assignment; totals do not describe collections or municipal income, no automatic association'),
         ('maritime_titles_coastline','maritimeConcessions','statisticalCoastlineLength','context','SID August 2026 title counts and Istat coastline 2021 have different statistical units and dates; incomplete title geometries cannot produce occupied coastal length'),
         ('bathing_classification_samples','bathingWaterQuality','bathingNonCompliantSamples','context','ARPAT four-year classification and 2025 monitoring sample shares have distinct statistical units and windows; supplementary controls are targeted, no automatic association'),
@@ -195,7 +198,7 @@ def connections(engine, coverage):
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
         if identity=='demography_natural_transfers':
             for q in qs:q['periods']=['2024']
-        results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_')) else {}))) for s in qs]
+        results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_')) else {}))) for s in qs]
         verification = 'not_verified'; reasons = []
         if all(r['status']=='computed' for r in results):
             a = {o['geography']:o for o in results[0]['observations']}
@@ -229,7 +232,7 @@ def connections(engine, coverage):
             else: verification='observations_available_context_only'
         else: reasons=sorted({reason for r in results for reason in r['reasons']})
         pair = engine.query(dict(operation='correlation', selectors=qs, method='spearman',
-            axis='municipalities', purpose=meaning, **({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_')) else {}))) if kind=='context' else None
+            axis='municipalities', purpose=meaning, **({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_')) else {}))) if kind=='context' else None
         edges.append(dict(id=identity, left=left, right=right, kind=kind, meaning=meaning,
             verification=verification, reasons=reasons, unitConversionFactor=1_000_000 if identity=='frame_turnover_numerator' else 1, permitsCausalClaim=False,
             permitsAutomaticCorrelation=False, observations=results,
