@@ -8619,6 +8619,984 @@
         ]
       },
       "reference": "Different reference periods and source coastline universes, no joint pairing reviewed"
+    },
+    {
+      "id": "bathing_quality_areas",
+      "question": "Quale quota delle aree di Camaiore è eccellente nella classificazione 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              200,
+              3
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_km",
+      "question": "Quale quota dei km classificati di Camaiore è eccellente?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "share:kilometres:excellent",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              7300,
+              81
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_poor",
+      "question": "Quante aree di Camaiore sono scarse?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "count:areas:poor",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_poor_share",
+      "question": "Quale quota delle aree di Camaiore è scarsa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "share:areas:poor",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              100,
+              3
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_poor_km",
+      "question": "Quanti km di Camaiore sono classificati scarsi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "kilometres:poor",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              8,
+              25
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_pooled",
+      "question": "Quale quota delle 21 aree costiere è eccellente?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              200,
+              3
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_pooled_km",
+      "question": "Quale quota dei 20,62 km classificati è eccellente?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "share:kilometres:excellent",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              94200,
+              1031
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_good_pietrasanta",
+      "question": "Quante aree di Pietrasanta sono buone?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "count:areas:good",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_all",
+      "question": "Quale quota dei campioni all di Camaiore non è conforme?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "share:all",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              200,
+              7
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_count_all",
+      "question": "Quanti campioni all di Camaiore sono stati controllati?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "samples:all",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              28,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_routine",
+      "question": "Quale quota dei campioni routine di Camaiore non è conforme?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "share:routine",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              350,
+              9
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_count_routine",
+      "question": "Quanti campioni routine di Camaiore sono stati controllati?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "samples:routine",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              18,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_supplementary",
+      "question": "Quale quota dei campioni supplementary di Camaiore non è conforme?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "share:supplementary",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_count_supplementary",
+      "question": "Quanti campioni supplementary di Camaiore sono stati controllati?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "samples:supplementary",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_pooled",
+      "question": "Quale quota dei 167 campioni costieri non è conforme?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3500,
+              167
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_routine_pooled",
+      "question": "Quale quota dei 126 campioni routinari costieri non è conforme?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "share:routine",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1450,
+              63
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_samples_supp_zero",
+      "question": "I campioni supplettivi non conformi di Forte sono zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "nonCompliant:supplementary",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blue_history",
+      "question": "Lo storico FEE di Pietrasanta conserva i conteggi originali?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              2,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/7/value",
+            "fraction": [
+              2,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blue_slash",
+      "question": "Le due località FEE di Viareggio mantengono la denominazione unita da barra?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingWaterQuality_partial_refused",
+      "question": "Si possono includere i tre comuni non costieri senza opt-in?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingWaterQuality_benchmark_refused",
+      "question": "Il totale Toscana è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingWaterQuality_anomaly_refused",
+      "question": "Si può dichiarare un comune anomalo senza revisione del riferimento?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingWaterQuality_trend_refused",
+      "question": "È autorizzato un trend automatico?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_classification_or_samples_history_not_frozen"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingNonCompliantSamples_partial_refused",
+      "question": "Si possono includere i tre comuni non costieri senza opt-in?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingNonCompliantSamples_benchmark_refused",
+      "question": "Il totale Toscana è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingNonCompliantSamples_anomaly_refused",
+      "question": "Si può dichiarare un comune anomalo senza revisione del riferimento?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_bathingNonCompliantSamples_trend_refused",
+      "question": "È autorizzato un trend automatico?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_classification_or_samples_history_not_frozen"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blueFlagBeaches_partial_refused",
+      "question": "Si possono includere i tre comuni non costieri senza opt-in?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blueFlagBeaches_benchmark_refused",
+      "question": "Il totale Toscana è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blueFlagBeaches_anomaly_refused",
+      "question": "Si può dichiarare un comune anomalo senza revisione del riferimento?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_blueFlagBeaches_trend_refused",
+      "question": "È autorizzato un trend automatico?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_historical_change_not_reviewed"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_awards_weighted_refused",
+      "question": "Si può ponderare il conteggio FEE come un rapporto?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_verified_ratio_required"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_quality_series_refused",
+      "question": "Esiste uno storico congelato della classificazione ARPAT?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_classification_or_samples_history_not_frozen"
+        ]
+      },
+      "reference": "Componenti ARPAT o conteggi FEE congelati in costa-mare-v123; valori letterali indipendenti, classificazioni 2022–2025, campioni 2025 e riconoscimenti 2019–2026 distinti"
+    },
+    {
+      "id": "bathing_mixed_universe_refused",
+      "question": "È ammessa una correlazione automatica fra classificazione quadriennale e campioni annuali?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality"
+          },
+          {
+            "metric": "bathingNonCompliantSamples"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "bathing_universes_not_jointly_comparable"
+        ]
+      },
+      "reference": "Unità, periodo e disegno di controllo ARPAT distinti; nessuna comparabilità automatica attestata."
     }
   ]
 }
