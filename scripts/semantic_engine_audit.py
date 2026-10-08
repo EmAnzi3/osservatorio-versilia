@@ -131,6 +131,8 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('agriculture_center_context','agriculturalFarms','irrigatedAgriculturalArea','context','Farms and irrigated area by farm center, census 2020; shared scale is not water demand or productivity'),
+        ('agriculture_mixed_scope','agriculturalUsedArea','irrigatedAgriculturalArea','context','Physically localized SAU and farm-center irrigation have different geographic attribution; joint correlation refused'),
         ('environment_residual_formula','wastePerResident','residualWaste','derived_product','Residual kg per resident is total kg per resident × (1 − separate collection share / 100); rounded published components, no independent causal evidence'),
         ('environment_cost_waste','wasteServiceCost','wastePerResident','context','2024 service cost and waste quantity per resident; distinct accounting scopes and potentially shared normalization, not TARI or efficiency'),
         ('environment_water_waste','waterNetworkLosses','wastePerResident','context','Water census 2018 and waste reporting 2024 are distinct periods and universes; no current environmental composite'),

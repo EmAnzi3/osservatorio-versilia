@@ -4904,6 +4904,471 @@
         ]
       },
       "reference": "CTOTab comunale congelato soltanto 2024"
+    },
+    {
+      "id": "agriculture_farms",
+      "question": "Quante aziende agricole censite con centro a Massarosa nel 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalFarms",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              192,
+              1
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_localized",
+      "question": "Quanta SAU fisicamente localizzata a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalUsedArea",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              137061,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_territory_share",
+      "question": "Quale quota della superficie comunale era SAU nel 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalUsedArea",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              13706100,
+              682379
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_farm_size",
+      "question": "Qual era la dimensione media delle aziende con SAU a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "averageAgriculturalFarmSize",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              24628,
+              4775
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_irrigated",
+      "question": "Quanti ettari irrigati delle aziende attribuite a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "irrigatedAgriculturalArea",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              24167,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_irrigated_share",
+      "question": "Quale quota di SAU delle aziende era irrigata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "irrigatedAgriculturalArea",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              604175,
+              24628
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_arable",
+      "question": "Quanti ettari di seminativi localizzati a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "cropProfile",
+            "dimension": "part:ARLAND",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              44423,
+              50
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_table_olives",
+      "question": "Quanti ettari di olive da tavola localizzati a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "cropProfile",
+            "dimension": "part:OLIVTTR",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_pooled_size",
+      "question": "Dimensione aziendale del gruppo da componenti sommate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "averageAgriculturalFarmSize",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              58111,
+              18740
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_pooled_irrigated",
+      "question": "Quota irrigata del gruppo da SAU per centro aziendale?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "irrigatedAgriculturalArea",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1047520,
+              58111
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_size_gap",
+      "question": "Scostamento dimensione media Massarosa da Toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "averageAgriculturalFarmSize",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -2452369887,
+              328653700
+            ]
+          }
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_history_refused",
+      "question": "Come cambia il numero di aziende 2010-2020?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalFarms",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2010",
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_single_census_no_history"
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_present_refused",
+      "question": "Quante aziende a Massarosa nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalFarms",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_period_not_frozen"
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_extent_refused",
+      "question": "Differenza ettari Massarosa-intera Toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "agriculturalUsedArea",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_benchmark_extent_or_normalization_not_comparable"
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_missing_vines",
+      "question": "La vite assente a Forte dei Marmi è zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "cropProfile",
+            "dimension": "part:VINEY",
+            "towns": [
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Istat census 2020 frozen carriers; independently transcribed municipal values and arithmetic; farm-center and localized land scopes distinct"
+    },
+    {
+      "id": "agriculture_mixed_scope_refused",
+      "question": "Associare SAU localizzata e superficie irrigata per centro aziendale?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "agriculturalUsedArea"
+          },
+          {
+            "metric": "irrigatedAgriculturalArea"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Inspect scope compatibility"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_localized_and_center_scopes_not_jointly_comparable"
+        ]
+      },
+      "reference": "Distinct census territorial attribution: localized land versus farm center; no jointly coherent agricultural land universe attested"
     }
   ]
 }
