@@ -1,10 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente — 7 ottobre 2026
+## Stato corrente — 8 ottobre 2026
 
-- Baseline main: `9d7baa837970a19c723de219b174fa741a7e394e`, merge #353. Quick/Full CI verdi sul candidato; albero `a14442cacfffdfa7fe038e783f615f7d3475f269` identico al Full locale isolato verde. Pubblicazione da verificare sul run main, distinta dal verde PR. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti; conteggi derivati.
+- Baseline main: `bc21c624fcaaada085cddef0ad9df601a327b932`, merge #356. Quick CI e Full CI rilanciato sullo stesso SHA verdi; Full locale isolato verde, albero `cebdb53d245f8713c83144020cba24ea60748126`. Build/deploy `37734683569` e controllo live `37735425732` SUCCESS. Catalogo effettivo: 225 indicatori, 124 storici e 137 confronti; conteggi derivati.
 - A0–A5 DONE. A5 chiusa con #280; UI approvate e correzioni #313–315/#322 preservate. Camaiore resta protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; golden e altri lock restano attivi.
-- Workstream attivo: **A6**, step **A6.4 e letture pilota A6.5**, issue **#330**, branch `feat/a6-agriculture-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
+- Workstream attivo: **A6**, step **A6.4 e letture pilota A6.5**, issue **#330**, branch `feat/a6-geography-forest-adapters`. A6.2–A6.3: contratto e guardie pubblicati con #331 (merge manuale del proprietario). A6.1 chiusa con merge autorizzato di #301. Specifica `docs/A6_SEMANTIC_MODEL.md`, contratto `ci/semantic-model-contract.json`, validatore e regressione integrati nel Quick per sorgente ed Effective Public Catalog.
 - A6.1 definisce invarianti e struttura; non è ancora un motore di interrogazione. A6.2 operazioni, A6.3 comparabilità e A6.4 motore devono precedere le letture A6.5 e la chiusura A6.6. A7 non parte prima della chiusura metodologica A6.
 - Perimetro del lotto: motore deterministico, test e documentazione; nessuna modifica a dati, asset, renderer, homepage, temi, schede comunali o golden.
 
@@ -26,6 +26,8 @@
 
 Il proprietario ha confermato #347 mergiata/pubblicata e autorizzato la ripresa di A6 il 6 ottobre. Il completamento Radar/live prosegue in un'altra chat: non incorporarlo né usarlo come blocco di A6.
 
-Lotto agricolo v13: cinque carrier Istat 2020, aziende, SAU localizzata, dimensione media, colture, superficie irrigata. Centro aziendale distinto dalla localizzazione dei terreni; rapporti da componenti native, mancanti delle colture conservati. Nessuno storico o condizione corrente 2026 inventato. Solo la dimensione media ha benchmark comparabili; ettari comunali e totali regionali non diventano misure equivalenti. Metodo `docs/A6_AGRICULTURE_ADAPTERS.md`, report `reports/a6-agriculture/`.
+#356 ha pubblicato il lotto agricolo v13: cinque carrier Istat 2020, con centro aziendale distinto dai terreni localizzati, rapporti da componenti native e mancanti preservati. Metodo `docs/A6_AGRICULTURE_ADAPTERS.md`; lotto chiuso, senza estendere la revisione delle letture.
 
-Copertura derivata: 118/225 effettivi, 85/181 sorgente; 107 senza adapter, di cui 42 ambientali. Suite cumulativa 182 domande (116 calcoli, 66 rifiuti), 86 osservazioni agricole indipendenti incluse quattro celle mancanti; 37 collegamenti tipizzati. Le 35 letture territoriali e due riepiloghi conservano perimetro e revisione metodologica aperta. Gate Quick/Full locali e CI sul singolo albero prima del merge, approvazione esplicita del proprietario richiesta. A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
+Lotto geografia/foreste v14: superficie Istat 2021, densità con popolazione 2026/superficie 2021, otto fasce e statistiche altimetriche 2021, carta forestale nominale 2020 aggiornata 2024. Date del rapporto 2026 distinte dalla rilevazione. Rapporti nativi per densità e bosco; nessun ettaro retro-derivato dalle fasce altimetriche, nessun trend da fotografie. Metodo `docs/A6_GEOGRAPHY_FOREST_ADAPTERS.md`; report `reports/a6-geography/`.
+
+Copertura derivata: 122/225 effettivi, 85/181 sorgente; 103 senza adapter, di cui 38 ambientali. Suite cumulativa 197 domande (125 calcoli, 72 rifiuti), 118 osservazioni geografiche indipendenti; 39 collegamenti tipizzati. Le 35 letture territoriali e due riepiloghi conservano perimetro e revisione metodologica aperta. Gate Quick/Full locali e CI sul singolo albero prima del merge, approvazione esplicita del proprietario richiesta. A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.

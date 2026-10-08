@@ -5369,6 +5369,395 @@
         ]
       },
       "reference": "Distinct census territorial attribution: localized land versus farm center; no jointly coherent agricultural land universe attested"
+    },
+    {
+      "id": "geography_surface",
+      "question": "Qual è la superficie comunale Istat 2021 di Massarosa e Pietrasanta?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalSurface",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 68.2455922649
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_density",
+      "question": "Qual è la densità usando popolazione 2026 e superficie 2021?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "populationDensity",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 319.17079590212444
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_altitude",
+      "question": "Qual è la quota minima territoriale Istat, inclusa quella sotto il mare?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "altitudeProfile",
+            "dimension": "stat:min",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": -8
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_forest_hectares",
+      "question": "Quanti ettari forestali riporta la base CFI congelata?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "dimension": "view:hectares",
+            "towns": [
+              "046018",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1513.583
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_density_pooled",
+      "question": "Qual è la densità del gruppo dei sette comuni, senza media delle densità?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "populationDensity",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              15852000000000000,
+              35722613717487
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/denominatorPeriod",
+            "value": "2021"
+          },
+          {
+            "path": "/result/numeratorPeriod",
+            "value": "2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_forest_pooled",
+      "question": "Qual è la quota forestale dai totali in ettari?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1768367000000000,
+              35722613717487
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_density_gap",
+      "question": "Scostamento della densità rispetto al rapporto aggregato toscano",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "populationDensity",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 160.00343091796535
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_surface_gap",
+      "question": "Scostamento della superficie comunale rispetto alla superficie media dei comuni italiani, non al totale Italia",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalSurface",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 30.023227682992825
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_altitude_gap",
+      "question": "Scostamento della sintesi arrotondata >=300 m rispetto alla quota territoriale toscana",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "altitudeProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -43.407879965451585
+          }
+        ]
+      }
+    },
+    {
+      "id": "geography_no_history",
+      "question": "Come è cambiata la copertura forestale?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "geography_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "geography_no_report_year",
+      "question": "La copertura forestale è una rilevazione 2026?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "geography_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "geography_altitude_no_weights",
+      "question": "Possiamo pesare le quote altimetriche senza ettari nativi delle fasce?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "altitudeProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      }
+    },
+    {
+      "id": "geography_no_forest_benchmark",
+      "question": "Qual è il divario forestale dalla Toscana?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "geography_benchmark_dimension_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "geography_no_band_benchmark",
+      "question": "Qual è il confronto regionale della sola fascia 0–299 m?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "altitudeProfile",
+            "dimension": "part:0_299",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "geography_benchmark_dimension_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "geography_mixed_reference",
+      "question": "Possiamo correlare quota altimetrica 2021 e carta forestale 2020–2024 come stessa fotografia?",
+      "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "altitudeProfile"
+          },
+          {
+            "metric": "forestCoverIndex"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Review frozen references"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      }
     }
   ]
 }

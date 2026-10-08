@@ -108,3 +108,6 @@ scripts/test_semantic_environment_adapters.py
 
 scripts/semantic_query_agriculture_adapters.py
 scripts/test_semantic_agriculture_adapters.py
+
+scripts/semantic_query_geography_adapters.py
+scripts/test_semantic_geography_adapters.py
