@@ -114,3 +114,5 @@ scripts/test_semantic_geography_adapters.py
 
 scripts/semantic_query_soil_adapters.py
 scripts/test_semantic_soil_adapters.py
+scripts/semantic_query_territory_adapters.py
+scripts/test_semantic_territory_adapters.py
