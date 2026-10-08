@@ -131,6 +131,7 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('hazard_flood_landslide','floodExposure','landslideExposure','context','Different map editions 2020/2024 and census populations 2011/2021; no automatic coeval pairing or causality'),
         ('territory_protection_network','protectedNaturalAreas','managedReticulumLength','context','Protection-layer consultation and DCRT network clipping are distinct reference photographs; common territory does not authorize automatic statistical pairing'),
         ('soil_stock_cover','landUse','landCoverProfile','context','ISPRA consumed stock 2024 and UCS cartographic cover 2019: distinct editions, surfaces and classifications; no automatic temporal or ecological causal comparison'),
         ('geography_density_area','municipalSurface','populationDensity','context','Municipal area 2021 and resident density 2026/2021 share the area denominator; pair periods differ, no automatic correlation'),

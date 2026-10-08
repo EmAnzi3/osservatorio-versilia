@@ -6590,6 +6590,460 @@
         ]
       },
       "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "hazard_flood_current",
+      "question": "Quale quota dei residenti 2011 è esposta in P2 a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              160420,
+              2233
+            ]
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_flood_published",
+      "question": "La percentuale P2 pubblicata mantiene la precisione ufficiale?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/publishedValue",
+            "value": 71.841
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_landslide_current",
+      "question": "Quanti residenti 2021 sono esposti in P3+P4 a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "residents:P3+P4"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 3534
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_landslide_area",
+      "question": "Quale quota di superficie P3+P4 è verificabile con i componenti nativi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "areaPct:P3+P4"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              787000,
+              34123
+            ]
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_flood_pooled",
+      "question": "Il rapporto del gruppo usa residenti censiti senza media delle percentuali?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2556500,
+              54413
+            ]
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_landslide_pooled_area",
+      "question": "Il rapporto areale usa il campo ufficiale P3+P4 sul territorio proprio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "areaPct:P3+P4",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2109300,
+              76469
+            ]
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_zero",
+      "question": "Forte dei Marmi ha zero residenti esposti distinto da dato mancante?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_history_area",
+      "question": "Quale quota di superficie P3+P4 riportava ISPRA a Massarosa nel 2017?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 18.23
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_history_current_precision",
+      "question": "Lo storico mantiene i due decimali nel 2024?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 23.06
+          }
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_flood_history",
+      "question": "Possiamo ricostruire residenti negli anni non congelati?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hazard_historical_dimension_not_frozen"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_landslide_trend",
+      "question": "Le edizioni PAI autorizzano un trend automatico?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hazard_temporal_comparability_not_attested"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_historical_count",
+      "question": "Possiamo dedurre residenti 2017 da percentuali di superficie?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "residents:P3+P4",
+            "periods": [
+              "2017"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hazard_period_or_dimension_not_frozen"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_history_weight",
+      "question": "Lo storico percentuale ha componenti per ponderare?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_scenario_sum",
+      "question": "Possiamo sommare gli scenari alluvionali annidati?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "residentsPct:sum"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_area_weight",
+      "question": "I km² assoluti sono un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "areaKm2:P2"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_benchmark",
+      "question": "Abbiamo un benchmark ufficiale congelato per questo profilo?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hazard_benchmark_not_frozen"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_mixed_maps_refused",
+      "question": "Possiamo correlare automaticamente alluvioni 2020 e frane 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "floodExposure"
+          },
+          {
+            "metric": "landslideExposure"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Verifica riferimenti cartografici e censuari; esclusa causalità"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
+    },
+    {
+      "id": "hazard_temporal_association_refused",
+      "question": "La serie areale PAI consente una correlazione nel tempo?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2017",
+              "2020",
+              "2024"
+            ]
+          },
+          {
+            "metric": "landslideExposure",
+            "dimension": "history:areaPct:P3+P4",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2017",
+              "2020",
+              "2024"
+            ]
+          }
+        ],
+        "axis": "periods",
+        "method": "spearman",
+        "purpose": "Verifica limite della continuità cartografica"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hazard_temporal_comparability_not_attested"
+        ]
+      },
+      "reference": "ISPRA fragilita-comunale-v133.json: mappe 2020/2024, confini 2024, residenti censiti 2011/2021; storico PAI P3+P4 superficie a due decimali, non residenti."
     }
   ]
 }
