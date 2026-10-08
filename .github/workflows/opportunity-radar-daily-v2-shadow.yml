@@ -94,7 +94,7 @@ jobs:
             exit 97
           fi
           mkdir -p reports/runtime reports/shadow
-          python scripts/opportunity_daily_refresh_stable.py 2>&1 \
+          python -u scripts/opportunity_daily_refresh_stable.py 2>&1 \
             | tee reports/shadow/opportunity-shadow-scan.log
 
       - name: Validate shadow candidate
@@ -210,6 +210,7 @@ jobs:
             reports/shadow/
             reports/runtime/opportunity-continuity-hold.json
             reports/runtime/opportunity-publishability-diagnostic.json
+            reports/runtime/opportunity-transport-progress.jsonl
           if-no-files-found: warn
           retention-days: 30
 

@@ -646,11 +646,108 @@ def _test_listing_coverage_status() -> None:
         discovery.fetch_with_diagnostics = original
 
 
+
+def _test_live_transport_budget_and_journal() -> None:
+    import json
+    from pathlib import Path
+    import tempfile
+    import threading
+    import time
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from opportunity_transport_budget import TransportBudget
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == "/slow":
+                time.sleep(2)
+            try:
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"<html>official notice</html>")
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = True
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            journal = Path(tmp) / "progress.jsonl"
+            budget = TransportBudget({"sources": [{"id": "official", "url": base + "/ok"}]},
+                                     endpoint_seconds=5, source_seconds=10, scan_seconds=20,
+                                     journal=journal)
+            payload, diagnostics = budget.fetch(base + "/ok")
+            assert "official notice" in payload and diagnostics["status"] == "ok"
+            assert budget.fetch(base + "/ok")[0] == payload  # same-run cache
+            budget.endpoint_seconds = 0.3
+            started = time.monotonic()
+            payload, diagnostics = budget.fetch(base + "/slow")
+            assert payload is None and diagnostics["failureClass"] == "timeout_client"
+            assert diagnostics["budgetScope"] == "endpoint"
+            assert time.monotonic() - started < 1.5  # all retries/fallbacks bounded
+            budget.source_seconds = 0.1
+            payload, diagnostics = budget.fetch(base + "/another")
+            assert payload is None and diagnostics["budgetScope"] == "source"
+            assert diagnostics["elapsedSeconds"] < 0.1
+            budget.deadline = time.monotonic() - 1
+            payload, diagnostics = budget.fetch("http://localhost:1/not-run")
+            assert payload is None and diagnostics["budgetScope"] == "scan"
+            assert budget.scan_exhausted
+            rows = [json.loads(line) for line in journal.read_text().splitlines()]
+            assert [row["event"] for row in rows] == ["start", "end"] * 4
+            assert rows[3]["status"] == "error" and rows[3]["sourceId"] == "official"
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+
+def _test_expired_worker_kills_descendants() -> None:
+    import os
+    from pathlib import Path
+    import subprocess
+    import sys
+    import tempfile
+    import time
+    from unittest.mock import patch
+    import opportunity_transport_budget as bounded
+
+    if os.name == "nt":
+        return  # Linux Actions requires whole process-group cleanup.
+    original_popen = subprocess.Popen
+    with tempfile.TemporaryDirectory() as tmp:
+        pid_file = Path(tmp) / "descendant.pid"
+        code = ("import subprocess,time,pathlib; "
+                "p=subprocess.Popen(['" + sys.executable + "','-c','import time; time.sleep(30)']); "
+                "pathlib.Path(" + repr(str(pid_file)) + ").write_text(str(p.pid)); time.sleep(30)")
+        def stalled_worker(command, **kwargs):
+            return original_popen([sys.executable, "-c", code], **kwargs)
+        budget = bounded.TransportBudget({}, endpoint_seconds=0.5, journal=Path(tmp) / "trace.jsonl")
+        with patch.object(bounded.subprocess, "Popen", stalled_worker):
+            payload, diagnostics = budget.fetch("https://example.test/stall")
+        assert payload is None and diagnostics["failureClass"] == "timeout_client"
+        assert pid_file.exists(), "Descendant must have started before the deadline"
+        status = Path("/proc") / pid_file.read_text() / "stat"
+        for _ in range(20):
+            if not status.exists() or status.read_text().split()[2] == "Z":
+                break
+            time.sleep(0.01)
+        else:
+            raise AssertionError("Expired worker left a running browser descendant")
+
+
 def main() -> int:
     _test_annual_archive_follows_current_year()
     _test_chromium_rejects_error_document()
     _test_listing_coverage_status()
     _test_configured_detail_pages_cannot_attest_discovery()
+    _test_expired_worker_kills_descendants()
+    _test_live_transport_budget_and_journal()
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
     _test_timeout_uses_reader_after_chromium_failure()

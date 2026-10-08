@@ -374,6 +374,10 @@ def _deadline_markers(value: Any) -> set[str]:
 def _fetch_continuity_detail(url: str) -> tuple[str | None, dict[str, Any]]:
     """Fetch verification-grade: HTTP diretto, poi Chromium; mai reader proxy."""
     discovery = h4.discovery
+    if discovery.LIVE_BUDGET is not None:
+        payload, diagnostics = discovery.LIVE_BUDGET.fetch(url, kind="continuity")
+        discovery._record_trace(url, diagnostics)
+        return payload, diagnostics
     errors: list[str] = []
     try:
         payload, resolved_url = discovery._fetch_browser_html_with_url(

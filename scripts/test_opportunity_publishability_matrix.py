@@ -88,13 +88,40 @@ def test_recent_date_replay_reconciles_before_final_decision() -> None:
         assert daily._publishability_problems(result) == [], (run_day, result)
 
 
+
+def test_scan_budget_exhaustion_blocks_publication() -> None:
+    from types import SimpleNamespace
+    import opportunity_daily_refresh_resilient as resilient
+
+    previous_budget = resilient.discovery.LIVE_BUDGET
+    previous_runtime = resilient._runtime_uncovered_families
+    previous_assert = resilient._ORIGINAL_ASSERT
+    try:
+        resilient.discovery.LIVE_BUDGET = SimpleNamespace(scan_exhausted=True)
+        resilient._runtime_uncovered_families = lambda result: []
+        resilient._ORIGINAL_ASSERT = daily._assert_publishable
+        result = _base()
+        try:
+            resilient._assert_publishable_hardened(result)
+        except RuntimeError as exc:
+            assert "coverageAudit=fail" in str(exc)
+        else:
+            raise AssertionError("Incomplete scan must not publish even with recent source health")
+        assert result["coverageAudit"]["transportBudget"]["status"] == "fail"
+    finally:
+        resilient.discovery.LIVE_BUDGET = previous_budget
+        resilient._runtime_uncovered_families = previous_runtime
+        resilient._ORIGINAL_ASSERT = previous_assert
+
+
 def main() -> int:
+    test_scan_budget_exhaustion_blocks_publication()
     test_clean_run()
     test_simultaneous_continuity_coverage_and_regional_failure()
     test_backtest_and_runtime_coverage_are_not_hidden()
     test_empty_output_is_an_independent_blocker()
     test_recent_date_replay_reconciles_before_final_decision()
-    print("Publishability finale Radar: 5 scenari + replay 09/09-11/09 PASS")
+    print("Publishability finale Radar: 6 scenari + replay 09/09-11/09 PASS")
     return 0
 
 
