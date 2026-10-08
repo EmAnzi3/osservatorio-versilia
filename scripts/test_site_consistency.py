@@ -13,6 +13,7 @@ from visualization_content_contract import validate_visual_runtime_contract, val
 from semantic_model_contract import validate_semantic_model_contract
 from semantic_operations import coverage_matrix
 from semantic_query_engine import QueryEngine
+import semantic_query_coast_adapters as coast
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -34,15 +35,24 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     for item in query_coverage:
         if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
             selector={"metric":item["metric"],"dimension":item["engine"]["dimensions"][0]}
-            result = query_engine.query({"operation": "compare", "selectors": [selector]})
+            query = {"operation": "compare", "selectors": [selector]}
+            coastal = item["metric"] in coast.KEYS
+            if coastal:
+                refusal = query_engine.query(query)
+                assert refusal["status"] == "not_computable" and "partial_coverage_requires_opt_in" in refusal["reasons"], refusal
+                query["allowPartial"] = True
+            result = query_engine.query(query)
             assert result["status"] == "computed", result
+            if coastal:
+                assert result["coverage"]["usable"] == 4 and {x["observation"]["geography"] for x in result["excluded"]} == set(coast.NA), result
             if 'weighted_ratio' in item['engine']['operations']:
-                result = query_engine.query({'operation':'weighted_ratio','selectors':[selector]})
+                result = query_engine.query(dict(operation='weighted_ratio',selectors=[selector],**({'allowPartial':True} if coastal else {})))
                 assert result['status']=='computed', result
+                if coastal:assert result['coverage']['usable']==4 and len(result['excluded'])==3, result
             if 'benchmark_gap' in item['engine']['operations']:
                 for scope in item['engine']['benchmarkScopes']:
                     result = query_engine.query({'operation':'benchmark_gap','benchmark':scope,
-                        'selectors':[dict(selector,towns=['046018'])]})
+                        'selectors':[dict(selector,towns=[coast.COASTAL[0] if coastal else '046018'])]})
                     assert result['status']=='computed', result
     age_coverage=next(x for x in query_coverage if x['metric']=='ageDistribution')
     for dimension in age_coverage['engine']['dimensions']:
@@ -66,6 +76,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     commuting_regressions(catalog_path)
     from test_semantic_agriculture_adapters import regressions as agriculture_regressions
     agriculture_regressions(catalog_path)
+    from test_semantic_coast_adapters import regressions as coast_regressions
+    coast_regressions(catalog_path)
     from test_semantic_fragility_adapters import regressions as fragility_regressions
     fragility_regressions(catalog_path)
     from test_semantic_hazard_adapters import regressions as hazard_regressions

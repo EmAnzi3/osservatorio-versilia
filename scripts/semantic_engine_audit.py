@@ -13,6 +13,7 @@ import semantic_query_business_adapters as business
 import semantic_query_census_adapters as census
 import semantic_query_distinct_finance_adapters as distinct
 import semantic_query_demography_school_adapters as demography
+import semantic_query_coast_adapters as coast
 
 
 def compact(result):
@@ -41,6 +42,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         elif key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
+    if key in coast.KEYS:query['allowPartial']=True
     if operation == 'benchmark_gap':
         selector['towns'] = [sorted(engine.codes)[0]]
         query['benchmark'] = scope
@@ -131,6 +133,8 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('coast_istat_protection','statisticalCoastlineLength','rigidDefenceProtectedCoast','context','Istat statistical coastline 2021 and ISPRA protection 2020 have distinct coastal universes; no interchangeable lengths or automatic association'),
+        ('coast_protection_dynamics','rigidDefenceProtectedCoast','shorelineDynamics','context','Rigid protection of ISPRA coast 2020 and natural low coastline change 2006–2020 have different denominators; not defence effectiveness'),
         ('ifc_ordinal_accessibility','municipalFragility','essentialServicesAccessibility','context','IFC ordinal decile 2022 and center-to-pole minutes 2019; ordinal class is not an amount or service coverage'),
         ('ifc_productivity_fragility','lowProductivityEmployment','municipalFragility','context','Published ventiles and composite deciles; component/composite dependence is not an independent causal relationship'),
         ('hazard_flood_landslide','floodExposure','landslideExposure','context','Different map editions 2020/2024 and census populations 2011/2021; no automatic coeval pairing or causality'),
@@ -185,7 +189,7 @@ def connections(engine, coverage):
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
         if identity=='demography_natural_transfers':
             for q in qs:q['periods']=['2024']
-        results = [engine.query({'operation':'compare','selectors':[s]}) for s in qs]
+        results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith('coast_') else {}))) for s in qs]
         verification = 'not_verified'; reasons = []
         if all(r['status']=='computed' for r in results):
             a = {o['geography']:o for o in results[0]['observations']}
@@ -219,7 +223,7 @@ def connections(engine, coverage):
             else: verification='observations_available_context_only'
         else: reasons=sorted({reason for r in results for reason in r['reasons']})
         pair = engine.query(dict(operation='correlation', selectors=qs, method='spearman',
-            axis='municipalities', purpose=meaning)) if kind=='context' else None
+            axis='municipalities', purpose=meaning, **({'allowPartial':True} if identity.startswith('coast_') else {}))) if kind=='context' else None
         edges.append(dict(id=identity, left=left, right=right, kind=kind, meaning=meaning,
             verification=verification, reasons=reasons, unitConversionFactor=1_000_000 if identity=='frame_turnover_numerator' else 1, permitsCausalClaim=False,
             permitsAutomaticCorrelation=False, observations=results,

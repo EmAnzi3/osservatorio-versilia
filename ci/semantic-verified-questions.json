@@ -7775,6 +7775,850 @@
         ]
       },
       "reference": "Istat IFC frozen v133 and accessibility 2019 native municipality medians; ordinal classes never quantities"
+    },
+    {
+      "id": "coast_istat_current",
+      "question": "Quanto misura la linea litoranea statistica di Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3238942133,
+              1000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_protection_current",
+      "question": "Quota della costa ISPRA protetta da opere rigide a Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3596945551683269,
+              500000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_protection_zero",
+      "question": "Viareggio ha zero km di costa protetta nello snapshot?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "view:protectedKm",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_protection_pooled",
+      "question": "Quota complessiva protetta nei quattro comuni costieri?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1526401254511423,
+              500000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_protection_tuscany_gap",
+      "question": "Scarto della quota Camaiore dalla quota ISPRA tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -141012581595607,
+              25000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_protection_italy_gap",
+      "question": "Scarto della quota Camaiore dalla quota ISPRA italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -220199211974387,
+              20000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_erosion",
+      "question": "Quota del tratto naturale basso erosion a Camaiore nel 2006–2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:erosion",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              858239052697313,
+              2500000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_erosion_km",
+      "question": "Quanti km di tratto erosion a Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "kilometres:erosion",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              12523696524137,
+              1250000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_erosion_pooled",
+      "question": "Quota erosion sull’intero tratto analizzato dei quattro comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:erosion",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              526637007799469,
+              200000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_stable",
+      "question": "Quota del tratto naturale basso stable a Camaiore nel 2006–2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:stable",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              27261216113857007,
+              10000000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_stable_km",
+      "question": "Quanti km di tratto stable a Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "kilometres:stable",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              795608627726403,
+              10000000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_stable_pooled",
+      "question": "Quota stable sull’intero tratto analizzato dei quattro comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:stable",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              9591413162949351,
+              1000000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_advance",
+      "question": "Quota del tratto naturale basso advance a Camaiore nel 2006–2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:advance",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              9693058276753537,
+              100000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_advance_km",
+      "question": "Quanti km di tratto advance a Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "kilometres:advance",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              141444181393653,
+              50000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_dynamics_advance_pooled",
+      "question": "Quota advance sull’intero tratto analizzato dei quattro comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:advance",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              8777540179805331,
+              100000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_statisticalCoastlineLength_na_refused",
+      "question": "I tre comuni non litoranei diventano zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_statisticalCoastlineLength_history_refused",
+      "question": "È disponibile uno storico annuale confrontabile?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_statisticalCoastlineLength_trend_refused",
+      "question": "Si può calcolare un trend annuale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_statisticalCoastlineLength_anomaly_refused",
+      "question": "È revisionata una diagnosi di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_rigidDefenceProtectedCoast_na_refused",
+      "question": "I tre comuni non litoranei diventano zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_rigidDefenceProtectedCoast_history_refused",
+      "question": "È disponibile uno storico annuale confrontabile?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_rigidDefenceProtectedCoast_trend_refused",
+      "question": "Si può calcolare un trend annuale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_rigidDefenceProtectedCoast_anomaly_refused",
+      "question": "È revisionata una diagnosi di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_shorelineDynamics_na_refused",
+      "question": "I tre comuni non litoranei diventano zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_shorelineDynamics_history_refused",
+      "question": "È disponibile uno storico annuale confrontabile?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_shorelineDynamics_trend_refused",
+      "question": "Si può calcolare un trend annuale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_history_not_frozen"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_shorelineDynamics_anomaly_refused",
+      "question": "È revisionata una diagnosi di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_statisticalCoastlineLength_benchmark_refused",
+      "question": "Il totale regionale o un benchmark scalare sono confrontabili col comune?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_benchmark_not_comparable"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_shorelineDynamics_benchmark_refused",
+      "question": "Il totale regionale o un benchmark scalare sono confrontabili col comune?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_benchmark_not_comparable"
+        ]
+      },
+      "reference": "Frozen coastal source lengths: Istat 2021 and ISPRA protection 2020 / shoreline interval 2006–2020; distinct universes; four coastal, three n.a."
+    },
+    {
+      "id": "coast_mixed_universe_refused",
+      "question": "Le quote ISPRA e la linea Istat possono essere correlate automaticamente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength"
+          },
+          {
+            "metric": "rigidDefenceProtectedCoast"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "coast_universes_not_jointly_comparable"
+        ]
+      },
+      "reference": "Different reference periods and source coastline universes, no joint pairing reviewed"
     }
   ]
 }
