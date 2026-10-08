@@ -320,6 +320,8 @@ def audit(path, layer):
     expected.update(k for k in distinct.KEYS if k in catalog["metrics"])
     import semantic_query_census_adapters as census
     expected.update(k for k in census.KEYS if k in catalog["metrics"])
+    import semantic_query_territory_adapters as territory
+    expected.update(k for k in territory.KEYS if k in catalog['metrics'] and str(catalog['metrics'][k]['meta']['year'])==territory.LABELS[k])
     import semantic_query_soil_adapters as soil
     expected.update(k for k in soil.KEYS if k in catalog["metrics"] and all(isinstance(r.get("coverSeries" if k=="landCoverProfile" else "seriesByView"),dict) for r in catalog["metrics"][k]["rows"]))
     import semantic_query_geography_adapters as geography

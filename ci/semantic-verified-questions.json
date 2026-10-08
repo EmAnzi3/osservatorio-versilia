@@ -6200,6 +6200,396 @@
         ]
       },
       "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "territory_protected_union",
+      "question": "Quanto territorio di Massarosa è coperto dall’unione delle tutele?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              113452403600,
+              3395522551
+            ]
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_protected_overlap",
+      "question": "Quanto vale Natura 2000 a Massarosa, senza sommare ZSC e ZPS?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "hectares:natura2000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 1568.073761
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_protected_pooled",
+      "question": "Qual è la quota protetta di Camaiore e Massarosa sui loro ettari territoriali?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              470631600000,
+              15272833231
+            ]
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_protected_zero",
+      "question": "Forte dei Marmi ha zero ettari Natura 2000, senza dato mancante?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "hectares:natura2000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_network_managed",
+      "question": "Quanti km sono in gestione a Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "view:managed"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 204.809871
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_network_pooled",
+      "question": "La densità di Camaiore e Massarosa usa km su superficie, non residenti?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "view:density",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              561693893,
+              152728332
+            ]
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_works_layers",
+      "question": "Quanti elementi lineari censiti intersecano Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hydraulicWorksCensusElements",
+            "dimension": "layer:line"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/5/value",
+            "value": 67
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_works_zero",
+      "question": "Forte dei Marmi non ha elementi puntuali censiti: zero è osservato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hydraulicWorksCensusElements",
+            "dimension": "layer:point"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_protected_history",
+      "question": "La consultazione 2026 consente un trend delle tutele?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "territory_history_not_frozen"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_network_history",
+      "question": "Possiamo inventare una serie annuale del reticolo?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "territory_history_not_frozen"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_works_history",
+      "question": "L’approvazione 2021 e i confini 2026 attestano una variazione?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "hydraulicWorksCensusElements",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "territory_history_not_frozen"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_works_weight",
+      "question": "Le presenze delle opere sono un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "hydraulicWorksCensusElements",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_network_full_weight",
+      "question": "I chilometri complessivi sono una percentuale da ponderare?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_works_regional_refused",
+      "question": "Il totale regionale di 3.666 elementi è confrontabile con un conteggio comunale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hydraulicWorksCensusElements",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "territory_regional_count_not_comparable"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_period_refused",
+      "question": "La fotografia delle aree protette è un dato annuale 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "territory_period_not_frozen"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
+    },
+    {
+      "id": "territory_mixed_reference_refused",
+      "question": "Consultazione delle tutele e reticolo DCRT hanno una medesima data statistica?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas"
+          },
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "view:density"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Verifica di comparabilità delle fotografie territoriali, senza causalità"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "Regione Toscana: territorio-v137-official.json (consultazione 12 settembre 2026, DCRT 24/2025) e bonifica-rischio-v126-gis.json (DGRT 1155/2021); clipping Istat 2026. Input congelati e controlli aritmetici indipendenti."
     }
   ]
 }
