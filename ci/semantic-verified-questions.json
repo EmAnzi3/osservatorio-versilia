@@ -10632,6 +10632,1296 @@
         ]
       },
       "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "extractive_sites_total",
+      "question": "Quanti record RTCave per total a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 44
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_active",
+      "question": "Quanti record RTCave per view:state_active a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:state_active",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_view_state_closed",
+      "question": "Quanti record RTCave per view:state_closed a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:state_closed",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 33
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_view_state_inactive",
+      "question": "Quanti record RTCave per view:state_inactive a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:state_inactive",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_view_state_nd",
+      "question": "Quanti record RTCave per view:state_nd a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:state_nd",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_view_type_restoreworks",
+      "question": "Quanti record RTCave per view:type_restoreworks a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:type_restoreworks",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_sites_view_prod_ornamental",
+      "question": "Quanti record RTCave per view:prod_ornamental a Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:prod_ornamental",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 44
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_zero_sites",
+      "question": "Lo zero RTCave di Camaiore è un dato valido?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_total",
+      "question": "Quale componente PRC per total a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 37.976
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_g_n",
+      "question": "Quale componente PRC per view:g_n a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:g_n",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_g_pct",
+      "question": "Quale componente PRC per view:g_pct a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:g_pct",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.965
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_gp_ha",
+      "question": "Quale componente PRC per view:gp_ha a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:gp_ha",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_acc_ha",
+      "question": "Quale componente PRC per view:acc_ha a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:acc_ha",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 156.322
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_acc_pct",
+      "question": "Quale componente PRC per view:acc_pct a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:acc_pct",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.971
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_mos",
+      "question": "Quale componente PRC per view:mos a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:mos",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_pmos",
+      "question": "Quale componente PRC per view:pmos a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:pmos",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_view_sed",
+      "question": "Quale componente PRC per view:sed a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:sed",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 105
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_planning_share_acc",
+      "question": "Quale componente PRC per share:acc a Seravezza, distinto da superficie escavata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "share:acc",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              78161,
+              19680
+            ]
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_prc_pooled",
+      "question": "Qual è la quota g ricostruita dalle aree arrotondate dei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "share:g"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              56997,
+              356860
+            ]
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_prc_gp_pooled",
+      "question": "Qual è la quota gp ricostruita dalle aree arrotondate dei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "share:gp"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1139,
+              35686
+            ]
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_prc_acc_pooled",
+      "question": "Qual è la quota acc ricostruita dalle aree arrotondate dei sette Comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "share:acc"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              111299,
+              71372
+            ]
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_production_current",
+      "question": "Qual è la produzione pubblicata 2025 per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 55801
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_production_partial",
+      "question": "È esplicita la copertura di produzione 2/7?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/4/value",
+            "value": 55801
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_production_history",
+      "question": "Qual è il primo volume 2019 documentato per Stazzema?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 19894
+          }
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_production_default_refused",
+      "question": "Gli altri cinque Comuni sono zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_absolute_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_relative_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_percentage_points_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_trend_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_benchmark_refused",
+      "question": "Il totale territoriale è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_anomaly_refused",
+      "question": "È autorizzata una diagnosi automatica di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_weighted_total_refused",
+      "question": "Un totale è un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_verified_area_ratio_required"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_absolute_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_relative_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_percentage_points_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_trend_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_benchmark_refused",
+      "question": "Il totale territoriale è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_anomaly_refused",
+      "question": "È autorizzata una diagnosi automatica di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveProduction_weighted_total_refused",
+      "question": "Un totale è un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_verified_area_ratio_required"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_absolute_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_relative_change_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_percentage_points_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_trend_refused",
+      "question": "È attestata la continuità per una variazione automatica?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_benchmark_refused",
+      "question": "Il totale territoriale è una media comunale confrontabile?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_totals_not_municipal_reference"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_anomaly_refused",
+      "question": "È autorizzata una diagnosi automatica di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_weighted_total_refused",
+      "question": "Un totale è un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_verified_area_ratio_required"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractiveSites_series_refused",
+      "question": "Lo snapshot autorizza uno storico annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_extractivePlanning_series_refused",
+      "question": "Lo snapshot autorizza uno storico annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_history_continuity_not_reviewed"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_published_percent_weighting_refused",
+      "question": "Si ponderano percentuali GIS senza i componenti a precisione originale?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:acc_pct",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_verified_area_ratio_required"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_combined_categories_refused",
+      "question": "Si sommano G, GP e ACC come superficie di cava?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "view:combined",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_pair_extractiveProduction_refused",
+      "question": "È autorizzata una correlazione tra record, volumi estratti e PRC?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "extractiveSites"
+          },
+          {
+            "metric": "extractiveProduction"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_universes_not_jointly_comparable"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "extractive_pair_extractivePlanning_refused",
+      "question": "È autorizzata una correlazione tra record, volumi estratti e PRC?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "extractiveSites"
+          },
+          {
+            "metric": "extractivePlanning"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "extractive_universes_not_jointly_comparable"
+        ]
+      },
+      "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
     }
   ]
 }
