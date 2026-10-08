@@ -26,9 +26,10 @@ import semantic_query_commuting_adapters as commuting
 import semantic_query_environment_adapters as environment
 import semantic_query_agriculture_adapters as agriculture
 import semantic_query_geography_adapters as geography
+import semantic_query_soil_adapters as soil
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '14'
+VERSION = '15'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -46,6 +47,7 @@ def annual(period):
 
 
 def period_token(key, period):
+    if key in soil.KEYS:return soil.token(key,period)
     if key in geography.KEYS:return geography.token(key,period)
     if key in demography.KEYS:return demography.token(key,period)
     if key in business.KEYS:return business.token(key,period)
@@ -59,6 +61,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in soil.KEYS:return soil.dimensions(key)
     if key in geography.KEYS:return geography.dimensions(key)
     if key in agriculture.KEYS:return agriculture.dimensions(key)
     if key in demography.KEYS:return demography.dimensions(key)
@@ -73,6 +76,7 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in soil.KEYS:return [o for o in SUPPORTED if (o not in TEMPORAL or o=='series') and (o!='weighted_ratio' or soil.weighted(key,dimension)) and (o!='benchmark_gap' or soil.scopes(key,dimension))]
     if key in geography.KEYS:return [o for o in SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or geography.weighted(key,dimension)) and (o!='benchmark_gap' or geography.scopes(key,dimension))]
     if key in agriculture.KEYS:return [o for o in SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or agriculture.weighted(key,dimension)) and (o!='benchmark_gap' or agriculture.scopes(key,dimension)) and o!='percentage_points']
     if key in environment.KEYS:
@@ -248,6 +252,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in soil.KEYS:return soil.context(metric,key,dimension)
         if key in geography.KEYS:return geography.context(metric,key,dimension)
         if key in agriculture.KEYS:return agriculture.context(metric,key,dimension)
         if key in environment.KEYS:return environment.context(metric,key,dimension)
@@ -277,6 +282,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in soil.KEYS:return soil.observation(self,key,row_index,dimension,period,historical)
         if key in geography.KEYS:return geography.observation(self,key,row_index,dimension,period,historical)
         if key in agriculture.KEYS:return agriculture.observation(self,key,row_index,dimension,period,historical)
         if key in environment.KEYS:return environment.observation(self,key,row_index,dimension,period,historical)
@@ -383,6 +389,7 @@ class QueryEngine:
         self.context(key,dimension)
         if key in geography.KEYS and operation in TEMPORAL:raise ValueError('geography_history_not_frozen')
         if key in agriculture.KEYS and operation in TEMPORAL:raise ValueError('agriculture_single_census_no_history')
+        if key in soil.KEYS:soil.selection_guard(key,operation)
         if key in environment.KEYS:environment.selection_guard(key,operation)
         if key in commuting.KEYS and operation in TEMPORAL:raise ValueError('commuting_history_not_frozen')
         if key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and operation=='trend':raise ValueError('census_method_break_trend_not_supported')
@@ -406,7 +413,8 @@ class QueryEngine:
         if historical and periods is None:
             if len(towns) != 1:
                 raise ValueError('temporal_query_requires_one_geography')
-            if key in environment.KEYS:periods=environment.available_periods(self,key,dimension,rows[towns[0]][1])
+            if key in soil.KEYS:periods=soil.available_periods(self,key,dimension,rows[towns[0]][1])
+            elif key in environment.KEYS:periods=environment.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in demography.KEYS:periods=demography.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in distinct.KEYS:periods=distinct.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in finance.KEYS:periods=finance.available_periods(self,key,dimension,rows[towns[0]][1])
@@ -434,7 +442,7 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                use_history=historical and not (key in (*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
+                use_history=historical and not (key in (*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS,*soil.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
                 observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
@@ -444,6 +452,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'soilAdapterSha256':digest((ROOT/'scripts/semantic_query_soil_adapters.py').read_bytes()),
                   'geographyAdapterSha256':digest((ROOT/'scripts/semantic_query_geography_adapters.py').read_bytes()),
                   'agricultureAdapterSha256':digest((ROOT/'scripts/semantic_query_agriculture_adapters.py').read_bytes()),
                   'environmentAdapterSha256':digest((ROOT/'scripts/semantic_query_environment_adapters.py').read_bytes()),
@@ -487,15 +496,15 @@ class QueryEngine:
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
                 key=selectors[0]['metric']
-                adapter=geography.benchmark if key in geography.KEYS else agriculture.benchmark if key in agriculture.KEYS else environment.benchmark if key in environment.KEYS else commuting.benchmark if key in commuting.KEYS else demography.benchmark if key in demography.KEYS else distinct.benchmark if key in distinct.KEYS else finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                adapter=soil.benchmark if key in soil.KEYS else geography.benchmark if key in geography.KEYS else agriculture.benchmark if key in agriculture.KEYS else environment.benchmark if key in environment.KEYS else commuting.benchmark if key in commuting.KEYS else demography.benchmark if key in demography.KEYS else distinct.benchmark if key in distinct.KEYS else finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
                 observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations
             policy = {'allowPartial':request.get('allowPartial',False)}
             if operation == 'weighted_ratio':
-                if not (selectors[0]['metric'] in geography.KEYS and geography.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and not (selectors[0]['metric'] in agriculture.KEYS and agriculture.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and selectors[0]['metric'] not in environment.RATIOS and selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS and selectors[0]['metric'] not in census.RATIOS and selectors[0]['metric'] not in finance.RATIOS and selectors[0]['metric'] not in commuting.RATIOS and not (selectors[0]['metric'] in demography.KEYS and demography.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and not (selectors[0]['metric'] in distinct.KEYS and distinct.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))):
+                if not (selectors[0]['metric'] in soil.KEYS and soil.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and not (selectors[0]['metric'] in geography.KEYS and geography.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and not (selectors[0]['metric'] in agriculture.KEYS and agriculture.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and selectors[0]['metric'] not in environment.RATIOS and selectors[0]['metric'] not in CENSUS and selectors[0]['metric']!='ageDistribution' and selectors[0]['metric'] not in territorial.RATIOS and selectors[0]['metric'] not in business.RATIOS and selectors[0]['metric'] not in census.RATIOS and selectors[0]['metric'] not in finance.RATIOS and selectors[0]['metric'] not in commuting.RATIOS and not (selectors[0]['metric'] in demography.KEYS and demography.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))) and not (selectors[0]['metric'] in distinct.KEYS and distinct.weighted(selectors[0]['metric'],selectors[0].get('dimension','total'))):
                     raise ValueError('verified_ratio_adapter_required')
-                policy['disjointPopulationEvidence'] = {'method':('disjoint municipal territories; native forest hectares or resident population / surface; explicit component reference periods' if selectors[0]['metric'] in geography.KEYS else 'disjoint municipal localized land or holdings assigned by farm center; same selected scope, native additive components' if selectors[0]['metric'] in agriculture.KEYS else 'distinct municipal distribution-network volume pairs; water-input weighting, not residents' if selectors[0]['metric'] in environment.RATIOS else 'disjoint municipalities of residence or destination; gross municipal work flows include moves within selected group; same-municipality retention is not group retention' if selectors[0]['metric'] in commuting.KEYS else 'distinct municipality school locations/buildings and field response counts; pupils are not resident children' if selectors[0]['metric'] in (*demography.STUDENTS,*demography.BUILDINGS) else 'distinct municipality accounting entities; additive amounts in the same exercise and denominator basis' if selectors[0]['metric'] in (*finance.KEYS,*distinct.KEYS) else 'distinct workplace municipality codes; additive ASIA/Frame components in the selected economic scope' if selectors[0]['metric'] in business.KEYS else 'distinct official municipality codes; additive source counts by residence'),
+                policy['disjointPopulationEvidence'] = {'method':('distinct municipal territories; same source edition, native category hectares / own source area or resident denominator; no sums of nested classes' if selectors[0]['metric'] in soil.KEYS else 'disjoint municipal territories; native forest hectares or resident population / surface; explicit component reference periods' if selectors[0]['metric'] in geography.KEYS else 'disjoint municipal localized land or holdings assigned by farm center; same selected scope, native additive components' if selectors[0]['metric'] in agriculture.KEYS else 'distinct municipal distribution-network volume pairs; water-input weighting, not residents' if selectors[0]['metric'] in environment.RATIOS else 'disjoint municipalities of residence or destination; gross municipal work flows include moves within selected group; same-municipality retention is not group retention' if selectors[0]['metric'] in commuting.KEYS else 'distinct municipality school locations/buildings and field response counts; pupils are not resident children' if selectors[0]['metric'] in (*demography.STUDENTS,*demography.BUILDINGS) else 'distinct municipality accounting entities; additive amounts in the same exercise and denominator basis' if selectors[0]['metric'] in (*finance.KEYS,*distinct.KEYS) else 'distinct workplace municipality codes; additive ASIA/Frame components in the selected economic scope' if selectors[0]['metric'] in business.KEYS else 'distinct official municipality codes; additive source counts by residence'),
                     'geographies':[o['geography'] for o in observations],
                     'snapshotSha256':observations[0]['evidence'][1]['sha256']}
             if operation == 'benchmark_gap':
@@ -521,6 +530,7 @@ class QueryEngine:
             if operation == 'correlation':
                 agriculture.correlation_guard(observations)
                 if any(o['metric'] in agriculture.KEYS for o in observations):notes.append('agriculture_shared_components_and_size_are_not_independent_effects')
+                soil.correlation_guard(observations,request.get("axis"))
                 environment.correlation_guard(observations,request.get("axis"))
                 if any(o["metric"] in environment.KEYS for o in observations):notes.append("environment_shared_components_and_resident_normalization_require_interpretation")
                 commuting.correlation_guard(observations,request.get("axis"))
@@ -584,7 +594,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix

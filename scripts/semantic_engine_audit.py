@@ -131,6 +131,7 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('soil_stock_cover','landUse','landCoverProfile','context','ISPRA consumed stock 2024 and UCS cartographic cover 2019: distinct editions, surfaces and classifications; no automatic temporal or ecological causal comparison'),
         ('geography_density_area','municipalSurface','populationDensity','context','Municipal area 2021 and resident density 2026/2021 share the area denominator; pair periods differ, no automatic correlation'),
         ('geography_forest_altitude','altitudeProfile','forestCoverIndex','context','Altitude 2021 and CFI nominal 2020 updated through 2024 have distinct observation bases; no aligned temporal or ecological causal claim'),
         ('agriculture_center_context','agriculturalFarms','irrigatedAgriculturalArea','context','Farms and irrigated area by farm center, census 2020; shared scale is not water demand or productivity'),

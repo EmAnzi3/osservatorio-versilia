@@ -5758,6 +5758,448 @@
           "paired_period_mismatch"
         ]
       }
+    },
+    {
+      "id": "soil_stock_current",
+      "question": "Quanto suolo risulta consumato a Massarosa nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              4553450,
+              340541
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/publishedValue",
+            "value": 13.371
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_stock_hectares",
+      "question": "Quanti ettari di suolo consumato a Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "view:hectares"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 910.69
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_stock_resident",
+      "question": "Quanti metri quadrati per residente, usando il denominatore ISPRA 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "view:sqmPerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              1821380,
+              4373
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_stock_pooled",
+      "question": "Qual è la quota aggregata dai componenti nativi Massarosa e Camaiore?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3518800,
+              254381
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_series_endpoint",
+      "question": "Da quale anno parte lo stock ISPRA senza inventare le annualità mancanti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "view:hectares",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2006"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 894.09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2012"
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_flow_gross",
+      "question": "Qual è il consumo lordo 2024 a Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUseChange",
+            "dimension": "view:gross"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.19
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_flow_net",
+      "question": "Qual è il consumo netto 2024 a Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUseChange",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.14
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_flow_negative",
+      "question": "Un netto negativo congelato viene conservato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUseChange",
+            "dimension": "total",
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": -2.3
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_ucs_forest",
+      "question": "Qual è la quota dei soli boschi UCS a Massarosa nel 2019?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landCoverProfile",
+            "dimension": "part:forest"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              8927186500,
+              457083083
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_ucs_hectares",
+      "question": "Quanti ettari UCS di bosco, separati dal CFI?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landCoverProfile",
+            "dimension": "hectares:forest"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 1339.077975
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_ucs_pooled",
+      "question": "La quota UCS usa la somma degli ettari sul proprio denominatore?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landCoverProfile",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              62023169425,
+              3831247711
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_stock_trend_refused",
+      "question": "Quale limite impedisce questo calcolo?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "soil_historical_comparability_not_attested"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_flow_trend_refused",
+      "question": "Quale limite impedisce questo calcolo?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "landUseChange",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "soil_historical_comparability_not_attested"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_ucs_change_refused",
+      "question": "Quale limite impedisce questo calcolo?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "landCoverProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "soil_historical_comparability_not_attested"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_missing_population_refused",
+      "question": "Quale limite impedisce questo calcolo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "view:sqmPerResident",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2006"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "soil_period_not_frozen"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_flow_weight_refused",
+      "question": "Quale limite impedisce questo calcolo?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landUseChange",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "verified_ratio_adapter_required"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+    },
+    {
+      "id": "soil_mixed_edition_refused",
+      "question": "Possiamo correlare automaticamente suolo ISPRA 2024 e copertura UCS 2019?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "landUse"
+          },
+          {
+            "metric": "landCoverProfile"
+          }
+        ],
+        "axis": "municipalities",
+        "purpose": "Test comparabilità di stock ISPRA e copertura UCS; esclusa ogni lettura causale",
+        "method": "spearman"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
+        ]
+      },
+      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     }
   ]
 }
