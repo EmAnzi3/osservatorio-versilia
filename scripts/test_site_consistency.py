@@ -15,6 +15,7 @@ from semantic_operations import coverage_matrix
 from semantic_query_engine import QueryEngine
 import semantic_query_coast_adapters as coast
 import semantic_query_bathing_adapters as bathing
+import semantic_query_maritime_adapters as maritime
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -37,7 +38,7 @@ def _build_assertions_from_dist_catalog(dist) -> None:
         if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
             selector={"metric":item["metric"],"dimension":item["engine"]["dimensions"][0]}
             query = {"operation": "compare", "selectors": [selector]}
-            coastal = item["metric"] in (*coast.KEYS,*bathing.KEYS)
+            coastal = item["metric"] in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS)
             if coastal:
                 refusal = query_engine.query(query)
                 assert refusal["status"] == "not_computable" and "partial_coverage_requires_opt_in" in refusal["reasons"], refusal
@@ -81,6 +82,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     coast_regressions(catalog_path)
     from test_semantic_bathing_adapters import regressions as bathing_regressions
     bathing_regressions(catalog_path)
+    from test_semantic_maritime_adapters import regressions as maritime_regressions
+    maritime_regressions(catalog_path)
     from test_semantic_fragility_adapters import regressions as fragility_regressions
     fragility_regressions(catalog_path)
     from test_semantic_hazard_adapters import regressions as hazard_regressions

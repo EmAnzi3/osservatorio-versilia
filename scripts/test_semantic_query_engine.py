@@ -322,8 +322,10 @@ def audit(path, layer):
     expected.update(k for k in census.KEYS if k in catalog["metrics"])
     import semantic_query_coast_adapters as coast
     import semantic_query_bathing_adapters as bathing
+    import semantic_query_maritime_adapters as maritime
     expected.update(k for k in coast.KEYS if k in catalog['metrics'] and str(catalog['metrics'][k]['meta']['year'])==coast.LABELS[k])
     expected.update(k for k in bathing.KEYS if k in catalog['metrics'])
+    expected.update(k for k in maritime.KEYS if k in catalog['metrics'])
     import semantic_query_fragility_adapters as fragility
     for k in fragility.KEYS:
         if k in catalog['metrics']:
@@ -350,13 +352,13 @@ def audit(path, layer):
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
         query=request('compare',key,dimension=dimensions[0])
-        if key in (*coast.KEYS,*bathing.KEYS):
+        if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):
             rejected(engine,query,'partial_coverage_requires_opt_in')
             query['allowPartial']=True
         report=engine.query(query)
         assert report['status']=='computed',report
         assert report['coverage']['requested']==7
-        if key in (*coast.KEYS,*bathing.KEYS):assert report['coverage']['usable']==4 and len(report['excluded'])==3
+        if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):assert report['coverage']['usable']==4 and len(report['excluded'])==3
         if key in CENSUS:
             for year in ['2021','2023']:
                 r=engine.query(request('weighted_ratio',key,periods=[year]))

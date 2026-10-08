@@ -9597,6 +9597,1041 @@
         ]
       },
       "reference": "Unità, periodo e disegno di controllo ARPAT distinti; nessuna comparabilità automatica attestata."
+    },
+    {
+      "id": "maritime_titles_total",
+      "question": "Qual è il valore SID di Camaiore per total nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 130
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_view_tourist",
+      "question": "Qual è il valore SID di Camaiore per view:tourist nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "view:tourist",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 124
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_share_tourist",
+      "question": "Qual è il valore SID di Camaiore per share:tourist nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "share:tourist",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1240,
+              13
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_view_minimumCount",
+      "question": "Qual è il valore SID di Camaiore per view:minimumCount nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "view:minimumCount",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 28
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_share_minimum",
+      "question": "Qual è il valore SID di Camaiore per share:minimum nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "share:minimum",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              280,
+              13
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_view_expiryMissing",
+      "question": "Qual è il valore SID di Camaiore per view:expiryMissing nello snapshot di agosto 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "view:expiryMissing",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_total",
+      "question": "Qual è il canone dovuto di Camaiore per total, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 852515.21
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_view_touristDue",
+      "question": "Qual è il canone dovuto di Camaiore per view:touristDue, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:touristDue",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 850257.45
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_share_touristDue",
+      "question": "Qual è il canone dovuto di Camaiore per share:touristDue, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "share:touristDue",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              8502574500,
+              85251521
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_view_mean",
+      "question": "Qual è il canone dovuto di Camaiore per view:mean, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:mean",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              85251521,
+              13000
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_view_touristMean",
+      "question": "Qual è il canone dovuto di Camaiore per view:touristMean, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:touristMean",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              17005149,
+              2480
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_view_median",
+      "question": "Qual è il canone dovuto di Camaiore per view:median, distinto da riscossioni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:median",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6404.7
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_tourist_pooled",
+      "question": "Qual è il rapporto costiero ricostruito dai componenti SID per share:tourist?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "share:tourist"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              57500,
+              799
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_minimum_pooled",
+      "question": "Qual è il rapporto costiero ricostruito dai componenti SID per share:minimum?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "share:minimum"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              26800,
+              799
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_tourist_due_pooled",
+      "question": "Qual è il rapporto costiero ricostruito dai componenti SID per share:touristDue?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "share:touristDue"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              27345118400,
+              326206087
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_mean_due_pooled",
+      "question": "Qual è il rapporto costiero ricostruito dai componenti SID per view:mean?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:mean"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              326206087,
+              39950
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_tourist_mean_due_pooled",
+      "question": "Qual è il rapporto costiero ricostruito dai componenti SID per view:touristMean?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:touristMean"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              136725592,
+              14375
+            ]
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_default_partial_refused",
+      "question": "I tre Comuni non costieri sono assimilabili a zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_series_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_absolute_change_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_relative_change_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_percentage_points_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_trend_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_benchmark_refused",
+      "question": "È autorizzato uno scarto da un benchmark dei canoni/titoli?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_weighted_total_refused",
+      "question": "Il totale è un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_verified_ratio_required"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_titles_anomaly_refused",
+      "question": "È autorizzata una valutazione automatica di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_default_partial_refused",
+      "question": "I tre Comuni non costieri sono assimilabili a zero?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_series_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_absolute_change_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_relative_change_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_percentage_points_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_trend_refused",
+      "question": "È autorizzata una serie o variazione storica SID armonizzata?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_previous_snapshots_not_harmonized"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_benchmark_refused",
+      "question": "È autorizzato uno scarto da un benchmark dei canoni/titoli?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_weighted_total_refused",
+      "question": "Il totale è un rapporto ponderabile?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_verified_ratio_required"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_due_anomaly_refused",
+      "question": "È autorizzata una valutazione automatica di anomalia?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_median_weighting_refused",
+      "question": "Le mediane comunali consentono una mediana aggregata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:median",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_median_not_additive"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_occupied_surface_refused",
+      "question": "I poligoni SID incompleti attestano la superficie occupata?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "view:occupiedSurface",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_annual_alias_refused",
+      "question": "Lo snapshot SID di agosto è una rilevazione annuale generica?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_august_explicit",
+      "question": "È selezionabile il solo snapshot SID congelato 2026-08?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "periods": [
+              "2026-08"
+            ],
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 130
+          }
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_pair_maritimeConcessionFeesDue_refused",
+      "question": "È ammessa un’associazione automatica tra titoli, canoni o costa statistica?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions"
+          },
+          {
+            "metric": "maritimeConcessionFeesDue"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_context_pair_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
+    },
+    {
+      "id": "maritime_pair_statisticalCoastlineLength_refused",
+      "question": "È ammessa un’associazione automatica tra titoli, canoni o costa statistica?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions"
+          },
+          {
+            "metric": "statisticalCoastlineLength"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "maritime_context_pair_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot SID demanio-marittimo-v127 agosto 2026; conteggi e importi dovuti letterali indipendenti, attribuzione territoriale congelata: 799 titoli, 575 turistici, EUR 6524121.74 dovuti, EUR 5469023.68 turistici. Non incassi o gettito comunale."
     }
   ]
 }
