@@ -131,6 +131,8 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('geography_density_area','municipalSurface','populationDensity','context','Municipal area 2021 and resident density 2026/2021 share the area denominator; pair periods differ, no automatic correlation'),
+        ('geography_forest_altitude','altitudeProfile','forestCoverIndex','context','Altitude 2021 and CFI nominal 2020 updated through 2024 have distinct observation bases; no aligned temporal or ecological causal claim'),
         ('agriculture_center_context','agriculturalFarms','irrigatedAgriculturalArea','context','Farms and irrigated area by farm center, census 2020; shared scale is not water demand or productivity'),
         ('agriculture_mixed_scope','agriculturalUsedArea','irrigatedAgriculturalArea','context','Physically localized SAU and farm-center irrigation have different geographic attribution; joint correlation refused'),
         ('environment_residual_formula','wastePerResident','residualWaste','derived_product','Residual kg per resident is total kg per resident × (1 − separate collection share / 100); rounded published components, no independent causal evidence'),
