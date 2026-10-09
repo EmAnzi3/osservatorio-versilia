@@ -91,6 +91,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     remediation_regressions(catalog_path)
     from test_semantic_pab_adapters import regressions as pab_regressions
     pab_regressions(catalog_path)
+    from test_semantic_climate_adapters import regressions as climate_regressions
+    climate_regressions(catalog_path)
     from test_semantic_fragility_adapters import regressions as fragility_regressions
     fragility_regressions(catalog_path)
     from test_semantic_hazard_adapters import regressions as hazard_regressions

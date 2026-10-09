@@ -13669,6 +13669,1047 @@
         ]
       },
       "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "climate_temperature_current",
+      "question": "Qual è il valore annuo 2025 di temperature a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              16619000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_fitted",
+      "question": "Quanto cambia la retta 1975–2025 di temperature a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2046325791855,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/n",
+            "value": 51
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_series",
+      "question": "Quanti anni contiene lo storico temperature di Massarosa?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "1950"
+          },
+          {
+            "path": "/observations/75/value",
+            "fraction": [
+              16619000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_pooling_refused",
+      "question": "È consentita weighted_ratio per temperature?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_no_native_spatial_components_for_pooling"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_relative_refused",
+      "question": "È consentita relative_change per temperature?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_relative_change_not_reviewed_celsius_not_ratio_scale"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_normal_benchmark_refused",
+      "question": "È consentita benchmark_gap per temperature?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_normals_are_temporal_not_geographic_benchmarks"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_fitted_series_refused",
+      "question": "Il delta cinquantennale temperature è una serie annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_fitted_window_is_not_annual_series"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_future_refused",
+      "question": "Esiste un valore 2026 di temperature nello snapshot?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_annual_period_not_frozen"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_temperature_arbitrary_trend_refused",
+      "question": "Si può stimare un trend arbitrario sulla serie composita temperature?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_stitched_sources_no_arbitrary_temporal_change"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_current",
+      "question": "Qual è il valore annuo 2025 di precipitation a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1336500000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_fitted",
+      "question": "Quanto cambia la retta 1975–2025 di precipitation a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              -18600904977376,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/n",
+            "value": 51
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_series",
+      "question": "Quanti anni contiene lo storico precipitation di Massarosa?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "1950"
+          },
+          {
+            "path": "/observations/75/value",
+            "fraction": [
+              1336500000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_pooling_refused",
+      "question": "È consentita weighted_ratio per precipitation?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_no_native_spatial_components_for_pooling"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_relative_refused",
+      "question": "È consentita relative_change per precipitation?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_relative_change_not_reviewed_celsius_not_ratio_scale"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_normal_benchmark_refused",
+      "question": "È consentita benchmark_gap per precipitation?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_normals_are_temporal_not_geographic_benchmarks"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_fitted_series_refused",
+      "question": "Il delta cinquantennale precipitation è una serie annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_fitted_window_is_not_annual_series"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_future_refused",
+      "question": "Esiste un valore 2026 di precipitation nello snapshot?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_annual_period_not_frozen"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_arbitrary_trend_refused",
+      "question": "Si può stimare un trend arbitrario sulla serie composita precipitation?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_stitched_sources_no_arbitrary_temporal_change"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_current",
+      "question": "Qual è il valore annuo 2025 di tmin a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              12656000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_fitted",
+      "question": "Quanto cambia la retta 1975–2025 di tmin a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1948846153846,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/n",
+            "value": 51
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_series",
+      "question": "Quanti anni contiene lo storico tmin di Massarosa?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "1975"
+          },
+          {
+            "path": "/observations/50/value",
+            "fraction": [
+              12656000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_pooling_refused",
+      "question": "È consentita weighted_ratio per tmin?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_no_native_spatial_components_for_pooling"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_relative_refused",
+      "question": "È consentita relative_change per tmin?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_relative_change_not_reviewed_celsius_not_ratio_scale"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_normal_benchmark_refused",
+      "question": "È consentita benchmark_gap per tmin?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_normals_are_temporal_not_geographic_benchmarks"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_fitted_series_refused",
+      "question": "Il delta cinquantennale tmin è una serie annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_fitted_window_is_not_annual_series"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_future_refused",
+      "question": "Esiste un valore 2026 di tmin nello snapshot?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_annual_period_not_frozen"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmin_annual_trend",
+      "question": "Qual è la pendenza descrittiva 1975–2025 di tmin?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/slope",
+            "fraction": [
+              38976923077,
+              1000000000000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/result/n",
+            "value": 51
+          },
+          {
+            "path": "/result/forecast",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_current",
+      "question": "Qual è il valore annuo 2025 di tmax a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              20959000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_fitted",
+      "question": "Quanto cambia la retta 1975–2025 di tmax a Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2029357466063,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/n",
+            "value": 51
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_series",
+      "question": "Quanti anni contiene lo storico tmax di Massarosa?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "1975"
+          },
+          {
+            "path": "/observations/50/value",
+            "fraction": [
+              20959000000000,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_pooling_refused",
+      "question": "È consentita weighted_ratio per tmax?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_no_native_spatial_components_for_pooling"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_relative_refused",
+      "question": "È consentita relative_change per tmax?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_relative_change_not_reviewed_celsius_not_ratio_scale"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_normal_benchmark_refused",
+      "question": "È consentita benchmark_gap per tmax?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_normals_are_temporal_not_geographic_benchmarks"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_fitted_series_refused",
+      "question": "Il delta cinquantennale tmax è una serie annuale?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "trend:1975-2025",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_fitted_window_is_not_annual_series"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_future_refused",
+      "question": "Esiste un valore 2026 di tmax nello snapshot?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "climate_annual_period_not_frozen"
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_tmax_annual_trend",
+      "question": "Qual è la pendenza descrittiva 1975–2025 di tmax?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "climateTmaxTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/slope",
+            "fraction": [
+              40587149321,
+              1000000000000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/result/n",
+            "value": 51
+          },
+          {
+            "path": "/result/forecast",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "climate_precipitation_fitted_percent",
+      "question": "Quanto varia percentualmente la retta delle precipitazioni 1975–2025 di Massarosa? Nel confronto con Viareggio, leggere il valore di Massarosa.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "trend_percent:1975-2025",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              -1609284377112,
+              1000000000000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
     }
   ]
 }

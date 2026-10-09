@@ -36,9 +36,10 @@ import semantic_query_maritime_adapters as maritime
 import semantic_query_extractive_adapters as extractive
 import semantic_query_remediation_adapters as remediation
 import semantic_query_pab_adapters as pab
+import semantic_query_climate_adapters as climate
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '24'
+VERSION = '25'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -56,6 +57,7 @@ def annual(period):
 
 
 def period_token(key, period):
+    if key in climate.KEYS:return climate.token(key,period)
     if key in pab.KEYS:return pab.token(key,period)
     if key in remediation.KEYS:return remediation.token(key,period)
     if key in extractive.KEYS:return extractive.token(key,period)
@@ -79,6 +81,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in climate.KEYS:return climate.dimensions(key)
     if key in pab.KEYS:return pab.dimensions(key)
     if key in remediation.KEYS:return remediation.dimensions(key)
     if key in extractive.KEYS:return extractive.dimensions(key)
@@ -103,6 +106,7 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in climate.KEYS:return climate.operations(key,dimension)
     if key in pab.KEYS:return pab.operations(key,dimension)
     if key in remediation.KEYS:return remediation.operations(key,dimension)
     if key in extractive.KEYS:return extractive.operations(key,dimension)
@@ -288,6 +292,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in climate.KEYS:return climate.context(metric,key,dimension)
         if key in pab.KEYS:return pab.context(metric,key,dimension)
         if key in remediation.KEYS:return remediation.context(metric,key,dimension)
         if key in extractive.KEYS:return extractive.context(metric,key,dimension)
@@ -327,6 +332,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in climate.KEYS:return climate.observation(self,key,row_index,dimension,period,historical)
         if key in pab.KEYS:return pab.observation(self,key,row_index,dimension,period,historical)
         if key in remediation.KEYS:return remediation.observation(self,key,row_index,dimension,period,historical)
         if key in extractive.KEYS:return extractive.observation(self,key,row_index,dimension,period,historical)
@@ -441,6 +447,9 @@ class QueryEngine:
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
+        if key in climate.KEYS:
+            self._climate_validation={}
+            climate.selection_guard(key,dimension,operation)
         if key in geography.KEYS and operation in TEMPORAL:raise ValueError('geography_history_not_frozen')
         if key in agriculture.KEYS and operation in TEMPORAL:raise ValueError('agriculture_single_census_no_history')
         if key in pab.KEYS:
@@ -474,11 +483,13 @@ class QueryEngine:
         if key in distinct.KEYS:distinct.selection_guard(key,dimension,operation,towns)
         periods = selector.get('periods')
         historical = periods is not None or operation in TEMPORAL
-        rows = {str(r['code']):(i,r) for i,r in enumerate(self._catalog['metrics'][key]['rows'])}
+        selected_rows=climate.rows(self,key) if key in climate.KEYS else self._catalog['metrics'][key]['rows']
+        rows = {str(r['code']):(i,r) for i,r in enumerate(selected_rows)}
         if historical and periods is None:
             if len(towns) != 1:
                 raise ValueError('temporal_query_requires_one_geography')
-            if key in extractive.KEYS:periods=extractive.available_periods(self,key,dimension,rows[towns[0]][1])
+            if key in climate.KEYS:periods=climate.available_periods(self,key,dimension,rows[towns[0]][1])
+            elif key in extractive.KEYS:periods=extractive.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in bathing.KEYS:periods=bathing.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in fragility.KEYS:periods=fragility.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in hazard.KEYS:periods=hazard.available_periods(self,key,dimension,rows[towns[0]][1])
@@ -495,7 +506,7 @@ class QueryEngine:
                 if not isinstance(series,dict):raise ValueError('series_not_available')
                 periods = sorted((period_token(key,p) for p in series['years']),key=int)
         elif periods is None:
-            periods = [period_token(key,self._catalog['metrics'][key]['meta']['year'])]
+            periods = [climate.default_period(dimension) if key in climate.KEYS else period_token(key,self._catalog['metrics'][key]['meta']['year'])]
         if not isinstance(periods,list) or not periods:
             raise ValueError('empty_period_selection')
         periods = [period_token(key,p) for p in periods]
@@ -522,6 +533,7 @@ class QueryEngine:
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
                   'pabAdapterSha256':digest((ROOT/'scripts/semantic_query_pab_adapters.py').read_bytes()),
+                  'climateAdapterSha256':digest((ROOT/'scripts/semantic_query_climate_adapters.py').read_bytes()),
                   'remediationAdapterSha256':digest((ROOT/'scripts/semantic_query_remediation_adapters.py').read_bytes()),
                   'extractiveAdapterSha256':digest((ROOT/'scripts/semantic_query_extractive_adapters.py').read_bytes()),
                   'maritimeAdapterSha256':digest((ROOT/'scripts/semantic_query_maritime_adapters.py').read_bytes()),
@@ -676,7 +688,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':([] if entry['metric'] in (*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':([] if entry['metric'] in (*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix
