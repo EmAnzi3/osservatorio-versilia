@@ -148,3 +148,5 @@ scripts/semantic_query_rgs_adapters.py
 scripts/test_semantic_rgs_adapters.py
 scripts/semantic_query_tourism_adapters.py
 scripts/test_semantic_tourism_adapters.py
+scripts/semantic_query_regional_adapters.py
+scripts/test_semantic_regional_adapters.py

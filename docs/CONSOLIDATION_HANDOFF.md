@@ -2,20 +2,20 @@
 
 ## Stato corrente — 9 ottobre 2026
 
-- Baseline main: #380 `f187b9fccfb187341ce900193a5fd6cd97a485c9`, albero `d1603659c1e7f6db6e49f7b8a64d58f4088b4006`. RGS Quick/Full CI `37986028181` SUCCESS sul head `c8f7c46909634eec2f6a4b6a33f48ffb41a17569`; nuovo Full locale isolato exit 0, 40 golden, 578 controlli browser e Lighthouse verdi, checkout pulito. Ricevuta completa consegnata in `PR380_Full_locale_isolato_20261009.zip`; nessun verde attribuito retroattivamente al Full MEF interrotto.
+- Baseline main: #381 `eb40123c6b9a65dac4d9f3f08e21cb19719819ba`, albero `3fab1045fe6688f6f4b5ebc787f9005effaa9c42`. Merge manuale del proprietario distinto dai gate: Full Linux freddo canonico exit 0 (09/10, 21:54:50–22:36:27 UTC), 40 golden, 578 controlli browser e Lighthouse verdi, checkout pulito; CI Quick/Full `37995764220` SUCCESS sul head `d33b419f3f21f4d55b1c4feadba7557060e295f8`. Ricevuta/log completi consegnati in `A6_Turismo_Full_locale_isolato_20261009.zip`. Tentativo Windows fallito nel Quick per separatori path, distinto dal Linux; primo Full Linux in checkout riusato dopo Quick fallito per output Atlas residui, conservato separatamente. Deploy main `37999080864` e live `37999964536` SUCCESS.
 - Catalogo effettivo: 225 indicatori, 124 storici, 137 confronti, SHA `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-tourism-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte alla revisione metodologica; A7 non avviata. Specifica `docs/A6_SEMANTIC_MODEL.md` e gate canonici governano il lavoro.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-regional-indicators`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte alla revisione metodologica; A7 non avviata. Specifica `docs/A6_SEMANTIC_MODEL.md` e gate canonici governano il lavoro.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; UI, golden, workflow, Radar, 35 letture territoriali e due riepiloghi conservati.
 
 ## Lotto in verifica
 
-Turismo v31: sei nuovi adapter più rafforzamento delle presenze già governate. Movimento 2023–2025 al netto delle locazioni; capacità Istat 2024 distinta dai residenti stimati 1 gennaio 2026. Quota estera pubblicata a un decimale e dimensione `nativeRatio` non arrotondata separate; nessuna retro-derivazione. Pannello Istat 7.899 Comuni, 273 toscani, totali provinciali/nazionale esclusi dalla somma; ampliamento del 2025 escluso. Storico posti letto 2002–2024 leggibile, nessun rapporto storico con residenti 2026 inventato. Operazioni già ammesse sulle presenze preservate; nuove variazioni/trend/anomalie/coppie non revisionate rifiutate per gli altri carrier. Metodo `docs/A6_TOURISM_ADAPTERS.md`, report `reports/a6-tourism/`.
+Indicatori comunali regionali v32: sei nuovi carrier, SAU biologica già coperta esclusa dal conteggio. Percentuali, tasso di disabilità 0–64 e P75 118 pubblicati; formule/universi espliciti, conteggi e distribuzioni native assenti. Servizi online al definitivo 2022, paniere 2018/2022 diverso; giovani 2020 assente. Serie leggibili e gap Toscana ufficiali al solo riferimento corrente; nessuna ponderazione, componente retro-derivata, continuità temporale o coppia automatica. Metodo `docs/A6_REGIONAL_ADAPTERS.md`, report `reports/a6-regional/`.
 
-Copertura derivata 175/225 effettivi, 124/181 sorgente, 50 residui e zero ambientali senza adapter. Suite 960 domande (449 consultazioni/calcoli, 511 rifiuti); 56 osservazioni fisse correnti, quattro rapporti territoriali e dieci benchmark; replay separato di 245 celle storiche congelate. 58 collegamenti tipizzati e 29 companion conservati; 81 carichi descrittivi senza promessa di prestazioni. Nessuna nuova acquisizione o modifica a dati/UI/rendering/golden/workflow/Radar. Quick/Full locali e CI del candidato da completare prima del merge manuale.
+Copertura derivata 181/225 effettivi, 130/181 sorgente, 44 residui, zero ambientali senza adapter. Suite 1.053 domande (473 consultazioni/calcoli, 580 rifiuti); 42 osservazioni fisse correnti, sei benchmark e 36 celle storiche fisse; replay separato 252 celle congelate. 58 collegamenti e 29 companion conservati; 84 carichi descrittivi. Dati/UI/golden/workflow/Radar/letture conservati. Quick/Full locali e CI del candidato da completare prima della prontezza per il merge.
 
 ## Prossima azione
 
-Completare i gate canonici del lotto turismo e consegnare l’evidenza Full isolata. Dopo merge, proseguire con i carrier regionali, previa verifica dei componenti e universi. La stima preliminare di ulteriori adapter non è una promessa; i carrier già coperti non vengono ricontati. A6.4 parziale; revisione metodologica e validazione delle letture A6.5–A6.6 aperte; A7 non avviata.
+Completare i gate canonici regionali in checkout isolati distinti, consegnare PR tecnica ed evidenza completa. Nessun merge/deploy automatico. Dopo merge manuale, scegliere il successivo lotto dal residuo derivato, senza ricontare carrier coperti. Revisione metodologica A6.4–A6.6 separata dal numero di adapter; A7 non avviata.
 
 ## Manutenzioni e monitor separati
 
