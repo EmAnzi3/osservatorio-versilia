@@ -19426,6 +19426,2560 @@
         ]
       },
       "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "mef_incomeSourceProfile_total",
+      "question": "MEF: incomeSourceProfile total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              289610500,
+              12578
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              87847722,
+              2105
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              202735109,
+              9125
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              206292313,
+              8641
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              103445668,
+              4887
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              23693613,
+              1140
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              601347696,
+              25522
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_employment",
+      "question": "MEF: incomeSourceProfile source employment",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:employment"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              289610500,
+              12578
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              87847722,
+              2105
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              202735109,
+              9125
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              206292313,
+              8641
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              103445668,
+              4887
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              23693613,
+              1140
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              601347696,
+              25522
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_pension",
+      "question": "MEF: incomeSourceProfile source pension",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:pension"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              167316194,
+              8328
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              45824668,
+              1964
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              111076251,
+              5530
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              137002792,
+              6352
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              67877930,
+              3456
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              14259777,
+              808
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              368024027,
+              15761
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_selfEmployment",
+      "question": "MEF: incomeSourceProfile source selfEmployment",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:selfEmployment"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23526140,
+              375
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              18134848,
+              154
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              8990333,
+              130
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              21048594,
+              324
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              5953679,
+              121
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              559217,
+              9
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              49737334,
+              730
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_entrepreneurOrdinary",
+      "question": "MEF: incomeSourceProfile source entrepreneurOrdinary",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:entrepreneurOrdinary"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5125272,
+              92
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2874338,
+              26
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              1530559,
+              27
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              4172407,
+              61
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              1149216,
+              24
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              11813533,
+              114
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_entrepreneurSimplified",
+      "question": "MEF: incomeSourceProfile source entrepreneurSimplified",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:entrepreneurSimplified"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23822193,
+              890
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              6361110,
+              204
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              12718876,
+              502
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              16879061,
+              637
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              7516261,
+              276
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              837672,
+              50
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              38793176,
+              1315
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_participation",
+      "question": "MEF: incomeSourceProfile source participation",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:participation"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              35375782,
+              1777
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              14422243,
+              508
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              14909135,
+              831
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              28089097,
+              1244
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              10013752,
+              554
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              1310584,
+              83
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              48082990,
+              2533
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_buildings",
+      "question": "MEF: incomeSourceProfile source buildings",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:buildings"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23027261,
+              10411
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              20838890,
+              2446
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              7415157,
+              7044
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              20386797,
+              7452
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              7002788,
+              3795
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              495211,
+              916
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              43254414,
+              20502
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_total",
+      "question": "MEF: incomeDistribution total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              865000,
+              23248
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              164500,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              549300,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              623000,
+              16765
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              339300,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              84800,
+              2094
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1565100,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_macro_0",
+      "question": "MEF: incomeDistribution macro 0",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "macro:0"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              865000,
+              23248
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              164500,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              549300,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              623000,
+              16765
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              339300,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              84800,
+              2094
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1565100,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_macro_1",
+      "question": "MEF: incomeDistribution macro 1",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "macro:1"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              682800,
+              23248
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              112000,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              505500,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              471300,
+              16765
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              280200,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              67300,
+              2094
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1230600,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_macro_2",
+      "question": "MEF: incomeDistribution macro 2",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "macro:2"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              641500,
+              23248
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              126800,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              466200,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              475800,
+              16765
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              254000,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              52600,
+              2094
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1370200,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_macro_3",
+      "question": "MEF: incomeDistribution macro 3",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "macro:3"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              135500,
+              23248
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              89100,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              72400,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              106400,
+              16765
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              44700,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              4700,
+              2094
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              351400,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_le0",
+      "question": "MEF: incomeDistribution band le0",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:le0"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              0,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              0,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              400,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_0to10k",
+      "question": "MEF: incomeDistribution band 0to10k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:0to10k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              571900,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              111000,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              358400,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              415600,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              222500,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              53500,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1027300,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_10to15k",
+      "question": "MEF: incomeDistribution band 10to15k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:10to15k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              293100,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53500,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              190900,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              207400,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              116800,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              31300,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              537400,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_15to26k",
+      "question": "MEF: incomeDistribution band 15to26k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:15to26k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              682800,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              112000,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              505500,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              471300,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              280200,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              67300,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1230600,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_26to55k",
+      "question": "MEF: incomeDistribution band 26to55k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:26to55k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              641500,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              126800,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              466200,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              475800,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              254000,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              52600,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              1370200,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_55to75k",
+      "question": "MEF: incomeDistribution band 55to75k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:55to75k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              75100,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              26600,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              36700,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              58300,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              22800,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              1900,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              157400,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_75to120k",
+      "question": "MEF: incomeDistribution band 75to120k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:75to120k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              60400,
+              23579
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              30600,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              24400,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              48100,
+              17066
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              14700,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              2800,
+              2098
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              126500,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_over120k",
+      "question": "MEF: incomeDistribution band over120k",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:over120k"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              31900,
+              4924
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              11300,
+              15934
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              7200,
+              9182
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              67500,
+              45173
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_total",
+      "question": "MEF: pensionIncomeShare total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              16731619400,
+              598867041
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4582466800,
+              225345208
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              11107625100,
+              369561101
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              13700279200,
+              457960925
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              6787793000,
+              211041286
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              1425977700,
+              42149013
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              36802402700,
+              1207277614
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_total",
+      "question": "MEF: taxpayersAdultPopulationRate total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2440800,
+              27833
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              515700,
+              5839
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              1640400,
+              18938
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              1767300,
+              20041
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              953000,
+              10801
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              215000,
+              2483
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              4650700,
+              53038
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_employment_pooled",
+      "question": "MEF: incomeSourceProfile source employment pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:employment"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1514972621,
+              63998
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_total_pooled",
+      "question": "MEF: pensionIncomeShare total pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              91138163900,
+              3112202188
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_total_pooled",
+      "question": "MEF: taxpayersAdultPopulationRate total pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              12182900,
+              138973
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_macro_0_pooled",
+      "question": "MEF: incomeDistribution macro 0 pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "macro:0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              4191000,
+              117320
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_band_0to10k_pooled",
+      "question": "MEF: incomeDistribution band 0to10k pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:0to10k"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2760200,
+              117956
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_tuscany_gap",
+      "question": "MEF: incomeSourceProfile tuscany gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 23942.870922326307
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_incomeSourceProfile_italy_gap",
+      "question": "MEF: incomeSourceProfile italy gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24223.942872801104
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_pensionIncomeShare_tuscany_gap",
+      "question": "MEF: pensionIncomeShare tuscany gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 30.97777568992456
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_pensionIncomeShare_italy_gap",
+      "question": "MEF: pensionIncomeShare italy gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 30.224327018823598
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_tuscany_gap",
+      "question": "MEF: taxpayersAdultPopulationRate tuscany gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 89.35750687431118
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_italy_gap",
+      "question": "MEF: taxpayersAdultPopulationRate italy gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 85.07684720194473
+          }
+        ]
+      },
+      "reference": "Fixed frozen regional/national MEF component benchmarks 2024; hybrid adult population benchmark retains 2026 denominator"
+    },
+    {
+      "id": "mef_incomeSourceProfile_history",
+      "question": "MEF: incomeSourceProfile history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              267550468,
+              12296
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Fixed Camaiore 2023 municipal native components from archived MEF extraction; no fresh acquisition"
+    },
+    {
+      "id": "mef_pensionIncomeShare_history",
+      "question": "MEF: pensionIncomeShare history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              15695183000,
+              564417856
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Fixed Camaiore 2023 municipal native components from archived MEF extraction; no fresh acquisition"
+    },
+    {
+      "id": "mef_incomeDistribution_absolute_change_refused",
+      "question": "MEF: incomeDistribution absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_relative_change_refused",
+      "question": "MEF: incomeDistribution relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_percentage_points_refused",
+      "question": "MEF: incomeDistribution percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_trend_refused",
+      "question": "MEF: incomeDistribution trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_anomaly_refused",
+      "question": "MEF: incomeDistribution anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeDistribution_pair_refused",
+      "question": "MEF: incomeDistribution pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "incomeDistribution"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_absolute_change_refused",
+      "question": "MEF: incomeSourceProfile absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_relative_change_refused",
+      "question": "MEF: incomeSourceProfile relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_percentage_points_refused",
+      "question": "MEF: incomeSourceProfile percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_trend_refused",
+      "question": "MEF: incomeSourceProfile trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_anomaly_refused",
+      "question": "MEF: incomeSourceProfile anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_incomeSourceProfile_pair_refused",
+      "question": "MEF: incomeSourceProfile pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "incomeSourceProfile"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_absolute_change_refused",
+      "question": "MEF: pensionIncomeShare absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_relative_change_refused",
+      "question": "MEF: pensionIncomeShare relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_percentage_points_refused",
+      "question": "MEF: pensionIncomeShare percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_trend_refused",
+      "question": "MEF: pensionIncomeShare trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_anomaly_refused",
+      "question": "MEF: pensionIncomeShare anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pensionIncomeShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pensionIncomeShare_pair_refused",
+      "question": "MEF: pensionIncomeShare pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "pensionIncomeShare"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_absolute_change_refused",
+      "question": "MEF: taxpayersAdultPopulationRate absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_relative_change_refused",
+      "question": "MEF: taxpayersAdultPopulationRate relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_percentage_points_refused",
+      "question": "MEF: taxpayersAdultPopulationRate percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_trend_refused",
+      "question": "MEF: taxpayersAdultPopulationRate trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_anomaly_refused",
+      "question": "MEF: taxpayersAdultPopulationRate anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_pair_refused",
+      "question": "MEF: taxpayersAdultPopulationRate pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "taxpayersAdultPopulationRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_hybrid_year_refused",
+      "question": "MEF: hybrid year refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_hybrid_period_required"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_band_missing_refused",
+      "question": "MEF: band missing refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:le0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_source_missing_refused",
+      "question": "MEF: source missing refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:entrepreneurOrdinary"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_band_series_refused",
+      "question": "MEF: band series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_history_not_frozen"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_pension_source_benchmark_refused",
+      "question": "MEF: pension source benchmark refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:pension",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "mef_benchmark_dimension_not_reviewed"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "mef_unknown_dimension_refused",
+      "question": "MEF: unknown dimension refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "incomeDistribution",
+            "dimension": "band:invented"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
     }
   ]
 }

@@ -161,6 +161,10 @@ def main() -> None:
                 "Grafico confronto Mobilità lenta non visibile su mobile")
 
         page.goto(base + "comuni/camaiore/?tema=mobilita&indicatore=slowMobilityRoutes", wait_until="networkidle")
+        # The town deep-link and A5 toolbar render asynchronously. Require the
+        # same visible entry and active metric before preserving the checks below.
+        page.locator('#town-topic [data-metric="slowMobilityRoutes"].active').wait_for(state="visible", timeout=10000)
+        page.locator('.slow-mobility-map-entry').wait_for(state="visible", timeout=10000)
         require_no_horizontal_overflow(page, "scheda comunale Camaiore / Mobilità lenta")
         require(page.locator('.slow-mobility-map-entry').is_visible(),
                 "Richiamo alla cartografia assente su mobile nella scheda comunale")
