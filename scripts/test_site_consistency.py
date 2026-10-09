@@ -99,6 +99,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     classification_regressions(catalog_path)
     from test_semantic_water_quality_adapters import regressions as water_quality_regressions
     water_quality_regressions(catalog_path)
+    from test_semantic_mef_adapters import regressions as mef_regressions
+    mef_regressions(catalog_path)
     from test_semantic_agriculture_profile_adapters import regressions as profile_regressions
     profile_regressions(catalog_path)
     from test_semantic_fragility_adapters import regressions as fragility_regressions

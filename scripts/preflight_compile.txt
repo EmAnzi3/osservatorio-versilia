@@ -140,3 +140,6 @@ scripts/semantic_query_classification_adapters.py
 scripts/test_semantic_classification_adapters.py
 scripts/semantic_query_water_quality_adapters.py
 scripts/test_semantic_water_quality_adapters.py
+
+scripts/semantic_query_mef_adapters.py
+scripts/test_semantic_mef_adapters.py

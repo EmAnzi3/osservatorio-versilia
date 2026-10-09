@@ -540,8 +540,22 @@ def main() -> None:
         require(compare_control_styles['root'] is not None and compare_control_styles['select'] is not None,
                 'A5 compare: riferimento cromatico controlli non disponibile')
 
+        def wait_a5_town(metric_key: str) -> None:
+            # Fidelity creates the municipal label/current surface after its
+            # data fetch in requestAnimationFrame; networkidle is not DOM ready.
+            # Keep all label/style/geometry assertions below unchanged.
+            page.wait_for_function("""key => {
+              const topic = document.querySelector('#town-topic');
+              const active = topic?.querySelector('[data-metric].active');
+              const label = topic?.querySelector('.town-metric-primary > [data-composite-primary-label]');
+              const visual = topic?.querySelector('.a5-town-current-visual');
+              return active?.dataset.metric === key && !!label?.textContent.trim()
+                && (visual?.dataset.a5Metric === key || visual?.dataset.a5Signature?.startsWith(key + '|'));
+            }""", arg=metric_key, timeout=15000)
+
         def assert_a5_town(metric_key: str, reference_geometry: dict | None = None, town_slug: str = 'viareggio') -> dict:
             page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            wait_a5_town(metric_key)
             require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
                     f'{metric_key}: pilot comunale A5 assente')
 
@@ -820,6 +834,7 @@ def main() -> None:
         def assert_a5_town_responsive(metric_key: str, width: int, height: int, town_slug: str = 'viareggio') -> None:
             page.set_viewport_size({'width': width, 'height': height})
             page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            wait_a5_town(metric_key)
             layout = page.evaluate('''() => {
               const q = selector => document.querySelector(selector);
               const rect = el => {
