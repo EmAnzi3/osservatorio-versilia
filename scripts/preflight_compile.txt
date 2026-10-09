@@ -128,3 +128,5 @@ scripts/semantic_query_maritime_adapters.py
 scripts/test_semantic_maritime_adapters.py
 scripts/semantic_query_extractive_adapters.py
 scripts/test_semantic_extractive_adapters.py
+scripts/semantic_query_remediation_adapters.py
+scripts/test_semantic_remediation_adapters.py
