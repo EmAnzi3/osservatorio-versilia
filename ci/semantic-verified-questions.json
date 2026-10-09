@@ -16360,6 +16360,1663 @@
         ]
       },
       "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "classification_total_046005",
+      "question": "Quale categoria total ha il Comune 046005 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/0/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046013",
+      "question": "Quale categoria total ha il Comune 046013 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046018",
+      "question": "Quale categoria total ha il Comune 046018 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046024",
+      "question": "Quale categoria total ha il Comune 046024 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046028",
+      "question": "Quale categoria total ha il Comune 046028 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046030",
+      "question": "Quale categoria total ha il Comune 046030 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 3
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_046033",
+      "question": "Quale categoria total ha il Comune 046033 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_total_rank_refused",
+      "question": "È ammessa rank sui codici total?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_series_refused",
+      "question": "È ammessa series sui codici total?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_absolute_change_refused",
+      "question": "È ammessa absolute_change sui codici total?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_relative_change_refused",
+      "question": "È ammessa relative_change sui codici total?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_trend_refused",
+      "question": "È ammessa trend sui codici total?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_percentage_points_refused",
+      "question": "È ammessa percentage_points sui codici total?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_weighted_ratio_refused",
+      "question": "È ammessa weighted_ratio sui codici total?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_benchmark_gap_refused",
+      "question": "È ammessa benchmark_gap sui codici total?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_total_anomaly_refused",
+      "question": "È ammessa anomaly sui codici total?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_046005",
+      "question": "Quale categoria part:degurba ha il Comune 046005 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/0/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046013",
+      "question": "Quale categoria part:degurba ha il Comune 046013 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046018",
+      "question": "Quale categoria part:degurba ha il Comune 046018 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046024",
+      "question": "Quale categoria part:degurba ha il Comune 046024 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046028",
+      "question": "Quale categoria part:degurba ha il Comune 046028 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046030",
+      "question": "Quale categoria part:degurba ha il Comune 046030 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 3
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_046033",
+      "question": "Quale categoria part:degurba ha il Comune 046033 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_degurba_rank_refused",
+      "question": "È ammessa rank sui codici part:degurba?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_series_refused",
+      "question": "È ammessa series sui codici part:degurba?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_absolute_change_refused",
+      "question": "È ammessa absolute_change sui codici part:degurba?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_relative_change_refused",
+      "question": "È ammessa relative_change sui codici part:degurba?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_trend_refused",
+      "question": "È ammessa trend sui codici part:degurba?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_percentage_points_refused",
+      "question": "È ammessa percentage_points sui codici part:degurba?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_weighted_ratio_refused",
+      "question": "È ammessa weighted_ratio sui codici part:degurba?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_benchmark_gap_refused",
+      "question": "È ammessa benchmark_gap sui codici part:degurba?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_degurba_anomaly_refused",
+      "question": "È ammessa anomaly sui codici part:degurba?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:degurba"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_046005",
+      "question": "Quale categoria part:littoral ha il Comune 046005 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/0/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046013",
+      "question": "Quale categoria part:littoral ha il Comune 046013 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046018",
+      "question": "Quale categoria part:littoral ha il Comune 046018 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046024",
+      "question": "Quale categoria part:littoral ha il Comune 046024 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046028",
+      "question": "Quale categoria part:littoral ha il Comune 046028 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046030",
+      "question": "Quale categoria part:littoral ha il Comune 046030 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_046033",
+      "question": "Quale categoria part:littoral ha il Comune 046033 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_littoral_rank_refused",
+      "question": "È ammessa rank sui codici part:littoral?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_series_refused",
+      "question": "È ammessa series sui codici part:littoral?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_absolute_change_refused",
+      "question": "È ammessa absolute_change sui codici part:littoral?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_relative_change_refused",
+      "question": "È ammessa relative_change sui codici part:littoral?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_trend_refused",
+      "question": "È ammessa trend sui codici part:littoral?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_percentage_points_refused",
+      "question": "È ammessa percentage_points sui codici part:littoral?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_weighted_ratio_refused",
+      "question": "È ammessa weighted_ratio sui codici part:littoral?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_benchmark_gap_refused",
+      "question": "È ammessa benchmark_gap sui codici part:littoral?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_littoral_anomaly_refused",
+      "question": "È ammessa anomaly sui codici part:littoral?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:littoral"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_046005",
+      "question": "Quale categoria part:coastalZone ha il Comune 046005 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/0/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046013",
+      "question": "Quale categoria part:coastalZone ha il Comune 046013 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046018",
+      "question": "Quale categoria part:coastalZone ha il Comune 046018 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046024",
+      "question": "Quale categoria part:coastalZone ha il Comune 046024 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046028",
+      "question": "Quale categoria part:coastalZone ha il Comune 046028 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046030",
+      "question": "Quale categoria part:coastalZone ha il Comune 046030 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_046033",
+      "question": "Quale categoria part:coastalZone ha il Comune 046033 nel riferimento 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/sourceValue",
+            "value": true
+          }
+        ]
+      },
+      "reference": "Fixture fisse Istat: sei DEGURBA 2 e Stazzema 3; quattro litoranei, sei in zona costiera. Confronto descrittivo con due Comuni, codici non quantità."
+    },
+    {
+      "id": "classification_part_coastalZone_rank_refused",
+      "question": "È ammessa rank sui codici part:coastalZone?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_series_refused",
+      "question": "È ammessa series sui codici part:coastalZone?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_absolute_change_refused",
+      "question": "È ammessa absolute_change sui codici part:coastalZone?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_relative_change_refused",
+      "question": "È ammessa relative_change sui codici part:coastalZone?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_trend_refused",
+      "question": "È ammessa trend sui codici part:coastalZone?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_percentage_points_refused",
+      "question": "È ammessa percentage_points sui codici part:coastalZone?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_weighted_ratio_refused",
+      "question": "È ammessa weighted_ratio sui codici part:coastalZone?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_benchmark_gap_refused",
+      "question": "È ammessa benchmark_gap sui codici part:coastalZone?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_part_coastalZone_anomaly_refused",
+      "question": "È ammessa anomaly sui codici part:coastalZone?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Categorie territoriali: nessuna aritmetica, graduatoria, aggregazione o benchmark geografico dei codici."
+    },
+    {
+      "id": "classification_correlation_refused",
+      "question": "La categoria può essere trattata come quantità, retrodatata alla pubblicazione o sostituire il minimo di confronto?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "territorialClassification"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_category_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Contratto vigente e riferimento territoriale 2021 congelato; pubblicazione 2026 distinta."
+    },
+    {
+      "id": "classification_publication_year_refused",
+      "question": "La categoria può essere trattata come quantità, retrodatata alla pubblicazione o sostituire il minimo di confronto?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "classification_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto vigente e riferimento territoriale 2021 congelato; pubblicazione 2026 distinta."
+    },
+    {
+      "id": "classification_single_town_refused",
+      "question": "La categoria può essere trattata come quantità, retrodatata alla pubblicazione o sostituire il minimo di confronto?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Contratto vigente e riferimento territoriale 2021 congelato; pubblicazione 2026 distinta."
     }
   ]
 }

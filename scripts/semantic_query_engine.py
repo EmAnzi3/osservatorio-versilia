@@ -38,9 +38,10 @@ import semantic_query_remediation_adapters as remediation
 import semantic_query_pab_adapters as pab
 import semantic_query_climate_adapters as climate
 import semantic_query_agriculture_profile_adapters as profiles
+import semantic_query_classification_adapters as classification
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '26'
+VERSION = '27'
 SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -82,6 +83,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in classification.KEYS:return classification.dimensions(key)
     if key in profiles.KEYS:return profiles.dimensions(key)
     if key in climate.KEYS:return climate.dimensions(key)
     if key in pab.KEYS:return pab.dimensions(key)
@@ -108,6 +110,7 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in classification.KEYS:return classification.operations(key,dimension)
     if key in profiles.KEYS:return profiles.operations(key,dimension)
     if key in climate.KEYS:return climate.operations(key,dimension)
     if key in pab.KEYS:return pab.operations(key,dimension)
@@ -295,6 +298,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in classification.KEYS:return classification.context(metric,key,dimension)
         if key in profiles.KEYS:return profiles.context(metric,key,dimension)
         if key in climate.KEYS:return climate.context(metric,key,dimension)
         if key in pab.KEYS:return pab.context(metric,key,dimension)
@@ -336,6 +340,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in classification.KEYS:return classification.observation(self,key,row_index,dimension,period,historical)
         if key in profiles.KEYS:return profiles.observation(self,key,row_index,dimension,period,historical)
         if key in climate.KEYS:return climate.observation(self,key,row_index,dimension,period,historical)
         if key in pab.KEYS:return pab.observation(self,key,row_index,dimension,period,historical)
@@ -452,6 +457,7 @@ class QueryEngine:
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
+        if key in classification.KEYS:classification.selection_guard(key,dimension,operation)
         if key in climate.KEYS:
             self._climate_validation={}
             climate.selection_guard(key,dimension,operation)
@@ -539,6 +545,7 @@ class QueryEngine:
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
                   'pabAdapterSha256':digest((ROOT/'scripts/semantic_query_pab_adapters.py').read_bytes()),
+                  'classificationAdapterSha256':digest((ROOT/'scripts/semantic_query_classification_adapters.py').read_bytes()),
                   'agricultureProfileAdapterSha256':digest((ROOT/'scripts/semantic_query_agriculture_profile_adapters.py').read_bytes()),
                   'climateAdapterSha256':digest((ROOT/'scripts/semantic_query_climate_adapters.py').read_bytes()),
                   'remediationAdapterSha256':digest((ROOT/'scripts/semantic_query_remediation_adapters.py').read_bytes()),
@@ -589,6 +596,8 @@ class QueryEngine:
             for selector in selectors:
                 selected,warnings = self.select(selector,operation)
                 observations.extend(selected);notes.extend(warnings)
+            if operation == 'compare' and selectors[0]['metric'] in classification.KEYS:
+                result['interpretationLevel'] = 'category_lookup'
             if operation == 'benchmark_gap':
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
@@ -695,7 +704,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix
