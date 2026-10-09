@@ -249,13 +249,19 @@
     {
       "path": ".github/workflows/opportunity-radar-daily.yml",
       "category": "automation",
-      "status": "active"
+      "status": "active",
+      "note": "Primary shadow candidate pipeline: one scheduled scan, semantic comparison, complete public-site build and browser gates; verified-opportunities-v1 separates degraded discovery from unsafe content."
     },
     {
       "path": ".github/workflows/opportunity-radar-daily-v2-shadow.yml",
       "category": "automation",
-      "executionBudgetMinutes": {"job": 60, "scan": 30, "build": 20},
-      "status": "active"
+      "executionBudgetMinutes": {
+        "job": 60,
+        "scan": 30,
+        "build": 20
+      },
+      "status": "active",
+      "note": "Manual failure rehearsal only; no schedule or PR trigger. Uses the primary discovery policy and failed-run source health seed."
     },
     {
       "path": ".github/workflows/refresh-agid-indicators.yml",

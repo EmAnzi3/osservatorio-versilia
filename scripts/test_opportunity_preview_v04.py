@@ -41,7 +41,7 @@ class OpportunityPreviewV04Test(unittest.TestCase):
             self.assertIn(f'data-lifecycle="{stage}"', page)
         self.assertIn("A sportello", page)
         self.assertIn("In arrivo", page)
-        self.assertEqual(len(re.findall(r'class="op-stat(?:\s|\")', page)), 6)
+        self.assertEqual(len(re.findall(r'class="op-stat(?:\s|\")', page)), 7)
 
     def test_render_replaces_source_buffets_with_compact_audit_summary(self):
         page = preview.render_page(self._payload())
@@ -52,6 +52,17 @@ class OpportunityPreviewV04Test(unittest.TestCase):
         self.assertNotIn("op-monitor-source", page)
         self.assertNotIn("data-op-source-quick", page)
         self.assertIn("data-op-source", page)
+
+    def test_degraded_discovery_is_visible_without_changing_card_layout(self):
+        payload = self._payload()
+        payload["coverageAudit"]["runtimeUncoveredFamilies"] = ["education-school-infrastructure"]
+        payload["discoveryCoverage"] = {"status": "degraded"}
+        page = preview.render_page(payload)
+        self.assertIn("17/18", page)
+        self.assertIn("Ricerca degradata", page)
+        self.assertIn("Istruzione, edilizia e servizi scolastici", page)
+        self.assertNotIn("education-school-infrastructure", page)
+        self.assertIn("le schede restano verificate", page)
 
     def test_render_uses_single_v04_filter_script(self):
         page = preview.render_page(self._payload())

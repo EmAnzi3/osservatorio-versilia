@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import html
 import json
 import re
 import shutil
@@ -221,6 +222,17 @@ def build(payload_path: Path, dist: Path) -> Path:
     reference = f"{day}/{month}/{year}"
 
     text = _clean_public_markup(target.read_text(encoding="utf-8"), reference)
+    note = route_builder.discovery_coverage_note(payload)
+    if note:
+        # Keep the source caveat in the public introduction: technical audit
+        # markup is intentionally removed by _clean_public_markup.
+        text, replacements = re.subn(
+            r'(<section class="editorial-hero page-width op-preview-hero">.*?<h1>.*?</h1>\s*<p>)(.*?)(</p>)',
+            lambda match: match.group(1) + match.group(2) + " " + html.escape(note) + match.group(3),
+            text, count=1, flags=re.DOTALL,
+        )
+        if replacements != 1:
+            raise RuntimeError("Avviso ricerca degradata assente dalla pagina pubblica")
     target.write_text(text, encoding="utf-8")
     ensure_sitemap_entries(dist, (PUBLIC_URL,))
 

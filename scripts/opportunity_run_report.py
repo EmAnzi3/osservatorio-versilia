@@ -259,7 +259,7 @@ def _gate_summary(
             },
             {
                 "name": "Copertura",
-                "status": str(summary.get("coverageAuditStatus") or "unknown"),
+                "status": "degraded" if (diagnostic.get("coverageAudit") or {}).get("status") == "pass" and diagnostic.get("runtimeUncoveredFamilies") else str(summary.get("coverageAuditStatus") or "unknown"),
                 "detail": _coverage_detail(diagnostic.get("coverageAudit") or {}, int(summary.get("runtimeUncoveredFamilyCount") or 0)),
             },
             {
@@ -290,7 +290,7 @@ def _gate_summary(
         },
         {
             "name": "Copertura",
-            "status": str(coverage.get("status") or "unknown"),
+            "status": "degraded" if coverage.get("status") == "pass" and coverage.get("runtimeUncoveredFamilies") else str(coverage.get("status") or "unknown"),
             "detail": _coverage_detail(coverage),
         },
         {

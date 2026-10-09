@@ -1,6 +1,23 @@
 {
   "schemaVersion": "0.4.3",
   "purpose": "Misurare la copertura del radar separatamente dalla precisione/recall del classificatore sui candidati già osservati. Le famiglie minime sono validate contro audit indipendente e un registro di evidenze ufficiali, evitando di confondere un portale configurato con una copertura dimostrata.",
+  "publicationPolicy": {
+    "id": "verified-opportunities-v1",
+    "discoveryGaps": "Publish only otherwise verified opportunities with explicit degraded discovery coverage; persist source failures without extending grace.",
+    "blockingGates": [
+      "structuralCoverage",
+      "primaryVerification",
+      "continuity",
+      "backtest",
+      "regionalCompleteness",
+      "scanBudget",
+      "snapshotValidation",
+      "fullSiteBuild",
+      "browserValidation",
+      "comparison",
+      "report"
+    ]
+  },
   "classifierRecallIsNotWebCoverage": true,
   "acceptedOpportunityKinds": [
     "grant",

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import shutil
 from pathlib import Path
@@ -89,6 +90,15 @@ def lifecycle_card(item: dict[str, Any]) -> str:
     return text
 
 
+
+def discovery_coverage_note(payload: dict[str, Any]) -> str:
+    if (payload.get("discoveryCoverage") or {}).get("status") != "degraded":
+        return ""
+    contract = json.loads((ROOT / "data/opportunity-coverage-contract-v04.json").read_text(encoding="utf-8"))
+    labels = {family["id"]: family.get("label") or family["id"] for family in contract.get("requiredFamilies") or []}
+    affected = [labels.get(family, family) for family in (payload.get("coverageAudit") or {}).get("runtimeUncoveredFamilies") or []]
+    return "Ricerca degradata: " + ", ".join(affected) + ". Alcune fonti non sono state controllate; le schede restano verificate."
+
 def _overview(payload: dict[str, Any]) -> str:
     opportunities = list(payload.get("opportunities") or [])
     municipal, partners = municipal_relevance.visible_partitions(opportunities)
@@ -105,7 +115,10 @@ def _overview(payload: dict[str, Any]) -> str:
     upcoming = sum(str(x.get("lifecycle_stage")) == "announced_upcoming" for x in municipal)
     monitored = int(summary.get("configured") or len(coverage.get("rows") or []))
     required_families = int(audit.get("requiredFamilies") or 0)
-    covered_families = max(0, required_families - len(audit.get("missingFamilies") or []))
+    missing = set(audit.get("missingFamilies") or []) | set(audit.get("runtimeUncoveredFamilies") or [])
+    covered_families = max(0, required_families - len(missing))
+    note = discovery_coverage_note(payload)
+    discovery_note = " · " + esc(note) if note else ""
     holdout_count = int(holdouts.get("configured") or 0)
     holdout_healthy = int(holdouts.get("healthy") or 0)
     closed = int(gap.get("closed") or 0)
@@ -115,7 +128,7 @@ def _overview(payload: dict[str, Any]) -> str:
     rate = prospective.get("captureRate")
     rate_text = "in raccolta" if rate is None else f"{float(rate):.1%}"
     icons = base.ICONS
-    return f'''<section class="method-detail page-width op-overview" aria-label="Quadro operativo"><div class="op-overview-shell"><div class="op-overview-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Il totale principale comprende solo opportunità con accesso, supporto o candidatura comunale documentati. Le partnership sono conteggiate a parte.</p></div><div class="op-overview-grid op-overview-grid-v04"><article class="op-stat op-stat-open"><span class="op-stat-icon">{icons['briefcase']}</span><div><small>Aperte</small><strong>{opened}</strong><span>Opportunità comunali con candidatura attiva</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['calendar']}</span><div><small>A sportello</small><strong>{rolling}</strong><span>Supporti e misure comunali senza scadenza unica</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['radar']}</span><div><small>In arrivo</small><strong>{upcoming}</strong><span>Procedure comunali annunciate ufficialmente</span></div></article><article class="op-stat op-stat-partner"><span class="op-stat-icon">{icons['building']}</span><div><small>Partnership / consorzi</small><strong>{len(partners)}</strong><span>Ruolo comunale documentato, fuori dal totale principale</span></div></article><article class="op-stat op-stat-sources"><span class="op-stat-icon">{icons['radar']}</span><div><small>Rete di raccolta</small><strong>{monitored}</strong><span>{required_families} famiglie · {holdout_count} fonti di controllo separate</span></div></article><article class="op-stat op-stat-towns"><span class="op-stat-icon">{icons['map']}</span><div><small>Famiglie presidiate</small><strong>{covered_families}/{required_families}</strong><span>Il dato non equivale alla completezza del web</span></div></article><article class="op-stat op-stat-archive"><span class="op-stat-icon">{icons['archive']}</span><div><small>In archivio</small><strong>{len(archive)}</strong><span>Opportunità chiuse con fonte ufficiale</span></div></article></div><div class="op-audit-summary"><strong>Audit indipendente</strong><span>{closed}/{gap_total} buchi baseline chiusi · capture rate prospettico: {rate_text} ({sample}/{minimum}) · fonti di controllo raggiungibili: {holdout_healthy}/{holdout_count}</span></div></div></section>'''
+    return f'''<section class="method-detail page-width op-overview" aria-label="Quadro operativo"><div class="op-overview-shell"><div class="op-overview-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Il totale principale comprende solo opportunità con accesso, supporto o candidatura comunale documentati. Le partnership sono conteggiate a parte.</p></div><div class="op-overview-grid op-overview-grid-v04"><article class="op-stat op-stat-open"><span class="op-stat-icon">{icons['briefcase']}</span><div><small>Aperte</small><strong>{opened}</strong><span>Opportunità comunali con candidatura attiva</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['calendar']}</span><div><small>A sportello</small><strong>{rolling}</strong><span>Supporti e misure comunali senza scadenza unica</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['radar']}</span><div><small>In arrivo</small><strong>{upcoming}</strong><span>Procedure comunali annunciate ufficialmente</span></div></article><article class="op-stat op-stat-partner"><span class="op-stat-icon">{icons['building']}</span><div><small>Partnership / consorzi</small><strong>{len(partners)}</strong><span>Ruolo comunale documentato, fuori dal totale principale</span></div></article><article class="op-stat op-stat-sources"><span class="op-stat-icon">{icons['radar']}</span><div><small>Rete di raccolta</small><strong>{monitored}</strong><span>{required_families} famiglie · {holdout_count} fonti di controllo separate</span></div></article><article class="op-stat op-stat-towns"><span class="op-stat-icon">{icons['map']}</span><div><small>Famiglie presidiate</small><strong>{covered_families}/{required_families}</strong><span>Il dato non equivale alla completezza del web</span></div></article><article class="op-stat op-stat-archive"><span class="op-stat-icon">{icons['archive']}</span><div><small>In archivio</small><strong>{len(archive)}</strong><span>Opportunità chiuse con fonte ufficiale</span></div></article></div><div class="op-audit-summary"><strong>Audit indipendente</strong><span>{closed}/{gap_total} buchi baseline chiusi · capture rate prospettico: {rate_text} ({sample}/{minimum}) · fonti di controllo raggiungibili: {holdout_healthy}/{holdout_count}{discovery_note}</span></div></div></section>'''
 
 
 def _recent_controls(payload: dict[str, Any]) -> str:

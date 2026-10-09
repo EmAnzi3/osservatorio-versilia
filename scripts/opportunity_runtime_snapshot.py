@@ -30,6 +30,27 @@ def _reference_date(payload: dict[str, Any]) -> date | None:
         return None
 
 
+# Operational policy: discovery gaps remain visible; verified content still
+# requires every structural, primary-verification and continuity gate.
+VERIFIED_DISCOVERY_POLICY = "verified-opportunities-v1"
+
+
+def discovery_coverage_errors(payload: dict[str, Any]) -> list[str]:
+    coverage = payload.get("coverageAudit") or {}
+    uncovered = list(coverage.get("runtimeUncoveredFamilies") or [])
+    discovery = payload.get("discoveryCoverage") or {}
+    if not discovery:
+        return ["runtimeUncoveredFamilies"] if uncovered else []
+    if discovery.get("policy") != VERIFIED_DISCOVERY_POLICY:
+        return ["discoveryCoverage.policy"]
+    expected = "degraded" if uncovered else "pass"
+    if discovery.get("status") != expected or discovery.get("uncoveredFamilies") != uncovered:
+        return ["discoveryCoverage"]
+    if uncovered and not (payload.get("transportAudit") or {}).get("sources"):
+        return ["discoveryCoverage.transportAudit"]
+    return []
+
+
 def validation_errors(payload: dict[str, Any], today: date) -> list[str]:
     errors: list[str] = []
     reference = _reference_date(payload)
@@ -50,8 +71,9 @@ def validation_errors(payload: dict[str, Any], today: date) -> list[str]:
     coverage = payload.get("coverageAudit") or {}
     if coverage and coverage.get("status") != "pass":
         errors.append("coverageAudit")
-    if (coverage.get("runtimeUncoveredFamilies") or []):
-        errors.append("runtimeUncoveredFamilies")
+    errors.extend(discovery_coverage_errors(payload))
+    if (coverage.get("transportBudget") or {}).get("status") == "fail":
+        errors.append("transportBudget")
     backtest = payload.get("backtest") or {}
     if backtest and backtest.get("passed") is not True:
         errors.append("backtest")
