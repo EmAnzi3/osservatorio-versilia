@@ -40,7 +40,9 @@
         "rows[].detailParts",
         "rows[].normalized",
         "rows[].ratioComponents",
-        "aggregate.parts"
+        "aggregate.parts",
+        "parameterDefinitions",
+        "rows[].localities[].values"
       ]
     },
     "source": {
@@ -66,7 +68,8 @@
       "municipality",
       "indicator",
       "period",
-      "dimension?"
+      "dimension?",
+      "locality?"
     ],
     "requiredSemanticFields": [
       "municipalityId",
@@ -81,7 +84,8 @@
       "available",
       "missing",
       "not_applicable"
-    ]
+    ],
+    "specializedLookup": "source-backed locality identity and parameter; source measurement string/qualifier only in lookup, primary numeric values and arithmetic guards unchanged"
   },
   "rules": {
     "themeMembershipMustBeBidirectional": true,

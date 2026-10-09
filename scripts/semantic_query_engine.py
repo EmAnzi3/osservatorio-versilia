@@ -39,12 +39,16 @@ import semantic_query_pab_adapters as pab
 import semantic_query_climate_adapters as climate
 import semantic_query_agriculture_profile_adapters as profiles
 import semantic_query_classification_adapters as classification
+import semantic_query_water_quality_adapters as water_quality
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '27'
-SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
+VERSION = '28'
+NUMERICAL_SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
+
+
+SUPPORTED = (*NUMERICAL_SUPPORTED, 'lookup')
 
 
 def digest(body):
@@ -83,6 +87,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in water_quality.KEYS:return water_quality.dimensions(key)
     if key in classification.KEYS:return classification.dimensions(key)
     if key in profiles.KEYS:return profiles.dimensions(key)
     if key in climate.KEYS:return climate.dimensions(key)
@@ -110,6 +115,7 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in water_quality.KEYS:return ['lookup']
     if key in classification.KEYS:return classification.operations(key,dimension)
     if key in profiles.KEYS:return profiles.operations(key,dimension)
     if key in climate.KEYS:return climate.operations(key,dimension)
@@ -120,32 +126,32 @@ def operations(key, dimension, unit):
     if key in bathing.KEYS:return bathing.operations(key,dimension)
     if key in coast.KEYS:return coast.operations(key,dimension)
     if key in fragility.KEYS:return fragility.operations(key)
-    if key in hazard.KEYS:return [o for o in SUPPORTED if (o not in TEMPORAL or o=='series' and dimension==hazard.HISTORY) and o!='benchmark_gap' and (o!='weighted_ratio' or hazard.weighted(key,dimension))]
-    if key in territory.KEYS:return [o for o in SUPPORTED if o not in TEMPORAL and o!='benchmark_gap' and (o!='weighted_ratio' or territory.weighted(key,dimension))]
-    if key in soil.KEYS:return [o for o in SUPPORTED if (o not in TEMPORAL or o=='series') and (o!='weighted_ratio' or soil.weighted(key,dimension)) and (o!='benchmark_gap' or soil.scopes(key,dimension))]
-    if key in geography.KEYS:return [o for o in SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or geography.weighted(key,dimension)) and (o!='benchmark_gap' or geography.scopes(key,dimension))]
-    if key in agriculture.KEYS:return [o for o in SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or agriculture.weighted(key,dimension)) and (o!='benchmark_gap' or agriculture.scopes(key,dimension)) and o!='percentage_points']
+    if key in hazard.KEYS:return [o for o in NUMERICAL_SUPPORTED if (o not in TEMPORAL or o=='series' and dimension==hazard.HISTORY) and o!='benchmark_gap' and (o!='weighted_ratio' or hazard.weighted(key,dimension))]
+    if key in territory.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and o!='benchmark_gap' and (o!='weighted_ratio' or territory.weighted(key,dimension))]
+    if key in soil.KEYS:return [o for o in NUMERICAL_SUPPORTED if (o not in TEMPORAL or o=='series') and (o!='weighted_ratio' or soil.weighted(key,dimension)) and (o!='benchmark_gap' or soil.scopes(key,dimension))]
+    if key in geography.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or geography.weighted(key,dimension)) and (o!='benchmark_gap' or geography.scopes(key,dimension))]
+    if key in agriculture.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or agriculture.weighted(key,dimension)) and (o!='benchmark_gap' or agriculture.scopes(key,dimension)) and o!='percentage_points']
     if key in environment.KEYS:
-        return [o for o in SUPPORTED if (o!='weighted_ratio' or key in environment.RATIOS) and (o!='percentage_points' or unit=='percent') and not (key in environment.WASTE and o in TEMPORAL and o!='series')]
+        return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in environment.RATIOS) and (o!='percentage_points' or unit=='percent') and not (key in environment.WASTE and o in TEMPORAL and o!='series')]
     if key in commuting.KEYS:
-        return [o for o in SUPPORTED if o not in TEMPORAL and (o not in ('weighted_ratio','benchmark_gap') or key in commuting.RATIOS)]
+        return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and (o not in ('weighted_ratio','benchmark_gap') or key in commuting.RATIOS)]
     if key in demography.KEYS:
         current_only=key in (demography.SITES,*demography.STUDENTS,*demography.BUILDINGS) or '|sex:' in dimension or dimension.startswith('sex:')
-        return [o for o in SUPPORTED if (o!='benchmark_gap' or demography.benchmark_scopes(key,dimension)) and (o!='weighted_ratio' or demography.weighted(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (current_only and o in TEMPORAL) and not (key==demography.CHANGE and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if (o!='benchmark_gap' or demography.benchmark_scopes(key,dimension)) and (o!='weighted_ratio' or demography.weighted(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (current_only and o in TEMPORAL) and not (key==demography.CHANGE and o=='trend')]
     if key in distinct.KEYS:
-        return [o for o in SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or distinct.weighted(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key==distinct.WORKS and o in TEMPORAL) and not (key==distinct.FISCAL and o in TEMPORAL and o!='series') and not (key==distinct.SECURITY and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or distinct.weighted(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key==distinct.WORKS and o in TEMPORAL) and not (key==distinct.FISCAL and o in TEMPORAL and o!='series') and not (key==distinct.SECURITY and o=='trend')]
     if key in finance.KEYS:
-        return [o for o in SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or key in finance.RATIOS) and (o!='percentage_points' or unit=='percent')]
+        return [o for o in NUMERICAL_SUPPORTED if o!='benchmark_gap' and (o!='weighted_ratio' or key in finance.RATIOS) and (o!='percentage_points' or unit=='percent')]
     if key in census.KEYS:
-        return [o for o in SUPPORTED if (o!='weighted_ratio' or key in census.RATIOS) and (o!='benchmark_gap' or census.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='householdSize' and o in TEMPORAL) and not (key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in census.RATIOS) and (o!='benchmark_gap' or census.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='householdSize' and o in TEMPORAL) and not (key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and o=='trend')]
     if key in business.KEYS:
-        return [o for o in SUPPORTED if (o!='weighted_ratio' or key in business.RATIOS) and (o!='benchmark_gap' or business.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='microUnits' and o in TEMPORAL) and not (key in business.CHANGES and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in business.RATIOS) and (o!='benchmark_gap' or business.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='microUnits' and o in TEMPORAL) and not (key in business.CHANGES and o=='trend')]
     if key in ars.KEYS:
         rolling='-' in ars._SPECS[key]['period']
         historical=key=='lifeExpectancy' or dimension=='total'
-        return [o for o in SUPPORTED if o not in ('weighted_ratio','percentage_points') and (historical or o not in TEMPORAL) and not (rolling and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if o not in ('weighted_ratio','percentage_points') and (historical or o not in TEMPORAL) and not (rolling and o=='trend')]
     current_only=key=='ageDistribution' or key in territorial.CURRENT_ONLY or (key=='population' and dimension!='total')
-    return [o for o in SUPPORTED if
+    return [o for o in NUMERICAL_SUPPORTED if
         (o!='weighted_ratio' or key in CENSUS or key=='ageDistribution' or key in territorial.RATIOS) and
         (o!='benchmark_gap' or key in CENSUS or key=='income' or key=='ageDistribution' or key in territorial.RATIOS or key=='elderlyHomeCare') and
         (o!='percentage_points' or unit=='percent') and (not current_only or o not in TEMPORAL)]
@@ -189,6 +195,8 @@ def coefficient(x, y, method):
 
 def calculate(operation, observations, policy):
     """Only called after the shared A6.2–3 eligibility gate."""
+    if operation == 'lookup':
+        return {'observations':[o for o in observations if o.get('value') is not None and not o.get('notApplicable') and not o.get('dataUnavailable')]}
     usable = [o for o in observations if finite(o.get('value')) and not o.get('notApplicable') and not o.get('dataUnavailable')]
     values = [o['value'] for o in usable]
     if operation in ('compare', 'series'):
@@ -298,6 +306,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in water_quality.KEYS:return water_quality.context(metric,key,dimension)
         if key in classification.KEYS:return classification.context(metric,key,dimension)
         if key in profiles.KEYS:return profiles.context(metric,key,dimension)
         if key in climate.KEYS:return climate.context(metric,key,dimension)
@@ -448,11 +457,15 @@ class QueryEngine:
         return obs,warnings
 
     def select(self, selector, operation):
-        if not isinstance(selector,dict) or set(selector)-{'metric','dimension','towns','periods'}:
+        if not isinstance(selector,dict) or set(selector)-{'metric','dimension','towns','periods','localities'}:
             raise ValueError('invalid_selector_fields')
         key = selector.get('metric')
         if key not in self._catalog['metrics']:
             raise ValueError('unknown_metric')
+        if key in water_quality.KEYS:
+            return water_quality.select(self,selector,operation)
+        if 'localities' in selector:raise ValueError('locality_selector_requires_water_quality_adapter')
+        if operation == 'lookup':raise ValueError('lookup_adapter_not_implemented')
         dimension=selector.get('dimension','total')
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
@@ -545,6 +558,7 @@ class QueryEngine:
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
                   'pabAdapterSha256':digest((ROOT/'scripts/semantic_query_pab_adapters.py').read_bytes()),
+                  'waterQualityAdapterSha256':digest((ROOT/'scripts/semantic_query_water_quality_adapters.py').read_bytes()),
                   'classificationAdapterSha256':digest((ROOT/'scripts/semantic_query_classification_adapters.py').read_bytes()),
                   'agricultureProfileAdapterSha256':digest((ROOT/'scripts/semantic_query_agriculture_profile_adapters.py').read_bytes()),
                   'climateAdapterSha256':digest((ROOT/'scripts/semantic_query_climate_adapters.py').read_bytes()),
@@ -596,6 +610,7 @@ class QueryEngine:
             for selector in selectors:
                 selected,warnings = self.select(selector,operation)
                 observations.extend(selected);notes.extend(warnings)
+            if operation == 'lookup':result['interpretationLevel'] = 'source_lookup'
             if operation == 'compare' and selectors[0]['metric'] in classification.KEYS:
                 result['interpretationLevel'] = 'category_lookup'
             if operation == 'benchmark_gap':
@@ -704,7 +719,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix
