@@ -243,6 +243,7 @@ def _write_full_publishability_diagnostic(
         "error": str(error) if error is not None else None,
         "gateSummary": _diagnostic_gate_summary(result),
         "runtimeUncoveredFamilies": list(uncovered),
+        "discoveryCoverage": dict(result.get("discoveryCoverage") or {}),
         "runtimeCoverageEvaluation": runtime_evaluation or {"evaluated": True, "error": None},
         "continuityHold": list(result.get("continuityHold") or []),
         "coverageHold": list(result.get("coverageHold") or []),

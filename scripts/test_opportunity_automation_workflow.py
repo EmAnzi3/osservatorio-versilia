@@ -12,6 +12,13 @@ def main() -> int:
     pages = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     live_status = (ROOT / ".github/workflows/pages-live-status.yml").read_text(encoding="utf-8")
 
+    assert "OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1" in daily
+    assert "opportunity_seed_source_health.sh" in daily
+    assert "scripts/opportunity_shadow_compare.py" in daily
+    assert "'comparison': os.environ.get('COMPARISON_STATUS')" in daily
+    assert "python scripts/build_public_site.py" in daily
+    assert "python scripts/test_site_consistency.py" in daily
+    assert "python scripts/test_opportunity_release_browser.py" in daily
     assert "gh pr create" not in daily
     assert "gh workflow run pages.yml" not in daily
     assert "Persist verified snapshot as runtime state" in daily

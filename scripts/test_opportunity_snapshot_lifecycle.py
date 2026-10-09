@@ -128,7 +128,8 @@ def verify_daily(path: Path) -> None:
     assert not payload.get("coverageHold")
     assert (payload.get("backtest") or {}).get("passed") is True
     assert (payload.get("coverageAudit") or {}).get("status") == "pass"
-    assert not ((payload.get("coverageAudit") or {}).get("runtimeUncoveredFamilies") or [])
+    from opportunity_runtime_snapshot import discovery_coverage_errors
+    assert not discovery_coverage_errors(payload), discovery_coverage_errors(payload)
     assert (payload.get("regionalCompleteness") or {}).get("status") in {"pass", "degraded"}
     assert (payload.get("continuityReconciliation") or {}).get("remaining") == 0
 

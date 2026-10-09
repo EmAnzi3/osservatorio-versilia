@@ -111,6 +111,11 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
     audit = candidate.get("coverageAudit") or {}
     if audit and audit.get("status") != "pass":
         return False
+    from opportunity_runtime_snapshot import discovery_coverage_errors
+    if discovery_coverage_errors(candidate):
+        return False
+    if (audit.get("transportBudget") or {}).get("status") == "fail":
+        return False
     regional = candidate.get("regionalCompleteness") or {}
     if regional and regional.get("status") not in {"pass", "degraded"}:
         return False

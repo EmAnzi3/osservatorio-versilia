@@ -245,6 +245,9 @@ def select_opportunity_public_payload() -> Path:
         raise RuntimeError(b"Snapshot Radar giornaliero con backtest non valido")
     if (daily_payload.get("coverageAudit") or {}).get("status") != "pass":
         raise RuntimeError("Snapshot Radar giornaliero con coverage audit non valido")
+    from opportunity_runtime_snapshot import discovery_coverage_errors
+    if discovery_coverage_errors(daily_payload):
+        raise RuntimeError("Snapshot Radar giornaliero con discovery coverage non valida")
     if (daily_payload.get("regionalCompleteness") or {}).get("status") == "fail":
         raise RuntimeError("Snapshot Radar giornaliero con completezza Regione Toscana non valida")
     return daily

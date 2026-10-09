@@ -95,13 +95,29 @@ def _assert_publishable_hardened(result: dict[str, Any]) -> None:
     if discovery.LIVE_BUDGET is not None and discovery.LIVE_BUDGET.scan_exhausted:
         audit["transportBudget"] = {"status": "fail", "reason": "scan budget exhausted"}
         audit["status"] = "fail"
-    if uncovered:
+    from opportunity_runtime_snapshot import VERIFIED_DISCOVERY_POLICY
+    import os
+    policy = os.environ.get("OPPORTUNITY_DISCOVERY_POLICY", "strict")
+    if policy not in {"strict", VERIFIED_DISCOVERY_POLICY}:
+        raise RuntimeError("Unknown discovery policy: " + policy)
+    allow_degraded = policy == VERIFIED_DISCOVERY_POLICY
+    if allow_degraded:
+        result["discoveryCoverage"] = {
+            "policy": policy,
+            "status": "degraded" if uncovered else "pass",
+            "uncoveredFamilies": list(uncovered),
+        }
+    if uncovered and not allow_degraded:
         audit["status"] = "fail"
     _ORIGINAL_ASSERT(result)
+    if uncovered and allow_degraded:
+        import opportunity_daily_refresh_stable as stable
+        stable._write_publishability_diagnostic(result, uncovered)
+        print("DISCOVERY DEGRADED: " + ", ".join(uncovered) + "; publishing verified opportunities only")
     # Defensive compatibility for legacy/custom assert hooks.  The canonical
     # base assert above already raises from coverageAudit=fail; this branch is
     # reached only when a caller replaced it with a permissive test/adapter.
-    if uncovered:
+    if uncovered and not allow_degraded:
         raise RuntimeError(
             "Snapshot giornaliero non pubblicabile: famiglie obbligatorie senza copertura runtime="
             + ", ".join(uncovered)

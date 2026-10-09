@@ -1,18 +1,7 @@
 name: Radar Opportunità · v2 shadow
 
 on:
-  schedule:
-    # Dopo il workflow produttivo delle 06:15 UTC: confronta il candidato v2
-    # con l'ultimo stato accettato senza modificare repository o Pages.
-    - cron: "45 7 * * *"
-  pull_request:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/opportunity-radar-daily-v2-shadow.yml"
-      - "scripts/opportunity_*.py"
-      - "scripts/test_opportunity_*.py"
-      - "data/opportunity-*.json"
-      - "requirements-ci.txt"
+  # Manual failure rehearsal only; the primary workflow owns the daily scan.
   workflow_dispatch:
     inputs:
       failure_stage:
@@ -80,12 +69,18 @@ jobs:
       - name: Materialize verified shadow baseline
         run: python scripts/materialize_opportunity_release_snapshot.py
 
+      - name: Seed source health from latest failed primary run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/opportunity_seed_source_health.sh
+
       - name: Scan live sources in shadow mode
         id: scan
         timeout-minutes: 30
         continue-on-error: true
         shell: bash
         env:
+          OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1
           FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
         run: |
           set -o pipefail

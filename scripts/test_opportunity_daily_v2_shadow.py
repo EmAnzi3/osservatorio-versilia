@@ -27,6 +27,10 @@ def _failure_matrix() -> None:
 def main() -> int:
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
+    assert "  schedule:" not in workflow
+    assert "  pull_request:" not in workflow
+    assert "opportunity_seed_source_health.sh" in workflow
+    assert "OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1" in workflow
     assert "contents: read" in workflow
     for forbidden in (
         "contents: write",
