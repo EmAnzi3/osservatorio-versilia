@@ -21980,6 +21980,2101 @@
         ]
       },
       "reference": "Fixed MEF native municipal components, tax year 2024; macro known-cell denominator vs eight-band total frequency; hybrid adult residents 2026. No live reacquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_total",
+      "question": "RGS: municipalEmployeesPer1000 total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 5.90007532011047
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 20.36299247454626
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.9789618111136518
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 7.37230121116377
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 5.066344993968637
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 4.4781260764726145
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 6.781334869558061
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_staff",
+      "question": "RGS: municipalEmployeesPer1000 staff",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "staff"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 188
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 138
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 87
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 168
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 63
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 13
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 412
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_residents",
+      "question": "RGS: municipalEmployeesPer1000 residents",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "residents"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 31864
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 6777
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 21865
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 22788
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 12435
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 2903
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 60755
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_series_refused",
+      "question": "RGS: municipalEmployeesPer1000 series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_absolute_change_refused",
+      "question": "RGS: municipalEmployeesPer1000 absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_relative_change_refused",
+      "question": "RGS: municipalEmployeesPer1000 relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_percentage_points_refused",
+      "question": "RGS: municipalEmployeesPer1000 percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_trend_refused",
+      "question": "RGS: municipalEmployeesPer1000 trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_anomaly_refused",
+      "question": "RGS: municipalEmployeesPer1000 anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_pair_refused",
+      "question": "RGS: municipalEmployeesPer1000 pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalEmployeesPer1000"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_2023_refused",
+      "question": "RGS: municipalEmployeesPer1000 2023 refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_rank",
+      "question": "RGS: municipalEmployeesPer1000 rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_total",
+      "question": "RGS: municipalStaffAgeStructure total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 40.42553191489361
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 47.82608695652174
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 44.827586206896555
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 38.69047619047619
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 36.507936507936506
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 30.76923076923077
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 36.407766990291265
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_age55plus",
+      "question": "RGS: municipalStaffAgeStructure age age55plus",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:age55plus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 40.42553191489361
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 47.82608695652174
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 44.827586206896555
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 38.69047619047619
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 36.507936507936506
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 30.76923076923077
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 36.407766990291265
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_age40to54",
+      "question": "RGS: municipalStaffAgeStructure age age40to54",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:age40to54"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 46.27659574468085
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 35.507246376811594
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 43.67816091954023
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 45.83333333333333
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 47.61904761904761
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 53.84615384615385
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 47.81553398058252
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_under40",
+      "question": "RGS: municipalStaffAgeStructure age under40",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:under40"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 13.297872340425531
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 16.666666666666664
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 11.494252873563218
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 15.476190476190476
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 15.873015873015872
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 15.384615384615385
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 15.776699029126215
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_series_refused",
+      "question": "RGS: municipalStaffAgeStructure series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_absolute_change_refused",
+      "question": "RGS: municipalStaffAgeStructure absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_relative_change_refused",
+      "question": "RGS: municipalStaffAgeStructure relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_percentage_points_refused",
+      "question": "RGS: municipalStaffAgeStructure percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_trend_refused",
+      "question": "RGS: municipalStaffAgeStructure trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_anomaly_refused",
+      "question": "RGS: municipalStaffAgeStructure anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_pair_refused",
+      "question": "RGS: municipalStaffAgeStructure pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalStaffAgeStructure"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_2023_refused",
+      "question": "RGS: municipalStaffAgeStructure 2023 refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_rank",
+      "question": "RGS: municipalStaffAgeStructure rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_total",
+      "question": "RGS: municipalStaffTraining total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.3018207282913163
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 0.9295499021526419
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.0958862673926193
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 1.2195652173913043
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 2.4310344827586206
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.7916666666666667
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.16976779176488288
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_measure_meanTotalRgs",
+      "question": "RGS: municipalStaffTraining measure meanTotalRgs",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanTotalRgs"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.3018207282913163
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 0.9295499021526419
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.0958862673926193
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 1.2195652173913043
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 2.4310344827586206
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.7916666666666667
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.16976779176488288
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_measure_totalDays",
+      "question": "RGS: municipalStaffTraining measure totalDays",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:totalDays"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 443
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 130
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 267
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 204
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 159
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 11
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 64
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_measure_meanMen",
+      "question": "RGS: municipalStaffTraining measure meanMen",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanMen"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1.4761904761904763
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 0.5714285714285714
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.0689655172413794
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 1.2
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 1.8620689655172413
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.75
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.22929936305732485
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_measure_meanWomen",
+      "question": "RGS: municipalStaffTraining measure meanWomen",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanWomen"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.127450980392157
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 1.2876712328767124
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.1228070175438596
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 1.2391304347826086
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 3.0
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.8333333333333334
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.11023622047244094
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_days_men",
+      "question": "RGS: municipalStaffTraining days men",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "days:men"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 124
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 36
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 89
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 90
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 54
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 6
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 36
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_days_women",
+      "question": "RGS: municipalStaffTraining days women",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "days:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 319
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 94
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 178
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 114
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 105
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 5
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 28
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_series_refused",
+      "question": "RGS: municipalStaffTraining series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_absolute_change_refused",
+      "question": "RGS: municipalStaffTraining absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_relative_change_refused",
+      "question": "RGS: municipalStaffTraining relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_percentage_points_refused",
+      "question": "RGS: municipalStaffTraining percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_trend_refused",
+      "question": "RGS: municipalStaffTraining trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_anomaly_refused",
+      "question": "RGS: municipalStaffTraining anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_pair_refused",
+      "question": "RGS: municipalStaffTraining pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalStaffTraining"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_2023_refused",
+      "question": "RGS: municipalStaffTraining 2023 refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTraining_rank",
+      "question": "RGS: municipalStaffTraining rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_total",
+      "question": "RGS: municipalStaffTurnover total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": -1.0638297872340425
+          },
+          {
+            "path": "/observations/1/value",
+            "value": -2.898550724637681
+          },
+          {
+            "path": "/observations/2/value",
+            "value": -1.1494252873563218
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 0.5952380952380952
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/5/value",
+            "value": -7.6923076923076925
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 4.611650485436893
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_headcount",
+      "question": "RGS: municipalStaffTurnover headcount",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "headcount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": -2
+          },
+          {
+            "path": "/observations/1/value",
+            "value": -4
+          },
+          {
+            "path": "/observations/2/value",
+            "value": -1
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/5/value",
+            "value": -1
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 19
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_hires",
+      "question": "RGS: municipalStaffTurnover hires",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "hires"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 9
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 5
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 13
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 4
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 41
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_cessations",
+      "question": "RGS: municipalStaffTurnover cessations",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "cessations"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 11
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 9
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 12
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 4
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 22
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_series_refused",
+      "question": "RGS: municipalStaffTurnover series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_absolute_change_refused",
+      "question": "RGS: municipalStaffTurnover absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_relative_change_refused",
+      "question": "RGS: municipalStaffTurnover relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_percentage_points_refused",
+      "question": "RGS: municipalStaffTurnover percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_trend_refused",
+      "question": "RGS: municipalStaffTurnover trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_history_or_temporal_continuity_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_anomaly_refused",
+      "question": "RGS: municipalStaffTurnover anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_pair_refused",
+      "question": "RGS: municipalStaffTurnover pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalStaffTurnover"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_2023_refused",
+      "question": "RGS: municipalStaffTurnover 2023 refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_rank",
+      "question": "RGS: municipalStaffTurnover rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalEmployeesPer1000_total_pooled",
+      "question": "RGS: municipalEmployeesPer1000 total pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1069000,
+              159387
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffTurnover_total_pooled",
+      "question": "RGS: municipalStaffTurnover total pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffTurnover",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1200,
+              1069
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_age55plus_pooled",
+      "question": "RGS: municipalStaffAgeStructure age age55plus pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:age55plus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              42300,
+              1069
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_age40to54_pooled",
+      "question": "RGS: municipalStaffAgeStructure age age40to54 pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:age40to54"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              48500,
+              1069
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_under40_pooled",
+      "question": "RGS: municipalStaffAgeStructure age under40 pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:under40"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              16100,
+              1069
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_total_versilia",
+      "question": "RGS: training total versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.1697010400972936
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_measure_meanTotalRgs_versilia",
+      "question": "RGS: training measure meanTotalRgs versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanTotalRgs",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.1697010400972936
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_measure_totalDays_versilia",
+      "question": "RGS: training measure totalDays versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:totalDays",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1278
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_measure_meanMen_versilia",
+      "question": "RGS: training measure meanMen versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanMen",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.9775280898876404
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_measure_meanWomen_versilia",
+      "question": "RGS: training measure meanWomen versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "measure:meanWomen",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.3618739903069468
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_days_men_versilia",
+      "question": "RGS: training days men versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "days:men",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 435
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_days_women_versilia",
+      "question": "RGS: training days women versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "days:women",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 843
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_staff_tuscany",
+      "question": "RGS: staff tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              23255000,
+              3660530
+            ]
+          }
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_training_pooling_refused",
+      "question": "RGS: training pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_measure_not_component_ratio"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_staff_italy_refused",
+      "question": "RGS: staff italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalEmployeesPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "rgs_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
+    },
+    {
+      "id": "rgs_age_mean_refused",
+      "question": "RGS: age mean refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "meanAge"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed RGS 2024 municipal components and published gender means, independent frozen transcription; staff 31 Dec / Istat residents 1 Jan, transfers excluded. Tuscany 23255/3660530; joint Versilia training native API selection. No new live acquisition."
     }
   ]
 }
