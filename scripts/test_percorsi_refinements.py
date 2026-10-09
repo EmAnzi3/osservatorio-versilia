@@ -147,6 +147,11 @@ def main() -> None:
         page.set_viewport_size({"width": 390, "height": 844})
 
         page.goto(base + "confronta/mobilita/?indicatore=slowMobilityRoutes", wait_until="networkidle")
+        # Network idle does not certify completion of the asynchronous deep-link
+        # selection. Wait for the same visible control checked below; a persistent
+        # hidden/missing control still fails within a bounded timeout.
+        page.locator('[data-metric="slowMobilityRoutes"]').wait_for(state="visible", timeout=10000)
+        page.locator('.comparison-axis').wait_for(state="visible", timeout=10000)
         require_no_horizontal_overflow(page, "confronto Mobilità lenta")
         require(page.locator('[data-section="mobilita-lenta"]').count() == 1,
                 "Sezione Mobilità lenta assente su mobile")

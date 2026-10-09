@@ -17,6 +17,7 @@ import semantic_query_coast_adapters as coast
 import semantic_query_bathing_adapters as bathing
 import semantic_query_maritime_adapters as maritime
 import semantic_query_extractive_adapters as extractive
+import semantic_query_climate_adapters as climate
 
 
 def compact(result):
@@ -31,9 +32,11 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         code = sorted(engine.codes)[0]
         selector['towns'] = [code]
         data=catalog if catalog is not None else engine.catalog
-        row = next(r for r in data['metrics'][key]['rows'] if str(r['code']) == code)
+        rows=climate.rows(engine,key) if key in climate.KEYS else data['metrics'][key]['rows']
+        row = next(r for r in rows if str(r['code']) == code)
         years = (row.get('series') or {}).get('years', [])
-        if key in demography.KEYS:
+        if key in climate.KEYS:years=climate.available_periods(engine,key,dimension,row)
+        elif key in demography.KEYS:
             try:years=demography.available_periods(engine,key,dimension,row)
             except ValueError:years=[]
         elif key in distinct.KEYS:
@@ -137,6 +140,8 @@ def connections(engine, coverage):
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
         ('pab_approved_operational','pabProgrammedInterventions','pabInterventionsCompleted','context','Approved A-1 unique codes and dated WFS operational features differ; no approved-plan completion percentage'),
+        ('climate_daily_minmax','climateTminTrend','climateTmaxTrend','context','Annual daily-extrema means from continuous calibrated ERA5-Land; descriptive context, no unreviewed correlation or annual record claim'),
+        ('climate_precipitation_flood','climatePrecipitationTrend50y','floodRiskArea','context','Annual reconstructed rainfall and scenario hazard-map area have distinct periods and universes; no causal risk or effectiveness claim'),
         ('pab_operations_gross','pabInterventionsCompleted','pabCompletedOperationalGrossValue','context','Completed operational features and their frozen gross field are neither liquidated spending nor proof of hydraulic risk reduction'),
         ('extractive_sites_production','extractiveSites','extractiveProduction','context','RTCave records at September 2026 and extraction reported in 2025 with only two reviewed municipality correspondences are distinct universes; no extraction per active site inferred'),
         ('extractive_sites_planning','extractiveSites','extractivePlanning','context','RTCave record counts and PRC separate planning categories are distinct; geometries do not measure excavated or authorized surfaces'),
