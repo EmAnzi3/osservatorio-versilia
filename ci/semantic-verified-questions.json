@@ -12227,6 +12227,1448 @@
         ]
       },
       "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength",
+      "question": "PAB: pabProgrammedInterventionLength?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 317.413
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_series_refused",
+      "question": "PAB: pabProgrammedInterventionLength series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_absolute_change_refused",
+      "question": "PAB: pabProgrammedInterventionLength absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_relative_change_refused",
+      "question": "PAB: pabProgrammedInterventionLength relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_percentage_points_refused",
+      "question": "PAB: pabProgrammedInterventionLength percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_trend_refused",
+      "question": "PAB: pabProgrammedInterventionLength trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_benchmark_refused",
+      "question": "PAB: pabProgrammedInterventionLength benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_anomaly_refused",
+      "question": "PAB: pabProgrammedInterventionLength anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventionLength_weighting_refused",
+      "question": "PAB: pabProgrammedInterventionLength weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventionLength",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions",
+      "question": "PAB: pabProgrammedInterventions?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 464
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_series_refused",
+      "question": "PAB: pabProgrammedInterventions series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_absolute_change_refused",
+      "question": "PAB: pabProgrammedInterventions absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_relative_change_refused",
+      "question": "PAB: pabProgrammedInterventions relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_percentage_points_refused",
+      "question": "PAB: pabProgrammedInterventions percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_trend_refused",
+      "question": "PAB: pabProgrammedInterventions trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_benchmark_refused",
+      "question": "PAB: pabProgrammedInterventions benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_anomaly_refused",
+      "question": "PAB: pabProgrammedInterventions anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedInterventions_weighting_refused",
+      "question": "PAB: pabProgrammedInterventions weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue",
+      "question": "PAB: pabProgrammedMaintenanceValue?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 1998372.37
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_series_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_absolute_change_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_relative_change_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_percentage_points_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_trend_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_benchmark_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_anomaly_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabProgrammedMaintenanceValue_weighting_refused",
+      "question": "PAB: pabProgrammedMaintenanceValue weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabProgrammedMaintenanceValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress",
+      "question": "PAB: pabInterventionsInProgress?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_series_refused",
+      "question": "PAB: pabInterventionsInProgress series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_absolute_change_refused",
+      "question": "PAB: pabInterventionsInProgress absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_relative_change_refused",
+      "question": "PAB: pabInterventionsInProgress relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_percentage_points_refused",
+      "question": "PAB: pabInterventionsInProgress percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_trend_refused",
+      "question": "PAB: pabInterventionsInProgress trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_benchmark_refused",
+      "question": "PAB: pabInterventionsInProgress benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_anomaly_refused",
+      "question": "PAB: pabInterventionsInProgress anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_weighting_refused",
+      "question": "PAB: pabInterventionsInProgress weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted",
+      "question": "PAB: pabInterventionsCompleted?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_series_refused",
+      "question": "PAB: pabInterventionsCompleted series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_absolute_change_refused",
+      "question": "PAB: pabInterventionsCompleted absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_relative_change_refused",
+      "question": "PAB: pabInterventionsCompleted relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_percentage_points_refused",
+      "question": "PAB: pabInterventionsCompleted percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_trend_refused",
+      "question": "PAB: pabInterventionsCompleted trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_benchmark_refused",
+      "question": "PAB: pabInterventionsCompleted benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_anomaly_refused",
+      "question": "PAB: pabInterventionsCompleted anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_weighting_refused",
+      "question": "PAB: pabInterventionsCompleted weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue",
+      "question": "PAB: pabInProgressOperationalGrossValue?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 9024.94
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_series_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_absolute_change_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_relative_change_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_percentage_points_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_trend_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_benchmark_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_anomaly_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInProgressOperationalGrossValue_weighting_refused",
+      "question": "PAB: pabInProgressOperationalGrossValue weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInProgressOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue",
+      "question": "PAB: pabCompletedOperationalGrossValue?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 12003.72
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_series_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_absolute_change_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_relative_change_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_percentage_points_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_trend_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_history_not_frozen"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_benchmark_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_regional_national_scope_not_certified"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_anomaly_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabCompletedOperationalGrossValue_weighting_refused",
+      "question": "PAB: pabCompletedOperationalGrossValue weighting refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabCompletedOperationalGrossValue",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_verified_operational_share_required"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_share",
+      "question": "PAB: pabInterventionsInProgress share?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "share:operational"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              600,
+              469
+            ]
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsInProgress_share_pooled",
+      "question": "PAB: pabInterventionsInProgress share pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInterventionsInProgress",
+            "dimension": "share:operational"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              22200,
+              1265
+            ]
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_share",
+      "question": "PAB: pabInterventionsCompleted share?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "share:operational"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              100,
+              469
+            ]
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_share_pooled",
+      "question": "PAB: pabInterventionsCompleted share pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "share:operational"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              24800,
+              1265
+            ]
+          }
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_approved_operational_refused",
+      "question": "PAB: approved operational refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions"
+          },
+          {
+            "metric": "pabInterventionsCompleted"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_approved_operational_or_risk_pair_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
+    },
+    {
+      "id": "pab_completed_gross_refused",
+      "question": "PAB: completed gross refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted"
+          },
+          {
+            "metric": "pabCompletedOperationalGrossValue"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pab_approved_operational_or_risk_pair_not_reviewed"
+        ]
+      },
+      "reference": "PAB 2026 congelato: A-1 1259 codici / EUR 5196433.08; WFS al 31 agosto 1265 feature, 222 in corso e 248 completate; Massarosa 464 approvati vs 469 feature, 6 in corso e 1 completata. Quote soltanto nello stesso universo WFS."
     }
   ]
 }
