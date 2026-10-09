@@ -136,6 +136,8 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('pab_approved_operational','pabProgrammedInterventions','pabInterventionsCompleted','context','Approved A-1 unique codes and dated WFS operational features differ; no approved-plan completion percentage'),
+        ('pab_operations_gross','pabInterventionsCompleted','pabCompletedOperationalGrossValue','context','Completed operational features and their frozen gross field are neither liquidated spending nor proof of hydraulic risk reduction'),
         ('extractive_sites_production','extractiveSites','extractiveProduction','context','RTCave records at September 2026 and extraction reported in 2025 with only two reviewed municipality correspondences are distinct universes; no extraction per active site inferred'),
         ('extractive_sites_planning','extractiveSites','extractivePlanning','context','RTCave record counts and PRC separate planning categories are distinct; geometries do not measure excavated or authorized surfaces'),
         ('maritime_titles_due','maritimeConcessions','maritimeConcessionFeesDue','context','SID title stocks and 2026 amounts due share a frozen territorial assignment; totals do not describe collections or municipal income, no automatic association'),
