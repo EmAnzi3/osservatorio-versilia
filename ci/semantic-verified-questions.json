@@ -11922,6 +11922,311 @@
         ]
       },
       "reference": "attivita-estrattive-v128: 90 record RTCave (15 attivi, 64 chiusi, 1 stato n.d.); produzione Seravezza/Stazzema 2019–2025; PRC G/GP/ACC distinti, aree pubblicate arrotondate e percentuali GIS originali separate. Nessuna equivalenza fra record, produzione, pianificazione e superficie escavata."
+    },
+    {
+      "id": "remediation_total",
+      "question": "Procedimenti SISBON: total?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_view_active",
+      "question": "Procedimenti SISBON: view active?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "view:active"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_view_closed",
+      "question": "Procedimenti SISBON: view closed?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "view:closed"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 10
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_view_all",
+      "question": "Procedimenti SISBON: view all?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "view:all"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 16
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_share",
+      "question": "Procedimenti SISBON: share?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "share:active"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              600,
+              16
+            ]
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_pooled",
+      "question": "Procedimenti SISBON: pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "share:active"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              5600,
+              152
+            ]
+          }
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_history_refused",
+      "question": "Procedimenti SISBON: history refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_history_not_frozen"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_absolute_change_refused",
+      "question": "Procedimenti SISBON: absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_history_not_frozen"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_relative_change_refused",
+      "question": "Procedimenti SISBON: relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_history_not_frozen"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_percentage_points_refused",
+      "question": "Procedimenti SISBON: percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_history_not_frozen"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_trend_refused",
+      "question": "Procedimenti SISBON: trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_history_not_frozen"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_benchmark_refused",
+      "question": "Procedimenti SISBON: benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_anomaly_refused",
+      "question": "Procedimenti SISBON: anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+    },
+    {
+      "id": "remediation_count_weighting_refused",
+      "question": "Si può ponderare il conteggio SISBON senza un rapporto definito?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "remediation_verified_ratio_required"
+        ]
+      },
+      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
     }
   ]
 }
