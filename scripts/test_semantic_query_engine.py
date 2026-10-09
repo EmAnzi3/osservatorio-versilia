@@ -328,8 +328,10 @@ def audit(path, layer):
     import semantic_query_pab_adapters as pab
     import semantic_query_climate_adapters as climate
     import semantic_query_classification_adapters as classification
+    import semantic_query_water_quality_adapters as water_quality
     import semantic_query_agriculture_profile_adapters as profiles
     expected.update(k for k in classification.KEYS if k in catalog['metrics'])
+    expected.update(k for k in water_quality.KEYS if k in catalog['metrics'])
     expected.update(k for k in profiles.KEYS if k in catalog['metrics'])
     expected.update(k for k in climate.KEYS if k in catalog['metrics'])
     expected.update(k for k in coast.KEYS if k in catalog['metrics'] and str(catalog['metrics'][k]['meta']['year'])==coast.LABELS[k])
@@ -363,13 +365,13 @@ def audit(path, layer):
     assert all('reason' in r['engine'] for r in matrix if r['metric'] not in adapters)
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
-        query=request('compare',key,dimension=dimensions[0])
+        query=request('lookup' if key in water_quality.KEYS else 'compare',key,dimension=dimensions[0])
         if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:
             rejected(engine,query,'partial_coverage_requires_opt_in')
             query['allowPartial']=True
         report=engine.query(query)
         assert report['status']=='computed',report
-        assert report['coverage']['requested']==7
+        assert report['coverage']['requested']==(70 if key in water_quality.KEYS else 7)
         if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):assert report['coverage']['usable']==4 and len(report['excluded'])==3
         if key in CENSUS:
             for year in ['2021','2023']:

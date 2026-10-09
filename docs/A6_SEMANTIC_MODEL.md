@@ -84,3 +84,9 @@ L'esito del validatore è una prova strutturale del catalogo, non una prova di a
 ## Confine A6.1
 
 A6.1 definisce il modello e i suoi invarianti su entrambi i layer, con l’Effective Public Catalog come superficie interrogabile. Non implementa ancora confronto, trend, rango, correlazione o anomalie: quelle operazioni appartengono ad A6.2.
+
+## Estensione A6.4 v28 — dettaglio di località
+
+La grana può includere un’identità di località esplicita, subordinata al Comune canonico, quando lo snapshot e il catalogo espongono direttamente questo dettaglio. GAIA usa `sampleCode/sampleCode2` e l’indice congelato del parametro; nome o titolo non vengono usati per dedurre confini o copertura della popolazione. Le righe primarie del catalogo restano univoche per Comune e soggette agli invarianti numerici originari.
+
+L’operazione `lookup`, dichiarata nel contratto delle operazioni v2, restituisce stringhe di misura originali con qualificatore e mantissa testuale. Questa capacità è separata dai calcoli numerici: nessuna stringa censurata diventa un valore esatto, nessuna concentrazione viene aggregata, nessuna conversione di unità viene implicata. Il minimo di una osservazione serve alla consultazione puntuale; il minimo di due di `compare` e tutte le guardie aritmetiche restano invariati. Metodo e limiti in `docs/A6_WATER_QUALITY_ADAPTERS.md`.

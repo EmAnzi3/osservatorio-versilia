@@ -38,7 +38,7 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     for item in query_coverage:
         if item["engine"]["status"] == "adapter_present_query_preconditions_apply":
             selector={"metric":item["metric"],"dimension":item["engine"]["dimensions"][0]}
-            query = {"operation": "compare", "selectors": [selector]}
+            query = {"operation": "lookup" if item["metric"] == "drinkingWaterQuality" else "compare", "selectors": [selector]}
             coastal = item["metric"] in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS)
             if coastal or item["metric"]==extractive.KEYS[1]:
                 refusal = query_engine.query(query)
@@ -46,6 +46,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
                 query["allowPartial"] = True
             result = query_engine.query(query)
             assert result["status"] == "computed", result
+            if query["operation"] == "lookup":
+                assert result["interpretationLevel"] == "source_lookup" and result["coverage"]["usable"] == 70, result
             if coastal:
                 assert result["coverage"]["usable"] == 4 and {x["observation"]["geography"] for x in result["excluded"]} == set(coast.NA), result
             if 'weighted_ratio' in item['engine']['operations']:
@@ -95,6 +97,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     climate_regressions(catalog_path)
     from test_semantic_classification_adapters import regressions as classification_regressions
     classification_regressions(catalog_path)
+    from test_semantic_water_quality_adapters import regressions as water_quality_regressions
+    water_quality_regressions(catalog_path)
     from test_semantic_agriculture_profile_adapters import regressions as profile_regressions
     profile_regressions(catalog_path)
     from test_semantic_fragility_adapters import regressions as fragility_regressions

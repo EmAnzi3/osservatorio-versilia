@@ -18017,6 +18017,1415 @@
         ]
       },
       "reference": "Contratto vigente e riferimento territoriale 2021 congelato; pubblicazione 2026 distinta."
+    },
+    {
+      "id": "water_quality_case_rosse_0",
+      "question": "GAIA: case rosse 0",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:0",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "7.6"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_1",
+      "question": "GAIA: case rosse 1",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:1",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "509.0"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_2",
+      "question": "GAIA: case rosse 2",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:2",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "31"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_3",
+      "question": "GAIA: case rosse 3",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:3",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "363.9"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_4",
+      "question": "GAIA: case rosse 4",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:4",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "0.1"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_5",
+      "question": "GAIA: case rosse 5",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "< 0,050"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_6",
+      "question": "GAIA: case rosse 6",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:6",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "< 0,050"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_7",
+      "question": "GAIA: case rosse 7",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "4.2"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_8",
+      "question": "GAIA: case rosse 8",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:8",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "20.7"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_9",
+      "question": "GAIA: case rosse 9",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:9",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "45.0"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_10",
+      "question": "GAIA: case rosse 10",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:10",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "< 5,0"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_11",
+      "question": "GAIA: case rosse 11",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:11",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "119"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_12",
+      "question": "GAIA: case rosse 12",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:12",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "4.2"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_13",
+      "question": "GAIA: case rosse 13",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:13",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "242"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_14",
+      "question": "GAIA: case rosse 14",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:14",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "0.0560"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_15",
+      "question": "GAIA: case rosse 15",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:15",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "0.49"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_case_rosse_16",
+      "question": "GAIA: case rosse 16",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:16",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "26.6"
+          },
+          {
+            "path": "/interpretationLevel",
+            "value": "source_lookup"
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046005",
+      "question": "GAIA: nitrates 046005",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046005"
+            ],
+            "localities": [
+              "07A01K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "5.0"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "07A01K01/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046005"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046005",
+      "question": "GAIA: localities 046005",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 20
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046013",
+      "question": "GAIA: nitrates 046013",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046013"
+            ],
+            "localities": [
+              "20A01K05/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "24"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "20A01K05/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046013",
+      "question": "GAIA: localities 046013",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046018",
+      "question": "GAIA: nitrates 046018",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "4.2"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "28A02K01/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046018",
+      "question": "GAIA: localities 046018",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 8
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046024",
+      "question": "GAIA: nitrates 046024",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046024"
+            ],
+            "localities": [
+              "35A01K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "2.9"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "35A01K01/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046024"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046024",
+      "question": "GAIA: localities 046024",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 11
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046028",
+      "question": "GAIA: nitrates 046028",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046028"
+            ],
+            "localities": [
+              "42A05K11/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "4.6"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "42A05K11/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046028"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046028",
+      "question": "GAIA: localities 046028",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 12
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046030",
+      "question": "GAIA: nitrates 046030",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046030"
+            ],
+            "localities": [
+              "44A15K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "1.6"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "44A15K01/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046030",
+      "question": "GAIA: localities 046030",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 16
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_nitrates_046033",
+      "question": "GAIA: nitrates 046033",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046033"
+            ],
+            "localities": [
+              "49A01K03/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": "5.4"
+          },
+          {
+            "path": "/observations/0/locality",
+            "value": "49A01K03/0"
+          },
+          {
+            "path": "/observations/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_localities_046033",
+      "question": "GAIA: localities 046033",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_compare_refused",
+      "question": "GAIA: compare refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_series_refused",
+      "question": "GAIA: series refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_absolute_change_refused",
+      "question": "GAIA: absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_relative_change_refused",
+      "question": "GAIA: relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_rank_refused",
+      "question": "GAIA: rank refused",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_trend_refused",
+      "question": "GAIA: trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_correlation_refused",
+      "question": "GAIA: correlation refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_percentage_points_refused",
+      "question": "GAIA: percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_weighted_ratio_refused",
+      "question": "GAIA: weighted ratio refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_benchmark_gap_refused",
+      "question": "GAIA: benchmark gap refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_anomaly_refused",
+      "question": "GAIA: anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_total_count_refused",
+      "question": "GAIA: total count refused",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_explicit_parameter_required"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_year_refused",
+      "question": "GAIA: year refused",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_period_not_frozen"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_other_locality_refused",
+      "question": "GAIA: other locality refused",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "07A01K01/0"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_unknown_duplicate_or_out_of_scope_locality"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_reverse_pair_refused",
+      "question": "GAIA: reverse pair refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "water_quality_arithmetic_or_association_not_supported"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+    },
+    {
+      "id": "water_quality_population_lookup_refused",
+      "question": "GAIA: population lookup refused",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "population"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "lookup_adapter_not_implemented"
+        ]
+      },
+      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     }
   ]
 }

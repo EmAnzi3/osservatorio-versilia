@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "scope": "A6.2-A6.3 eligibility; A6.4 calculators/adapters pending",
+  "version": 2,
+  "scope": "A6.2-A6.3 eligibility and A6.4 explicit numerical/locality-lookup adapters",
   "descriptorFields": [
     "metric",
     "dimension",
@@ -159,6 +159,30 @@
         "period"
       ],
       "minimumObservations": 2
+    },
+    "lookup": {
+      "formula": "verbatim source-reported locality measurement and qualifier; no arithmetic or implicit aggregation",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 1,
+      "valueDomain": "source_reported_measurement",
+      "descriptorFields": [
+        "locality",
+        "parameter",
+        "referenceText",
+        "sourceValue",
+        "valueKind",
+        "reportedQualifier",
+        "reportedNumber"
+      ]
     }
   },
   "rounding": "retain input precision; round only displayed result",

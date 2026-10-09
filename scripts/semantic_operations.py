@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +13,14 @@ CONTRACT = ROOT / 'ci/semantic-operations-contract.json'
 
 def finite(value):
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def reported_measurement(value):
+    """Split a preserved source string; never substitute its bound as a value."""
+    match = re.fullmatch(r'\s*([<>]?)\s*([+-]?\d+(?:[.,]\d+)?)\s*', value) if isinstance(value,str) else None
+    if not match:
+        raise ValueError('invalid_source_reported_measurement')
+    return ({'':'exact','<':'less_than','>':'greater_than'}[match[1]], match[2])
 
 
 def assess(operation, observations, *, policy=None):
@@ -27,7 +36,8 @@ def assess(operation, observations, *, policy=None):
         raise ValueError(f'Unknown operation: {operation}')
     policy = policy or {}
     reasons, warnings, excluded = [], [], []
-    required = contract['descriptorFields']
+    spec = contract['operations'][operation]
+    required = contract['descriptorFields'] + spec.get('descriptorFields',[])
     valid = []
     for index, obs in enumerate(observations):
         missing = [key for key in required if obs.get(key) is None or str(obs[key]).strip() == '']
@@ -35,6 +45,14 @@ def assess(operation, observations, *, policy=None):
             reasons.append(f'context_missing:{index}:{",".join(missing)}')
         if obs.get('notApplicable') or obs.get('dataUnavailable') or obs.get('value') is None:
             excluded.append(index)
+        elif spec.get('valueDomain') == 'source_reported_measurement':
+            try:
+                qualifier, number = reported_measurement(obs['value'])
+                if obs.get('valueKind') != 'source_reported_measurement' or obs.get('sourceValue') != obs['value'] or obs.get('reportedQualifier') != qualifier or obs.get('reportedNumber') != number:
+                    raise ValueError('measurement_descriptor_mismatch')
+                valid.append(obs)
+            except ValueError:
+                reasons.append(f'invalid_reported_measurement:{index}')
         elif not finite(obs['value']):
             reasons.append(f'invalid_value:{index}')
         else:
@@ -49,7 +67,7 @@ def assess(operation, observations, *, policy=None):
     for field in spec['equalFields']:
         if len({str(o.get(field)) for o in valid}) > 1:
             reasons.append(f'incompatible:{field}')
-    identities = [(str(o.get('metric')), str(o.get('dimension')), str(o.get('geography')), str(o.get('period'))) for o in valid]
+    identities = [(str(o.get('metric')), str(o.get('dimension')), str(o.get('geography')), str(o.get('period')), str(o.get('locality')) if operation == 'lookup' else None) for o in valid]
     if len(identities) != len(set(identities)):
         reasons.append('duplicate_observation')
     if operation in ('series', 'absolute_change', 'relative_change', 'percentage_points', 'trend'):
