@@ -140,6 +140,8 @@ def connections(engine, coverage):
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
         ('pab_approved_operational','pabProgrammedInterventions','pabInterventionsCompleted','context','Approved A-1 unique codes and dated WFS operational features differ; no approved-plan completion percentage'),
+        ('agriculture_profiles_manager_holder','agriculturalRenewalAndLeadership','agriculturalFarms','context','Census holders and managers use distinct universes; no automatic association or policy effect'),
+        ('agriculture_profiles_modern_organic','agriculturalDiversificationAndModernization','organicAgriculturalAreaShare','context','Census 2020 overlapping farm characteristics and annual organic land shares have different periods and denominators; no synthetic score'),
         ('climate_daily_minmax','climateTminTrend','climateTmaxTrend','context','Annual daily-extrema means from continuous calibrated ERA5-Land; descriptive context, no unreviewed correlation or annual record claim'),
         ('climate_precipitation_flood','climatePrecipitationTrend50y','floodRiskArea','context','Annual reconstructed rainfall and scenario hazard-map area have distinct periods and universes; no causal risk or effectiveness claim'),
         ('pab_operations_gross','pabInterventionsCompleted','pabCompletedOperationalGrossValue','context','Completed operational features and their frozen gross field are neither liquidated spending nor proof of hydraulic risk reduction'),

@@ -134,3 +134,5 @@ scripts/semantic_query_pab_adapters.py
 scripts/test_semantic_pab_adapters.py
 scripts/semantic_query_climate_adapters.py
 scripts/test_semantic_climate_adapters.py
+scripts/semantic_query_agriculture_profile_adapters.py
+scripts/test_semantic_agriculture_profile_adapters.py

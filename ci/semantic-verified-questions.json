@@ -14710,6 +14710,1656 @@
         ]
       },
       "reference": "Frozen external climate input and reviewed runtime configs; current values exact native records, OLS fixed references independently computed with Decimal centred at 2000; raw grids/validation not replayed."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1500,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              6900,
+              957
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_total_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1500,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              6900,
+              957
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_youngManagers_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part youngManagers percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:youngManagers",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              6800,
+              191
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_female_pooled",
+      "question": "Agricoltura profili: agriculture profiles female pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              33400,
+              944
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_part_femaleHolders_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership part femaleHolders percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_anomaly_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_pair_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership pair refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership"
+          },
+          {
+            "metric": "agriculturalFarms"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalRenewalAndLeadership_benchmark_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalRenewalAndLeadership benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_no_geographic_benchmark"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1600,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7400,
+              959
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_total_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1600,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7400,
+              959
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_connectedActivities_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part connectedActivities percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:connectedActivities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3400,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              20200,
+              957
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_informatization_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part informatization percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:informatization",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1800,
+              192
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_pooled",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation pooled?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11000,
+              957
+            ]
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_series_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_part_innovation_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization part innovation percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "part:innovation",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_anomaly_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_pair_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization pair refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization"
+          },
+          {
+            "metric": "agriculturalFarms"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_agriculturalDiversificationAndModernization_benchmark_refused",
+      "question": "Agricoltura profili: agriculture profiles agriculturalDiversificationAndModernization benchmark refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "agriculturalDiversificationAndModernization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_no_geographic_benchmark"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_total",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare total?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4.30272899101345
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_total_absolute_change_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_total_relative_change_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_total_trend_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_total_percentage_points_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_temporal_change_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_anomaly_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organicAgriculturalAreaShare_pair_refused",
+      "question": "Agricoltura profili: agriculture profiles organicAgriculturalAreaShare pair refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare"
+          },
+          {
+            "metric": "agriculturalFarms"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organic_series",
+      "question": "Agricoltura profili: agriculture profiles organic series?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.55
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 3.89
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.99
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 4.01
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 2.9
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 3.02
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 4.30272899101345
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organic_tuscany_gap",
+      "question": "Agricoltura profili: agriculture profiles organic tuscany gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -29.26727100898655
+          }
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organic_pooling_refused",
+      "question": "Agricoltura profili: agriculture profiles organic pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_no_organic_area_components"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organic_italy_2024_gap_refused",
+      "question": "Agricoltura profili: agriculture profiles organic italy 2024 gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
+    },
+    {
+      "id": "agriculture_profiles_organic_tuscany_2023_gap_refused",
+      "question": "Agricoltura profili: agriculture profiles organic tuscany 2023 gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "agriculture_profiles_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 2020 frozen counts: young 69/957; female holders 334/944; connected 74/959; informatized 202/957; innovation 110/957, reported investment 2018–2020. Holders != managers; characteristics overlap. Regional ind20 2018–2024 frozen percentages; Tuscany 2024 33.57%, no acquired hectares."
     }
   ]
 }
