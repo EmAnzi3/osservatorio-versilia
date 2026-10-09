@@ -327,7 +327,9 @@ def audit(path, layer):
     import semantic_query_remediation_adapters as remediation
     import semantic_query_pab_adapters as pab
     import semantic_query_climate_adapters as climate
+    import semantic_query_classification_adapters as classification
     import semantic_query_agriculture_profile_adapters as profiles
+    expected.update(k for k in classification.KEYS if k in catalog['metrics'])
     expected.update(k for k in profiles.KEYS if k in catalog['metrics'])
     expected.update(k for k in climate.KEYS if k in catalog['metrics'])
     expected.update(k for k in coast.KEYS if k in catalog['metrics'] and str(catalog['metrics'][k]['meta']['year'])==coast.LABELS[k])

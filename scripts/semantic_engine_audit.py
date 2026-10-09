@@ -139,6 +139,7 @@ def connections(engine, coverage):
     groups += [dict(kind='same_source_profile', key=g['sourceProfileId'], members=g['metrics'],
                    permitsCalculation=False) for g in coverage['sourceProfiles']]
     recipes = [
+        ('classification_coast_context','territorialClassification','statisticalCoastlineLength','context','Official municipal categories at reference 2021 are not coastline lengths; littoral and coastal-zone membership differ; coastline observations cover four littoral municipalities and three n.a.; no category-code association or synthetic index'),
         ('pab_approved_operational','pabProgrammedInterventions','pabInterventionsCompleted','context','Approved A-1 unique codes and dated WFS operational features differ; no approved-plan completion percentage'),
         ('agriculture_profiles_manager_holder','agriculturalRenewalAndLeadership','agriculturalFarms','context','Census holders and managers use distinct universes; no automatic association or policy effect'),
         ('agriculture_profiles_modern_organic','agriculturalDiversificationAndModernization','organicAgriculturalAreaShare','context','Census 2020 overlapping farm characteristics and annual organic land shares have different periods and denominators; no synthetic score'),
@@ -207,7 +208,7 @@ def connections(engine, coverage):
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
         if identity=='demography_natural_transfers':
             for q in qs:q['periods']=['2024']
-        results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_')) else {}))) for s in qs]
+        results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_','classification_')) else {}))) for s in qs]
         verification = 'not_verified'; reasons = []
         if all(r['status']=='computed' for r in results):
             a = {o['geography']:o for o in results[0]['observations']}
@@ -241,7 +242,7 @@ def connections(engine, coverage):
             else: verification='observations_available_context_only'
         else: reasons=sorted({reason for r in results for reason in r['reasons']})
         pair = engine.query(dict(operation='correlation', selectors=qs, method='spearman',
-            axis='municipalities', purpose=meaning, **({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_')) else {}))) if kind=='context' else None
+            axis='municipalities', purpose=meaning, **({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_','classification_')) else {}))) if kind=='context' else None
         edges.append(dict(id=identity, left=left, right=right, kind=kind, meaning=meaning,
             verification=verification, reasons=reasons, unitConversionFactor=1_000_000 if identity=='frame_turnover_numerator' else 1, permitsCausalClaim=False,
             permitsAutomaticCorrelation=False, observations=results,
