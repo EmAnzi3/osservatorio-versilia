@@ -69,6 +69,16 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
     cards = parser.out
     structured_listing = False
     short_tuscany_listing = False
+    if source.get("id") == "anci-lombardia-national-leads":
+        from bs4 import BeautifulSoup
+        from urllib.parse import urlsplit
+        if urlsplit(page_url).hostname == "anci.lombardia.it":
+            structured_listing = True
+            cards = []
+            for heading in BeautifulSoup(payload, "html.parser").select("a[href] > h2"):
+                link = heading.parent
+                if link["href"].startswith(("/dettaglio-news/", "/dettaglio-circolari/")):
+                    cards.append((heading.get_text(" ", strip=True), link["href"], ""))
     if source.get("id") == "anci-toscana":
         from bs4 import BeautifulSoup
         from urllib.parse import urlsplit

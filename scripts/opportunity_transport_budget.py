@@ -61,6 +61,8 @@ class TransportBudget:
         requests = {}
         for category, default_timeout in (("sources", 30), ("discoverySources", 25)):
             for source in config.get(category) or []:
+                if source.get("deferDiscoveryCheck"):
+                    continue
                 for url in [source.get("url"), *(source.get("urls") or [])]:
                     if url:
                         requests.setdefault(url, (int(source.get("fetchTimeoutSeconds") or default_timeout),

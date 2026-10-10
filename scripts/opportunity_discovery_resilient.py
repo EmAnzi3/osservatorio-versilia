@@ -434,6 +434,14 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
     queue: list[dict[str, Any]] = []
     states: list[dict[str, Any]] = []
     for source in config.get("discoverySources") or []:
+        if source.get("deferDiscoveryCheck") and not any(url in payloads for url in source.get("urls") or []):
+            deferred_candidates = list(source.get("deferredCandidates") or [])
+            queue.extend(deferred_candidates)
+            states.append({"sourceId": source["id"], "status": "deferred",
+                           "candidateCount": len(deferred_candidates), "endpointCount": len(source.get("urls") or []),
+                           "endpointOk": 0, "endpointResults": [], "errors": [],
+                           "freshness": {"status": "discovery", "observedDate": None, "ageDays": None}})
+            continue
         urls = list(source.get("urls") or [])
         endpoint_ok = 0
         endpoint_errors: list[str] = []

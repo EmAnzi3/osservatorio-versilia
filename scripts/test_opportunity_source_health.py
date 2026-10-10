@@ -696,7 +696,65 @@ def _test_legacy_gse_faq_success_is_not_listing_success() -> None:
     assert stable._seed_previous_health(snapshot)["gse"]["lastSuccessfulFetch"] == "2026-10-06"
 
 
+def _test_weekly_check_does_not_fetch_or_reset_health() -> None:
+    from opportunity_transport_budget import TransportBudget
+    original_compose = stable._BASE_COMPOSE
+    original_previous = stable._PREVIOUS_HEALTH
+    original_date = stable._RUN_DATE
+    original_fetch = stable.h4.discovery.fetch_with_diagnostics
+    original_discovery = stable._PREVIOUS_DISCOVERY
+    try:
+        weekly = {"id": "mim-enti-locali", "checkEveryDays": 7, "urls": ["https://example.test/weekly"]}
+        daily = {"id": "daily", "urls": ["https://example.test/daily"]}
+        stable._BASE_COMPOSE = lambda: ({"sources": [], "discoverySources": [dict(weekly), dict(daily)]}, {})
+        stable._PREVIOUS_HEALTH = {"mim-enti-locali": {"lastSuccessfulFetch": None,
+            "lastAttemptedFetch": "2026-10-10", "lastCheckStatus": "error", "consecutiveFailures": 8}}
+        stable._PREVIOUS_DISCOVERY = [{"source_id": "mim-enti-locali", "title": "Prior lead", "url": "https://example.test/lead"}]
+        for day in (11, 16):
+            stable._RUN_DATE = date(2026, 10, day)
+            config, _ = stable._compose_runtime_scheduled()
+            scheduled = config["discoverySources"][0]
+            assert scheduled["deferDiscoveryCheck"] and scheduled["nextScheduledCheck"] == "2026-10-17"
+            assert not config["discoverySources"][1].get("deferDiscoveryCheck")
+            calls = []
+            with TemporaryDirectory() as directory:
+                budget = TransportBudget(config, journal=Path(directory) / "journal.jsonl")
+                budget.fetch = lambda url, **kwargs: calls.append(url)
+                budget.prefetch(config)
+            assert calls == daily["urls"], calls
+            stable.h4.discovery.fetch_with_diagnostics = lambda *a, **k: (_ for _ in ()).throw(AssertionError("deferred source fetched"))
+            queue, states = stable.h4.discovery.probe_discovery_sources(stable.h4.radar_module, {"discoverySources": [scheduled]})
+            assert states[0]["status"] == "deferred" and queue[0]["discovery_last_checked_at"] == "2026-10-10"
+            health = stable._health_state("mim-enti-locali", "deferred", stable._RUN_DATE)
+            assert health["lastAttemptedFetch"] == "2026-10-10" and health["consecutiveFailures"] == 8
+            assert health["effectiveStatus"] == "error" and health["lastSuccessfulFetch"] is None
+        stable._RUN_DATE = date(2026, 10, 17)
+        config, _ = stable._compose_runtime_scheduled()
+        assert not config["discoverySources"][0]["deferDiscoveryCheck"]
+        stable._PREVIOUS_DISCOVERY[0]["discovery_last_checked_at"] = "2026-10-09"
+        assert stable._compose_runtime_scheduled()[0]["discoverySources"][0]["deferredCandidates"][0]["discovery_last_checked_at"] == "2026-10-09"
+        assert stable._health_state("mim-enti-locali", "not_run", stable._RUN_DATE)["lastAttemptedFetch"] == "2026-10-10"
+        assert stable._health_state("mim-enti-locali", "error", stable._RUN_DATE)["consecutiveFailures"] == 9
+        # A deferred snapshot must not move the due date on the next day.
+        seeded = stable._seed_previous_health({"referenceDate": "2026-10-16", "transportAudit": {"sources": [{
+            "sourceId": "mim-enti-locali", "runtimeStatus": "deferred", **health}]}})
+        assert seeded["mim-enti-locali"]["lastAttemptedFetch"] == "2026-10-10"
+    finally:
+        stable._BASE_COMPOSE = original_compose
+        stable._PREVIOUS_HEALTH = original_previous
+        stable._RUN_DATE = original_date
+        stable._PREVIOUS_DISCOVERY = original_discovery
+        stable.h4.discovery.fetch_with_diagnostics = original_fetch
+
+    html = '<div><a href="/dettaglio-circolari/new/"><h2>Avviso vulnerabilità sismica edifici scolastici</h2></a></div>'
+    leads = stable.h4.radar_module.discovery_candidates({"id": "anci-lombardia-national-leads",
+        "includeTerms": ["avviso"], "municipalTerms": ["scolastici"]}, html, "https://anci.lombardia.it/archivio-circolari/")
+    assert len(leads) == 1 and leads[0]["url"] == "https://anci.lombardia.it/dettaglio-circolari/new/"
+    assert leads[0]["discovery_only"] and leads[0]["status"] == "internal_review"
+
+
 def main() -> int:
+    _test_weekly_check_does_not_fetch_or_reset_health()
     _test_legacy_supplementary_success_does_not_seed_national_health()
     _test_legacy_gse_faq_success_is_not_listing_success()
     _test_recent_success_gives_family_grace()

@@ -161,7 +161,7 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
             if trace is None:
                 endpoint = {
                     "url": url,
-                    "status": "not_run",
+                    "status": "deferred" if configs.get(source_id, {}).get("deferDiscoveryCheck") else "not_run",
                     "transport": None,
                     "fallbackUsed": False,
                     "proxyUsed": False,
@@ -190,6 +190,9 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
 
         rows.append({
             "sourceId": source_id,
+            "checkEveryDays": int(configs.get(source_id, {}).get("checkEveryDays") or 1),
+            "checkDeferred": bool(configs.get(source_id, {}).get("deferDiscoveryCheck")),
+            "nextScheduledCheck": configs.get(source_id, {}).get("nextScheduledCheck"),
             "runtimeStatus": runtime_by_id.get(source_id, "not_run"),
             "endpointCount": len(endpoints),
             "endpointOk": sum(endpoint.get("status") == "ok" for endpoint in endpoints),
