@@ -684,9 +684,9 @@ def _test_live_transport_budget_and_journal() -> None:
             payload, diagnostics = budget.fetch(base + "/ok")
             assert "official notice" in payload and diagnostics["status"] == "ok"
             assert budget.fetch(base + "/ok")[0] == payload  # same-run cache
-            budget.endpoint_seconds = 0.3
             started = time.monotonic()
-            payload, diagnostics = budget.fetch(base + "/slow")
+            payload, diagnostics = budget.fetch(base + "/slow", max_seconds=0.3)
+            assert budget.endpoint_seconds == 5
             assert payload is None and diagnostics["failureClass"] == "timeout_client"
             assert diagnostics["budgetScope"] == "endpoint"
             assert time.monotonic() - started < 1.5  # all retries/fallbacks bounded

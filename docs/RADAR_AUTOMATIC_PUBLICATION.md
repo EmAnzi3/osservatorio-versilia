@@ -15,3 +15,15 @@ L’identità della call deriva dal titolo ministeriale e dalla finestra ricavat
 `documentPromotion` distingue schede aggiunte, riconfermate e archiviate e conserva gli esiti dei tentativi. `counts.documentAutomaticallyAdded` e il rapporto giornaliero separano le nuove schede verificate dal numero di segnalazioni interne. Le date annuali e i singoli protocolli degli avvisi non sono censiti nel codice.
 
 Gli altri formati, i documenti ambigui, le restrizioni territoriali e le risposte non PDF restano in discovery con una motivazione. Questo contratto non certifica una copertura completa di tutte le opportunità: altre famiglie documentali richiedono un adattatore verificabile.
+
+## Verifiche richieste, senza ricerca manuale degli allegati
+
+Il rapporto giornaliero e la notifica GitHub espongono subito le **Verifiche richieste**. Ogni segnalazione da controllare contiene pagina sorgente, collegamenti diretti ai documenti individuati, motivo del blocco e controllo da svolgere. Se il documento non è stato trovato, se la ricerca non è ancora stata eseguita o se è disponibile solo un riferimento precedente, viene dichiarato esplicitamente. I problemi di trasporto e di budget sono distinti dalle verifiche di persona: il Radar li ritenta automaticamente.
+
+La ricerca degli allegati riusa le pagine già acquisite; per le altre usa HTTPS diretto su host del registro fonti, con verifica TLS e redirect controllati. È limitata a 24 pagine e 90 secondi, entro il budget globale del run; ciascuna nuova richiesta ha un limite di 8 secondi. I risultati sono conservati con data e riesaminati dopo sette giorni. Le pagine mai esaminate hanno priorità rispetto ai ritentativi, per evitare che il limite lasci sempre indietro gli stessi avvisi. L'individuazione di un allegato non certifica l'ammissibilità e non promuove da sola una scheda.
+
+Il lettore MIM supporta anche collegamenti diretti ai PDF, intestazioni `Articolo` e separatori diversi. Articoli ripetuti o finestre discordanti richiedono verifica. Un PDF senza testo viene segnalato come scansionato, senza pubblicazione da una lettura incompleta. Le approvazioni di graduatorie senza una riapertura documentata sono distinte dalle nuove candidature; i termini conclusi sono classificati soltanto da date strutturate o da una finestra ministeriale integrale.
+
+Le segnalazioni sono raggruppate per riferimento esatto, conservando la contabilità delle ripetizioni. Pagine di navigazione, riferimenti già associati a schede pubblicate e termini conclusi sono visibili separatamente. La coda grezza resta conservata: la vista operativa non è una cancellazione delle evidenze né una certificazione di tutte le opportunità mancanti. I cambiamenti delle verifiche richieste entrano nell'impronta della notifica, anche quando il numero delle schede pubbliche non cambia.
+
+I rapporti che superano il limite di un corpo GitHub proseguono automaticamente nei commenti della stessa segnalazione, con tabelle e collegamenti diretti. Un ritentativo completa le parti mancanti senza duplicare la segnalazione o le parti già inviate.

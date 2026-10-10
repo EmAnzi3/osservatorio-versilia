@@ -33,6 +33,8 @@ def main() -> int:
     assert "actions/deploy-pages@v4" in daily
     assert "Notify owner after successful publication" in daily
     assert "Notify owner about blocked publication" in daily
+    assert daily.count("python scripts/opportunity_owner_notification.py") == 2
+    assert daily.index("Checkout notification helper") < daily.index("Deploy verified Radar")
     assert daily.index("Deploy verified Radar") < daily.index("Notify owner after successful publication")
     publish_section = daily.split("  publish:", 1)[1]
     report_download = publish_section.split("- name: Download readable run report", 1)[1].split(

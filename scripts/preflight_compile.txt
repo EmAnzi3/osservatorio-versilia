@@ -168,3 +168,5 @@ scripts/opportunity_document_promotion.py
 scripts/test_opportunity_document_promotion.py
 scripts/semantic_query_road_adapters.py
 scripts/test_semantic_road_adapters.py
+scripts/opportunity_review_actions.py
+scripts/opportunity_owner_notification.py

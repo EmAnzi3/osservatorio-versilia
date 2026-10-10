@@ -74,7 +74,7 @@ class TransportBudget:
             # Consume every future; exceptions cannot silently disappear.
             list(pool.map(fetch_one, requests.items()))
 
-    def fetch(self, url, *, timeout=30, attempts=2, kind="discovery", options=None):
+    def fetch(self, url, *, timeout=30, attempts=2, kind="discovery", options=None, max_seconds=None):
         options = options or {}
         key = (kind, url, json.dumps(options, sort_keys=True))
         host = urlsplit(url).netloc
@@ -93,7 +93,8 @@ class TransportBudget:
                     self.source_seconds - self.spent.get(source, 0) - self.source_reserved.get(source, 0),
                     self.source_seconds - self.host_spent.get(host, 0) - self.host_reserved.get(host, 0),
                 )
-                wanted = min(self.endpoint_seconds, remaining_source, remaining_scan)
+                wanted = min(self.endpoint_seconds, remaining_source, remaining_scan,
+                             max_seconds if max_seconds is not None else self.endpoint_seconds)
                 # Active requests reserve budget. Wait for their actual cost
                 # instead of prematurely failing or overspending a shared host.
                 if remaining_scan > 0 and wanted > 0 and available + 1e-6 < wanted:
@@ -165,9 +166,10 @@ def _worker():
     import opportunity_discovery_resilient as discovery
     try:
         kind = request["kind"]
-        if kind in {"promotion_document", "promotion_page"}:
+        if kind in {"promotion_document", "promotion_page", "review_page"}:
             from opportunity_document_promotion import fetch_receipt
-            payload = fetch_receipt(request["url"], document=kind == "promotion_document", timeout=request["timeout"])
+            payload = fetch_receipt(request["url"], document=kind == "promotion_document", timeout=request["timeout"],
+                                    allowed_hosts=set(request["options"]["allowedHosts"]) if kind == "review_page" else None)
             result = (payload, {"status": "ok", "transport": "direct_https", "proxyUsed": False,
                                 "fallbackUsed": False, "failureClass": None, "resolvedUrl": payload["resolvedUrl"], "errors": []})
         elif kind == "continuity":

@@ -48,6 +48,7 @@ jobs:
       modified: ${{ steps.run_report.outputs.modified }}
       archived: ${{ steps.run_report.outputs.archived }}
       removed: ${{ steps.run_report.outputs.removed }}
+      human_review: ${{ steps.run_report.outputs.human_review }}
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v4
@@ -246,6 +247,7 @@ jobs:
           print(f"content_changed={'true' if changed else 'false'}")
           print(f"reference_date={report.get('referenceDate') or 'n.d.'}")
           print(f"fingerprint={report['fingerprint']}")
+          print(f"human_review={(report.get('reviewActions') or {}).get('counts', {}).get('human', 0)}")
           for key in ('added', 'modified', 'archived', 'removed'):
               print(f"{key}={int(counts[key])}")
           PY
@@ -281,10 +283,6 @@ jobs:
         run: |
           set -euo pipefail
           marker="radar-failure:${{ steps.run_report.outputs.reference_date }}:${{ steps.run_report.outputs.fingerprint }}"
-          if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
-            echo "Blocco Radar già notificato: ${marker}"
-            exit 0
-          fi
           {
             echo "<!-- ${marker} -->"
             echo "# Pubblicazione Radar bloccata"
@@ -293,8 +291,9 @@ jobs:
             echo
             cat reports/runtime/opportunity-run-report.md
           } > /tmp/opportunity-radar-failure.md
-          gh issue create \
+          python scripts/opportunity_owner_notification.py \
             --repo "$GITHUB_REPOSITORY" \
+            --marker "$marker" \
             --title "Radar bloccato · ${{ steps.run_report.outputs.reference_date }}" \
             --body-file /tmp/opportunity-radar-failure.md \
             --assignee "$GITHUB_REPOSITORY_OWNER"
@@ -384,6 +383,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout notification helper
+        uses: actions/checkout@v4
+
       - name: Deploy verified Radar
         id: deployment
         uses: actions/deploy-pages@v4
@@ -401,10 +403,6 @@ jobs:
         run: |
           set -euo pipefail
           marker="radar-published:${{ needs.refresh.outputs.reference_date }}:${{ needs.refresh.outputs.fingerprint }}"
-          if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
-            echo "Pubblicazione già notificata: ${marker}"
-            exit 0
-          fi
           {
             echo "<!-- ${marker} -->"
             echo "# Radar verificato e pubblicato"
@@ -413,9 +411,10 @@ jobs:
             echo
             cat reports/runtime/opportunity-run-report.md
           } > /tmp/opportunity-radar-published.md
-          title="Radar pubblicato · ${{ needs.refresh.outputs.reference_date }} · +${{ needs.refresh.outputs.added }} ~${{ needs.refresh.outputs.modified }} −${{ needs.refresh.outputs.archived }}"
-          gh issue create \
+          title="Radar pubblicato · ${{ needs.refresh.outputs.reference_date }} · +${{ needs.refresh.outputs.added }} · verifiche richieste ${{ needs.refresh.outputs.human_review }}"
+          python scripts/opportunity_owner_notification.py \
             --repo "$GITHUB_REPOSITORY" \
+            --marker "$marker" \
             --title "$title" \
             --body-file /tmp/opportunity-radar-published.md \
             --assignee "$GITHUB_REPOSITORY_OWNER"

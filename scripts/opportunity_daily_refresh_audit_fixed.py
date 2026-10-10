@@ -23,6 +23,7 @@ import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
 import opportunity_document_promotion as document_promotion
+import opportunity_review_actions as review_actions
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -192,6 +193,10 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     previous_path = kwargs.get("previous_path")
     previous = core._load(previous_path) if previous_path and previous_path.exists() else {}
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
+    if kwargs.get("payloads") is None:
+        import opportunity_discovery_resilient as discovery
+        if discovery.LIVE_BUDGET is not None:
+            review_actions.collect_document_links(result, previous=previous, budget=discovery.LIVE_BUDGET)
     _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
@@ -256,6 +261,11 @@ def _write_full_publishability_diagnostic(
         "sourceCoverage": dict(result.get("sourceCoverage") or {}),
         "backtest": dict(result.get("backtest") or {}),
         "transportAudit": transport,
+        "discoveryQueue": list(result.get("discoveryQueue") or []),
+        "reviewQueue": list(result.get("reviewQueue") or []),
+        "qualityHold": list(result.get("qualityHold") or []),
+        "documentPromotion": dict(result.get("documentPromotion") or {}),
+        "reviewDocumentLookup": list(result.get("reviewDocumentLookup") or []),
     }
     path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
     path.parent.mkdir(parents=True, exist_ok=True)

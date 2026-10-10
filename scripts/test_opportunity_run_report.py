@@ -72,6 +72,7 @@ def _test_coverage_failure_names_expired_evidence() -> None:
 
 def main() -> int:
     _test_coverage_failure_names_expired_evidence()
+    _test_actionable_document_review()
     prior = _snapshot([])
     candidate = _snapshot([])
     candidate["discoveryQueue"] = [{"title": "Nuovo avviso da verificare", "url": "https://example.test/lead", "source_label": "Fonte istituzionale"}]
@@ -197,6 +198,82 @@ def main() -> int:
 
     print("Rapporto run Radar: PASS")
     return 0
+
+
+def _test_actionable_document_review():
+    from opportunity_review_actions import build_actions, collect_document_links, is_administrative_update
+    page = "https://www.anciabruzzo.it/avviso/"
+    document = "https://www.anciabruzzo.it/avviso-integrale.pdf"
+    current = _snapshot([])
+    current["discoveryQueue"] = [
+        {"title": "Avviso da verificare", "url": page},
+        {"title": "Copia della segnalazione", "url": page+"?utm_source=feed"},
+        {"title": "Navigazione principale", "url": "https://www.anciabruzzo.it/"},
+        {"title": "Già pubblicata", "url": "https://example.test/public"},
+    ]
+    current["opportunities"] = [_item("Scheda pubblicata", "public")]
+    current["documentPromotion"] = {"checks": [{"url": page, "status": "review", "errors": ["PDF scansionato"],
+        "documents": [{"url": document, "status": "review", "error": "PDF scansionato"}]}]}
+    actions = build_actions(current)
+    assert actions["signalCount"] == 4 and actions["uniqueCount"] == 3 and actions["duplicatesGrouped"] == 1
+    assert actions["counts"] == {"human": 1, "covered": 1, "monitor": 1}
+    row = actions["items"][0]
+    assert row["reasonCode"] == "scanned_pdf" and row["documents"][0]["url"] == document
+    report = build_report(current, current, phase_statuses={"scan": "success", "validation": "success", "build": "success"})
+    for rendered in (render_markdown(report), render_html(report)):
+        assert "Verifiche richieste" in rendered and "Cosa fare" in rendered and document in rendered
+        assert "avviso-integrale.pdf" in rendered and "trascrizione controllata" in rendered
+    assert report["counts"]["added"] == 0
+    import opportunity_daily_refresh_audit_fixed as audit_refresh
+    import json
+    from pathlib import Path
+    from unittest.mock import patch
+    from tempfile import TemporaryDirectory
+    with TemporaryDirectory() as folder:
+        diagnostic_path = Path(folder) / "diagnostic.json"
+        with patch.object(audit_refresh.stable, "PUBLISHABILITY_DIAGNOSTIC_PATH", diagnostic_path):
+            audit_refresh._write_full_publishability_diagnostic(current, [], error="scan blocked")
+        diagnostic = json.loads(diagnostic_path.read_text())
+        blocked = build_report(current, current, diagnostic=diagnostic,
+                               phase_statuses={"scan": "failure", "validation": "skipped", "build": "skipped"})
+        assert blocked["reviewActions"]["counts"] == actions["counts"]
+        assert document in render_markdown(blocked), "Il blocco della scansione non deve nascondere i documenti"
+        diagnostic["documentPromotion"]["checks"].append({"url": page+"nuovo/", "title": "Avviso verificato non pubblicato", "status": "published_candidate", "coverage_id": "new-verified",
+                                                          "documents": [{"url": document+"?new=1", "status": "verified", "deadline": "2026-10-23"}]})
+        pending = build_report(current, current, diagnostic=diagnostic,
+                               phase_statuses={"scan": "failure", "validation": "skipped", "build": "skipped"})
+        pending_rows = [x for x in pending["reviewActions"]["items"] if x["reasonCode"] == "publication_blocked"]
+        assert len(pending_rows) == 1 and pending_rows[0]["documents"][0]["url"] == document+"?new=1"
+        assert pending_rows[0]["deadline"] == "2026-10-23" and "non va ricercato nuovamente" in render_markdown(pending)
+    changed = {**current, "documentPromotion": {"checks": [{"url": page, "status": "deferred", "errors": ["budget exhausted"]}]}}
+    changed_report = build_report(current, changed, phase_statuses={"scan": "success", "validation": "success", "build": "success"})
+    assert changed_report["fingerprint"] != report["fingerprint"]
+    assert changed_report["reviewActions"]["counts"]["retry"] == 1
+    failed_lookup = {**current, "documentPromotion": {}, "reviewDocumentLookup": [{"url": page, "status": "error", "errors": ["timeout"]}]}
+    failed_actions = build_actions(failed_lookup)
+    assert failed_actions["items"][0]["documentLookup"] == "failed"
+    from opportunity_review_actions import render_actions_markdown
+    assert "Ricerca non riuscita" in render_actions_markdown(failed_actions)
+    assert is_administrative_update("<p>È stata approvata la graduatoria definitiva.</p>")
+    assert not is_administrative_update("<p>È stata approvata la graduatoria definitiva. Riapertura delle domande.</p>")
+    fresh = _snapshot([]);fresh["referenceDate"] = "2026-10-10"
+    fresh["discoveryQueue"] = [{"title": "Avviso A", "url": page}, {"title": "Avviso B", "url": page+"secondo/"}]
+    calls = []
+    def loader(url):
+        calls.append(url)
+        return {"text": '<a href="avviso-integrale.pdf">Avviso</a>', "resolvedUrl": "https://www.anciabruzzo.it/redirect/"}
+    collect_document_links(fresh, loader=loader, max_pages=1)
+    assert len(calls) == 1
+    assert fresh["reviewDocumentLookup"][0]["documents"][0]["url"] == "https://www.anciabruzzo.it/redirect/avviso-integrale.pdf"
+    previous = fresh.copy()
+    next_run = {**fresh, "reviewDocumentLookup": []}
+    collect_document_links(next_run, previous=previous, loader=loader, max_pages=1)
+    assert len(calls) == 2 and calls[0] != calls[1], "Il limite non deve affamare sempre le stesse pagine"
+    assert len(next_run["reviewDocumentLookup"]) == 2
+    assert sum(build_actions(next_run)["counts"].values()) == 2
+    carried = {**next_run}
+    collect_document_links(carried, previous=next_run, loader=loader, max_pages=1)
+    assert len(calls) == 2 and len(carried["reviewDocumentLookup"]) == 2, "Gli allegati persistono senza nuove richieste per sette giorni"
 
 
 if __name__ == "__main__":
