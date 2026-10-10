@@ -106,6 +106,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     water_quality_regressions(catalog_path)
     from test_semantic_library_adapters import regressions as library_regressions
     library_regressions(catalog_path)
+    from test_semantic_social_spending_adapters import regressions as social_regressions
+    social_regressions(catalog_path)
     from test_semantic_invalsi_adapters import regressions as invalsi_regressions
     invalsi_regressions(catalog_path)
     from test_semantic_regional_adapters import regressions as regional_regressions

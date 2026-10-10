@@ -36482,6 +36482,1796 @@
         ]
       },
       "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "social_spending_046005",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3394,
+              25
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046013",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              5571,
+              20
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046018",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              9769,
+              100
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046024",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              13229,
+              100
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046028",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              13223,
+              100
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046030",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              847,
+              10
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_046033",
+      "question": "Qual è la spesa sociale per abitante nel 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              18039,
+              100
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_families-minors",
+      "question": "Quali quote comunali vanno a Famiglia e minori?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:families-minors"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              223219568931723,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              505824662743041,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              18138972450417,
+              625000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              449802566666207,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              5803588013079,
+              250000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              65838120232719,
+              2500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              456709656576869,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_disability",
+      "question": "Quali quote comunali vanno a Disabili?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:disability"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              219935752113551,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              124683261561797,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              250736574087321,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              98396211593843,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              41422531840297,
+              1250000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              530295648186437,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              115978285883979,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_addictions",
+      "question": "Quali quote comunali vanno a Dipendenze?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:addictions"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              363619363250549,
+              10000000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              135688992048107,
+              200000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_elderly",
+      "question": "Quali quote comunali vanno a Anziani (65 anni e più)?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:elderly"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              39882182930347,
+              2500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              85773652140939,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              29054300321461,
+              2000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              215928370516009,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              51401685603673,
+              2500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              60595390656027,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              122567434263317,
+              12500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_immigration",
+      "question": "Quali quote comunali vanno a Immigrati, Rom, Sinti e Caminanti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:immigration"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              236352586112857,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              232464705189769,
+              250000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              406355401035843,
+              50000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              526104411462913,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_poverty-hardship",
+      "question": "Quali quote comunali vanno a Povertà, disagio adulti e senza dimora?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:poverty-hardship"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              962606509663533,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              191248201382793,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              138313157387389,
+              50000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              160556323552709,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              54296437991429,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              72248744078643,
+              12500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              975950460842587,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_multiuser",
+      "question": "Quali quote comunali vanno a Multiutenza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:multiuser"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              389178636676307,
+              50000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1883613233667,
+              625000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              130352856631559,
+              50000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              2606677926973,
+              781250000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              24455321271383,
+              2000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              273620943077181,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              179052622897949,
+              10000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_history",
+      "question": "Quali sono i valori pubblicati di Camaiore dal 2014 al 2022?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              7421,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3817,
+              25
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              16773,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              14279,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              13983,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              131,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              7529,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/7/value",
+            "fraction": [
+              15193,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/8/value",
+            "fraction": [
+              3394,
+              25
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_spending_rank",
+      "question": "Quale è il rango numerico degli indici comunali?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/0/value",
+            "fraction": [
+              5571,
+              20
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_area_alias",
+      "question": "Che cosa significa la misura predefinita della composizione?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              223219568931723,
+              5000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ],
+        "warnings": [
+          "social_total_alias_families_minors_not_sum",
+          "social_summary_eur_per_resident_not_area_percent"
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_gap_tuscany",
+      "question": "Qual è il gap 2022 di Camaiore rispetto a tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -781,
+              25
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/unit",
+            "value": "eurPerResident"
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              167,
+              1
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_gap_italy",
+      "question": "Qual è il gap 2022 di Camaiore rispetto a italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -356,
+              25
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/unit",
+            "value": "eurPerResident"
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat Tavole 10a/10b 2022: trascrizione indipendente dei record comunali; benchmark Tav. 1 include prima infanzia; test_semantic_social_spending_adapters.py"
+    },
+    {
+      "id": "social_socialSpendingPerResident_weighted_ratio_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_weighted_ratio_refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_native_denominators_unavailable"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_anomaly_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_anomaly_refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_trend_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_trend_refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_absolute_change_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_absolute_change_refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_relative_change_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_relative_change_refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_percentage_points_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_percentage_points_refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_2013_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_2013_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "periods": [
+              "2013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_2023_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_2023_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_2026_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_2026_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_numerator_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_numerator_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_denominator_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_denominator_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_summary_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_summary_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "dimension": "summary"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_age_65plus_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_age_65plus_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "dimension": "age:65plus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_sex_women_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_sex_women_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_pair_0_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_pair_0_refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingPerResident_pair_1_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingPerResident_pair_1_refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "socialSpendingPerResident"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_weighted_ratio_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_weighted_ratio_refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_native_denominators_unavailable"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_anomaly_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_anomaly_refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_trend_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_trend_refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_absolute_change_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_absolute_change_refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_relative_change_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_relative_change_refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_percentage_points_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_percentage_points_refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_temporal_operations_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_2013_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_2013_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "periods": [
+              "2013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_2023_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_2023_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_2026_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_2026_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_period_not_frozen"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_numerator_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_numerator_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_denominator_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_denominator_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_summary_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_summary_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "summary"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_age_65plus_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_age_65plus_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "age:65plus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_sex_women_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_sex_women_refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_pair_0_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_pair_0_refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_socialSpendingByUserArea_pair_1_refused",
+      "question": "Quale limite metodologico impedisce social_socialSpendingByUserArea_pair_1_refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "socialSpendingByUserArea"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_area_history_refused",
+      "question": "Quale limite metodologico impedisce social_area_history_refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_area_history_not_published"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_area_benchmark_refused",
+      "question": "Quale limite metodologico impedisce social_area_benchmark_refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_area_benchmark_not_available"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_spending_historical_gap_refused",
+      "question": "Quale limite metodologico impedisce social_spending_historical_gap_refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "social_spending_versilia_gap_refused",
+      "question": "Quale limite metodologico impedisce social_spending_versilia_gap_refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "social_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
     }
   ]
 }
