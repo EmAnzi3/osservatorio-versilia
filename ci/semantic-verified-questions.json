@@ -38272,6 +38272,1422 @@
         ]
       },
       "reference": "Contratto spesa sociale: denominatori nativi non acquisiti; quote solo 2022, nessun benchmark per area o operazione temporale/coppia revisionata."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046005",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046005 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.35
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046013",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046013 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.76
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046018",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046018 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 0.28
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046024",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046024 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/3/value",
+            "value": 0.4
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046028",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046028 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/4/value",
+            "value": 0.33
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046030",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046030 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/5/value",
+            "value": 0.36
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_046033",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di farmacie ogni 1.000 residenti nel Comune 046033 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/6/value",
+            "value": 0.33
+          },
+          {
+            "path": "/observations/6/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_rank",
+      "question": "Come si ordinano i sette Comuni per farmacie ogni 1.000 residenti, senza interpretarlo come qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_series_refused",
+      "question": "È ammessa l’operazione series sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_absolute_change_refused",
+      "question": "È ammessa l’operazione absolute_change sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_relative_change_refused",
+      "question": "È ammessa l’operazione relative_change sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_trend_refused",
+      "question": "È ammessa l’operazione trend sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_weighted_ratio_refused",
+      "question": "È ammessa l’operazione weighted_ratio sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_public_rounded_rate_no_reviewed_pooling"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_anomaly_refused",
+      "question": "È ammessa l’operazione anomaly sui dati farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_2024_refused",
+      "question": "Abbiamo un valore 2024 verificato per farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_2026_refused",
+      "question": "Abbiamo un valore 2026 verificato per farmacie ogni 1.000 residenti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_pair_False_refused",
+      "question": "È stata revisionata l’associazione fra farmacie ogni 1.000 residenti e popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmaciesPer1000_pair_True_refused",
+      "question": "È stata revisionata l’associazione fra farmacie ogni 1.000 residenti e popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046005",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046005 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 5
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046013",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046013 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046018",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046018 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/2/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046024",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046024 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/3/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046028",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046028 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/4/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046030",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046030 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/5/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_046033",
+      "question": "Nel confronto dei sette Comuni, qual è il valore di RSA accreditate localizzate nel Comune 046033 nella fotografia 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/6/value",
+            "value": 4
+          },
+          {
+            "path": "/observations/6/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_rank",
+      "question": "Come si ordinano i sette Comuni per RSA accreditate localizzate, senza interpretarlo come qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_series_refused",
+      "question": "È ammessa l’operazione series sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_absolute_change_refused",
+      "question": "È ammessa l’operazione absolute_change sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_relative_change_refused",
+      "question": "È ammessa l’operazione relative_change sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_trend_refused",
+      "question": "È ammessa l’operazione trend sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_weighted_ratio_refused",
+      "question": "È ammessa l’operazione weighted_ratio sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_public_rounded_rate_no_reviewed_pooling"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_anomaly_refused",
+      "question": "È ammessa l’operazione anomaly sui dati RSA accreditate localizzate?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_2024_refused",
+      "question": "Abbiamo un valore 2024 verificato per RSA accreditate localizzate?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_2026_refused",
+      "question": "Abbiamo un valore 2026 verificato per RSA accreditate localizzate?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_pair_False_refused",
+      "question": "È stata revisionata l’associazione fra RSA accreditate localizzate e popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_accreditedRsaCount_pair_True_refused",
+      "question": "È stata revisionata l’associazione fra RSA accreditate localizzate e popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046005",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046005 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1072770,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046013",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046013 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              151100872,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046018",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046018 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -24541784,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046024",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046024 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              19368880,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046028",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046028 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -6245674,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046030",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046030 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              4731992,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046033",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046033 dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -6245674,
+              365922200
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046005",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046005 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -10001020,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046013",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046013 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2406654928,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046018",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046018 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -422600816,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046024",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046024 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              284713120,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046028",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046028 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -127886676,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046030",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046030 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              48941808,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_gap_italy_046033",
+      "question": "Quanto differisce la densità farmacie 2025 del Comune 046033 dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "warnings": [
+          "health_pharmacies_public_two_decimals_benchmark_unrounded"
+        ],
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -127886676,
+              5894282800
+            ],
+            "tolerance": 1e-12
+          }
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_rsa_regional_gap_refused",
+      "question": "Il totale regionale di 336 RSA è un tasso direttamente confrontabile con il conteggio comunale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_rsa_absolute_regional_stock_not_municipal_rate"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "health_pharmacy_versilia_gap_refused",
+      "question": "È revisionato uno scostamento dal benchmark Versilia farmacie?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "health_facilities_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
     }
   ]
 }
