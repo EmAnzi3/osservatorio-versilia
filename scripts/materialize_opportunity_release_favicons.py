@@ -40,6 +40,7 @@ _HOST_ALIASES = {
 # Source-mark locali per domini indipendenti non ancora dotati di asset acquisito.
 # Non sono loghi inventati: sono badge tipografici identificativi della fonte.
 _GENERATED_HOST_MARKS = {
+    "mim.gov.it": "MIM",
     "agenziagioventu.gov.it": "AG",
     "inpa.gov.it": "inPA",
     "creditosportivo.it": "ICSC",
@@ -83,6 +84,12 @@ def _resolve_icon_key(item: dict[str, Any], provenance: dict[str, dict[str, Any]
     sid = str(item.get("source_id") or "")
     if sid in provenance:
         return sid
+
+    # Ministerial PDFs can be hosted by ANCI: the badge identifies the issuer,
+    # while the source link and document receipt preserve the actual copy URL.
+    if sid == "mim-enti-locali":
+        key = _generated_key("mim.gov.it")
+        return key if key in provenance else None
 
     host = _host(item)
     if not host:

@@ -165,7 +165,12 @@ def _worker():
     import opportunity_discovery_resilient as discovery
     try:
         kind = request["kind"]
-        if kind == "continuity":
+        if kind in {"promotion_document", "promotion_page"}:
+            from opportunity_document_promotion import fetch_receipt
+            payload = fetch_receipt(request["url"], document=kind == "promotion_document", timeout=request["timeout"])
+            result = (payload, {"status": "ok", "transport": "direct_https", "proxyUsed": False,
+                                "fallbackUsed": False, "failureClass": None, "resolvedUrl": payload["resolvedUrl"], "errors": []})
+        elif kind == "continuity":
             import opportunity_daily_refresh_stable as stable
             result = stable._fetch_continuity_detail(request["url"])
         elif kind.startswith("official_"):
