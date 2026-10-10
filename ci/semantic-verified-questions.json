@@ -42564,6 +42564,5778 @@
         ]
       },
       "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046005",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.43682491836222
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046005",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.35656242304851
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 6.43682491836222
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046013",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 15.0264077958789
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046013",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 15.4516640253566
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 15.0264077958789
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046018",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4.35071328799432
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046018",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.47864867878247
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 4.35071328799432
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046024",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 6.10573016186774
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046024",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.62378288792211
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 6.10573016186774
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046028",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3.70728562217924
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046028",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.31279082964476
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 3.70728562217924
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046030",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.72562553925798
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046030",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.617379225189072
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 1.72562553925798
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_current_046033",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 6.62420801990558
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_history_046033",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.80928422781601
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 6.62420801990558
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_rank",
+      "question": "Quale Comune ha il valore numerico più alto, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_absolute_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_relative_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_percentage_points_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_trend_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_weighted_ratio_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_native_counts_and_denominators_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_anomaly_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_2025_refused",
+      "question": "La fotografia è aggiornata al 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_period_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_sex_refused",
+      "question": "È disponibile questa lettura per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_pair_0_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_pair_1_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2289929610388,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              10879512487905,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              203817980020,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1958834853894,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -439609685795,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -2421269768716,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2477312711932,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3496326255829,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              12085909133346,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1410214625461,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3165231499335,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              766786959646,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1214873123275,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_italy_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3683709357372,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_versilia_2024_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_incidents_gap_tuscany_2023_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046005",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1.95121951219512
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046005",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1.25523012552301
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 1.95121951219512
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046013",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046013",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.0
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046018",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046018",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.56410256410256
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.0
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046024",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.719424460431655
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046024",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1.6304347826087
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.719424460431655
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046028",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4.34782608695652
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046028",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 4.34782608695652
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046030",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046030",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.0
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_current_046033",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.24378109452736
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_history_046033",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.936768149882904
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 1.24378109452736
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_rank",
+      "question": "Quale Comune ha il valore numerico più alto, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046028"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_absolute_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_relative_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_percentage_points_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_trend_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_weighted_ratio_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_native_counts_and_denominators_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_anomaly_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_2025_refused",
+      "question": "La fotografia è aggiornata al 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_period_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_sex_refused",
+      "question": "È disponibile questa lettura per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_pair_0_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_pair_1_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              712258130885,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1238961381310,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1238961381310,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -519536920878,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3108864705646,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1238961381310,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              4819713217,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              203451809558,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1747767702637,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1747767702637,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1028343242206,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2600058384319,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1747767702637,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_italy_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -503986608110,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_versilia_2024_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_mortality_gap_tuscany_2023_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046005",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 117.073170731707
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046005",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 127.196652719665
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 117.073170731707
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046013",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 126.732673267327
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046013",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 128.205128205128
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 126.732673267327
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046018",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 115.789473684211
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046018",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 128.205128205128
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 115.789473684211
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046024",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 123.021582733813
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046024",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 127.173913043478
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 123.021582733813
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046028",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 108.695652173913
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046028",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 133.333333333333
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 108.695652173913
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046030",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 140.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046030",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 150.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 140.0
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_current_046033",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 117.661691542289
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_history_046033",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 122.248243559719
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2014"
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 117.661691542289
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_rank",
+      "question": "Quale Comune ha il valore numerico più alto, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_absolute_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_relative_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_percentage_points_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_trend_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_weighted_ratio_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_native_counts_and_denominators_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_anomaly_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_2025_refused",
+      "question": "La fotografia è aggiornata al 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_period_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_sex_refused",
+      "question": "È disponibile questa lettura per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_pair_0_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_pair_1_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -11205463774686,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1545961239066,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -12489160822182,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5257051772580,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -19582982332480,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11721365493607,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -10616942964104,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -17818156187377,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -8158653651757,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -19101853234873,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -11869744185271,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -26195674745171,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              5108673080916,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_italy_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -17229635376795,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_versilia_2024_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injury_gap_tuscany_2023_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046005",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 75.32011046949535
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046005",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 60.55226199156707
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 75.32011046949535
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046013",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 188.87413309724067
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046013",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 139.22092532695822
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 188.87413309724067
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046018",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50.30871255431054
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046018",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 39.32454314133704
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 50.30871255431054
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046024",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 75.03949447077409
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046024",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 59.13814845414619
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 75.03949447077409
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046028",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 40.20908725371934
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046028",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 32.096445905746045
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 40.20908725371934
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046030",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.11298656562177
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046030",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 13.522650439486139
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 24.11298656562177
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_current_046033",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 77.85367459468357
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_history_046033",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 44.453992596509785
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 77.85367459468357
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_rank",
+      "question": "Quale Comune ha il valore numerico più alto, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_absolute_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_relative_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_percentage_points_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_trend_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_weighted_ratio_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_native_counts_and_denominators_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_anomaly_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_2025_refused",
+      "question": "La fotografia è aggiornata al 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_period_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_sex_refused",
+      "question": "È disponibile questa lettura per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_pair_0_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_pair_1_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadSafety_measure_injured_gap_refused",
+      "question": "Esiste un benchmark congelato dei feriti per residenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injured",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_injured_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046005",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 36.0983071095113
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046005",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 25.4292758956937
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 36.0983071095113
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046013",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 247.638983782175
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046013",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 184.090501412429
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 247.638983782175
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046018",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 6.76785583524027
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046018",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.32421437382921
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 6.76785583524027
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046024",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 22.4294826336255
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046024",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 91.4154026024639
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 22.4294826336255
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046028",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 39.5120434098519
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046028",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 36.3057542905149
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 39.5120434098519
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046030",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2.19099427381572
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046030",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.87826883206634
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 2.19099427381572
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_current_046033",
+      "question": "Qual è questa lettura comunale della sicurezza stradale o dei proventi nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 49.005837367849
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_history_046033",
+      "question": "Qual è la serie pubblicata, senza interpolare le lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 29.7584687970171
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 49.005837367849
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_rank",
+      "question": "Quale Comune ha il valore numerico più alto, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_absolute_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_relative_change_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_percentage_points_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_trend_refused",
+      "question": "È certificata questa analisi temporale?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_weighted_ratio_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_native_counts_and_denominators_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_anomaly_refused",
+      "question": "Questa aggregazione o anomalia è metodologicamente revisionata?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_2025_refused",
+      "question": "La fotografia è aggiornata al 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_period_not_frozen"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_sex_refused",
+      "question": "È disponibile questa lettura per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_pair_0_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_pair_1_refused",
+      "question": "È autorizzata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -11450151549285,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              200090525123379,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -40780602823556,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -25118976025171,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -8036415248944,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -45357464384981,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale tuscany nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1457378709053,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046005",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              6771467497143,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046013",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              218312144169807,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046018",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -22558983777128,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046024",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -6897356978743,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046028",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              10185203797484,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046030",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -27135845338552,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_italy_046033",
+      "question": "Quanto dista il valore comunale dalla riga ufficiale italy nel 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              19678997755481,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_versilia_2024_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_roadFinesPerResident_total_gap_tuscany_2023_refused",
+      "question": "È disponibile lo stesso confronto in questo scope/anno?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "roadFinesPerResident",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "road_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_incidents_missing_refused",
+      "question": "Si può ignorare la lacuna di Stazzema 2017?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_incidents_missing_explicit",
+      "question": "La lacuna 2017 resta distinta da zero?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:incidents",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/dataUnavailable",
+            "value": true
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 10
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_mortality_missing_refused",
+      "question": "Si può ignorare la lacuna di Stazzema 2017?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_mortality_missing_explicit",
+      "question": "La lacuna 2017 resta distinta da zero?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/dataUnavailable",
+            "value": true
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 10
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_injury_missing_refused",
+      "question": "Si può ignorare la lacuna di Stazzema 2017?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_measure_injury_missing_explicit",
+      "question": "La lacuna 2017 resta distinta da zero?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:injury",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/dataUnavailable",
+            "value": true
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 10
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_primary_alias",
+      "question": "La lettura predefinita identifica gli incidenti per residenti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.43682491836222
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "per1000"
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "road_zero_mortality",
+      "question": "Zero dell’indice di mortalità è un valore valido?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "roadSafety",
+            "dimension": "measure:mortality",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.0
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 2
+          }
+        ]
+      },
+      "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
     }
   ]
 }
