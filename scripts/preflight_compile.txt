@@ -163,6 +163,9 @@ scripts/test_semantic_health_facilities_adapters.py
 
 scripts/semantic_query_connectivity_adapters.py
 scripts/test_semantic_connectivity_adapters.py
+
+scripts/opportunity_document_promotion.py
+scripts/test_opportunity_document_promotion.py
 scripts/semantic_query_road_adapters.py
 scripts/test_semantic_road_adapters.py
 scripts/semantic_query_vehicle_adapters.py

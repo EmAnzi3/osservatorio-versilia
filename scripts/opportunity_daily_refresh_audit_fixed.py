@@ -22,6 +22,7 @@ from typing import Any
 import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
+import opportunity_document_promotion as document_promotion
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -188,6 +189,9 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     """
     result = _BASE_RUN_V04(today, **kwargs)
     audit_promotions.apply_complete_promotions(result, today)
+    previous_path = kwargs.get("previous_path")
+    previous = core._load(previous_path) if previous_path and previous_path.exists() else {}
+    document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
     _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
@@ -344,7 +348,14 @@ def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, A
         f"partnership correnti/a sportello: **{partners}** · partnership in arrivo: **{partner_upcoming}** · "
         f"evidenziate come nuove: **{counts.get('new', 0)}**."
     )
-    return text.replace(old, new, 1)
+    text = text.replace(old, new, 1)
+    promotion = result.get("documentPromotion") or {}
+    if promotion:
+        text += ("\n## Promozione documentale automatica\n\n"
+                 f"Nuove schede verificate: **{promotion.get('added', 0)}** · "
+                 f"schede riconfermate dal PDF: **{promotion.get('revalidated', 0)}**.\n"
+                 "I conteggi distinguono le schede pubblicabili dalle segnalazioni ancora in discovery.\n")
+    return text
 
 
 def main() -> int:

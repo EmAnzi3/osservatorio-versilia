@@ -64,6 +64,27 @@
         "spazi pubblici",
         "under 35"
       ]
+    },
+    {
+      "id": "anci-abruzzo-national-leads",
+      "label": "ANCI Abruzzo · Segnalazioni nazionali da verificare",
+      "publisher": "ANCI Abruzzo",
+      "territory": "Italia · da verificare per ogni avviso",
+      "urls": [
+        "https://www.anciabruzzo.it/feed/"
+      ],
+      "fetchTimeoutSeconds": 12,
+      "includeTerms": [
+        "MIM",
+        "edilizia scolastica",
+        "vulnerabilità sismica"
+      ],
+      "municipalTerms": [
+        "scolastic",
+        "vulnerabilità",
+        "enti locali",
+        "comun"
+      ]
     }
   ],
   "coverageRegistry": {
@@ -93,6 +114,19 @@
       "historicalReplay": false,
       "favicon": "",
       "note": "Segnalazioni editoriali da verificare sulle fonti primarie; il canale non attesta recupero ANCI nazionale/MIM e non presume applicabilità alla Toscana."
+    },
+    "anci-abruzzo-national-leads": {
+      "label": "ANCI Abruzzo · Segnalazioni nazionali da verificare",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 65,
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": false,
+      "favicon": "",
+      "note": "Segnalazioni regionali; la promozione richiede il PDF ministeriale completo e ammissibilità nazionale. Non attesta recupero del trasporto MIM."
     }
   },
   "verifiedEntries": [
