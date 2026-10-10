@@ -18,6 +18,7 @@ import semantic_query_bathing_adapters as bathing
 import semantic_query_maritime_adapters as maritime
 import semantic_query_extractive_adapters as extractive
 import semantic_query_climate_adapters as climate
+import semantic_query_library_adapters as library
 
 
 def compact(result):
@@ -48,7 +49,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
         elif key in business.KEYS and key!='microUnits':years=business.available_periods(engine,key,dimension,row)
         if operation in ('absolute_change', 'relative_change', 'percentage_points') and years:
             selector['periods'] = [str(years[0]), str(years[-1])]
-    if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:query['allowPartial']=True
+    if key in (*library.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:query['allowPartial']=True
     if operation == 'benchmark_gap':
         selector['towns'] = [sorted(engine.codes)[0]]
         query['benchmark'] = scope

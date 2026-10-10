@@ -17,6 +17,7 @@ import semantic_query_coast_adapters as coast
 import semantic_query_bathing_adapters as bathing
 import semantic_query_maritime_adapters as maritime
 import semantic_query_extractive_adapters as extractive
+import semantic_query_library_adapters as library
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -40,7 +41,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
             selector={"metric":item["metric"],"dimension":item["engine"]["dimensions"][0]}
             query = {"operation": "lookup" if item["metric"] == "drinkingWaterQuality" else "compare", "selectors": [selector]}
             coastal = item["metric"] in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS)
-            if coastal or item["metric"]==extractive.KEYS[1]:
+            is_library = item["metric"] in library.KEYS
+            if coastal or is_library or item["metric"]==extractive.KEYS[1]:
                 refusal = query_engine.query(query)
                 assert refusal["status"] == "not_computable" and "partial_coverage_requires_opt_in" in refusal["reasons"], refusal
                 query["allowPartial"] = True
@@ -48,6 +50,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
             assert result["status"] == "computed", result
             if query["operation"] == "lookup":
                 assert result["interpretationLevel"] == "source_lookup" and result["coverage"]["usable"] == 70, result
+            if is_library:
+                assert result["coverage"]["usable"] == 5 and {x["observation"]["geography"] for x in result["excluded"]} == {"046018", "046030"}, result
             if coastal:
                 assert result["coverage"]["usable"] == 4 and {x["observation"]["geography"] for x in result["excluded"]} == set(coast.NA), result
             if 'weighted_ratio' in item['engine']['operations']:
@@ -57,7 +61,7 @@ def _build_assertions_from_dist_catalog(dist) -> None:
             if 'benchmark_gap' in item['engine']['operations']:
                 for scope in item['engine']['benchmarkScopes']:
                     result = query_engine.query({'operation':'benchmark_gap','benchmark':scope,
-                        'selectors':[dict(selector,towns=[coast.COASTAL[0] if coastal else '046018'])]})
+                        'selectors':[dict(selector,towns=[coast.COASTAL[0] if coastal else ('046005' if is_library else '046018')])]})
                     assert result['status']=='computed', result
     age_coverage=next(x for x in query_coverage if x['metric']=='ageDistribution')
     for dimension in age_coverage['engine']['dimensions']:
@@ -99,6 +103,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     classification_regressions(catalog_path)
     from test_semantic_water_quality_adapters import regressions as water_quality_regressions
     water_quality_regressions(catalog_path)
+    from test_semantic_library_adapters import regressions as library_regressions
+    library_regressions(catalog_path)
     from test_semantic_regional_adapters import regressions as regional_regressions
     regional_regressions(catalog_path)
     from test_semantic_tourism_adapters import regressions as tourism_regressions
