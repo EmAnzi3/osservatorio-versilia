@@ -39688,6 +39688,2882 @@
         ]
       },
       "reference": "Snapshot nativi Ministero Salute/Regione Toscana 31 dicembre 2025, POSAS 1 gennaio 2026; conteggi e valori comunali trascritti indipendentemente. Metodo docs/A6_HEALTH_FACILITIES_ADAPTERS.md."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046005",
+      "question": "Qual è il dato FTTH del Comune 046005 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 91.3
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046013",
+      "question": "Qual è il dato FTTH del Comune 046013 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046018",
+      "question": "Qual è il dato FTTH del Comune 046018 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 47.0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046024",
+      "question": "Qual è il dato FTTH del Comune 046024 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 59.3
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046028",
+      "question": "Qual è il dato FTTH del Comune 046028 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.7
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046030",
+      "question": "Qual è il dato FTTH del Comune 046030 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 87.9
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_046033",
+      "question": "Qual è il dato FTTH del Comune 046033 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 94.8
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_rank",
+      "question": "Quale Comune presenta il valore FTTH più alto?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_series_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_absolute_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_relative_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_percentage_points_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_trend_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_weighted_ratio_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_rounded_percentages_not_native_pooling"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_anomaly_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_2026_refused",
+      "question": "Il dato FTTH descrive il 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_reference_date_not_frozen"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_dimension_refused",
+      "question": "È disponibile la copertura FTTH per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_pair_0_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_pair_1_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "ftthCoverageDesi"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046005",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              18074683896122,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046013",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -73225316103878,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046018",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -26225316103878,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046024",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -13925316103878,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046028",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -72525316103878,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046030",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              14674683896122,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_tuscany_046033",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              21574683896122,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046005",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              8400479225833,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046013",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -82899520774167,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046018",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -35899520774167,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046024",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -23599520774167,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046028",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -82199520774167,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046030",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              5000479225833,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_gap_italy_046033",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11900479225833,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverageDesi_scope_refused",
+      "question": "Il totale regionale può sostituire un riferimento Versilia non revisionato?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046005",
+      "question": "Qual è il dato FTTH del Comune 046005 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 80.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046013",
+      "question": "Qual è il dato FTTH del Comune 046013 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046018",
+      "question": "Qual è il dato FTTH del Comune 046018 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 34.3
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046024",
+      "question": "Qual è il dato FTTH del Comune 046024 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 44.2
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046028",
+      "question": "Qual è il dato FTTH del Comune 046028 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.1
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046030",
+      "question": "Qual è il dato FTTH del Comune 046030 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 77.4
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_046033",
+      "question": "Qual è il dato FTTH del Comune 046033 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 86.0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_rank",
+      "question": "Quale Comune presenta il valore FTTH più alto?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_series_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_absolute_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_relative_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_percentage_points_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_trend_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_weighted_ratio_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_rounded_percentages_not_native_pooling"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_anomaly_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_2026_refused",
+      "question": "Il dato FTTH descrive il 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_reference_date_not_frozen"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_dimension_refused",
+      "question": "È disponibile la copertura FTTH per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_pair_0_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_pair_1_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "ftthCoverage20m"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046005",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              15513145555601,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046013",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -64586854444399,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046018",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -30286854444399,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046024",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -20386854444399,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046028",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -64486854444399,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046030",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              12813145555601,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046033",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              21413145555601,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046005",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              5840399832598,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046013",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -74259600167402,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046018",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -39959600167402,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046024",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -30059600167402,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046028",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -74159600167402,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046030",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3140399832598,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_italy_046033",
+      "question": "Quanto dista la copertura FTTH comunale dal riferimento italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11740399832598,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_scope_refused",
+      "question": "Il totale regionale può sostituire un riferimento Versilia non revisionato?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046005",
+      "question": "Qual è il dato FTTH del Comune 046005 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 11978
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046013",
+      "question": "Qual è il dato FTTH del Comune 046013 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046013",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046018",
+      "question": "Qual è il dato FTTH del Comune 046018 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4219
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046024",
+      "question": "Qual è il dato FTTH del Comune 046024 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5546
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046028",
+      "question": "Qual è il dato FTTH del Comune 046028 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 35
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046030",
+      "question": "Qual è il dato FTTH del Comune 046030 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1009
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_046033",
+      "question": "Qual è il dato FTTH del Comune 046033 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 23734
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_rank",
+      "question": "Quale Comune presenta il valore FTTH più alto?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_series_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_absolute_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_relative_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_percentage_points_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_trend_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_weighted_ratio_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_rounded_percentages_not_native_pooling"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_anomaly_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_2026_refused",
+      "question": "Il dato FTTH descrive il 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_reference_date_not_frozen"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_dimension_refused",
+      "question": "È disponibile la copertura FTTH per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_pair_0_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_pair_1_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_partial_refused",
+      "question": "Si può confrontare il totale delle famiglie FTTH senza accettare copertura parziale?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_benchmark_refused",
+      "question": "Quante famiglie FTTH mancano rispetto alla Toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_absolute_benchmarks_incomplete"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046005",
+      "question": "Qual è il dato FTTH del Comune 046005 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1141
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046013",
+      "question": "Qual è il dato FTTH del Comune 046013 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046013",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046018",
+      "question": "Qual è il dato FTTH del Comune 046018 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4763
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046024",
+      "question": "Qual è il dato FTTH del Comune 046024 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3807
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046028",
+      "question": "Qual è il dato FTTH del Comune 046028 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5033
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046030",
+      "question": "Qual è il dato FTTH del Comune 046030 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 139
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_046033",
+      "question": "Qual è il dato FTTH del Comune 046033 al 31 dicembre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1305
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-12-31"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_rank",
+      "question": "Quale Comune presenta il valore FTTH più alto?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046028"
+          }
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_series_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_absolute_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_relative_change_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_percentage_points_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_trend_refused",
+      "question": "È disponibile una lettura temporale omogenea FTTH?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_single_reference_no_history"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_weighted_ratio_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_rounded_percentages_not_native_pooling"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_anomaly_refused",
+      "question": "È ammessa questa analisi automatica FTTH?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_2026_refused",
+      "question": "Il dato FTTH descrive il 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_reference_date_not_frozen"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_dimension_refused",
+      "question": "È disponibile la copertura FTTH per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_pair_0_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_pair_1_refused",
+      "question": "La fibra può essere automaticamente correlata ai residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_partial_refused",
+      "question": "Si può confrontare il totale delle famiglie FTTH senza accettare copertura parziale?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_benchmark_refused",
+      "question": "Quante famiglie FTTH mancano rispetto alla Toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "connectivity_absolute_benchmarks_incomplete"
+        ]
+      },
+      "reference": "AGCOM CSV primario congelato, riferimento 31/12/2025; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     }
   ]
 }

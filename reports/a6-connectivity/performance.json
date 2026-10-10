@@ -1,0 +1,3081 @@
+{
+  "schemaVersion": 1,
+  "catalogSha256": "b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4",
+  "engineSha256": "12a8853131a17fc6f34b15b3e2fd771e053d990cf29c9dff8cb866a0ca7c7d25",
+  "adapterImplementationHashes": {
+    "adapterImplementationSha256": "988d1d32a0a754c0707a8c7b0acc4c3af1218bb7548ea824fd2ab6df71a1ff52",
+    "connectivityAdapterSha256": "c797ee93d0d98d1b0690946e8dd4b5406c4fa8df5ae3406b294bcf455036080f",
+    "healthFacilitiesAdapterSha256": "f2463c8ada7d9b5bbbd054a749f596ebd59bb851de6311ad9eba05f73fc94775",
+    "socialSpendingAdapterSha256": "7205b209c239477481a0f7d1dfa9cc07ac47c1fd4142bf9ba26e3db5934eb319",
+    "invalsiAdapterSha256": "6dbe8fc1284221ab133b32cefab318492cb2e3e05bfec63e9a1c7e06164f6ac4",
+    "libraryAdapterSha256": "30c03bda7df238ab08c2cf3b21e6da18905817da2cb4eb2c49f2967bcf0026f9",
+    "regionalAdapterSha256": "2a0239fcce20505dec2e0be89a2d6e2b358e4dde5e2b4333bd337c8caa6f5262",
+    "tourismAdapterSha256": "768f1f61e2cfec18b2f3e6a35c3989b0468f67cd6b594c59c7053193486bd4b8",
+    "rgsAdapterSha256": "b7bd7fb6a1ea5d3b5a94d6bb6a4d879939471bb6f46f95d07fcd44dfaa80d5af",
+    "mefAdapterSha256": "119bfba1c853790b4ee3aa74e3b88d16d6019abd597e4471512092f528fe7496",
+    "pabAdapterSha256": "fad0391a396cf4e9a6ee32e1ac965fe4a10f3684fccc5d0690efd7435452a1b8",
+    "waterQualityAdapterSha256": "26a2406f232176661c63411a454bb051466af782a1d1c9db4e4ecf734ca394c7",
+    "classificationAdapterSha256": "b1b480a0e46be5f6d87819a22120969ce1f80dc591c5622339ba4a4fac674a01",
+    "agricultureProfileAdapterSha256": "3b65fa2c02807e5454d7e59110ab6ba0990a7272ca11014ef625a6088a3f3b86",
+    "climateAdapterSha256": "62a385a9a49a9ef9e91dc3e25f6f77b2be3a6a259c38950fc493dcc0713c886f",
+    "remediationAdapterSha256": "303269e55e8d4f5a2275b45a96833df27fc755cd61b035feb38052883a673368",
+    "extractiveAdapterSha256": "4261110cd0fadd43b8691be3f2da2d40a23e98fcbe11942af311ddce98490972",
+    "maritimeAdapterSha256": "bced33dc09761daa64e54ca69c35822ba603bbaebc370c3f9923ccf1eb6dd3e2",
+    "bathingAdapterSha256": "562061699d57c58292c702e2598d883ee05348de649caad1c50f3719880285a4",
+    "coastAdapterSha256": "1ace0bf132cfa6200b65997dd397e9e3ad47ae5f083e1d4fae33f878572fea09",
+    "fragilityAdapterSha256": "b1b104bb69ebbb5dfecd9061955b6113b342f583746e43eb12986a719fefd76e",
+    "hazardAdapterSha256": "750c4833fcd93ebc03c7ff32b4c585861e35d231b545cf0aefc77453f3dfc8af",
+    "territoryAdapterSha256": "ad447b28f098f32d6d15169300b843df24ee8e1d3f9e06d028cc6f1aa91d9e97",
+    "soilAdapterSha256": "13f5119f1a87111b8f2e689f4901b3ec6c6900a4425fbc0de899bec363d3ed50",
+    "geographyAdapterSha256": "a06095ad1f650d060880fb66ae88bf37a71709a77e2a5d2992aee92e996e6d71",
+    "agricultureAdapterSha256": "558a510c662ff1c21d93d90d3ece81f19423bffee4aef2032640a74f424de5b2",
+    "environmentAdapterSha256": "49fc8bb55c5dc18efa32d5398a87cd6d471e90a9913d00a22a12e075e8d7c793",
+    "commutingAdapterSha256": "98385b92c620a8e08c0d3d70d8bb52c60d62929f4b8afce38a59a064ada634b6",
+    "demographySchoolAdapterSha256": "c4631a7c742db0286882c3489e681188a2da42744094727a218fb442b43a7bcf",
+    "distinctFinanceAdapterSha256": "3f8e6f31da9ee9d54ab2853d2130c50ea3a021bda48b255b81ed669a3937418c",
+    "financeAdapterSha256": "dfac1ca93eeb990105fc188bffc5d76d6c32bb0d021da832b11d65bec3b98879",
+    "censusAdapterSha256": "528c7e1e2e66c2490eeef4419dd08f2d05790fc13ca58bfdf34cb369495bd96e",
+    "businessAdapterSha256": "5b1f9c79a0558523cadc802e16060fb98558d0bac1a665e6a230b0ce161e6523",
+    "arsAdapterSha256": "6b13af3d84f9313adf9aff0b39f6338fc2a227981053ca7748d54d348b47ef6f",
+    "territorialAdapterSha256": "403f4143cf5557763af3b90f0b122afe33ee6db8d3270a3299e51e482576b465"
+  },
+  "questionManifestSha256": "b184891d6cebad697e6929335ed966da33046eccf10a968d340faac7e5b4b6b4",
+  "correctnessSuite": {
+    "questions": 1512,
+    "passed": 1512,
+    "computed": 740,
+    "refused": 772
+  },
+  "environment": {
+    "python": "3.12.14",
+    "implementation": "CPython",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "visibleCpuCount": 9,
+    "cpuQuota": "800000 100000",
+    "clock": "perf_counter_ns",
+    "clockResolutionSeconds": 1e-09
+  },
+  "engineConstruction": {
+    "samples": 5,
+    "minMs": 117.178202,
+    "medianMs": 182.321029,
+    "p95Ms": 184.51827160000002,
+    "maxMs": 184.894436
+  },
+  "workloads": [
+    {
+      "id": "connectivity_ftthCoverageDesi_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthCoverageDesi",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.839059,
+        "medianMs": 2.670494,
+        "p95Ms": 2.8324028,
+        "maxMs": 2.841813
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.758446,
+        "medianMs": 1.8312315,
+        "p95Ms": 2.2622214999999994,
+        "maxMs": 2.578234
+      }
+    },
+    {
+      "id": "connectivity_ftthCoverage20m_gap_tuscany_046018",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "ftthCoverage20m",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.563092,
+        "medianMs": 2.751276,
+        "p95Ms": 2.8109582,
+        "maxMs": 2.816885
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.775372,
+        "medianMs": 1.8255625,
+        "p95Ms": 2.0794406499999996,
+        "maxMs": 2.256058
+      }
+    },
+    {
+      "id": "connectivity_ftthReachedHouseholds_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "ftthReachedHouseholds"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.202027,
+        "medianMs": 4.178502,
+        "p95Ms": 5.807347,
+        "maxMs": 6.071542
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 3.245904,
+        "medianMs": 3.3068400000000002,
+        "p95Ms": 3.7871811999999996,
+        "maxMs": 3.967093
+      }
+    },
+    {
+      "id": "connectivity_ftthUnreachedHouseholds_partial_refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "ftthUnreachedHouseholds"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.868503,
+        "medianMs": 3.00517,
+        "p95Ms": 4.6300626,
+        "maxMs": 4.766691
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 3.25013,
+        "medianMs": 3.3522545,
+        "p95Ms": 3.7123046499999997,
+        "maxMs": 3.886141
+      }
+    },
+    {
+      "id": "health_pharmaciesPer1000_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 187.503085,
+        "medianMs": 263.236657,
+        "p95Ms": 285.0074576,
+        "maxMs": 287.329172
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 130.022007,
+        "medianMs": 166.937082,
+        "p95Ms": 198.86422454999996,
+        "maxMs": 216.374004
+      }
+    },
+    {
+      "id": "health_pharmacy_gap_tuscany_046005",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pharmaciesPer1000",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 72.974224,
+        "medianMs": 88.097444,
+        "p95Ms": 99.8215004,
+        "maxMs": 99.909372
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 49.719159,
+        "medianMs": 49.957432999999995,
+        "p95Ms": 50.70491105,
+        "maxMs": 50.860112
+      }
+    },
+    {
+      "id": "health_accreditedRsaCount_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "accreditedRsaCount"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 13.603971,
+        "medianMs": 17.481449,
+        "p95Ms": 20.0120556,
+        "maxMs": 20.283737
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 10.012986,
+        "medianMs": 14.296882499999999,
+        "p95Ms": 15.17585125,
+        "maxMs": 15.248785
+      }
+    },
+    {
+      "id": "social_spending_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.690485,
+        "medianMs": 3.04524,
+        "p95Ms": 4.0478608,
+        "maxMs": 4.288218
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.07179,
+        "medianMs": 2.253424,
+        "p95Ms": 2.54845725,
+        "maxMs": 2.597694
+      }
+    },
+    {
+      "id": "social_area_addictions",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "socialSpendingByUserArea",
+            "dimension": "part:addictions"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.922685,
+        "medianMs": 3.55445,
+        "p95Ms": 3.7323624,
+        "maxMs": 3.734041
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.930837,
+        "medianMs": 2.2060425,
+        "p95Ms": 2.6045252,
+        "maxMs": 2.757626
+      }
+    },
+    {
+      "id": "social_socialSpendingPerResident_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "socialSpendingPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.97981,
+        "medianMs": 1.021803,
+        "p95Ms": 1.0292308000000001,
+        "maxMs": 1.029425
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.916615,
+        "medianMs": 0.9289080000000001,
+        "p95Ms": 1.1814952999999995,
+        "maxMs": 1.364882
+      }
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-italiano_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 15.677564,
+        "medianMs": 18.064819,
+        "p95Ms": 25.066882999999997,
+        "maxMs": 26.334542
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 14.124096,
+        "medianMs": 14.4795465,
+        "p95Ms": 18.601017249999995,
+        "maxMs": 20.96473
+      }
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_level_1",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 7.920905,
+        "medianMs": 10.805834,
+        "p95Ms": 12.517411000000001,
+        "maxMs": 12.613504
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 5.755034,
+        "medianMs": 7.884716,
+        "p95Ms": 8.56358655,
+        "maxMs": 8.81727
+      }
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 22.866283,
+        "medianMs": 23.139065,
+        "p95Ms": 27.8561222,
+        "maxMs": 28.950423
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 19.701312,
+        "medianMs": 19.972967,
+        "p95Ms": 20.39396975,
+        "maxMs": 20.604185
+      }
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.985819,
+        "medianMs": 1.271601,
+        "p95Ms": 1.2862088,
+        "maxMs": 1.287024
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.620116,
+        "medianMs": 0.669211,
+        "p95Ms": 1.0102086499999996,
+        "maxMs": 1.139351
+      }
+    },
+    {
+      "id": "library_libraryLoansPerResident_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.897076,
+        "medianMs": 3.793009,
+        "p95Ms": 3.9832875999999997,
+        "maxMs": 4.005952
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.296058,
+        "medianMs": 2.359309,
+        "p95Ms": 2.95405395,
+        "maxMs": 3.022386
+      }
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 8.366119,
+        "medianMs": 8.780494,
+        "p95Ms": 15.8141954,
+        "maxMs": 17.298627
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 6.985453,
+        "medianMs": 7.9033595,
+        "p95Ms": 10.091217449999998,
+        "maxMs": 10.54506
+      }
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_pooling_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.940691,
+        "medianMs": 1.262327,
+        "p95Ms": 1.3444614000000001,
+        "maxMs": 1.359234
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.614709,
+        "medianMs": 0.7431425,
+        "p95Ms": 1.00514225,
+        "maxMs": 1.006391
+      }
+    },
+    {
+      "id": "regional_emsResponseTimeP75_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.7076,
+        "medianMs": 1.843265,
+        "p95Ms": 2.0550226,
+        "maxMs": 2.092912
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.120283,
+        "medianMs": 1.3528185000000001,
+        "p95Ms": 1.72135475,
+        "maxMs": 1.755422
+      }
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.444412,
+        "medianMs": 1.499505,
+        "p95Ms": 1.951187,
+        "maxMs": 2.04603
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.932388,
+        "medianMs": 1.0151035,
+        "p95Ms": 1.3731824999999998,
+        "maxMs": 1.465464
+      }
+    },
+    {
+      "id": "regional_youthOtherStatus_pooling_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.90733,
+        "medianMs": 1.261265,
+        "p95Ms": 1.3032824,
+        "maxMs": 1.305131
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.634399,
+        "medianMs": 0.691049,
+        "p95Ms": 0.9525333999999998,
+        "maxMs": 1.03225
+      }
+    },
+    {
+      "id": "tourism_foreignTourismShare_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "foreignTourismShare",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.325373,
+        "medianMs": 2.625086,
+        "p95Ms": 5.360213399999999,
+        "maxMs": 5.992127
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.625476,
+        "medianMs": 1.7732685,
+        "p95Ms": 2.10709115,
+        "maxMs": 2.16458
+      }
+    },
+    {
+      "id": "tourism_tourismBeds_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "tourismBeds",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 184.464154,
+        "medianMs": 236.764844,
+        "p95Ms": 335.21260859999995,
+        "maxMs": 359.50282
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 96.71095,
+        "medianMs": 135.869035,
+        "p95Ms": 156.9001479,
+        "maxMs": 158.268921
+      }
+    },
+    {
+      "id": "tourism_tourismBedsPer1000_history_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "tourismBedsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.937416,
+        "medianMs": 0.964577,
+        "p95Ms": 1.1020484000000002,
+        "maxMs": 1.117598
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.625485,
+        "medianMs": 0.677739,
+        "p95Ms": 0.9002704999999999,
+        "maxMs": 0.980681
+      }
+    },
+    {
+      "id": "rgs_municipalStaffAgeStructure_age_age55plus_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffAgeStructure",
+            "dimension": "age:age55plus"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.63554,
+        "medianMs": 1.762092,
+        "p95Ms": 2.0586963999999996,
+        "maxMs": 2.127194
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.159622,
+        "medianMs": 1.3583525,
+        "p95Ms": 1.7768894499999996,
+        "maxMs": 1.922464
+      }
+    },
+    {
+      "id": "rgs_training_total_versilia",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.449028,
+        "medianMs": 1.56261,
+        "p95Ms": 1.8068696,
+        "maxMs": 1.856004
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.869604,
+        "medianMs": 0.9012215,
+        "p95Ms": 1.2704471499999996,
+        "maxMs": 1.417171
+      }
+    },
+    {
+      "id": "rgs_training_pooling_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalStaffTraining",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.979469,
+        "medianMs": 1.101504,
+        "p95Ms": 1.3040782,
+        "maxMs": 1.305823
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.611323,
+        "medianMs": 0.6616045,
+        "p95Ms": 0.9534907499999999,
+        "maxMs": 0.993741
+      }
+    },
+    {
+      "id": "mef_incomeSourceProfile_source_employment_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "incomeSourceProfile",
+            "dimension": "source:employment"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.615151,
+        "medianMs": 3.034193,
+        "p95Ms": 3.6921274,
+        "maxMs": 3.765999
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.901222,
+        "medianMs": 2.1574595,
+        "p95Ms": 2.88086605,
+        "maxMs": 3.021244
+      }
+    },
+    {
+      "id": "mef_taxpayersAdultPopulationRate_total_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "taxpayersAdultPopulationRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 8.835277,
+        "medianMs": 10.204726,
+        "p95Ms": 19.864624999999997,
+        "maxMs": 22.149671
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 7.152815,
+        "medianMs": 7.490605,
+        "p95Ms": 8.3898736,
+        "maxMs": 8.469169
+      }
+    },
+    {
+      "id": "mef_incomeSourceProfile_pair_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "incomeSourceProfile"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.91359,
+        "medianMs": 2.248116,
+        "p95Ms": 5.0996842,
+        "maxMs": 5.758289
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.764696,
+        "medianMs": 0.7842645,
+        "p95Ms": 1.0799795,
+        "maxMs": 1.085951
+      }
+    },
+    {
+      "id": "water_quality_case_rosse_5",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5",
+            "towns": [
+              "046018"
+            ],
+            "localities": [
+              "28A02K01/0"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.511074,
+        "medianMs": 2.732178,
+        "p95Ms": 2.9283362,
+        "maxMs": 2.95858
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.47653,
+        "medianMs": 1.572651,
+        "p95Ms": 1.9388041999999999,
+        "maxMs": 1.955123
+      }
+    },
+    {
+      "id": "water_quality_localities_046030",
+      "query": {
+        "operation": "lookup",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:7",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.089808,
+        "medianMs": 4.383782,
+        "p95Ms": 4.6288026,
+        "maxMs": 4.6338
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.194245,
+        "medianMs": 3.2199995,
+        "p95Ms": 3.8863660499999995,
+        "maxMs": 4.09824
+      }
+    },
+    {
+      "id": "water_quality_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "drinkingWaterQuality",
+            "dimension": "parameter:5"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.829473,
+        "medianMs": 0.924937,
+        "p95Ms": 1.0959354,
+        "maxMs": 1.098269
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.610512,
+        "medianMs": 0.7001875,
+        "p95Ms": 0.9969396999999995,
+        "maxMs": 1.182877
+      }
+    },
+    {
+      "id": "classification_part_coastalZone_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "part:coastalZone",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.50301,
+        "medianMs": 2.25701,
+        "p95Ms": 2.4854302,
+        "maxMs": 2.523061
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.607038,
+        "medianMs": 1.6692515,
+        "p95Ms": 1.9383189999999995,
+        "maxMs": 2.101966
+      }
+    },
+    {
+      "id": "classification_total_rank_refused",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "territorialClassification",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.798817,
+        "medianMs": 0.825537,
+        "p95Ms": 0.9324252,
+        "maxMs": 0.946871
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.647097,
+        "medianMs": 0.872223,
+        "p95Ms": 1.0529637,
+        "maxMs": 1.063266
+      }
+    },
+    {
+      "id": "agriculture_profiles_female_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "agriculturalRenewalAndLeadership",
+            "dimension": "part:femaleHolders"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.301266,
+        "medianMs": 2.683944,
+        "p95Ms": 3.107628,
+        "maxMs": 3.128275
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.527367,
+        "medianMs": 1.6077585,
+        "p95Ms": 2.0922621999999995,
+        "maxMs": 2.352364
+      }
+    },
+    {
+      "id": "agriculture_profiles_organic_series",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.515345,
+        "medianMs": 2.717175,
+        "p95Ms": 3.3275083999999997,
+        "maxMs": 3.473547
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.754922,
+        "medianMs": 2.8908820000000004,
+        "p95Ms": 3.3380466499999994,
+        "maxMs": 3.628001
+      }
+    },
+    {
+      "id": "agriculture_profiles_organic_pooling_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "organicAgriculturalAreaShare",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.849603,
+        "medianMs": 0.961502,
+        "p95Ms": 1.0307714,
+        "maxMs": 1.044358
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.626246,
+        "medianMs": 0.6450940000000001,
+        "p95Ms": 0.82032555,
+        "maxMs": 0.850395
+      }
+    },
+    {
+      "id": "climate_temperature_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "climateTemperatureTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.808001,
+        "medianMs": 1.962645,
+        "p95Ms": 2.5949861999999997,
+        "maxMs": 2.683614
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.315618,
+        "medianMs": 1.4745425,
+        "p95Ms": 1.9752664500000001,
+        "maxMs": 2.022705
+      }
+    },
+    {
+      "id": "climate_tmin_annual_trend",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "climateTminTrend",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.268047,
+        "medianMs": 3.388118,
+        "p95Ms": 3.6958896,
+        "maxMs": 3.738468
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.615391,
+        "medianMs": 2.91256,
+        "p95Ms": 3.3623808499999996,
+        "maxMs": 3.504494
+      }
+    },
+    {
+      "id": "climate_precipitation_pooling_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "climatePrecipitationTrend50y",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.934081,
+        "medianMs": 1.00671,
+        "p95Ms": 1.0855622,
+        "maxMs": 1.101885
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.631034,
+        "medianMs": 0.805277,
+        "p95Ms": 1.0046079499999998,
+        "maxMs": 1.010606
+      }
+    },
+    {
+      "id": "pab_pabProgrammedInterventions",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 17.924247,
+        "medianMs": 19.284041,
+        "p95Ms": 30.3145298,
+        "maxMs": 30.618498
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 5.994065,
+        "medianMs": 6.2552745000000005,
+        "p95Ms": 8.0587883,
+        "maxMs": 8.388182
+      }
+    },
+    {
+      "id": "pab_pabInterventionsCompleted_share_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pabInterventionsCompleted",
+            "dimension": "share:operational"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 18.493026,
+        "medianMs": 19.752869,
+        "p95Ms": 27.7390354,
+        "maxMs": 28.556919
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 5.615803,
+        "medianMs": 5.8636775,
+        "p95Ms": 6.517975099999999,
+        "maxMs": 6.703646
+      }
+    },
+    {
+      "id": "pab_approved_operational_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pabProgrammedInterventions"
+          },
+          {
+            "metric": "pabInterventionsCompleted"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "descriptive"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.832427,
+        "medianMs": 0.906189,
+        "p95Ms": 1.0055542,
+        "maxMs": 1.02005
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.618064,
+        "medianMs": 0.6564215,
+        "p95Ms": 0.97888275,
+        "maxMs": 0.98631
+      }
+    },
+    {
+      "id": "remediation_total",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.518896,
+        "medianMs": 3.739198,
+        "p95Ms": 5.3311114,
+        "maxMs": 5.332696
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.268828,
+        "medianMs": 2.7005745,
+        "p95Ms": 4.193925449999999,
+        "maxMs": 4.52121
+      }
+    },
+    {
+      "id": "remediation_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "share:active"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.600709,
+        "medianMs": 3.92529,
+        "p95Ms": 5.768017,
+        "maxMs": 5.789265
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.133653,
+        "medianMs": 2.2235185,
+        "p95Ms": 3.9088348999999996,
+        "maxMs": 4.101596
+      }
+    },
+    {
+      "id": "remediation_history_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "remediationProceedings",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.92672,
+        "medianMs": 0.963486,
+        "p95Ms": 1.3214106,
+        "maxMs": 1.38315
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.63565,
+        "medianMs": 0.7754464999999999,
+        "p95Ms": 1.1390693499999998,
+        "maxMs": 1.290529
+      }
+    },
+    {
+      "id": "extractive_sites_active",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "extractiveSites",
+            "dimension": "view:state_active",
+            "towns": [
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.625437,
+        "medianMs": 3.148015,
+        "p95Ms": 3.7602602,
+        "maxMs": 3.875374
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.197419,
+        "medianMs": 2.2417715,
+        "p95Ms": 2.6238554499999993,
+        "maxMs": 2.836345
+      }
+    },
+    {
+      "id": "extractive_prc_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "extractivePlanning",
+            "dimension": "share:g"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.523913,
+        "medianMs": 3.599177,
+        "p95Ms": 5.7332414,
+        "maxMs": 6.066555
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.437021,
+        "medianMs": 2.6405085,
+        "p95Ms": 3.0360362499999995,
+        "maxMs": 3.180664
+      }
+    },
+    {
+      "id": "extractive_production_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "extractiveProduction",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.533007,
+        "medianMs": 3.78646,
+        "p95Ms": 3.8386104,
+        "maxMs": 3.850967
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.423491,
+        "medianMs": 2.712738,
+        "p95Ms": 3.4683528499999996,
+        "maxMs": 3.717836
+      }
+    },
+    {
+      "id": "maritime_tourist_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessions",
+            "dimension": "share:tourist"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.361267,
+        "medianMs": 2.398023,
+        "p95Ms": 3.2759989999999997,
+        "maxMs": 3.397713
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.647789,
+        "medianMs": 1.8403749999999999,
+        "p95Ms": 2.4542520499999996,
+        "maxMs": 2.663183
+      }
+    },
+    {
+      "id": "maritime_mean_due_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:mean"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.183739,
+        "medianMs": 2.306934,
+        "p95Ms": 3.2471686,
+        "maxMs": 3.397111
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.534598,
+        "medianMs": 1.5905475,
+        "p95Ms": 1.8797727499999994,
+        "maxMs": 2.095676
+      }
+    },
+    {
+      "id": "maritime_median_weighting_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "maritimeConcessionFeesDue",
+            "dimension": "view:median",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.908863,
+        "medianMs": 0.925387,
+        "p95Ms": 1.0692516,
+        "maxMs": 1.103968
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.618364,
+        "medianMs": 0.6510035000000001,
+        "p95Ms": 0.8641781999999997,
+        "maxMs": 0.987471
+      }
+    },
+    {
+      "id": "bathing_quality_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingWaterQuality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.561098,
+        "medianMs": 1.692967,
+        "p95Ms": 1.9407192,
+        "maxMs": 1.994863
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.029506,
+        "medianMs": 1.1601124999999999,
+        "p95Ms": 1.6533223499999996,
+        "maxMs": 1.80741
+      }
+    },
+    {
+      "id": "bathing_samples_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "bathingNonCompliantSamples",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.517973,
+        "medianMs": 1.968704,
+        "p95Ms": 2.0952740000000003,
+        "maxMs": 2.098571
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.953981,
+        "medianMs": 1.0550935,
+        "p95Ms": 1.3751841999999996,
+        "maxMs": 1.531093
+      }
+    },
+    {
+      "id": "bathing_blue_history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "blueFlagBeaches",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.176098,
+        "medianMs": 2.408057,
+        "p95Ms": 3.1216654,
+        "maxMs": 3.299544
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.314666,
+        "medianMs": 1.3485770000000001,
+        "p95Ms": 1.6945303499999995,
+        "maxMs": 1.863405
+      }
+    },
+    {
+      "id": "coast_protection_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "rigidDefenceProtectedCoast",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.362018,
+        "medianMs": 1.387656,
+        "p95Ms": 1.6392166,
+        "maxMs": 1.673088
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.880269,
+        "medianMs": 0.990461,
+        "p95Ms": 1.56075205,
+        "maxMs": 1.596802
+      }
+    },
+    {
+      "id": "coast_dynamics_erosion_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "shorelineDynamics",
+            "dimension": "share:erosion",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.428698,
+        "medianMs": 1.547919,
+        "p95Ms": 1.7810481999999999,
+        "maxMs": 1.806649
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.962133,
+        "medianMs": 1.165085,
+        "p95Ms": 1.44083125,
+        "maxMs": 1.469359
+      }
+    },
+    {
+      "id": "coast_mixed_universe_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "statisticalCoastlineLength"
+          },
+          {
+            "metric": "rigidDefenceProtectedCoast"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "descriptive",
+        "allowPartial": true
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.977456,
+        "medianMs": 1.044167,
+        "p95Ms": 1.218853,
+        "maxMs": 1.245411
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.642,
+        "medianMs": 0.675535,
+        "p95Ms": 1.1221058499999998,
+        "maxMs": 1.20472
+      }
+    },
+    {
+      "id": "ifc_municipalFragility_series",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalFragility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.633628,
+        "medianMs": 1.738096,
+        "p95Ms": 1.8402158,
+        "maxMs": 1.846349
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.457462,
+        "medianMs": 1.5010620000000001,
+        "p95Ms": 1.8868004499999993,
+        "maxMs": 2.154505
+      }
+    },
+    {
+      "id": "ifc_access_tuscany_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "essentialServicesAccessibility",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 8.742196,
+        "medianMs": 9.110212,
+        "p95Ms": 11.981188399999999,
+        "maxMs": 12.64426
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 5.14357,
+        "medianMs": 5.2443975,
+        "p95Ms": 6.46680315,
+        "maxMs": 6.804318
+      }
+    },
+    {
+      "id": "ifc_lowProductivityEmployment_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "lowProductivityEmployment",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 0.922374,
+        "medianMs": 1.288636,
+        "p95Ms": 1.7416424,
+        "maxMs": 1.821521
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.645145,
+        "medianMs": 0.6717949999999999,
+        "p95Ms": 0.9426464999999997,
+        "maxMs": 1.05885
+      }
+    },
+    {
+      "id": "hazard_flood_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "floodExposure",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.58209,
+        "medianMs": 1.729412,
+        "p95Ms": 2.1062250000000002,
+        "maxMs": 2.192391
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.356209,
+        "medianMs": 1.409309,
+        "p95Ms": 1.7596412999999995,
+        "maxMs": 1.955133
+      }
+    },
+    {
+      "id": "hazard_landslide_pooled_area",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landslideExposure",
+            "dimension": "areaPct:P3+P4",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.552626,
+        "medianMs": 1.626897,
+        "p95Ms": 2.2596700000000003,
+        "maxMs": 2.259694
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.96673,
+        "medianMs": 1.0485134999999999,
+        "p95Ms": 1.4057464499999996,
+        "maxMs": 1.548279
+      }
+    },
+    {
+      "id": "hazard_mixed_maps_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "floodExposure"
+          },
+          {
+            "metric": "landslideExposure"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Verifica riferimenti cartografici e censuari; esclusa causalità"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.669212,
+        "medianMs": 2.786239,
+        "p95Ms": 6.423182599999999,
+        "maxMs": 7.331575
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.000942,
+        "medianMs": 2.1355965,
+        "p95Ms": 2.82180125,
+        "maxMs": 2.823365
+      }
+    },
+    {
+      "id": "territory_protected_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.665065,
+        "medianMs": 1.70768,
+        "p95Ms": 2.0293115999999998,
+        "maxMs": 2.088996
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.868451,
+        "medianMs": 0.9089635,
+        "p95Ms": 1.2436069999999997,
+        "maxMs": 1.389659
+      }
+    },
+    {
+      "id": "territory_network_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "view:density",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.571995,
+        "medianMs": 1.885047,
+        "p95Ms": 2.1976876,
+        "maxMs": 2.19793
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.822743,
+        "medianMs": 0.959695,
+        "p95Ms": 1.3967889499999997,
+        "maxMs": 1.539425
+      }
+    },
+    {
+      "id": "territory_mixed_reference_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "protectedNaturalAreas"
+          },
+          {
+            "metric": "managedReticulumLength",
+            "dimension": "view:density"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Verifica di comparabilità delle fotografie territoriali, senza causalità"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.293294,
+        "medianMs": 2.53514,
+        "p95Ms": 3.1860724,
+        "maxMs": 3.321577
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.163648,
+        "medianMs": 2.2113705,
+        "p95Ms": 2.605383,
+        "maxMs": 2.811186
+      }
+    },
+    {
+      "id": "soil_stock_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landUse",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.515129,
+        "medianMs": 1.630634,
+        "p95Ms": 1.7690944,
+        "maxMs": 1.769573
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.791636,
+        "medianMs": 0.8488519999999999,
+        "p95Ms": 1.2726692999999998,
+        "maxMs": 1.349028
+      }
+    },
+    {
+      "id": "soil_ucs_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "landCoverProfile",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.391342,
+        "medianMs": 1.444552,
+        "p95Ms": 1.715513,
+        "maxMs": 1.763784
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.851596,
+        "medianMs": 0.9385325,
+        "p95Ms": 1.6747236499999998,
+        "maxMs": 1.704956
+      }
+    },
+    {
+      "id": "soil_mixed_edition_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "landUse"
+          },
+          {
+            "metric": "landCoverProfile"
+          }
+        ],
+        "axis": "municipalities",
+        "purpose": "Test comparabilità di stock ISPRA e copertura UCS; esclusa ogni lettura causale",
+        "method": "spearman"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.364892,
+        "medianMs": 2.426265,
+        "p95Ms": 2.8938414,
+        "maxMs": 3.000262
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 2.0391,
+        "medianMs": 2.1234725,
+        "p95Ms": 2.6152026999999998,
+        "maxMs": 2.776885
+      }
+    },
+    {
+      "id": "geography_density_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "populationDensity",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.525565,
+        "medianMs": 3.169798,
+        "p95Ms": 6.541162199999999,
+        "maxMs": 7.137611
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.098329,
+        "medianMs": 1.187789,
+        "p95Ms": 1.6244331499999995,
+        "maxMs": 1.830845
+      }
+    },
+    {
+      "id": "geography_forest_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "forestCoverIndex",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.649551,
+        "medianMs": 1.821421,
+        "p95Ms": 1.9132666,
+        "maxMs": 1.931268
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.981663,
+        "medianMs": 1.1815595,
+        "p95Ms": 1.458869,
+        "maxMs": 1.485734
+      }
+    },
+    {
+      "id": "geography_mixed_reference",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "altitudeProfile"
+          },
+          {
+            "metric": "forestCoverIndex"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Review frozen references"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.795161,
+        "medianMs": 1.901722,
+        "p95Ms": 2.187266,
+        "maxMs": 2.223088
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.417191,
+        "medianMs": 1.6865725,
+        "p95Ms": 1.77961035,
+        "maxMs": 1.793559
+      }
+    },
+    {
+      "id": "population_current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.205091,
+        "medianMs": 2.446936,
+        "p95Ms": 6.164333599999999,
+        "maxMs": 7.0834
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.845477,
+        "medianMs": 1.017602,
+        "p95Ms": 1.2336538,
+        "maxMs": 1.268446
+      }
+    },
+    {
+      "id": "female_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "femaleEmploymentRate",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.50934,
+        "medianMs": 1.623483,
+        "p95Ms": 1.6437072,
+        "maxMs": 1.645446
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.97964,
+        "medianMs": 1.022299,
+        "p95Ms": 1.4616733499999996,
+        "maxMs": 1.577052
+      }
+    },
+    {
+      "id": "ars_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "elderlyHomeCare",
+            "dimension": "sex:total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.436602,
+        "medianMs": 3.874853,
+        "p95Ms": 5.886195799999999,
+        "maxMs": 6.384815
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.796003,
+        "medianMs": 0.8364085,
+        "p95Ms": 1.1324460499999998,
+        "maxMs": 1.296539
+      }
+    },
+    {
+      "id": "aligned_association",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.885679,
+        "medianMs": 3.035204,
+        "p95Ms": 5.4384352,
+        "maxMs": 5.998281
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.539105,
+        "medianMs": 1.5921854999999998,
+        "p95Ms": 1.9793306999999998,
+        "maxMs": 2.150148
+      }
+    },
+    {
+      "id": "mismatched_association",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Technical seven-town descriptive example, stock and fiscal flow retained; no causal interpretation"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.487587,
+        "medianMs": 2.809594,
+        "p95Ms": 5.2687208,
+        "maxMs": 5.572087
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.798898,
+        "medianMs": 1.9069555,
+        "p95Ms": 2.17036465,
+        "maxMs": 2.35015
+      }
+    },
+    {
+      "id": "ars_hypertension_age",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hypertensionPrevalence",
+            "dimension": "age:65-84|total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.651326,
+        "medianMs": 3.916226,
+        "p95Ms": 7.2114116,
+        "maxMs": 7.688955
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.873309,
+        "medianMs": 1.0725449999999999,
+        "p95Ms": 1.6963576999999999,
+        "maxMs": 1.825568
+      }
+    },
+    {
+      "id": "ars_mortality_window_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "mortalityAll",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.423792,
+        "medianMs": 3.569081,
+        "p95Ms": 7.710603399999998,
+        "maxMs": 8.643837
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.846909,
+        "medianMs": 0.9776769999999999,
+        "p95Ms": 1.2776884999999998,
+        "maxMs": 1.3967
+      }
+    },
+    {
+      "id": "business_frame_industry_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "turnoverPerPersonEmployed",
+            "dimension": "sector:industry"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.004508,
+        "medianMs": 2.209568,
+        "p95Ms": 2.3315638,
+        "maxMs": 2.33691
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.021293,
+        "medianMs": 1.0996665,
+        "p95Ms": 1.4883110999999996,
+        "maxMs": 1.682532
+      }
+    },
+    {
+      "id": "business_endpoint_refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "localUnitsChange",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.027873,
+        "medianMs": 1.11851,
+        "p95Ms": 1.1705604,
+        "maxMs": 1.181515
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.6356,
+        "medianMs": 0.6651644999999999,
+        "p95Ms": 0.9475242999999995,
+        "maxMs": 1.145851
+      }
+    },
+    {
+      "id": "census_young_employment",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "employmentRate",
+            "dimension": "age:15-24|sex:total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.985048,
+        "medianMs": 2.075134,
+        "p95Ms": 3.9924613999999994,
+        "maxMs": 4.24973
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.826769,
+        "medianMs": 0.8820175,
+        "p95Ms": 1.4365166499999993,
+        "maxMs": 1.771066
+      }
+    },
+    {
+      "id": "census_diploma_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.003296,
+        "medianMs": 1.053561,
+        "p95Ms": 1.0828313999999999,
+        "maxMs": 1.085229
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.668921,
+        "medianMs": 0.8240295,
+        "p95Ms": 1.0647298499999998,
+        "maxMs": 1.182957
+      }
+    },
+    {
+      "id": "finance_cash_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "cashReceiptsPerResident",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.954052,
+        "medianMs": 2.035605,
+        "p95Ms": 2.4327126,
+        "maxMs": 2.527648
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.904657,
+        "medianMs": 1.0035910000000001,
+        "p95Ms": 1.4216879999999998,
+        "maxMs": 1.525935
+      }
+    },
+    {
+      "id": "finance_benchmark_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "currentCollectionCapacity",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.882363,
+        "medianMs": 2.094755,
+        "p95Ms": 2.36546,
+        "maxMs": 2.371894
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.969685,
+        "medianMs": 1.0333860000000001,
+        "p95Ms": 1.3645439499999996,
+        "maxMs": 1.507207
+      }
+    },
+    {
+      "id": "distinct_debt_weighted",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.451394,
+        "medianMs": 2.947562,
+        "p95Ms": 4.248035399999999,
+        "maxMs": 4.535066
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.074654,
+        "medianMs": 1.2468335,
+        "p95Ms": 1.5393621499999997,
+        "maxMs": 1.64168
+      }
+    },
+    {
+      "id": "distinct_debt_osl_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "financialDebtProfile",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.019229,
+        "medianMs": 1.054233,
+        "p95Ms": 1.1845228,
+        "maxMs": 1.186662
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.667227,
+        "medianMs": 0.9378215,
+        "p95Ms": 2.973845849999997,
+        "maxMs": 4.366977
+      }
+    },
+    {
+      "id": "demography_dependency",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "dependencyIndices",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 21.13745,
+        "medianMs": 24.50645,
+        "p95Ms": 30.4038582,
+        "maxMs": 31.810323
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.94652,
+        "medianMs": 1.2554815000000001,
+        "p95Ms": 1.5697614999999996,
+        "maxMs": 1.784245
+      }
+    },
+    {
+      "id": "school_class_size",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "studentsPerClass",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 18.113232,
+        "medianMs": 21.691337,
+        "p95Ms": 25.487522,
+        "maxMs": 25.935073
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.921492,
+        "medianMs": 0.9560740000000001,
+        "p95Ms": 1.42587075,
+        "maxMs": 1.460136
+      }
+    },
+    {
+      "id": "demography_aligned_events",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "naturalDemographicDynamics",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "totalResidentialMobility",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 21.135968,
+        "medianMs": 22.075688,
+        "p95Ms": 28.7407628,
+        "maxMs": 30.282755
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.771806,
+        "medianMs": 1.8897895,
+        "p95Ms": 2.4117484499999997,
+        "maxMs": 2.545245
+      }
+    },
+    {
+      "id": "school_calendar_year_refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "studentsPerClass",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.004758,
+        "medianMs": 1.055435,
+        "p95Ms": 1.2634666,
+        "maxMs": 1.289508
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.646907,
+        "medianMs": 0.7642045,
+        "p95Ms": 1.1709682499999996,
+        "maxMs": 1.339293
+      }
+    },
+    {
+      "id": "commuting_pooled_selfContainment",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "selfContainment"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 43.050502,
+        "medianMs": 46.927319,
+        "p95Ms": 58.494364000000004,
+        "maxMs": 60.180449
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.001933,
+        "medianMs": 1.1760465,
+        "p95Ms": 1.5434010999999994,
+        "maxMs": 1.73485
+      }
+    },
+    {
+      "id": "commuting_pooled_commuterBalanceRate",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "commuterBalanceRate"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 52.231916,
+        "medianMs": 58.531117,
+        "p95Ms": 62.015930999999995,
+        "maxMs": 62.215312
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.044397,
+        "medianMs": 1.2128269999999999,
+        "p95Ms": 1.7367462499999993,
+        "maxMs": 2.006591
+      }
+    },
+    {
+      "id": "commuting_hybrid_pair_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate"
+          },
+          {
+            "metric": "commuterBalanceRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Descrizione trasparente di sette comuni, componenti condivise esplicite, nessuna inferenza causale"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 47.67599,
+        "medianMs": 50.827476,
+        "p95Ms": 57.039778999999996,
+        "maxMs": 58.500712
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.107122,
+        "medianMs": 1.2660525,
+        "p95Ms": 1.7198669,
+        "maxMs": 1.782092
+      }
+    },
+    {
+      "id": "environment_water_pooled",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "waterNetworkLosses"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.171761,
+        "medianMs": 2.314967,
+        "p95Ms": 3.8131984,
+        "maxMs": 3.908334
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.919089,
+        "medianMs": 0.977672,
+        "p95Ms": 1.3357589999999995,
+        "maxMs": 1.532535
+      }
+    },
+    {
+      "id": "environment_rd_weighting_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "recycling"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 18.139202,
+        "medianMs": 20.771458,
+        "p95Ms": 23.8590202,
+        "maxMs": 24.004582
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.94617,
+        "medianMs": 1.2253660000000002,
+        "p95Ms": 1.33518915,
+        "maxMs": 1.371762
+      }
+    },
+    {
+      "id": "environment_cost_gap",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "wasteServiceCost",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.364451,
+        "medianMs": 1.391772,
+        "p95Ms": 1.4339968,
+        "maxMs": 1.437923
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.771856,
+        "medianMs": 0.9130245,
+        "p95Ms": 1.2017816499999998,
+        "maxMs": 1.309729
+      }
+    },
+    {
+      "id": "agriculture_pooled_size",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "averageAgriculturalFarmSize",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.573617,
+        "medianMs": 1.747019,
+        "p95Ms": 2.0715634,
+        "maxMs": 2.081074
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.990055,
+        "medianMs": 1.041328,
+        "p95Ms": 1.50964255,
+        "maxMs": 1.551664
+      }
+    },
+    {
+      "id": "agriculture_pooled_irrigated",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "irrigatedAgriculturalArea",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.604554,
+        "medianMs": 1.66163,
+        "p95Ms": 1.8324036000000001,
+        "maxMs": 1.869223
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 1.022104,
+        "medianMs": 1.240684,
+        "p95Ms": 1.53873595,
+        "maxMs": 1.556281
+      }
+    },
+    {
+      "id": "agriculture_mixed_scope_refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "agriculturalUsedArea"
+          },
+          {
+            "metric": "irrigatedAgriculturalArea"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Inspect scope compatibility"
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.564263,
+        "medianMs": 1.674369,
+        "p95Ms": 2.0197254,
+        "maxMs": 2.039241
+      },
+      "warmQuery": {
+        "samples": 10,
+        "minMs": 0.967061,
+        "medianMs": 1.053191,
+        "p95Ms": 1.4512003999999996,
+        "maxMs": 1.590443
+      }
+    }
+  ],
+  "pythonAllocationBytes": {
+    "retained": 36571345,
+    "peak": 38209777,
+    "scope": "one fresh engine plus 101 representative queries; tracemalloc, excludes native allocations"
+  },
+  "notes": [
+    "Local sequential microbenchmark; not a production concurrency or load test",
+    "Fresh engine means no application snapshot cache; operating-system filesystem cache is uncontrolled",
+    "Warm query includes normal provenance/output construction, not network acquisition",
+    "p95 uses linear interpolation at (n-1)*0.95; small samples are descriptive",
+    "No hardware-independent latency threshold or completeness claim; compare runs in equivalent environments"
+  ]
+}
