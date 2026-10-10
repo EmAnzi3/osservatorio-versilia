@@ -207,6 +207,11 @@
         "label": "publication and refresh status semantics",
         "script": "scripts/test_pages_live_status.py",
         "args": []
+      },
+      {
+        "label": "Radar automatic document promotion",
+        "script": "scripts/test_opportunity_document_promotion.py",
+        "args": []
       }
     ],
     "monitorRuntime": {

@@ -1,0 +1,340 @@
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+AVVISO PUBBLICO PER L'ACQUISIZIONE DI MANIFESTAZIONI DI INTERESSE 
+FINALIZZATE ALLA FORMAZIONE DELLA GRADUATORIA DEGLI EDIFICI SCOLASTICI DA 
+SOTTOPORRE A VERIFICA DI VULNERABILITÀ SISMICA (PROGRAMMA NAZIONALE DI 
+PREVENZIONE SISMICA) 
+ART. 1 – FINALITÀ DELL’AVVISO PUBBLICO 
+1. Con decreto del 31 luglio 2026 del Ministro per la Protezione civile e le Politiche del mare di concerto con il 
+Ministro dell’Economia e delle Finanze  - reso noto tramite il comunicato del Dipartimento Casa Italia della 
+Presidenza del Consiglio dei Ministri  pubblicato nella Gazzetta Ufficiale n. 206 del 5 settembre 2026 (di seguito 
+“Decreto”) - è stato approvato il “Programma di mitigazione strutturale della vulnerabilità sismica degli edifici 
+pubblici, ai sensi dell’articolo 1, comma 402, della legge 30 dicembre 2023, n. 213” (di seguito, “Programma”). 
+2. Il paragrafo 2.1.b.i. della Parte 2 del Programma prevede, quale prima linea di azione, il finanziamento delle 
+verifiche di vulnerabilità degli edifici pubblici strategici e rilevanti e, nella Tabella A5 dell’Appendice, assegna 
+a tal fine al Ministero dell’Istruzione e del Merito la somma di euro 11.545.920,00. 
+3. Il Ministero dell’Istruzione e del Merito, quale Amministrazione responsabile ai sensi del Programma, indice 
+la presente procedura pubblica nazionale ai fini della formazione di una graduatoria di edifici pubblici, adibiti 
+ad uso scolastico e censiti nel Sistema Nazionale dell’Anagrafe dell’Edilizia Scolastica, da sottoporre a verifiche 
+di vulnerabilità, intese in termini di “valutazione della sicurezza” così come definita nel capitolo 8 delle NTC 
+2018 e della relativa circolare C.S.LL.PP. n. 7 del 21 gennaio 2019.  
+Ai sensi dell’articolo 2, comma 2, lett. b), del Decreto, la suddetta graduatoria verrà trasmessa dal Ministero 
+dell’Istruzione e del Merito alla Cabina di coordinamento di cui all’articolo 1, comma 401, legge 30 dicembre 
+2023, n. 213, ai fini del finanzia mento delle verifiche di vulnerabilità degli edifici utilmente collocati, fino a 
+concorrenza della somma di cui al comma 2. 
+ART. 2 – SOGGETTI AMMESSI ALLA SELEZIONE E REQUISITI DI PARTECIPAZIONE 
+1. Tutti gli Enti locali possono presentare richiesta di finanziamento per la realizzazione delle verifiche di 
+vulnerabilità di edifici pubblici ad uso scolastico di propria competenza, per i quali non sia stata ancora effettuata 
+una verifica di adeguatezza sismica, ai sensi della O.P.C.M. n. 3274 del 2003 o successive norme tecniche.  
+2. Nel caso in cui la proprietà dell’edificio pubblico scolastico appartenga a un soggetto o Ente pubblico diverso 
+da quello che ne ha la gestione ai sensi della legge 11 gennaio 1996, n. 23, per proporre la candidatura è 
+necessario acquisire il nulla osta da parte dell’Ente proprietario prima dell’inoltro della candidatura. 
+3. Ciascun Ente può candidare al massimo n°3 edifici pubblici, adibiti ad uso scolastico e censiti nel Sistema 
+Nazionale dell’Anagrafe dell’Edilizia Scolastica  alla data di pubblicazione del presente Avviso, ognuno 
+identificato da un unico codice edificio, e deve essere finalizzata alla realizzazione delle attività di cui al comma 
+1, pena l’inammissibilità della candidatura.  
+Nel caso di plessi scolastici costituiti da più unità strutturali indipendenti ovvero giuntate, è possibile candidare 
+l’edificio scolastico con identificazione dei corpi di fabbrica oggetto di verifica, escludendo le unità strutturali 
+già verificate e  quelle su cui è stato già eseguito intervento di miglioramento/adeguamento . L’importo del 
+contributo è calcolato per ciascuna unità strutturale oggetto di verifica di vulnerabilità. 
+4. L’importo del contributo per le verifiche di vulnerabilità sismica degli edifici scolastici, comprensivi delle 
+indagini necessarie, non può eccedere quello determinato sulla base dei costi parametrici di cui all’allegato 2, 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+lettere a1), dell’Ordinanza del Presidente del Consiglio dei Ministri 8 luglio 2004, n. 3362, incrementati del 40 
+per cento a titolo di attualizzazione  (Tabella 1 ) e ulteriormente incrementati fino ad un massimo del 20% 
+(Tabella 2) se ricorrono le condizioni di cui alla Tabella 3. 
+Tabella 1 - Costo convenzionale O.P.C.M. 3362/2004 con incremento del 40%   
+VOLUME (MC) COSTO COSTO 
+MIN 
+COSTO MAX 
+≤ 10.000 volume * € 3,50 € 4.200,00 € 35.000,00 
+10.000 - 30.000 € 35.000,00 + (volume eccedente 10.000 mc) * € 2,52 € 35.000,00 € 85.400,00 
+30.000 - 60.000 € 85.400,00 + (volume eccedente 30.000 mc) * € 1,68 € 85.400,00 € 135.800,00 
+60.000 - 100.000 € 135.800,00 + (volume eccedente 60.000 mc) * € 0,84 € 135.800,00 € 169.400,00 
+> 100.000 € 169.400,00 + (volume eccedente 100.000 mc) * € 0,42 € 169.400,00 * 
+* il costo massimo nella classe >100.000 mc è determinato dal volume ecced ente 
+Tabella 2 - Costo convenzionale O.P.C.M. 3362/2004 con incremento del 40% ed eventuale incremento massimo del 20%  
+VOLUME (MC) COSTO COSTO MIN COSTO MAX 
+≤ 10.000 volume * € 4,20 € 5.040,00 € 42.000,00 
+10.000 - 30.000 € 42.000,00 + (volume eccedente 10.000 mc) * € 3,02 € 42.000,00 € 102.480,00 
+30.000 - 60.000 € 102.480,00 + (volume eccedente 30.000 mc) * € 2,01 € 102.480,00 € 162.960,00 
+60.000 - 100.000 € 162.960,00 + (volume eccedente 60.000 mc) * € 1,00 € 162.960,00 € 203.280,00 
+> 100.000 € 203.280,00 + (volume eccedente i 100.000 mc) * € 0,50 € 203.280,00  
+Tabella 3 - Condizioni per l’applicazione di un incremento ulteriore fino ad un massimo del 20%  
+CONDIZIONE INCREMENTO 
+Irreperibilità/mancanza degli elaborati progettuali strutturali 10% ed. muratura 
+15% edifici c.a. 
+Siano presenti importanti dissesti attribuibili a cedimenti delle fondazioni o altre condizioni 
+richiamate nel §8.3 NTC 2018 15% 
+Affidamento di incarico di verifica tecnica di edificio singolo di volumetria compresa tra 1000 
+e 5000 mc. L'unione di più edifici adiacenti e coevi, come potrebbe essere il caso di un 
+complesso scolastico composto da più corpi di fabbrica, in un unico affidamento ad un singolo 
+professionista non rientra in questa fattispecie 
+10% 
+Edifici a struttura mista come cemento armato e muratura oppure carp enteria metallica e 
+cemento armato ecc. 10% 
+Edifici beni del patrimonio culturale vincolato, soggetti a verifica LV3, per i quali il livello di 
+conoscenza raggiunto sia almeno LC2 10% 
+Edifici per i quali si intende raggiungere il livello di conoscenza LC3 10% 
+L’importo del contributo è determinato dal format di candidatura ed è pari al costo convenzionale indicato nella 
+Tabella 1, maggiorato della percentuale di incremento eventualmente ricorrente nei casi di cui alla Tabella 3.  
+5. Ciascuna unità strutturale candidata, a pena di inammissibilità, non deve essere destinataria di altro 
+finanziamento pubblico per medesima finalità (“Divieto di doppio finanziamento”).  
+6. Al termine delle attività di verifica degli edifici/unità strutturali che risulteranno beneficiari delle risorse per 
+l’effettuazione delle verifiche di vulnerabilità, è prevista la compilazione obbligatoria della “Scheda di sintesi 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+della verifica sismica di edifici strategici ai fini della protezione civile o rilevanti in caso di collasso a seguito 
+di evento sismico” (allegato 2 all’O.C.D.P.C. 978/2023). 
+7. Le verifiche di vulnerabilità dovranno essere affidate a soggetti qualificati nel rispetto delle disposizioni di 
+cui al decreto legislativo 31 marzo 2023, n. 36. 
+ART. 3 – MODALITÀ DI PARTECIPAZIONE E DOCUMENTAZIONE 
+1. Gli Enti locali possono presentare al massimo n°3 candidature corrispondenti a n°3 codici edificio, a pena di 
+inammissibilità, tramite il proprio legale rappresentante, utilizzando  esclusivamente il format di candidatura 
+predisposto dal Ministero dell’Istruzione e del Merito. 
+2. Il format di candidatura è costituito da un file in formato HTML, denominato 
+"Modulo_candidatura_VVS_2026_v1.00.html", allegato al presente Avviso e scaricabile dalla pagina dedicata, 
+al seguente indirizzo: https://www.istruzione.it/edilizia_scolastica/news.shtml. 
+I dati inseriti restano nella disponibilità dell' Ente fino alla trasmissione della candidatura. Le istruzioni per la 
+compilazione sono riportate nell'Allegato 1 al presente Avviso. 
+3. Al termine della compilazione di tutti i campi presenti, il format di candidatura genera i seguenti documenti: 
+a) il file dati della candidatura, in formato JSON ("01_[Ente]_[codice edificio]_Dati.json"); 
+b) la domanda di candidatura, in formato PDF, contenente i dati inseriti e le dichiarazioni rese ai sensi degli 
+articoli 46 e 47 del decreto del Presid ente della Repubblica 28 dicembre 2000, n. 445, nonché l'impronta 
+informatica (SHA-256) del file dati di cui alla lettera a) ("02_[Ente]_[codice edificio]_Domanda.pdf"); 
+c) la dichiarazione relativa al numero medio di occupanti dell'edificio, in formato PDF ("03_[Ente]_[codice 
+edificio]_Occupanti.pdf"); 
+d) nel caso di cui all'articolo 2, comma 2, il nulla osta dell'Ente proprietario, in formato PDF 
+("04_[Ente]_[codice edificio]_NullaOsta_modello.pdf").  
+4. La domanda di candidatura di cui al comma 3, lettera b), è firmata digitalm ente dal legale rappresentante 
+dell'Ente, in formato P7M. 
+La dichiarazione di cui al comma 3, lettera c), è firmata digitalm ente dal dirigente scolastico dell'istituzione 
+utilizzatrice dell'edificio, in formato P7M. 
+Il nulla osta di cui al comma 3, lettera d), è firmato digitalmente  dall'Ente proprietario, in formato P7M, 
+utilizzando esclusivamente il documento generato dal format.  
+Il file dati di cui al comma 3, lettera a), non deve essere firmato né modificato. I documenti di cui al comma 3, 
+lettere b), c) e d), sono firmati senza modificare i file generati dal format. 
+5. Ciascuna candidatura è trasmessa, a pena di esclusione, dall'indirizzo di posta elettronica certificata dell'Ente 
+all'indirizzo bandi.ediliziascolastica@postacert.istruzione.it, con un unico messaggio recante in allegato i 
+documenti di cui al comma 3, firmati ai sensi del comma 4, con indicazione del seguente oggetto: "VVS 2026 - 
+Candidatura - [denominazione Ente] - CF [codice fiscale] - edificio [codice edificio]" . Ciascuna candidatura 
+riguarda un solo codice edificio. In caso di più candidature del medesimo Ente  relative al medesimo codice 
+edificio è considerata l'ultima pervenuta entro il termine di cui al comma 6. 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+6. La trasmissione delle candidature è consentita, a pena di esclusione, dalle ore 1 4:00 del giorno 07 ottobre 
+2026 e fino alle ore 14:00 del giorno 14 ottobre 2026. A tal fine fanno fede la data e l'orario di invio del 
+messaggio attestati dal gestore di posta elettronica certificata del mittente, come risultanti dai dati di 
+certificazione del messaggio ricevuto dal Ministero e dalla ricevuta di accettazione rilasciata all'Ente. 
+Non verranno prese in considerazione le candidature trasmesse con modalità diverse rispetto a quella indicata, 
+nonché produzioni documentali tardive anche se di carattere meram ente integrativo rispetto a candidature già 
+trasmesse tempestivamente. 
+7. Le candidature che risultino incomplete o che contengano dati non conformi a quanto richiesto nel format 
+sono considerate inammissibili. Eventuali errori, omissioni o carenze nella compilazione restano a carico del 
+richiedente. Non sarà possibile richiedere integrazioni o correzioni successive tramite il soccorso istruttorio, al 
+fine di assicurare la trasmissione della graduatoria alla Cabina di coordinamento nel termine di cui all'articolo 
+2, comma 2, lettera b), del decreto di approvazione del Programma. 
+8. Fermo restando quanto previsto dai commi precedenti e dall’articolo 2, sono escluse le candidature: 
+a) presentate oltre il termine previsto dal comma 6; 
+b) presentate senza utilizzare il format di candidatura di cui al comma 2 oppure con documenti non 
+corrispondenti a quelli indicati al comma 3; 
+c) prive delle firme digitali di cui al comma 4, nel formato P7M; 
+d) relative a edifici ulteriori rispetto ai primi 3 candidati dal medesimo Ente, secondo l’ordine di trasmissione; 
+e) prive dei requisiti richiesti o contenenti dati incompleti, errati o non coerenti con quanto previsto dal 
+format come indicato al comma 7. 
+9. Il format di candidatura costituisce dichiarazione ai sensi degli articoli 46 e 47 del decreto del Presidente della 
+Repubblica 28 dicembre 2000, n. 445. 
+ART. 4 – VALUTAZIONE DELLE CANDIDATURE 
+1. La valutazione delle candidature avverrà sulla base del criterio del maggiore “indice di rischio” dell’edificio 
+scolastico ovvero di ciascuna unità strutturale di cui è composto . La graduatoria riporta una riga per ciascuna 
+unità strutturale candidata. 
+L’“indice di rischio”  è determinat o in funzione della zona sismica del comune di appartenenza, della 
+vulnerabilità dell’edificio e dell’esposizione in termini di numero di occupanti, ottenuto sommando i tre addendi 
+riportati nel seguito: 
+- termine di “zona sismica”: calcolato attribuendo un punteggio decrescente da 10 (Zona 1) a 0 (Zona 4), 
+a seconda della zona sismica in cui è ubicato l’edificio scolastico, secondo l’aggiornamento al 2024 
+della mappa di classificazione sismica, come riportato nella tabella che segue: 
+ZONASISMICA PUNTEGGIO 
+1 10 
+2B 6 
+2A-2B 6 
+2A 6 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+2 5 
+2A-3A-3B 3 
+3S 2 
+3B 2 
+3A 2 
+3 1 
+4 0 
+- termine “vulnerabilità”, calcolato attribuendo un punteggio da 0 a 10 ottenuto incrociando tipologia 
+costruttiva e anno di progettazione, come riportato nella tabella che segue: 
+ANNO_PROG COD_MAT_STRUT PUNTEGGIO 
+< 1919 
+A (Cemento Armato), G 
+(Prefabbricato),  
+H (altro) 
+10 
+1920-1945 8 
+1946-1961 6 
+1962-1971 5 
+1972-1981 3 
+1982-1984 2 
+> 1984 0 
+< 1919 
+B (acciaio), C (acciaio-
+calcestruzzo), E (legno) 
+9 
+1920-1945 8 
+1946-1961 6 
+1962-1971 4 
+1972-1981 2 
+1982-1984 1 
+> 1984 0 
+< 1919 
+D (muratura), F (mista 
+muratura e cemento armato) 
+10 
+1920-1945 9 
+1946-1961 7 
+1962-1971 6 
+1972-1981 4 
+1982-1984 3 
+> 1984 0 
+Nel caso di plessi scolastici costituiti da più unità strutturali indipendenti ovvero giuntate, progettati in 
+epoche differenti, si determina il punteggio per ciascuna unità strutturale oggetto di candidatura.  
+- termine “esposizione”, calcolato attribuendo un punteggio da 0 a 10 proporzionale al numero di 
+occupanti l’edificio, intesi come alunni, personale doc ente e non docente e altre persone mediam ente 
+presenti durante la fruizione ordinaria dell’edificio.  Il punteggio è determinato secondo la segu ente 
+relazione: 
+𝐸 = min (10, 𝑁
+1000 × 10) 
+dove “E” rappresenta il punteggio di esposizione e  “N” il numero di occupanti dell’edificio. Al 
+raggiungimento di 1.000 occupanti il punteggio assume il valore massimo di 10 e, per valori superiori, 
+viene mantenuto costante pari a 10. 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+2. Si precisa che a parità di punteggio prevale la candidatura relativa a edifici per i quali risultano già disponibili 
+rilievi e/o indagini;  in caso di persist ente parità, è data preferenza alla candidatura pervenuta prima 
+temporalmente. A tal proposito, faranno fede la data e l’orario di cui all’articolo 3, comma 6. 
+In caso di ulteriore parità tra unità strutturali della medesima candidatura, prevale l’ordine di inserimento in fase 
+di candidatura. 
+3. Le verifiche saranno ammesse a finanziamento, nei limiti delle risorse disponibili, secondo l’ordine 
+decrescente di punteggio nella graduatoria. 
+ART. 5 – APPROVAZIONE DELLA GRADUATORIA ED EROGAZIONE DEI CONTRIBUTI 
+1. Le graduatorie sono approvate con decreto del Ministero dell’Istruzione e del Merito e trasmesse alla Cabina 
+di coordinamento delle politiche attive per la riduzione della vulnerabilità sismica degli edifici pubblici, ai sensi 
+dell’articolo 2, comma 2, lettera b), del decreto di approvazione del Programma. 
+2. La graduatoria non impegna il Ministero a erogare il finanziamento delle verifiche, che è subordinato 
+all’adozione degli atti di impegno e pagamento delle risorse del Fondo di cui all’articolo 1, comma 400, della 
+legge 30 dicembre 2023, n. 213, da parte  del Dipartimento Casa Italia, ai sensi dell’articolo 3 del decreto di 
+approvazione del Programma. 
+3. Le modalità di erogazione, rendicontazione e monitoraggio del contributo, nonché i casi di revoca e le 
+modalità di recupero delle somme, sono definite con successive indicazioni operative della Direzione generale, 
+alle quali gli Enti beneficiari sono tenuti ad attenersi. 
+4. Le verifiche di vulnerabilità sismica, oggetto del presente finanziamento, dovranno essere completate entro 
+il 31 dicembre 2028.  
+ART. 6 – ALTRE INFORMAZIONI 
+1. L’invio della candidatura comporta l’accettazione integrale, incondizionata e senza riserve di tutte le regole, 
+i termini e le condizioni riportate nel presente Avviso. La trasmissione della candidatura non impegna il 
+Ministero dell’Istruzione e del Merito a dare seguito all’erogazione del finanziamento né ad alcun indennizzo 
+di sorta. 
+2. Il Ministero dell’Istruzione e del Merito si riserva di verificare, anche a campione, le dichiarazioni rese dai 
+proponenti e di richiedere agli stessi ulteriore documentazione a chiarimento delle dichiarazioni rese. 
+3. Il Ministero dell’Istruzione e del Merito si riserva di revocare o annullare la presente procedura senza che i 
+proponenti possano vantare alcuna pretesa. 
+4. I dati raccolti con le candidature saranno trattati secondo quanto previsto dal Regolamento UE n. 679 del 
+2016, anche al fine di consentire l’aggiornamento dell’Anagrafe dell’Edilizia Scolastica. Il Responsabile del 
+trattamento dei dati è la Direzione Gene rale per l’Edilizia Scolastica, le risorse e il supporto  alle Istituzioni 
+Scolastiche. Responsabile del procedimento è l’ ing. Alessandra Cafardi, dirig ente dell’Ufficio III della 
+Direzione Generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche.  
+5. I recapiti presso cui è possibile chiedere informazioni sulla presente procedura sono i seguenti: tel. 
+06.5849.2373 – 2889;  e-mail: manifestazioneinteresseVVS@indire.it.  
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+ART. 7 – CONTROVERSIE E FORO COMPETENTE 
+1. Le controversie derivanti dal presente Avviso sono definite mediante ricorso giurisdizionale dinanzi al 
+Tribunale Amministrativo Regionale del Lazio o mediante ricorso straordinario al Presidente della Repubblica, 
+nei termini di legge. 
+IL DIRETTORE GENERALE 
+                                                                                                                             Gianna Barbieri 
+ 
+ 
+Ministero dell’Istruzione e del Merito 
+Dipartimento per le risorse, l’organizzazione e l’innovazione digitale  
+Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche 
+ 
+ 
+ALLEGATO 1 – ISTRUZIONI PER L’UTILIZZO DEL FORMAT DI CANDIDATURA 
+ 
+1. DOWNLOAD E APERTURA DEL FORMAT 
+Scaricare il file "Modulo_candidatura_VVS_2026_v1.00.html" dalla pagina: 
+ 
+https://www.istruzione.it/edilizia_scolastica/news.shtml.  
+ 
+Salvarlo sul proprio computer e aprirlo tramite browser. 
+ 
+Browser supportati e testati: Google Chrome e Microsoft Edge, aggiornati all'ultima versione. Il format può 
+funzionare anche con altri browser.  
+ 
+2. COMPILAZIONE DEL FORMAT 
+Compilare le tre sezioni del format: 
+- "Ente": dati dell'Ente, del legale rappresentante e del referente per la procedura; 
+- "Edificio": dati dell'edificio, degli occupanti, delle unità strutturali, dei rilievi e delle indagini già 
+disponibili, presenza di condizioni di cui alla Tabella 3; 
+- "Controllo e invio": verifica dei dati e dichiarazioni. 
+ 
+NOTA: Durante la compilazione, il format calcola l'importo del contributo di ciascuna unità strutturale 
+candidata. L'indice di rischio di cui all'articolo 4 è determinato dal Ministero dell'Istruzione e del Merito sulla 
+base dei dati dichiarati.  
+ 
+3. SALVATAGGIO E GESTIONE DELLA BOZZA 
+Il format salva automaticamente i dati nel browser in uso. Per conservare la compilazione sul proprio computer 
+o riprenderla in un secondo momento, utilizzare i comandi “Salva bozza” e “Apri”. 
+ 
+4. GENERAZIONE, FIRMA E TRASMISSIONE 
+Completata la compilazione, selezionare "Genera i documenti" e scaricare i file prodotti (singolarmente o in un 
+unico archivio compresso). 
+ 
+NOTA! I file generati dall’applicativo (format HTML), sia i PDF sia il JSON, non devono essere 
+modificati. Qualora occorra correggere dei dati, è necessario modificarli nell’applicativo, generare di 
+nuovo i documenti e utilizzare esclusivamente i file aggiornati. 
+Firmare digitalmente i documenti PDF ai sensi dell'articolo 3, comma 4, senza modificarne il contenuto 
+né il nome. Il file JSON non deve essere firmato digitalmente. 
+ 
+Prima della trasmissione, caricare i file firmati nella sezione "Verifica i file firmati" del format, che ne controlla 
+la completezza e la corrispondenza con i documenti generati. 
+ 
+Trasmettere la candidatura con un unico messaggio di posta elettronica certificata all'indirizzo: 
+bandi.ediliziascolastica@postacert.istruzione.it, ai sensi dell'articolo 3, comma 5, e conservare le ricevute di 
+accettazione e di avvenuta consegna. 
