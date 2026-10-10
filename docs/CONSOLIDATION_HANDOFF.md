@@ -2,20 +2,20 @@
 
 ## Stato corrente — 10 ottobre 2026
 
-- Baseline main: #386 `1f4a970a3903097ea700248f41b48f9903ae23fb`, mergiata dal proprietario. CI `38050147410` e audit A3 SUCCESS, deploy `38057001822` e live status `38057733682` SUCCESS. Baseline 190/225 effettivi, 135/181 sorgente e 35 residui. Quick locale finale verde; il precedente Full locale finale ha log fino a Percorsi mobile ma ricevuta incompleta dopo interruzione della sessione: non dichiarato verde né usato per certificare il nuovo candidato.
-- Catalogo effettivo: 225 indicatori, 124 storici, 137 confronti, SHA `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-health-facilities-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte alla revisione metodologica; A7 non avviata.
+- Baseline #388 mergiata dal proprietario, main `2e80420c5900867aea2fe45f430c440ad196173e`, albero `4ccc08864261c61483f9ef554dbc2e66a7e11709`. Quick/Full locali e CI `38059711386` SUCCESS, audit A3 `38059711293` SUCCESS; deploy post-merge `38062949456` SUCCESS. Baseline 192/225 adapter effettivi, 136/181 sorgente, 33 residui.
+- Catalogo effettivo invariato: 225 indicatori, 124 storici, 137 confronti, SHA `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-connectivity-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte alla revisione metodologica; A7 non avviata.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; dati/UI/golden/workflow/Radar, 35 letture e due riepiloghi conservati.
 
 ## Lotto in verifica
 
-Presìdi Salute v36: farmacie e RSA accreditate, 7/7 Comuni, snapshot completo 31 dicembre 2025. Farmacie pubbliche a due decimali / residenti POSAS stimati 1 gennaio 2026; benchmark Toscana/Italia con stesso perimetro e precisione distinta. RSA conteggi esatti, deduplicazione regionale 337→336 e riconciliazione locale; totale regionale non usato come tasso comunale. Ospedali esclusi per supporto nativo congelato insufficiente. Nessun pooling pubblico, storico singleton, temporalità, anomalie o coppia non revisionata. Metodo `docs/A6_HEALTH_FACILITIES_ADAPTERS.md`.
+FTTH AGCOM v37: quattro carrier al riferimento 31 dicembre 2025. Percentuali DESI/entro 20 metri 7/7, conteggi raggiunte/non raggiunte 6/7: Forte dei Marmi zero percentuale ma conteggi mancanti, nessuna ricostruzione. Denominatore famiglie AGCOM, fotografia distinta dalla pubblicazione/acquisizione 2026. Confronto/rango, scostamenti Toscana/Italia solo percentuali. Aggregati pubblici riconciliati: percentuali arrotondate ponderate, totali assoluti parziali distinti. Snapshot A3 benchmark con run/artifact, nessuna falsa prova di replay del pannello nazionale non congelato. Nessuno storico, pooling o coppia non revisionata. Metodo `docs/A6_CONNECTIVITY_ADAPTERS.md`.
 
-Test mirati PASS: 14 celle fisse, sette conteggi/denominatori farmacie indipendenti, 14 gap e guardie su zeri/provenienza/mutazioni. Audit derivato 192/225 effettivi, 136/181 sorgente, 33 residui. Suite 1.402/1.402 PASS (680 consultazioni/calcoli, 722 rifiuti), tutte le 1.350 precedenti conservate; 58 collegamenti, 29 companion e 97 carichi descrittivi. Report `reports/a6-health-facilities/`. Audit preliminare sul catalogo effettivo verificato della #386; build candidate fredde devono riconciliarne SHA e conteggi.
+Test mirati: 28 celle pubbliche, 35 native, 28 gap, quattro aggregati e guardie su mancante/zero/provenienza/mutazioni. Suite 1.512 PASS (740 consultazioni/calcoli, 772 rifiuti), tutte le 1.402 precedenti conservate. Report preliminari `reports/a6-connectivity/` sul catalogo effettivo #388; nuove build fredde devono riconciliarne SHA e conteggi. Copertura derivata 196/225 effettivi, 140/181 sorgente, 29 residui; 58 collegamenti, 29 companion e 101 carichi descrittivi. Gate da verificare nel candidato.
 
 ## Prossima azione
 
-Quick canonico locale prima del push; Full locale comprensivo di Quick in clone freddo distinto e CI Quick→Full sullo stesso albero prima della prontezza al merge. Conservare log e ricevute finali complete: una sessione interrotta non certifica un gate. Nessun merge/deploy automatico. Dopo merge manuale scegliere il successivo lotto dal residuo derivato. Revisione metodologica A6.4–A6.6 separata dal numero di adapter; A7 non avviata.
+Quick canonico locale prima del push; Full locale comprensivo di Quick in clone freddo distinto e CI Quick→Full sullo stesso albero prima della prontezza al merge. Log e ricevute finali complete richiesti. Nessun merge/deploy automatico. Dopo merge manuale scegliere il lotto dal residuo derivato; revisione metodologica A6.4–A6.6 distinta dal conteggio degli adapter.
 
 ## Manutenzioni e monitor separati
 
