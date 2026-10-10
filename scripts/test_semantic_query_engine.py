@@ -362,6 +362,8 @@ def audit(path, layer):
     import semantic_query_demography_school_adapters as demography
     expected.update(k for k in demography.KEYS if k in catalog["metrics"])
     import semantic_query_library_adapters as library
+    import semantic_query_invalsi_adapters as invalsi
+    expected.update(k for k in invalsi.KEYS if k in catalog["metrics"])
     expected.update(k for k in library.KEYS if k in catalog["metrics"])
     import semantic_query_regional_adapters as regional
     expected.update(k for k in regional.KEYS if k in catalog["metrics"])
@@ -376,7 +378,7 @@ def audit(path, layer):
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
         query=request('lookup' if key in water_quality.KEYS else 'compare',key,dimension=dimensions[0])
-        if key in (*library.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:
+        if key in (*invalsi.KEYS,*library.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:
             rejected(engine,query,'partial_coverage_requires_opt_in')
             query['allowPartial']=True
         report=engine.query(query)

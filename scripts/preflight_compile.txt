@@ -152,3 +152,6 @@ scripts/semantic_query_regional_adapters.py
 scripts/test_semantic_regional_adapters.py
 scripts/semantic_query_library_adapters.py
 scripts/test_semantic_library_adapters.py
+
+scripts/semantic_query_invalsi_adapters.py
+scripts/test_semantic_invalsi_adapters.py
