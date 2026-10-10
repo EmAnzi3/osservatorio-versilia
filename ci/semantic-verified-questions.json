@@ -28628,6 +28628,1676 @@
         ]
       },
       "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "library_libraryLoansPerResident_current",
+      "question": "Quali valori bibliotecari 2024 sono disponibili nei sette comuni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 5
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 0.25
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 0.86
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 0.22
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 0.24
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.15
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_strict",
+      "question": "Si possono confrontare tutti i comuni senza accettare dati mancanti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_rank",
+      "question": "Come si ordinano i cinque valori bibliotecari disponibili?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_tuscany",
+      "question": "Quanto differisce Camaiore dal riferimento Toscana 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.66
+          },
+          {
+            "path": "/result/value",
+            "fraction": [
+              -41,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_missing_current",
+      "question": "Il valore storico di Massarosa può sostituire il valore attuale assente?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046018",
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_history",
+      "question": "Quali osservazioni storiche di Massarosa sono disponibili e quali mancanti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/7/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/8/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/9/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/11/value",
+            "value": 0.02
+          },
+          {
+            "path": "/observations/12/value",
+            "value": 0.02
+          },
+          {
+            "path": "/observations/13/value",
+            "value": 0.04
+          },
+          {
+            "path": "/observations/14/value",
+            "value": 0.09
+          },
+          {
+            "path": "/observations/15/value",
+            "value": 0.13
+          },
+          {
+            "path": "/observations/16/value",
+            "value": 0.12
+          },
+          {
+            "path": "/observations/17/value",
+            "value": 0.12
+          },
+          {
+            "path": "/observations/18/value",
+            "value": 0.13
+          },
+          {
+            "path": "/observations/19/value",
+            "value": 0.07
+          },
+          {
+            "path": "/observations/20/value",
+            "value": 0.13
+          },
+          {
+            "path": "/observations/21/value",
+            "value": 0.09
+          },
+          {
+            "path": "/observations/22/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/23/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/24/value",
+            "value": 0.01
+          },
+          {
+            "path": "/observations/25/value",
+            "value": null
+          },
+          {
+            "path": "/observations/26/value",
+            "value": null
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_history_strict",
+      "question": "La serie di Massarosa è completa senza accettare lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_stazzema_history",
+      "question": "Esiste una serie bibliotecaria utilizzabile per Stazzema?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_pooling_refused",
+      "question": "Possiamo calcolare un indice complessivo della Versilia ponderando i comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_published_indices_not_poolable"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_absolute_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_relative_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_percentage_points_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_trend_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_anomaly_refused",
+      "question": "Il rango bibliotecario prova un’anomalia del servizio?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_pair_0_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_pair_1_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "libraryLoansPerResident"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_italy_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_versilia_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryLoansPerResident_historical_gap_refused",
+      "question": "È disponibile un benchmark bibliotecario storico 2022?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryLoansPerResident",
+            "towns": [
+              "046005"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_current",
+      "question": "Quali valori bibliotecari 2024 sono disponibili nei sette comuni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 5
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 13.64
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 11.57
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 2.83
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 2.81
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 8.58
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_strict",
+      "question": "Si possono confrontare tutti i comuni senza accettare dati mancanti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_rank",
+      "question": "Come si ordinano i cinque valori bibliotecari disponibili?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_tuscany",
+      "question": "Quanto differisce Camaiore dal riferimento Toscana 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 7.5
+          },
+          {
+            "path": "/result/value",
+            "fraction": [
+              614,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_missing_current",
+      "question": "Il valore storico di Massarosa può sostituire il valore attuale assente?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046018",
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_history",
+      "question": "Quali osservazioni storiche di Massarosa sono disponibili e quali mancanti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 3.48
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 2.96
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 2.45
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 2.16
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 0.47
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 0.37
+          },
+          {
+            "path": "/observations/7/value",
+            "value": 0.46
+          },
+          {
+            "path": "/observations/8/value",
+            "value": null
+          },
+          {
+            "path": "/observations/9/value",
+            "value": 0.18
+          },
+          {
+            "path": "/observations/10/value",
+            "value": 0.29
+          },
+          {
+            "path": "/observations/11/value",
+            "value": 0.38
+          },
+          {
+            "path": "/observations/12/value",
+            "value": 0.83
+          },
+          {
+            "path": "/observations/13/value",
+            "value": 1.76
+          },
+          {
+            "path": "/observations/14/value",
+            "value": 2.27
+          },
+          {
+            "path": "/observations/15/value",
+            "value": 6.39
+          },
+          {
+            "path": "/observations/16/value",
+            "value": 2.75
+          },
+          {
+            "path": "/observations/17/value",
+            "value": 2.76
+          },
+          {
+            "path": "/observations/18/value",
+            "value": 1.57
+          },
+          {
+            "path": "/observations/19/value",
+            "value": 3.22
+          },
+          {
+            "path": "/observations/20/value",
+            "value": 5.76
+          },
+          {
+            "path": "/observations/21/value",
+            "value": 1.17
+          },
+          {
+            "path": "/observations/22/value",
+            "value": 0.26
+          },
+          {
+            "path": "/observations/23/value",
+            "value": 0.22
+          },
+          {
+            "path": "/observations/24/value",
+            "value": null
+          },
+          {
+            "path": "/observations/25/value",
+            "value": null
+          },
+          {
+            "path": "/observations/26/value",
+            "value": null
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_history_strict",
+      "question": "La serie di Massarosa è completa senza accettare lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_stazzema_history",
+      "question": "Esiste una serie bibliotecaria utilizzabile per Stazzema?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_pooling_refused",
+      "question": "Possiamo calcolare un indice complessivo della Versilia ponderando i comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_published_indices_not_poolable"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_absolute_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_relative_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_percentage_points_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_trend_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_anomaly_refused",
+      "question": "Il rango bibliotecario prova un’anomalia del servizio?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_pair_0_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_pair_1_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "libraryActiveBorrowersPer100"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_italy_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_versilia_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryActiveBorrowersPer100_historical_gap_refused",
+      "question": "È disponibile un benchmark bibliotecario storico 2022?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryActiveBorrowersPer100",
+            "towns": [
+              "046005"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_current",
+      "question": "Quali valori bibliotecari 2024 sono disponibili nei sette comuni?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/coverage/usable",
+            "value": 5
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 56.04
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 61.96
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 47.98
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 40.65
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 63.75
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_strict",
+      "question": "Si possono confrontare tutti i comuni senza accettare dati mancanti?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_rank",
+      "question": "Come si ordinano i cinque valori bibliotecari disponibili?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_tuscany",
+      "question": "Quanto differisce Camaiore dal riferimento Toscana 2024?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 33.16
+          },
+          {
+            "path": "/result/value",
+            "fraction": [
+              2288,
+              100
+            ]
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_missing_current",
+      "question": "Il valore storico di Massarosa può sostituire il valore attuale assente?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046018",
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_history",
+      "question": "Quali osservazioni storiche di Massarosa sono disponibili e quali mancanti?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 1
+          }
+        ],
+        "warnings": [
+          "partial_coverage"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_history_strict",
+      "question": "La serie di Massarosa è completa senza accettare lacune?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_stazzema_history",
+      "question": "Esiste una serie bibliotecaria utilizzabile per Stazzema?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "insufficient_observations"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_pooling_refused",
+      "question": "Possiamo calcolare un indice complessivo della Versilia ponderando i comuni?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_published_indices_not_poolable"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_absolute_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_relative_change_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_percentage_points_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_trend_refused",
+      "question": "Sono certificate variazioni o tendenze omogenee di questo indice?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_anomaly_refused",
+      "question": "Il rango bibliotecario prova un’anomalia del servizio?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_pair_0_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_pair_1_refused",
+      "question": "L’indice bibliotecario dimostra una relazione con i residenti?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "libraryWeeklyOpeningHours"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "lettura descrittiva"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_italy_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_versilia_gap_refused",
+      "question": "Esiste un benchmark ufficiale di questo ambito?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_libraryWeeklyOpeningHours_historical_gap_refused",
+      "question": "È disponibile un benchmark bibliotecario storico 2022?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "library_hours_pre2022_refused",
+      "question": "Il vecchio indice di apertura è confrontabile con le ore settimanali?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "libraryWeeklyOpeningHours",
+            "towns": [
+              "046005"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "library_period_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
     }
   ]
 }
