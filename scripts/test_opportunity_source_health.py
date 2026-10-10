@@ -735,6 +735,12 @@ def _test_weekly_check_does_not_fetch_or_reset_health() -> None:
         assert stable._compose_runtime_scheduled()[0]["discoverySources"][0]["deferredCandidates"][0]["discovery_last_checked_at"] == "2026-10-09"
         assert stable._health_state("mim-enti-locali", "not_run", stable._RUN_DATE)["lastAttemptedFetch"] == "2026-10-10"
         assert stable._health_state("mim-enti-locali", "error", stable._RUN_DATE)["consecutiveFailures"] == 9
+        stable._PREVIOUS_HEALTH["mim-enti-locali"] = {"lastSuccessfulFetch": "2026-10-10",
+            "lastAttemptedFetch": "2026-10-10", "lastCheckStatus": "ok", "consecutiveFailures": 0}
+        healthy = stable._health_state("mim-enti-locali", "deferred", date(2026, 10, 16))
+        assert healthy["consecutiveFailures"] == 0 and healthy["lastSuccessfulFetch"] == "2026-10-10"
+        assert healthy["lastAttemptedFetch"] == "2026-10-10" and healthy["lastCheckStatus"] == "ok"
+        assert healthy["effectiveStatus"] == "grace" and healthy["graceReason"] == "scheduled_check"
         # A deferred snapshot must not move the due date on the next day.
         seeded = stable._seed_previous_health({"referenceDate": "2026-10-16", "transportAudit": {"sources": [{
             "sourceId": "mim-enti-locali", "runtimeStatus": "deferred", **health}]}})

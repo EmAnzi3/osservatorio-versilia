@@ -248,10 +248,11 @@ def _health_state(source_id: str, current_status: str, today: date) -> dict[str,
     age_days = (today - last_success).days if last_success else None
     deferred = current_status == "deferred"
     failures = int(previous.get("consecutiveFailures") or 0) + (0 if deferred else 1)
+    scheduled_success = deferred and failures == 0 and last_success is not None and previous.get("lastCheckStatus") in {"ok", "degraded"}
     recent_success = age_days is not None and 0 <= age_days <= SOURCE_HEALTH_GRACE_DAYS
     failure_window = 0 < failures <= SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
-    in_grace = recent_success or failure_window
-    grace_reason = "recent_success" if recent_success else "consecutive_failure_window" if failure_window else None
+    in_grace = scheduled_success or recent_success or failure_window
+    grace_reason = "scheduled_check" if scheduled_success else "recent_success" if recent_success else "consecutive_failure_window" if failure_window else None
     return {
         "lastAttemptedFetch": previous.get("lastAttemptedFetch") if deferred or current_status == "not_run" else today.isoformat(),
         "lastCheckStatus": previous.get("lastCheckStatus") if deferred or current_status == "not_run" else current_status,

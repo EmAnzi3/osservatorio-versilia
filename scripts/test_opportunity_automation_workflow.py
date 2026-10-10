@@ -11,8 +11,15 @@ def main() -> int:
     daily = (ROOT / ".github/workflows/opportunity-radar-daily.yml").read_text(encoding="utf-8")
     pages = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     live_status = (ROOT / ".github/workflows/pages-live-status.yml").read_text(encoding="utf-8")
+    quality_gate = (ROOT / ".github/workflows/opportunity-radar-v044-ci.yml").read_text(encoding="utf-8")
 
     assert "OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1" in daily
+    dry_run_scan = quality_gate.split(
+        "- name: Run current live discovery through production entrypoint", 1
+    )[1].split("\n      - name:", 1)[0]
+    assert "OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1" in dry_run_scan, (
+        "Il dry-run produttivo deve usare la stessa politica discovery del primario"
+    )
     assert "opportunity_seed_source_health.sh" in daily
     assert "scripts/opportunity_shadow_compare.py" in daily
     assert "'comparison': os.environ.get('COMPARISON_STATUS')" in daily

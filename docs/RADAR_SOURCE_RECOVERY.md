@@ -80,6 +80,17 @@ settimanale quando dovuto. Il budget finito resta applicato anche alle nuove rot
 
 ### Lo zero nuove non prova un periodo di magra
 
+Il primo dry-run della #389 ha confermato ANCI/MIM `deferred` e il canale
+ANCI Lombardia `ok`, con dieci segnalazioni interne e due endpoint letti in
+circa un secondo. Il confronto delle rotte conferma timeout di connessione per
+feed/API ANCI anche in IPv4 e HTTP 403 sul nuovo archivio MIM. Queste fonti
+dirette non sono recuperate. Il dry-run è fallito sulla famiglia scolastica
+scoperta perché usava ancora la politica CLI `strict`, mentre il primario
+usa `verified-opportunities-v1`: la PR allinea soltanto il dry-run produttivo
+alla politica già operativa, con regressione contro futuri disallineamenti.
+La CLI rimane strict e i blocchi documentali, regionali (`fail`) e di budget
+totale non cambiano; il canale supplementare non copre artificialmente MIM.
+
 Confronto indipendente con lo snapshot runtime del 10 ottobre, generato alle
 12:41:59 UTC, 55 schede e 137 segnalazioni interne:
 
