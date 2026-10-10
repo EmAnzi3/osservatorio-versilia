@@ -14,7 +14,7 @@ Confronto, rango numerico e gap Toscana/Italia ammessi sulle due viste 2024; il 
 
 ## Provenienza e verifiche
 
-Snapshot `data/source-snapshots/a3-aci-vehicle-benchmark-2024.json`: SHA-256 `67834d9ef2dd5804dc5be39b05abc5afb8c9e6f6d7733aedcd059d2209e3eb9a`; workbook originale Base64 congelato con hash `700e7fbc0a1f3d68502aec979a11fc6d25f4c07ecc563fc356ee9d610b77dabc`. Il test rigioca 7.997 righe di localizzazione da quel workbook, propagando soltanto intestazioni geografiche di celle unite; null numerici conservati. L'audit fonte già governato riconcilia classi, totali provinciali/regionali/nazionale, benchmark e 7/7 valori comunali.
+Snapshot `data/source-snapshots/a3-aci-vehicle-benchmark-2024.json`: SHA-256 `67834d9ef2dd5804dc5be39b05abc5afb8c9e6f6d7733aedcd059d2209e3eb9a`; workbook originale Base64 congelato con hash `700e7fbc0a1f3d68502aec979a11fc6d25f4c07ecc563fc356ee9d610b77dabc`. Il test usa soltanto la libreria standard Python (ZIP/XML OOXML), verificato anche con `python -S`, e rigioca 7.997 righe di localizzazione da quel workbook, propagando soltanto intestazioni geografiche di celle unite; null numerici conservati. L'audit fonte già governato riconcilia classi, totali provinciali/regionali/nazionale, benchmark e 7/7 valori comunali.
 
 Pannello include localizzazioni non definite/estere pubblicate; totali geografici sono esclusi dalla somma delle localizzazioni. Denominatore include classi Euro non contemplate/non definite; nessun valore numerico nullo imputato. Numeratore Euro 0–3 usa quattro celle osservate distinte. Workbook congelato viene rigiocato, archivio ZIP originale è soltanto riferito con URL/hash, non riacquisito né rigiocato.
 

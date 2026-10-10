@@ -1,6 +1,4 @@
 """Fixed ACI cells, raw workbook replay, public precision and adversarial guards."""
-import base64
-import io
 import math
 
 from semantic_query_engine import QueryEngine, ROOT
@@ -23,20 +21,42 @@ def query(key, dim='total', op='compare', **selection):
 
 
 def replay_workbook(snapshot):
-    from openpyxl import load_workbook
-    import hashlib
+    # Read the original OOXML workbook with stdlib only, as Quick CI does not
+    # install spreadsheet libraries. Only merged geographic labels are carried.
+    import base64, hashlib, io, re, zipfile
+    from xml.etree import ElementTree as ET
+    ns='{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
     body=base64.b64decode(snapshot['source']['workbookBase64'],validate=True)
     assert hashlib.sha256(body).hexdigest() == '700e7fbc0a1f3d68502aec979a11fc6d25f4c07ecc563fc356ee9d610b77dabc'
-    book=load_workbook(io.BytesIO(body),read_only=True,data_only=True)
-    sheet=book[snapshot['source']['sheet']];wanted={r[0]:r[1:] for r in snapshot['records']};checked=0;region=province=None
-    for i,row in enumerate(sheet.iter_rows(values_only=True),1):
-        if row[0] is not None: region=row[0]
-        if row[1] is not None: province=row[1]
-        if i in wanted:
-            parsed=[region,province,*row[2:19]]
-            assert parsed == wanted[i], (i,parsed,wanted[i])
-            checked+=1
-    book.close();assert checked == 7997
+    wanted={r[0]:r[1:] for r in snapshot['records']};checked=0;region=province=None
+    with zipfile.ZipFile(io.BytesIO(body)) as archive:
+        strings=[''.join(t.text or '' for t in si.iter(ns+'t')) for si in ET.fromstring(archive.read('xl/sharedStrings.xml'))]
+        workbook=ET.fromstring(archive.read('xl/workbook.xml'))
+        sheet=next(s for s in workbook.iter(ns+'sheet') if s.attrib['name']==snapshot['source']['sheet'])
+        rid=sheet.attrib['{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id']
+        rel=next(r for r in ET.fromstring(archive.read('xl/_rels/workbook.xml.rels')) if r.attrib['Id']==rid)
+        target=rel.attrib['Target'];target=target.lstrip('/') if target.startswith('/') else 'xl/'+target
+        for row in ET.fromstring(archive.read(target)).iter(ns+'row'):
+            i=int(row.attrib['r']);values=[None]*19
+            for cell in row:
+                letters=re.match(r'[A-Z]+',cell.attrib['r']).group();column=0
+                for letter in letters:column=column*26+ord(letter)-64
+                if column>19:continue
+                node=cell.find(ns+'v');raw=node.text if node is not None else None
+                kind=cell.attrib.get('t')
+                if kind=='s':value=strings[int(raw)] if raw is not None else None
+                elif kind=='inlineStr':value=''.join(t.text or '' for t in cell.iter(ns+'t'))
+                elif raw is None:value=None
+                elif kind=='str':value=raw
+                else:
+                    number=float(raw);value=int(number) if number.is_integer() else number
+                values[column-1]=value
+            if values[0] is not None:region=values[0]
+            if values[1] is not None:province=values[1]
+            if i in wanted:
+                parsed=[region,province,*values[2:19]]
+                assert parsed==wanted[i],(i,parsed,wanted[i]);checked+=1
+    assert checked==7997
 
 
 def regressions(path):
