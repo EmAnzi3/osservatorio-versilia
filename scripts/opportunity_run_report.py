@@ -324,6 +324,8 @@ def build_report(
     previous_items = list(previous.get("opportunities") or [])
     current_items = list(current.get("opportunities") or [])
     pairs, added_raw, removed_raw = _match_items(previous_items, current_items)
+    _, discovery_added, _ = _match_items(list(previous.get("discoveryQueue") or []),
+                                        list(current.get("discoveryQueue") or []))
 
     modified = []
     for old, new in pairs:
@@ -362,6 +364,10 @@ def build_report(
             "graceUsed": bool(source.get("graceUsed")),
             "consecutiveFailures": int(source.get("consecutiveFailures") or 0),
             "failureClasses": list(source.get("failureClasses") or []),
+            "lastAttemptedFetch": source.get("lastAttemptedFetch"),
+            "nextScheduledCheck": source.get("nextScheduledCheck"),
+            "lastCheckStatus": source.get("lastCheckStatus"),
+            "checkDeferred": bool(source.get("checkDeferred")),
             "endpoints": [
                 {
                     "url": str(endpoint.get("url") or ""),
@@ -422,6 +428,10 @@ def build_report(
             "unchanged": len(pairs) - len(modified),
         },
         "comparisonAvailable": scan_succeeded and current_error is None,
+        "discoveryReview": {
+            "current": len(current.get("discoveryQueue") or []),
+            "added": [_compact(item) for item in discovery_added] if scan_succeeded and current_error is None else [],
+        },
         "fingerprint": fingerprint,
         "added": added,
         "modified": modified,
@@ -491,6 +501,13 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
             "",
             "> Il confronto dei contenuti non è conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
         ])
+    discovery_review = report.get("discoveryReview") or {}
+    discovery_added = discovery_review.get("added") or []
+    lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
+                  f"nuove alla coda rispetto allo snapshot precedente: **{len(discovery_added)}**. "
+                  "Queste segnalazioni non sono nuove opportunità pubblicate; possono riguardare avvisi già noti o non ammissibili."])
+    for item in discovery_added[:detail_limit]:
+        lines.append(f"- {_markdown_link(item)} · {_markdown_cell(item.get('source'))}")
     if report.get("failureReasons"):
         lines.extend(["", "## Motivo del blocco", ""])
         lines.extend(f"- {reason}" for reason in report["failureReasons"])
@@ -519,6 +536,9 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
                 f"{'Sì' if source['graceUsed'] else 'No'} | {source['consecutiveFailures']} | "
                 f"{', '.join(source['failureClasses']) or '—'} |"
             )
+        for source in health["attention"]:
+            if source.get("checkDeferred"):
+                lines.append(f"\n`{source['sourceId']}`: controllo settimanale rinviato; ultima verifica {source.get('lastAttemptedFetch') or 'sconosciuta'} ({source.get('lastCheckStatus') or 'sconosciuto'}), prossima {source.get('nextScheduledCheck') or 'sconosciuta'}.\n")
         endpoint_rows = [
             (source["sourceId"], endpoint)
             for source in health["attention"]
@@ -614,7 +634,11 @@ def render_html(report: dict[str, Any]) -> str:
     )
     source_rows = "".join(
         "<tr><td><code>" + html.escape(str(row.get("sourceId") or "")) + "</code></td><td>"
-        + html.escape(str(row.get("runtimeStatus") or "")) + "</td><td>"
+        + html.escape(str(row.get("runtimeStatus") or ""))
+        + ("<br>Ultima verifica: " + html.escape(str(row.get("lastAttemptedFetch") or "sconosciuta"))
+           + " (" + html.escape(str(row.get("lastCheckStatus") or "sconosciuto")) + ")<br>Prossima: "
+           + html.escape(str(row.get("nextScheduledCheck") or "sconosciuta")) if row.get("checkDeferred") else "")
+        + "</td><td>"
         + html.escape(str(row.get("effectiveStatus") or "")) + "</td><td>"
         + ("Sì" if row.get("graceUsed") else "No") + "</td><td>"
         + html.escape(str(row.get("consecutiveFailures") or 0)) + "</td><td>"
@@ -658,6 +682,7 @@ body{{font-family:Arial,sans-serif;color:#111827;background:#f3f6f8;line-height:
 <div class="cards"><div class="card"><strong>{counts['added']}</strong>Nuove</div><div class="card"><strong>{counts['modified']}</strong>Modificate</div><div class="card"><strong>{counts['archived']}</strong>Archiviate</div><div class="card"><strong>{counts['removed']}</strong>Rimosse</div><div class="card"><strong>{counts['current']}</strong>Correnti</div></div>
 <section><h2>Riepilogo</h2><p>Record precedenti: <strong>{counts['previous']}</strong> -> record correnti: <strong>{counts['current']}</strong><br>Record invariati: <strong>{counts['unchanged']}</strong></p></section>
 {comparison_warning}{failure_reasons}
+{_html_table("Nuove segnalazioni interne da verificare (non pubblicate)", (report.get('discoveryReview') or {}).get('added') or [])}
 <section><h2>Fasi e gate</h2><table><thead><tr><th>Controllo</th><th>Esito</th><th>Dettaglio</th></tr></thead><tbody>{phase_rows}{gate_rows}</tbody></table></section>
 <section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong> · schede ripulite da contaminazioni HTML/JS <strong>{health['contentSanitized']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table><h3>Dettaglio endpoint</h3><table><thead><tr><th>Fonte</th><th>URL configurato</th><th>Esito/trasporto</th><th>HTTP tentativi</th><th>Fallback</th><th>Redirect/destinazione</th><th>Errori trasporto</th></tr></thead><tbody>{endpoint_rows}</tbody></table></section>
 {_html_table('Nuove opportunita', report['added'])}

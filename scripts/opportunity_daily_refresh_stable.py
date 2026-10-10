@@ -26,7 +26,7 @@ import json
 import os
 import re
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -43,6 +43,25 @@ PUBLISHABILITY_DIAGNOSTIC_PATH = Path("reports/runtime/opportunity-publishabilit
 SOURCE_HEALTH_SEED_ENV = "OPPORTUNITY_SOURCE_HEALTH_SEED"
 _PREVIOUS_HEALTH: dict[str, dict[str, Any]] = {}
 _RUN_DATE: date | None = None
+_PREVIOUS_DISCOVERY: list[dict[str, Any]] = []
+_BASE_COMPOSE = h4._compose_runtime_hardened
+
+
+def _compose_runtime_scheduled():
+    config, coverage = _BASE_COMPOSE()
+    today = _RUN_DATE or date.today()
+    for source in config.get("discoverySources") or []:
+        interval = int(source.get("checkEveryDays") or 1)
+        if interval <= 1:
+            continue
+        previous = _PREVIOUS_HEALTH.get(source["id"]) or {}
+        last = _safe_date(previous.get("lastAttemptedFetch"))
+        source["lastAttemptedFetch"] = last.isoformat() if last else None
+        source["nextScheduledCheck"] = (last + timedelta(days=interval)).isoformat() if last else today.isoformat()
+        source["deferDiscoveryCheck"] = bool(last and 0 <= (today - last).days < interval)
+        source["deferredCandidates"] = [dict(item, discovery_last_checked_at=item.get("discovery_last_checked_at") or (last.isoformat() if last else None))
+                                        for item in _PREVIOUS_DISCOVERY if item.get("source_id") == source["id"]]
+    return config, coverage
 
 _BASE_BUILD_AUDIT = h4._build_transport_audit
 _BASE_PREPARE = h4._prepare_public_hardened
@@ -187,6 +206,9 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
             "lastSuccessfulFetch": last_success,
             "consecutiveFailures": int(persisted_failures or 0),
             "effectiveStatus": row.get("effectiveStatus") or runtime,
+            "lastAttemptedFetch": row.get("lastAttemptedFetch") or (reference if runtime in {"ok", "degraded", "error"} else None),
+            "lastCheckStatus": row.get("lastCheckStatus") or runtime,
+            "lastCheckedEndpoints": row.get("lastCheckedEndpoints") if runtime == "deferred" else row.get("endpoints"),
         }
 
     for row in (snapshot.get("sourceCoverage") or {}).get("rows") or []:
@@ -200,6 +222,8 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
             "lastSuccessfulFetch": reference if runtime in {"ok", "degraded"} and reference else None,
             "consecutiveFailures": 0 if runtime in {"ok", "degraded"} else 1,
             "effectiveStatus": runtime,
+            "lastAttemptedFetch": reference if runtime in {"ok", "degraded", "error"} else None,
+            "lastCheckStatus": runtime,
         }
     return seeded
 
@@ -209,6 +233,8 @@ def _health_state(source_id: str, current_status: str, today: date) -> dict[str,
     current_ok = current_status in {"ok", "degraded"}
     if current_ok:
         return {
+            "lastAttemptedFetch": today.isoformat(),
+            "lastCheckStatus": current_status,
             "lastSuccessfulFetch": today.isoformat(),
             "consecutiveFailures": 0,
             "effectiveStatus": current_status,
@@ -220,12 +246,16 @@ def _health_state(source_id: str, current_status: str, today: date) -> dict[str,
     last_success_text = str(previous.get("lastSuccessfulFetch") or "")
     last_success = _safe_date(last_success_text)
     age_days = (today - last_success).days if last_success else None
-    failures = int(previous.get("consecutiveFailures") or 0) + 1
+    deferred = current_status == "deferred"
+    failures = int(previous.get("consecutiveFailures") or 0) + (0 if deferred else 1)
+    scheduled_success = deferred and failures == 0 and last_success is not None and previous.get("lastCheckStatus") in {"ok", "degraded"}
     recent_success = age_days is not None and 0 <= age_days <= SOURCE_HEALTH_GRACE_DAYS
-    failure_window = failures <= SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
-    in_grace = recent_success or failure_window
-    grace_reason = "recent_success" if recent_success else "consecutive_failure_window" if failure_window else None
+    failure_window = 0 < failures <= SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
+    in_grace = scheduled_success or recent_success or failure_window
+    grace_reason = "scheduled_check" if scheduled_success else "recent_success" if recent_success else "consecutive_failure_window" if failure_window else None
     return {
+        "lastAttemptedFetch": previous.get("lastAttemptedFetch") if deferred or current_status == "not_run" else today.isoformat(),
+        "lastCheckStatus": previous.get("lastCheckStatus") if deferred or current_status == "not_run" else current_status,
         "lastSuccessfulFetch": last_success_text or None,
         "consecutiveFailures": failures,
         "effectiveStatus": "grace" if in_grace else "error",
@@ -318,6 +348,7 @@ def _build_transport_audit_stable(result: dict[str, Any]) -> dict[str, Any]:
         runtime = str(row.get("runtimeStatus") or "unknown")
         state = _health_state(source_id, runtime, today)
         row.update(state)
+        row["lastCheckedEndpoints"] = (_PREVIOUS_HEALTH.get(source_id) or {}).get("lastCheckedEndpoints") if runtime == "deferred" else row.get("endpoints")
         if state["effectiveStatus"] == "grace":
             in_grace += 1
         elif state["effectiveStatus"] == "error":
@@ -637,22 +668,27 @@ def _prepare_public_stable(result: dict[str, Any], today: date) -> dict[str, Any
 
 
 def main() -> int:
-    global _PREVIOUS_HEALTH, _RUN_DATE
+    global _PREVIOUS_HEALTH, _RUN_DATE, _PREVIOUS_DISCOVERY
     _RUN_DATE = _run_date_from_argv()
     previous = _load_previous_snapshot(_daily_path_from_argv())
+    _PREVIOUS_DISCOVERY = [dict(item, discovery_last_checked_at=item.get("discovery_last_checked_at") or previous.get("referenceDate"))
+                           for item in previous.get("discoveryQueue") or []]
     _PREVIOUS_HEALTH = _seed_health_with_failed_run(previous)
 
     original_runtime = h4._runtime_uncovered_families
+    original_compose = h4._compose_runtime_hardened
     original_build = h4._build_transport_audit
     original_prepare = h4._prepare_public_hardened
     original_restore = h4.daily._restore_recent_verified_continuity
     h4._runtime_uncovered_families = _runtime_uncovered_families_stable
+    h4._compose_runtime_hardened = _compose_runtime_scheduled
     h4._build_transport_audit = _build_transport_audit_stable
     h4._prepare_public_hardened = _prepare_public_stable
     h4.daily._restore_recent_verified_continuity = _restore_continuity_stable
     try:
         return h4.main()
     finally:
+        h4._compose_runtime_hardened = original_compose
         h4._runtime_uncovered_families = original_runtime
         h4._build_transport_audit = original_build
         h4._prepare_public_hardened = original_prepare

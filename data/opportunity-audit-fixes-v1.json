@@ -38,6 +38,32 @@
         "local authorities", "public authorities", "local practitioners", "cities",
         "municipal", "regional and local"
       ]
+    },
+    {
+      "id": "anci-lombardia-national-leads",
+      "label": "ANCI Lombardia · Segnalazioni da verificare",
+      "publisher": "ANCI Lombardia",
+      "territory": "Italia · da verificare per ogni avviso",
+      "urls": [
+        "https://anci.lombardia.it/tema/edilizia-scolastica/",
+        "https://anci.lombardia.it/archivio-circolari/"
+      ],
+      "fetchTimeoutSeconds": 12,
+      "includeTerms": [
+        "edilizia scolastica",
+        "avviso",
+        "bando",
+        "finanzi",
+        "contribut",
+        "vulnerabilità"
+      ],
+      "municipalTerms": [
+        "comun",
+        "enti locali",
+        "scolastic",
+        "spazi pubblici",
+        "under 35"
+      ]
     }
   ],
   "coverageRegistry": {
@@ -54,6 +80,19 @@
       "historicalReplay": true,
       "favicon": "",
       "note": "Presidio dedicato a C4T GROUNDWORK e assistenza tecnica per investimenti di coesione PO2; la pubblicazione richiede verifica primaria del ruolo dell'autorità locale."
+    },
+    "anci-lombardia-national-leads": {
+      "label": "ANCI Lombardia · Segnalazioni da verificare",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 65,
+      "listingDiscovery": true,
+      "detailEnrichment": false,
+      "pdfFallback": false,
+      "archiveContinuity": false,
+      "historicalReplay": false,
+      "favicon": "",
+      "note": "Segnalazioni editoriali da verificare sulle fonti primarie; il canale non attesta recupero ANCI nazionale/MIM e non presume applicabilità alla Toscana."
     }
   },
   "verifiedEntries": [

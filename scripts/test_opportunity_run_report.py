@@ -72,6 +72,18 @@ def _test_coverage_failure_names_expired_evidence() -> None:
 
 def main() -> int:
     _test_coverage_failure_names_expired_evidence()
+    prior = _snapshot([])
+    candidate = _snapshot([])
+    candidate["discoveryQueue"] = [{"title": "Nuovo avviso da verificare", "url": "https://example.test/lead", "source_label": "Fonte istituzionale"}]
+    candidate["transportAudit"]["sources"] = [{"sourceId": "mim-enti-locali", "runtimeStatus": "deferred", "effectiveStatus": "error",
+        "checkDeferred": True, "lastAttemptedFetch": "2026-10-10", "lastCheckStatus": "error", "nextScheduledCheck": "2026-10-17", "consecutiveFailures": 8}]
+    discovery_report = build_report(prior, candidate, phase_statuses={"scan": "success", "validation": "success", "build": "success"})
+    assert discovery_report["counts"]["added"] == 0
+    assert len(discovery_report["discoveryReview"]["added"]) == 1
+    for rendered in (render_markdown(discovery_report), render_html(discovery_report)):
+        assert "Nuovo avviso da verificare" in rendered and "2026-10-17" in rendered and "2026-10-10" in rendered
+    incomplete = build_report(prior, candidate, phase_statuses={"scan": "failure", "validation": "skipped", "build": "skipped"})
+    assert incomplete["discoveryReview"]["added"] == []
     assert incomplete_run_stages({"scan": "success", "validation": "success"}) == {}
     assert incomplete_run_stages({"scan": "failure", "validation": "skipped"}) == {
         "scan": "failure",
