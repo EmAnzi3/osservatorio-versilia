@@ -165,3 +165,5 @@ scripts/semantic_query_connectivity_adapters.py
 scripts/test_semantic_connectivity_adapters.py
 scripts/semantic_query_road_adapters.py
 scripts/test_semantic_road_adapters.py
+scripts/semantic_query_vehicle_adapters.py
+scripts/test_semantic_vehicle_adapters.py

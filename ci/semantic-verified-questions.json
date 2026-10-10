@@ -48336,6 +48336,4072 @@
         ]
       },
       "reference": "Istat 15a/15c parsed frozen snapshot with workbook hashes; injured legacy canonical rate, no raw replay claim. docs/A6_ROAD_ADAPTERS.md. Independent fixed cells and missing Stazzema 2017."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046005",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 713.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046013",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 738.8
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046018",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 742.4
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046024",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 728.3
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046028",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 700.7
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046030",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 740.2
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_current_046033",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 650.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_rank",
+      "question": "Quale Comune ha il valore numerico maggiore, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -31021564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5321564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1721564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -15821564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -43421564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -3921564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_tuscany_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -94021564638603,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11733652257065,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              37433652257065,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              41033652257065,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              26933652257065,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -666347742935,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              38833652257065,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_gap_italy_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -51266347742935,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_series_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_absolute_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_relative_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_percentage_points_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_trend_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_2025_refused",
+      "question": "Esiste il parco ACI 2025 congelato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_period_not_frozen"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_anomaly_refused",
+      "question": "È revisionata questa ricerca di anomalie?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_benchmark_refused",
+      "question": "Il benchmark Versilia è equiparabile a quello ufficiale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_pair_0_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total"
+          },
+          {
+            "metric": "population",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_pair_1_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total"
+          },
+          {
+            "metric": "motorization",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_pooling_refused",
+      "question": "Si possono ricostruire i componenti dalle percentuali arrotondate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_total_sex_refused",
+      "question": "È congelata una disaggregazione per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046005",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              22650000,
+              31763
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046013",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4839000,
+              6550
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046018",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              16170000,
+              21782
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046024",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              16516000,
+              22678
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046028",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              8607000,
+              12284
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046030",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2060000,
+              2783
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_current_046033",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              39446000,
+              60680
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_rank",
+      "question": "Quale Comune ha il valore numerico maggiore, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -31027713302143,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5342938684405,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -1765490816181,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -15838647273756,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -43454029633719,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -3913156446005,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_tuscany_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -94055645060489,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              11727503593526,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              37412278211264,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              40989726079487,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              26916569621912,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -698812738050,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              38842060449663,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_gap_italy_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -51300428164820,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_series_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_absolute_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_relative_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_percentage_points_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_trend_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_2025_refused",
+      "question": "Esiste il parco ACI 2025 congelato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_period_not_frozen"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_anomaly_refused",
+      "question": "È revisionata questa ricerca di anomalie?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_benchmark_refused",
+      "question": "Il benchmark Versilia è equiparabile a quello ufficiale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_pair_0_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio"
+          },
+          {
+            "metric": "population",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_pair_1_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total"
+          },
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_pooled_all",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              110288000,
+              158520
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 110288
+          },
+          {
+            "path": "/result/denominator",
+            "value": 158520
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_pooled_coastal",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              83451000,
+              121671
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 83451
+          },
+          {
+            "path": "/result/denominator",
+            "value": 121671
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_pooled_inland",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              26837000,
+              36849
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 26837
+          },
+          {
+            "path": "/result/denominator",
+            "value": 36849
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_motorization_nativeRatio_sex_refused",
+      "question": "È congelata una disaggregazione per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "motorization",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046005",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 19.4
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046013",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 19.4
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046018",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.9
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046024",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 20.0
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046028",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.4
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046030",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.7
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_current_046033",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_rank",
+      "question": "Quale Comune ha il valore numerico maggiore, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2233891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2233891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1733891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2833891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1233891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7533891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_tuscany_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              933891438045,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4422150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4422150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4922150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -3822150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5422150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              877849352437,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_gap_italy_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5722150647563,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_series_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_absolute_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_relative_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_percentage_points_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_trend_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_2025_refused",
+      "question": "Esiste il parco ACI 2025 congelato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_period_not_frozen"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_anomaly_refused",
+      "question": "È revisionata questa ricerca di anomalie?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_benchmark_refused",
+      "question": "Il benchmark Versilia è equiparabile a quello ufficiale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_pair_0_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total"
+          },
+          {
+            "metric": "population",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_pair_1_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total"
+          },
+          {
+            "metric": "pollutingCars",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_pooling_refused",
+      "question": "Si possono ricostruire i componenti dalle percentuali arrotondate?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_total_sex_refused",
+      "question": "È congelata una disaggregazione per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046005",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              438400,
+              22650
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046013",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              93900,
+              4839
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046018",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              306200,
+              16170
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046024",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              330800,
+              16516
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046028",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              158500,
+              8607
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046030",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              50900,
+              2060
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_current_046033",
+      "question": "Qual è il valore comunale, mantenendo distinti dato pubblico arrotondato e rapporto nativo?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              715800,
+              39446
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_rank",
+      "question": "Quale Comune ha il valore numerico maggiore, senza giudizio di qualità?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2189299826565,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2238727147902,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1770193231489,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2862954165097,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1249134844574,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7542629302122,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              980218061783,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046005",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4466742259042,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046013",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4417314937706,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046018",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -4885848854119,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046024",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -3793087920511,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046028",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5406907241034,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046030",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              886587216514,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046033",
+      "question": "Quanto dista questo valore dal benchmark con gli stessi periodi delle componenti?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              -5675824023824,
+              1000000000000
+            ],
+            "tolerance": 1e-09
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_series_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_absolute_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_relative_change_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_percentage_points_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_trend_refused",
+      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_single_snapshot_no_history"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_2025_refused",
+      "question": "Esiste il parco ACI 2025 congelato?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_period_not_frozen"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_anomaly_refused",
+      "question": "È revisionata questa ricerca di anomalie?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_benchmark_refused",
+      "question": "Il benchmark Versilia è equiparabile a quello ufficiale?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_benchmark_scope_not_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_pair_0_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio"
+          },
+          {
+            "metric": "population",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_pair_1_refused",
+      "question": "È revisionata la correlazione automatica con la popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "dimension": "total"
+          },
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "vehicles_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_pooled_all",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              2094500,
+              110288
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 20945
+          },
+          {
+            "path": "/result/denominator",
+            "value": 110288
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_pooled_coastal",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              1578900,
+              83451
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 15789
+          },
+          {
+            "path": "/result/denominator",
+            "value": 83451
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_pooled_inland",
+      "question": "Qual è il rapporto aggregato dalle componenti native del gruppo esplicitamente selezionato?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046028",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              515600,
+              26837
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/result/numerator",
+            "value": 5156
+          },
+          {
+            "path": "/result/denominator",
+            "value": 26837
+          }
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "vehicles_pollutingCars_nativeRatio_sex_refused",
+      "question": "È congelata una disaggregazione per sesso?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pollutingCars",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     }
   ]
 }
