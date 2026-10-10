@@ -30298,6 +30298,6190 @@
         ]
       },
       "reference": "Trascrizione indipendente Regione Toscana 2024; snapshot biblioteche governato, copertura 5/7, storici null conservati e benchmark Toscana A3."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-italiano_current",
+      "question": "INVALSI: invalsiResults, view:g2-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 211.0002
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 207.5303
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 208.5007
+          },
+          {
+            "path": "/observations/3/value",
+            "value": null
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 190.1836
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 188.0277
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 5
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-italiano_tuscany",
+      "question": "INVALSI: invalsiResults, view:g2-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 198.0971
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-italiano_italy",
+      "question": "INVALSI: invalsiResults, view:g2-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 198.7605
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-matematica_current",
+      "question": "INVALSI: invalsiResults, view:g2-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 204.5151
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 213.8983
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 178.225
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 207.3137
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 167.4749
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 174.3313
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-matematica_tuscany",
+      "question": "INVALSI: invalsiResults, view:g2-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 196.5165
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g2-matematica_italy",
+      "question": "INVALSI: invalsiResults, view:g2-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g2-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 197.0769
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-italiano_current",
+      "question": "INVALSI: invalsiResults, view:g5-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 185.2472
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 212.5597
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 197.6839
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 197.7281
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 187.8794
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 196.1073
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-italiano_tuscany",
+      "question": "INVALSI: invalsiResults, view:g5-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 196.3952
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-italiano_italy",
+      "question": "INVALSI: invalsiResults, view:g5-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 194.9709
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-matematica_current",
+      "question": "INVALSI: invalsiResults, view:g5-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 193.7261
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 216.2248
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 193.9176
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 189.8484
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 168.2974
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 190.8117
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-matematica_tuscany",
+      "question": "INVALSI: invalsiResults, view:g5-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 194.1859
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-matematica_italy",
+      "question": "INVALSI: invalsiResults, view:g5-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 191.6444
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-reading_current",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 219.0695
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 230.4409
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 201.1885
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 200.4696
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 195.3736
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 207.5277
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 209.3316
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-reading_italy",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 210.852
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-listening_current",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 223.2222
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 248.521
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 219.4305
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 214.6354
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 193.5447
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 211.3068
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 218.3185
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g5-inglese-listening_italy",
+      "question": "INVALSI: invalsiResults, view:g5-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g5-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 217.1992
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-italiano_current",
+      "question": "INVALSI: invalsiResults, view:g8-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 192.3777
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 191.2901
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 197.564
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 193.496
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-italiano_tuscany",
+      "question": "INVALSI: invalsiResults, view:g8-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 194.5063
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-italiano_italy",
+      "question": "INVALSI: invalsiResults, view:g8-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 193.171
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-matematica_current",
+      "question": "INVALSI: invalsiResults, view:g8-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 192.8084
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 197.2807
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 202.2339
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 196.3211
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-matematica_tuscany",
+      "question": "INVALSI: invalsiResults, view:g8-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 199.7218
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-matematica_italy",
+      "question": "INVALSI: invalsiResults, view:g8-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 194.8842
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-reading_current",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 212.3058
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 208.1986
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 222.0467
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 216.7394
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 217.6211
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-reading_italy",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 215.4293
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-listening_current",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 217.1643
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 206.8375
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 224.6979
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 220.3216
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 220.0079
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g8-inglese-listening_italy",
+      "question": "INVALSI: invalsiResults, view:g8-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g8-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 215.7473
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-italiano_current",
+      "question": "INVALSI: invalsiResults, view:g10-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 210.3488
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 164.0951
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 154.8642
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 188.1317
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-italiano_tuscany",
+      "question": "INVALSI: invalsiResults, view:g10-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 187.9137
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-italiano_italy",
+      "question": "INVALSI: invalsiResults, view:g10-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 191.9695
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-matematica_current",
+      "question": "INVALSI: invalsiResults, view:g10-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 215.7646
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 172.9024
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 161.7376
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 193.3811
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-matematica_tuscany",
+      "question": "INVALSI: invalsiResults, view:g10-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 194.6308
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g10-matematica_italy",
+      "question": "INVALSI: invalsiResults, view:g10-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 195.0181
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-italiano_current",
+      "question": "INVALSI: invalsiResults, view:g13-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 194.0749
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 182.8276
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 144.7009
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 178.8921
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-italiano_tuscany",
+      "question": "INVALSI: invalsiResults, view:g13-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 183.7942
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-italiano_italy",
+      "question": "INVALSI: invalsiResults, view:g13-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 184.6876
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-matematica_current",
+      "question": "INVALSI: invalsiResults, view:g13-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 204.3038
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 180.2124
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 160.4632
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 190.5849
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-matematica_tuscany",
+      "question": "INVALSI: invalsiResults, view:g13-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 191.8165
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-matematica_italy",
+      "question": "INVALSI: invalsiResults, view:g13-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 189.8442
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-reading_current",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 208.2456
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 194.7636
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 156.3381
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 200.5995
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 199.2047
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-reading_italy",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 201.3159
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-listening_current",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 215.335
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 202.6982
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 170.1106
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 211.2824
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 211.788
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_g13-inglese-listening_italy",
+      "question": "INVALSI: invalsiResults, view:g13-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g13-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 207.8872
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_history",
+      "question": "INVALSI: invalsiResults, total, series, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 204.1706
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 197.9091
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 189.906
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 185.8766
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 198.0377
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 185.2472
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018-19"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2020-21"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2021-22"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2022-23"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2023-24"
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2024-25"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_weighted_ratio_refused",
+      "question": "INVALSI: invalsiResults, total, weighted_ratio, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_valid_student_denominators_unavailable"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_trend_refused",
+      "question": "INVALSI: invalsiResults, total, trend, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_relative_change_refused",
+      "question": "INVALSI: invalsiResults, total, relative_change, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_anomaly_refused",
+      "question": "INVALSI: invalsiResults, total, anomaly, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_partial_refused",
+      "question": "INVALSI: invalsiResults, total, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_gap_refused",
+      "question": "INVALSI: invalsiResults, total, compare, ['2019-20']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "periods": [
+              "2019-20"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_period_not_frozen"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_calendar_refused",
+      "question": "INVALSI: invalsiResults, total, compare, ['2025']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_academic_year_required"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_current",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 94.6565
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 100.0
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 90.2778
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 86.9565
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 77.4648
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 89.1089
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 90.52
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_italy",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 92.2516
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 10.6436
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Pre-A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-reading_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 89.1089
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-listening_current",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 93.1298
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 100.0
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 94.4444
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 93.913
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 83.0986
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 87.6238
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 6
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 91.379
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-listening_italy",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 89.7837
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-listening_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-listening|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-listening|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 12.3762
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Pre-A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g5-inglese-listening_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-listening|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-listening|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 87.6238
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_current",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 56.4516
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 53.8043
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 67.1756
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 58.6873
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 60.7324
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_italy",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 58.6406
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 13.7066
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 27.6062
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 33.2046
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 17.5676
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-italiano_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g8-italiano|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-italiano|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 7.9151
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_current",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 52.6531
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 53.8462
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 60.3053
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 57.0213
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 61.0316
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_italy",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 55.6983
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.2979
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.6809
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.8936
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.0851
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-matematica_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g8-matematica|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-matematica|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 14.0426
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_current",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 83.6735
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 80.7692
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 87.7863
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 83.0443
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 84.3198
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_italy",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 82.787
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1.9268
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Pre-A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 15.0289
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-reading_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-reading|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-reading|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 83.0443
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_current",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 73.4694
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 62.2222
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 77.0992
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 75.7225
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 74.0868
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_italy",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 69.6552
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0.9634
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Pre-A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 23.3141
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g8-inglese-listening_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g8-inglese-listening|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g8-inglese-listening|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 75.7225
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "A2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_current",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 77.1084
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 28.3951
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 13.3333
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 51.7293
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 53.9919
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_italy",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 58.2222
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 20.3008
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 27.9699
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 26.7669
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 15.7895
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-italiano_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g10-italiano|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-italiano|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 9.1729
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_current",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 75.0
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 23.2558
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 13.2075
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 50.0
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 52.2025
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_italy",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 53.3685
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 22.3881
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 27.6119
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 19.7015
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 16.7164
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g10-matematica_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g10-matematica|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g10-matematica|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 13.5821
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_current",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 58.9474
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 53.75
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 11.9048
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 44.3925
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50.5292
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_italy",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 51.7219
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 25.3894
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 30.2181
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.7664
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 15.109
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-italiano_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g13-italiano|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-italiano|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4.5171
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_current",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 61.0526
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 36.25
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 19.0476
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 49.3769
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 49.9762
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_italy",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 49.2254
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 25.7009
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.9221
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 22.1184
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 3"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_level_4",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica|level:level-4, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica|level:level-4",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 16.9782
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 4"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-matematica_level_5",
+      "question": "INVALSI: invalsiCompetence, view:g13-matematica|level:level-5, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-matematica|level:level-5",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 10.2804
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Livello 5"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_current",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 60.0
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 45.0
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 14.6341
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 52.7301
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50.6471
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_italy",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 53.7679
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 10.2964
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Non ancora B1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 36.9735
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "B1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-reading_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-reading|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-reading|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 52.7301
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "B2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_current",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 50.5263
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 38.75
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 14.6341
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 45.1713
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_tuscany",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 45.813
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_italy",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 42.5089
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_level_1",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening|level:level-1, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening|level:level-1",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 19.0031
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "Non ancora B1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_level_2",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening|level:level-2, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening|level:level-2",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 35.8255
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "B1"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_g13-inglese-listening_level_3",
+      "question": "INVALSI: invalsiCompetence, view:g13-inglese-listening|level:level-3, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g13-inglese-listening|level:level-3",
+            "towns": [
+              "046033",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 45.1713
+          },
+          {
+            "path": "/observations/1/levelLabel",
+            "value": "B2"
+          },
+          {
+            "path": "/observations/1/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_history",
+      "question": "INVALSI: invalsiCompetence, total, series, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 93.3333
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 85.5422
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 81.3008
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 92.233
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 86.0697
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 97.0732
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 94.6565
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2017-18"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2018-19"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2020-21"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2021-22"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2022-23"
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2023-24"
+          },
+          {
+            "path": "/observations/6/period",
+            "value": "2024-25"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_weighted_ratio_refused",
+      "question": "INVALSI: invalsiCompetence, total, weighted_ratio, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_valid_student_denominators_unavailable"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_trend_refused",
+      "question": "INVALSI: invalsiCompetence, total, trend, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_relative_change_refused",
+      "question": "INVALSI: invalsiCompetence, total, relative_change, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_anomaly_refused",
+      "question": "INVALSI: invalsiCompetence, total, anomaly, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_partial_refused",
+      "question": "INVALSI: invalsiCompetence, total, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_gap_refused",
+      "question": "INVALSI: invalsiCompetence, total, compare, ['2019-20']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "periods": [
+              "2019-20"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_period_not_frozen"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_calendar_refused",
+      "question": "INVALSI: invalsiCompetence, total, compare, ['2025']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_academic_year_required"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g8_current",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g8, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g8"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 12.9167
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 14.4444
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 8.3969
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 11.2766
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g8_tuscany",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g8, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g8",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 10.3103
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g8_italy",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g8, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g8",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 12.3307
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g13_current",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g13, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g13"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 1.0526
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 10.0
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 46.3415
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 5.618
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g13_tuscany",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g13, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g13",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 7.6539
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_g13_italy",
+      "question": "INVALSI: invalsiImplicitDispersion, view:g13, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "view:g13",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 8.6884
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_history",
+      "question": "INVALSI: invalsiImplicitDispersion, total, series, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 12.1739
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 11.0169
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 17.3745
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 16.9065
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 8.4034
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 10.0877
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 12.9167
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2017-18"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2018-19"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2020-21"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2021-22"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2022-23"
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2023-24"
+          },
+          {
+            "path": "/observations/6/period",
+            "value": "2024-25"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_weighted_ratio_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, weighted_ratio, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_valid_student_denominators_unavailable"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_trend_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, trend, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_relative_change_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, relative_change, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_anomaly_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, anomaly, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_partial_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_gap_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, compare, ['2019-20']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "periods": [
+              "2019-20"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_period_not_frozen"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_calendar_refused",
+      "question": "INVALSI: invalsiImplicitDispersion, total, compare, ['2025']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_academic_year_required"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g8_current",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g8, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g8"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 14.5833
+          },
+          {
+            "path": "/observations/1/value",
+            "value": null
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 17.7778
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 22.9008
+          },
+          {
+            "path": "/observations/4/value",
+            "value": null
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 17.234
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g8_tuscany",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g8, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g8",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 20.4153
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g8_italy",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g8, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g8",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 18.5066
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g13_current",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g13, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g13"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": null
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 16.8421
+          },
+          {
+            "path": "/observations/2/value",
+            "value": null
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 3.75
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 0.0
+          },
+          {
+            "path": "/observations/5/value",
+            "value": null
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 9.1493
+          },
+          {
+            "path": "/coverage/usable",
+            "value": 4
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g13_tuscany",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g13, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g13",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 11.8785
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_g13_italy",
+      "question": "INVALSI: invalsiAcademicExcellence, view:g13, benchmark_gap, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "view:g13",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 12.2613
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_history",
+      "question": "INVALSI: invalsiAcademicExcellence, total, series, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 20.8696
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 21.6102
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 16.6023
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 15.8273
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 19.7479
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 17.5439
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 14.5833
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2017-18"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2018-19"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2020-21"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2021-22"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2022-23"
+          },
+          {
+            "path": "/observations/5/period",
+            "value": "2023-24"
+          },
+          {
+            "path": "/observations/6/period",
+            "value": "2024-25"
+          }
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_weighted_ratio_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, weighted_ratio, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_valid_student_denominators_unavailable"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_trend_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, trend, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_relative_change_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, relative_change, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_anomaly_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, anomaly, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_partial_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, compare, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_gap_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, compare, ['2019-20']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "periods": [
+              "2019-20"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_period_not_frozen"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_calendar_refused",
+      "question": "INVALSI: invalsiAcademicExcellence, total, compare, ['2025']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_academic_year_required"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_level_history_refused",
+      "question": "INVALSI: invalsiCompetence, view:g5-inglese-reading|level:level-1, series, 2024-25; Comune del plesso.",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence",
+            "dimension": "view:g5-inglese-reading|level:level-1",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_level_history_not_published_in_catalog"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_grade10_cancelled_refused",
+      "question": "INVALSI: invalsiResults, view:g10-italiano, compare, ['2020-21']; Comune del plesso.",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "invalsiResults",
+            "dimension": "view:g10-italiano",
+            "periods": [
+              "2020-21"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_period_not_frozen"
+        ]
+      },
+      "reference": "Record ufficiali INVALSI v1.38, Totale / Comune plesso; snapshot compatto congelato. Aspettative lette dai record sorgente, mai dalle risposte del motore; annate e categorie conservate."
+    },
+    {
+      "id": "invalsi_invalsiResults_pair_False_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "invalsiResults"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiResults_pair_True_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "invalsiResults"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_pair_False_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "invalsiCompetence"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiCompetence_pair_True_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "invalsiCompetence"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_pair_False_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "invalsiImplicitDispersion"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiImplicitDispersion_pair_True_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "invalsiImplicitDispersion"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_pair_False_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "invalsiAcademicExcellence"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
+    },
+    {
+      "id": "invalsi_invalsiAcademicExcellence_pair_True_refused",
+      "question": "È revisionata la coppia con popolazione residente?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "invalsiAcademicExcellence"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "invalsi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Universo Comune plesso diverso dalla residenza; coppia non revisionata."
     }
   ]
 }
