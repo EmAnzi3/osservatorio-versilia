@@ -26254,6 +26254,2380 @@
         ]
       },
       "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+    },
+    {
+      "id": "regional_youthOtherStatus_current",
+      "question": "Indicatori regionali: youthOtherStatus current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.20175997079088
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 6.01649783701882
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_other_status_not_unemployment_or_neet",
+          "regional_youth_2020_absent_not_interpolated"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_rank",
+      "question": "Indicatori regionali: youthOtherStatus rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_history",
+      "question": "Indicatori regionali: youthOtherStatus history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.25
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 5.49
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 6.32
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 6.5
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 5.09
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 6.01649783701882
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_tuscany",
+      "question": "Indicatori regionali: youthOtherStatus tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5.8305374855463
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_absolute_change_refused",
+      "question": "Indicatori regionali: youthOtherStatus absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_relative_change_refused",
+      "question": "Indicatori regionali: youthOtherStatus relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_percentage_points_refused",
+      "question": "Indicatori regionali: youthOtherStatus percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_trend_refused",
+      "question": "Indicatori regionali: youthOtherStatus trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_pooling_refused",
+      "question": "Indicatori regionali: youthOtherStatus pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_anomaly_refused",
+      "question": "Indicatori regionali: youthOtherStatus anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_pair_0_refused",
+      "question": "Indicatori regionali: youthOtherStatus pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_pair_1_refused",
+      "question": "Indicatori regionali: youthOtherStatus pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "youthOtherStatus"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_italy_refused",
+      "question": "Indicatori regionali: youthOtherStatus italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_period_refused",
+      "question": "Indicatori regionali: youthOtherStatus period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youthOtherStatus_counts_refused",
+      "question": "Indicatori regionali: youthOtherStatus counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_current",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 9.56569543705333
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 12.861136999068
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_foreign_birth_not_citizenship_all_enterprises_or_residents"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_rank",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_history",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 11.64
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 12.15
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 12.33
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 13.19
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 15.5
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 13.18
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 12.861136999068
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_tuscany",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24.0749483313925
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_absolute_change_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_relative_change_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_percentage_points_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_trend_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_pooling_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_anomaly_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_pair_0_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_pair_1_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "foreignBornSoleProprietorShare"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_italy_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_period_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_foreignBornSoleProprietorShare_counts_refused",
+      "question": "Indicatori regionali: foreignBornSoleProprietorShare counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "foreignBornSoleProprietorShare",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_current",
+      "question": "Indicatori regionali: emsResponseTimeP75 current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 10.8166666666667
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 13.7666666666667
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_p75_not_mean_or_pooled_percentile",
+          "regional_small_intervention_counts_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_rank",
+      "question": "Indicatori regionali: emsResponseTimeP75 rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_history",
+      "question": "Indicatori regionali: emsResponseTimeP75 history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 11.4
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 12
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 12.2
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 13
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 13.7
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 13.42
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 13.7666666666667
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_tuscany",
+      "question": "Indicatori regionali: emsResponseTimeP75 tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 14.9
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_absolute_change_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_relative_change_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_percentage_points_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_trend_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_pooling_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_anomaly_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_pair_0_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_pair_1_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "emsResponseTimeP75"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_italy_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_period_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_emsResponseTimeP75_counts_refused",
+      "question": "Indicatori regionali: emsResponseTimeP75 counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "emsResponseTimeP75",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_current",
+      "question": "Indicatori regionali: disability064Per1000 current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.64996977286467
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 8.71112201705417
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_administrative_recognition_not_health_prevalence"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_rank",
+      "question": "Indicatori regionali: disability064Per1000 rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "disability064Per1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_history",
+      "question": "Indicatori regionali: disability064Per1000 history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.32
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 5.34
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.66
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 5.46
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 4.9
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 3.22
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 8.71112201705417
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_tuscany",
+      "question": "Indicatori regionali: disability064Per1000 tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5.73
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_absolute_change_refused",
+      "question": "Indicatori regionali: disability064Per1000 absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_relative_change_refused",
+      "question": "Indicatori regionali: disability064Per1000 relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_percentage_points_refused",
+      "question": "Indicatori regionali: disability064Per1000 percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_trend_refused",
+      "question": "Indicatori regionali: disability064Per1000 trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_pooling_refused",
+      "question": "Indicatori regionali: disability064Per1000 pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "disability064Per1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_anomaly_refused",
+      "question": "Indicatori regionali: disability064Per1000 anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "disability064Per1000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_pair_0_refused",
+      "question": "Indicatori regionali: disability064Per1000 pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "disability064Per1000"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_pair_1_refused",
+      "question": "Indicatori regionali: disability064Per1000 pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "disability064Per1000"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_italy_refused",
+      "question": "Indicatori regionali: disability064Per1000 italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_period_refused",
+      "question": "Indicatori regionali: disability064Per1000 period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_disability064Per1000_counts_refused",
+      "question": "Indicatori regionali: disability064Per1000 counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "disability064Per1000",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_current",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 75
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 33.333333333
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_online_effective_2022_not_release_2024",
+          "regional_online_basket_24_to_27_not_homogeneous"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_rank",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_history",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 33.333333333
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_tuscany",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 33.6538461538462
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_absolute_change_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_relative_change_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_percentage_points_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_trend_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_pooling_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_anomaly_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_pair_0_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_pair_1_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalOnlineServicesAdvanced"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_italy_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_period_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_municipalOnlineServicesAdvanced_counts_refused",
+      "question": "Indicatori regionali: municipalOnlineServicesAdvanced counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_current",
+      "question": "Indicatori regionali: innovationBusinessShare current",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.98158051099228
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 8.70818915801615
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "regional_ateco_classification_not_innovation_quality_or_research_spending"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_rank",
+      "question": "Indicatori regionali: innovationBusinessShare rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_history",
+      "question": "Indicatori regionali: innovationBusinessShare history",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.97
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 8.07
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 7.9
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 8.06
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 8.4
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 8.6
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 8.70818915801615
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_tuscany",
+      "question": "Indicatori regionali: innovationBusinessShare tuscany",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 8.9178377031752
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_absolute_change_refused",
+      "question": "Indicatori regionali: innovationBusinessShare absolute change refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_relative_change_refused",
+      "question": "Indicatori regionali: innovationBusinessShare relative change refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_percentage_points_refused",
+      "question": "Indicatori regionali: innovationBusinessShare percentage points refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_trend_refused",
+      "question": "Indicatori regionali: innovationBusinessShare trend refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_pooling_refused",
+      "question": "Indicatori regionali: innovationBusinessShare pooling refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_native_components_or_joint_distribution_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_anomaly_refused",
+      "question": "Indicatori regionali: innovationBusinessShare anomaly refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_pair_0_refused",
+      "question": "Indicatori regionali: innovationBusinessShare pair 0 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_pair_1_refused",
+      "question": "Indicatori regionali: innovationBusinessShare pair 1 refused",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "innovationBusinessShare"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_italy_refused",
+      "question": "Indicatori regionali: innovationBusinessShare italy refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_period_refused",
+      "question": "Indicatori regionali: innovationBusinessShare period refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_innovationBusinessShare_counts_refused",
+      "question": "Indicatori regionali: innovationBusinessShare counts refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "innovationBusinessShare",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_youth_missing_2020",
+      "question": "Indicatori regionali: youth missing 2020",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "youthOtherStatus",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_online_not_2024",
+      "question": "Indicatori regionali: online not 2024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_period_not_frozen"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
+    },
+    {
+      "id": "regional_online_historical_gap_refused",
+      "question": "Indicatori regionali: online historical gap refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalOnlineServicesAdvanced",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "regional_benchmark_scope_or_period_not_reviewed"
+        ]
+      },
+      "reference": "Fixed regional transcription ind05/10/14/16/19 2024, ind18 effective 2022; formulas document source universes, numerical counts/joint distributions absent. Fixed Massarosa historical cells distinct from full frozen replay. No native count back-calculation or certified temporal continuity."
     }
   ]
 }

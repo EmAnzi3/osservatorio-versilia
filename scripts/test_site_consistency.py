@@ -99,6 +99,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     classification_regressions(catalog_path)
     from test_semantic_water_quality_adapters import regressions as water_quality_regressions
     water_quality_regressions(catalog_path)
+    from test_semantic_regional_adapters import regressions as regional_regressions
+    regional_regressions(catalog_path)
     from test_semantic_tourism_adapters import regressions as tourism_regressions
     tourism_regressions(catalog_path)
     from test_semantic_rgs_adapters import regressions as rgs_regressions

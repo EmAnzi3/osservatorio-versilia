@@ -1,0 +1,185 @@
+# A6 — baseline delle prestazioni
+
+Catalogo `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`; motore `167401d373d61da97c925f67da4cdec2b774f110cf9138dfa55f3bad3f5d8f1b`; domande `92453a2b3f2b80e66bf773aeeffd919a3263cf8a3022c570a93611cd0dfaee1a`.
+
+Hash degli adapter: {"adapterImplementationSha256": "988d1d32a0a754c0707a8c7b0acc4c3af1218bb7548ea824fd2ab6df71a1ff52", "agricultureAdapterSha256": "558a510c662ff1c21d93d90d3ece81f19423bffee4aef2032640a74f424de5b2", "agricultureProfileAdapterSha256": "3b65fa2c02807e5454d7e59110ab6ba0990a7272ca11014ef625a6088a3f3b86", "arsAdapterSha256": "6b13af3d84f9313adf9aff0b39f6338fc2a227981053ca7748d54d348b47ef6f", "bathingAdapterSha256": "562061699d57c58292c702e2598d883ee05348de649caad1c50f3719880285a4", "businessAdapterSha256": "5b1f9c79a0558523cadc802e16060fb98558d0bac1a665e6a230b0ce161e6523", "censusAdapterSha256": "528c7e1e2e66c2490eeef4419dd08f2d05790fc13ca58bfdf34cb369495bd96e", "classificationAdapterSha256": "b1b480a0e46be5f6d87819a22120969ce1f80dc591c5622339ba4a4fac674a01", "climateAdapterSha256": "62a385a9a49a9ef9e91dc3e25f6f77b2be3a6a259c38950fc493dcc0713c886f", "coastAdapterSha256": "1ace0bf132cfa6200b65997dd397e9e3ad47ae5f083e1d4fae33f878572fea09", "commutingAdapterSha256": "98385b92c620a8e08c0d3d70d8bb52c60d62929f4b8afce38a59a064ada634b6", "demographySchoolAdapterSha256": "c4631a7c742db0286882c3489e681188a2da42744094727a218fb442b43a7bcf", "distinctFinanceAdapterSha256": "3f8e6f31da9ee9d54ab2853d2130c50ea3a021bda48b255b81ed669a3937418c", "environmentAdapterSha256": "49fc8bb55c5dc18efa32d5398a87cd6d471e90a9913d00a22a12e075e8d7c793", "extractiveAdapterSha256": "4261110cd0fadd43b8691be3f2da2d40a23e98fcbe11942af311ddce98490972", "financeAdapterSha256": "dfac1ca93eeb990105fc188bffc5d76d6c32bb0d021da832b11d65bec3b98879", "fragilityAdapterSha256": "b1b104bb69ebbb5dfecd9061955b6113b342f583746e43eb12986a719fefd76e", "geographyAdapterSha256": "a06095ad1f650d060880fb66ae88bf37a71709a77e2a5d2992aee92e996e6d71", "hazardAdapterSha256": "750c4833fcd93ebc03c7ff32b4c585861e35d231b545cf0aefc77453f3dfc8af", "maritimeAdapterSha256": "bced33dc09761daa64e54ca69c35822ba603bbaebc370c3f9923ccf1eb6dd3e2", "mefAdapterSha256": "119bfba1c853790b4ee3aa74e3b88d16d6019abd597e4471512092f528fe7496", "pabAdapterSha256": "fad0391a396cf4e9a6ee32e1ac965fe4a10f3684fccc5d0690efd7435452a1b8", "regionalAdapterSha256": "2a0239fcce20505dec2e0be89a2d6e2b358e4dde5e2b4333bd337c8caa6f5262", "remediationAdapterSha256": "303269e55e8d4f5a2275b45a96833df27fc755cd61b035feb38052883a673368", "rgsAdapterSha256": "b7bd7fb6a1ea5d3b5a94d6bb6a4d879939471bb6f46f95d07fcd44dfaa80d5af", "soilAdapterSha256": "13f5119f1a87111b8f2e689f4901b3ec6c6900a4425fbc0de899bec363d3ed50", "territorialAdapterSha256": "403f4143cf5557763af3b90f0b122afe33ee6db8d3270a3299e51e482576b465", "territoryAdapterSha256": "ad447b28f098f32d6d15169300b843df24ee8e1d3f9e06d028cc6f1aa91d9e97", "tourismAdapterSha256": "768f1f61e2cfec18b2f3e6a35c3989b0468f67cd6b594c59c7053193486bd4b8", "waterQualityAdapterSha256": "26a2406f232176661c63411a454bb051466af782a1d1c9db4e4ecf734ca394c7"}.
+
+Ambiente: Python 3.12.14 CPython, Linux-6.18.44-x86_64-with-glibc2.39, x86_64; CPU visibili 9, quota cgroup `800000 100000`.
+
+Suite di correttezza PASS prima delle misure. Millisecondi; p95 interpolato. Esecuzione sequenziale locale: non è uno stress test o una promessa di latenza in produzione. Cache filesystem non controllata.
+
+| Carico | Campioni | Mediana ms | p95 ms | Massimo ms |
+|---|---|---|---|---|
+| Costruzione/validazione motore | 5 | 344.979 | 349.083 | 349.577 |
+| regional_emsResponseTimeP75_current · prima query, nuova istanza | 5 | 3.948 | 4.880 | 5.022 |
+| regional_emsResponseTimeP75_current · query con cache applicativa | 30 | 3.018 | 3.724 | 4.414 |
+| regional_municipalOnlineServicesAdvanced_history · prima query, nuova istanza | 5 | 3.446 | 5.115 | 5.532 |
+| regional_municipalOnlineServicesAdvanced_history · query con cache applicativa | 30 | 2.446 | 4.577 | 4.861 |
+| regional_youthOtherStatus_pooling_refused · prima query, nuova istanza | 5 | 1.830 | 3.279 | 3.477 |
+| regional_youthOtherStatus_pooling_refused · query con cache applicativa | 30 | 1.710 | 2.595 | 3.273 |
+| tourism_foreignTourismShare_pooled · prima query, nuova istanza | 5 | 6.056 | 6.877 | 7.049 |
+| tourism_foreignTourismShare_pooled · query con cache applicativa | 30 | 2.341 | 3.536 | 5.853 |
+| tourism_tourismBeds_history · prima query, nuova istanza | 5 | 254.549 | 275.498 | 279.885 |
+| tourism_tourismBeds_history · query con cache applicativa | 30 | 140.105 | 194.546 | 237.345 |
+| tourism_tourismBedsPer1000_history_refused · prima query, nuova istanza | 5 | 1.129 | 1.268 | 1.271 |
+| tourism_tourismBedsPer1000_history_refused · query con cache applicativa | 30 | 0.794 | 1.155 | 1.326 |
+| rgs_municipalStaffAgeStructure_age_age55plus_pooled · prima query, nuova istanza | 5 | 1.975 | 2.490 | 2.542 |
+| rgs_municipalStaffAgeStructure_age_age55plus_pooled · query con cache applicativa | 30 | 1.565 | 2.334 | 2.349 |
+| rgs_training_total_versilia · prima query, nuova istanza | 5 | 1.871 | 2.554 | 2.582 |
+| rgs_training_total_versilia · query con cache applicativa | 30 | 1.290 | 1.892 | 2.162 |
+| rgs_training_pooling_refused · prima query, nuova istanza | 5 | 1.993 | 3.636 | 3.923 |
+| rgs_training_pooling_refused · query con cache applicativa | 30 | 1.492 | 2.267 | 3.039 |
+| mef_incomeSourceProfile_source_employment_pooled · prima query, nuova istanza | 5 | 3.668 | 5.115 | 5.311 |
+| mef_incomeSourceProfile_source_employment_pooled · query con cache applicativa | 30 | 3.802 | 10.781 | 14.308 |
+| mef_taxpayersAdultPopulationRate_total_pooled · prima query, nuova istanza | 5 | 15.621 | 69.355 | 81.828 |
+| mef_taxpayersAdultPopulationRate_total_pooled · query con cache applicativa | 30 | 11.559 | 15.439 | 15.542 |
+| mef_incomeSourceProfile_pair_refused · prima query, nuova istanza | 5 | 3.634 | 7.370 | 8.214 |
+| mef_incomeSourceProfile_pair_refused · query con cache applicativa | 30 | 1.176 | 1.750 | 1.914 |
+| water_quality_case_rosse_5 · prima query, nuova istanza | 5 | 3.619 | 4.594 | 4.620 |
+| water_quality_case_rosse_5 · query con cache applicativa | 30 | 2.246 | 3.043 | 4.078 |
+| water_quality_localities_046030 · prima query, nuova istanza | 5 | 5.861 | 7.755 | 8.063 |
+| water_quality_localities_046030 · query con cache applicativa | 30 | 3.294 | 9.062 | 9.708 |
+| water_quality_weighted_ratio_refused · prima query, nuova istanza | 5 | 1.292 | 1.850 | 1.950 |
+| water_quality_weighted_ratio_refused · query con cache applicativa | 30 | 0.920 | 3.035 | 4.014 |
+| classification_part_coastalZone_046018 · prima query, nuova istanza | 5 | 2.664 | 3.512 | 3.613 |
+| classification_part_coastalZone_046018 · query con cache applicativa | 30 | 1.561 | 2.511 | 2.906 |
+| classification_total_rank_refused · prima query, nuova istanza | 5 | 1.103 | 1.560 | 1.626 |
+| classification_total_rank_refused · query con cache applicativa | 30 | 0.807 | 1.118 | 1.270 |
+| agriculture_profiles_female_pooled · prima query, nuova istanza | 5 | 2.981 | 5.255 | 5.656 |
+| agriculture_profiles_female_pooled · query con cache applicativa | 30 | 2.576 | 3.785 | 4.216 |
+| agriculture_profiles_organic_series · prima query, nuova istanza | 5 | 3.210 | 3.706 | 3.801 |
+| agriculture_profiles_organic_series · query con cache applicativa | 30 | 2.554 | 3.665 | 3.826 |
+| agriculture_profiles_organic_pooling_refused · prima query, nuova istanza | 5 | 1.156 | 1.462 | 1.523 |
+| agriculture_profiles_organic_pooling_refused · query con cache applicativa | 30 | 1.002 | 1.762 | 2.371 |
+| climate_temperature_current · prima query, nuova istanza | 5 | 2.831 | 3.574 | 3.736 |
+| climate_temperature_current · query con cache applicativa | 30 | 1.738 | 2.536 | 3.529 |
+| climate_tmin_annual_trend · prima query, nuova istanza | 5 | 4.232 | 4.893 | 5.047 |
+| climate_tmin_annual_trend · query con cache applicativa | 30 | 3.517 | 4.787 | 5.152 |
+| climate_precipitation_pooling_refused · prima query, nuova istanza | 5 | 1.200 | 2.115 | 2.222 |
+| climate_precipitation_pooling_refused · query con cache applicativa | 30 | 0.976 | 1.577 | 1.658 |
+| pab_pabProgrammedInterventions · prima query, nuova istanza | 5 | 26.458 | 28.611 | 29.125 |
+| pab_pabProgrammedInterventions · query con cache applicativa | 30 | 8.227 | 10.388 | 10.977 |
+| pab_pabInterventionsCompleted_share_pooled · prima query, nuova istanza | 5 | 26.833 | 36.785 | 39.074 |
+| pab_pabInterventionsCompleted_share_pooled · query con cache applicativa | 30 | 8.624 | 11.617 | 14.440 |
+| pab_approved_operational_refused · prima query, nuova istanza | 5 | 1.109 | 6.250 | 7.497 |
+| pab_approved_operational_refused · query con cache applicativa | 30 | 0.758 | 0.936 | 1.023 |
+| remediation_total · prima query, nuova istanza | 5 | 5.527 | 9.216 | 9.865 |
+| remediation_total · query con cache applicativa | 30 | 3.318 | 5.078 | 12.328 |
+| remediation_pooled · prima query, nuova istanza | 5 | 4.969 | 5.620 | 5.652 |
+| remediation_pooled · query con cache applicativa | 30 | 3.247 | 4.523 | 5.183 |
+| remediation_history_refused · prima query, nuova istanza | 5 | 1.523 | 1.807 | 1.871 |
+| remediation_history_refused · query con cache applicativa | 30 | 0.876 | 1.358 | 2.758 |
+| extractive_sites_active · prima query, nuova istanza | 5 | 3.805 | 4.265 | 4.374 |
+| extractive_sites_active · query con cache applicativa | 30 | 2.095 | 3.396 | 3.842 |
+| extractive_prc_pooled · prima query, nuova istanza | 5 | 4.855 | 5.644 | 5.764 |
+| extractive_prc_pooled · query con cache applicativa | 30 | 3.398 | 4.222 | 5.982 |
+| extractive_production_history · prima query, nuova istanza | 5 | 4.990 | 5.506 | 5.621 |
+| extractive_production_history · query con cache applicativa | 30 | 3.599 | 4.158 | 4.216 |
+| maritime_tourist_pooled · prima query, nuova istanza | 5 | 3.035 | 3.564 | 3.650 |
+| maritime_tourist_pooled · query con cache applicativa | 30 | 2.317 | 2.879 | 3.156 |
+| maritime_mean_due_pooled · prima query, nuova istanza | 5 | 2.721 | 4.967 | 5.512 |
+| maritime_mean_due_pooled · query con cache applicativa | 30 | 2.310 | 2.881 | 5.053 |
+| maritime_median_weighting_refused · prima query, nuova istanza | 5 | 1.220 | 1.474 | 1.494 |
+| maritime_median_weighting_refused · query con cache applicativa | 30 | 0.870 | 1.140 | 1.292 |
+| bathing_quality_pooled · prima query, nuova istanza | 5 | 1.949 | 2.706 | 2.811 |
+| bathing_quality_pooled · query con cache applicativa | 30 | 1.490 | 2.014 | 2.333 |
+| bathing_samples_pooled · prima query, nuova istanza | 5 | 2.086 | 2.253 | 2.258 |
+| bathing_samples_pooled · query con cache applicativa | 30 | 1.450 | 2.123 | 2.812 |
+| bathing_blue_history · prima query, nuova istanza | 5 | 4.253 | 9.433 | 10.627 |
+| bathing_blue_history · query con cache applicativa | 30 | 2.057 | 3.700 | 4.532 |
+| coast_protection_pooled · prima query, nuova istanza | 5 | 2.369 | 4.167 | 4.592 |
+| coast_protection_pooled · query con cache applicativa | 30 | 1.262 | 1.832 | 3.202 |
+| coast_dynamics_erosion_pooled · prima query, nuova istanza | 5 | 2.173 | 3.036 | 3.112 |
+| coast_dynamics_erosion_pooled · query con cache applicativa | 30 | 1.421 | 4.047 | 5.201 |
+| coast_mixed_universe_refused · prima query, nuova istanza | 5 | 1.532 | 2.065 | 2.079 |
+| coast_mixed_universe_refused · query con cache applicativa | 30 | 0.963 | 2.991 | 5.000 |
+| ifc_municipalFragility_series · prima query, nuova istanza | 5 | 2.302 | 3.042 | 3.154 |
+| ifc_municipalFragility_series · query con cache applicativa | 30 | 1.684 | 3.266 | 3.498 |
+| ifc_access_tuscany_gap · prima query, nuova istanza | 5 | 15.234 | 27.878 | 30.635 |
+| ifc_access_tuscany_gap · query con cache applicativa | 30 | 7.406 | 8.980 | 9.695 |
+| ifc_lowProductivityEmployment_relative_change_refused · prima query, nuova istanza | 5 | 1.277 | 1.650 | 1.670 |
+| ifc_lowProductivityEmployment_relative_change_refused · query con cache applicativa | 30 | 0.888 | 1.315 | 1.472 |
+| hazard_flood_pooled · prima query, nuova istanza | 5 | 2.047 | 2.695 | 2.843 |
+| hazard_flood_pooled · query con cache applicativa | 30 | 1.256 | 1.722 | 2.886 |
+| hazard_landslide_pooled_area · prima query, nuova istanza | 5 | 2.471 | 2.551 | 2.570 |
+| hazard_landslide_pooled_area · query con cache applicativa | 30 | 1.421 | 2.628 | 3.294 |
+| hazard_mixed_maps_refused · prima query, nuova istanza | 5 | 4.033 | 5.423 | 5.617 |
+| hazard_mixed_maps_refused · query con cache applicativa | 30 | 3.113 | 4.189 | 4.626 |
+| territory_protected_pooled · prima query, nuova istanza | 5 | 2.262 | 3.457 | 3.639 |
+| territory_protected_pooled · query con cache applicativa | 30 | 1.336 | 1.905 | 2.183 |
+| territory_network_pooled · prima query, nuova istanza | 5 | 1.951 | 2.142 | 2.163 |
+| territory_network_pooled · query con cache applicativa | 30 | 1.164 | 1.791 | 1.855 |
+| territory_mixed_reference_refused · prima query, nuova istanza | 5 | 3.210 | 5.604 | 6.145 |
+| territory_mixed_reference_refused · query con cache applicativa | 30 | 2.265 | 3.194 | 3.369 |
+| soil_stock_pooled · prima query, nuova istanza | 5 | 2.258 | 5.235 | 5.899 |
+| soil_stock_pooled · query con cache applicativa | 30 | 1.279 | 1.802 | 2.425 |
+| soil_ucs_pooled · prima query, nuova istanza | 5 | 1.852 | 2.180 | 2.257 |
+| soil_ucs_pooled · query con cache applicativa | 30 | 1.356 | 2.414 | 3.015 |
+| soil_mixed_edition_refused · prima query, nuova istanza | 5 | 3.183 | 7.225 | 7.949 |
+| soil_mixed_edition_refused · query con cache applicativa | 30 | 1.974 | 3.334 | 3.817 |
+| geography_density_pooled · prima query, nuova istanza | 5 | 3.803 | 6.242 | 6.756 |
+| geography_density_pooled · query con cache applicativa | 30 | 1.603 | 2.199 | 2.336 |
+| geography_forest_pooled · prima query, nuova istanza | 5 | 2.097 | 2.261 | 2.275 |
+| geography_forest_pooled · query con cache applicativa | 30 | 1.324 | 3.680 | 4.614 |
+| geography_mixed_reference · prima query, nuova istanza | 5 | 2.621 | 3.357 | 3.484 |
+| geography_mixed_reference · query con cache applicativa | 30 | 1.927 | 3.129 | 3.980 |
+| population_current · prima query, nuova istanza | 5 | 3.467 | 12.785 | 15.087 |
+| population_current · query con cache applicativa | 30 | 1.076 | 1.385 | 1.435 |
+| female_weighted · prima query, nuova istanza | 5 | 2.169 | 2.433 | 2.498 |
+| female_weighted · query con cache applicativa | 30 | 1.417 | 1.759 | 2.075 |
+| ars_gap · prima query, nuova istanza | 5 | 5.909 | 9.351 | 10.176 |
+| ars_gap · query con cache applicativa | 30 | 1.145 | 2.413 | 3.447 |
+| aligned_association · prima query, nuova istanza | 5 | 4.579 | 7.258 | 7.820 |
+| aligned_association · query con cache applicativa | 30 | 2.278 | 3.579 | 3.660 |
+| mismatched_association · prima query, nuova istanza | 5 | 3.855 | 6.725 | 7.170 |
+| mismatched_association · query con cache applicativa | 30 | 1.726 | 2.585 | 3.019 |
+| ars_hypertension_age · prima query, nuova istanza | 5 | 5.230 | 7.945 | 8.398 |
+| ars_hypertension_age · query con cache applicativa | 30 | 1.336 | 1.962 | 2.065 |
+| ars_mortality_window_gap · prima query, nuova istanza | 5 | 5.364 | 8.360 | 8.936 |
+| ars_mortality_window_gap · query con cache applicativa | 30 | 1.169 | 1.651 | 1.701 |
+| business_frame_industry_weighted · prima query, nuova istanza | 5 | 2.809 | 3.312 | 3.423 |
+| business_frame_industry_weighted · query con cache applicativa | 30 | 1.372 | 1.809 | 1.870 |
+| business_endpoint_refused · prima query, nuova istanza | 5 | 1.568 | 1.850 | 1.897 |
+| business_endpoint_refused · query con cache applicativa | 30 | 1.053 | 1.829 | 3.059 |
+| census_young_employment · prima query, nuova istanza | 5 | 2.891 | 7.299 | 8.385 |
+| census_young_employment · query con cache applicativa | 30 | 1.228 | 2.194 | 2.500 |
+| census_diploma_trend_refused · prima query, nuova istanza | 5 | 1.320 | 1.345 | 1.345 |
+| census_diploma_trend_refused · query con cache applicativa | 30 | 0.881 | 1.285 | 1.397 |
+| finance_cash_weighted · prima query, nuova istanza | 5 | 2.564 | 3.270 | 3.433 |
+| finance_cash_weighted · query con cache applicativa | 30 | 1.286 | 2.098 | 3.775 |
+| finance_benchmark_refused · prima query, nuova istanza | 5 | 2.796 | 4.912 | 5.243 |
+| finance_benchmark_refused · query con cache applicativa | 30 | 0.849 | 1.216 | 1.247 |
+| distinct_debt_weighted · prima query, nuova istanza | 5 | 3.414 | 5.492 | 5.828 |
+| distinct_debt_weighted · query con cache applicativa | 30 | 1.555 | 1.986 | 2.153 |
+| distinct_debt_osl_refused · prima query, nuova istanza | 5 | 1.308 | 1.424 | 1.451 |
+| distinct_debt_osl_refused · query con cache applicativa | 30 | 0.918 | 1.364 | 1.412 |
+| demography_dependency · prima query, nuova istanza | 5 | 27.915 | 32.474 | 32.846 |
+| demography_dependency · query con cache applicativa | 30 | 1.305 | 1.793 | 2.309 |
+| school_class_size · prima query, nuova istanza | 5 | 27.311 | 33.705 | 34.150 |
+| school_class_size · query con cache applicativa | 30 | 1.522 | 2.129 | 3.418 |
+| demography_aligned_events · prima query, nuova istanza | 5 | 30.957 | 38.465 | 39.185 |
+| demography_aligned_events · query con cache applicativa | 30 | 2.452 | 3.718 | 4.173 |
+| school_calendar_year_refused · prima query, nuova istanza | 5 | 1.444 | 1.782 | 1.832 |
+| school_calendar_year_refused · query con cache applicativa | 30 | 0.806 | 1.042 | 1.118 |
+| commuting_pooled_selfContainment · prima query, nuova istanza | 5 | 58.851 | 60.479 | 60.742 |
+| commuting_pooled_selfContainment · query con cache applicativa | 30 | 1.344 | 1.653 | 2.006 |
+| commuting_pooled_commuterBalanceRate · prima query, nuova istanza | 5 | 56.986 | 61.888 | 62.613 |
+| commuting_pooled_commuterBalanceRate · query con cache applicativa | 30 | 1.528 | 1.903 | 3.484 |
+| commuting_hybrid_pair_refused · prima query, nuova istanza | 5 | 57.821 | 60.837 | 61.496 |
+| commuting_hybrid_pair_refused · query con cache applicativa | 30 | 1.590 | 2.016 | 2.120 |
+| environment_water_pooled · prima query, nuova istanza | 5 | 3.083 | 4.413 | 4.739 |
+| environment_water_pooled · query con cache applicativa | 30 | 1.530 | 2.581 | 2.971 |
+| environment_rd_weighting_refused · prima query, nuova istanza | 5 | 26.900 | 29.827 | 29.921 |
+| environment_rd_weighting_refused · query con cache applicativa | 30 | 1.193 | 2.278 | 4.459 |
+| environment_cost_gap · prima query, nuova istanza | 5 | 1.812 | 2.642 | 2.816 |
+| environment_cost_gap · query con cache applicativa | 30 | 1.090 | 1.712 | 1.903 |
+| agriculture_pooled_size · prima query, nuova istanza | 5 | 2.145 | 2.605 | 2.607 |
+| agriculture_pooled_size · query con cache applicativa | 30 | 1.539 | 3.649 | 4.692 |
+| agriculture_pooled_irrigated · prima query, nuova istanza | 5 | 2.291 | 3.074 | 3.253 |
+| agriculture_pooled_irrigated · query con cache applicativa | 30 | 1.516 | 1.894 | 2.105 |
+| agriculture_mixed_scope_refused · prima query, nuova istanza | 5 | 2.017 | 2.461 | 2.487 |
+| agriculture_mixed_scope_refused · query con cache applicativa | 30 | 1.361 | 1.788 | 1.985 |
+
+Allocazioni Python: picco 29.339 MiB; mantenute 27.783 MiB. Misura separata dai tempi; non include memoria nativa o RSS totale.
+
+I carichi comprendono confronto, rapporto ponderato, benchmark ARS, associazione descrittiva e rifiuto temporale. Non attestano le prestazioni di tutti i carrier, di un server concorrente o del futuro interprete linguistico. Prima di ottimizzare o fissare budget occorre ripetere su ambiente di esecuzione stabile.
