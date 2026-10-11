@@ -362,6 +362,8 @@ def audit(path, layer):
     import semantic_query_demography_school_adapters as demography
     expected.update(k for k in demography.KEYS if k in catalog["metrics"])
     import semantic_query_library_adapters as library
+    import semantic_query_road_network_adapters as road_network
+    expected.update(k for k in road_network.KEYS if k in catalog["metrics"])
     import semantic_query_seasonality_adapters as seasonality
     expected.update(k for k in seasonality.KEYS if k in catalog["metrics"])
     import semantic_query_hospital_adapters as hospital
