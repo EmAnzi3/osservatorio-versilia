@@ -23,6 +23,69 @@ def receipt(name="otto-per-mille.txt", url=URL):
 
 
 class PromotionTests(unittest.TestCase):
+    def test_deferred_notices_get_a_turn_next_run(self):
+        leads = [{"url": f"https://anci.lombardia.it/avviso/{n}", "title": f"Avviso MIM {n}"} for n in range(13)]
+        loader = lambda url, document: {"text": "Nessun allegato"}
+        first = {"discoveryQueue": leads.copy(), "opportunities": []}
+        promotion.apply_promotions(first, TODAY, loader=loader)
+        self.assertEqual(first["documentPromotion"]["checks"][-1]["status"], "deferred")
+        second = {"discoveryQueue": leads.copy(), "opportunities": []}
+        promotion.apply_promotions(second, TODAY, previous=first, loader=loader)
+        self.assertEqual(second["documentPromotion"]["checks"][0]["url"], leads[-1]["url"])
+
+    def test_layout_variants_and_conflicting_or_compound_notices(self):
+        r = receipt()
+        r["text"] = r["text"].replace("ART.", "Articolo").replace(" – ", " — ").replace("del giorno", "del")
+        item = promotion.parse_notice(r, URL, TODAY)
+        self.assertEqual(item["deadline_at"], "2026-10-23")
+        r["text"] += "\nArticolo 3 — Seconda procedura\n"
+        with self.assertRaisesRegex(ValueError, "ripetuti"):
+            promotion.parse_notice(r, URL, TODAY)
+        r = receipt()
+        r["text"] = r["text"].replace("ART. 4", "dalle ore 10.00 del giorno 5 ottobre 2026 e fino alle ore 12.00 del giorno 20 ottobre 2026.\nART. 4")
+        with self.assertRaisesRegex(ValueError, "ambigua"):
+            promotion.parse_notice(r, URL, TODAY)
+
+    def test_direct_pdf_and_failed_attachment_are_visible(self):
+        result = {"opportunities": [], "discoveryQueue": [{"url": URL, "title": "Avviso MIM"}]}
+        calls = []
+        def loader(url, document):
+            calls.append((url, document))
+            return receipt(url=url)
+        promotion.apply_promotions(result, TODAY, loader=loader)
+        self.assertEqual(calls, [(URL, True)])
+        self.assertEqual(result["documentPromotion"]["checks"][0]["documents"][0]["status"], "verified")
+        def failed(url, document):
+            if document:
+                raise ValueError("PDF scansionato o testo non estraibile")
+            return {"text": f'<a href="{URL}">Avviso</a>'}
+        result = {"opportunities": [], "discoveryQueue": [{"url": PAGE, "title": "Avviso MIM"}]}
+        promotion.apply_promotions(result, TODAY, loader=failed)
+        document = result["documentPromotion"]["checks"][0]["documents"][0]
+        self.assertEqual(document["url"], URL)
+        self.assertIn("scansionato", document["error"])
+        self.assertEqual(result["opportunities"], [])
+
+    def test_past_window_is_classified_without_inventing_eligibility(self):
+        r = receipt(); r["text"] = r["text"].replace("2026", "2025").replace("OTTO PER MILLE", "FONDO NON SUPPORTATO")
+        result = {"opportunities": [], "discoveryQueue": [{"url": URL, "title": "Avviso MIM"}]}
+        promotion.apply_promotions(result, TODAY, loader=lambda url, document: r)
+        check = result["documentPromotion"]["checks"][0]
+        self.assertEqual(check["status"], "expired")
+        self.assertEqual(check["documents"][0]["deadline"], "2025-10-23")
+        self.assertEqual(result["opportunities"], [])
+
+    def test_graduatoria_is_not_a_new_application_window(self):
+        result = {"opportunities": [], "discoveryQueue": [{"url": PAGE, "title": "Edilizia scolastica"}]}
+        calls = []
+        def loader(url, document):
+            calls.append(document)
+            return {"text": f'<p>È stata approvata la graduatoria definitiva.</p><a href="{URL}">Decreto</a>'}
+        promotion.apply_promotions(result, TODAY, loader=loader)
+        self.assertEqual(calls, [False])
+        self.assertEqual(result["documentPromotion"]["checks"][0]["status"], "administrative_update")
+        self.assertEqual(result["documentPromotion"]["checks"][0]["documents"][0]["url"], URL)
+
     def test_real_notices(self):
         for name, deadline, clock in [("otto-per-mille.txt", "2026-10-23", "23:59"),
                                        ("vulnerabilita-sismica.txt", "2026-10-14", "14:00")]:
