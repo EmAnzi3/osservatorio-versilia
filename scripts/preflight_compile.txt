@@ -174,3 +174,6 @@ scripts/semantic_query_vehicle_adapters.py
 scripts/test_semantic_vehicle_adapters.py
 scripts/semantic_query_municipal_tax_adapters.py
 scripts/test_semantic_municipal_tax_adapters.py
+
+scripts/semantic_query_tpl_adapters.py
+scripts/test_semantic_tpl_adapters.py
