@@ -456,6 +456,15 @@ def test_official_route_diagnostics():
                 assert request.call_args.args[1]['requestTimeoutSeconds'] == 120
                 assert coverage.probe_source('https://other.example/data', timeout_registry)['requestTimeoutSeconds'] == 20
         assert timeout_registry['requestTimeoutSeconds'] == 20
+    timeout_registry['requestTimeoutSecondsByHost'] = {'www.ars.toscana.it': 120}
+    with patch.object(coverage, 'ORIGINAL_PROBE_SOURCE', side_effect=reachable) as request:
+        for depth in ('light', 'deep'):
+            with patch.dict(os.environ, {'MONITOR_CHECK_DEPTH': depth}):
+                for route in ('/banche-dati/actions/esporta.php?indicatore=1499', '/banche-dati/dettaglio_indicatore-255'):
+                    assert coverage.probe_source('https://www.ars.toscana.it' + route, timeout_registry)['requestTimeoutSeconds'] == 120
+                assert coverage.probe_source('https://www.ars.toscana.it.evil.example/data', timeout_registry)['requestTimeoutSeconds'] == 20
+                assert coverage.probe_source('https://other.example/ars.toscana.it', timeout_registry)['requestTimeoutSeconds'] == 20
+        assert timeout_registry['requestTimeoutSeconds'] == 20
     import re
     policies = json.loads((ROOT / 'data/source-registry.json').read_text())['sourceProbePolicies']
     pattern = policies['https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/']['releasePattern']

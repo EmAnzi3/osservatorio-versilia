@@ -297,7 +297,8 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
                                 "ok": False, "error": policy.get("reason", ""), "result": "obsolete_path"}]}
     else:
         probe_registry = registry
-        timeout_override = policy.get("requestTimeoutSeconds")
+        host_timeout = registry.get("requestTimeoutSecondsByHost", {}).get(urllib.parse.urlsplit(url).hostname)
+        timeout_override = policy.get("requestTimeoutSeconds", host_timeout)
         if os.environ.get("MONITOR_CHECK_DEPTH") == "deep":
             timeout_override = policy.get("deepRequestTimeoutSeconds", timeout_override)
         if timeout_override is not None:

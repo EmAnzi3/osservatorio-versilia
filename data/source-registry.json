@@ -1154,5 +1154,9 @@
     "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": {
       "requestTimeoutSeconds": 120
     }
+  },
+  "requestTimeoutSecondsByHost": {
+    "ars.toscana.it": 120,
+    "www.ars.toscana.it": 120
   }
 }
