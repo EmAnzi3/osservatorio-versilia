@@ -19,4 +19,4 @@ Quick canonico locale prima di ogni push. Full completo locale in clone freddo e
 
 ## Manutenzioni e monitor separati
 
-Radar #398 conservato; monitor e snapshot mensile invariati. PNRR fotografia 25 settembre 2026, carburanti puntuali 3 ottobre e mensili fino a settembre. Nessuna acquisizione onerosa; RUNTS non acquisito. #329 refresh ASIA/AGCOM, #306 diagnostica Radar e #117 watchdog fuori dal lotto.
+Manutenzione separata autorizzata 11 ottobre: branch `fix/source-data-sisbon-mimit-20261011`, base main #403 `0fc9af7`, include Radar #402 pubblicato. SISBON 2.0 CSV pubblico integralmente acquisito, 154 codici (58 attivi/96 chiusi), adapter aggiornato con replay raw e rifiuti invariati; MIMIT 10 ottobre, storico puntuale conservato e mensili fino a settembre invariati. PNRR 25 settembre invariato. RUNTS Excel 11 ottobre acquisito in sola lettura (465 sedi comunali), fotografia candidata corrente distinta dai tassi 2025 non riconciliati. Esiti Quick/Full e monitor live nella PR dedicata; nessun merge/deploy di questo lotto. #338 conserva il rapporto mensile, #329 ASIA/AGCOM e #117 watchdog restano separati; #306 archiviata.

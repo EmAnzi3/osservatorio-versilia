@@ -613,7 +613,8 @@
     "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
     "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
-    "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual"
+    "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual",
+    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -877,7 +878,8 @@
     "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular",
     "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
-    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual"
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
+    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {
@@ -1125,6 +1127,16 @@
       },
       "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
       "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 273 ARCHIVE.zip"
+    },
+    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": {
+      "role": "data_export",
+      "acquisition": {
+        "method": "public_csv",
+        "path": "data/source-snapshots/sisbon-public-2026-10-11.csv.gz.b64",
+        "materializer": "scripts/update_sisbon_public.py",
+        "publishedReference": "2026-10-11"
+      },
+      "releaseCheck": "Compare regional IDs and procedure states in the public CSV; a proceeding is not confirmed contamination."
     }
   }
 }

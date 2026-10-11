@@ -8,8 +8,8 @@ KEYS = ('drinkingWaterQuality',)
 NATIVE = 'data/source-snapshots/ambiente-acqua-v124-data.json'
 URL = 'https://www.gaia-spa.it/analisiweb_v2/'
 PERIOD = '2° semestre 2025'
-FILE_SHA = '7ae5d8961e39e1d7f5dac60cfbb6e7e9c48ec9e89828dcc34816218d7e44d679'
-STRUCTURE_SHA = '870cde2674be112734acdc29fb90d7fb738d55f152088f680f28422165e117a4'
+FILE_SHA = 'f9b7c4f02c9ec313f74700fdac21d0f31b1a5b596a43596473a7f978a48cdf66'
+STRUCTURE_SHA = '22e5533d90ff4fa8bf1a33ed5cb0199d69124c00d0c9883c63d9f343466be738'
 
 
 def dimensions(key):

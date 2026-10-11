@@ -67,14 +67,14 @@ def main() -> None:
     active = sum(next(part["value"] for part in row["parts"] if part["key"] == "active") for row in remediation["rows"])
     closed = sum(next(part["value"] for part in row["parts"] if part["key"] == "closed") for row in remediation["rows"])
     procedures = [item for row in remediation["rows"] for item in row["procedures"]]
-    require((active, closed, len(procedures)) == (56, 96, 152), "SISBON: conteggi attesi 56/96/152")
-    require(len({item["id"] for item in procedures}) == 152, "SISBON: codice regionale non univoco")
+    require((active, closed, len(procedures)) == (58, 96, 154), "SISBON: conteggi attesi 58/96/154")
+    require(len({item["id"] for item in procedures}) == 154, "SISBON: codice regionale non univoco")
 
     camaiore = next(row for row in remediation["rows"] if row["slug"] == "camaiore")
     camaiore_active = next(part["value"] for part in camaiore["parts"] if part["key"] == "active")
     camaiore_closed = next(part["value"] for part in camaiore["parts"] if part["key"] == "closed")
-    require((camaiore_active, camaiore_closed) == (9, 22), "Camaiore: conteggi attesi 9/22")
-    require(math.isclose((camaiore_active - 56 / 7) / (56 / 7) * 100, 12.5), "Benchmark attivi errato")
+    require((camaiore_active, camaiore_closed) == (10, 22), "Camaiore: conteggi attesi 10/22")
+    require(math.isclose((camaiore_active - 58 / 7) / (58 / 7) * 100, 20.689655172413794), "Benchmark attivi errato")
     require(math.isclose(96 / 7, 13.714285714285714), "Benchmark chiusi errato")
 
     remediation_compare = function_source("remediationCompareMarkup", "signedNumber")
