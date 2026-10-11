@@ -441,6 +441,170 @@
           "pages": 8
         }
       ]
+    },
+    {
+      "coverage_id": "mlps-assistenti-sociali-manifestazione-2026",
+      "source_id": "mlps-social-services",
+      "source_label": "Ministero del Lavoro",
+      "publisher": "Ministero del Lavoro e delle Politiche Sociali",
+      "title": "Assistenti sociali · Adesione di Comuni e ATS al concorso nazionale",
+      "url": "https://www.lavoro.gov.it/notizie/pagine/assunzione-assistenti-sociali-riaperti-i-termini-la-manifestazione-di-interesse",
+      "required_terms": [
+        "11 novembre 2026",
+        "SIOSS",
+        "Comuni",
+        "285"
+      ],
+      "evidence_verified_at": "2026-10-11",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-09-28",
+      "first_seen_at": "2026-10-11",
+      "lifecycle_stage": "application_open",
+      "opens_at": null,
+      "deadline_at": "2026-11-11",
+      "deadline_time": "",
+      "eligibility": "conditional",
+      "applicant_type": "Comuni e Ambiti territoriali sociali tramite il capofila ATS",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "final_beneficiaries": "Servizi sociali territoriali",
+      "geographic_scope": "Italia",
+      "project_requirements": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso.",
+      "category": "sociale",
+      "description": "Manifestazione di interesse per il reclutamento nazionale di assistenti sociali; assunzioni a carico degli enti con risorse già disponibili.",
+      "condition_label": "Invio tramite ATS e copertura delle assunzioni",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Comuni singoli e ATS possono aderire tramite il capofila ATS sulla piattaforma SIOSS entro l’11 novembre 2026. Necessari delega al capofila (Comune non capofila), istanza, impegno all’assunzione e delibera dell’organo competente; verificare sostenibilità finanziaria, programmazione del fabbisogno, vincoli assunzionali, mobilità e riserve. Gli stipendi restano a carico degli enti con risorse già disponibili, senza nuovi contributi ministeriali. Le istanze perfezionate entro l’11 settembre restano valide e non vanno ripresentate. Il Ministero non garantisce l’attivazione del concorso."
+        }
+      },
+      "document_evidence": {
+        "url": "https://trasparenza.lavoro.gov.it/moduli/downloadFile.php?file=oggetto_allegati/2612716350486323170O__Omanifestazione_interesse_assunzioni_assistenti_sociali_maggio_2026.pdf",
+        "sha256": "ff562c13405549df751413118e3ceab8eeb21d46e6f3fa8d2d8b8ef94509b33c",
+        "pages": 12
+      },
+      "presentation": {
+        "source_label": "Ministero del Lavoro",
+        "category": "sociale",
+        "description": "Manifestazione di interesse per Comuni e ATS. Assunzioni con risorse già disponibili; invio esclusivamente tramite il capofila ATS su SIOSS.",
+        "condition_label": "Invio tramite ATS e copertura delle assunzioni",
+        "source_mark": "MLPS",
+        "source_class": "gov"
+      },
+      "supporting_documents": [
+        {
+          "url": "https://trasparenza.lavoro.gov.it/moduli/downloadFile.php?file=oggetto_allegati/262709582030803170O__Odd285del25092026.pdf",
+          "sha256": "0d53520e1bc68e0b7bf6c1b0b31357d84f46158c6dbdfa7ce354213f0ca9043b",
+          "pages": 3,
+          "reading_method": "OCR e riscontro visivo; scadenza confermata dalla pagina ufficiale"
+        }
+      ]
+    },
+    {
+      "coverage_id": "rt-generatori-kiev-cooperazione-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana",
+      "title": "Cooperazione internazionale · Generatori per la regione di Kiev",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-per-contributi-destinati-alla-fornitura-di-generatori-elettrici-alla-popolazione-della-regione-di-kiev",
+      "required_terms": [
+        "20302",
+        "12.10.2026",
+        "generatori"
+      ],
+      "evidence_verified_at": "2026-10-11",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-09-16",
+      "first_seen_at": "2026-10-11",
+      "lifecycle_stage": "application_open",
+      "opens_at": null,
+      "deadline_at": "2026-10-12",
+      "deadline_time": "",
+      "eligibility": "conditional",
+      "applicant_type": "Soggetti privi di scopo di lucro con i requisiti umanitari; formulario contempla enti pubblici",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "final_beneficiaries": "Popolazione e strutture di pubblica utilità nella regione di Kiev, Ucraina",
+      "geographic_scope": "Soggetti con sede in Italia; progetto nella regione di Kiev (Ucraina)",
+      "project_requirements": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga.",
+      "category": "generale",
+      "description": "Cooperazione internazionale per generatori a Kiev: enti pubblici contemplati dal formulario, con requisiti umanitari e cofinanziamento. Nessun intervento locale in Versilia.",
+      "condition_label": "Esperienza umanitaria e partner in Ucraina",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "L’avviso ammette soggetti privi di scopo di lucro e il formulario ufficiale contempla espressamente Ente Pubblico sia come proponente (15.a) sia come partner (16.b); previste modalità di invio per PA. Il Comune può valutare una candidatura solo se soddisfa i requisiti sostanziali: organizzazione non profit costituita da almeno tre anni, esperienza comprovata in cooperazione internazionale o aiuti umanitari, capacità amministrativa e finanziaria e partner/referenti operativi in Ucraina. Progetto per acquisto, trasporto, consegna e formazione su generatori da 20 kVA nella regione di Kiev; nessun intervento locale in Versilia. Contributo fino all’80%, massimo 96.368,75 euro; almeno 20% a carico proponente/partner, anche valorizzazioni. Domanda con formulario e budget via protocollo interoperabile o PEC entro il 12 ottobre 2026, come indicato dalla pagina ufficiale; conclusione entro il 31 dicembre 2026 salvo proroga."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5530617&nomeFile=Decreto+n.20302+del+14-09-2026-+Allegato+A+",
+        "sha256": "6fc24877f8e54017f724d05b3ab5676f7a1361472ca64e688ae762686ff4d617",
+        "pages": 8
+      },
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "category": "generale",
+        "description": "Generatori per Kiev; enti pubblici contemplati dal formulario, con esperienza umanitaria e partner in Ucraina. Non finanzia interventi in Versilia.",
+        "condition_label": "Esperienza umanitaria e partner in Ucraina",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      },
+      "supporting_documents": [
+        {
+          "url": "https://www.regione.toscana.it/documents/10180/160689289/Allegato%20B%20FORMULARIO%281%29.doc/5faaf2a2-c217-c68c-f297-98c9b27cdbcb",
+          "sha256": "de0025cd57a8488bcbfd1645d9445ad97822d89956aa3df7d0ac5f6235a2a215",
+          "reading_method": "Formulario integrale, sezioni 15.a e 16.b: Ente Pubblico"
+        }
+      ]
     }
   ],
   "reviewAssessments": [
@@ -869,6 +1033,22 @@
       "verifiedAt": "2026-10-11",
       "evidenceUrl": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/",
       "deadline": "2026-09-30"
+    },
+    {
+      "url": "https://anci.lombardia.it/dettaglio-circolari/202511281429-interventi-urgenti-di-edilizia-scolastica/",
+      "sourceTextSha256": "84f0f79b374f3bbb415c87970785c1b09046847d2a6432cc08936e26b8c0dd7c",
+      "status": "monitor",
+      "reasonCode": "administrative_update",
+      "reason": "Nota sulla legge 164/2025: stanziamenti futuri, non apertura di candidature. Articolo 6 letto; nessun termine o procedura di domanda vigente in questo documento.",
+      "action": "Scartata dalla coda; monitorare separatamente eventuali nuovi avvisi attuativi.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://anci.lombardia.it/documenti/22687-d.l. 127 MaturitÃ  conv. in L.164 del 2025.pdf",
+          "sha256": "4aa63b5d3ebba5588878927c66f9496899ece8d7873f174268c5e3fb763ac33a",
+          "pages": 14
+        }
+      ]
     }
   ]
 }

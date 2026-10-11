@@ -95,6 +95,21 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
                     if link:
                         cards.append((link.get_text(" ", strip=True), link["href"],
                                       excerpt.get_text(" ", strip=True) if excerpt else ""))
+    if source.get("id") == "mlps-social-services":
+        from bs4 import BeautifulSoup
+        from urllib.parse import urlsplit
+        if urlsplit(page_url).hostname in {"www.lavoro.gov.it", "lavoro.gov.it"}:
+            # The generic card parser can inherit the catalogue navigation URL.
+            # Bind each headline to its own official detail anchor instead.
+            structured_listing = True
+            cards = []
+            for link in BeautifulSoup(payload, "html.parser").select("a[href]"):
+                location = urlsplit(urljoin(page_url, link["href"]))
+                if location.hostname in {"www.lavoro.gov.it", "lavoro.gov.it"} and location.path.lower().startswith("/notizie/pagine/") and location.path.lower().rstrip("/") != "/notizie/pagine/notizie":
+                    card = link.find_parent(class_="item")
+                    heading = card.find(["h2", "h3"]) if card else None
+                    title = heading.get_text(" ", strip=True) if heading else link.get_text(" ", strip=True)
+                    cards.append((title, link["href"], card.get_text(" ", strip=True) if card else ""))
     try:
         feed = ET.fromstring(payload)
     except ET.ParseError:

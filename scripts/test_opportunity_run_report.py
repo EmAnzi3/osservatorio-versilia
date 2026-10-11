@@ -282,6 +282,35 @@ Sono ammessi anche enti pubblici titolari della superficie forestale.
     assert is_administrative_update("<p>Sono state approvate le graduatorie definitive.</p>")
     assert not is_administrative_update("<p>Sono state approvate le graduatorie definitive. Nuova finestra.</p>")
     assert not is_administrative_update("<p>È stata approvata la graduatoria definitiva. Riapertura delle domande.</p>")
+    from opportunity_radar_v03 import discovery_candidates
+    detail = "https://www.lavoro.gov.it/notizie/pagine/assunzione-assistenti-sociali-riaperti-i-termini-la-manifestazione-di-interesse"
+    mlps = {"id": "mlps-social-services", "includeTerms": ["manifestazione"], "municipalTerms": ["Comuni"]}
+    fixture = '<nav><a href="/notizie/Pagine/Notizie">Notizie</a></nav><article><a href="' + detail + '"><h3>Comuni: riaperti i termini per la manifestazione di interesse</h3></a></article>'
+    leads = discovery_candidates(mlps, fixture, "https://www.lavoro.gov.it/notizie")
+    assert len(leads) == 1 and leads[0]["url"] == detail
+    fixture = '<div class="item alternative"><a class="search-item-link" href="' + detail + '"></a><div><h2>Assunzione Assistenti sociali: riaperti i termini per la manifestazione di interesse</h2><p>Ambiti territoriali sociali e Comuni</p></div></div>'
+    leads = discovery_candidates(mlps, fixture, "https://www.lavoro.gov.it/notizie")
+    assert len(leads) == 1 and leads[0]["url"] == detail and leads[0]["title"].startswith("Assunzione")
+    news_titles = [
+        "17 Comuni fermani candidano progetti per la videosorveglianza",
+        "Approvati i progetti di videosorveglianza presentati da 11 Comuni",
+        "Approvati in Prefettura 31 progetti di videosorveglianza urbana",
+        "Approvati in Prefettura i progetti di videosorveglianza urbana",
+        "Approvazione graduatoria per cofinanziamento impianti videosorveglianza",
+        "Approvazione progetti di videosorveglianza",
+        "Approvazione progetti per potenziamento della videosorveglianza urbana",
+        "Assegnazione fondi per videosorveglianza a n.7 Comuni dell'Ascolano",
+    ]
+    allocations = _snapshot([])
+    allocations["referenceDate"] = "2026-10-11"
+    allocations["discoveryQueue"] = [{"title": title, "url": f"https://prefettura.interno.gov.it/it/notizie/{i}"} for i, title in enumerate(news_titles)]
+    assert build_actions(allocations)["discardedCount"] == 8
+    collect_document_links(allocations, loader=lambda u: (_ for _ in ()).throw(AssertionError("notizie, nessun documento da cercare")))
+    assert allocations["reviewDocumentLookup"] == []
+    for title in news_titles:
+        assert is_administrative_update(title, "https://prefettura.interno.gov.it/it/notizie/caso")
+        assert not is_administrative_update(title + ". Riapertura delle domande", "https://prefettura.interno.gov.it/it/notizie/caso")
+    assert not is_administrative_update("Avviso pubblico per nuovi progetti di videosorveglianza", "https://prefettura.interno.gov.it/it/notizie/caso")
     fresh = _snapshot([]);fresh["referenceDate"] = "2026-10-10"
     fresh["discoveryQueue"] = [{"title": "Avviso A", "url": page}, {"title": "Avviso B", "url": page+"secondo/"}]
     queued = build_actions(fresh)

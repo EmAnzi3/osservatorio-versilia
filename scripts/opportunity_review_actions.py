@@ -95,13 +95,25 @@ def reviewed_source(page, url):
     return None
 
 
-def is_administrative_update(page):
+def is_administrative_update(page, url=""):
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(page, "html.parser")
     for el in soup(["script", "style", "nav", "header", "footer"]):
         el.decompose()
     text = soup.get_text(" ", strip=True)
-    return bool(re.search(r"(?:approvata\s+la\s+graduatoria\s+definitiva|approvate\s+le\s+graduatorie\s+definitive)", text, re.I) and not re.search(r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|riapert[ui]|nuova\s+finestra", text, re.I))
+    # An explicit application window takes precedence over an allocation report.
+    if re.search(r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|riapert[ui]|riapertura|nuova\s+finestra|apert[uo]\s+(?:il\s+)?bando", text, re.I):
+        return False
+    if re.search(r"(?:approvata\s+la\s+graduatoria\s+definitiva|approvate\s+le\s+graduatorie\s+definitive)", text, re.I):
+        return True
+    # Prefecture headlines report named municipalities' existing projects.
+    # Do not extrapolate this rule to other publishers or generic funding news.
+    if urlsplit(url).hostname != "prefettura.interno.gov.it":
+        return False
+    heading = soup.find("h1")
+    headline = heading.get_text(" ", strip=True) if heading else text
+    return bool(re.search(r"videosorveglianza", headline, re.I) and re.search(
+        r"approvat[io]\b.*progetti|approvazione\s+(?:graduatoria|progetti)|assegnazione\s+fondi|comuni\s+\w*\s*candidano\s+progetti", headline, re.I))
 
 
 def build_actions(payload):
@@ -165,8 +177,8 @@ def build_actions(payload):
             deadline = assessment.get("deadline") or deadline
             if status == "covered" and not any(x.get("coverage_id") == assessment.get("representedCoverageId") for x in payload.get("opportunities") or []):
                 status, code, reason, action = "technical", "published_reference_missing", "La scheda precedentemente verificata non è presente nello snapshot corrente.", "Responsabilità del Radar: verificare il motivo della mancata pubblicazione."
-        elif lookup.get("classification") == "administrative_update" or (check_rows and all(c.get("status") == "administrative_update" for c in check_rows)):
-            status, code, reason, action = "monitor", "administrative_update", "La pagina comunica l’approvazione di una graduatoria, senza una nuova apertura documentata.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
+        elif is_administrative_update(str(item.get("title") or ""), str(item.get("url") or "")) or lookup.get("classification") == "administrative_update" or (check_rows and all(c.get("status") == "administrative_update" for c in check_rows)):
+            status, code, reason, action = "monitor", "administrative_update", "La notizia riguarda progetti già candidati, approvati o fondi assegnati; non documenta una nuova candidatura.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
         else:
             status, code, reason, action = _diagnosis(check, item)
         document_lookup = "found" if documents else ("not_attempted" if check.get("status") == "deferred" else "failed" if lookup.get("status") == "error" or (status == "retry" and check_rows) else "not_found" if check_rows or lookup.get("status") == "ok" else "not_attempted")
@@ -262,7 +274,7 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
             assessment = reviewed_source(text, row["url"])
             if assessment:
                 entry["assessment"] = assessment
-            if is_administrative_update(text):
+            if is_administrative_update(text, row["url"]):
                 entry["classification"] = "administrative_update"
         except Exception as exc:
             entry["errors"].append(str(exc))

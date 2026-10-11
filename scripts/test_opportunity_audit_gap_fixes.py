@@ -28,6 +28,17 @@ def test_reviewed_regional_seeds() -> None:
         item = next(x for x in result["opportunities"] if x["coverage_id"] == "rt-risorse-genetiche-agrarie-aca16b-2026")
         assert item["lifecycle_stage"] == stage
         assert item["deadline_at"] == "2026-11-30" and item["deadline_time"] == "13:00"
+    kiev = entries["rt-generatori-kiev-cooperazione-2026"]
+    assert kiev["deadline_at"] == "2026-10-12" and kiev["allow_recent_evidence_fallback"] is False
+    assert "15.a" in kiev["project_requirements"] and "nessun intervento locale" in kiev["project_requirements"]
+    assert kiev["supporting_documents"][0]["sha256"] == "de0025cd57a8488bcbfd1645d9445ad97822d89956aa3df7d0ac5f6235a2a215"
+    social = entries["mlps-assistenti-sociali-manifestazione-2026"]
+    result = {"opportunities": []}
+    fixed._inject_fix_entries(result, date(2026, 10, 11), detail_payloads={social["url"]: " | ".join(social["required_terms"])}, live=False)
+    item = next(x for x in result["opportunities"] if x["coverage_id"] == social["coverage_id"])
+    assert item["deadline_at"] == "2026-11-11" and item["municipality_role"] == "direct_applicant"
+    assert "SIOSS" in item["project_requirements"] and "senza nuovi contributi" in item["project_requirements"]
+    assert not fixed.core.verify_entry(social, date(2026, 10, 11), live=False)[0]
     assert "Firenze" in entries["rt-artea-immobile-sede-2026"]["project_requirements"]
     entry = entries["rt-spreco-alimentare-ets-partner-2026"]
     result = {"opportunities": []}
@@ -44,7 +55,7 @@ def test_reviewed_regional_seeds() -> None:
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
-    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026"}
+    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026", "rt-generatori-kiev-cooperazione-2026"}
     entry = entries[0]
     assert entry.get("coverage_id") == C4T_ID
     assert entry.get("deadline_at") == "2026-09-11"
