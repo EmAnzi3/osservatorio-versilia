@@ -74490,6 +74490,1031 @@
           "dimension_adapter_not_implemented"
         ]
       }
+    },
+    {
+      "id": "seasonality_compare_046005",
+      "question": "Stagionalità turistica · compare_046005",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 55.69144840034739,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046005",
+      "question": "Stagionalità turistica · gap_tuscany_046005",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 7.442016305455397,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046013",
+      "question": "Stagionalità turistica · compare_046013",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 60.05249044331603,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046013",
+      "question": "Stagionalità turistica · gap_tuscany_046013",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 11.803058348424038,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046018",
+      "question": "Stagionalità turistica · compare_046018",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50.85756504301019,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046018",
+      "question": "Stagionalità turistica · gap_tuscany_046018",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 2.6081329481181967,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046024",
+      "question": "Stagionalità turistica · compare_046024",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 56.81186156006498,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046024",
+      "question": "Stagionalità turistica · gap_tuscany_046024",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 8.56242946517299,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046028",
+      "question": "Stagionalità turistica · compare_046028",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50.33885934730476,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046028",
+      "question": "Stagionalità turistica · gap_tuscany_046028",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 2.0894272524127686,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046030",
+      "question": "Stagionalità turistica · compare_046030",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 56.92045212198763,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046030",
+      "question": "Stagionalità turistica · gap_tuscany_046030",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 8.671020027095636,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_compare_046033",
+      "question": "Stagionalità turistica · compare_046033",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 63.71711502971945,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_tuscany_046033",
+      "question": "Stagionalità turistica · gap_tuscany_046033",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 15.467682934827458,
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 48.24943209489199,
+            "tolerance": 1e-10
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_rank",
+      "question": "Stagionalità turistica · rank",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046028"
+          }
+        ],
+        "warnings": [
+          "seasonality_public_replay_not_native_monthly_panel",
+          "seasonality_sum_of_local_top_three_not_regional_top_three"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_series_refused",
+      "question": "Stagionalità turistica · series_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_single_annual_measure_no_monthly_or_historical_panel"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_absolute_change_refused",
+      "question": "Stagionalità turistica · absolute_change_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_single_annual_measure_no_monthly_or_historical_panel"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_relative_change_refused",
+      "question": "Stagionalità turistica · relative_change_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_single_annual_measure_no_monthly_or_historical_panel"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_percentage_points_refused",
+      "question": "Stagionalità turistica · percentage_points_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_single_annual_measure_no_monthly_or_historical_panel"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_trend_refused",
+      "question": "Stagionalità turistica · trend_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_single_annual_measure_no_monthly_or_historical_panel"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_weighted_ratio_refused",
+      "question": "Stagionalità turistica · weighted_ratio_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_monthly_panels_not_frozen_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_anomaly_refused",
+      "question": "Stagionalità turistica · anomaly_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_italy_refused",
+      "question": "Stagionalità turistica · gap_italy_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_benchmark_scope_or_period_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_gap_versilia_refused",
+      "question": "Stagionalità turistica · gap_versilia_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_benchmark_scope_or_period_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_period_2024_refused",
+      "question": "Stagionalità turistica · period_2024_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_period_2026_refused",
+      "question": "Stagionalità turistica · period_2026_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_period_2025-07_refused",
+      "question": "Stagionalità turistica · period_2025-07_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "total",
+            "periods": [
+              "2025-07"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "unsupported_annual_period:2025-07"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_dimension_month:07_refused",
+      "question": "Stagionalità turistica · dimension_month:07_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "month:07"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_dimension_numerator_refused",
+      "question": "Stagionalità turistica · dimension_numerator_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_dimension_denominator_refused",
+      "question": "Stagionalità turistica · dimension_denominator_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_dimension_nativeRatio_refused",
+      "question": "Stagionalità turistica · dimension_nativeRatio_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_dimension_view:normalized_refused",
+      "question": "Stagionalità turistica · dimension_view:normalized_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_correlation_0_refused",
+      "question": "Stagionalità turistica · correlation_0_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismSeasonality"
+          },
+          {
+            "metric": "tourismPresences"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "seasonality_correlation_1_refused",
+      "question": "Stagionalità turistica · correlation_1_refused",
+      "reference": "Fixed published municipal shares and regional concentration transcribed in test_semantic_seasonality_adapters.py; annual catalog/A3 snapshot replay, monthly counts not frozen; docs/A6_SEASONALITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismPresences"
+          },
+          {
+            "metric": "tourismSeasonality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "seasonality_pair_not_jointly_reviewed"
+        ]
+      }
     }
   ]
 }

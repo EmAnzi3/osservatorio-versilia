@@ -2,20 +2,20 @@
 
 ## Stato corrente — 11 ottobre 2026
 
-- Baseline dopo il merge manuale #403: main `0fc9af79e097c8abcbe66a63bf8d290f0072b5c8`, comprende Radar #402. Redditi v43: 208/225 effettivi, 152/181 sorgente, 17 residui, 2.427 domande PASS. Quick/Full locali e CI della PR verdi; Full completo sul merge effettivo GREEN, build/deploy post-merge `38141187066` SUCCESS. Alberi ed evidenze distinti.
+- Baseline dopo merge manuale #406: main `63dace2c810bb9b13223fb1c360b282aa6a770c9`, albero `6fdf52029a1918c424b1f13e17f356b7963dd5e7`, identico al lotto ospedali verificato. Quick/Full completi locali e CI della #406 verdi; evidenze del merge distinte dalle identità di commit della PR. Copertura 209/225 effettivi, 153/181 sorgente, 16 residui, 2.476 domande PASS.
 - Catalogo effettivo invariato: 225 indicatori, 124 storici, 137 confronti, SHA `b9fd34b5cf0f81a84579efefc7554b71b2b515810a53d4fca036fa51d8935dc4`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-hospital-adapter`. A6.1–A6.3 pubblicate, A6.4 parziale; A6.5–A6.6 aperte, A7 non avviata.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-tourism-seasonality-adapter`. A6.1–A6.3 pubblicate, A6.4 parziale; A6.5–A6.6 aperte, A7 non avviata.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; dati/UI/asset/golden/workflow/Radar, 35 letture e due riepiloghi conservati.
 
 ## Lotto in verifica
 
-Strutture ospedaliere v44: un carrier 7/7, due viste 2025. Presidi localizzati distinti dai posti letto ogni 10.000 residenti. Confronto/ordinamento numerico di valori pubblici, non accessibilità, qualità o priorità politica. Replay del catalogo, non dei record ministeriali; data esatta dello stock, componenti e data del denominatore del tasso non congelati separatamente. Nessuna retro-derivazione, pooling, benchmark geografico, storia o coppia non revisionata. Metodo `docs/A6_HOSPITAL_ADAPTERS.md`.
+Concentrazione turistica v45: quota annuale 2025 dei tre mesi con più presenze, 7/7 Comuni; confronto, rango e scostamento Toscana in punti percentuali. Mesi selezionati per geografia, non trimestre estivo fisso; concentrazione distinta da volume/performance. Replay dei valori pubblici e risultato A3, non del pannello mensile originario assente. Vietate retro-derivazione, pooling dei numeratori locali, storico/mesi, benchmark Italia/Versilia, anomalie e coppie non revisionate. Metodo `docs/A6_SEASONALITY_ADAPTERS.md`.
 
-14 riferimenti pubblici indipendenti, zeri/pari merito, puntatori e prove ostili dopo cache. 49 nuove domande e 2.427 precedenti invariate; suite 2.476 PASS (1.414 letture/calcoli, 1.062 rifiuti). Copertura derivata 209/225 effettivi, 153/181 sorgente, 16 residui; collegamenti derivati in `reports/a6-hospitals/`; gate canonici da concludere sul medesimo albero.
+Sette quote e sette gap fissi indipendenti; puntatori, cache ostile e controesempio sulla selezione dei massimi. 34 nuove domande e 2.476 precedenti invariate; suite 2.510 PASS (1.429 letture/calcoli, 1.081 rifiuti). Copertura derivata 210/225 effettivi, 154/181 sorgente, 15 residui. Report in `reports/a6-seasonality/`; gate canonici da concludere sul medesimo albero.
 
 ## Prossima azione
 
-Quick canonico locale prima di ogni push. Full completo locale in clone freddo e CI Quick→Full sul medesimo albero prima della prontezza. Conservare log finali/ricevute, aggiornare prove e PR. Merge riservato al proprietario. Dopo merge manuale scegliere dal residuo derivato; chiusura metodologica distinta dal conteggio adapter.
+Quick canonico locale prima di ogni push. Pubblicare la PR tecnica dopo Quick GREEN; completare Full locale in clone freddo e CI Quick→Full prima della prontezza. Conservare ricevute/log, verificare identità di alberi e aggiornare PR. Merge riservato al proprietario. Dopo merge scegliere dal residuo derivato; chiusura metodologica distinta dal conteggio adapter.
 
 ## Manutenzioni e monitor separati
 
