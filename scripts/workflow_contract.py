@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -44,6 +45,19 @@ def validate_workflow_contract() -> dict[str, Any]:
         f"mancanti={sorted(declared_present - actual)}"
     )
     assert not (actual & declared_retired), f"Workflow retired ancora presenti: {sorted(actual & declared_retired)}"
+
+    for entry in entries:
+        allowed = entry.get("allowedTriggers")
+        if allowed is None:
+            continue
+        assert isinstance(allowed, list) and allowed and all(isinstance(event, str) for event in allowed)
+        source = (ROOT / entry["path"]).read_text(encoding="utf-8")
+        trigger_block = re.search(r"^on:\n((?:[ \t].*\n|\n)*)", source, re.MULTILINE)
+        assert trigger_block, f"Trigger workflow non leggibili: {entry['path']}"
+        triggers = set(re.findall(r"^  ([a-z_]+):", trigger_block.group(1), re.MULTILINE))
+        assert triggers == set(allowed), (
+            f"Trigger workflow fuori contratto: {entry['path']}: {sorted(triggers)} != {sorted(allowed)}"
+        )
 
     canonical = contract["canonical"]
     required_checks = canonical["requiredPullRequestChecks"]
