@@ -73122,6 +73122,1374 @@
           "real_income_benchmark_only_2024"
         ]
       }
+    },
+    {
+      "id": "hospital_total_046005",
+      "question": "Strutture ospedaliere · total_046005",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046013",
+      "question": "Strutture ospedaliere · total_046013",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046018",
+      "question": "Strutture ospedaliere · total_046018",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046024",
+      "question": "Strutture ospedaliere · total_046024",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046028",
+      "question": "Strutture ospedaliere · total_046028",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046030",
+      "question": "Strutture ospedaliere · total_046030",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_046033",
+      "question": "Strutture ospedaliere · total_046033",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "number"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_rank",
+      "question": "Strutture ospedaliere · total_rank",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_series_refused",
+      "question": "Strutture ospedaliere · total_series_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_absolute_change_refused",
+      "question": "Strutture ospedaliere · total_absolute_change_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_relative_change_refused",
+      "question": "Strutture ospedaliere · total_relative_change_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_percentage_points_refused",
+      "question": "Strutture ospedaliere · total_percentage_points_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_trend_refused",
+      "question": "Strutture ospedaliere · total_trend_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_weighted_ratio_refused",
+      "question": "Strutture ospedaliere · total_weighted_ratio_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_native_components_not_frozen_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_anomaly_refused",
+      "question": "Strutture ospedaliere · total_anomaly_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_gap_tuscany_refused",
+      "question": "Strutture ospedaliere · total_gap_tuscany_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_gap_italy_refused",
+      "question": "Strutture ospedaliere · total_gap_italy_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_gap_versilia_refused",
+      "question": "Strutture ospedaliere · total_gap_versilia_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_2024_refused",
+      "question": "Strutture ospedaliere · total_2024_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_2026_refused",
+      "question": "Strutture ospedaliere · total_2026_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_pair_False_refused",
+      "question": "Strutture ospedaliere · total_pair_False_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_total_pair_True_refused",
+      "question": "Strutture ospedaliere · total_pair_True_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "hospitals",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046005",
+      "question": "Strutture ospedaliere · view_normalized_046005",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 131.91449170418412
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046013",
+      "question": "Strutture ospedaliere · view_normalized_046013",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 210.68702290076337
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046018",
+      "question": "Strutture ospedaliere · view_normalized_046018",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046024",
+      "question": "Strutture ospedaliere · view_normalized_046024",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046028",
+      "question": "Strutture ospedaliere · view_normalized_046028",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046030",
+      "question": "Strutture ospedaliere · view_normalized_046030",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_046033",
+      "question": "Strutture ospedaliere · view_normalized_046033",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5.273566249176005
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "per10k"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_rank",
+      "question": "Strutture ospedaliere · view_normalized_rank",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ],
+        "warnings": [
+          "hospital_sites_and_bed_rates_are_distinct_measures",
+          "hospital_public_catalog_replay_not_original_ministerial_records"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_series_refused",
+      "question": "Strutture ospedaliere · view_normalized_series_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_absolute_change_refused",
+      "question": "Strutture ospedaliere · view_normalized_absolute_change_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_relative_change_refused",
+      "question": "Strutture ospedaliere · view_normalized_relative_change_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_percentage_points_refused",
+      "question": "Strutture ospedaliere · view_normalized_percentage_points_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_trend_refused",
+      "question": "Strutture ospedaliere · view_normalized_trend_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_single_public_snapshot_no_history"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_weighted_ratio_refused",
+      "question": "Strutture ospedaliere · view_normalized_weighted_ratio_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_native_components_not_frozen_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_anomaly_refused",
+      "question": "Strutture ospedaliere · view_normalized_anomaly_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_gap_tuscany_refused",
+      "question": "Strutture ospedaliere · view_normalized_gap_tuscany_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_gap_italy_refused",
+      "question": "Strutture ospedaliere · view_normalized_gap_italy_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_gap_versilia_refused",
+      "question": "Strutture ospedaliere · view_normalized_gap_versilia_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_geographic_benchmark_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_2024_refused",
+      "question": "Strutture ospedaliere · view_normalized_2024_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_2026_refused",
+      "question": "Strutture ospedaliere · view_normalized_2026_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_pair_False_refused",
+      "question": "Strutture ospedaliere · view_normalized_pair_False_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_view_normalized_pair_True_refused",
+      "question": "Strutture ospedaliere · view_normalized_pair_True_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "hospitals",
+            "dimension": "view:normalized"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "hospital_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "hospital_dimension_normalized_refused",
+      "question": "Strutture ospedaliere · dimension_normalized_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "hospital_dimension_numerator_refused",
+      "question": "Strutture ospedaliere · dimension_numerator_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "hospital_dimension_denominator_refused",
+      "question": "Strutture ospedaliere · dimension_denominator_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "hospital_dimension_beds_refused",
+      "question": "Strutture ospedaliere · dimension_beds_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "beds"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "hospital_dimension_sex:women_refused",
+      "question": "Strutture ospedaliere · dimension_sex:women_refused",
+      "reference": "Independent published municipal counts/bed rates transcribed in test_semantic_hospital_adapters.py; catalog-only provenance, no raw component reconstruction; docs/A6_HOSPITAL_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "hospitals",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
     }
   ]
 }
