@@ -98,6 +98,11 @@ def _inject_fix_entries(
     }
 
     for entry in payload.get("verifiedEntries") or []:
+        entry = dict(entry)
+        if entry.get("published_at") and entry["published_at"] > today.isoformat():
+            continue
+        if entry.get("lifecycle_stage") == "announced_upcoming" and entry.get("opens_at") and entry["opens_at"] <= today.isoformat():
+            entry["lifecycle_stage"] = "application_open"
         coverage_id = str(entry.get("coverage_id") or "")
         # Una candidatura gia scaduta non deve dipendere dalla raggiungibilita
         # odierna del dettaglio.  Verificarla prima del filtro temporale puo
@@ -130,6 +135,9 @@ def _inject_fix_entries(
             continue
 
         item = core.build_seed_item(entry, today, verification_status)
+        if entry.get("municipality_role") == "partner":
+            item["applicant_eligibility"] = "not_direct_applicant"
+            item["territorial_relevance"] = "indirect"
         item["first_seen_at"] = str(entry.get("first_seen_at") or today.isoformat())
         resolved.add(coverage_id)
 

@@ -8,6 +8,9 @@ for human verification. No dates or eligibility are inferred from headlines.
 from __future__ import annotations
 
 import html
+import hashlib
+import json
+from pathlib import Path
 import re
 import time
 from collections import Counter
@@ -16,7 +19,7 @@ from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 import opportunity_pdf_evidence as pdf
 
-LABELS = {"human": "Verifica di persona", "retry": "Ritentativo automatico",
+LABELS = {"human": "Verifica di persona", "retry": "Ritentativo automatico", "technical": "Intervento sul Radar",
           "covered": "Già rappresentata", "expired": "Termine concluso",
           "monitor": "Pagina di monitoraggio"}
 GENERIC = re.compile(r"^(?:aggiornamenti da .+|navigazione(?: principale)?|main navigation|footer\b.*|"
@@ -64,23 +67,53 @@ def _diagnosis(check, item):
     ]
     for probe, code, reason, action in rules:
         if probe in text:
-            return "human", code, reason, action
+            return ("human" if code == "scanned_pdf" else "technical"), code, reason, (action if code == "scanned_pdf" else "Responsabilità del Radar: " + action)
     if check.get("status") == "deferred" or any(x in text for x in ("timeout", "timed out", "budget", "urlopen", "http error", "acquisizione fallita")):
         return "retry", "transport_or_budget", "L’acquisizione non è conclusa o il budget del run è esaurito.", "Il Radar ritenterà nei run successivi. Se urgente, aprire i collegamenti disponibili e verificare il documento di persona."
     if "nessun pdf" in text:
-        return "human", "missing_document", "Nessun avviso PDF su una fonte documentale consentita è stato individuato.", "Aprire la pagina sorgente e verificare quale documento ufficiale disciplina l’avviso; i collegamenti individuati sono riportati qui sotto."
+        return "technical", "missing_document", "Nessun avviso PDF su una fonte documentale consentita è stato individuato.", "Responsabilità del Radar: individuare e acquisire il documento ufficiale che disciplina l’avviso; i collegamenti individuati sono riportati qui sotto."
     if errors:
-        return "human", "document_evidence", "La verifica del documento non è completa.", "Verificare autore, integrità del documento, requisiti e termini prima della pubblicazione."
-    return "human", "unverified_signal", "La segnalazione non ha ancora una verifica documentale sufficiente per pubblicare una scheda.", "Verificare nella fonte ufficiale beneficiari, ruolo comunale, territorio, requisiti e termini. Una notizia da sola non autorizza la pubblicazione."
+        return "technical", "document_evidence", "La verifica del documento non è completa.", "Responsabilità del Radar: verificare autore, integrità del documento, requisiti e termini prima della pubblicazione."
+    return "technical", "unverified_signal", "La segnalazione non ha ancora una verifica documentale sufficiente per pubblicare una scheda.", "Responsabilità del Radar: completare la verifica documentale di beneficiari, ruolo comunale, territorio, requisiti e termini. La disponibilità di un PDF leggibile non richiede un controllo del proprietario."
 
 
-def is_administrative_update(page):
+def source_text_hash(page):
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(page, "html.parser")
+    for element in soup(["script", "style", "nav", "header", "footer"]):
+        element.decompose()
+    text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True)).strip()
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def reviewed_source(page, url):
+    path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
+    assessments = json.loads(path.read_text(encoding="utf-8")).get("reviewAssessments", [])
+    for entry in assessments:
+        if normalized_url(entry["url"]) == normalized_url(url) and source_text_hash(page) == entry["sourceTextSha256"]:
+            return entry
+    return None
+
+
+def is_administrative_update(page, url=""):
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(page, "html.parser")
     for el in soup(["script", "style", "nav", "header", "footer"]):
         el.decompose()
     text = soup.get_text(" ", strip=True)
-    return bool(re.search(r"approvata\s+la\s+graduatoria\s+definitiva", text, re.I) and not re.search(r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|riapert[ui]|nuova\s+finestra", text, re.I))
+    # An explicit application window takes precedence over an allocation report.
+    if re.search(r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|riapert[ui]|riapertura|nuova\s+finestra|apert[uo]\s+(?:il\s+)?bando", text, re.I):
+        return False
+    if re.search(r"(?:approvata\s+la\s+graduatoria\s+definitiva|approvate\s+le\s+graduatorie\s+definitive)", text, re.I):
+        return True
+    # Prefecture headlines report named municipalities' existing projects.
+    # Do not extrapolate this rule to other publishers or generic funding news.
+    if urlsplit(url).hostname != "prefettura.interno.gov.it":
+        return False
+    heading = soup.find("h1")
+    headline = heading.get_text(" ", strip=True) if heading else text
+    return bool(re.search(r"videosorveglianza", headline, re.I) and re.search(
+        r"approvat[io]\b.*progetti|approvazione\s+(?:graduatoria|progetti)|assegnazione\s+fondi|comuni\s+\w*\s*candidano\s+progetti", headline, re.I))
 
 
 def build_actions(payload):
@@ -138,12 +171,18 @@ def build_actions(payload):
             status, code, reason, action = "expired", "verified_expiry", "Il termine strutturato di candidatura risulta concluso.", "Nessun inserimento tra le opportunità aperte; verificare solo eventuali successive proroghe."
         elif all(GENERIC.fullmatch(str(x.get("title") or "")) for x in items):
             status, code, reason, action = "monitor", "catalog_or_navigation", "È una pagina di catalogo o navigazione, non una scheda di bando.", "Monitoraggio automatico della fonte; nessuna richiesta di inserimento manuale."
-        elif lookup.get("classification") == "administrative_update" or (check_rows and all(c.get("status") == "administrative_update" for c in check_rows)):
-            status, code, reason, action = "monitor", "administrative_update", "La pagina comunica l’approvazione di una graduatoria, senza una nuova apertura documentata.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
+        elif lookup.get("assessment"):
+            assessment = lookup["assessment"]
+            status, code, reason, action = assessment["status"], assessment["reasonCode"], assessment["reason"], assessment["action"]
+            deadline = assessment.get("deadline") or deadline
+            if status == "covered" and not any(x.get("coverage_id") == assessment.get("representedCoverageId") for x in payload.get("opportunities") or []):
+                status, code, reason, action = "technical", "published_reference_missing", "La scheda precedentemente verificata non è presente nello snapshot corrente.", "Responsabilità del Radar: verificare il motivo della mancata pubblicazione."
+        elif is_administrative_update(str(item.get("title") or ""), str(item.get("url") or "")) or lookup.get("classification") == "administrative_update" or (check_rows and all(c.get("status") == "administrative_update" for c in check_rows)):
+            status, code, reason, action = "monitor", "administrative_update", "La notizia riguarda progetti già candidati, approvati o fondi assegnati; non documenta una nuova candidatura.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
         else:
             status, code, reason, action = _diagnosis(check, item)
         document_lookup = "found" if documents else ("not_attempted" if check.get("status") == "deferred" else "failed" if lookup.get("status") == "error" or (status == "retry" and check_rows) else "not_found" if check_rows or lookup.get("status") == "ok" else "not_attempted")
-        if status == "human" and code == "unverified_signal" and document_lookup == "not_attempted" and normalized_url(item.get("url")):
+        if status == "technical" and code == "unverified_signal" and document_lookup == "not_attempted" and normalized_url(item.get("url")):
             status, code = "retry", "document_lookup_pending"
             reason = "La ricerca automatica degli allegati deve ancora essere eseguita."
             action = "Attendere il tentativo automatico: i riferimenti rinviati hanno priorità nei run successivi. Il rapporto segnalerà l’eventuale verifica di persona con il documento individuato o il motivo della mancata acquisizione."
@@ -154,10 +193,13 @@ def build_actions(payload):
                      "documentLookup": document_lookup,
                      "technicalDetails": check["errors"], "signalCount": len(items),
                      "representedBy": represented.get(key)})
-    order = {"human": 0, "retry": 1, "covered": 2, "expired": 3, "monitor": 4}
+    discarded = [x for x in rows if x["status"] == "expired" or x["reasonCode"] in {"outside_municipal_call", "reviewed_closed_catalogue", "administrative_update"}]
+    rows = [x for x in rows if x not in discarded]
+    order = {"human": 0, "technical": 1, "retry": 2, "covered": 3, "expired": 4, "monitor": 5}
     rows.sort(key=lambda x: (order[x["status"]], x["deadline"] or "9999-99-99", x["title"].casefold()))
-    return {"version": 1, "signalCount": len(signals), "uniqueCount": len(rows),
-            "duplicatesGrouped": len(signals)-len(rows), "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
+    return {"version": 1, "signalCount": sum(x["signalCount"] for x in rows), "uniqueCount": len(rows),
+            "duplicatesGrouped": sum(x["signalCount"]-1 for x in rows),
+            "discardedCount": len(discarded), "discarded": discarded, "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
 
 
 def collect_document_links(payload, *, previous=None, budget=None, loader=None, max_pages=24, max_seconds=90):
@@ -171,11 +213,14 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     previous_rows = {normalized_url(x.get("url")): x for x in (previous or {}).get("reviewDocumentLookup") or []}
     actions = build_actions(payload)
     promotion_urls = {normalized_url(c.get("url")) for c in (payload.get("documentPromotion") or {}).get("checks") or [] if c.get("documents")}
-    candidates = [x for x in actions["items"] if x["status"] in ("human", "retry") and normalized_url(x["url"]) not in promotion_urls]
+    assessment_path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
+    reviewed_urls = {normalized_url(x["url"]) for x in json.loads(assessment_path.read_text(encoding="utf-8")).get("reviewAssessments", [])}
+    candidates = [x for x in actions["items"] + actions["discarded"] if (x["status"] in ("human", "technical", "retry") or normalized_url(x["url"]) in reviewed_urls)
+                  and (normalized_url(x["url"]) not in promotion_urls or normalized_url(x["url"]) in reviewed_urls)]
     today = date.fromisoformat(payload["referenceDate"])
     result = {}
     # Keep located attachments even when a later diagnostic changes category.
-    for row in actions["items"]:
+    for row in actions["items"] + actions["discarded"]:
         key = normalized_url(row["url"])
         if key in previous_rows:
             result[key] = dict(previous_rows[key])
@@ -194,11 +239,13 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     def fresh(row):
         old = previous_rows.get(normalized_url(row["url"]), {})
         try:
-            return old.get("status") == "ok" and 0 <= (today-date.fromisoformat(old["checkedAt"])).days < 7
+            return (old.get("status") == "ok"
+                    and old.get("extractorVersion") == pdf.LINK_EXTRACTOR_VERSION
+                    and 0 <= (today-date.fromisoformat(old["checkedAt"])).days < 7)
         except (ValueError, KeyError):
             return False
     # Oldest attempts first; pages never attempted come before failed retries.
-    candidates.sort(key=lambda row: (previous_rows.get(normalized_url(row["url"]), {}).get("checkedAt", ""),
+    candidates.sort(key=lambda row: (normalized_url(row["url"]) not in reviewed_urls, previous_rows.get(normalized_url(row["url"]), {}).get("checkedAt", ""),
                                      row["deadline"] or "9999-99-99", row["title"].casefold()))
     until = time.monotonic() + max_seconds
     attempted = 0
@@ -211,7 +258,8 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
             break
         attempted += 1
         old_docs = [{**d, "status": "previously_located"} for d in (result.get(key, {}).get("documents") or [])]
-        entry = {"url": row["url"], "checkedAt": today.isoformat(), "status": "error", "documents": old_docs, "errors": []}
+        entry = {"url": row["url"], "checkedAt": today.isoformat(), "status": "error", "documents": old_docs, "errors": [],
+                 "extractorVersion": pdf.LINK_EXTRACTOR_VERSION}
         result[key] = entry
         try:
             if re.search(r"\.pdf(?:$|[?#])", row["url"], re.I):
@@ -223,7 +271,10 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
                 urls = pdf.pdf_links(page, base, limit=8)
                 text = page
             entry.update(status="ok", documents=[{"url": u, "status": "located", "lastSeen": today.isoformat()} for u in urls if normalized_url(u)])
-            if is_administrative_update(text):
+            assessment = reviewed_source(text, row["url"])
+            if assessment:
+                entry["assessment"] = assessment
+            if is_administrative_update(text, row["url"]):
                 entry["classification"] = "administrative_update"
         except Exception as exc:
             entry["errors"].append(str(exc))
@@ -262,12 +313,12 @@ def render_actions_html(actions):
         else:
             body = f'<h3>{html.escape(LABELS[status])}: {len(rows)}</h3>{body}'
         blocks.append(body)
-    return ('<section id="verifiche-richieste"><h2>Verifiche richieste</h2><p><strong>' + str(counts.get("human", 0)) + ' verifiche di persona</strong> · ' + str(counts.get("retry", 0)) + ' ritentativi automatici. Queste segnalazioni non sono opportunità pubblicate.</p><p>' + str(actions.get("duplicatesGrouped", 0)) + ' ripetizioni raggruppate; ogni segnalazione resta contabilizzata.</p>' + ''.join(blocks) + '</section>')
+    return ('<section id="verifiche-richieste"><h2>Verifiche richieste</h2><p><strong>' + str(counts.get("human", 0)) + ' verifiche di persona</strong> · ' + str(counts.get("retry", 0)) + ' ritentativi automatici · ' + str(counts.get("technical", 0)) + ' interventi sul Radar. Queste segnalazioni non sono opportunità pubblicate.</p><p>' + str(actions.get("duplicatesGrouped", 0)) + ' ripetizioni raggruppate; ogni segnalazione resta contabilizzata.</p>' + ''.join(blocks) + '</section>')
 
 
 def render_actions_markdown(actions):
     counts = actions.get("counts") or {}
-    lines = ["", "## Verifiche richieste", "", f"**Di persona: {counts.get('human', 0)} · Ritentativi automatici: {counts.get('retry', 0)}**. Le segnalazioni non sono opportunità pubblicate.", "", f"{actions.get('signalCount', 0)} segnalazioni, {actions.get('uniqueCount', 0)} riferimenti distinti; {actions.get('duplicatesGrouped', 0)} ripetizioni raggruppate."]
+    lines = ["", "## Verifiche richieste", "", f"**Di persona: {counts.get('human', 0)} · Ritentativi automatici: {counts.get('retry', 0)} · Interventi sul Radar: {counts.get('technical', 0)}**. Le segnalazioni non sono opportunità pubblicate.", "", f"{actions.get('signalCount', 0)} segnalazioni, {actions.get('uniqueCount', 0)} riferimenti distinti; {actions.get('duplicatesGrouped', 0)} ripetizioni raggruppate."]
     def link(url, label):
         label = re.sub(r"[\[\]<>\r\n|]", " ", label)
         safe_url = str(url)
@@ -276,7 +327,7 @@ def render_actions_markdown(actions):
         return f"[{label}](<{safe_url}>)" if normalized_url(url) else label
     groups = {}
     for row in actions.get("items") or []:
-        if row["status"] in ("human", "retry"):
+        if row["status"] in ("human", "technical", "retry"):
             groups.setdefault((row["status"], row["reasonCode"]), []).append(row)
     for rows in groups.values():
         first = rows[0]

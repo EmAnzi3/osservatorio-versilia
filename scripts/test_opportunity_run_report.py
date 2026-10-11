@@ -201,6 +201,30 @@ def main() -> int:
 
 
 def _test_actionable_document_review():
+    import opportunity_pdf_evidence as pdf_evidence
+    # SRA31's index contains "Beneficiari" followed by "Imprese in
+    # difficoltà". It must not replace the actual applicant section.
+    document_text = """Indice
+2. Richiedenti/Beneficiari .................................. 7
+2.3 Imprese in difficoltà .................................. 10
+Disposizioni generali sulle imprese.
+2. Richiedenti/Beneficiari
+Sono ammessi proprietari, possessori, pubblici o privati e loro associazioni.
+Sono ammessi anche enti pubblici titolari della superficie forestale.
+"""
+    audience = pdf_evidence.document_audience(document_text)
+    assert audience.startswith("2. Richiedenti/Beneficiari Sono ammessi")
+    assert "Imprese in difficoltà" not in audience
+    import opportunity_radar as base_radar
+    assert base_radar.eligibility(audience, ["Massarosa"])[0] == "conditional"
+    assert not pdf_evidence.document_audience("Beneficiari ........ 7\nImprese ........ 10")
+    assert pdf_evidence.document_audience("Beneficiari: imprese private").startswith("Beneficiari:")
+    attachment = "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5530617&nomeFile=Decreto+n.20302+del+14-09-2026-+Allegato+A+"
+    page_html = f'<a href="{attachment.replace("&", "&amp;")}">Avviso pubblico</a>'
+    assert pdf_evidence.pdf_links(page_html, "https://www.regione.toscana.it/") == [attachment]
+    assert not pdf_evidence.pdf_links(page_html.replace("www301.regione.toscana.it", "example.test"), "https://www.regione.toscana.it/")
+    assert not pdf_evidence.pdf_links('<a href="https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=1">Avviso pubblico</a>', "https://www.regione.toscana.it/")
+    assert pdf_evidence.pdf_links('<a href="/documents/1/allegato.pdf/uuid?t=1">Allegato A</a>', "https://www.regione.toscana.it/") == ["https://www.regione.toscana.it/documents/1/allegato.pdf/uuid?t=1"]
     from opportunity_review_actions import build_actions, collect_document_links, is_administrative_update
     page = "https://www.anciabruzzo.it/avviso/"
     document = "https://www.anciabruzzo.it/avviso-integrale.pdf"
@@ -255,7 +279,38 @@ def _test_actionable_document_review():
     from opportunity_review_actions import render_actions_markdown
     assert "Ricerca non riuscita" in render_actions_markdown(failed_actions)
     assert is_administrative_update("<p>È stata approvata la graduatoria definitiva.</p>")
+    assert is_administrative_update("<p>Sono state approvate le graduatorie definitive.</p>")
+    assert not is_administrative_update("<p>Sono state approvate le graduatorie definitive. Nuova finestra.</p>")
     assert not is_administrative_update("<p>È stata approvata la graduatoria definitiva. Riapertura delle domande.</p>")
+    from opportunity_radar_v03 import discovery_candidates
+    detail = "https://www.lavoro.gov.it/notizie/pagine/assunzione-assistenti-sociali-riaperti-i-termini-la-manifestazione-di-interesse"
+    mlps = {"id": "mlps-social-services", "includeTerms": ["manifestazione"], "municipalTerms": ["Comuni"]}
+    fixture = '<nav><a href="/notizie/Pagine/Notizie">Notizie</a></nav><article><a href="' + detail + '"><h3>Comuni: riaperti i termini per la manifestazione di interesse</h3></a></article>'
+    leads = discovery_candidates(mlps, fixture, "https://www.lavoro.gov.it/notizie")
+    assert len(leads) == 1 and leads[0]["url"] == detail
+    fixture = '<div class="item alternative"><a class="search-item-link" href="' + detail + '"></a><div><h2>Assunzione Assistenti sociali: riaperti i termini per la manifestazione di interesse</h2><p>Ambiti territoriali sociali e Comuni</p></div></div>'
+    leads = discovery_candidates(mlps, fixture, "https://www.lavoro.gov.it/notizie")
+    assert len(leads) == 1 and leads[0]["url"] == detail and leads[0]["title"].startswith("Assunzione")
+    news_titles = [
+        "17 Comuni fermani candidano progetti per la videosorveglianza",
+        "Approvati i progetti di videosorveglianza presentati da 11 Comuni",
+        "Approvati in Prefettura 31 progetti di videosorveglianza urbana",
+        "Approvati in Prefettura i progetti di videosorveglianza urbana",
+        "Approvazione graduatoria per cofinanziamento impianti videosorveglianza",
+        "Approvazione progetti di videosorveglianza",
+        "Approvazione progetti per potenziamento della videosorveglianza urbana",
+        "Assegnazione fondi per videosorveglianza a n.7 Comuni dell'Ascolano",
+    ]
+    allocations = _snapshot([])
+    allocations["referenceDate"] = "2026-10-11"
+    allocations["discoveryQueue"] = [{"title": title, "url": f"https://prefettura.interno.gov.it/it/notizie/{i}"} for i, title in enumerate(news_titles)]
+    assert build_actions(allocations)["discardedCount"] == 8
+    collect_document_links(allocations, loader=lambda u: (_ for _ in ()).throw(AssertionError("notizie, nessun documento da cercare")))
+    assert allocations["reviewDocumentLookup"] == []
+    for title in news_titles:
+        assert is_administrative_update(title, "https://prefettura.interno.gov.it/it/notizie/caso")
+        assert not is_administrative_update(title + ". Riapertura delle domande", "https://prefettura.interno.gov.it/it/notizie/caso")
+    assert not is_administrative_update("Avviso pubblico per nuovi progetti di videosorveglianza", "https://prefettura.interno.gov.it/it/notizie/caso")
     fresh = _snapshot([]);fresh["referenceDate"] = "2026-10-10"
     fresh["discoveryQueue"] = [{"title": "Avviso A", "url": page}, {"title": "Avviso B", "url": page+"secondo/"}]
     queued = build_actions(fresh)
@@ -264,10 +319,10 @@ def _test_actionable_document_review():
     assert "Attendere il tentativo automatico" in render_actions_markdown(queued)
     searched = {**fresh, "reviewDocumentLookup": [{"url": page, "status": "ok", "documents": []}]}
     searched_row = next(x for x in build_actions(searched)["items"] if x["url"] == page)
-    assert searched_row["status"] == "human" and searched_row["documentLookup"] == "not_found"
+    assert searched_row["status"] == "technical" and searched_row["documentLookup"] == "not_found"
     located = {**fresh, "reviewDocumentLookup": [{"url": page, "status": "ok", "documents": [{"url": document, "status": "located"}]}]}
     located_row = next(x for x in build_actions(located)["items"] if x["url"] == page)
-    assert located_row["status"] == "human" and located_row["documentLookup"] == "found"
+    assert located_row["status"] == "technical" and located_row["documentLookup"] == "found"
     calls = []
     def loader(url):
         calls.append(url)
@@ -284,6 +339,40 @@ def _test_actionable_document_review():
     carried = {**next_run}
     collect_document_links(carried, previous=next_run, loader=loader, max_pages=1)
     assert len(calls) == 2 and len(carried["reviewDocumentLookup"]) == 2, "Gli allegati persistono senza nuove richieste per sette giorni"
+    legacy = {**previous, "reviewDocumentLookup": [{**x, "extractorVersion": 1, "documents": []} for x in previous["reviewDocumentLookup"]]}
+    legacy_payload = {**fresh, "discoveryQueue": [fresh["discoveryQueue"][0]]}
+    collect_document_links(legacy_payload, previous=legacy, loader=lambda url: page_html, max_pages=1)
+    assert legacy_payload["reviewDocumentLookup"][0]["documents"][0]["url"] == attachment, "Un vecchio esito senza PDF non deve restare in cache dopo la correzione del lettore"
+
+    from opportunity_review_actions import reviewed_source, source_text_hash
+    entry = audit_refresh._load_fixes()["reviewAssessments"][0]
+    probe = "<main>Selezione individuale controllata</main>"
+    evidence = {**entry, "sourceTextSha256": source_text_hash(probe)}
+    with patch("opportunity_review_actions.json.loads", return_value={"reviewAssessments": [evidence]}):
+        assert reviewed_source(probe, entry["url"])["reasonCode"] == "outside_municipal_call"
+        assert reviewed_source(probe+"<p>Nuova candidatura comunale</p>", entry["url"]) is None
+
+    # An old reader failure must not prevent reassessment of a located PDF.
+    closure = next(x for x in audit_refresh._load_fixes()["reviewAssessments"] if x["status"] == "expired")
+    reassessed = _snapshot([])
+    reassessed["discoveryQueue"] = [{"url": closure["url"], "title": "Edilizia scolastica"}]
+    reassessed["documentPromotion"] = {"checks": [{"url": closure["url"], "status": "review", "errors": ["Articoli ripetuti"], "documents": [{"url": document}]}]}
+    with patch("opportunity_review_actions.reviewed_source", return_value=closure):
+        collect_document_links(reassessed, loader=lambda u: "<p>Avviso verificato e scaduto</p>")
+    assert build_actions(reassessed)["counts"] == {}
+    assert build_actions(reassessed)["discardedCount"] == 1
+    assert closure["url"] not in render_actions_markdown(build_actions(reassessed))
+    from opportunity_review_actions import render_actions_html
+    assert closure["url"] not in render_actions_html(build_actions(reassessed))
+    # Removed cases still have their evidence refreshed and can reopen.
+    previous = {"reviewDocumentLookup": reassessed["reviewDocumentLookup"]}
+    previous["reviewDocumentLookup"][0]["checkedAt"] = "2026-09-01"
+    with patch("opportunity_review_actions.reviewed_source", return_value=None):
+        collect_document_links(reassessed, previous=previous, loader=lambda u: f'<a href="{document}">Nuovo avviso</a>')
+    assert build_actions(reassessed)["counts"] == {"technical": 1}
+    technical = {**current, "documentPromotion": {"checks": [{"url": page, "errors": ["Struttura non supportata"], "documents": [{"url": document}]}]}}
+    assert build_actions(technical)["counts"].get("technical") == 1
+    assert "Interventi sul Radar: 1" in render_actions_markdown(build_actions(technical))
 
 
 if __name__ == "__main__":

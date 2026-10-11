@@ -8,9 +8,10 @@ import urllib.request
 from html import unescape
 from html.parser import HTMLParser
 from typing import Callable
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit, parse_qs
 
 UA = "OsservatorioVersilia-OpportunityRadar/0.2.4 (+https://osservatorioversilia.it/)"
+LINK_EXTRACTOR_VERSION = 2
 KEYS = (
     "soggetti beneficiari",
     "destinatari / beneficiari",
@@ -21,7 +22,7 @@ KEYS = (
     "beneficiari",
     "destinatari",
 )
-RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat|decreto|disciplinare|linee guida)\b", re.I)
+RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat\w*|decreto|disciplinare|linee guida)\b", re.I)
 
 
 class Links(HTMLParser):
@@ -56,8 +57,17 @@ def pdf_links(payload: str, page_url: str, limit: int = 2) -> list[str]:
     for href, label in parser.links:
         absolute = urljoin(page_url, unescape(href))
         probe = f"{href} {label}"
-        is_pdf = bool(re.search(r"\.pdf(?:$|[?#])", href, re.I))
+        is_pdf = bool(re.search(r"\.pdf(?:$|[/?#])", href, re.I))
         document_like = "/documents/" in href.lower() or "download" in href.lower()
+        # The Tuscan acts bank serves PDF bytes through Contenuto.xml.
+        # Recognise this exact official attachment route, retaining its query.
+        parsed = urlsplit(absolute)
+        query = parse_qs(parsed.query)
+        regional_attachment = (parsed.scheme == "https"
+                               and parsed.hostname == "www301.regione.toscana.it"
+                               and parsed.path == "/bancadati/atti/Contenuto.xml"
+                               and bool(query.get("id")) and bool(query.get("nomeFile")))
+        document_like = document_like or regional_attachment
         if not is_pdf and not (document_like and RELEVANT_LINK.search(probe)):
             continue
         if absolute in seen:
@@ -90,13 +100,26 @@ def fetch_pdf_text(url: str, max_pages: int = 18, max_chars: int = 60000) -> str
 
 
 def document_audience(text: str, window: int = 3200) -> str:
-    plain = re.sub(r"\s+", " ", str(text or "")).strip()
+    # Preserve section boundaries and discard table-of-contents entries before
+    # selecting beneficiaries. An index window can contain unrelated audiences.
+    lines = [line.strip() for line in str(text or "").splitlines()
+             if not re.search(r"\.{3,}|…{2,}", line)]
+    body = "\n".join(lines)
+    for match in re.finditer(r"(?m)^([^\n]{1,100})$", body):
+        heading = match.group(1).casefold().replace("’", "'")
+        if any(key in heading for key in KEYS) and re.fullmatch(
+            r"(?:\d+(?:\.\d+)*[.)]?\s*)?(?:richiedenti\s*/\s*)?"
+            r"(?:soggetti beneficiari|destinatari\s*/\s*beneficiari|"
+            r"soggetti ammissibili|chi pu[oò] presentare domanda|beneficiari|destinatari)"
+            r"\s*:?", heading
+        ):
+            return re.sub(r"\s+", " ", body[match.start():]).strip()[:window]
+    plain = re.sub(r"\s+", " ", body).strip()
     folded = plain.casefold().replace("’", "'")
     starts = [folded.find(key) for key in KEYS if folded.find(key) >= 0]
     if not starts:
         return ""
-    start = min(starts)
-    return plain[start : start + window].strip()
+    return plain[min(starts):min(starts) + window].strip()
 
 
 def attached_pdf_audience(
