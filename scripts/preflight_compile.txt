@@ -191,3 +191,6 @@ scripts/test_semantic_seasonality_adapters.py
 
 scripts/semantic_query_road_network_adapters.py
 scripts/test_semantic_road_network_adapters.py
+
+scripts/semantic_query_slow_mobility_adapters.py
+scripts/test_semantic_slow_mobility_adapters.py
