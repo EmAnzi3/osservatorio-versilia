@@ -77,6 +77,17 @@ def _compose_with_audit_fixes() -> tuple[dict[str, Any], dict[str, Any]]:
     return config, coverage
 
 
+def _apply_publication_exclusions(result: dict[str, Any]) -> None:
+    """Remove only explicitly reviewed calls, including restored previous cards."""
+    exclusions = _load_fixes().get("publicationExclusions") or []
+    result["publicationExclusions"] = [dict(entry) for entry in exclusions]
+    for field in ("opportunities", "coverageHold", "continuityHold"):
+        if field in result:
+            result[field] = [item for item in result[field] if not review_actions.publication_exclusion(item)]
+    if "counts" in result:
+        result["counts"]["continuityHold"] = len(result.get("continuityHold") or [])
+
+
 def _inject_fix_entries(
     result: dict[str, Any],
     today: date,
@@ -84,6 +95,7 @@ def _inject_fix_entries(
     detail_payloads: dict[str, str] | None = None,
     live: bool = True,
 ) -> set[str]:
+    _apply_publication_exclusions(result)
     payload = _load_fixes()
     max_days = int(payload.get("evidenceFallbackMaxDays") or 7)
     resolved: set[str] = set()
@@ -99,6 +111,8 @@ def _inject_fix_entries(
 
     for entry in payload.get("verifiedEntries") or []:
         entry = dict(entry)
+        if review_actions.publication_exclusion(entry):
+            continue
         if entry.get("published_at") and entry["published_at"] > today.isoformat():
             continue
         if entry.get("lifecycle_stage") == "announced_upcoming" and entry.get("opens_at") and entry["opens_at"] <= today.isoformat():
@@ -205,6 +219,7 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
         import opportunity_discovery_resilient as discovery
         if discovery.LIVE_BUDGET is not None:
             review_actions.collect_document_links(result, previous=previous, budget=discovery.LIVE_BUDGET)
+    _apply_publication_exclusions(result)
     _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
@@ -339,6 +354,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     result = _BASE_PREPARE_STABLE(result, today)
     if result.get("auditCorpusPromotionVersion") != audit_promotions.PROMOTION_VERSION:
         audit_promotions.apply_complete_promotions(result, today)
+    _apply_publication_exclusions(result)
     _archive_expired_opportunities(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.

@@ -52,6 +52,31 @@ def test_reviewed_regional_seeds() -> None:
     assert annotate_item(item) == "partner" and not item["municipal_headline"]
 
 
+def test_concrete_versilia_scope_excludes_only_reviewed_calls() -> None:
+    entries = {e["coverage_id"]: e for e in fixed._load_fixes()["verifiedEntries"]}
+    rejected = {"rt-artea-immobile-sede-2026", "rt-generatori-kiev-cooperazione-2026"}
+    kept = {"rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026"}
+    unrelated = {"url": "https://www.regione.toscana.it/it/-/altro-avviso", "title": "Altro avviso"}
+    result = {"referenceDate": "2026-10-11", "opportunities": [dict(entries[x]) for x in rejected],
+              "continuityHold": [dict(entries[x]) for x in rejected] + [unrelated],
+              "coverageHold": [dict(entries[x]) for x in rejected] + [unrelated],
+              "discoveryQueue": [dict(entries[x]) for x in rejected]}
+    details = {e["url"]: " | ".join(e["required_terms"]) for e in entries.values()}
+    fixed._inject_fix_entries(result, date(2026, 10, 11), detail_payloads=details, live=False)
+    ids = {x.get("coverage_id") for x in result["opportunities"]}
+    assert kept <= ids and ids.isdisjoint(rejected)
+    assert all(guard._documented_exclusion_rule(entries[x]) is not None for x in rejected)
+    assert guard._documented_exclusion_rule(entries["rt-risorse-genetiche-agrarie-aca16b-2026"]) is None
+    assert result["continuityHold"] == [unrelated] and result["coverageHold"] == [unrelated]
+    # A generic rediscovery with a different id must remain excluded by exact URL.
+    result["opportunities"].append({"id": "rediscovered", "url": entries[next(iter(rejected))]["url"]})
+    fixed._apply_publication_exclusions(result)
+    assert not any(x.get("id") == "rediscovered" for x in result["opportunities"])
+    actions = fixed.review_actions.build_actions(result)
+    assert actions["items"] == [] and len(actions["discarded"]) == 2
+    assert all(x["reasonCode"] == "outside_municipal_call" for x in actions["discarded"])
+
+
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
@@ -272,6 +297,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 
 
 def main() -> int:
+    test_concrete_versilia_scope_excludes_only_reviewed_calls()
     test_reviewed_regional_seeds()
     test_c4t_source_and_verified_seed()
     test_c4t_injection_is_conditional_and_deterministic()
