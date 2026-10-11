@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 import opportunity_pdf_evidence as pdf
 import run_opportunity_radar_v04 as core
 
-VERSION = "1.0"
+VERSION = "1.1"
 HOSTS = {"anci.lombardia.it", "www.anciabruzzo.it", "anciabruzzo.it",
          "www.anci.it", "anci.it", "www.mim.gov.it", "mim.gov.it",
          "www.istruzione.it", "istruzione.it"}
@@ -28,28 +28,32 @@ MONTHS = {name: i for i, name in enumerate(
 MAX_LEADS = 12
 
 
-def trusted(url: str) -> bool:
+def trusted(url: str, hosts=None) -> bool:
     p = urlsplit(url)
-    return p.scheme == "https" and p.hostname in HOSTS and not p.username and p.port in (None, 443)
+    return p.scheme == "https" and p.hostname in (HOSTS if hosts is None else hosts) and not p.username and p.port in (None, 443)
 
 
 class _Redirect(urllib.request.HTTPRedirectHandler):
+    def __init__(self, hosts=None):
+        super().__init__()
+        self.hosts = hosts
+
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        if not trusted(newurl):
+        if not trusted(newurl, self.hosts):
             raise ValueError("Redirect fuori dalle fonti istituzionali consentite")
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def fetch_receipt(url: str, *, document: bool, timeout: int = 15) -> dict:
+def fetch_receipt(url: str, *, document: bool, timeout: int = 15, allowed_hosts=None) -> dict:
     """Executed in the shared budget's isolated worker; TLS stays enabled."""
-    if not trusted(url):
+    if not trusted(url, allowed_hosts):
         raise ValueError("Fonte documentale non consentita")
     p = urlsplit(url)
     encoded = urlunsplit((p.scheme, p.netloc, quote(unquote(p.path), safe="/"), p.query, ""))
     request = urllib.request.Request(encoded, headers={"User-Agent": pdf.UA, "Accept": "application/pdf" if document else "text/html"})
-    with urllib.request.build_opener(_Redirect()).open(request, timeout=timeout) as response:
+    with urllib.request.build_opener(_Redirect(allowed_hosts)).open(request, timeout=timeout) as response:
         resolved = response.geturl()
-        if not trusted(resolved):
+        if not trusted(resolved, allowed_hosts):
             raise ValueError("Fonte finale non consentita")
         data = response.read(8_000_001 if document else 2_000_001)
         if len(data) > (8_000_000 if document else 2_000_000):
@@ -64,6 +68,8 @@ def fetch_receipt(url: str, *, document: bool, timeout: int = 15) -> dict:
         if not 1 <= len(reader.pages) <= 18:
             raise ValueError("PDF incompleto o oltre il limite di pagine")
         text = "\n".join(page.extract_text() or "" for page in reader.pages)
+        if len(re.sub(r"\s+", "", text)) < 200:
+            raise ValueError("PDF scansionato o testo non estraibile: lettura del documento richiesta")
         if len(text) > 100_000:
             raise ValueError("Testo oltre il limite; nessuna promozione parziale")
     else:
@@ -78,6 +84,12 @@ def _plain(text: str) -> str:
     return re.sub(r"Ministero dell[’']Istruzione e del Merito Dipartimento per le risorse, l’organizzazione e l’innovazione digitale Direzione generale per l’edilizia scolastica, le risorse e il supporto alle istituzioni scolastiche", "", text, flags=re.I)
 
 
+class NoticeWindowClosed(ValueError):
+    def __init__(self, deadline):
+        super().__init__(f"Finestra ministeriale di candidatura conclusa il {deadline}")
+        self.deadline = deadline
+
+
 def parse_notice(receipt: dict, url: str, today: date) -> dict:
     if not trusted(url) or not trusted(receipt.get("resolvedUrl", "")) or receipt.get("transport") != "direct_https" or not receipt.get("document"):
         raise ValueError("Manca una ricevuta PDF diretta su fonte istituzionale")
@@ -87,23 +99,18 @@ def parse_notice(receipt: dict, url: str, today: date) -> dict:
     if not re.match(r"Ministero dell[’']Istruzione e del Merito", raw, re.I) or "IL DIRETTORE GENERALE" not in raw:
         raise ValueError("Autore o chiusura del documento ministeriale non verificati")
     text = _plain(raw)
-    sections = re.split(r"ART\.\s*(\d+)\s*[–-]", text)
+    # Match headings at line starts, not references such as articolo 46-bis.
+    sections = re.split(r"^\s*(?:ART\.?|ARTICOLO)\s*(\d+)\s*[–—:\-]\s*", receipt["text"], flags=re.I | re.M)
+    sections = [_plain(s) if i % 2 == 0 else s for i, s in enumerate(sections)]
+    numbers = [int(sections[i]) for i in range(1, len(sections)-1, 2)]
+    if len(numbers) != len(set(numbers)):
+        raise ValueError("Articoli ripetuti o documento composto: verifica degli allegati richiesta")
     articles = {int(sections[i]): sections[i + 1] for i in range(1, len(sections)-1, 2)}
     if not all(n in articles for n in (1, 2, 3)):
         raise ValueError("Struttura dell'avviso non supportata")
-    audience = articles[2]
-    if re.search(r"\b(?:Abruzzo|Basilicata|Calabria|Campania|Emilia.Romagna|Friuli|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino|Umbria|Valle d.Aosta|Veneto)\b", audience, re.I):
-        raise ValueError("Requisiti territoriali specifici da verificare")
-    if not re.search(r"Tutti gli Enti locali possono presentare richiesta di finanziamento", audience, re.I):
-        raise ValueError("Ammissibilità nazionale degli enti locali non dimostrata")
-    if not re.search(r"edifici pubblici ad uso scolastico di propria competenza", audience, re.I):
-        raise ValueError("Ruolo comunale e destinazione scolastica non dimostrati")
-    # Reject territorial restrictions, even when the universal phrase remains.
-    if re.search(r"(?:esclusivamente|soltanto|solo|limitat[oaie])\s+(?:a[il]*\s+)?(?:comuni|enti|territori|region[ei])|residenti|ubicati in|situati in", text, re.I):
-        raise ValueError("Limitazione territoriale da verificare")
-    pattern = (r"dalle ore\s+([\d\s]{1,4})[.:]([\d\s]{2,3})\s+del giorno\s+(\d{1,2})\s+(\w+)\s+(\d{4})"
-               r"\s+e fino alle ore\s+([\d\s]{1,4})[.:]([\d\s]{2,3})\s+del giorno\s+(\d{1,2})\s+(\w+)\s+(\d{4})")
-    windows = re.findall(pattern, articles[3], re.I)
+    pattern = (r"dalle ore\s+([\d\s]{1,4})[.:]([\d\s]{2,3})\s+del\s+(?:giorno\s+)?(\d{1,2})\s+(\w+)\s+(\d{4})"
+               r"\s+(?:e\s+)?fino alle ore\s+([\d\s]{1,4})[.:]([\d\s]{2,3})\s+del\s+(?:giorno\s+)?(\d{1,2})\s+(\w+)\s+(\d{4})")
+    windows = list(dict.fromkeys(re.findall(pattern, articles[3], re.I)))
     if len(windows) != 1:
         raise ValueError("Finestra di candidatura assente o ambigua")
     values = windows[0]
@@ -117,6 +124,18 @@ def parse_notice(receipt: dict, url: str, today: date) -> dict:
     closes, closes_time = endpoint(5)
     if closes < opens:
         raise ValueError("Finestra di candidatura non valida")
+    if closes < today:
+        raise NoticeWindowClosed(closes.isoformat())
+    audience = articles[2]
+    if re.search(r"\b(?:Abruzzo|Basilicata|Calabria|Campania|Emilia.Romagna|Friuli|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino|Umbria|Valle d.Aosta|Veneto)\b", audience, re.I):
+        raise ValueError("Requisiti territoriali specifici da verificare")
+    if not re.search(r"Tutti gli Enti locali possono presentare richiesta di finanziamento", audience, re.I):
+        raise ValueError("Ammissibilità nazionale degli enti locali non dimostrata")
+    if not re.search(r"edifici pubblici ad uso scolastico di propria competenza", audience, re.I):
+        raise ValueError("Ruolo comunale e destinazione scolastica non dimostrati")
+    # Reject territorial restrictions, even when the universal phrase remains.
+    if re.search(r"(?:esclusivamente|soltanto|solo|limitat[oaie])\s+(?:a[il]*\s+)?(?:comuni|enti|territori|region[ei])|residenti|ubicati in|situati in", text, re.I):
+        raise ValueError("Limitazione territoriale da verificare")
     header = sections[0].strip()
     if "OTTO PER MILLE" in header.upper():
         family = "otto-per-mille"
@@ -186,9 +205,13 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
         if key not in cache:
             cache[key] = loader(url, document)
         return cache[key]
-    for lead in [*old, *leads[:MAX_LEADS]]:
+    unique_leads = list({x["url"]: x for x in leads}.values())
+    previous_checks = {c.get("url"): c for c in ((previous or {}).get("documentPromotion") or {}).get("checks") or []}
+    # Give deferred and previously unseen notices their turn before retries.
+    unique_leads.sort(key=lambda x: 0 if x["url"] not in previous_checks or previous_checks[x["url"]].get("status") == "deferred" else 1)
+    for lead in [*old, *unique_leads[:MAX_LEADS]]:
         url = lead["url"]
-        check = {"url": url, "status": "review", "errors": []}
+        check = {"url": url, "title": lead.get("title", ""), "status": "review", "errors": [], "documents": []}
         diagnostic["checks"].append(check)
         if lead in old and date.fromisoformat(lead["deadline_at"]) < today:
             core._append_archive(result, lead)
@@ -196,15 +219,25 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
             check["status"] = "expired"
             continue
         try:
-            urls = [url] if lead.get("document_promotion_version") else pdf.pdf_links(load(url, False)["text"], url, limit=3)
+            direct_pdf = bool(re.search(r"\.pdf(?:$|[?#])", url, re.I))
+            page = "" if lead.get("document_promotion_version") or direct_pdf else load(url, False)["text"]
+            urls = [url] if lead.get("document_promotion_version") or direct_pdf else pdf.pdf_links(page, url, limit=8)
+            check["documents"] = [{"url": u, "status": "not_checked" if trusted(u) else "untrusted_host"} for u in urls]
+            from opportunity_review_actions import is_administrative_update
+            if page and is_administrative_update(page):
+                check["status"] = "administrative_update"
+                continue
             urls = [u for u in urls if trusted(u)]
             if not urls:
                 check["errors"].append("Nessun PDF ministeriale su host consentito")
             for document_url in urls:
+                document_check = next(x for x in check["documents"] if x["url"] == document_url)
                 try:
-                    item = parse_notice(load(document_url, True), document_url, today)
+                    receipt = load(document_url, True)
+                    document_check.update(resolvedUrl=receipt.get("resolvedUrl"), sha256=receipt.get("sha256"))
+                    item = parse_notice(receipt, document_url, today)
                     if date.fromisoformat(item["deadline_at"]) < today:
-                        check["status"] = "expired"
+                        document_check.update(status="expired", deadline=item["deadline_at"])
                         continue
                     if item["coverage_id"] not in seen and item["url"] not in existing_urls:
                         item["discovery_url"] = lead.get("discovery_url") or url
@@ -213,12 +246,21 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                         existing_urls.add(item["url"])
                         diagnostic["revalidated" if lead.get("document_promotion_version") else "added"] += 1
                     check.update(status="published_candidate", coverage_id=item["coverage_id"])
+                    document_check.update(status="verified", coverage_id=item["coverage_id"], deadline=item["deadline_at"])
                     promoted_urls.add(url)
                     break
+                except NoticeWindowClosed as exc:
+                    document_check.update(status="expired", deadline=exc.deadline)
                 except Exception as exc:
+                    document_check.update(status="review", error=str(exc))
                     check["errors"].append(str(exc))
+            if check["documents"] and all(x["status"] == "expired" for x in check["documents"]):
+                check["status"] = "expired"
         except Exception as exc:
             check["errors"].append(str(exc))
+    for lead in unique_leads[MAX_LEADS:]:
+        diagnostic["checks"].append({"url": lead["url"], "title": lead.get("title", ""), "status": "deferred",
+                                     "errors": ["Limite documentale del run raggiunto"], "documents": []})
     result["discoveryQueue"] = [x for x in result.get("discoveryQueue", []) if x.get("url") not in promoted_urls]
     core._recompute_v04_counts(result)
     result.setdefault("counts", {})["discoveryReview"] = len(result["discoveryQueue"])

@@ -212,6 +212,16 @@
         "label": "Radar automatic document promotion",
         "script": "scripts/test_opportunity_document_promotion.py",
         "args": []
+      },
+      {
+        "label": "Radar actionable document review",
+        "script": "scripts/test_opportunity_run_report.py",
+        "args": []
+      },
+      {
+        "label": "Radar complete owner notifications",
+        "script": "scripts/test_opportunity_owner_notification.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
@@ -255,7 +265,7 @@
       "path": ".github/workflows/opportunity-radar-daily.yml",
       "category": "automation",
       "status": "active",
-      "note": "Primary shadow candidate pipeline: one scheduled scan, semantic comparison, complete public-site build and browser gates; verified-opportunities-v1 separates degraded discovery from unsafe content."
+      "note": "Primary shadow candidate pipeline: one scheduled scan, semantic comparison, complete public-site build and browser gates; verified-opportunities-v1 separates degraded discovery from unsafe content. Owner notification includes the complete actionable review inbox and direct document links."
     },
     {
       "path": ".github/workflows/opportunity-radar-daily-v2-shadow.yml",

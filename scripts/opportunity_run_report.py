@@ -19,6 +19,8 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlsplit, urlunsplit
 
+from opportunity_review_actions import build_actions, render_actions_html, render_actions_markdown
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PREVIOUS = Path("/tmp/opportunity-daily-previous.json")
 DEFAULT_CURRENT = ROOT / "data" / "opportunity-daily-public.json"
@@ -349,6 +351,10 @@ def build_report(
     )
 
     scan_succeeded = phase_statuses.get("scan") == "success"
+    review_payload = current if scan_succeeded or not diagnostic else {**current, **diagnostic, "opportunities": current_items}
+    if any(status == "failure" for status in phase_statuses.values()):
+        review_payload = {**review_payload, "opportunities": previous_items, "publicationBlocked": True}
+    review_actions = build_actions(review_payload)
     gates = _gate_summary(current, diagnostic if not scan_succeeded else None) if current or diagnostic else []
     transport_payload = diagnostic if diagnostic and not scan_succeeded else current
     transport = transport_payload.get("transportAudit") or {}
@@ -407,6 +413,10 @@ def build_report(
         item["identity"] + ":" + ",".join(change["field"] for change in item["changes"])
         for item in modified
     )
+    # Changes to the owner inbox must be visible even with unchanged public cards.
+    identity_lines.extend("review:" + json.dumps({"url": row["url"], "title": row["title"], "deadline": row["deadline"], "source": row["source"], "status": row["status"], "reasonCode": row["reasonCode"],
+                          "documents": [{k: d.get(k) for k in ("url", "status", "sha256")} for d in row["documents"]]}, sort_keys=True)
+                          for row in review_actions["items"] if row["status"] in ("human", "retry"))
     fingerprint = hashlib.sha256("\n".join(sorted(identity_lines)).encode("utf-8")).hexdigest()[:16]
 
     return {
@@ -432,6 +442,7 @@ def build_report(
             "current": len(current.get("discoveryQueue") or []),
             "added": [_compact(item) for item in discovery_added] if scan_succeeded and current_error is None else [],
         },
+        "reviewActions": review_actions,
         "fingerprint": fingerprint,
         "added": added,
         "modified": modified,
@@ -501,6 +512,7 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
             "",
             "> Il confronto dei contenuti non è conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
         ])
+    lines.append(render_actions_markdown(report.get("reviewActions") or {}))
     discovery_review = report.get("discoveryReview") or {}
     discovery_added = discovery_review.get("added") or []
     lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
@@ -675,13 +687,14 @@ def render_html(report: dict[str, Any]) -> str:
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Radar Opportunità - rapporto del run</title>
 <style>
-body{{font-family:Arial,sans-serif;color:#111827;background:#f3f6f8;line-height:1.45;margin:0;padding:24px}}main{{max-width:1500px;margin:auto}}h1{{margin-bottom:4px}}.small{{color:#6b7280;font-size:13px}}.status{{display:inline-block;border-radius:999px;padding:7px 12px;font-weight:800}}.ok{{background:#dcfce7;color:#166534}}.warn{{background:#fef3c7;color:#92400e}}.fail{{background:#fee2e2;color:#991b1b}}.cards{{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin:18px 0 24px}}.card,section{{border:1px solid #d1d5db;border-radius:14px;background:white}}.card{{padding:14px}}.card strong{{display:block;font-size:28px}}section{{padding:18px;margin-bottom:20px;overflow-x:auto}}table{{border-collapse:collapse;width:100%;margin:12px 0 8px;font-size:13px}}th,td{{border-bottom:1px solid #e5e7eb;padding:8px;vertical-align:top}}th{{background:#f9fafb;text-align:left;position:sticky;top:0}}a{{color:#0f766e;font-weight:700;text-decoration:none}}ul{{margin:0;padding-left:18px}}@media(max-width:800px){{body{{padding:12px}}.cards{{grid-template-columns:repeat(2,minmax(130px,1fr))}}}}
+body{{font-family:Arial,sans-serif;color:#111827;background:#f3f6f8;line-height:1.45;margin:0;padding:24px}}main{{max-width:1500px;margin:auto}}h1{{margin-bottom:4px}}.small{{color:#6b7280;font-size:13px}}.status{{display:inline-block;border-radius:999px;padding:7px 12px;font-weight:800}}.ok{{background:#dcfce7;color:#166534}}.warn{{background:#fef3c7;color:#92400e}}.fail{{background:#fee2e2;color:#991b1b}}.cards{{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin:18px 0 24px}}.card,section{{border:1px solid #d1d5db;border-radius:14px;background:white}}.card{{padding:14px}}.card strong{{display:block;font-size:28px}}section{{padding:18px;margin-bottom:20px;overflow-x:auto}}.review-action{{border-top:1px solid #d1d5db;padding:12px 0;overflow-wrap:anywhere}}table{{border-collapse:collapse;width:100%;margin:12px 0 8px;font-size:13px}}th,td{{border-bottom:1px solid #e5e7eb;padding:8px;vertical-align:top}}th{{background:#f9fafb;text-align:left;position:sticky;top:0}}a{{color:#0f766e;font-weight:700;text-decoration:none}}ul{{margin:0;padding-left:18px}}@media(max-width:800px){{body{{padding:12px}}.cards{{grid-template-columns:repeat(2,minmax(130px,1fr))}}}}
 </style></head><body><main>
 <h1>Radar Opportunità - rapporto del run</h1><p class="small">Generato {generated} · dati {html.escape(str(report.get('referenceDate') or 'n.d.'))} · fingerprint {html.escape(report['fingerprint'])}</p>
 <p><span class="status {status_class}">{html.escape(_status_label(report['overallStatus']))}</span></p>
 <div class="cards"><div class="card"><strong>{counts['added']}</strong>Nuove</div><div class="card"><strong>{counts['modified']}</strong>Modificate</div><div class="card"><strong>{counts['archived']}</strong>Archiviate</div><div class="card"><strong>{counts['removed']}</strong>Rimosse</div><div class="card"><strong>{counts['current']}</strong>Correnti</div></div>
 <section><h2>Riepilogo</h2><p>Record precedenti: <strong>{counts['previous']}</strong> -> record correnti: <strong>{counts['current']}</strong><br>Record invariati: <strong>{counts['unchanged']}</strong></p></section>
 {comparison_warning}{failure_reasons}
+{render_actions_html(report.get('reviewActions') or {})}
 {_html_table("Nuove segnalazioni interne da verificare (non pubblicate)", (report.get('discoveryReview') or {}).get('added') or [])}
 <section><h2>Fasi e gate</h2><table><thead><tr><th>Controllo</th><th>Esito</th><th>Dettaglio</th></tr></thead><tbody>{phase_rows}{gate_rows}</tbody></table></section>
 <section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong> · schede ripulite da contaminazioni HTML/JS <strong>{health['contentSanitized']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table><h3>Dettaglio endpoint</h3><table><thead><tr><th>Fonte</th><th>URL configurato</th><th>Esito/trasporto</th><th>HTTP tentativi</th><th>Fallback</th><th>Redirect/destinazione</th><th>Errori trasporto</th></tr></thead><tbody>{endpoint_rows}</tbody></table></section>
