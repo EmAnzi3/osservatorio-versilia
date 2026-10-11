@@ -142,11 +142,16 @@ def build_actions(payload):
             status, code, reason, action = "monitor", "administrative_update", "La pagina comunica l’approvazione di una graduatoria, senza una nuova apertura documentata.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
         else:
             status, code, reason, action = _diagnosis(check, item)
+        document_lookup = "found" if documents else ("not_attempted" if check.get("status") == "deferred" else "failed" if lookup.get("status") == "error" or (status == "retry" and check_rows) else "not_found" if check_rows or lookup.get("status") == "ok" else "not_attempted")
+        if status == "human" and code == "unverified_signal" and document_lookup == "not_attempted" and normalized_url(item.get("url")):
+            status, code = "retry", "document_lookup_pending"
+            reason = "La ricerca automatica degli allegati deve ancora essere eseguita."
+            action = "Attendere il tentativo automatico: i riferimenti rinviati hanno priorità nei run successivi. Il rapporto segnalerà l’eventuale verifica di persona con il documento individuato o il motivo della mancata acquisizione."
         rows.append({"title": str(item.get("title") or "Segnalazione senza titolo"),
                      "url": str(item.get("url") or ""), "source": str(item.get("source_label") or item.get("source_id") or "Fonte non indicata"),
                      "deadline": deadline, "status": status, "statusLabel": LABELS[status], "reasonCode": code,
                      "reason": reason, "action": action, "documents": list(documents.values()),
-                     "documentLookup": "found" if documents else ("not_attempted" if check.get("status") == "deferred" else "failed" if lookup.get("status") == "error" or (status == "retry" and check_rows) else "not_found" if check_rows or lookup.get("status") == "ok" else "not_attempted"),
+                     "documentLookup": document_lookup,
                      "technicalDetails": check["errors"], "signalCount": len(items),
                      "representedBy": represented.get(key)})
     order = {"human": 0, "retry": 1, "covered": 2, "expired": 3, "monitor": 4}

@@ -258,6 +258,16 @@ def _test_actionable_document_review():
     assert not is_administrative_update("<p>È stata approvata la graduatoria definitiva. Riapertura delle domande.</p>")
     fresh = _snapshot([]);fresh["referenceDate"] = "2026-10-10"
     fresh["discoveryQueue"] = [{"title": "Avviso A", "url": page}, {"title": "Avviso B", "url": page+"secondo/"}]
+    queued = build_actions(fresh)
+    assert queued["counts"] == {"retry": 2}
+    assert all(x["reasonCode"] == "document_lookup_pending" for x in queued["items"])
+    assert "Attendere il tentativo automatico" in render_actions_markdown(queued)
+    searched = {**fresh, "reviewDocumentLookup": [{"url": page, "status": "ok", "documents": []}]}
+    searched_row = next(x for x in build_actions(searched)["items"] if x["url"] == page)
+    assert searched_row["status"] == "human" and searched_row["documentLookup"] == "not_found"
+    located = {**fresh, "reviewDocumentLookup": [{"url": page, "status": "ok", "documents": [{"url": document, "status": "located"}]}]}
+    located_row = next(x for x in build_actions(located)["items"] if x["url"] == page)
+    assert located_row["status"] == "human" and located_row["documentLookup"] == "found"
     calls = []
     def loader(url):
         calls.append(url)
