@@ -38909,96 +38909,120 @@
         "theme": "comunita",
         "label": "Enti del Terzo settore ogni 1.000 residenti",
         "shortLabel": "Terzo settore",
-        "description": "Enti iscritti al RUNTS rapportati alla popolazione residente.",
+        "description": "Enti con sede legale nel Comune iscritti al RUNTS alla data 11 ottobre 2026, ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2025",
+        "year": "2026-10-11",
         "source": "Ministero del Lavoro — RUNTS",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti",
+      "sourceUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
       "rows": [
         {
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.34,
-          "formatted": "2,34 ogni 1.000",
+          "value": 2.433201726195942,
+          "formatted": "2,43 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2.34
+          "benchmarkValue": 2.433201726195942,
+          "registeredEntities": 53,
+          "residentPopulation": 21782,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 2.74,
-          "formatted": "2,74 ogni 1.000",
+          "value": 2.8510217534607776,
+          "formatted": "2,85 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2.74
+          "benchmarkValue": 2.8510217534607776,
+          "registeredEntities": 173,
+          "residentPopulation": 60680,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.64,
-          "formatted": "2,64 ogni 1.000",
+          "value": 2.6760696407770044,
+          "formatted": "2,68 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2.64
+          "benchmarkValue": 2.6760696407770044,
+          "registeredEntities": 85,
+          "residentPopulation": 31763,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2.78,
-          "formatted": "2,78 ogni 1.000",
+          "value": 2.9544051503659934,
+          "formatted": "2,95 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2.78
+          "benchmarkValue": 2.9544051503659934,
+          "registeredEntities": 67,
+          "residentPopulation": 22678,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 3.99,
-          "formatted": "3,99 ogni 1.000",
+          "value": 4.0703353956366,
+          "formatted": "4,07 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 3.99
+          "benchmarkValue": 4.0703353956366,
+          "registeredEntities": 50,
+          "residentPopulation": 12284,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 3.82,
-          "formatted": "3,82 ogni 1.000",
+          "value": 3.66412213740458,
+          "formatted": "3,66 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 3.82
+          "benchmarkValue": 3.66412213740458,
+          "registeredEntities": 24,
+          "residentPopulation": 6550,
+          "populationReference": "2026-01-01"
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 4.67,
+          "value": 4.671218109953288,
           "formatted": "4,67 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 4.67
+          "benchmarkValue": 4.671218109953288,
+          "registeredEntities": 13,
+          "residentPopulation": 2783,
+          "populationReference": "2026-01-01"
         }
       ],
       "aggregate": {
-        "value": 2.845066868533939,
+        "value": 2.9333838001514003,
         "label": "Densità Versilia",
-        "note": "Enti complessivi ogni 1.000 residenti."
+        "note": "465 enti con sede legale nei sette Comuni; 158.520 residenti al 1° gennaio 2026."
       },
       "normalizedAggregate": null,
       "method": {
-        "type": "Elaborazione Osservatorio",
-        "formula": "enti RUNTS / popolazione residente × 1.000",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "type": "Elaborazione Osservatorio su RUNTS e Istat",
+        "formula": "enti RUNTS con sede legale nel Comune / residenti Istat al 1° gennaio 2026 × 1.000",
+        "caveat": "Fotografia del registro alla data 11 ottobre 2026. Conteggio per codice fiscale univoco e sede legale, in tutte le sezioni. La sede non misura attività o servizi effettivamente svolti nel territorio. Popolazione al 1° gennaio 2026; nessuna variazione calcolata rispetto ai tassi 2025 non riconciliati.",
+        "coverage": "7/7",
+        "sourceSnapshot": "data/source-snapshots/runts-public-2026-10-11.json",
+        "referenceDate": "2026-10-11",
+        "populationReference": "2026-01-01"
       }
     },
     "recycling": {
@@ -46787,11 +46811,11 @@
         "shortLabel": "Copertura FTTH",
         "description": "Quota delle famiglie residenti raggiunte da una rete fissa in fibra fino all’edificio secondo la metrica europea DESI.",
         "unit": "percent",
-        "year": "31 dicembre 2025",
+        "year": "6 luglio 2026",
         "source": "AGCOM — Broadband Map, reportistica comunale",
         "polarity": "neutral",
         "benchmark": {
-          "year": "31 dicembre 2025",
+          "year": "6 luglio 2026",
           "tuscany": 73.22531610387755,
           "italy": 82.89952077416727,
           "source": "AGCOM — Broadband Map, reportistica comunale",
@@ -46894,7 +46918,7 @@
         "shortLabel": "Famiglie raggiunte da FTTH",
         "description": "Numero di famiglie residenti considerate raggiunte dalla rete FTTH secondo la metrica DESI.",
         "unit": "number",
-        "year": "31 dicembre 2025",
+        "year": "6 luglio 2026",
         "source": "AGCOM — Broadband Map",
         "polarity": "neutral"
       },
@@ -46992,7 +47016,7 @@
         "shortLabel": "Famiglie non raggiunte",
         "description": "Differenza tra famiglie residenti e famiglie raggiunte da FTTH secondo la metrica DESI.",
         "unit": "number",
-        "year": "31 dicembre 2025",
+        "year": "6 luglio 2026",
         "source": "Elaborazione Osservatorio su dati AGCOM Broadband Map",
         "polarity": "neutral"
       },
@@ -47090,11 +47114,11 @@
         "shortLabel": "FTTH entro 20 metri",
         "description": "Quota delle famiglie residenti con infrastruttura FTTH dichiarata entro 20 metri dall’abitazione.",
         "unit": "percent",
-        "year": "31 dicembre 2025",
+        "year": "6 luglio 2026",
         "source": "AGCOM — Broadband Map, reportistica comunale",
         "polarity": "neutral",
         "benchmark": {
-          "year": "31 dicembre 2025",
+          "year": "6 luglio 2026",
           "tuscany": 64.58685444439853,
           "italy": 74.25960016740227,
           "source": "AGCOM — Broadband Map, reportistica comunale",

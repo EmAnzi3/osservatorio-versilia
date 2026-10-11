@@ -11,11 +11,11 @@ NATIVE = 'data/source-snapshots/agid-asia-agcom-2026-08.json'
 BENCHMARK = 'data/source-snapshots/a3-agcom-benchmark-2025.json'
 URL = 'https://maps.agcom.it/'
 CSV = 'https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data'
-LABEL = '31 dicembre 2025'
+LABEL = '6 luglio 2026'
 FIELDS = {DESI: 'copertura_ftth_desi_pct', NEAR: 'copertura_ftth_20m_pct', REACHED: 'famiglie_ftth'}
 FORMULAS = {DESI: 'Copertura FTTH DESI comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', NEAR: 'Copertura FTTH entro 20 metri comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', REACHED: 'Famiglie FTTH pubblicate da AGCOM nella reportistica comunale Broadband Map.', UNREACHED: 'famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI'}
-HASHES = {NATIVE: ('1e50ea8cbebfcfce6e83120d38fda90a4cbbf9dd6d5ba1b73916433d77f66dc7', '41585ef8b5ea2a96b8e425eadb0bb54bb14641f2d28553e0fb67ea8b8f24d49c'), BENCHMARK: ('00901a98e02931879b3babfbcb5f6c5fbe91330f2c17b7c577251eb9cce2b80c', '7fdc7be0620c9dbae183aad3500f655f80fc42f9d93cd023c9e3a83522a67d21')}
-NOTES = ['connectivity_declared_network_not_subscriptions_speed_or_civic_activation', 'connectivity_reference_2025_publication_acquisition_2026_distinct', 'connectivity_no_automatic_causal_or_policy_priority_claim']
+HASHES = {NATIVE: ('068d787f7fedbb09f95f7072f8a1555c9f1b6bb2ef8cc064712f5c7b1cd5e3f6', '3a798f79b2a3527b12d08bc40d52a592857276af259deef31d46e1ff7a5237c0'), BENCHMARK: ('d51797b7f47895b3aa1d75ed96928af3d4a0dca14b4eb1ff626f764872d49df2', '38b51a81d34e5ef60375882604c100eba65ad0dccb6288997eca9358d95e670b')}
+NOTES = ['connectivity_declared_network_not_subscriptions_speed_or_civic_activation', 'connectivity_official_reference_2026_correction_not_new_acquisition', 'connectivity_no_automatic_causal_or_policy_priority_claim']
 
 
 def frozen(engine, path):
@@ -33,7 +33,7 @@ def equal(actual, expected):
 
 
 def token(key, period):
-    if str(period) in ('2025', LABEL, '2025-12-31'): return '2025-12-31'
+    if str(period) in ('2026', LABEL, '2026-07-06'): return '2026-07-06'
     raise ValueError('connectivity_reference_date_not_frozen')
 
 
@@ -63,7 +63,7 @@ def context(metric, key, dim):
     return dict(unit=meta['unit'], population='AGCOM resident households; declared network availability, not active contracts',
                 definition=FIELDS.get(key, 'famiglie_residenti minus famiglie_ftth; missing count remains missing'),
                 method='direct primary official municipal percentage, published one-decimal precision retained' if key in PERCENTAGES else FORMULAS[key],
-                frequency='reference_snapshot', periodBasis='network reference 31 December 2025; publication and acquisition 2026 distinct',
+                frequency='reference_snapshot', periodBasis='official consistencies reference 6 July 2026; report revised 14 July; acquisition dates retained',
                 nativeComponentsAvailable=False, adapter='connectivity/' + key + '/v1')
 
 
@@ -86,7 +86,7 @@ def validated(engine, key):
         code = row['code']; index, record = native[code]; town = snap['towns'][index]
         if (row.get('town') != TOWNS[code] or row.get('slug') != '-'.join(TOWNS[code].lower().split())
                 or town['town'] != TOWNS[code] or record['comune'] != TOWNS[code]
-                or town['agcom']['dataPeriod'] != '31/12/2025' or row.get('notApplicable') or row.get('dataUnavailable')
+                or snap['agcomAudit'].get('dataPeriod') != '06/07/2026' or row.get('notApplicable') or row.get('dataUnavailable')
                 or any(row.get(k) is not None for k in ('series', 'normalized', 'ratioComponents'))):
             raise ValueError('connectivity_row_definition_changed')
         expected = value(key, record)
@@ -115,10 +115,10 @@ def validated(engine, key):
 def observation(engine, key, index, dim, period, historical):
     metric = engine._catalog['metrics'][key]; ctx = context(metric,key,dim)
     snap, ref, native = validated(engine,key); row = metric['rows'][index]; code = row['code']
-    if period != '2025-12-31': raise ValueError('connectivity_reference_date_not_frozen')
+    if period != '2026-07-06': raise ValueError('connectivity_reference_date_not_frozen')
     j, record = native[code]
     evidence = [dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/rows/{index}/value'),
-                dict(ref,kind='source_snapshot',recordPointer=f'/towns/{j}/agcom/primaryOfficialCsv',sourceUrl=CSV,nativeFields={k:record[k] for k in ('famiglie_residenti','famiglie_ftth','famiglie_ftth_20m','copertura_ftth_desi_pct','copertura_ftth_20m_pct')},referenceDate='2025-12-31')]
+                dict(ref,kind='source_snapshot',recordPointer=f'/towns/{j}/agcom/primaryOfficialCsv',sourceUrl=CSV,nativeFields={k:record[k] for k in ('famiglie_residenti','famiglie_ftth','famiglie_ftth_20m','copertura_ftth_desi_pct','copertura_ftth_20m_pct')},referenceDate='2026-07-06')]
     notes = NOTES[:]
     if key in PERCENTAGES: notes += ['connectivity_percentages_and_counts_independent_no_reverse_derivation', 'connectivity_public_aggregate_weights_rounded_percentages_not_native_count_ratio']
     else: notes += ['connectivity_counts_6_of_7_forte_missing_no_imputation', 'connectivity_available_municipal_mean_not_complete_versilia_total']
@@ -127,7 +127,7 @@ def observation(engine, key, index, dim, period, historical):
 
 
 def benchmark(engine, key, scope, municipal):
-    if key not in PERCENTAGES or scope not in scopes(key,'total') or municipal['period'] != '2025-12-31':
+    if key not in PERCENTAGES or scope not in scopes(key,'total') or municipal['period'] != '2026-07-06':
         raise ValueError('connectivity_benchmark_scope_not_reviewed')
     validated(engine,key); snap,ref = frozen(engine,BENCHMARK)
     evidence = [dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{key}/{scope}',acquisitionEvidence=snap['acquisitionEvidence']),
