@@ -442,6 +442,36 @@ def acquire_primary_rows(
     )
 
 
+
+REPORT_SCRIPT_URL = "https://geo.agcom.it/reportistica/report.js"
+
+
+def dated_primary_candidates(text):
+    """Bind each municipal CSV to its enclosing official reference heading."""
+    result = []
+    for section in re.split(r'<h2>', text)[1:]:
+        match = re.match(r'Consistenze rilevate al (\d{2}/\d{2}/\d{4})', section)
+        if not match:
+            continue
+        period = match.group(1)
+        base.agcom_period(period)
+        link = re.search(r'Dati Comunali\s*<a href="([^"]+)"[^>]*><u>CSV</u>', section)
+        if link and _is_csv_candidate(link.group(1)):
+            result.append((link.group(1), period))
+    return sorted(result, key=lambda item: base.agcom_period(item[1]), reverse=True)
+
+
+def acquire_dated_primary(required_codes):
+    body = fetch_bytes(REPORT_SCRIPT_URL, "text/javascript,*/*")
+    candidates = dated_primary_candidates(body.decode('utf-8-sig'))
+    if not candidates:
+        raise base.DataError("AGCOM: catalogo comunale datato assente")
+    # A failed current release must not silently downgrade to an older one.
+    url, period = candidates[0]
+    rows = fetch_primary_rows(url)
+    validate_primary_rows(rows, required_codes)
+    return rows, url, period
+
 def population_by_code(data: dict[str, Any]) -> dict[str, float]:
     metric = data.get("metrics", {}).get("population", {})
     result = {}
@@ -470,7 +500,8 @@ def plausibility(population: float | None, households: int | None, reached: int 
 def audit(data: dict[str, Any], snapshot: dict[str, Any]) -> tuple[dict[str, Any], str, str]:
     town_names = {str(t.get("code")): t.get("name") for t in data.get("towns", [])}
     required_codes = set(town_names)
-    rows, csv_url, discovery = acquire_primary_rows(required_codes)
+    rows, csv_url, period = acquire_dated_primary(required_codes)
+    discovery = "official_dated_catalog:" + REPORT_SCRIPT_URL
 
     population = population_by_code(data)
     invalid: list[str] = []
@@ -502,6 +533,8 @@ def audit(data: dict[str, Any], snapshot: dict[str, Any]) -> tuple[dict[str, Any
 
     snapshot["agcomAudit"] = {
         "sourceType": "primary_official_csv",
+        "dataPeriod": period,
+        "periodEvidenceUrl": REPORT_SCRIPT_URL,
         "publicMapUrl": PUBLIC_MAP_URL,
         "officialCsvUrl": csv_url,
         "discovery": discovery,

@@ -1,6 +1,6 @@
 # A6 — FTTH AGCOM: disponibilità dichiarata e famiglie
 
-Il lotto v37 abilita quattro carrier già pubblicati senza acquisire dati né cambiare la UI: `ftthCoverageDesi`, `ftthCoverage20m`, `ftthReachedHouseholds` e `ftthUnreachedHouseholds`. Riferimento **31 dicembre 2025**, distinto dalla pubblicazione/acquisizione 2026. Il token delle risposte è `2025-12-31`; `2025` e l'etichetta pubblica risolvono la stessa fotografia, non una media annuale.
+Il lotto v37 abilita quattro carrier già pubblicati senza acquisire dati né cambiare la UI: `ftthCoverageDesi`, `ftthCoverage20m`, `ftthReachedHouseholds` e `ftthUnreachedHouseholds`. Riferimento **6 luglio 2026**, distinto dalla pubblicazione/acquisizione 2026. Il token delle risposte è `2026-07-06`; `2026` e l'etichetta pubblica risolvono la stessa fotografia, non una media annuale.
 
 ## Evidenza e universi
 
@@ -37,3 +37,5 @@ La disponibilità dichiarata della rete non equivale ad abbonamenti, velocità e
 Regressioni indipendenti: 28 celle pubbliche (incluse quattro `null`), 35 celle native, 28 scostamenti, quattro aggregati, ranghi, data e puntatori, zero/mancante e mutazioni avverse su catalogo/cache/hash. Corpus: 110 nuove domande con aspettative fisse e rifiuti, tutte le 1.402 precedenti conservate; totale 1.512 PASS, 740 letture/calcoli e 772 rifiuti. Audit derivato e carichi descrittivi in `reports/a6-connectivity/`.
 
 Il report preliminare usa catalogo e registry effettivi della #388 con SHA conservato; Quick e Full in clone freddo devono ricostruire e riconciliare la stessa vista prima della prontezza al merge manuale. A6.4 resta parziale; A6.5–A6.6 richiedono la revisione metodologica. A7 non avviata.
+
+Correzione 11 ottobre: il CSV già acquisito era identificato dal portale come Reportistica 260630 Comuni. Il catalogo ufficiale lo associa alle consistenze del 6 luglio 2026 (revisione 14 luglio). Corretti i riferimenti di Comuni e benchmark del medesimo CSV; numeri, date di acquisizione e celle mancanti invariati. Gli shard AgID hanno una data separata (30 giugno). Lo snapshot di audit conserva URL, hash del catalogo e prove precedenti. Nessun nuovo CSV dichiarato acquisito: il portale ArcGIS oggi restituisce un errore interno. Il nome storico del file benchmark resta per compatibilità.

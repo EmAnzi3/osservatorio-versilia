@@ -87,6 +87,7 @@ def snapshot_data(invalid_codes=None):
     return {
         "towns": towns,
         "agcomAudit": {
+            "dataPeriod": "06/07/2026",
             "invalidAbsoluteTownCodes": list(invalid_codes),
             "invalidAbsoluteTowns": [name for name, code, _ in TOWNS if code in invalid_codes],
         },

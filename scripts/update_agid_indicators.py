@@ -178,11 +178,37 @@ def validate_asia(code: str, shard: dict[str, Any]) -> None:
         _as_number(kpi.get(key), f"ASIA {code} {key}")
 
 
+def agcom_period(value):
+    """Validate a complete, non-future source reference, independent of release."""
+    if not isinstance(value, str) or not re.fullmatch(r"\d{2}/\d{2}/\d{4}", value):
+        raise DataError(f"AGCOM: periodo non valido ({value})")
+    try:
+        parsed = datetime.strptime(value, "%d/%m/%Y").date()
+    except ValueError as exc:
+        raise DataError(f"AGCOM: periodo non valido ({value})") from exc
+    if parsed > datetime.now(timezone.utc).date():
+        raise DataError(f"AGCOM: periodo futuro ({value})")
+    return parsed
+
+
+def agcom_period_label(value):
+    d = agcom_period(value)
+    months = ('gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
+              'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre')
+    return f"{d.day} {months[d.month-1]} {d.year}"
+
+
+def common_agcom_period(agcom):
+    periods = {agcom_period(s.get('_data_period')) for s in agcom.values()}
+    if len(periods) != 1:
+        raise DataError("AGCOM: periodi comunali discordanti")
+    return next(iter(periods)).strftime('%d/%m/%Y')
+
+
 def validate_agcom(code: str, shard: dict[str, Any]) -> None:
     period = shard.get("_data_period")
     kpi = shard.get("kpi")
-    if period != "31/12/2025":
-        raise DataError(f"AGCOM {code}: periodo inatteso ({period})")
+    agcom_period(period)
     if not isinstance(kpi, dict):
         raise DataError(f"AGCOM {code}: sezione kpi mancante")
     for key in (
@@ -353,6 +379,9 @@ def apply_updates(
             raise DataError(f"Fonti mancanti per il Comune {code}")
         validate_asia(code, asia[code])
         validate_agcom(code, agcom[code])
+
+    period = common_agcom_period(agcom)
+    period_label = agcom_period_label(period)
 
     local_units = data["metrics"]["localUnits"]
     local_by_code = {row["code"]: row for row in local_units["rows"]}
@@ -528,7 +557,7 @@ def apply_updates(
         "Copertura FTTH",
         "Quota delle famiglie residenti raggiunte da una rete fissa in fibra fino all’edificio secondo la metrica europea DESI.",
         "percent",
-        "31 dicembre 2025",
+        period_label,
         "AGCOM — Broadband Map",
         AGCOM_SOURCE_URL,
         ftth_pct_rows,
@@ -548,7 +577,7 @@ def apply_updates(
         "Famiglie raggiunte da FTTH",
         "Numero di famiglie residenti considerate raggiunte dalla rete FTTH secondo la metrica DESI.",
         "number",
-        "31 dicembre 2025",
+        period_label,
         "AGCOM — Broadband Map",
         AGCOM_SOURCE_URL,
         ftth_reached_rows,
@@ -568,7 +597,7 @@ def apply_updates(
         "Famiglie non raggiunte",
         "Stima contabile delle famiglie residenti non comprese tra quelle raggiunte da FTTH secondo la metrica DESI.",
         "number",
-        "31 dicembre 2025",
+        period_label,
         "Elaborazione Osservatorio su dati AGCOM Broadband Map",
         AGCOM_SOURCE_URL,
         ftth_unreached_rows,
@@ -588,7 +617,7 @@ def apply_updates(
         "FTTH entro 20 metri",
         "Quota delle famiglie residenti con infrastruttura FTTH dichiarata entro 20 metri dall’abitazione.",
         "percent",
-        "31 dicembre 2025",
+        period_label,
         "AGCOM — Broadband Map",
         AGCOM_SOURCE_URL,
         ftth_20m_rows,
@@ -673,7 +702,7 @@ def apply_updates(
                 "dataset": "Broadband Map — reportistica comunale rete cablata",
                 "url": AGCOM_SOURCE_URL,
                 "license": "CC BY 4.0",
-                "dataPeriod": "31/12/2025",
+                "dataPeriod": period,
             },
         },
         "formulas": {

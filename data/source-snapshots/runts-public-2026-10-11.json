@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "status": "validated_for_publication",
+  "referenceDate": "2026-10-11",
+  "sourceUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+  "sourceSha256": "6319cc30c68e77436bba1d37a36ab46dddd3be44373fd99613e972778f11ddbb",
+  "sourcePublicationDate": "2026-10-11",
+  "method": "Unique fiscal codes; current legal municipality and province LU; all registered sections",
+  "rows": [
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "count": 53,
+      "population": 21782,
+      "populationReference": "2026-01-01",
+      "per1000": 2.433201726195942
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "count": 173,
+      "population": 60680,
+      "populationReference": "2026-01-01",
+      "per1000": 2.8510217534607776
+    },
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "count": 85,
+      "population": 31763,
+      "populationReference": "2026-01-01",
+      "per1000": 2.6760696407770044
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "count": 67,
+      "population": 22678,
+      "populationReference": "2026-01-01",
+      "per1000": 2.9544051503659934
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "count": 50,
+      "population": 12284,
+      "populationReference": "2026-01-01",
+      "per1000": 4.0703353956366
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "count": 24,
+      "population": 6550,
+      "populationReference": "2026-01-01",
+      "per1000": 3.66412213740458
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "count": 13,
+      "population": 2783,
+      "populationReference": "2026-01-01",
+      "per1000": 4.671218109953288
+    }
+  ],
+  "versilia": {
+    "count": 465,
+    "population": 158520
+  },
+  "limitations": [
+    "Current geography cannot reconstruct 2025 legal-seat transfers.",
+    "No historical trend or comparison with unreconciled 2025 public rates.",
+    "Population reference differs from register snapshot and remains explicit."
+  ],
+  "publicMetricChanged": true,
+  "replayScope": "Normalized aggregate counts verified against official Excel; personal entity records not versioned."
+}

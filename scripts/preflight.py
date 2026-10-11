@@ -71,6 +71,7 @@ STATIC_FULL_TESTS = (
     ("source links", "scripts/test_source_links_v160.py"),
     ("SIOPE history", "scripts/test_siope_history_v160.py"),
     ("AGID indicators", "scripts/test_agid_indicators.py"),
+    ("RUNTS current stock", "scripts/test_runts_public.py"),
     ("AGID idempotence", "scripts/test_agid_refresh_idempotent.py"),
     ("ATECO/AGCOM audit", "scripts/test_ateco_agcom_audit.py"),
     ("AGCOM percentages", "scripts/test_agcom_primary_percentages.py"),

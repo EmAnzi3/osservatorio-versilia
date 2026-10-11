@@ -614,7 +614,8 @@
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
     "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
     "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual",
-    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly"
+    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly",
+    "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti": "runts-continuous"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -936,10 +937,11 @@
         }
       ],
       "acquisition": {
-        "method": "manual_snapshot",
-        "path": "data/site-data.json:metrics.thirdSector",
-        "publishedReference": "2025",
-        "rawSnapshot": "not_versioned"
+        "method": "validated_dated_snapshot",
+        "path": "data/source-snapshots/runts-public-2026-10-11.json",
+        "publishedReference": "2026-10-11",
+        "rawSnapshot": "normalized_counts_with_official_excel_sha256",
+        "materializer": "scripts/update_runts_public.py"
       },
       "releaseCheck": "Leggere la data della riga Enti iscritti (formato Excel) nella Lista enti; scaricare il file tramite il controllo ufficiale e contare sedi comunali. Il registro non certifica il denominatore demografico.",
       "catalogueUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
@@ -1153,6 +1155,19 @@
     },
     "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": {
       "requestTimeoutSeconds": 120
+    },
+    "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti": {
+      "role": "release_catalog",
+      "acquisition": {
+        "method": "validated_dated_snapshot",
+        "path": "data/source-snapshots/runts-public-2026-10-11.json",
+        "publishedReference": "2026-10-11",
+        "rawSnapshot": "normalized_counts_with_official_excel_sha256",
+        "materializer": "scripts/update_runts_public.py"
+      },
+      "releaseCheck": "Leggere la data della riga Enti iscritti (formato Excel) nella Lista enti; scaricare il file tramite il controllo ufficiale e contare sedi comunali. Il registro non certifica il denominatore demografico.",
+      "catalogueUrl": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+      "releasePattern": "Enti iscritti(?: \\(formato Excel\\))?\\s*</td>.*?(\\d{2}/\\d{2}/\\d{4})"
     }
   },
   "requestTimeoutSecondsByHost": {
