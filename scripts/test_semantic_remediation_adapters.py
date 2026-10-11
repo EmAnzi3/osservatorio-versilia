@@ -3,9 +3,25 @@ import copy,math
 from semantic_query_engine import QueryEngine,ROOT
 from test_semantic_query_engine import request,rejected
 import semantic_query_remediation_adapters as x
-COUNTS={'046005':(9,22),'046013':(10,11),'046018':(6,10),'046024':(10,13),'046028':(3,6),'046030':(3,4),'046033':(15,30)}
+COUNTS={'046005':(10,22),'046013':(10,11),'046018':(6,10),'046024':(10,13),'046028':(3,6),'046030':(4,4),'046033':(15,30)}
 
 def regressions(path):
+ # Public CSV parser fails closed before writing, including duplicates outside Versilia.
+ import csv,io,base64,gzip
+ from update_sisbon_public import procedures
+ raw=gzip.decompress(base64.b64decode((ROOT/'data/source-snapshots/sisbon-public-2026-10-11.csv.gz.b64').read_text()))
+ source=list(csv.DictReader(io.StringIO(raw.decode('utf-8-sig'))))
+ towns=[dict(name=n,code=c) for c,n in [('046005','Camaiore'),('046013','Forte dei Marmi'),('046018','Massarosa'),('046024','Pietrasanta'),('046028','Seravezza'),('046030','Stazzema'),('046033','Viareggio')]]
+ assert len(procedures(raw,towns))==154
+ for mode in ('duplicate','state','missing'):
+  rows=copy.deepcopy(source)
+  if mode=='duplicate':rows.append(rows[0])
+  elif mode=='state':next(r for r in rows if r['nome_comune']=='Camaiore')['d_stato_proc']='999-Unreviewed'
+  else:rows=[r for r in rows if r['nome_comune']!='Camaiore']
+  out=io.StringIO();writer=csv.DictWriter(out,fieldnames=source[0].keys());writer.writeheader();writer.writerows(rows)
+  try:procedures(out.getvalue().encode(),towns)
+  except ValueError:pass
+  else:raise AssertionError('SISBON parser accepted '+mode)
  e=QueryEngine(path,layer='effective');checks=0
  for dim in x.dimensions(x.KEYS[0]):
   r=e.query(request('compare',x.KEYS[0],dimension=dim));assert r['status']=='computed',r
@@ -18,7 +34,7 @@ def regressions(path):
     assert len(ev['sha256'])==64
   assert e.query(request('rank',x.KEYS[0],dimension=dim))['status']=='computed'
   if dim!='share:active':rejected(e,request('weighted_ratio',x.KEYS[0],dimension=dim),'remediation_verified_ratio_required')
- r=e.query(request('weighted_ratio',x.KEYS[0],dimension='share:active'));assert r['status']=='computed' and math.isclose(r['result']['value'],56/152*100),r
+ r=e.query(request('weighted_ratio',x.KEYS[0],dimension='share:active'));assert r['status']=='computed' and math.isclose(r['result']['value'],58/154*100),r
  r=e.query(request('weighted_ratio',x.KEYS[0],dimension='share:active',towns=['046018','046033']));assert r['status']=='computed' and math.isclose(r['result']['value'],21/61*100),r
  for op in ('series','absolute_change','relative_change','percentage_points','trend'):rejected(e,request(op,x.KEYS[0],towns=['046018']),'remediation_history_not_frozen')
  rejected(e,dict(request('benchmark_gap',x.KEYS[0]),benchmark='versilia'),'remediation_benchmark_not_reviewed')
@@ -30,7 +46,7 @@ def regressions(path):
  for mode,reason in [('duplicate','remediation_duplicate_or_invalid_id'),('status','remediation_state_partition_changed'),('state','remediation_state_partition_changed'),('identity','remediation_native_identity_changed'),('hash','remediation_native_reference_changed'),('partition','remediation_state_partition_changed'),('public','remediation_public_records_changed'),('parts','remediation_catalog_source_mismatch'),('aggregate','remediation_catalog_source_mismatch'),('history','remediation_public_identity_or_history_changed')]:
   g=QueryEngine(path,layer='effective');s,ref=g.file(x.NATIVE);s=copy.deepcopy(s);rs=s['remediationProceedings']['procedures'];row=g._catalog['metrics'][x.KEYS[0]]['rows'][0]
   if mode=='duplicate':rs[1]['id']=rs[0]['id']
-  elif mode=='status':rs[0]['status']='active'
+  elif mode=='status':rs[0]['status']='closed' if rs[0]['status']=='active' else 'active'
   elif mode=='state':rs[0]['stateCode']='999'
   elif mode=='identity':rs[0]['townCode']='000000'
   elif mode=='hash':s['sources']['sisbon']['validatedCsvSha256']='0'*64

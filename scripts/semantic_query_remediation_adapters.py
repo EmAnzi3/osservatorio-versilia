@@ -1,19 +1,21 @@
 """Frozen SISBON administrative proceedings; never an estimate of contamination."""
 import math
+import base64, gzip, hashlib
+from update_sisbon_public import procedures
 from semantic_operations import finite
 
 KEYS=('remediationProceedings',)
 NATIVE='data/source-snapshots/ambiente-acqua-v124-data.json'
 MANIFEST='data/source-snapshots/ambiente-acqua-v124-manifest.json'
 SUMMARY='data/source-snapshots/ambiente-acqua-bonifiche-v124.json'
-URL='https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO'
-SHA='e5bd50e5b6a4a88b0f7bec0762b8719b69064ae1841bdbde925c5501e363dbcb'
-PERIOD='2026-08-29'
+URL='https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv'
+SHA='b75c63fffa94fb2088d5bbee39d7154df295d8798e039bf563e3fc883e41bf4c'
+PERIOD='2026-10-11'
 ACTIVE=('10','40','50','60','70','120','135','140')
 CLOSED=('200','210','220','230','280')
 FIELDS={'total':'active','view:active':'active','view:closed':'closed','view:all':'all','share:active':'share'}
 
-def token(key,period):return PERIOD if str(period)=='29 agosto 2026' else str(period)
+def token(key,period):return PERIOD if str(period)=='11 ottobre 2026' else str(period)
 def dimensions(key):return list(FIELDS)
 def weighted(key,dim):return dim=='share:active'
 def operations(key,dim):return ['compare','rank',*(['weighted_ratio'] if weighted(key,dim) else [])]
@@ -30,18 +32,18 @@ def close(a,b):
 
 def context(m,key,dim):
     if dim not in FIELDS:raise ValueError('remediation_dimension_not_reviewed')
-    if m['meta'].get('unit')!='number' or m['meta'].get('year')!='29 agosto 2026' or m.get('sourceUrl')!=URL or m['meta'].get('sourceMeta',{}).get('snapshot')!=NATIVE:raise ValueError('remediation_definition_or_reference_changed')
-    return dict(unit='percent' if weighted(key,dim) else 'number',population='distinct regional SISBON proceedings assigned to municipality in frozen snapshot',definition=FIELDS[dim]+' administrative proceedings; not currently contaminated sites, risk or remediation effectiveness',method='unique regional code; reviewed active/closed state partition, coincident coordinates never merged',frequency='weekly',periodBasis='administrative stock acquired 29 August 2026; not new cases or completed remediation during a year',adapter='remediation/'+FIELDS[dim]+'/v1')
+    if m['meta'].get('unit')!='number' or m['meta'].get('year')!=PERIOD or m.get('sourceUrl')!=URL or m['meta'].get('sourceMeta',{}).get('snapshot')!=NATIVE:raise ValueError('remediation_definition_or_reference_changed')
+    return dict(unit='percent' if weighted(key,dim) else 'number',population='distinct regional SISBON proceedings assigned to municipality in frozen snapshot',definition=FIELDS[dim]+' administrative proceedings; not currently contaminated sites, risk or remediation effectiveness',method='unique regional code; reviewed active/closed state partition, coincident coordinates never merged',frequency='weekly',periodBasis='administrative stock acquired 11 October 2026; not new cases or completed remediation during a year',adapter='remediation/'+FIELDS[dim]+'/v1')
 
 def native(engine,key):
     s,ref=engine.file(NATIVE);m,mref=engine.file(MANIFEST);summary,sref=engine.file(SUMMARY)
     src=s.get('sources',{}).get('sisbon',{})
-    if s.get('schemaVersion')!=2 or s.get('acquiredAt')!=PERIOD or src.get('url')!=URL or src.get('validatedCsvSha256')!=SHA or src.get('fetchedSha256')!=SHA or m.get('acquiredAt')!=PERIOD or m['sources']['sisbon'].get('csvSha256')!=SHA or m['sources']['sisbon'].get('snapshot')!=PERIOD or m['sources']['sisbon'].get('url')!=URL or summary['sources']['sisbon'].get('sha256')!=SHA:raise ValueError('remediation_native_reference_changed')
+    if s.get('schemaVersion')!=2 or src.get('acquiredAt')!=PERIOD or src.get('url')!=URL or src.get('validatedCsvSha256')!=SHA or src.get('fetchedSha256')!=SHA or m['sources']['sisbon'].get('csvSha256')!=SHA or m['sources']['sisbon'].get('snapshot')!=PERIOD or m['sources']['sisbon'].get('url')!=URL or summary['sources']['sisbon'].get('sha256')!=SHA:raise ValueError('remediation_native_reference_changed')
     if s['remediationProceedings'].get('closedStateCodes')!=list(CLOSED) or m.get('activeStateCodes')!=list(ACTIVE) or m.get('closedStateCodes')!=list(CLOSED):raise ValueError('remediation_state_partition_changed')
     towns={t['code']:t['name'] for t in engine._catalog['towns']};rows=engine._catalog['metrics'][key]['rows']
     if len(rows)!=7 or len(towns)!=7 or {r['code'] for r in rows}!=set(towns):raise ValueError('remediation_public_cohort_changed')
     rs=s['remediationProceedings']['procedures'];ids=[r.get('id') for r in rs]
-    if len(ids)!=152 or len(set(ids))!=152 or any(not isinstance(i,str) or not i for i in ids):raise ValueError('remediation_duplicate_or_invalid_id')
+    if len(ids)!=154 or len(set(ids))!=154 or any(not isinstance(i,str) or not i for i in ids):raise ValueError('remediation_duplicate_or_invalid_id')
     counts={code:dict(active=0,closed=0,total=0) for code in towns}
     for r in rs:
         code=r.get('townCode');state=r.get('stateCode')
@@ -50,6 +52,12 @@ def native(engine,key):
         status='closed' if state in CLOSED else 'active'
         if r.get('status')!=status:raise ValueError('remediation_state_partition_changed')
         counts[code][status]+=1;counts[code]['total']+=1
+    from pathlib import Path
+    from semantic_query_engine import ROOT
+    raw=gzip.decompress(base64.b64decode((ROOT/src['rawSnapshot']).read_text().strip()))
+    if hashlib.sha256(raw).hexdigest()!=SHA:raise ValueError('remediation_native_reference_changed')
+    replay=procedures(raw,engine._catalog['towns'])
+    if {r['id']:r for r in replay}!={r['id']:r for r in rs} or len(replay)!=len(rs):raise ValueError('remediation_public_records_changed')
     if summary['remediationProceedings']['countsByMunicipality']!=counts or summary['remediationProceedings']['versilia']!=m['versilia']['remediationProceedings'] or any(sum(n[f] for n in counts.values())!=m['versilia']['remediationProceedings'][f] for f in ('active','closed','total')):raise ValueError('remediation_catalog_source_mismatch')
     for row in rows:
         code=row['code'];rr=[r for r in rs if r['townCode']==code]

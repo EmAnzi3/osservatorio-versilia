@@ -213,7 +213,11 @@ def build_public_status(
         operational = operational_metrics.get(metric_key)
         operational = operational if isinstance(operational, dict) else {}
         period = published_period(metric)
-        status = derive_status(period, probe, operational)
+        # Il monitor conserva una fotografia storica: un aggiornamento del
+        # catalogo non rinnova le prove né le date del controllo precedente.
+        monitored_period = str(operational.get("publishedPeriod") or "")
+        stale_publication = bool(monitored_period and compare_periods(period, monitored_period) != 0)
+        status = "verification_required" if stale_publication else derive_status(period, probe, operational)
         status_meta = STATUS_META[status]
         theme_key = str(meta.get("theme") or "")
         theme = themes.get(theme_key) if isinstance(themes.get(theme_key), dict) else {}

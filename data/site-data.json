@@ -31438,8 +31438,8 @@
         "shortLabel": "Procedimenti di bonifica",
         "description": "Procedimenti SISBON localizzati nei sette Comuni, distinti tra iter attivi e chiusi. Un procedimento non equivale automaticamente a un sito attualmente contaminato.",
         "unit": "number",
-        "year": "29 agosto 2026",
-        "source": "Regione Toscana / ARPAT — SISBON",
+        "year": "2026-10-11",
+        "source": "Regione Toscana — SISBON 2.0",
         "polarity": "neutral",
         "context": "Acqua e bonifiche",
         "detailGroup": "water-remediation",
@@ -31456,7 +31456,7 @@
           "note": "Conteggio per codice_regionale univoco; coordinate coincidenti non fondono procedimenti distinti."
         }
       },
-      "sourceUrl": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
+      "sourceUrl": "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv",
       "rows": [
         {
           "town": "Massarosa",
@@ -31496,8 +31496,8 @@
             {
               "townCode": "046018",
               "id": "LU-1095",
-              "name": "SALT p.a. km 86+500 interconnessione A11 per A12 Viareggio",
-              "address": "km 86+500 interconnessione A11 per A12 - 55049 Viareggio",
+              "name": "SALT p.a.  km 86+500 interconnessione A11 per A12 Viareggio",
+              "address": " km 86+500 interconnessione A11 per A12 -  55049 Viareggio",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -31509,10 +31509,34 @@
               "townCode": "046018",
               "id": "LU-1246",
               "name": "A. S. via della Guelfa 166 frazione stiava Massarosa Lucca",
-              "address": "via della Guelfa 166 frazione stiava Massarosa Lucca",
+              "address": "via della Guelfa 166 frazione stiava Massarosa Lucca ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "50-Piano di Caratterizzazione approvato",
               "stateCode": "50",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046018",
+              "id": "LU-1159",
+              "name": "Sversamento carburante Viadotto Sterpeti -  A11 Lucca-Viareggio km 80+500",
+              "address": "km 80+500 della A11 Lucca-Viareggio direzione Viareggio viadotto Sterpeti",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
+              "stateCode": "40",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046018",
+              "id": "LU-1186",
+              "name": "Poste Italiane SpA Via Vittoria Manzoni n. 61",
+              "address": "Via Vittoria Manzoni n. 61",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
+              "stateCode": "40",
               "status": "active",
               "lat": null,
               "lon": null
@@ -31543,42 +31567,6 @@
             },
             {
               "townCode": "046018",
-              "id": "LU-1186",
-              "name": "Poste Italiane SpA Via Vittoria Manzoni n. 61",
-              "address": "Via Vittoria Manzoni n. 61",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
-              "stateCode": "40",
-              "status": "active",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046018",
-              "id": "LU-1159",
-              "name": "Sversamento carburante Viadotto Sterpeti - A11 Lucca-Viareggio km 80+500",
-              "address": "km 80+500 della A11 Lucca-Viareggio direzione Viareggio viadotto Sterpeti",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
-              "stateCode": "40",
-              "status": "active",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046018",
-              "id": "LU-1022",
-              "name": "Cantalupi Lighting Srl",
-              "address": "via Duccini, 178 Massarosa",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046018",
               "id": "LU-1130",
               "name": "Cisterne carburanti - Cantiere Massarosa Project srl",
               "address": "Via IV Novembre (angolo Via Papa Giovanni XXIII) Massarosa",
@@ -31591,9 +31579,21 @@
             },
             {
               "townCode": "046018",
+              "id": "LU-1022",
+              "name": "Cantalupi Lighting Srl ",
+              "address": "via Duccini, 178 Massarosa",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046018",
               "id": "LU-1050",
-              "name": "SALT P.A. A11 - Sversamento di gasolio per rottura serbatoio autoarticolato",
-              "address": "autostrada A11 da casello a viabilità ordinaria (piazzola)",
+              "name": "SALT P.A.  A11 - Sversamento di gasolio per rottura serbatoio autoarticolato",
+              "address": "autostrada A11 da casello a viabilità ordinaria (piazzola)  ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -31665,7 +31665,7 @@
               "townCode": "046018",
               "id": "LU004",
               "name": "EX Discarica Comunale di Pioppogatto",
-              "address": "Loc. Pioppogatto",
+              "address": "Loc. Pioppogatto ",
               "contamination": "Contaminato",
               "procedureState": "120-Altro - Progetto di MISO e/o Bonifica e/o MISP approvato",
               "stateCode": "120",
@@ -31676,7 +31676,7 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 6
         },
         {
           "town": "Viareggio",
@@ -31705,7 +31705,7 @@
               "townCode": "046033",
               "id": "LU058",
               "name": "Discarica RSU La Morina",
-              "address": "Quartiere Varignano",
+              "address": "Quartiere Varignano ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
               "stateCode": "40",
@@ -31728,8 +31728,8 @@
             {
               "townCode": "046033",
               "id": "LU-1281",
-              "name": "Eni Via Marconi 325 - 55049 Torre del Lago Puccini - Viareggio",
-              "address": "Via Marconi 325 - 55049 Torre del Lago Puccini - Viareggio",
+              "name": "Eni Via Marconi 325 - 55049 Torre del Lago Puccini  - Viareggio",
+              "address": "Via Marconi 325 - 55049 Torre del Lago Puccini  - Viareggio",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
               "stateCode": "10",
@@ -31764,7 +31764,7 @@
             {
               "townCode": "046033",
               "id": "LU-1227",
-              "name": "Distributore PV IP n. 40735 Piazza Dante Alighieri",
+              "name": " Distributore PV IP n. 40735 Piazza Dante Alighieri",
               "address": "Piazza Dante Alighieri",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
@@ -31800,7 +31800,7 @@
             {
               "townCode": "046033",
               "id": "LU-1225",
-              "name": "Viareggio (LU), Piazza Dante 17- Fabrizio Boccassini",
+              "name": "Viareggio (LU), Piazza Dante 17-\tFabrizio Boccassini",
               "address": "Viareggio (LU), Piazza Dante 17",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
@@ -31818,42 +31818,6 @@
               "procedureState": "230-Non contaminato con non necessità di intervento (a seguito di AdR C < CSR)",
               "stateCode": "230",
               "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046033",
-              "id": "LU-1209",
-              "name": "Depuratore Gaia Spa in via degli Aceri n.20 - 55049 - Viareggio",
-              "address": "via degli Aceri, 20 - 55049 - Viareggio",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046033",
-              "id": "LU-1172",
-              "name": "Distributore Viareggio Petroli - Banchina Tistino (Porto di Viareggio)",
-              "address": "banchina tistino - Porto di viareggio",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
-              "stateCode": "10",
-              "status": "active",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046033",
-              "id": "LU-1169",
-              "name": "M. L. VIA DELLA FONTANELLA - VIAREGGIO (LU)",
-              "address": "VIA DELLA FONTANELLA CAP 55049 VIAREGGIO (LU)",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
-              "stateCode": "10",
-              "status": "active",
               "lat": null,
               "lon": null
             },
@@ -31883,9 +31847,33 @@
             },
             {
               "townCode": "046033",
-              "id": "LU-1113",
-              "name": "SOCIETA' AUTOSTRDA LIGURE TOSCANA autostrada A12 KM 141+100 nord",
-              "address": "autostrada A12 KM 141+100 nord",
+              "id": "LU-1172",
+              "name": "Distributore Viareggio Petroli - Banchina Tistino (Porto di Viareggio)",
+              "address": "banchina tistino - Porto di viareggio",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
+              "stateCode": "10",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046033",
+              "id": "LU-1169",
+              "name": "M. L. VIA DELLA FONTANELLA - VIAREGGIO (LU)",
+              "address": "VIA DELLA FONTANELLA CAP 55049 VIAREGGIO (LU)",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
+              "stateCode": "10",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046033",
+              "id": "LU-1209",
+              "name": "Depuratore Gaia Spa in via degli Aceri n.20 - 55049 - Viareggio",
+              "address": "via degli Aceri, 20 - 55049 - Viareggio",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -31931,13 +31919,37 @@
             },
             {
               "townCode": "046033",
-              "id": "LU-1120",
-              "name": "Distributore Petrolifera Adriatica EX ESSO PV n. 8501 L.go Risorgimento",
-              "address": "L.go Risorgimento - Viareggio",
+              "id": "LU-1100",
+              "name": "Salt p.a. Autostra  A12 Sestri Levante / Livorno km 140,900 direzione sud",
+              "address": "Autostra  A12 Sestri Levante / Livorno km 140,900 direzione sud",
               "contamination": "Non contaminato",
-              "procedureState": "230-Non contaminato con non necessità di intervento (a seguito di AdR C < CSR)",
-              "stateCode": "230",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
               "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046033",
+              "id": "LU-1113",
+              "name": "SOCIETA' AUTOSTRDA LIGURE TOSCANA autostrada A12 KM 141+100 nord",
+              "address": "autostrada A12 KM 141+100 nord",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046033",
+              "id": "LU-1115",
+              "name": "RTP Viareggio Srl Via Volta, n. 2 - 55049 Viareggio (LU)",
+              "address": "Via Volta, n. 2 - 55049 Viareggio (LU)",
+              "contamination": "Contaminato",
+              "procedureState": "120-Altro - Progetto di MISO e/o Bonifica e/o MISP approvato",
+              "stateCode": "120",
+              "status": "active",
               "lat": null,
               "lon": null
             },
@@ -31955,25 +31967,13 @@
             },
             {
               "townCode": "046033",
-              "id": "LU-1100",
-              "name": "Salt p.a. Autostra A12 Sestri Levante / Livorno km 140,900 direzione sud",
-              "address": "Autostra A12 Sestri Levante / Livorno km 140,900 direzione sud",
+              "id": "LU-1120",
+              "name": "Distributore Petrolifera Adriatica EX ESSO PV n. 8501 L.go Risorgimento",
+              "address": "L.go Risorgimento - Viareggio",
               "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
+              "procedureState": "230-Non contaminato con non necessità di intervento (a seguito di AdR C < CSR)",
+              "stateCode": "230",
               "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046033",
-              "id": "LU-1115",
-              "name": "RTP Viareggio Srl Via Volta, n. 2 - 55049 Viareggio (LU)",
-              "address": "Via Volta, n. 2 - 55049 Viareggio (LU)",
-              "contamination": "Contaminato",
-              "procedureState": "120-Altro - Progetto di MISO e/o Bonifica e/o MISP approvato",
-              "stateCode": "120",
-              "status": "active",
               "lat": null,
               "lon": null
             },
@@ -32087,9 +32087,9 @@
             },
             {
               "townCode": "046033",
-              "id": "LU206*",
-              "name": "Distributore Q8 Kuwait PV n. 4330 Torre del Lago",
-              "address": "Via Aurelia, km 350 + 917 Torre del Lago",
+              "id": "LU197*",
+              "name": "Distributore AGIP PV n. 59183 v. Aurelia Nord",
+              "address": "Via Aurelia Nord ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32099,9 +32099,9 @@
             },
             {
               "townCode": "046033",
-              "id": "LU197*",
-              "name": "Distributore AGIP PV n. 59183 v. Aurelia Nord",
-              "address": "Via Aurelia Nord",
+              "id": "LU206*",
+              "name": "Distributore Q8 Kuwait PV n. 4330 Torre del Lago",
+              "address": "Via Aurelia, km 350 + 917  Torre del Lago",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32136,8 +32136,8 @@
             {
               "townCode": "046033",
               "id": "LU165*",
-              "name": "Distributore Q8 Kuwait v. Buonarroti Viareggio",
-              "address": "Via Buonarroti",
+              "name": "Distributore Q8 Kuwait  v. Buonarroti Viareggio",
+              "address": "Via Buonarroti ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32171,21 +32171,9 @@
             },
             {
               "townCode": "046033",
-              "id": "LU088*",
-              "name": "Distributore Q8 Kuwait PV n. 4300 -Via Aurelia Sud",
-              "address": "Strada Statale Aurelia Sud",
-              "contamination": "Non contaminato",
-              "procedureState": "210-Non contaminato con non necessità di intervento (a seguito di caratterizzazione, C < CSC)",
-              "stateCode": "210",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046033",
               "id": "LU087*",
               "name": "Distributore Q8 Kuwait PV n. 4302 - Largo Risorgimento",
-              "address": "Largo Risorgimento",
+              "address": "Largo Risorgimento ",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
@@ -32195,9 +32183,21 @@
             },
             {
               "townCode": "046033",
+              "id": "LU088*",
+              "name": "Distributore Q8 Kuwait PV n. 4300 -Via Aurelia Sud",
+              "address": "Strada Statale Aurelia Sud ",
+              "contamination": "Non contaminato",
+              "procedureState": "210-Non contaminato con non necessità di intervento (a seguito di caratterizzazione, C < CSC)",
+              "stateCode": "210",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046033",
               "id": "LU075*",
-              "name": "Distributore TAMOIL PV n. 1270 Via della Foce",
-              "address": "Via della Foce",
+              "name": "Distributore TAMOIL PV n. 1270 Via della Foce ",
+              "address": "Via della Foce ",
               "contamination": "Non contaminato",
               "procedureState": "210-Non contaminato con non necessità di intervento (a seguito di caratterizzazione, C < CSC)",
               "stateCode": "210",
@@ -32221,7 +32221,7 @@
               "townCode": "046033",
               "id": "LU117*",
               "name": "Incidente stradale SALT Autostrada A12 - Km 138/750 (Lavorazione materiali ferrosi)",
-              "address": "Loc. Viareggio",
+              "address": "Loc. Viareggio ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32233,7 +32233,7 @@
               "townCode": "046033",
               "id": "LU003",
               "name": "Discarica RSU Le Carbonaie",
-              "address": "Loc. Le Carbonaie",
+              "address": "Loc. Le Carbonaie ",
               "contamination": "Contaminato",
               "procedureState": "135-Bonifica e/o MISP e/o MISO con certificazione parziale",
               "stateCode": "135",
@@ -32244,13 +32244,13 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 15
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 9,
+          "value": 10,
           "formatted": "9",
           "parts": [
             {
@@ -32258,7 +32258,7 @@
               "label": "Iter attivi",
               "selectorLabel": "Iter attivi",
               "unit": "number",
-              "value": 9
+              "value": 10
             },
             {
               "key": "closed",
@@ -32269,6 +32269,18 @@
             }
           ],
           "procedures": [
+            {
+              "townCode": "046005",
+              "id": "LU-2016",
+              "name": "PTP DX30-2-123592 \"ANTENNA\"",
+              "address": "Via dell'Antenna - Camaiore - Lucca (LU)",
+              "contamination": "In attesa di accertamenti analitici",
+              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
+              "stateCode": "10",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
             {
               "townCode": "046005",
               "id": "LUns03",
@@ -32343,45 +32355,9 @@
             },
             {
               "townCode": "046005",
-              "id": "LU-1207",
-              "name": "Kuwait Petroleum Italia S.p.A Piazza Romboni",
-              "address": "Piazza Romboni",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
-              "stateCode": "10",
-              "status": "active",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046005",
-              "id": "LU-1203",
-              "name": "Gaia Spa Lido di Camaiore, Loc. Secco",
-              "address": "Lido di Camaiore, Loc. Secco",
-              "contamination": "Contaminato",
-              "procedureState": "120-Altro - Progetto di MISO e/o Bonifica e/o MISP approvato",
-              "stateCode": "120",
-              "status": "active",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046005",
-              "id": "LU-1178",
-              "name": "ENEL DISTRIBUZIONE SPA ZONA PISTOIA LUCCA MASSA Via Italica 252 in prossimità di via Sarzanese Comune di Camaiore",
-              "address": "Via Italica 252 in prossimità di via Sarzanese Comune di Camaiore",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046005",
-              "id": "LU-1145",
-              "name": "GAIA SpA Sversamento fanghi - Via Del Termine",
-              "address": "Via Del Termine snc",
+              "id": "LU-1149",
+              "name": "SALT PA Loc. Ponte di Sasso - Abbandono rifiuti",
+              "address": "via Sarzanese località Ponte di Sasso",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32403,9 +32379,21 @@
             },
             {
               "townCode": "046005",
-              "id": "LU-1149",
-              "name": "SALT PA Loc. Ponte di Sasso - Abbandono rifiuti",
-              "address": "via Sarzanese località Ponte di Sasso",
+              "id": "LU-1207",
+              "name": "Kuwait Petroleum Italia S.p.A Piazza Romboni",
+              "address": "Piazza Romboni",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
+              "stateCode": "10",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046005",
+              "id": "LU-1145",
+              "name": "GAIA SpA Sversamento fanghi - Via Del Termine",
+              "address": "Via Del Termine snc",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32415,9 +32403,21 @@
             },
             {
               "townCode": "046005",
-              "id": "LU-1016",
-              "name": "Ditta M. C.- Sversamento idrocarburi",
-              "address": "VIA DELLA LIBERTA' N° 9",
+              "id": "LU-1203",
+              "name": "Gaia Spa Lido di Camaiore, Loc. Secco",
+              "address": "Lido di Camaiore, Loc. Secco",
+              "contamination": "Contaminato",
+              "procedureState": "120-Altro - Progetto di MISO e/o Bonifica e/o MISP approvato",
+              "stateCode": "120",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046005",
+              "id": "LU-1178",
+              "name": "ENEL DISTRIBUZIONE SPA ZONA PISTOIA LUCCA MASSA Via Italica 252 in prossimità di via Sarzanese  Comune di Camaiore ",
+              "address": "Via Italica 252 in prossimità di via Sarzanese  Comune di Camaiore ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32427,9 +32427,9 @@
             },
             {
               "townCode": "046005",
-              "id": "LU238*",
-              "name": "Distributore Q8 Kuwait PV n. 4312",
-              "address": "Viale Italico",
+              "id": "LU148*",
+              "name": "Distributore ERG  PV n.  LU099 loc. Frati",
+              "address": "Via Prov.le lucchese, loc. Frati",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
@@ -32439,9 +32439,9 @@
             },
             {
               "townCode": "046005",
-              "id": "LU148*",
-              "name": "Distributore ERG PV n. LU099 loc. Frati",
-              "address": "Via Prov.le lucchese, loc. Frati",
+              "id": "LU238*",
+              "name": "Distributore Q8 Kuwait PV n. 4312",
+              "address": "Viale Italico",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
@@ -32499,8 +32499,20 @@
             },
             {
               "townCode": "046005",
+              "id": "LU-1016",
+              "name": "Ditta M. C.- Sversamento idrocarburi",
+              "address": "VIA DELLA LIBERTA' N° 9",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046005",
               "id": "LU244*",
-              "name": "Distributore Q8 Kuwait PV n. 4310 Viale Oberdan",
+              "name": "Distributore Q8 Kuwait  PV n. 4310 Viale Oberdan ",
               "address": "Viale Oberdan",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
@@ -32559,24 +32571,24 @@
             },
             {
               "townCode": "046005",
-              "id": "LU189*",
-              "name": "Sig.ra G. A. M. ex Distributore PV Carburanti",
-              "address": "Viale Colombo 306, Lido di Camaiore",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046005",
               "id": "LU174*",
               "name": "Distributore API PV n.41763",
               "address": "Via Italica, Lido di Camaiore",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046005",
+              "id": "LU189*",
+              "name": "Sig.ra G. A. M. ex Distributore PV Carburanti",
+              "address": "Viale Colombo 306, Lido di Camaiore",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
               "status": "closed",
               "lat": null,
               "lon": null
@@ -32609,11 +32621,23 @@
               "townCode": "046005",
               "id": "LU085*",
               "name": "Distributore Q8 Kuwait Viale Oberdan",
-              "address": "Viale Oberdan",
+              "address": "Viale Oberdan ",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
               "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046005",
+              "id": "LU002",
+              "name": "EX Discarica Comunale RSU di Bernardone",
+              "address": "Loc. Pieve ",
+              "contamination": "Potenzialmente contaminato",
+              "procedureState": "50-Piano di Caratterizzazione approvato",
+              "stateCode": "50",
+              "status": "active",
               "lat": null,
               "lon": null
             },
@@ -32628,23 +32652,11 @@
               "status": "closed",
               "lat": null,
               "lon": null
-            },
-            {
-              "townCode": "046005",
-              "id": "LU002",
-              "name": "EX Discarica Comunale RSU di Bernardone",
-              "address": "Loc. Pieve",
-              "contamination": "Potenzialmente contaminato",
-              "procedureState": "50-Piano di Caratterizzazione approvato",
-              "stateCode": "50",
-              "status": "active",
-              "lat": null,
-              "lon": null
             }
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 10
         },
         {
           "town": "Pietrasanta",
@@ -32720,7 +32732,7 @@
             {
               "townCode": "046024",
               "id": "LU257*",
-              "name": "Falascaia - Baccatoio tratto TEV",
+              "name": "Falascaia - Baccatoio tratto TEV ",
               "address": "",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "60-Caratterizzazione conclusa e/o Analisi di Rischio presentata da approvare e/o progetto di intervento alle CSC presentato da approvare",
@@ -32744,8 +32756,8 @@
             {
               "townCode": "046024",
               "id": "LU-1200",
-              "name": "Trasformatore elettrico MT/BT del PTP 517888 denominato Casone in via Val di Castello Carducci",
-              "address": "VIA VAL DI CASTELLO CARDUCCI",
+              "name": "Trasformatore elettrico MT/BT del PTP 517888 denominato Casone in via Val di Castello Carducci ",
+              "address": "VIA VAL DI CASTELLO CARDUCCI ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32758,18 +32770,6 @@
               "id": "LU-1164",
               "name": "EX officina meccanica - Via della Sipe",
               "address": "via della Sipe n. 57",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046024",
-              "id": "LU-1012",
-              "name": "SAVEMA S.p.A.",
-              "address": "Via Aurelia, 24 loc. Pontenuovo - 55045 Pietrasanta (LU)",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32794,6 +32794,18 @@
               "id": "LU-1002",
               "name": "Area residenziale R. R. - Cisterna gasolio",
               "address": "Via Barcaio, 29 Fiumetto",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046024",
+              "id": "LU-1012",
+              "name": "SAVEMA S.p.A.",
+              "address": "Via Aurelia, 24 loc. Pontenuovo - 55045 Pietrasanta (LU)",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -32839,18 +32851,6 @@
             },
             {
               "townCode": "046024",
-              "id": "LU263*",
-              "name": "Mandriato -Reflui lavorazione marmo (marmettola) (CFS Procedura 2003/2077)",
-              "address": "Loc. Falascaia -Mandriato",
-              "contamination": "Non contaminato",
-              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
-              "stateCode": "200",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046024",
               "id": "LU001b",
               "name": "Falascaia Discarica Ceneri (ERSU)",
               "address": "Loc. Falascaia",
@@ -32863,8 +32863,20 @@
             },
             {
               "townCode": "046024",
+              "id": "LU263*",
+              "name": "Mandriato -Reflui lavorazione marmo (marmettola)  (CFS Procedura 2003/2077)",
+              "address": "Loc. Falascaia -Mandriato",
+              "contamination": "Non contaminato",
+              "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
+              "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046024",
               "id": "LU146*",
-              "name": "Falascaia Area Depuratore (ERSU)",
+              "name": "Falascaia Area Depuratore (ERSU) ",
               "address": "Via Delle Colmate, Falascaia",
               "contamination": "Non contaminato",
               "procedureState": "210-Non contaminato con non necessità di intervento (a seguito di caratterizzazione, C < CSC)",
@@ -32913,7 +32925,7 @@
               "townCode": "046024",
               "id": "LU170*",
               "name": "Distributore API PV n.40729",
-              "address": "Via Marconi",
+              "address": "Via Marconi ",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
@@ -32925,7 +32937,7 @@
               "townCode": "046024",
               "id": "LU074*",
               "name": "Distributore TOTALFINA ELF PV n. 1974 Focette",
-              "address": "Viale Roma, Focette",
+              "address": "Viale Roma, Focette ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
               "stateCode": "40",
@@ -32937,7 +32949,7 @@
               "townCode": "046024",
               "id": "LU001a",
               "name": "Discarica Falascaia Argin Vecchio Area Vecchio Inceneritore (Commissario ad acta Regione)",
-              "address": "Loc. Focette",
+              "address": "Loc. Focette ",
               "contamination": "Non contaminato",
               "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
               "stateCode": "280",
@@ -32948,7 +32960,7 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 10
         },
         {
           "town": "Seravezza",
@@ -32977,7 +32989,7 @@
               "townCode": "046028",
               "id": "LU053",
               "name": "Discarica Azzano",
-              "address": "Loc. Azzano",
+              "address": "Loc. Azzano ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "40-Altro - Notifica attivazione procedimento o MIPRE o MISE o indagini preliminari, etc. e comunque Piano di Caratterizzazione non ancora approvato",
               "stateCode": "40",
@@ -33060,7 +33072,7 @@
             {
               "townCode": "046028",
               "id": "LU096*",
-              "name": "Distributore ESSO PV n.8539 Loc. Querceta",
+              "name": "Distributore ESSO  PV n.8539 Loc. Querceta",
               "address": "Strada Statale aurelia Sud 158 - Loc. Querceta",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
@@ -33084,7 +33096,7 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 3
         },
         {
           "town": "Forte dei Marmi",
@@ -33173,7 +33185,7 @@
               "townCode": "046013",
               "id": "LU-1252",
               "name": "Comune di Forte dei Marmi Via G.B Vico, 130 - Segnalazione gasolio",
-              "address": "Via G.B Vico, 130 - 55042 Forte dei Marmi",
+              "address": "Via G.B Vico, 130 - 55042 Forte dei Marmi ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
               "stateCode": "10",
@@ -33231,24 +33243,24 @@
             },
             {
               "townCode": "046013",
-              "id": "LU-1175",
-              "name": "CAMUZZI SPA IN LIQUIDAZIONE",
-              "address": "VIA DEL PARADISO, 20 - 55042 - FORTE DEI MARMI (LU)",
-              "contamination": "Non contaminato",
-              "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
-              "stateCode": "280",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046013",
               "id": "LU-1154",
               "name": "Cantiere PMC Costruzioni Via Marino Marini - Serbatoio interrato idrocarburi",
               "address": "Via Marino Marini 12, Forte dei Marmi (LU)",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046013",
+              "id": "LU-1175",
+              "name": "CAMUZZI SPA IN LIQUIDAZIONE",
+              "address": "VIA DEL PARADISO, 20 - 55042 - FORTE DEI MARMI (LU)",
+              "contamination": "Non contaminato",
+              "procedureState": "280-Altro - bonifica e/o MISP e/o MISO conclusa/e e certificata/e",
+              "stateCode": "280",
               "status": "closed",
               "lat": null,
               "lon": null
@@ -33267,24 +33279,24 @@
             },
             {
               "townCode": "046013",
-              "id": "LU-1122",
-              "name": "Distributore Esso PV n. 8576 - Via G.B. Vico (Forte dei Marmi)",
-              "address": "Via G.B. Vico 140/B - Forte dei Marmi",
-              "contamination": "Non contaminato",
-              "procedureState": "220-Non contaminato con non necessità di intervento (a seguito di AdR C < CSR) con monitoraggio in corso",
-              "stateCode": "220",
-              "status": "closed",
-              "lat": null,
-              "lon": null
-            },
-            {
-              "townCode": "046013",
               "id": "LU-1101",
               "name": "SALT p.a. Autostrada A12 Livorno-Sestri Levante Km 124+400 direzione Nord",
               "address": "Autostrada A12 Livorno-Sestri Levante Km 124+400 direzione Nord",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
+              "status": "closed",
+              "lat": null,
+              "lon": null
+            },
+            {
+              "townCode": "046013",
+              "id": "LU-1122",
+              "name": "Distributore Esso PV n. 8576 - Via G.B. Vico (Forte dei Marmi)",
+              "address": "Via G.B. Vico 140/B - Forte dei Marmi",
+              "contamination": "Non contaminato",
+              "procedureState": "220-Non contaminato con non necessità di intervento (a seguito di AdR C < CSR) con monitoraggio in corso",
+              "stateCode": "220",
               "status": "closed",
               "lat": null,
               "lon": null
@@ -33353,7 +33365,7 @@
               "townCode": "046013",
               "id": "LU142*",
               "name": "Distributore AGIP PV n.5113",
-              "address": "Viale Italico",
+              "address": "Viale Italico ",
               "contamination": "Non contaminato",
               "procedureState": "200-Non contaminato con non necessità di intervento (a seguito di indagini preliminari, C < CSC)",
               "stateCode": "200",
@@ -33364,13 +33376,13 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 10
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 3,
+          "value": 4,
           "formatted": "3",
           "parts": [
             {
@@ -33378,7 +33390,7 @@
               "label": "Iter attivi",
               "selectorLabel": "Iter attivi",
               "unit": "number",
-              "value": 3
+              "value": 4
             },
             {
               "key": "closed",
@@ -33389,6 +33401,18 @@
             }
           ],
           "procedures": [
+            {
+              "townCode": "046030",
+              "id": "LU-2015",
+              "name": "PTP DX30-2-227685 \"LE LAME\"",
+              "address": "Via Levigliani, Seravezza - Stazzema - Lucca (LU)",
+              "contamination": "In attesa di accertamenti analitici",
+              "procedureState": "10-Notifica attivazione procedimento ai sensi del DLgs152/06",
+              "stateCode": "10",
+              "status": "active",
+              "lat": null,
+              "lon": null
+            },
             {
               "townCode": "046030",
               "id": "LU-1261",
@@ -33451,9 +33475,9 @@
             },
             {
               "townCode": "046030",
-              "id": "LU048",
-              "name": "Discarica Col dal Pruno - Furetto (Foretto)",
-              "address": "Loc. Col dal Pruno",
+              "id": "LU049",
+              "name": "Discarica Ponte delle Rave",
+              "address": "Loc. Ponte delle Rave ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "50-Piano di Caratterizzazione approvato",
               "stateCode": "50",
@@ -33463,9 +33487,9 @@
             },
             {
               "townCode": "046030",
-              "id": "LU049",
-              "name": "Discarica Ponte delle Rave",
-              "address": "Loc. Ponte delle Rave",
+              "id": "LU048",
+              "name": "Discarica Col dal Pruno - Furetto (Foretto)",
+              "address": "Loc. Col dal Pruno ",
               "contamination": "Potenzialmente contaminato",
               "procedureState": "50-Piano di Caratterizzazione approvato",
               "stateCode": "50",
@@ -33476,18 +33500,18 @@
           ],
           "series": null,
           "normalized": null,
-          "benchmarkValue": null
+          "benchmarkValue": 4
         }
       ],
       "aggregate": {
-        "value": 56,
+        "value": 58,
         "label": "Versilia · iter attivi",
         "parts": [
           {
             "key": "active",
             "label": "Iter attivi",
             "unit": "number",
-            "value": 56
+            "value": 58
           },
           {
             "key": "closed",
@@ -33496,14 +33520,14 @@
             "value": 96
           }
         ],
-        "note": "152 procedimenti univoci: 56 attivi e 96 chiusi."
+        "note": "154 procedimenti univoci: 58 attivi e 96 chiusi."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Conteggio dello snapshot pubblico SISBON",
         "formula": "Conteggio dei codici regionali univoci per Comune e stato dell’iter.",
         "caveat": "Lo stato procedurale non è una classificazione diretta della contaminazione attuale del sito.",
-        "coverage": "7/7 · 152/152 codici regionali univoci",
+        "coverage": "7/7 · 154/154 codici regionali univoci",
         "snapshot": "data/source-snapshots/ambiente-acqua-v124-data.json"
       }
     },
@@ -55511,7 +55535,7 @@
         "shortLabel": "Prezzi carburanti",
         "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
         "unit": "eurliter",
-        "year": "2026-10-03",
+        "year": "2026-10-10",
         "source": "MIMIT — Osservaprezzi carburanti",
         "polarity": "neutral",
         "compositeType": "securityMeasures",
@@ -55529,35 +55553,37 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.097,
+          "value": 2.077,
           "formatted": "",
           "series": {
             "years": [
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.987,
               2.018,
               2.018,
-              2.097
+              2.097,
+              2.077
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.097,
+          "benchmarkValue": 2.077,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.097,
+              "value": 2.077,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.299,
+              "value": 2.277,
               "unit": "eurliter"
             }
           ],
@@ -55568,13 +55594,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.987,
                 2.018,
                 2.018,
-                2.097
+                2.097,
+                2.077
               ]
             },
             "Gasolio self": {
@@ -55582,13 +55610,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.088,
                 2.147,
                 2.147,
-                2.299
+                2.299,
+                2.277
               ]
             }
           }
@@ -55604,12 +55634,14 @@
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.994,
               2.019,
               2.019,
+              1.994,
               1.994
             ]
           },
@@ -55625,7 +55657,7 @@
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.194,
+              "value": 2.254,
               "unit": "eurliter"
             }
           ],
@@ -55636,12 +55668,14 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.994,
                 2.019,
                 2.019,
+                1.994,
                 1.994
               ]
             },
@@ -55650,13 +55684,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.099,
                 2.144,
                 2.141,
-                2.194
+                2.194,
+                2.254
               ]
             }
           }
@@ -55665,35 +55701,37 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.079,
+          "value": 2.03,
           "formatted": "",
           "series": {
             "years": [
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.999,
               2.029,
               2.029,
-              2.079
+              2.079,
+              2.03
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.079,
+          "benchmarkValue": 2.03,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.079,
+              "value": 2.03,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.299,
+              "value": 2.289,
               "unit": "eurliter"
             }
           ],
@@ -55704,13 +55742,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.999,
                 2.029,
                 2.029,
-                2.079
+                2.079,
+                2.03
               ]
             },
             "Gasolio self": {
@@ -55718,13 +55758,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.089,
                 2.139,
                 2.139,
-                2.299
+                2.299,
+                2.289
               ]
             }
           }
@@ -55733,35 +55775,37 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1.999,
+          "value": 2.01,
           "formatted": "",
           "series": {
             "years": [
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.999,
               2.019,
               2.019,
-              1.999
+              1.999,
+              2.01
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 2.01,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 2.01,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.199,
+              "value": 2.23,
               "unit": "eurliter"
             }
           ],
@@ -55772,13 +55816,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.999,
                 2.019,
                 2.019,
-                1.999
+                1.999,
+                2.01
               ]
             },
             "Gasolio self": {
@@ -55786,13 +55832,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.099,
                 2.149,
                 2.149,
-                2.199
+                2.199,
+                2.23
               ]
             }
           }
@@ -55808,12 +55856,14 @@
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.994,
               1.999,
               1.999,
+              2.03,
               2.03
             ]
           },
@@ -55829,7 +55879,7 @@
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.23,
+              "value": 2.291,
               "unit": "eurliter"
             }
           ],
@@ -55840,12 +55890,14 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.994,
                 1.999,
                 1.999,
+                2.03,
                 2.03
               ]
             },
@@ -55854,13 +55906,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.079,
                 2.144,
                 2.144,
-                2.23
+                2.23,
+                2.291
               ]
             }
           }
@@ -55869,35 +55923,37 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 2.03,
+          "value": 2.011,
           "formatted": "",
           "series": {
             "years": [
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
               1.979,
               2.009,
               1.999,
-              2.03
+              2.03,
+              2.011
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.03,
+          "benchmarkValue": 2.011,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.03,
+              "value": 2.011,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.215,
+              "value": 2.242,
               "unit": "eurliter"
             }
           ],
@@ -55908,13 +55964,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 1.979,
                 2.009,
                 1.999,
-                2.03
+                2.03,
+                2.011
               ]
             },
             "Gasolio self": {
@@ -55922,13 +55980,15 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
                 2.089,
                 2.134,
                 2.129,
-                2.215
+                2.215,
+                2.242
               ]
             }
           }
@@ -55944,9 +56004,11 @@
               "2026-08-14",
               "2026-08-27",
               "2026-08-28",
-              "2026-10-03"
+              "2026-10-03",
+              "2026-10-10"
             ],
             "values": [
+              null,
               null,
               null,
               null,
@@ -55976,9 +56038,11 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
+                null,
                 null,
                 null,
                 null,
@@ -55990,9 +56054,11 @@
                 "2026-08-14",
                 "2026-08-27",
                 "2026-08-28",
-                "2026-10-03"
+                "2026-10-03",
+                "2026-10-10"
               ],
               "values": [
+                null,
                 null,
                 null,
                 null,
@@ -56003,20 +56069,20 @@
         }
       ],
       "aggregate": {
-        "value": 2.0381666666666667,
+        "value": 2.025333333333333,
         "label": "Media delle mediane comunali disponibili",
         "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
         "parts": [
           {
             "label": "Benzina self",
             "selectorLabel": "Benzina self",
-            "value": 2.0381666666666667,
+            "value": 2.025333333333333,
             "unit": "eurliter"
           },
           {
             "label": "Gasolio self",
             "selectorLabel": "Gasolio self",
-            "value": 2.239333333333333,
+            "value": 2.2638333333333334,
             "unit": "eurliter"
           }
         ]
@@ -56025,7 +56091,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data MIMIT",
         "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
-        "caveat": "Ultima fotografia: 3 ottobre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "caveat": "Ultima fotografia: 10 ottobre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
         "coverage": "6/7"
       }
     },

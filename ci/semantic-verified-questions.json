@@ -11944,7 +11944,7 @@
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_view_active",
@@ -11967,7 +11967,7 @@
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_view_closed",
@@ -11990,7 +11990,7 @@
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_view_all",
@@ -12013,7 +12013,7 @@
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_share",
@@ -12039,7 +12039,7 @@
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_pooled",
@@ -12059,13 +12059,13 @@
           {
             "path": "/result/value",
             "fraction": [
-              5600,
-              152
+              5800,
+              154
             ]
           }
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_history_refused",
@@ -12085,7 +12085,7 @@
           "remediation_history_not_frozen"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_absolute_change_refused",
@@ -12105,7 +12105,7 @@
           "remediation_history_not_frozen"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_relative_change_refused",
@@ -12125,7 +12125,7 @@
           "remediation_history_not_frozen"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_percentage_points_refused",
@@ -12145,7 +12145,7 @@
           "remediation_history_not_frozen"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_trend_refused",
@@ -12165,7 +12165,7 @@
           "remediation_history_not_frozen"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_benchmark_refused",
@@ -12186,7 +12186,7 @@
           "remediation_benchmark_not_reviewed"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_anomaly_refused",
@@ -12206,7 +12206,7 @@
           "remediation_anomaly_not_reviewed"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "remediation_count_weighting_refused",
@@ -12226,7 +12226,7 @@
           "remediation_verified_ratio_required"
         ]
       },
-      "reference": "SISBON congelato 29 agosto 2026: conteggi indipendenti attivi/chiusi 9/22, 10/11, 6/10, 10/13, 3/6, 3/4, 15/30; 56/152 complessivi."
+      "reference": "SISBON 2.0 acquisito 11 ottobre 2026: CSV pubblico integrale rigiocato; conteggi attivi/chiusi 10/22, 10/11, 6/10, 10/13, 3/6, 4/4, 15/30; 58/154 complessivi."
     },
     {
       "id": "pab_pabProgrammedInterventionLength",

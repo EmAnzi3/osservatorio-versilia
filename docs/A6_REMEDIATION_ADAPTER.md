@@ -1,3 +1,5 @@
+> Aggiornamento fonte 11 ottobre 2026: carrier SISBON 2.0 pubblico, 154 codici univoci (58 attivi/96 chiusi), due aggiunte LU-2015 Stazzema e LU-2016 Camaiore. CSV integrale congelato e rigiocato, SHA-256 `b75c63fffa94fb2088d5bbee39d7154df295d8798e039bf563e3fc883e41bf4c`. Nessuno dei 152 codici precedenti manca o cambia stato/Comune/contaminazione. Quota attivi 58/154; l’alias e tutti i rifiuti temporali restano attivi. I dati GAIA e Istat e le rispettive date di acquisizione sono conservati; solo la fonte SISBON ha data 2026-10-11. Il testo sotto documenta il lotto A6 originario, non il dato corrente.
+
 # A6 v23 — procedimenti SISBON
 
 L'adapter legge i record congelati in `ambiente-acqua-v124-data.json`, riconciliati al manifest e al riepilogo della stessa acquisizione del 29 agosto 2026. CSV SISBON attestato SHA-256 `e5bd50e5b6a4a88b0f7bec0762b8719b69064ae1841bdbde925c5501e363dbcb`. Nessun dato acquisito o modificato da questo lotto.
