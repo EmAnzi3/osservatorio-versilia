@@ -14,10 +14,27 @@ C4T_ID = "eu-c4t-groundwork-2026"
 CERV_ID = "eu-cerv-town-twinning-2026"
 
 
+def test_reviewed_regional_seeds() -> None:
+    entries = {e["coverage_id"]: e for e in fixed._load_fixes()["verifiedEntries"]}
+    for key in ("rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026"):
+        entry = entries[key]
+        assert entry["allow_recent_evidence_fallback"] is False
+        assert len(entry["document_evidence"]["sha256"]) == 64
+        assert not fixed.core.verify_entry(entry, date(2026, 10, 11), live=False)[0]
+    for day, stage in [(date(2026, 10, 11), "announced_upcoming"), (date(2026, 11, 2), "application_open")]:
+        result = {"opportunities": []}
+        details = {e["url"]: "<p>" + " | ".join(e["required_terms"]) + "</p>" for e in entries.values()}
+        fixed._inject_fix_entries(result, day, detail_payloads=details, live=False)
+        item = next(x for x in result["opportunities"] if x["coverage_id"] == "rt-risorse-genetiche-agrarie-aca16b-2026")
+        assert item["lifecycle_stage"] == stage
+        assert item["deadline_at"] == "2026-11-30" and item["deadline_time"] == "13:00"
+    assert "Firenze" in entries["rt-artea-immobile-sede-2026"]["project_requirements"]
+
+
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
-    assert len(entries) == 1
+    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026"}
     entry = entries[0]
     assert entry.get("coverage_id") == C4T_ID
     assert entry.get("deadline_at") == "2026-09-11"
@@ -234,6 +251,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 
 
 def main() -> int:
+    test_reviewed_regional_seeds()
     test_c4t_source_and_verified_seed()
     test_c4t_injection_is_conditional_and_deterministic()
     test_expired_audit_entry_is_archived_without_live_probe()

@@ -416,7 +416,7 @@ def build_report(
     # Changes to the owner inbox must be visible even with unchanged public cards.
     identity_lines.extend("review:" + json.dumps({"url": row["url"], "title": row["title"], "deadline": row["deadline"], "source": row["source"], "status": row["status"], "reasonCode": row["reasonCode"],
                           "documents": [{k: d.get(k) for k in ("url", "status", "sha256")} for d in row["documents"]]}, sort_keys=True)
-                          for row in review_actions["items"] if row["status"] in ("human", "retry"))
+                          for row in review_actions["items"] if row["status"] in ("human", "technical", "retry"))
     fingerprint = hashlib.sha256("\n".join(sorted(identity_lines)).encode("utf-8")).hexdigest()[:16]
 
     return {

@@ -8,9 +8,10 @@ import urllib.request
 from html import unescape
 from html.parser import HTMLParser
 from typing import Callable
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit, parse_qs
 
 UA = "OsservatorioVersilia-OpportunityRadar/0.2.4 (+https://osservatorioversilia.it/)"
+LINK_EXTRACTOR_VERSION = 2
 KEYS = (
     "soggetti beneficiari",
     "destinatari / beneficiari",
@@ -21,7 +22,7 @@ KEYS = (
     "beneficiari",
     "destinatari",
 )
-RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat|decreto|disciplinare|linee guida)\b", re.I)
+RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat\w*|decreto|disciplinare|linee guida)\b", re.I)
 
 
 class Links(HTMLParser):
@@ -56,8 +57,17 @@ def pdf_links(payload: str, page_url: str, limit: int = 2) -> list[str]:
     for href, label in parser.links:
         absolute = urljoin(page_url, unescape(href))
         probe = f"{href} {label}"
-        is_pdf = bool(re.search(r"\.pdf(?:$|[?#])", href, re.I))
+        is_pdf = bool(re.search(r"\.pdf(?:$|[/?#])", href, re.I))
         document_like = "/documents/" in href.lower() or "download" in href.lower()
+        # The Tuscan acts bank serves PDF bytes through Contenuto.xml.
+        # Recognise this exact official attachment route, retaining its query.
+        parsed = urlsplit(absolute)
+        query = parse_qs(parsed.query)
+        regional_attachment = (parsed.scheme == "https"
+                               and parsed.hostname == "www301.regione.toscana.it"
+                               and parsed.path == "/bancadati/atti/Contenuto.xml"
+                               and bool(query.get("id")) and bool(query.get("nomeFile")))
+        document_like = document_like or regional_attachment
         if not is_pdf and not (document_like and RELEVANT_LINK.search(probe)):
             continue
         if absolute in seen:

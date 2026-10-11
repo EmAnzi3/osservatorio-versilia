@@ -98,6 +98,11 @@ def _inject_fix_entries(
     }
 
     for entry in payload.get("verifiedEntries") or []:
+        entry = dict(entry)
+        if entry.get("published_at") and entry["published_at"] > today.isoformat():
+            continue
+        if entry.get("lifecycle_stage") == "announced_upcoming" and entry.get("opens_at") and entry["opens_at"] <= today.isoformat():
+            entry["lifecycle_stage"] = "application_open"
         coverage_id = str(entry.get("coverage_id") or "")
         # Una candidatura gia scaduta non deve dipendere dalla raggiungibilita
         # odierna del dettaglio.  Verificarla prima del filtro temporale puo

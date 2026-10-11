@@ -31,12 +31,21 @@
       ],
       "fetchTimeoutSeconds": 18,
       "includeTerms": [
-        "C4T", "GROUNDWORK", "technical assistance", "Cohesion Policy", "PO2",
-        "green transition", "11 September 2026"
+        "C4T",
+        "GROUNDWORK",
+        "technical assistance",
+        "Cohesion Policy",
+        "PO2",
+        "green transition",
+        "11 September 2026"
       ],
       "municipalTerms": [
-        "local authorities", "public authorities", "local practitioners", "cities",
-        "municipal", "regional and local"
+        "local authorities",
+        "public authorities",
+        "local practitioners",
+        "cities",
+        "municipal",
+        "regional and local"
       ]
     },
     {
@@ -137,7 +146,11 @@
       "publisher": "Commissione europea · Cohesion for Transitions",
       "title": "C4T GROUNDWORK — assistenza tecnica per investimenti di coesione PO2",
       "url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/c4t-groundwork-call-open-technical-assistance-2026-07-03_en",
-      "required_terms": ["C4T GROUNDWORK", "11 September 2026", "local"],
+      "required_terms": [
+        "C4T GROUNDWORK",
+        "11 September 2026",
+        "local"
+      ],
       "evidence_verified_at": "2026-09-07",
       "allow_recent_evidence_fallback": true,
       "published_at": "2026-07-03",
@@ -155,13 +168,34 @@
       "description": "Assistenza tecnica della Commissione europea per preparare e attuare investimenti di transizione verde della politica di coesione sotto il PO2.",
       "condition_label": "Ruolo attuativo su investimenti PO2",
       "municipality_status_overrides": {
-        "Camaiore": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Forte dei Marmi": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Massarosa": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Pietrasanta": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Seravezza": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Stazzema": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
-        "Viareggio": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."}
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."
+        }
       },
       "presentation": {
         "source_mark": "C4T",
@@ -171,6 +205,583 @@
         "description": "Assistenza tecnica UE per investimenti verdi della politica di coesione PO2.",
         "condition_label": "Ruolo attuativo su investimenti PO2"
       }
+    },
+    {
+      "coverage_id": "rt-artea-immobile-sede-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana · ARTEA",
+      "title": "ARTEA · Ricognizione di immobili pubblici per la sede a Firenze",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-per-ricerca-di-un-immobile-da-destinare-a-sede-di-artea",
+      "required_terms": [
+        "30 ottobre 2026",
+        "Firenze",
+        "pubblica"
+      ],
+      "evidence_verified_at": "2026-10-11",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-09-24",
+      "first_seen_at": "2026-10-11",
+      "lifecycle_stage": "application_open",
+      "opens_at": null,
+      "deadline_at": "2026-10-30",
+      "deadline_time": "12:00",
+      "eligibility": "conditional",
+      "applicant_type": "Amministrazioni ed enti pubblici",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "final_beneficiaries": "ARTEA",
+      "geographic_scope": "Immobile nel Comune di Firenze",
+      "project_requirements": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00.",
+      "category": "generale",
+      "description": "Ricognizione di immobili pubblici a Firenze per la sede ARTEA; nessuna garanzia di contratto o contributo.",
+      "condition_label": "Disponibilità di immobile a Firenze",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può rispondere solo se possiede o ha nella propria disponibilità un immobile nel Comune di Firenze, di circa 1.250 mq ad uso uffici per almeno 60 postazioni, conforme o adeguabile ai requisiti di accessibilità, impianti, sicurezza e antincendio. Gli immobili situati in Versilia non soddisfano il requisito di ubicazione. È una ricognizione di disponibilità, senza garanzia di contratto o contributo. Invio via PEC ad artea@cert.legalmail.it entro il 30 ottobre 2026 alle 12:00."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www.regione.toscana.it/documents/d/guest/avviso-ricerca-immobile-per-sede-artea-regione-toscana-24-settembre-2026-pdf",
+        "sha256": "51a80d17e4f12076398b3f232164358e8b190fa3255e0296d41ac45a4c526660",
+        "pages": 1
+      },
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "category": "generale",
+        "description": "Ricognizione di immobili pubblici a Firenze per la sede ARTEA; nessuna garanzia di contratto o contributo.",
+        "condition_label": "Disponibilità di immobile a Firenze",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      }
+    },
+    {
+      "coverage_id": "rt-risorse-genetiche-agrarie-aca16b-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana",
+      "title": "Toscana · Risorse genetiche agrarie: progetti di agrobiodiversità",
+      "url": "https://www.regione.toscana.it/it/-/contributi-per-uso-e-gestione-sostenibile-delle-risorse-genetiche-agrarie-specie-erbacee-specie-legnose-da-frutto-bovini-e-ovini-autoctoni",
+      "required_terms": [
+        "21441",
+        "dal 2 novembre",
+        "30 novembre 2026",
+        "Altri soggetti pubblici"
+      ],
+      "evidence_verified_at": "2026-10-11",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-09-16",
+      "first_seen_at": "2026-10-11",
+      "lifecycle_stage": "announced_upcoming",
+      "opens_at": "2026-11-02",
+      "deadline_at": "2026-11-30",
+      "deadline_time": "13:00",
+      "eligibility": "conditional",
+      "applicant_type": "Altri soggetti pubblici o privati (CR04), singoli o associati",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "final_beneficiaries": "Territorio toscano e risorse genetiche agrarie locali",
+      "geographic_scope": "Toscana",
+      "project_requirements": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00.",
+      "category": "ambiente",
+      "description": "Progetti di tutela e valorizzazione delle risorse genetiche agrarie locali. Domande dal 2 novembre 2026; ammessi anche soggetti pubblici con i requisiti del bando.",
+      "condition_label": "Progetto ammissibile e fascicolo ARTEA",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Ammessi anche altri soggetti pubblici (CR04), singoli o associati, con sede o unità operativa in Toscana. Occorre un progetto sulle risorse genetiche locali in uno solo dei settori: specie erbacee, specie legnose da frutto, bovini/ovini autoctoni. Richiesto fascicolo elettronico ARTEA prima della domanda; possesso regolare dei beni interessati dagli investimenti, divieto di doppio finanziamento e requisiti del paragrafo 7.2. Sostegno minimo 50.000 euro, massimo 100.000 euro per settore vegetale e 112.500 euro per settore animale, fino al 100% dei costi ammissibili. Domande su ARTEA dal 2 novembre al 30 novembre 2026, ore 13:00."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www.regione.toscana.it/documents/d/guest/testo-coordinato-bando-sra-aca-16b-pdf",
+        "sha256": "aa0d0bd1b0192161369309f812926f41f9d9d632dab6a829038d17b9bc746bb1",
+        "pages": 61
+      },
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "category": "ambiente",
+        "description": "Progetti di tutela e valorizzazione delle risorse genetiche agrarie locali. Domande dal 2 novembre 2026; ammessi anche soggetti pubblici con i requisiti del bando.",
+        "condition_label": "Progetto ammissibile e fascicolo ARTEA",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      }
+    }
+  ],
+  "reviewAssessments": [
+    {
+      "url": "https://www.regione.toscana.it/it/-/avviso-di-mobilit%C3%A0-per-un-dirigente-valutazioni-ambientali-e-autorit%C3%A0-di-audit",
+      "sourceTextSha256": "c774dcde14793c5064d35bcb83d6ee9c4b90d177934cbccfeb2aa57587f47099",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Mobilità individuale di personale regionale.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5529584&nomeFile=Decreto+n.19615+del+03-09-2026-+Allegato+1+",
+          "sha256": "dc193ef4005f98f9cd641930266c835266a11cae26caa55e9dd5198773bba74d",
+          "pages": 9
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5528762&nomeFile=Decreto+n.19087+del+26-08-2026",
+          "sha256": "b0c5dc5abab97272638f458ed183662fc8e5144fe41f6002251d5d3468448e74",
+          "pages": 4
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5529583&nomeFile=Decreto+n.19615+del+03-09-2026",
+          "sha256": "4c84e6f305320faeea06889fbb86965ffc874566fd06a0118729a8be8fcf8e6a",
+          "pages": 6
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/posizioni-di-elevata-qualificazione-avvisi-interni-per-incarichi-ottobre-2026",
+      "sourceTextSha256": "3328aaca34ead52661c205ff69c08b3a71a6d0d8097b72728734f76869d01447",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Selezioni interne di personale regionale.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-36-peq-direzione-giunta-regionale-def-5-ottobre-2026-pdf",
+          "sha256": "a22866a395d818bb563a5749e1f42b90e2a51908b06abb2c1db7e66f1ce8a1a3",
+          "pages": 6
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-11-peq-settore-avvocatura-regione-toscana-ottobre-2026-def-pdf",
+          "sha256": "4dfedbcc56177c38827f5aa24d7974d2256eea4b4e5a1fbacc6b5be9c7645681",
+          "pages": 5
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-47-peq-direzione-agricoltura-sviluppo-rurale-ottobre-2026-def-pdf",
+          "sha256": "2c8c57a47ff204b143b3ce35d20c2ed58ed6a2d9842e313886c7b5d4b192b634",
+          "pages": 6
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-16-peq-direzione-attivita-produttive-5-ottobre-2026-def-pdf",
+          "sha256": "4aa766e5d22c4432df83ecaeeaf0d15094ead7632a82c44dd5857b3f5589a71d",
+          "pages": 5
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-6-peq-direzione-beni-e-attivita-culturali-ottobre-2026-def-pdf",
+          "sha256": "4f50a838c155f1f89f04b61ea21112dea223ba640ff40bf560170dd1acab623e",
+          "pages": 4
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-peq-direzione-competitivita-territoriale-ottobre-2026-def-pdf",
+          "sha256": "32518712dcd9553d4ad72e3d0875ee3e15ee890cbc8a7dfbc4ace9444684f218",
+          "pages": 4
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/avviso-55-posizioni-di-elevata-qualificazione-def-pdf",
+          "sha256": "e6b2a6fab3229513db9e74a7f733c66c058676ec2536dfecba457365f1891b28",
+          "pages": 6
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/avviso-di-interpello-interno-per-dirigente-del-settore-investimenti-in-materia-di-governo-del-territorio-1",
+      "sourceTextSha256": "67a863dbb476d17a10947be0aa475c6ad31f463a00b5e62b3a1fc6159b287a07",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Interpello interno per incarico dirigenziale.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/interpello-investimenti-in-materia-di-governo-del-territorio-pdf",
+          "sha256": "2fb84c9abccfc98235b598bf8bd93e7d3d0ad591347d4b3bc14f9224a892c4dd",
+          "pages": 2
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/progetti-di-servizio-civile-regionale-bando-2-mila-396-giovani-avviso-per-i-posti-vacanti",
+      "sourceTextSha256": "fb17620bf9135e94fe1365e32894022b890fafb976edbb187485d6ee0af86225",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Selezione di giovani per posti di servizio civile; non apertura per progetti comunali.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532876&nomeFile=Decreto+n.21596+del+25-09-2026-+Allegato+1_+",
+          "sha256": "6648acbe465dd327b9dc759b41342434a6acd4f57b5837c1627d2248e4f0d800",
+          "pages": 4
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532872&nomeFile=Decreto+n.21596+del+25-09-2026",
+          "sha256": "22ffab776413b9d10389bcd917808c4903ac73584186195af9f3cadc5d51b69d",
+          "pages": 5
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532874&nomeFile=Decreto+n.21596+del+25-09-2026-+Allegato+A+",
+          "sha256": "fb6892f4f20b330ba2e01c5039be8c76429a98406fce00bef66f055203f0c5a5",
+          "pages": 66
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532873&nomeFile=Decreto+n.21596+del+25-09-2026-+Allegato+B_+",
+          "sha256": "0df01366c4034eab4405bda41fccc134892df463330c5df64230d7e07246d80d",
+          "pages": 1
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532875&nomeFile=Decreto+n.21596+del+25-09-2026-+Allegato+C_+",
+          "sha256": "f2329f5ed416bc4bcba35104adc73b8be8353281cd0baeca149db73406973ad9",
+          "pages": 4
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511316&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+A+",
+          "sha256": "e74aee543f67878911740e3e33ab377b4f3a03b35262df73f89ad5b5cc8b664f",
+          "pages": 19
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511310&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+B+",
+          "sha256": "53adfd943c937001ab7dc9901336bf34a58c5a692f02255a979f85edebf5b838",
+          "pages": 9
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511311&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+C+",
+          "sha256": "dacaac9a47fe040d20430ebd54066165eb586692e378f91c2efffb7ef4c4f111",
+          "pages": 11
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/concorso-per-giovani-laureati-per-5-funzionari-con-contratto-di-apprendistato",
+      "sourceTextSha256": "c1ce8b26719b17124936d3a6d53fb9d22f43278335b015c69742888be197405f",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Concorso per assunzione di persone fisiche.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5533515&nomeFile=Decreto+n.22005+del+07-10-2026",
+          "sha256": "eb2c41b5ae46ced85431fed4ac3fd7fb2c48fa24d628c25f5fba70252be07f5e",
+          "pages": 6
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5533516&nomeFile=Decreto+n.22005+del+07-10-2026-+Allegato+A+",
+          "sha256": "7a08e18721487767efb83473b12dfcf64eb95ffe2e5eaa17e3763ba1590753b6",
+          "pages": 27
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/servizio-civile-regionale-bando-per-la-selezione-di-2.396-giovani",
+      "sourceTextSha256": "d5256c9a76eb4ccedc37d07971355cdfc63e76b2237ca86af46ccce6df567411",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Selezione di giovani per posti di servizio civile; non apertura per progetti comunali.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511314&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+1+",
+          "sha256": "852e6acd11b1a37d3725e7ba48d412a84105cc33203128447e58adfe9d25d3b3",
+          "pages": 5
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532870&nomeFile=Decreto+n.21595+del+25-09-2026-+Allegato+A+",
+          "sha256": "c0c5a9c6dc4d6e08b4792b1b28ed65b1ff390df5aa00f0a4276429d9b26f1b5f",
+          "pages": 7
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532871&nomeFile=Decreto+n.21595+del+25-09-2026-+Allegato+B+",
+          "sha256": "d993008c033c03fbf201c24cf2be9459233b79da9659d10d202433524a93a6ab",
+          "pages": 2
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511305&nomeFile=Decreto+n.8655+del+22-04-2026",
+          "sha256": "41a5ae0db67b03afa1441872575241e8c5f455692b339fd5bef8f0f120cd15c9",
+          "pages": 6
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511315&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+2+",
+          "sha256": "4ea5edd3fc164dfac160379fa274b791658da84ccf0b39ed37993695396a1216",
+          "pages": 6
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511316&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+A+",
+          "sha256": "e74aee543f67878911740e3e33ab377b4f3a03b35262df73f89ad5b5cc8b664f",
+          "pages": 19
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511310&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+B+",
+          "sha256": "53adfd943c937001ab7dc9901336bf34a58c5a692f02255a979f85edebf5b838",
+          "pages": 9
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5511311&nomeFile=Decreto+n.8655+del+22-04-2026-+Allegato+C+",
+          "sha256": "dacaac9a47fe040d20430ebd54066165eb586692e378f91c2efffb7ef4c4f111",
+          "pages": 11
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/promozione-della-conciliazione-vita-lavoro-bando-2026-2027-per-attivit%C3%A0-di-animazione-territoriale",
+      "sourceTextSha256": "cb54d49f6f951c5eb87d0766a26c6f6e2d8dfa21dda9b4a4938b535cbfe8ed31",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Richiedenti: ATS tra associazioni di rappresentanza datoriale e sindacale, non Comuni.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532180&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+A+",
+          "sha256": "45c104872ab296d2f6c0c197c9e6b720fb2e7cf4f43eb256de631f3da6ae5116",
+          "pages": 20
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/10180/23101/DD 13512-2023 All_A (Avviso).pdf/e7674885-eec9-d2f2-4973-f617fe59e421",
+          "sha256": "b5747bbfa0b4e6ecc7ea80ed78139e92eeeddc3f8d16740ae6cda583854e8fcd",
+          "pages": 18
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532175&nomeFile=Decreto+n.21180+del+22-09-2026",
+          "sha256": "78a8d357abb4f324e2494af373f2e0625d4bcf1f8fc24c3a10d1daee7e88b063",
+          "pages": 8
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532177&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+1+",
+          "sha256": "4589f0a4d8ece050015c89175f47cd22c622ee721913569efce918a659302ccf",
+          "pages": 5
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532176&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+2+",
+          "sha256": "ba8f43231ae056972a67e322579fcea138c719819e0efa20ae5b312246753cc1",
+          "pages": 1
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532179&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+3+",
+          "sha256": "d113fb675b0d015be737123fbecff2ea52bc7285c14cc35754963d37e89a86e1",
+          "pages": 2
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532178&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+4+",
+          "sha256": "caf6c2396b4e74b7693cfdc7aea5cc56d08e070c9e3bead387d75e390ee70a2d",
+          "pages": 11
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532182&nomeFile=Decreto+n.21180+del+22-09-2026-+Allegato+5+",
+          "sha256": "7c69df8c295a2db7c34ef0f1092113d8ef4753e42a5f8f1a8bfbaa77b085a310",
+          "pages": 5
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie",
+      "sourceTextSha256": "0e1628042689c0e36a331a72784fe11acafe685b20b705d059c10c3657a0c261",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Domande delle famiglie per Nidi gratis; distinta dalla procedura di adesione comunale.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5529606&nomeFile=Decreto+n.19629+del+03-09-2026-+Allegato+A+",
+          "sha256": "170ff5324f175fd95aa0040007fc9b53db59bb8e6f2b75307a70bd866cb7c1c0",
+          "pages": 6
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5512222&nomeFile=Decreto+n.9186+del+27-04-2026-+Allegato+A+",
+          "sha256": "bd02f29a81e7b206d70bcdf8935db5f0095631c00197d45523a20221df01f33f",
+          "pages": 17
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/d/guest/faq-del-29-aprile-per-nidi-gratis-bando-2026-2027-per-le-famiglie-pdf",
+          "sha256": "14850a3f1bb6d7449904bf835f6ee1c1972f91dcebe9006562561be5a8aae4c5",
+          "pages": 4
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5532097&nomeFile=Decreto+n.21151+del+15-09-2026",
+          "sha256": "7dade34828044404f0a011b4055f06f16ece217444ee6277bffccd052640c751",
+          "pages": 8
+        }
+      ]
+    },
+    {
+      "url": "https://www.regione.toscana.it/it/-/concorso-per-tre-posti-di-dirigente-area-tecnico-professionale",
+      "sourceTextSha256": "6bfbeced0911da3768a4c33cd81577c77cfcaf9e4647432f80a892cb882f9af4",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Concorso individuale e scorrimenti di graduatoria.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://www.regione.toscana.it/documents/10180/141179453/Esiti-Diario+prova+pratica+DIR-TEC_rinvio2.pdf/0a349bf6-a6c8-6132-7b08-4283ffc63bb4?t=1700583733422",
+          "sha256": "17d0d352dc90edf651081de748f91458c6427827bb4aeb97163a99a4d50baa4b",
+          "pages": 1
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/10180/0/Esiti+prova+scritta+e+Diario+prova+pratica+DIR-TEC_rinvioV2.pdf/c14ba850-59e0-8521-39ca-cf52e85ad3e4?t=1698668186117",
+          "sha256": "dab299846e2fcb5b11cd0e82a469e458ed31a8124d2473d9be4eab1f8661c968",
+          "pages": 1
+        },
+        {
+          "url": "https://www.regione.toscana.it/documents/10180/141179453/Avviso+rinvio+diario+prove+concorso+3+posti+Dirigente+tecnico.pdf/10b0ca20-2a8a-1b76-f63a-75d71eac7b75?t=1685122195633",
+          "sha256": "42f822efc51b9f8ee3d6f62400deb9fe3b935b530d40993502d02dcb689822ab",
+          "pages": 1
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5516518&nomeFile=Decreto+n.11799+del+27-05-2026",
+          "sha256": "47292510ebd637303fade85a05b19212d42a2b67248d9a2abca8fe6a2406d998",
+          "pages": 6
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5516519&nomeFile=Decreto+n.11799+del+27-05-2026-+Allegato+A+",
+          "sha256": "9ee8766f3ed4dff10134c6c3a92ff3d2b7d302dd84557389108d3e7fdd8f5a79",
+          "pages": 1
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5497317&nomeFile=Decreto+n.27363+del+30-12-2025",
+          "sha256": "9f2296f01a6462ccc64a33a8392eb6c5c018172e3beaccc77f48db01f343abe3",
+          "pages": 5
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5497318&nomeFile=Decreto+n.27363+del+30-12-2025-+Allegato+A+",
+          "sha256": "c495b9434db91d3d097346813dfb1db522f22ec707ee62a9a9501e78b03379f1",
+          "pages": 1
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5416100&nomeFile=Decreto_n.8353_del_17-04-2024",
+          "sha256": "1a123f967e172fd2fe82b3d589b43a962b584520fd3d2ecb9d47ef5268b7ded8",
+          "pages": 6
+        }
+      ]
+    },
+    {
+      "url": "https://www.politichecoesione.governo.it/it/finanziamenti-avvisi-e-bandi/assunzioni-per-la-politica-di-coesione/",
+      "sourceTextSha256": "44775a7c8761cb47b757bf86d7b8cbb50b47a07855c31ac37d999039f29d16f9",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Catalogo delle assunzioni: fase di manifestazione comunale chiusa e riferita agli enti territoriali del Sud.",
+      "action": "Nessuna verifica richiesta al proprietario; rivalutare se cambia la fonte.",
+      "verifiedAt": "2026-10-11",
+      "documents": []
+    },
+    {
+      "url": "https://anci.lombardia.it/dettaglio-circolari/20251215928-edilizia-scolastica-–-normativa-antincendio-e-messa-in-sicurezza/",
+      "sourceTextSha256": "569a9ed190dde23830b58eabb81158fcff629662ea52e8d8aa3fea1acf8ef8fb",
+      "status": "expired",
+      "reasonCode": "reviewed_document_expiry",
+      "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
+      "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
+      "deadline": "2025-12-19",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://anci.lombardia.it/documenti/22765-Edilizia scolastica - Avviso MIM n. 217015 del 12 dicembre 2025.pdf",
+          "sha256": "eeb913b80a09a22b9fce7659085729f606d9fb1aee7676bbf55b11052edaa707",
+          "pages": 1
+        }
+      ]
+    },
+    {
+      "url": "https://anci.lombardia.it/dettaglio-circolari/20251128924-edilizia-scolastica-–-normativa-antincendio-e-messa-in-sicurezza/",
+      "sourceTextSha256": "b24b27ccd90e8330d1b8fa576945579716c49a82b1b1957efd152f59ba5411b4",
+      "status": "expired",
+      "reasonCode": "reviewed_document_expiry",
+      "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
+      "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
+      "deadline": "2025-12-15",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://anci.lombardia.it/documenti/22685-Edilizia scolastica- Avviso MIM n. 207071 del 26 novembre 2025.pdf",
+          "sha256": "d1ca7a01f16d8e9d23f30d20e60db87f453aa426eb2c33172d7555660b83faef",
+          "pages": 14
+        }
+      ]
+    },
+    {
+      "url": "https://anci.lombardia.it/dettaglio-circolari/202668942-edilizia-scolastica-–-richiesta-risorse-aggiuntive-per-esigenze-urgenti/",
+      "sourceTextSha256": "f170c37a485bc3cc80f8c3ff9c039abbd5bf8787f8e5223cc361d99165e5ee9b",
+      "status": "expired",
+      "reasonCode": "reviewed_document_expiry",
+      "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
+      "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
+      "deadline": "2026-06-12",
+      "verifiedAt": "2026-10-11",
+      "documents": [
+        {
+          "url": "https://anci.lombardia.it/documenti/23541-Richiesta risorse aggiuntive PNRR_Avviso 135383 del 27 maggio 2026.pdf",
+          "sha256": "b8aa2b7c14080848db1f51e6c0881b7296154a0e508298d0036b4b8b9a70bdf9",
+          "pages": 8
+        }
+      ]
+    },
+    {
+      "url": "https://anci.lombardia.it/dettaglio-circolari/20261071633-edilizia-scolastica-–-vulnerabilità-sismica/",
+      "sourceTextSha256": "ea36980f31b13a88f74d6109bff95feef2ba39e03b6d27e46e1e50bf6ba4a530",
+      "status": "covered",
+      "reasonCode": "reviewed_cross_source_reference",
+      "reason": "Lo stesso avviso MIM n. 79378 è già pubblicato mediante il PDF ANCI Abruzzo.",
+      "action": "Nessuna verifica richiesta al proprietario; controllare i requisiti locali nella scheda pubblicata.",
+      "representedCoverageId": "mim-document-vulnerabilita-sismica-2280b7578f65c13c",
+      "verifiedAt": "2026-10-11"
+    },
+    {
+      "url": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/",
+      "sourceTextSha256": "d7499b2e976b9944fa1684a568e8384f3e130be87955172ff23bcf2aee9a6559",
+      "status": "monitor",
+      "reasonCode": "reviewed_closed_catalogue",
+      "reason": "Catalogo delle procedure Capitale italiana del mare: la procedura 2027 risulta conclusa il 30 settembre 2026.",
+      "action": "Monitorare nuove procedure; nessuna verifica richiesta al proprietario.",
+      "verifiedAt": "2026-10-11",
+      "evidenceUrl": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/",
+      "deadline": "2026-09-30"
     }
   ]
 }
