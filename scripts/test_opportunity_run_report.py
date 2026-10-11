@@ -202,6 +202,23 @@ def main() -> int:
 
 def _test_actionable_document_review():
     import opportunity_pdf_evidence as pdf_evidence
+    # SRA31's index contains "Beneficiari" followed by "Imprese in
+    # difficoltà". It must not replace the actual applicant section.
+    document_text = """Indice
+2. Richiedenti/Beneficiari .................................. 7
+2.3 Imprese in difficoltà .................................. 10
+Disposizioni generali sulle imprese.
+2. Richiedenti/Beneficiari
+Sono ammessi proprietari, possessori, pubblici o privati e loro associazioni.
+Sono ammessi anche enti pubblici titolari della superficie forestale.
+"""
+    audience = pdf_evidence.document_audience(document_text)
+    assert audience.startswith("2. Richiedenti/Beneficiari Sono ammessi")
+    assert "Imprese in difficoltà" not in audience
+    import opportunity_radar as base_radar
+    assert base_radar.eligibility(audience, ["Massarosa"])[0] == "conditional"
+    assert not pdf_evidence.document_audience("Beneficiari ........ 7\nImprese ........ 10")
+    assert pdf_evidence.document_audience("Beneficiari: imprese private").startswith("Beneficiari:")
     attachment = "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5530617&nomeFile=Decreto+n.20302+del+14-09-2026-+Allegato+A+"
     page_html = f'<a href="{attachment.replace("&", "&amp;")}">Avviso pubblico</a>'
     assert pdf_evidence.pdf_links(page_html, "https://www.regione.toscana.it/") == [attachment]

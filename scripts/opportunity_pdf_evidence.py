@@ -100,13 +100,26 @@ def fetch_pdf_text(url: str, max_pages: int = 18, max_chars: int = 60000) -> str
 
 
 def document_audience(text: str, window: int = 3200) -> str:
-    plain = re.sub(r"\s+", " ", str(text or "")).strip()
+    # Preserve section boundaries and discard table-of-contents entries before
+    # selecting beneficiaries. An index window can contain unrelated audiences.
+    lines = [line.strip() for line in str(text or "").splitlines()
+             if not re.search(r"\.{3,}|…{2,}", line)]
+    body = "\n".join(lines)
+    for match in re.finditer(r"(?m)^([^\n]{1,100})$", body):
+        heading = match.group(1).casefold().replace("’", "'")
+        if any(key in heading for key in KEYS) and re.fullmatch(
+            r"(?:\d+(?:\.\d+)*[.)]?\s*)?(?:richiedenti\s*/\s*)?"
+            r"(?:soggetti beneficiari|destinatari\s*/\s*beneficiari|"
+            r"soggetti ammissibili|chi pu[oò] presentare domanda|beneficiari|destinatari)"
+            r"\s*:?", heading
+        ):
+            return re.sub(r"\s+", " ", body[match.start():]).strip()[:window]
+    plain = re.sub(r"\s+", " ", body).strip()
     folded = plain.casefold().replace("’", "'")
     starts = [folded.find(key) for key in KEYS if folded.find(key) >= 0]
     if not starts:
         return ""
-    start = min(starts)
-    return plain[start : start + window].strip()
+    return plain[min(starts):min(starts) + window].strip()
 
 
 def attached_pdf_audience(
