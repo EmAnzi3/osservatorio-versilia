@@ -57543,6 +57543,2861 @@
         ]
       },
       "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046005",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              330,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046013",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046013",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              110,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046018",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              106,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046024",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              236,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046028",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046028",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              119,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046030",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046030",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              26,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_046033",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_046033",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              659,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_rank",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_date",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_date",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "periods": [
+              "2026-08-26"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_series_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_series_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_absolute_change_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_absolute_change_refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_relative_change_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_percentage_points_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_percentage_points_refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_trend_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_weighted_ratio_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pooling_not_reviewed_memberships_and_access_ids"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_anomaly_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_anomaly_refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_benchmark_gap_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_benchmark_gap_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_wrong_2026",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_wrong_2026",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_explicit_service_date_required"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_total_wrong_2026-08-27",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_total_wrong_2026-08-27",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "total",
+            "periods": [
+              "2026-08-27"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_service_date_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046005",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5194723420331833,
+              500000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046013",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046013",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              16793893129770993,
+              1000000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046018",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1216600863097971,
+              250000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046024",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046024",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1300820178146221,
+              125000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046028",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046028",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046028",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              968739824161511,
+              100000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046030",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046030",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046030",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              583902263744161,
+              62500000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_046033",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_046033",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046033",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2172050098879367,
+              200000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_rank",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046018"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_date",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_date",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026-08-26"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_series_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_series_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_absolute_change_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_absolute_change_refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_relative_change_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_percentage_points_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_percentage_points_refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_trend_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_weighted_ratio_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pooling_not_reviewed_memberships_and_access_ids"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_anomaly_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_anomaly_refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_benchmark_gap_refused",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_benchmark_gap_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_wrong_2026",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_wrong_2026",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_explicit_service_date_required"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_view:normalized_wrong_2026-08-27",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_view:normalized_wrong_2026-08-27",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026-08-27"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_service_date_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046005",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              151,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046013",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046013",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              31,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046018",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              131,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046024",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              107,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046028",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046028",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              102,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046030",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046030",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              80,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_046033",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_046033",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              254,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_rank",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_date",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_date",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "periods": [
+              "2026-08-26"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_series_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_series_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_absolute_change_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_absolute_change_refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_relative_change_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_percentage_points_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_percentage_points_refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_trend_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_weighted_ratio_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pooling_not_reviewed_memberships_and_access_ids"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_anomaly_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_anomaly_refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_benchmark_gap_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_benchmark_gap_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_wrong_2026",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_wrong_2026",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_explicit_service_date_required"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_total_wrong_2026-08-27",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_total_wrong_2026-08-27",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "total",
+            "periods": [
+              "2026-08-27"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_service_date_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046005",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2376979504454869,
+              500000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046013",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046013",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1183206106870229,
+              250000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046018",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              12028280231383711,
+              2000000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046024",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046024",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4718229120733751,
+              1000000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046028",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046028",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046028",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1660696841419733,
+              200000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046030",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046030",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046030",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1437297879985627,
+              50000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_046033",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_046033",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046033",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2092946605141727,
+              500000000000000
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_rank",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_date",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_date",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026-08-26"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_series_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_series_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_absolute_change_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_absolute_change_refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_relative_change_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_percentage_points_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_percentage_points_refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_trend_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_weighted_ratio_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pooling_not_reviewed_memberships_and_access_ids"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_anomaly_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_anomaly_refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_benchmark_gap_refused",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_benchmark_gap_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_wrong_2026",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_wrong_2026",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_explicit_service_date_required"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_view:normalized_wrong_2026-08-27",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_view:normalized_wrong_2026-08-27",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints",
+            "dimension": "view:normalized",
+            "periods": [
+              "2026-08-27"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_service_date_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046005",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046005",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1201,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046013",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046013",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              573,
+              25
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046018",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1571,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046024",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046024",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              243,
+              10
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046028",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046028",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              447,
+              25
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046030",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046030",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              697,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_046033",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_046033",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2457,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_rank",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_date",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_date",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "periods": [
+              "2026-08-26"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-26"
+          }
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_series_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_series_refused",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_absolute_change_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_absolute_change_refused",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_relative_change_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_relative_change_refused",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_percentage_points_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_percentage_points_refused",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_trend_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_trend_refused",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_single_service_day_no_history"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_weighted_ratio_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pooling_not_reviewed_memberships_and_access_ids"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_anomaly_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_anomaly_refused",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_benchmark_gap_refused",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_benchmark_gap_refused",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_wrong_2026",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_wrong_2026",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_explicit_service_date_required"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_total_wrong_2026-08-27",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_total_wrong_2026-08-27",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan",
+            "dimension": "total",
+            "periods": [
+              "2026-08-27"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_service_date_not_frozen"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_pair_False",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_pair_False",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "scheduledTplTripsPer1000"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_scheduledTplTripsPer1000_pair_True",
+      "question": "Lettura TPL verificata: tpl_scheduledTplTripsPer1000_pair_True",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "scheduledTplTripsPer1000"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_pair_False",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_pair_False",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "activeTplAccessPoints"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_activeTplAccessPoints_pair_True",
+      "question": "Lettura TPL verificata: tpl_activeTplAccessPoints_pair_True",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "activeTplAccessPoints"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_pair_False",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_pair_False",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tplServiceSpan"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "tpl_tplServiceSpan_pair_True",
+      "question": "Lettura TPL verificata: tpl_tplServiceSpan_pair_True",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "tplServiceSpan"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "tpl_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
     }
   ]
 }
