@@ -52402,6 +52402,5147 @@
         ]
       },
       "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046005",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              21147,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 422.94; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046005_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              21147,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 422.94; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046013",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              47573,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 475.73; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046013_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              47573,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 475.73; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046018",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              54251,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 542.51; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046018_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              54251,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 542.51; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046024",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              35611,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 356.11; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046024_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              35611,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 356.11; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046028",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              25111,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 502.22; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046028_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              25111,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 502.22; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046030",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              36531,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 365.31; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046030_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              36531,
+              100
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 365.31; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046033",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              20893,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 417.86; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_total_046033_2025",
+      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              20893,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 417.86; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046005",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046005_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046013",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046013_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046018",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046018_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046024",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046024_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046028",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046028_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046030",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046030_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1060,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046033",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_total_046033_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1140,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046005",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046005_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046013",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046013_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046018",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046018_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046024",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046024_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046028",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046028_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046030",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046030_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046033",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalImuStandard_ratePercent_046033_2025",
+      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "ratePercent",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              57,
+              50
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046005",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              165,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 82.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046005_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              165,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 82.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046013",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046013_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046018",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046018_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046024",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046024_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046028",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046028_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046030",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046030_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046033",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_total_046033_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046005",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              165,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 82.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046005_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              165,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 82.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046013",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046013_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046018",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046018_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046024",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046024_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046028",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046028_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046030",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046030_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              160,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 160; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046033",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:20000_046033_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:20000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:20000",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              150,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 150; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046005",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              289,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 144.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046005_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              289,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 144.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046013",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              153,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 153; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046013_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              153,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 153; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046018",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046018_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046024",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              225,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 225; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046024_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              225,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 225; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046028",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046028_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046030",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046030_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              240,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 240; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046033",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              225,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 225; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:30000_046033_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:30000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:30000",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              225,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 225; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046005",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              569,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 284.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046005_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              569,
+              2
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 284.5; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046013",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              283,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 283; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046013_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              283,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 283; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046018",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046018_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046024",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              375,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 375; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046024_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              375,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 375; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046028",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046028_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046030",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046030_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              400,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 400; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046033",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              375,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 375; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_income:50000_046033_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura income:50000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:50000",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              375,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 375; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046005",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              33,
+              80
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 0.4125; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046005_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Camaiore?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              33,
+              80
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 0.4125; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046013",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0.0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046013_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Forte dei Marmi?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046013"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              0,
+              1
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 0.0; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046018",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046018_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Massarosa?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046018"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046024",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3,
+              4
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 0.75; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046024_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Pietrasanta?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046024"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3,
+              4
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 0.75; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046028",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046028_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Seravezza?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046028"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046030",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046030_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Stazzema?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046030"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4,
+              5
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 0.8; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046033",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3,
+              4
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 0.75; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_municipalIrpef_effectiveRate:20000_046033_2025",
+      "question": "Qual è il valore 2025 di municipalIrpef, lettura effectiveRate:20000, nello scenario standard per Viareggio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "effectiveRate:20000",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              3,
+              4
+            ],
+            "tolerance": 1e-09
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025"
+          }
+        ]
+      },
+      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 0.75; aliquote/importi standard, non bolletta personale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_series_refused",
+      "question": "Posso applicare series a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_absolute_change_refused",
+      "question": "Posso applicare absolute_change a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_relative_change_refused",
+      "question": "Posso applicare relative_change a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_percentage_points_refused",
+      "question": "Posso applicare percentage_points a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_trend_refused",
+      "question": "Posso applicare trend a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_weighted_ratio_refused",
+      "question": "Posso applicare weighted_ratio a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_scenarios_not_additive_population"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_anomaly_refused",
+      "question": "Posso applicare anomaly a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_benchmark_gap_refused",
+      "question": "Posso applicare benchmark_gap a tariStandardHousehold nel lotto 2025?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_tariStandardHousehold_2024_refused",
+      "question": "tariStandardHousehold nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_tariStandardHousehold_2026_refused",
+      "question": "tariStandardHousehold nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_tariStandardHousehold_normalized_refused",
+      "question": "Posso interrogare normalized per tariStandardHousehold?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_tariStandardHousehold_income:25000_refused",
+      "question": "Posso interrogare income:25000 per tariStandardHousehold?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "income:25000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_tariStandardHousehold_numerator_refused",
+      "question": "Posso interrogare numerator per tariStandardHousehold?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_tariStandardHousehold_sex:women_refused",
+      "question": "Posso interrogare sex:women per tariStandardHousehold?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_tariStandardHousehold_pair_False",
+      "question": "tariStandardHousehold è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tariStandardHousehold"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tax_tariStandardHousehold_pair_True",
+      "question": "tariStandardHousehold è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "tariStandardHousehold"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tax_municipalImuStandard_series_refused",
+      "question": "Posso applicare series a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_absolute_change_refused",
+      "question": "Posso applicare absolute_change a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_relative_change_refused",
+      "question": "Posso applicare relative_change a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_percentage_points_refused",
+      "question": "Posso applicare percentage_points a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_trend_refused",
+      "question": "Posso applicare trend a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_weighted_ratio_refused",
+      "question": "Posso applicare weighted_ratio a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_scenarios_not_additive_population"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_anomaly_refused",
+      "question": "Posso applicare anomaly a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_benchmark_gap_refused",
+      "question": "Posso applicare benchmark_gap a municipalImuStandard nel lotto 2025?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalImuStandard_2024_refused",
+      "question": "municipalImuStandard nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_municipalImuStandard_2026_refused",
+      "question": "municipalImuStandard nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_municipalImuStandard_normalized_refused",
+      "question": "Posso interrogare normalized per municipalImuStandard?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalImuStandard_income:25000_refused",
+      "question": "Posso interrogare income:25000 per municipalImuStandard?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "income:25000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalImuStandard_numerator_refused",
+      "question": "Posso interrogare numerator per municipalImuStandard?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalImuStandard_sex:women_refused",
+      "question": "Posso interrogare sex:women per municipalImuStandard?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalImuStandard_pair_False",
+      "question": "municipalImuStandard è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "municipalImuStandard"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tax_municipalImuStandard_pair_True",
+      "question": "municipalImuStandard è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalImuStandard"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tax_municipalIrpef_series_refused",
+      "question": "Posso applicare series a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_absolute_change_refused",
+      "question": "Posso applicare absolute_change a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_relative_change_refused",
+      "question": "Posso applicare relative_change a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_percentage_points_refused",
+      "question": "Posso applicare percentage_points a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_trend_refused",
+      "question": "Posso applicare trend a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_single_snapshot_no_history"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_weighted_ratio_refused",
+      "question": "Posso applicare weighted_ratio a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_scenarios_not_additive_population"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_anomaly_refused",
+      "question": "Posso applicare anomaly a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_benchmark_gap_refused",
+      "question": "Posso applicare benchmark_gap a municipalIrpef nel lotto 2025?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+    },
+    {
+      "id": "tax_municipalIrpef_2024_refused",
+      "question": "municipalIrpef nel 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_municipalIrpef_2026_refused",
+      "question": "municipalIrpef nel 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot esclusivamente 2025."
+    },
+    {
+      "id": "tax_municipalIrpef_normalized_refused",
+      "question": "Posso interrogare normalized per municipalIrpef?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalIrpef_income:25000_refused",
+      "question": "Posso interrogare income:25000 per municipalIrpef?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "income:25000"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalIrpef_numerator_refused",
+      "question": "Posso interrogare numerator per municipalIrpef?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalIrpef_sex:women_refused",
+      "question": "Posso interrogare sex:women per municipalIrpef?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Dimensione fuori dagli scenari revisionati."
+    },
+    {
+      "id": "tax_municipalIrpef_pair_False",
+      "question": "municipalIrpef è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "municipalIrpef"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
+    },
+    {
+      "id": "tax_municipalIrpef_pair_True",
+      "question": "municipalIrpef è associato alla popolazione?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "municipalIrpef"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "municipal_tax_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Nessuna coppia approvata; nessuna conclusione causale."
     }
   ]
 }

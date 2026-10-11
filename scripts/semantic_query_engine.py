@@ -48,12 +48,13 @@ import semantic_query_social_spending_adapters as social
 import semantic_query_health_facilities_adapters as facilities
 import semantic_query_connectivity_adapters as connectivity
 import semantic_query_road_adapters as road
+import semantic_query_municipal_tax_adapters as taxes
 import semantic_query_vehicle_adapters as vehicles
 import semantic_query_regional_adapters as regional
 import semantic_query_tourism_adapters as tourism
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '39'
+VERSION = '40'
 NUMERICAL_SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -101,6 +102,7 @@ def period_token(key, period):
 
 
 def dimensions(key):
+    if key in taxes.KEYS:return taxes.dimensions(key)
     if key in vehicles.KEYS:return vehicles.dimensions(key)
     if key in road.KEYS:return road.dimensions(key)
     if key in connectivity.KEYS:return connectivity.dimensions(key)
@@ -140,6 +142,7 @@ def dimensions(key):
 
 
 def operations(key, dimension, unit):
+    if key in taxes.KEYS:return taxes.operations(key,dimension)
     if key in vehicles.KEYS:return vehicles.operations(key,dimension)
     if key in road.KEYS:return road.operations(key,dimension)
     if key in connectivity.KEYS:return connectivity.operations(key,dimension)
@@ -342,6 +345,7 @@ class QueryEngine:
     def context(self, key, dimension="total"):
         metric = self._catalog['metrics'][key]
         meta = metric['meta']
+        if key in taxes.KEYS:return taxes.context(metric,key,dimension)
         if key in vehicles.KEYS:return vehicles.context(metric,key,dimension)
         if key in road.KEYS:return road.context(metric,key,dimension)
         if key in connectivity.KEYS:return connectivity.context(metric,key,dimension)
@@ -396,6 +400,7 @@ class QueryEngine:
         raise ValueError('adapter_not_implemented')
 
     def observation(self, key, row_index, period, *, historical, dimension="total"):
+        if key in taxes.KEYS:return taxes.observation(self,key,row_index,dimension,period,historical)
         if key in vehicles.KEYS:return vehicles.observation(self,key,row_index,dimension,period,historical)
         if key in road.KEYS:return road.observation(self,key,row_index,dimension,period,historical)
         if key in connectivity.KEYS:return connectivity.observation(self,key,row_index,dimension,period,historical)
@@ -528,6 +533,7 @@ class QueryEngine:
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)
+        if key in taxes.KEYS:taxes.selection_guard(key,dimension,operation)
         if key in vehicles.KEYS:vehicles.selection_guard(key,dimension,operation)
         if key in road.KEYS:road.selection_guard(key,dimension,operation)
         if key in connectivity.KEYS:connectivity.selection_guard(key,dimension,operation)
@@ -623,7 +629,7 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                use_history=historical and not (key in (*vehicles.KEYS,*road.KEYS,*connectivity.KEYS,*facilities.KEYS,*social.KEYS,*invalsi.KEYS,*library.KEYS,*regional.KEYS,*tourism.KEYS,*rgs.KEYS,*mef.KEYS,*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS,*soil.KEYS,*territory.KEYS,*hazard.KEYS,*fragility.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
+                use_history=historical and not (key in (*taxes.KEYS,*vehicles.KEYS,*road.KEYS,*connectivity.KEYS,*facilities.KEYS,*social.KEYS,*invalsi.KEYS,*library.KEYS,*regional.KEYS,*tourism.KEYS,*rgs.KEYS,*mef.KEYS,*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS,*soil.KEYS,*territory.KEYS,*hazard.KEYS,*fragility.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
                 observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
@@ -633,6 +639,7 @@ class QueryEngine:
         request = copy.deepcopy(request)
         result = {'schemaVersion':1, 'engineVersion':VERSION, 'engineSha256':self.module_hash,
                   'adapterImplementationSha256':digest((ROOT/'scripts/semantic_query_adapters.py').read_bytes()),
+                  'municipalTaxAdapterSha256':digest((ROOT/'scripts/semantic_query_municipal_tax_adapters.py').read_bytes()),
                   'vehiclesAdapterSha256':digest((ROOT/'scripts/semantic_query_vehicle_adapters.py').read_bytes()),
                   'roadAdapterSha256':digest((ROOT/'scripts/semantic_query_road_adapters.py').read_bytes()),
                   'connectivityAdapterSha256':digest((ROOT/'scripts/semantic_query_connectivity_adapters.py').read_bytes()),
@@ -806,7 +813,7 @@ class QueryEngine:
                 dims=list(contexts)
                 entry['engine'] = {'adapter':contexts[dims[0]]['adapter'], 'dimensions':dims,
                     'operations':per_dimension[dims[0]],'operationsByDimension':per_dimension,
-                    'dimensionStatus':states,'benchmarkScopes':(vehicles.scopes(entry['metric'],dims[0]) if entry['metric'] in vehicles.KEYS else road.scopes(entry['metric'],dims[0]) if entry['metric'] in road.KEYS else connectivity.scopes(entry['metric'],dims[0]) if entry['metric'] in connectivity.KEYS else facilities.scopes(entry['metric'],dims[0]) if entry['metric'] in facilities.KEYS else social.scopes(entry['metric'],dims[0]) if entry['metric'] in social.KEYS else invalsi.scopes(entry['metric'],dims[0]) if entry['metric'] in invalsi.KEYS else library.scopes(entry['metric'],dims[0]) if entry['metric'] in library.KEYS else regional.scopes(entry['metric'],dims[0]) if entry['metric'] in regional.KEYS else tourism.scopes(entry['metric'],dims[0]) if entry['metric'] in tourism.KEYS else rgs.scopes(entry['metric'],dims[0]) if entry['metric'] in rgs.KEYS else mef.scopes(entry['metric'],dims[0]) if entry['metric'] in mef.KEYS else profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
+                    'dimensionStatus':states,'benchmarkScopes':(taxes.scopes(entry['metric'],dims[0]) if entry['metric'] in taxes.KEYS else vehicles.scopes(entry['metric'],dims[0]) if entry['metric'] in vehicles.KEYS else road.scopes(entry['metric'],dims[0]) if entry['metric'] in road.KEYS else connectivity.scopes(entry['metric'],dims[0]) if entry['metric'] in connectivity.KEYS else facilities.scopes(entry['metric'],dims[0]) if entry['metric'] in facilities.KEYS else social.scopes(entry['metric'],dims[0]) if entry['metric'] in social.KEYS else invalsi.scopes(entry['metric'],dims[0]) if entry['metric'] in invalsi.KEYS else library.scopes(entry['metric'],dims[0]) if entry['metric'] in library.KEYS else regional.scopes(entry['metric'],dims[0]) if entry['metric'] in regional.KEYS else tourism.scopes(entry['metric'],dims[0]) if entry['metric'] in tourism.KEYS else rgs.scopes(entry['metric'],dims[0]) if entry['metric'] in rgs.KEYS else mef.scopes(entry['metric'],dims[0]) if entry['metric'] in mef.KEYS else profiles.scopes(entry['metric'],dims[0]) if entry['metric'] in profiles.KEYS else [] if entry['metric'] in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(entry['metric'],dims[0]) if entry['metric'] in coast.KEYS else fragility.scopes(entry['metric']) if entry['metric'] in fragility.KEYS else [] if entry['metric'] in hazard.KEYS else [] if entry['metric'] in territory.KEYS else soil.scopes(entry['metric'],dims[0]) if entry['metric'] in soil.KEYS else geography.scopes(entry['metric'],dims[0]) if entry['metric'] in geography.KEYS else agriculture.scopes(entry['metric'],dims[0]) if entry['metric'] in agriculture.KEYS else ['tuscany','italy'] if entry['metric'] in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(entry['metric'],dims[0]) if entry['metric'] in demography.KEYS else census.benchmark_scopes(entry['metric']) if entry['metric'] in census.KEYS else business.benchmark_scopes(entry['metric']) if entry['metric'] in business.KEYS else ['versilia'] if entry['metric'] in ars.LEGACY_ONLY else ['tuscany','versilia'] if entry['metric'] in ars.KEYS or entry['metric']=='elderlyHomeCare' else ['tuscany'] if entry['metric'] in territorial.RATIOS else ['tuscany','italy'] if entry['metric'] in CENSUS or entry['metric'] in ('income','ageDistribution') else []),'status':'adapter_present_query_preconditions_apply'}
             except ValueError as exc:
                 entry['engine'] = {'status':'not_supported','reason':str(exc)}
         return matrix
