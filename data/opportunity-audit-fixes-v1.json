@@ -354,6 +354,93 @@
         "source_mark": "TOSC",
         "source_class": "rt"
       }
+    },
+    {
+      "coverage_id": "rt-spreco-alimentare-ets-partner-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana",
+      "title": "Toscana · Contrasto allo spreco alimentare: collaborazione con ETS",
+      "url": "https://www.regione.toscana.it/it/-/economia-circolare-incentivi-per-il-contrasto-allo-spreco-alimentare",
+      "required_terms": [
+        "20605",
+        "30 ottobre 2026",
+        "ETS",
+        "partner"
+      ],
+      "evidence_verified_at": "2026-10-11",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-09-30",
+      "first_seen_at": "2026-10-11",
+      "lifecycle_stage": "application_open",
+      "opens_at": null,
+      "deadline_at": "2026-10-30",
+      "deadline_time": "14:00",
+      "eligibility": "conditional",
+      "applicant_type": "ETS iscritti al RUNTS; Comune solo come partner operativo",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "final_beneficiaries": "Reti solidali e persone destinatarie della redistribuzione alimentare",
+      "geographic_scope": "Toscana",
+      "project_requirements": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune.",
+      "category": "sociale",
+      "description": "Contributi agli ETS per recupero e redistribuzione del cibo; possibile collaborazione operativa comunale. Il Comune non presenta la domanda e non riceve il contributo.",
+      "condition_label": "ETS proponente e collaborazione operativa",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati a un ETS iscritto al RUNTS; il Comune non può candidarsi direttamente. Possibile collaborazione come partner operativo con sede in Toscana (art. 4.2: altri soggetti che forniscono beni o servizi e impegno concreto); risorse finanziarie pubbliche ammesse per il cofinanziamento (art. 5.5). Occorre un ETS proponente e un progetto locale di recupero e redistribuzione delle eccedenze alimentari, non semplice patrocinio. La Regione copre fino all’85% dei costi ammissibili, con almeno il 15% di cofinanziamento monetario. Domanda dell’ETS via PEC entro il 30 ottobre 2026 ore 14:00; avvio entro 60 giorni dalla concessione, realizzazione entro 12 mesi. Spese sostenute e rendicontazione in capo all’ETS; nessun contributo diretto al Comune."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5531161&nomeFile=Decreto+n.20605+del+17-09-2026-+Allegato+1+",
+        "sha256": "48835fc65744b194d50f7452c06b4660d457da2fa0468c5740bc1c6d20917b4d",
+        "pages": 10
+      },
+      "presentation": {
+        "category": "sociale",
+        "description": "Contributi agli ETS per recupero e redistribuzione del cibo; possibile collaborazione operativa comunale. Il Comune non presenta la domanda e non riceve il contributo.",
+        "condition_label": "ETS proponente e collaborazione operativa",
+        "source_label": "Regione Toscana",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      },
+      "supporting_documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5531159&nomeFile=Decreto+n.20605+del+17-09-2026",
+          "sha256": "1fa3f0c8245591d89cb8803dcf2b203fb4ddbc5504cc380b9b8d9fac14a4028b",
+          "pages": 7
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5531160&nomeFile=Decreto+n.20605+del+17-09-2026-+Allegato+A+",
+          "sha256": "985821d05f0492596397af23b3aa0053630e8722ac882b2db8ab62702a20a9f9",
+          "pages": 8
+        }
+      ]
     }
   ],
   "reviewAssessments": [

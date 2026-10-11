@@ -181,10 +181,13 @@ def build_actions(payload):
                      "documentLookup": document_lookup,
                      "technicalDetails": check["errors"], "signalCount": len(items),
                      "representedBy": represented.get(key)})
+    discarded = [x for x in rows if x["status"] == "expired" or x["reasonCode"] in {"outside_municipal_call", "reviewed_closed_catalogue", "administrative_update"}]
+    rows = [x for x in rows if x not in discarded]
     order = {"human": 0, "technical": 1, "retry": 2, "covered": 3, "expired": 4, "monitor": 5}
     rows.sort(key=lambda x: (order[x["status"]], x["deadline"] or "9999-99-99", x["title"].casefold()))
-    return {"version": 1, "signalCount": len(signals), "uniqueCount": len(rows),
-            "duplicatesGrouped": len(signals)-len(rows), "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
+    return {"version": 1, "signalCount": sum(x["signalCount"] for x in rows), "uniqueCount": len(rows),
+            "duplicatesGrouped": sum(x["signalCount"]-1 for x in rows),
+            "discardedCount": len(discarded), "discarded": discarded, "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
 
 
 def collect_document_links(payload, *, previous=None, budget=None, loader=None, max_pages=24, max_seconds=90):
@@ -200,12 +203,12 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     promotion_urls = {normalized_url(c.get("url")) for c in (payload.get("documentPromotion") or {}).get("checks") or [] if c.get("documents")}
     assessment_path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
     reviewed_urls = {normalized_url(x["url"]) for x in json.loads(assessment_path.read_text(encoding="utf-8")).get("reviewAssessments", [])}
-    candidates = [x for x in actions["items"] if x["status"] in ("human", "technical", "retry")
+    candidates = [x for x in actions["items"] + actions["discarded"] if (x["status"] in ("human", "technical", "retry") or normalized_url(x["url"]) in reviewed_urls)
                   and (normalized_url(x["url"]) not in promotion_urls or normalized_url(x["url"]) in reviewed_urls)]
     today = date.fromisoformat(payload["referenceDate"])
     result = {}
     # Keep located attachments even when a later diagnostic changes category.
-    for row in actions["items"]:
+    for row in actions["items"] + actions["discarded"]:
         key = normalized_url(row["url"])
         if key in previous_rows:
             result[key] = dict(previous_rows[key])
@@ -230,7 +233,7 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
         except (ValueError, KeyError):
             return False
     # Oldest attempts first; pages never attempted come before failed retries.
-    candidates.sort(key=lambda row: (previous_rows.get(normalized_url(row["url"]), {}).get("checkedAt", ""),
+    candidates.sort(key=lambda row: (normalized_url(row["url"]) not in reviewed_urls, previous_rows.get(normalized_url(row["url"]), {}).get("checkedAt", ""),
                                      row["deadline"] or "9999-99-99", row["title"].casefold()))
     until = time.monotonic() + max_seconds
     attempted = 0

@@ -29,12 +29,22 @@ def test_reviewed_regional_seeds() -> None:
         assert item["lifecycle_stage"] == stage
         assert item["deadline_at"] == "2026-11-30" and item["deadline_time"] == "13:00"
     assert "Firenze" in entries["rt-artea-immobile-sede-2026"]["project_requirements"]
+    entry = entries["rt-spreco-alimentare-ets-partner-2026"]
+    result = {"opportunities": []}
+    details = {entry["url"]: " | ".join(entry["required_terms"])}
+    fixed._inject_fix_entries(result, date(2026, 10, 11), detail_payloads=details, live=False)
+    item = next(x for x in result["opportunities"] if x["coverage_id"] == entry["coverage_id"])
+    assert item["municipality_role"] == "partner" and item["partnership_required"]
+    assert item["applicant_eligibility"] == "not_direct_applicant"
+    assert item["deadline_time"] == "14:00"
+    from opportunity_municipal_relevance import annotate_item
+    assert annotate_item(item) == "partner" and not item["municipal_headline"]
 
 
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
-    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026"}
+    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026"}
     entry = entries[0]
     assert entry.get("coverage_id") == C4T_ID
     assert entry.get("deadline_at") == "2026-09-11"

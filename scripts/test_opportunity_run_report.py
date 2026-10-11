@@ -330,7 +330,17 @@ Sono ammessi anche enti pubblici titolari della superficie forestale.
     reassessed["documentPromotion"] = {"checks": [{"url": closure["url"], "status": "review", "errors": ["Articoli ripetuti"], "documents": [{"url": document}]}]}
     with patch("opportunity_review_actions.reviewed_source", return_value=closure):
         collect_document_links(reassessed, loader=lambda u: "<p>Avviso verificato e scaduto</p>")
-    assert build_actions(reassessed)["counts"] == {"expired": 1}
+    assert build_actions(reassessed)["counts"] == {}
+    assert build_actions(reassessed)["discardedCount"] == 1
+    assert closure["url"] not in render_actions_markdown(build_actions(reassessed))
+    from opportunity_review_actions import render_actions_html
+    assert closure["url"] not in render_actions_html(build_actions(reassessed))
+    # Removed cases still have their evidence refreshed and can reopen.
+    previous = {"reviewDocumentLookup": reassessed["reviewDocumentLookup"]}
+    previous["reviewDocumentLookup"][0]["checkedAt"] = "2026-09-01"
+    with patch("opportunity_review_actions.reviewed_source", return_value=None):
+        collect_document_links(reassessed, previous=previous, loader=lambda u: f'<a href="{document}">Nuovo avviso</a>')
+    assert build_actions(reassessed)["counts"] == {"technical": 1}
     technical = {**current, "documentPromotion": {"checks": [{"url": page, "errors": ["Struttura non supportata"], "documents": [{"url": document}]}]}}
     assert build_actions(technical)["counts"].get("technical") == 1
     assert "Interventi sul Radar: 1" in render_actions_markdown(build_actions(technical))

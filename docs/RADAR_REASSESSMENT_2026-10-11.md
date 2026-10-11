@@ -1,11 +1,14 @@
 # Rivalutazione delle 30 richieste del Radar — 11 ottobre 2026
 
-Questa è la rivalutazione del rapporto di produzione pubblicato nel run 38099537434, non un nuovo conteggio delle schede già online. Alla redazione, le due nuove schede non sono ancora pubblicate. La pubblicazione resta subordinata ai gate di release e alla verifica live delle fonti.
+Questa è la rivalutazione del rapporto di produzione pubblicato nel run 38099537434, non un nuovo conteggio delle schede già online. Alla redazione, le tre nuove schede non sono ancora pubblicate. La pubblicazione resta subordinata ai gate di release e alla verifica live delle fonti.
 
-**Esito:** 2 nuove schede verificabili (una in arrivo), 1 scheda già pubblicata, 10 segnalazioni fuori perimetro, 3 avvisi scolastici scaduti, 2 pagine di monitoraggio (una con procedura scaduta), 12 verifiche o riparazioni di competenza del Radar. Nessuna delle 30 richiede che il proprietario ricerchi e legga al posto del Radar un PDF testuale.
+**Esito:** 3 nuove schede verificabili (una in arrivo e una solo come partnership), 1 scheda già pubblicata, 10 segnalazioni fuori perimetro, 3 avvisi scolastici scaduti, 2 pagine di monitoraggio (una con procedura scaduta), 11 verifiche o riparazioni di competenza del Radar. Nessuna delle 30 richiede che il proprietario ricerchi e legga al posto del Radar un PDF testuale.
+
+Le segnalazioni confermate fuori perimetro, scadute o relative a graduatorie concluse vengono rimosse dalla coda operativa e dai dettagli delle verifiche HTML/Markdown. Il JSON conserva la sola traccia di scarto; un cambiamento della fonte viene riesaminato e può riaprire il caso.
 
 ## Cosa resta al proprietario
 
+- Per lo spreco alimentare: individuare un ETS proponente e definire un eventuale contributo operativo del Comune; il Comune non può presentare domanda né ricevere il contributo regionale.
 - Decidere se un Comune dispone di un progetto ammissibile sulle risorse genetiche agrarie, dei beni necessari e del fascicolo ARTEA.
 - Solo se pertinente: verificare la disponibilità di un immobile pubblico a Firenze per la ricognizione ARTEA. Un immobile in Versilia non basta.
 - Per la scheda sismica già pubblicata: individuare al massimo tre edifici scolastici candidabili e controllare anagrafe, verifiche pregresse, nulla osta, doppio finanziamento e documentazione PEC.
@@ -22,7 +25,7 @@ Questi sono controlli sui dati e sui beni del Comune per una eventuale domanda, 
 | 4 | [Avviso di interpello interno per dirigente del settore "Investimenti in materia di governo del territorio”](<https://www.regione.toscana.it/it/-/avviso-di-interpello-interno-per-dirigente-del-settore-investimenti-in-materia-di-governo-del-territorio-1>) | Fuori perimetro della candidatura comunale: Interpello interno per incarico dirigenziale. |
 | 5 | [Progetti di servizio civile regionale, bando 2 mila 396 giovani: avviso per i posti vacanti](<https://www.regione.toscana.it/it/-/progetti-di-servizio-civile-regionale-bando-2-mila-396-giovani-avviso-per-i-posti-vacanti>) | Fuori perimetro della candidatura comunale: Selezione di giovani per posti di servizio civile; non apertura per progetti comunali. |
 | 6 | [Avviso pubblico per ricerca di un immobile da destinare a sede di Artea](<https://www.regione.toscana.it/it/-/avviso-pubblico-per-ricerca-di-un-immobile-da-destinare-a-sede-di-artea>) | Promuovibile con requisito esplicito: immobile a Firenze. Ricognizione di disponibilità, non contributo. |
-| 7 | [Economia circolare: incentivi per il contrasto allo spreco alimentare](<https://www.regione.toscana.it/it/-/economia-circolare-incentivi-per-il-contrasto-allo-spreco-alimentare>) | Verifica del Radar: acquisire il testo del decreto 20605/2026; ETS candidati, ruolo comunale da dimostrare. |
+| 7 | [Economia circolare: incentivi per il contrasto allo spreco alimentare](<https://www.regione.toscana.it/it/-/economia-circolare-incentivi-per-il-contrasto-allo-spreco-alimentare>) | Promozione come partnership: ETS proponente e beneficiario; Comune solo possibile partner operativo (art. 4.2) o supporto finanziario (art. 5.5). Avviso letto integralmente, 10 pagine; scadenza 30 ottobre 2026 ore 14:00. |
 | 8 | [Concorso per giovani laureati per 5 funzionari con contratto di apprendistato](<https://www.regione.toscana.it/it/-/concorso-per-giovani-laureati-per-5-funzionari-con-contratto-di-apprendistato>) | Fuori perimetro della candidatura comunale: Concorso per assunzione di persone fisiche. |
 | 9 | [Progetti di servizio civile regionale: bando per impiegare 2 mila 396 giovani](<https://www.regione.toscana.it/it/-/servizio-civile-regionale-bando-per-la-selezione-di-2.396-giovani>) | Fuori perimetro della candidatura comunale: Selezione di giovani per posti di servizio civile; non apertura per progetti comunali. |
 | 10 | [Promozione della conciliazione vita-lavoro: bando 2026-2027 per attività di animazione territoriale](<https://www.regione.toscana.it/it/-/promozione-della-conciliazione-vita-lavoro-bando-2026-2027-per-attivit%C3%A0-di-animazione-territoriale>) | Fuori perimetro della candidatura comunale: Richiedenti: ATS tra associazioni di rappresentanza datoriale e sindacale, non Comuni. |
@@ -55,3 +58,9 @@ I PDF sono stati letti integralmente, non solo mediante estratti iniziali. Le im
 - [Contributi per uso e gestione sostenibile delle risorse genetiche agrarie](<https://www.regione.toscana.it/documents/d/guest/testo-coordinato-bando-sra-aca-16b-pdf>) — 61 pagine; SHA-256 `aa0d0bd1b0192161369309f812926f41f9d9d632dab6a829038d17b9bc746bb1`.
 
 La classificazione delle esclusioni e dei termini conclusi viene riusata solo se l’impronta del testo della pagina ufficiale acquisita coincide con quella riesaminata. Una modifica della fonte invalida la classificazione e torna alla verifica; i problemi tecnici restano visibili come Intervento sul Radar.
+
+## Verifica spreco alimentare — decreto 20605/2026
+
+Avviso (10 pagine), domanda (8 pagine) e decreto (7 pagine) letti integralmente. Articoli 4.1 e 7: proponente ETS iscritto al RUNTS. Articolo 4.2: partner operativi con sede in Toscana; l’inclusione possibile del Comune deriva dalla categoria aperta degli altri soggetti, non da una menzione nominativa dei Comuni. Articolo 5.5: fino all’85% dei costi, almeno 15% monetario, anche con risorse di terzi pubblici. Articolo 6: domanda ETS entro il 30 ottobre 2026 ore 14:00. Modulo pagina 4: descrivere ruolo dei partner e accordi/convenzioni. Il coinvolgimento comunale richiede un progetto concreto con un ETS, non il solo patrocinio. Nessun contributo diretto al Comune.
+
+[Avviso integrale](https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5531161&nomeFile=Decreto+n.20605+del+17-09-2026-+Allegato+1+) — SHA-256 `48835fc65744b194d50f7452c06b4660d457da2fa0468c5740bc1c6d20917b4d`, coincidente con l’impronta dell’Allegato 1 elencata nel decreto. La scheda appartiene alle partnership e non incrementa il conteggio delle candidature dirette comunali.
