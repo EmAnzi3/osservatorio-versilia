@@ -185,3 +185,6 @@ scripts/test_semantic_real_income_adapters.py
 
 scripts/semantic_query_hospital_adapters.py
 scripts/test_semantic_hospital_adapters.py
+
+scripts/semantic_query_seasonality_adapters.py
+scripts/test_semantic_seasonality_adapters.py

@@ -68,10 +68,40 @@ def main() -> None:
     assert sample_status["status"] == "source_checked"
     assert sample_status["lastChecked"] == "", "La data generale non è una prova per-metrica"
 
+    # Anche un vecchio "current" certificato o un rilascio già acquisito non
+    # devono diventare prova del periodo nuovo. Conserviamo le date storiche.
+    from copy import deepcopy
+    for old_status in ("current", "release_detected", "update_expected"):
+        old = {
+            "publishedPeriod": "1900", "observedLatestPeriod": "1900",
+            "checkedAt": "2026-01-01T12:00:00Z", "periodVerifiedAt": "2026-01-01T12:00:00Z",
+            "status": old_status, "verificationEvidence": {"referenceDate": "1900"},
+        }
+        historical = {
+            "schemaVersion": 2, "checkedAt": "2026-01-01T12:00:00Z",
+            "sources": {sample_metric["sourceUrl"]: {"ok": True}},
+            "metrics": {sample_key: old},
+        }
+        frozen = deepcopy(historical)
+        row = build_public_status(
+            {"version": "test", "metrics": {sample_key: sample_metric}, "themes": data["themes"]},
+            registry, historical,
+        )["metrics"][0]
+        assert row["publishedPeriod"] == published_period(sample_metric)
+        assert row["status"] == "verification_required"
+        assert row["lastChecked"] == old["checkedAt"]
+        assert row["lastPeriodVerified"] == old["periodVerifiedAt"]
+        assert row["observedLatestPeriod"] == "1900"
+        assert historical == frozen, "La presentazione non riscrive la prova storica"
+
     for metric in public["metrics"]:
         operational = state.get("metrics", {}).get(metric["key"], {})
-        if state.get("runContext", {}).get("catalogSha256"):
-            assert operational.get("publishedPeriod") == published_period(data["metrics"][metric["key"]])
+        assert metric["publishedPeriod"] == published_period(data["metrics"][metric["key"]])
+        monitored_period = operational.get("publishedPeriod")
+        if monitored_period and compare_periods(metric["publishedPeriod"], monitored_period) != 0:
+            assert metric["status"] == "verification_required", metric["key"]
+            assert metric["lastChecked"] == str(operational.get("checkedAt") or "")
+            assert metric["observedLatestPeriod"] == str(operational.get("observedLatestPeriod") or "")
         release = metric.get("nextExpectedRelease")
         if release:
             assert release["basis"] in ALLOWED_RELEASE_BASES
