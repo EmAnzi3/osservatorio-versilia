@@ -1,0 +1,15 @@
+# A6 — Morosità ERP Lucca
+
+Un carrier, sette Comuni, esercizi 2020–2024. `total` conserva il valore pubblico a due decimali; `nativeRatio` calcola morosità cumulata / emesso cumulato × 100 dagli importi in euro. Il denominatore riguarda gli importi emessi per fitti e spese accessorie degli alloggi gestiti da ERP Lucca: non famiglie, assegnatari, abitanti o canoni del solo esercizio.
+
+Sono ammessi confronto, rango e consultazione delle serie. Il rapporto ponderato richiede `nativeRatio` e un solo esercizio: somma della morosità / somma dell'emesso nei Comuni selezionati × 100. Non si sommano anni, non si ponderano le percentuali arrotondate. Gli ambiti contabili comunali sono distinti nel prospetto normalizzato; non viene ricostruito un registro individuale di contratti o assegnatari. I valori pubblici seguono l'arrotondamento già materializzato, incluso il passaggio dalla precisione a quattro decimali dello snapshot a due decimali.
+
+La serie è consultabile senza attestare continuità per variazioni, punti percentuali o trend. Restano rifiutati anomalie fra pari, benchmark geografici non congelati e correlazioni non revisionate, in entrambe le direzioni. Nessuna interpretazione causale, misura della qualità di gestione o priorità politica.
+
+Nel 2022 l'intestazione del prospetto riporta il 2021: l'esercizio conservato è il 2022. Nel 2023 le percentuali stampate ripetono quelle del 2022 e non riconciliano con gli importi: sono ignorate. Massarosa 2023 conserva emesso 3.164.988,55 € e morosità 64.990,36 €, rapporto pubblico 2,05%, senza correzioni o interpolazioni. Il calo successivo dell'emesso cumulato non viene trasformato in un indicatore di gestione.
+
+Lo snapshot `data/source-snapshots/erp-lucca-arrears-2020-2024.json` è vincolato sia dai byte SHA-256 `cbaf36702a95054797ab96d259549eb76b4caee0c750187df3c91be7a008c661` sia dalla struttura decodificata. Il catalogo intero del carrier (definizione, righe, importi, serie, aggregati) viene riconciliato con il materializzatore esistente; rapporti e somme sono ricontrollati dagli importi. Non vengono rigiocati i cinque PDF originari: i loro nomi e hash nello snapshot sono riferimenti di provenienza, non una nuova verifica dei documenti. Hash dell'adapter e del materializzatore accompagnano ogni query.
+
+La regressione contiene 35 percentuali pubbliche fisse, 70 importi elementari fissi, cinque coppie di totali e cinque rapporti territoriali indipendenti, controlli delle serie/ranghi e modifiche ostili a fonte, valori, importi, identità, definizioni e aggregati. Le 124 nuove domande preservano integralmente le 2.111 precedenti. Report derivati in `reports/a6-erp/`; baseline prestazionale descrittiva, senza promesse di latenza.
+
+A6.4 resta parziale; A6.5–A6.6 aperte alla revisione metodologica e A7 non avviata. Dati, UI, asset, golden, workflow, Radar e letture territoriali non cambiano. Quick locale prima del push; Full locale completo e CI Quick→Full sullo stesso albero prima della prontezza al merge manuale.

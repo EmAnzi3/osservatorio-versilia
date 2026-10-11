@@ -60398,6 +60398,4674 @@
         ]
       },
       "reference": "Snapshot comunale GTFS 26 agosto 2026 trascritto indipendentemente; non replay dei feed raw."
+    },
+    {
+      "id": "erp_public_046005_2020",
+      "question": "Morosità ERP: public 046005 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.9
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046005_2020",
+      "question": "Morosità ERP: native 046005 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2470632300,
+              358279237
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 247063.23
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3582792.37
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046013_2020",
+      "question": "Morosità ERP: public 046013 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 5.85
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046013_2020",
+      "question": "Morosità ERP: native 046013 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1724750900,
+              294920699
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 172475.09
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 2949206.99
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046018_2020",
+      "question": "Morosità ERP: public 046018 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.8
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046018_2020",
+      "question": "Morosità ERP: native 046018 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              629711700,
+              165693953
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 62971.17
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 1656939.53
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046024_2020",
+      "question": "Morosità ERP: public 046024 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.7
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046024_2020",
+      "question": "Morosità ERP: native 046024 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4128282000,
+              536380069
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 412828.2
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 5363800.69
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046028_2020",
+      "question": "Morosità ERP: public 046028 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 5.25
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046028_2020",
+      "question": "Morosità ERP: native 046028 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2161084400,
+              411735899
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 216108.44
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4117358.99
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046030_2020",
+      "question": "Morosità ERP: public 046030 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.5
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046030_2020",
+      "question": "Morosità ERP: native 046030 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              288833700,
+              82511656
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 28883.37
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 825116.56
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046033_2020",
+      "question": "Morosità ERP: public 046033 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 11.51
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2020"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046033_2020",
+      "question": "Morosità ERP: native 046033 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              23338199100,
+              2027535816
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/numerator",
+            "value": 2333819.91
+          },
+          {
+            "path": "/observations/1/denominator",
+            "value": 20275358.16
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_total_2020",
+      "question": "Morosità ERP: rank total 2020?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_nativeRatio_2020",
+      "question": "Morosità ERP: rank nativeRatio 2020?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_pooled_2020",
+      "question": "Morosità ERP: pooled 2020?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              34741494100,
+              3877057329
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046005_2021",
+      "question": "Morosità ERP: public 046005 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.95
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046005_2021",
+      "question": "Morosità ERP: native 046005 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2677124200,
+              385450754
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 267712.42
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3854507.54
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046013_2021",
+      "question": "Morosità ERP: public 046013 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046013_2021",
+      "question": "Morosità ERP: native 046013 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1947176700,
+              319286458
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 194717.67
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3192864.58
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046018_2021",
+      "question": "Morosità ERP: public 046018 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.48
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046018_2021",
+      "question": "Morosità ERP: native 046018 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              611489100,
+              175576428
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 61148.91
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 1755764.28
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046024_2021",
+      "question": "Morosità ERP: public 046024 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.3
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046024_2021",
+      "question": "Morosità ERP: native 046024 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4170317000,
+              570977082
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 417031.7
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 5709770.82
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046028_2021",
+      "question": "Morosità ERP: public 046028 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.72
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046028_2021",
+      "question": "Morosità ERP: native 046028 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2082019200,
+              440913000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 208201.92
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4409130.0
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046030_2021",
+      "question": "Morosità ERP: public 046030 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.22
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046030_2021",
+      "question": "Morosità ERP: native 046030 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              285986700,
+              88744932
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 28598.67
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 887449.32
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046033_2021",
+      "question": "Morosità ERP: public 046033 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 11.06
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046033_2021",
+      "question": "Morosità ERP: native 046033 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              24017631000,
+              2171362562
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/numerator",
+            "value": 2401763.1
+          },
+          {
+            "path": "/observations/1/denominator",
+            "value": 21713625.62
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_total_2021",
+      "question": "Morosità ERP: rank total 2021?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_nativeRatio_2021",
+      "question": "Morosità ERP: rank nativeRatio 2021?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_pooled_2021",
+      "question": "Morosità ERP: pooled 2021?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              35791743900,
+              4152311216
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046005_2022",
+      "question": "Morosità ERP: public 046005 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.18
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046005_2022",
+      "question": "Morosità ERP: native 046005 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2965542200,
+              413241989
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 296554.22
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4132419.89
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046013_2022",
+      "question": "Morosità ERP: public 046013 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.57
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046013_2022",
+      "question": "Morosità ERP: native 046013 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2251931300,
+              342930868
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 225193.13
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3429308.68
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046018_2022",
+      "question": "Morosità ERP: public 046018 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.49
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046018_2022",
+      "question": "Morosità ERP: native 046018 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              649504900,
+              186050725
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 64950.49
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 1860507.25
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046024_2022",
+      "question": "Morosità ERP: public 046024 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.36
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046024_2022",
+      "question": "Morosità ERP: native 046024 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4473946500,
+              608175516
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 447394.65
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 6081755.16
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046028_2022",
+      "question": "Morosità ERP: public 046028 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.48
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046028_2022",
+      "question": "Morosità ERP: native 046028 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2112108400,
+              470952563
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 211210.84
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4709525.63
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046030_2022",
+      "question": "Morosità ERP: public 046030 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.72
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046030_2022",
+      "question": "Morosità ERP: native 046030 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              351879500,
+              94713777
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 35187.95
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 947137.77
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046033_2022",
+      "question": "Morosità ERP: public 046033 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 11.0
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2022"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046033_2022",
+      "question": "Morosità ERP: native 046033 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              25586374400,
+              2325710559
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/numerator",
+            "value": 2558637.44
+          },
+          {
+            "path": "/observations/1/denominator",
+            "value": 23257105.59
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_total_2022",
+      "question": "Morosità ERP: rank total 2022?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_nativeRatio_2022",
+      "question": "Morosità ERP: rank nativeRatio 2022?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_pooled_2022",
+      "question": "Morosità ERP: pooled 2022?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              38391287200,
+              4441775997
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046005_2023",
+      "question": "Morosità ERP: public 046005 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.01
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046005_2023",
+      "question": "Morosità ERP: native 046005 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3085115400,
+              440223972
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 308511.54
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4402239.72
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046013_2023",
+      "question": "Morosità ERP: public 046013 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.11
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046013_2023",
+      "question": "Morosità ERP: native 046013 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2460565200,
+              345982527
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 246056.52
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3459825.27
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046018_2023",
+      "question": "Morosità ERP: public 046018 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.05
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046018_2023",
+      "question": "Morosità ERP: native 046018 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              649903600,
+              316498855
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 64990.36
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3164988.55
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046024_2023",
+      "question": "Morosità ERP: public 046024 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.55
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046024_2023",
+      "question": "Morosità ERP: native 046024 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4631314200,
+              613648016
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 463131.42
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 6136480.16
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046028_2023",
+      "question": "Morosità ERP: public 046028 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.66
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046028_2023",
+      "question": "Morosità ERP: native 046028 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2198362500,
+              472035945
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 219836.25
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4720359.45
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046030_2023",
+      "question": "Morosità ERP: public 046030 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.87
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046030_2023",
+      "question": "Morosità ERP: native 046030 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              361323600,
+              125968108
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 36132.36
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 1259681.08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046033_2023",
+      "question": "Morosità ERP: public 046033 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 11.64
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2023"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046033_2023",
+      "question": "Morosità ERP: native 046033 2023?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              27123467500,
+              2330363028
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/numerator",
+            "value": 2712346.75
+          },
+          {
+            "path": "/observations/1/denominator",
+            "value": 23303630.28
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_total_2023",
+      "question": "Morosità ERP: rank total 2023?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_nativeRatio_2023",
+      "question": "Morosità ERP: rank nativeRatio 2023?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_pooled_2023",
+      "question": "Morosità ERP: pooled 2023?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2023"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              40510052000,
+              4644720451
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046005_2024",
+      "question": "Morosità ERP: public 046005 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.37
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046005_2024",
+      "question": "Morosità ERP: native 046005 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              3480671900,
+              472124544
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 348067.19
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 4721245.44
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046013_2024",
+      "question": "Morosità ERP: public 046013 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 6.98
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046013_2024",
+      "question": "Morosità ERP: native 046013 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2728693700,
+              391135857
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 272869.37
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 3911358.57
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046018_2024",
+      "question": "Morosità ERP: public 046018 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3.48
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046018_2024",
+      "question": "Morosità ERP: native 046018 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              723980900,
+              207896536
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 72398.09
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 2078965.36
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046024_2024",
+      "question": "Morosità ERP: public 046024 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 7.02
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046024_2024",
+      "question": "Morosità ERP: native 046024 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4781141800,
+              681248999
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 478114.18
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 6812489.99
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046028_2024",
+      "question": "Morosità ERP: public 046028 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.41
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046028_2024",
+      "question": "Morosità ERP: native 046028 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2358745100,
+              534660017
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 235874.51
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 5346600.17
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046030_2024",
+      "question": "Morosità ERP: public 046030 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 4.05
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046030_2024",
+      "question": "Morosità ERP: native 046030 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              419679200,
+              103614557
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/numerator",
+            "value": 41967.92
+          },
+          {
+            "path": "/observations/0/denominator",
+            "value": 1036145.57
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_public_046033_2024",
+      "question": "Morosità ERP: public 046033 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 10.83
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2024"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_native_046033_2024",
+      "question": "Morosità ERP: native 046033 2024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046005"
+            ],
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              28556393800,
+              2637910173
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/numerator",
+            "value": 2855639.38
+          },
+          {
+            "path": "/observations/1/denominator",
+            "value": 26379101.73
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_total_2024",
+      "question": "Morosità ERP: rank total 2024?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rank_nativeRatio_2024",
+      "question": "Morosità ERP: rank nativeRatio 2024?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_pooled_2024",
+      "question": "Morosità ERP: pooled 2024?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              43049306400,
+              5028590683
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046005",
+      "question": "Morosità ERP: series total 046005?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 6.9
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 6.95
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 7.18
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 7.01
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 7.37
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046005",
+      "question": "Morosità ERP: series nativeRatio 046005?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2470632300,
+              358279237
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2677124200,
+              385450754
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              2965542200,
+              413241989
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              3085115400,
+              440223972
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              3480671900,
+              472124544
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046013",
+      "question": "Morosità ERP: series total 046013?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 5.85
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 6.1
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 6.57
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 7.11
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 6.98
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046013",
+      "question": "Morosità ERP: series nativeRatio 046013?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1724750900,
+              294920699
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1947176700,
+              319286458
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              2251931300,
+              342930868
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              2460565200,
+              345982527
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              2728693700,
+              391135857
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046018",
+      "question": "Morosità ERP: series total 046018?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 3.8
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 3.48
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.49
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 2.05
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 3.48
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046018",
+      "question": "Morosità ERP: series nativeRatio 046018?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              629711700,
+              165693953
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              611489100,
+              175576428
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              649504900,
+              186050725
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              649903600,
+              316498855
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              723980900,
+              207896536
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046024",
+      "question": "Morosità ERP: series total 046024?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 7.7
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 7.3
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 7.36
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 7.55
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 7.02
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046024",
+      "question": "Morosità ERP: series nativeRatio 046024?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              4128282000,
+              536380069
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              4170317000,
+              570977082
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              4473946500,
+              608175516
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              4631314200,
+              613648016
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              4781141800,
+              681248999
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046028",
+      "question": "Morosità ERP: series total 046028?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 5.25
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 4.72
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 4.48
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 4.66
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 4.41
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046028",
+      "question": "Morosità ERP: series nativeRatio 046028?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2161084400,
+              411735899
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2082019200,
+              440913000
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              2112108400,
+              470952563
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              2198362500,
+              472035945
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              2358745100,
+              534660017
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046030",
+      "question": "Morosità ERP: series total 046030?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 3.5
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 3.22
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 3.72
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 2.87
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 4.05
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046030",
+      "question": "Morosità ERP: series nativeRatio 046030?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              288833700,
+              82511656
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              285986700,
+              88744932
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              351879500,
+              94713777
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              361323600,
+              125968108
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              419679200,
+              103614557
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_total_046033",
+      "question": "Morosità ERP: series total 046033?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 11.51
+          },
+          {
+            "path": "/observations/1/value",
+            "value": 11.06
+          },
+          {
+            "path": "/observations/2/value",
+            "value": 11.0
+          },
+          {
+            "path": "/observations/3/value",
+            "value": 11.64
+          },
+          {
+            "path": "/observations/4/value",
+            "value": 10.83
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_series_nativeRatio_046033",
+      "question": "Morosità ERP: series nativeRatio 046033?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2020"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/2/period",
+            "value": "2022"
+          },
+          {
+            "path": "/observations/3/period",
+            "value": "2023"
+          },
+          {
+            "path": "/observations/4/period",
+            "value": "2024"
+          },
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23338199100,
+              2027535816
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              24017631000,
+              2171362562
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              25586374400,
+              2325710559
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              27123467500,
+              2330363028
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              28556393800,
+              2637910173
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_absolute_change_refused",
+      "question": "Morosità ERP: total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_relative_change_refused",
+      "question": "Morosità ERP: total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_percentage_points_refused",
+      "question": "Morosità ERP: total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_trend_refused",
+      "question": "Morosità ERP: total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_anomaly_refused",
+      "question": "Morosità ERP: total anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_tuscany_gap_refused",
+      "question": "Morosità ERP: total tuscany gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_italy_gap_refused",
+      "question": "Morosità ERP: total italy gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_2019_refused",
+      "question": "Morosità ERP: total 2019 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total",
+            "periods": [
+              "2019"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_period_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_population_pair_False_refused",
+      "question": "Morosità ERP: total population pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_population_pair_True_refused",
+      "question": "Morosità ERP: total population pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "erpArrears",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_income_pair_False_refused",
+      "question": "Morosità ERP: total income pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "total"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_total_income_pair_True_refused",
+      "question": "Morosità ERP: total income pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "erpArrears",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_absolute_change_refused",
+      "question": "Morosità ERP: nativeRatio absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_relative_change_refused",
+      "question": "Morosità ERP: nativeRatio relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_percentage_points_refused",
+      "question": "Morosità ERP: nativeRatio percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_trend_refused",
+      "question": "Morosità ERP: nativeRatio trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ],
+            "periods": [
+              "2023",
+              "2024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_accounting_continuity_not_attested_for_temporal_analysis"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_anomaly_refused",
+      "question": "Morosità ERP: nativeRatio anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_tuscany_gap_refused",
+      "question": "Morosità ERP: nativeRatio tuscany gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_italy_gap_refused",
+      "question": "Morosità ERP: nativeRatio italy gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_geographic_benchmark_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_2019_refused",
+      "question": "Morosità ERP: nativeRatio 2019 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2019"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_period_not_frozen"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_population_pair_False_refused",
+      "question": "Morosità ERP: nativeRatio population pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_population_pair_True_refused",
+      "question": "Morosità ERP: nativeRatio population pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_income_pair_False_refused",
+      "question": "Morosità ERP: nativeRatio income pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_nativeRatio_income_pair_True_refused",
+      "question": "Morosità ERP: nativeRatio income pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "erpArrears",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
+    },
+    {
+      "id": "erp_rounded_pooling_refused",
+      "question": "Morosità ERP: rounded pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "erpArrears"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "erp_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Trascrizione indipendente dei prospetti ERP Lucca 2020–2024; importi cumulati e anomalie conservati, PDF non rigiocati."
     }
   ]
 }
