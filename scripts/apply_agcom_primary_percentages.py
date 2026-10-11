@@ -77,7 +77,7 @@ def update_metric(data, snapshot, metric_key, source_key, label):
         "note": "Media delle percentuali comunali AGCOM, ponderata per le famiglie residenti del CSV primario.",
     }
     metric["meta"]["source"] = "AGCOM — Broadband Map, reportistica comunale"
-    metric["meta"]["year"] = "31 dicembre 2025"
+    metric["meta"]["year"] = base.agcom_period_label(snapshot["agcomAudit"]["dataPeriod"])
     metric["sourceUrl"] = primary.AI_READY_PAGE
     metric["method"] = {
         "type": "Dato ufficiale; aggregato elaborato dall'Osservatorio",
@@ -88,12 +88,13 @@ def update_metric(data, snapshot, metric_key, source_key, label):
 
 
 def apply(data, snapshot):
+    base.agcom_period(snapshot.get("agcomAudit", {}).get("dataPeriod"))
     update_metric(data, snapshot, "ftthCoverageDesi", "copertura_ftth_desi_pct", "Copertura FTTH DESI")
     update_metric(data, snapshot, "ftthCoverage20m", "copertura_ftth_20m_pct", "Copertura FTTH entro 20 metri")
     snapshot["agcomPrimarySource"] = {
         "aiReadyPage": primary.AI_READY_PAGE,
         "officialCsvUrl": snapshot.get("agcomAudit", {}).get("officialCsvUrl"),
-        "period": "31/12/2025",
+        "period": snapshot["agcomAudit"]["dataPeriod"],
         "role": "Fonte primaria utilizzata per percentuali e conteggi FTTH",
     }
     return data, snapshot

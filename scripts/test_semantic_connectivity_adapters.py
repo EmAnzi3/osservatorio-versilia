@@ -29,21 +29,21 @@ def regressions(path):
         r=e.query(q); assert r['status']=='computed',r
         assert r['coverage']['requested']==7 and r['coverage']['usable']==(6 if key in c.COUNTS else 7)
         for o in r['observations']:
-            code=o['geography']; assert o['value']==expected[key][code] and o['period']=='2025-12-31'
+            code=o['geography']; assert o['value']==expected[key][code] and o['period']=='2026-07-06'
             assert o['unit']==('percent' if key in c.PERCENTAGES else 'number')
             assert o['dataUnavailable']==(o['value'] is None) and not o['notApplicable']
             assert pointer(catalog,o['provenance'][0]['valuePointer'])==o['value']
             p=o['provenance'][1]; snap,_=e.file(c.NATIVE); native=pointer(snap,p['recordPointer'])
             assert tuple(native[f] for f in ('famiglie_residenti','famiglie_ftth','famiglie_ftth_20m','copertura_ftth_desi_pct','copertura_ftth_20m_pct'))==FIXED[code]
-            assert p['nativeFields']['famiglie_residenti']==FIXED[code][0] and p['referenceDate']=='2025-12-31'
+            assert p['nativeFields']['famiglie_residenti']==FIXED[code][0] and p['referenceDate']=='2026-07-06'
         ranked=e.query(dict(q,operation='rank')); assert ranked['status']=='computed'
         wanted=sorted((k for k,v in expected[key].items() if v is not None),key=lambda k:(-expected[key][k],k))
         assert [x['geography'] for x in ranked['result']['ranking']]==wanted
-        # Explicit reference aliases share the same full date; not a 2026 observation.
-        for period in ('2025',c.LABEL,'2025-12-31'):
+        # Explicit reference aliases share the same full date; a dated snapshot, not an annual average.
+        for period in ('2026',c.LABEL,'2026-07-06'):
             dated=e.query(dict(q,selectors=[dict(metric=key,periods=[period])]))
-            assert dated['status']=='computed' and all(o['period']=='2025-12-31' for o in dated['observations'])
-        rejected(e,query(key,periods=['2026']),'connectivity_reference_date_not_frozen')
+            assert dated['status']=='computed' and all(o['period']=='2026-07-06' for o in dated['observations'])
+        rejected(e,query(key,periods=['2025']),'connectivity_reference_date_not_frozen')
         for op in ('series','absolute_change','relative_change','percentage_points','trend'):
             rejected(e,query(key,op,towns=['046018']),'connectivity_single_reference_no_history')
         for op,reason in [('weighted_ratio','connectivity_rounded_percentages_not_native_pooling'),('anomaly','connectivity_peer_anomaly_not_reviewed')]: rejected(e,query(key,op),reason)

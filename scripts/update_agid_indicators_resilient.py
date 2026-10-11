@@ -79,6 +79,7 @@ def _prepare_for_base(
     assoluti vengono poi eliminati e lo snapshot viene ripristinato con i valori
     originali, quindi nessuna stima entra nei dati pubblicabili.
     """
+    base.common_agcom_period(agcom)
     technical = copy.deepcopy(agcom)
     missing_desi_counts: list[str] = []
     missing_20m_counts: list[str] = []
@@ -86,8 +87,7 @@ def _prepare_for_base(
     for code, shard in technical.items():
         period = shard.get("_data_period")
         kpi = shard.get("kpi")
-        if period != "31/12/2025":
-            raise base.DataError(f"AGCOM {code}: periodo inatteso ({period})")
+        base.agcom_period(period)
         if not isinstance(kpi, dict):
             raise base.DataError(f"AGCOM {code}: sezione kpi mancante")
 

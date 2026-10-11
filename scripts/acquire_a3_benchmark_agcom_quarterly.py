@@ -113,7 +113,8 @@ def main() -> None:
 
     site=json.loads(SITE.read_text(encoding="utf-8"))
     required={str(t.get("code")) for t in site.get("towns",[]) if t.get("code")}
-    primary,url,discovery=ag.acquire_primary_rows(required)
+    primary,url,period=ag.acquire_dated_primary(required)
+    discovery="official_dated_catalog:"+ag.REPORT_SCRIPT_URL
 
     italy=scope_rows(primary,False)
     tuscany=scope_rows(primary,True)
@@ -126,7 +127,7 @@ def main() -> None:
     benchmarks={}
     for metric_id,key in PERCENT_METRICS.items():
         benchmarks[metric_id]={
-            "year":"31 dicembre 2025",
+            "year":ag.base.agcom_period_label(period),
             "unit":"percent",
             "formula":"media delle percentuali comunali AGCOM ponderata per famiglie residenti",
             "tuscany":weighted(tuscany,key),
@@ -143,12 +144,12 @@ def main() -> None:
             pass
         tus=abs_diag["tuscany"]; ita=abs_diag["italy"]
         benchmarks["ftthReachedHouseholds"]={
-            "year":"31 dicembre 2025","unit":"number",
+            "year":ag.base.agcom_period_label(period),"unit":"number",
             "formula":"somma famiglie FTTH ufficiali",
             "tuscany":tus["knownFtthHouseholds"],"italy":ita["knownFtthHouseholds"],
         }
         benchmarks["ftthUnreachedHouseholds"]={
-            "year":"31 dicembre 2025","unit":"number",
+            "year":ag.base.agcom_period_label(period),"unit":"number",
             "formula":"somma famiglie residenti - somma famiglie FTTH, solo con conteggi ufficiali completi",
             "tuscany":tus["residentHouseholds"]-tus["knownFtthHouseholds"],
             "italy":ita["residentHouseholds"]-ita["knownFtthHouseholds"],
@@ -159,7 +160,7 @@ def main() -> None:
         "schemaVersion":1,
         "publisher":"AGCOM — Broadband Map, reportistica comunale",
         "profileId":"agcom-quarterly",
-        "referenceDate":"31/12/2025",
+        "referenceDate":period,
         "status":status,
         "source":{"url":url,"discovery":discovery,"rowCount":len(primary),"parserSchemaVersion":PARSER_SCHEMA_VERSION},
         "benchmarks":benchmarks,

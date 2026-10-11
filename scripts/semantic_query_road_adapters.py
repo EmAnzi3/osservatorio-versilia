@@ -9,7 +9,7 @@ NATIVE = 'data/source-snapshots/sicurezza-territorio-draft-2026-08.json'
 CANONICAL = 'data/site-data.json'
 HASHES = {NATIVE: ('3fa39838392f75bf4642298929123093eee189419bbaf38e422d4569fc870bcf',
                   'f8d26ae2375505e7d2d2329724fbb24b4e72680cc19bc4ad40d60d57fdcd7db9')}
-CANONICAL_HASH = '927f18c6a1043ae918b3b7d13786f448851693fab9c3a35ad4962458131145e9'
+CANONICAL_HASH = '79371eb276039d6659f66c00f4b6763b921781e1f1b50267067a93c755edd444'
 INJURED_HASH = '9ef9463e4e14141e57626190033d0e4dc397d0d27d132e5110ffd0102c6bc6d8'
 INCIDENTS, MORTALITY, INJURY, INJURED = VIEWS = ('measure:incidents', 'measure:mortality', 'measure:injury', 'measure:injured')
 # field, public selector, public label, unit, denominator universe

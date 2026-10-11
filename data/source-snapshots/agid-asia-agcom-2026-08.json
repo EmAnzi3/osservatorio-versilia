@@ -800,12 +800,28 @@
         }
       }
     ],
-    "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. La distribuzione comunale è scoperta da endpoint ufficiali AGCOM e accettata solo dopo validazione di schema, copertura nazionale e sette Comuni."
+    "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. La distribuzione comunale è scoperta da endpoint ufficiali AGCOM e accettata solo dopo validazione di schema, copertura nazionale e sette Comuni.",
+    "dataPeriod": "06/07/2026",
+    "periodEvidenceUrl": "https://geo.agcom.it/reportistica/report.js",
+    "referenceCorrection": "data/source-snapshots/agcom-reference-audit-2026-10-11.json"
   },
   "agcomPrimarySource": {
     "aiReadyPage": "https://maps.agcom.it/",
     "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-    "period": "31/12/2025",
+    "period": "06/07/2026",
     "role": "Fonte primaria utilizzata per percentuali e conteggi FTTH"
+  },
+  "referenceCorrection": {
+    "checkedAt": "2026-10-11",
+    "catalogueUrl": "https://geo.agcom.it/reportistica/report.js",
+    "catalogueSha256": "0b4a47c34f3bb49bc681e053139a285c27844820c4a3825fc6d2bc8eb7596f42",
+    "officialHeading": "Consistenze rilevate al 06/07/2026 (rev. del 14/07/2026)",
+    "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+    "dataPeriod": "06/07/2026",
+    "revisionDate": "14/07/2026",
+    "previousDiscovery": "arcgis_portal_search:reportistica comuni:Reportistica 260630 Comuni",
+    "previousAcquisitionDate": "2026-09-16T08:57:25+00:00",
+    "action": "Reference metadata correction for already frozen primary CSV records; no new acquisition of CSV or values.",
+    "currentTransport": "ArcGIS returned HTML: Could not access any Portal machines."
   }
 }

@@ -1,6 +1,6 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `6fe570d5b0a4aec85810922dc4b177c772a709549d3b45fb73006353dec1767b`; motore `3b780eab4fff0339183586020fb971e23cc828100f19eb6acbf4088db2a46d1b`.
+Catalogo SHA-256 `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; motore `3b780eab4fff0339183586020fb971e23cc828100f19eb6acbf4088db2a46d1b`.
 
 225 indicatori censiti; 216 con adapter e 9 senza adapter. 63 profili fonte.
 
@@ -82,10 +82,10 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | foreignResidents | demografia | istat-demography-annual | 2025 | demography-school/foreignResidents/total/v1 | total, count, sex:men, sex:women | 22 / 2 | 8 |
 | foreignTourismShare | economia | regione-toscana-tourism-annual | 2025 | tourism/foreignTourismShare/total/v1 | total, nativeRatio | 8 / 0 | 2 |
 | forestCoverIndex | ambiente | pefc-sinfor-foreste-in-comune-2026 | CFI 2020 · aggiornamento 2024 | geography/forestCoverIndex/v1 | total, view:hectares | 7 / 0 | 2 |
-| ftthCoverage20m | mobilita | agcom-quarterly | 31 dicembre 2025 | connectivity/ftthCoverage20m/v1 | total | 4 / 0 | 2 |
-| ftthCoverageDesi | mobilita | agcom-quarterly | 31 dicembre 2025 | connectivity/ftthCoverageDesi/v1 | total | 4 / 0 | 2 |
-| ftthReachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | connectivity/ftthReachedHouseholds/v1 | total | 0 / 2 | 0 |
-| ftthUnreachedHouseholds | mobilita | agcom-quarterly | 31 dicembre 2025 | connectivity/ftthUnreachedHouseholds/v1 | total | 0 / 2 | 0 |
+| ftthCoverage20m | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthCoverage20m/v1 | total | 4 / 0 | 2 |
+| ftthCoverageDesi | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthCoverageDesi/v1 | total | 4 / 0 | 2 |
+| ftthReachedHouseholds | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthReachedHouseholds/v1 | total | 0 / 2 | 0 |
+| ftthUnreachedHouseholds | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthUnreachedHouseholds/v1 | total | 0 / 2 | 0 |
 | fuelPrices | mobilita | mimit-fuel-daily | 2026-10-10 | adapter_not_implemented | — | 0 / 0 | 3 |
 | generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/generalAdministrationMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | grossOperatingMargin | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
@@ -213,7 +213,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | territorialClassification | ambiente | istat-geografie-funzionali-2021 | 2021 | classification/degurba/v1 | total, part:degurba, part:littoral, part:coastalZone | 4 / 0 | 0 |
 | territorialPlanningMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/territorialPlanningMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | tertiary | istruzione | istat-census-annual | 2024 | istat-census-carriers/tertiary/v1 | total, age:9-24\|sex:total, age:9-24\|sex:men, age:9-24\|sex:women, age:25-49\|sex:total, age:25-49\|sex:men, age:25-49\|sex:women, age:50-64\|sex:total, age:50-64\|sex:men, age:50-64\|sex:women, age:65plus\|sex:total, age:65plus\|sex:men, age:65plus\|sex:women, age:25-64\|sex:total, age:25-64\|sex:men, age:25-64\|sex:women, age:9plus\|sex:total, age:9plus\|sex:men, age:9plus\|sex:women | 64 / 90 | 8 |
-| thirdSector | comunita | runts-continuous | 2025 | adapter_not_implemented | — | 0 / 0 | 1 |
+| thirdSector | comunita | runts-continuous | 2026-10-11 | adapter_not_implemented | — | 0 / 0 | 4 |
 | totalResidentialMobility | demografia | istat-demography-annual | 2024 | demography-school/totalResidentialMobility/total/v1 | total, part:arrivals, part:departures, part:balance | 40 / 0 | 7 |
 | tourismArrivals | economia | regione-toscana-tourism-annual | 2025 | tourism/tourismArrivals/total/v1 | total | 4 / 0 | 2 |
 | tourismAverageStay | economia | regione-toscana-tourism-annual | 2025 | tourism/tourismAverageStay/total/v1 | total | 5 / 0 | 2 |
@@ -343,8 +343,8 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 |---|---|---|
 | dait-eligendo-irregular | 1 | 6 |
 | regione-toscana-infocamere-annual | 1 | 6 |
+| runts-continuous | 1 | 4 |
 | mimit-fuel-daily | 1 | 3 |
-| runts-continuous | 1 | 1 |
 | regione-toscana-pnrr-monthly | 2 | 0 |
 | agenzia-entrate-omi-semestral | 1 | 0 |
 | istat-commuting-irregular | 1 | 0 |

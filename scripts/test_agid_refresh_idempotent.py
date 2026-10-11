@@ -117,7 +117,37 @@ def test_refresh_preserves_catalog_contract() -> None:
     assert snapshot["sources"]["agcom"]["url"] == resilient.AGCOM_PUBLIC_MAP_URL
 
 
+
+def test_dynamic_reference():
+    source = fixtures.base_data()
+    asia, agcom = fixtures.source_maps()
+    for shard in agcom.values():
+        shard['_data_period'] = '30/06/2026'
+    original = copy.deepcopy(agcom)
+    updated, snapshot = resilient.apply_policy(source, asia, agcom, '2026-10-11T00:00:00+00:00')
+    assert agcom == original
+    assert updated['metrics']['ftthCoverageDesi']['meta']['year'] == '30 giugno 2026'
+    assert snapshot['sources']['agcom']['dataPeriod'] == '30/06/2026'
+    for bad in ['31/02/2026', '2026', None, '01/01/2999']:
+        broken = copy.deepcopy(agcom)
+        broken['046018']['_data_period'] = bad
+        try:
+            resilient.apply_policy(source, asia, broken, '2026-10-11T00:00:00+00:00')
+        except base.DataError:
+            pass
+        else:
+            raise AssertionError('Invalid/mixed period accepted')
+    mixed = copy.deepcopy(agcom)
+    mixed['046018']['_data_period'] = '31/12/2025'
+    try:
+        resilient.apply_policy(source, asia, mixed, '2026-10-11T00:00:00+00:00')
+    except base.DataError:
+        pass
+    else:
+        raise AssertionError('Mixed municipal releases accepted')
+
 if __name__ == "__main__":
+    test_dynamic_reference()
     test_old_dataset()
     test_rerun_with_managed_metrics_already_present()
     test_refresh_preserves_catalog_contract()

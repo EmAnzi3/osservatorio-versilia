@@ -42,7 +42,7 @@ def data_fixture():
 
 def snapshot_fixture():
     return {
-        "agcomAudit": {"officialCsvUrl": "https://example.invalid/agcom.csv"},
+        "agcomAudit": {"officialCsvUrl": "https://example.invalid/agcom.csv", "dataPeriod": "06/07/2026"},
         "towns": [
             {
                 "town": name,
@@ -277,7 +277,27 @@ def test_primary_semantic_gate_rejects_incomplete_national_payload():
         raise AssertionError("Il gate doveva rifiutare un dataset nazionale troppo piccolo")
 
 
+
+def test_primary_period_provenance():
+    primary = absolute_policy.primary
+    old = 'https://geo.agcom.it/arcgis/sharing/rest/content/items/' + 'a'*32 + '/data'
+    new = 'https://geo.agcom.it/arcgis/sharing/rest/content/items/' + 'b'*32 + '/data'
+    html = f'<h2>Consistenze rilevate al 31/12/2025 (rev. del 19/01/2026)</h2>Dati Comunali <a href="{old}"><u>CSV</u></a><h2>Consistenze rilevate al 06/07/2026 (rev. del 14/07/2026)</h2>Dati Comunali <a href="{new}"><u>CSV</u></a>'
+    assert primary.dated_primary_candidates(html) == [(new, '06/07/2026'), (old, '31/12/2025')]
+    data, snapshot = module.apply(data_fixture(), snapshot_fixture())
+    assert data['metrics']['ftthCoverageDesi']['meta']['year'] == '6 luglio 2026'
+    assert snapshot['agcomPrimarySource']['period'] == '06/07/2026'
+    broken = snapshot_fixture()
+    del broken['agcomAudit']['dataPeriod']
+    try:
+        module.apply(data_fixture(), broken)
+    except module.base.DataError:
+        pass
+    else:
+        raise AssertionError('Undated primary publication accepted')
+
 if __name__ == "__main__":
+    test_primary_period_provenance()
     test_apply_primary_percentages()
     test_absolute_source_policy_alignment()
     test_primary_csv_tolerates_leading_blank_lines()
