@@ -1046,87 +1046,94 @@
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=255": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-salute-11-v140.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 255 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 255 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=268": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-salute-11-v140.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 268 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 268 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=269": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-salute-11-v140.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 269 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 269 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=270": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-a3-5-legacy-history.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 270 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 270 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=271": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-a3-5-legacy-history.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 271 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 271 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=272": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-salute-11-v140.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 272 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 272 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=273": {
       "role": "data_export",
-      "deepRequestTimeoutSeconds": 90,
+      "deepRequestTimeoutSeconds": 120,
       "acquisition": {
         "method": "official_zip_csv_to_versioned_snapshot",
         "path": "data/source-snapshots/ars-salute-11-v140.json",
         "publishedReference": "2025",
         "timeoutSeconds": 120
       },
-      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Deep con timeout 90 secondi; light conserva 20 secondi.",
-      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 273 ARCHIVE.zip"
+      "releaseCheck": "Confrontare CSV decompresso, periodi e selezioni native comunali con lo snapshot; i metadata ZIP non sono un rilascio. Light e deep con timeout 120 secondi per richiesta; solo deep scarica e confronta il contenuto.",
+      "manualValidation": "python scripts/verify_manual_source_download.py --source ars --indicator 273 ARCHIVE.zip",
+      "requestTimeoutSeconds": 120
     },
     "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": {
       "role": "data_export",
@@ -1137,6 +1144,15 @@
         "publishedReference": "2026-10-11"
       },
       "releaseCheck": "Compare regional IDs and procedure states in the public CSV; a proceeding is not confirmed contamination."
+    },
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": {
+      "requestTimeoutSeconds": 120
+    },
+    "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti": {
+      "requestTimeoutSeconds": 120
+    },
+    "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": {
+      "requestTimeoutSeconds": 120
     }
   }
 }
