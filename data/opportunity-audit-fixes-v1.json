@@ -1050,5 +1050,21 @@
         }
       ]
     }
+  ],
+  "publicationExclusions": [
+    {
+      "coverage_id": "rt-artea-immobile-sede-2026",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-per-ricerca-di-un-immobile-da-destinare-a-sede-di-artea",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Richiede un immobile di circa 1.250 mq nel Comune di Firenze: nessuna disponibilità documentata dei Comuni della Versilia e nessun intervento sul territorio versiliese.",
+      "reviewed_at": "2026-10-11"
+    },
+    {
+      "coverage_id": "rt-generatori-kiev-cooperazione-2026",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-per-contributi-destinati-alla-fornitura-di-generatori-elettrici-alla-popolazione-della-regione-di-kiev",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Progetto nella regione di Kiev con esperienza umanitaria e partner operativi in Ucraina: nessun percorso di candidatura concreto documentato per i Comuni della Versilia.",
+      "reviewed_at": "2026-10-11"
+    }
   ]
 }

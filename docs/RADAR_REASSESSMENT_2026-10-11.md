@@ -1,3 +1,15 @@
+## Rettifica del perimetro di pubblicazione — 11 ottobre 2026
+
+Dopo il merge della #398, il proprietario richiede di pubblicare solo opportunità ragionevolmente intercettabili dai Comuni della Versilia. La verifica documentale resta valida, ma l'ammissibilità formale non basta.
+
+Delle cinque nuove schede, ne restano tre: assistenti sociali tramite ATS (assunzioni con risorse degli enti, nessun nuovo contributo), prevenzione dello spreco alimentare tramite ETS proponente (Comune partner operativo), risorse genetiche agrarie ACA16B (progetto locale ammissibile, anche in partenariato, e fascicolo ARTEA).
+
+Sono escluse ARTEA/immobile a Firenze e generatori per Kiev: nessuna disponibilità di immobile a Firenze o capacità/partnership umanitaria in Ucraina documentata per i sette Comuni. L'esclusione è una decisione di perimetro pubblico, non una dichiarazione di inammissibilità giuridica. Le evidenze documentali sono conservate; la configurazione delle esclusioni impedisce la reiniezione automatica e rimuove eventuali schede pregresse. I due casi restano negli scarti del rapporto, senza ricerca di documenti o richieste al proprietario.
+
+Il bilancio aggiornato delle 30 segnalazioni è quindi 26 scarti e 4 casi pertinenti (uno già pubblicato e tre nuove schede). Il seguito documenta la rivalutazione precedente e va letto con questa rettifica.
+
+---
+
 # Rivalutazione delle 30 richieste del Radar — 11 ottobre 2026
 
 Questa è la rivalutazione del rapporto di produzione pubblicato nel run 38099537434, non un nuovo conteggio delle schede già online. Alla redazione, le cinque nuove schede non sono ancora pubblicate. La pubblicazione resta subordinata ai gate di release e alla verifica live delle fonti.

@@ -77,6 +77,17 @@ def _diagnosis(check, item):
     return "technical", "unverified_signal", "La segnalazione non ha ancora una verifica documentale sufficiente per pubblicare una scheda.", "Responsabilità del Radar: completare la verifica documentale di beneficiari, ruolo comunale, territorio, requisiti e termini. La disponibilità di un PDF leggibile non richiede un controllo del proprietario."
 
 
+def publication_exclusion(item):
+    """Exact reviewed calls excluded by the owner's territorial publication scope."""
+    path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
+    for entry in json.loads(path.read_text(encoding="utf-8")).get("publicationExclusions", []):
+        if (item.get("coverage_id") == entry["coverage_id"] or
+                any(normalized_url(item.get(field)) == normalized_url(entry["url"])
+                    for field in ("url", "discovery_url") if item.get(field))):
+            return entry
+    return None
+
+
 def source_text_hash(page):
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(page, "html.parser")
@@ -163,7 +174,10 @@ def build_actions(payload):
             check["status"] = "deferred"
         deadline = str(item.get("deadline_at") or "")
         expired = bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", deadline) and deadline < str(payload.get("referenceDate") or ""))
-        if any(x.get("_verifiedPublicationPending") for x in items):
+        exclusion = next((publication_exclusion(x) for x in items if publication_exclusion(x)), None)
+        if exclusion:
+            status, code, reason, action = "monitor", exclusion["reasonCode"], exclusion["reason"], "Esclusa dal Radar pubblico per il perimetro concreto dei Comuni della Versilia; nessuna ricerca documentale richiesta."
+        elif any(x.get("_verifiedPublicationPending") for x in items):
             status, code, reason, action = "retry", "publication_blocked", "Il documento è verificato, ma la pubblicazione è bloccata da un altro controllo del run.", "Il Radar ritenterà la pubblicazione. Se il blocco persiste, correggere il controllo segnalato in cima al rapporto: il documento è già collegato qui e non va ricercato nuovamente."
         elif key in represented:
             status, code, reason, action = "covered", "exact_public_reference", "La stessa fonte è già associata a una scheda del Radar.", "Gli eventuali aggiornamenti restano soggetti alla riconferma della scheda; non è una nuova opportunità da inserire."

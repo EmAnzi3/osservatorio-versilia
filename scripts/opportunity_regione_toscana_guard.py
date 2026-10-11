@@ -181,6 +181,10 @@ def _default_fetch(url: str) -> str:
 
 def _documented_exclusion_rule(candidate: dict[str, Any]) -> dict[str, Any] | None:
     """Return an explicit non-municipal rule that resolves a safety-net candidate."""
+    import opportunity_review_actions as review_actions
+    exclusion = review_actions.publication_exclusion(candidate)
+    if exclusion:
+        return {"id": exclusion["coverage_id"], "suppress_reason": exclusion["reason"]}
     rules, _policy, aliases = radar.load_rules()
     source_id = "regione-toscana"
     working = {
