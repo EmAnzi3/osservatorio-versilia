@@ -199,6 +199,13 @@ def _changes(old: dict[str, Any], new: dict[str, Any]) -> list[dict[str, str]]:
             "before": _display(before),
             "after": _display(after),
         })
+    from opportunity_pdf_evidence import verified_document_links
+    from opportunity_review_actions import normalized_url as document_url
+    before = sorted(document_url(url) for label,url in verified_document_links(old))
+    after = sorted(document_url(url) for label,url in verified_document_links(new))
+    if before != after:
+        changes.append({"field":"official_documents","label":"Documenti ufficiali",
+                        "before":_display(before),"after":_display(after)})
     return changes
 
 

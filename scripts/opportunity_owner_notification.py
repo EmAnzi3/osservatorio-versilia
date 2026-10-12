@@ -13,6 +13,13 @@ from tempfile import TemporaryDirectory
 PART_BYTES = 48_000
 
 
+def publication_requires_notification(report):
+    """Successful unchanged runs with automatic work stay in run artifacts."""
+    counts = report.get('counts') or {}
+    human = ((report.get('reviewActions') or {}).get('counts') or {}).get('human', 0)
+    return int(human) > 0 or any(int(counts.get(k, 0)) > 0 for k in ('added', 'modified', 'archived', 'removed'))
+
+
 def split_markdown(text: str, max_bytes: int = PART_BYTES) -> list[str]:
     chunks, current, size = [], [], 0
     for line in text.splitlines(keepends=True):

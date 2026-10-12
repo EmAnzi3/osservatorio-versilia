@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Real ministry documents, future calls, transport failures and daily replay."""
 import hashlib
+import json
 import unittest
 from unittest.mock import patch
 from tempfile import TemporaryDirectory
@@ -23,6 +24,109 @@ def receipt(name="otto-per-mille.txt", url=URL):
 
 
 class PromotionTests(unittest.TestCase):
+    def culture_receipts(self):
+        root = FIXTURES.parent / "cepell-notices"
+        provenance = json.loads((root / "provenance.json").read_text())
+        return {name:{"text":(root / (name+".txt")).read_text(),"sha256":meta["sha256"],
+                      "resolvedUrl":meta["url"],"document":True,"transport":"direct_https",
+                      "pages":meta["pages"],"pagesWithoutText":[]} for name,meta in provenance.items()}
+
+    def test_reading_call_uses_complete_qualification_list(self):
+        receipts=self.culture_receipts();b,q,a=[receipts[n] for n in ("reading-call","qualified-towns","evaluation-criteria")]
+        self.assertEqual(q["pages"],30)
+        item=promotion.parse_reading_notice(b,b["resolvedUrl"],q,a,date(2026,10,12))
+        self.assertEqual(item["deadline_at"],"2026-10-30")
+        self.assertEqual(item["deadline_time"],"13:00")
+        self.assertEqual({t for t,v in item["municipality_eligibility"].items() if v["status"]=="conditional"},
+                         {"Forte dei Marmi","Pietrasanta","Seravezza","Viareggio"})
+        self.assertEqual(item["municipality_eligibility"]["Massarosa"]["status"],"not_eligible")
+        self.assertIn("nessun finanziamento",item["project_requirements"])
+        self.assertIn("mai partner",item["project_requirements"])
+        from build_opportunity_preview import card_markup
+        card=card_markup(item)
+        self.assertIn('Documenti ufficiali',card)
+        self.assertIn(q["resolvedUrl"],card)
+        self.assertIn(a["resolvedUrl"],card)
+        refused_tail={**q,"text":q["text"]+"\n5 2024-QCL-99999 MASSAROSA\nNon ammissibile"}
+        excluded=promotion.parse_reading_notice(b,b["resolvedUrl"],refused_tail,a,TODAY)
+        self.assertEqual(excluded["municipality_eligibility"]["Massarosa"]["status"],"not_eligible")
+        for old,new in (("almeno il 51%","almeno il 40%"),("è volontario","è obbligatorio"),("inferiore al 50%","inferiore al 30%")):
+            with self.assertRaises(ValueError):
+                promotion.parse_reading_notice({**b,"text":b["text"].replace(old,new)},b["resolvedUrl"],q,a,TODAY)
+        with self.assertRaises(promotion.NoticeWindowClosed):
+            promotion.parse_reading_notice(b,b["resolvedUrl"],q,a,date(2026,11,1))
+        for changed in ({**q,"text":q["text"].replace("2024-2025-2026","2021-2022-2023")},
+                        {**q,"pagesWithoutText":[30]},
+                        {**q,"text":q["text"].replace("320 2024-QCL-00904 FORTE DEI MARMI","")},
+                        {**q,"transport":"reader_proxy"}):
+            with self.assertRaises(ValueError):
+                promotion.parse_reading_notice(b,b["resolvedUrl"],changed,a,TODAY)
+
+    def test_culture_call_promotes_and_revalidates_without_duplicate(self):
+        receipts=self.culture_receipts();by_url={r["resolvedUrl"]:r for r in receipts.values()}
+        page_url="https://cultura.gov.it/comunicato/avviso-lettura"
+        page='<main>'+''.join(f'<a href="{u}">Bando o Allegato</a>' for u in by_url)+'</main>'
+        def loader(url,document):return by_url[url] if document else {"text":page}
+        first={"opportunities":[],"discoveryQueue":[{"url":page_url,"title":"Bando Città che legge"}]}
+        promotion.apply_promotions(first,TODAY,loader=loader)
+        self.assertEqual(len(first["opportunities"]),1)
+        next_run={"opportunities":[],"discoveryQueue":[]}
+        promotion.apply_promotions(next_run,TODAY,previous=first,loader=loader)
+        self.assertEqual(len(next_run["opportunities"]),1)
+        self.assertEqual(next_run["documentPromotion"]["revalidated"],1)
+        missing={"opportunities":[],"discoveryQueue":[{"url":page_url,"title":"Bando Città che legge"}]}
+        promotion.apply_promotions(missing,TODAY,loader=lambda u,d:by_url[u] if d else {"text":f'<a href="{receipts["reading-call"]["resolvedUrl"]}">Bando</a>'})
+        self.assertEqual(missing["opportunities"],[])
+
+    def test_inaccessible_national_pdf_uses_fresh_exact_protocol_copy(self):
+        original="https://www.anci.it/wp-content/uploads/2026/10/m_pi.AOODGFIESD.REGISTRO-UFFICIALEU.0078918.01-10-2026.pdf"
+        copy="https://anci.lombardia.it/documenti/24093-Avviso%20MIM%20n.%2078918%20del%201%20ottobre%202026.pdf"
+        self.assertEqual(promotion.notice_reference(original),promotion.notice_reference(copy))
+        self.assertNotEqual(promotion.notice_reference(original.replace("0078918","0079594")),promotion.notice_reference(copy))
+        old=promotion.parse_notice(receipt(url=copy),copy,TODAY)
+        result={"opportunities":[old],"discoveryQueue":[{"url":PAGE,"title":"Avviso MIM"}]}
+        calls=[]
+        def loader(url,document):
+            calls.append(url)
+            if not document:return {"text":f'<a href="{original}">Avviso MIM</a>'}
+            if url==copy:return receipt(url=copy)
+            raise TimeoutError("national timeout")
+        promotion.apply_promotions(result,TODAY,loader=loader)
+        self.assertEqual(len(result["opportunities"]),1)
+        self.assertNotIn(original,calls)
+        check=result["documentPromotion"]["checks"][0]["documents"][0]
+        self.assertEqual(check["originalUrl"],original)
+        self.assertEqual(check["url"],copy)
+        self.assertEqual(check["status"],"verified")
+        wrong={**receipt(url=copy),"text":"Not an official notice"}
+        refused={"opportunities":[old],"discoveryQueue":[{"url":PAGE,"title":"Avviso MIM"}]}
+        promotion.apply_promotions(refused,TODAY,loader=lambda u,d:wrong if d else {"text":f'<a href="{original}">Avviso</a>'})
+        self.assertEqual(refused["documentPromotion"]["added"],0)
+        self.assertNotEqual(refused["documentPromotion"]["checks"][0]["status"],"published_candidate")
+
+    def test_faq_is_read_without_creating_a_call_and_failure_stays_visible(self):
+        faq_url="https://www.anci.it/documenti/faq.pdf"
+        faq=receipt("otto-per-mille-faq.txt",faq_url)
+        item=promotion.parse_notice(receipt(),URL,TODAY)
+        self.assertTrue(promotion.supporting_faq(faq,item))
+        self.assertFalse(promotion.supporting_faq({**faq,"transport":"reader_proxy"},item))
+        self.assertFalse(promotion.supporting_faq({**faq,"text":faq["text"]+"\nProroga delle domande"},item))
+        def loader(url,document):
+            if not document:return {"text":f'<a href="{URL}">Avviso</a><a href="{faq_url}">FAQ</a>'}
+            return faq if url==faq_url else receipt()
+        result={"opportunities":[],"discoveryQueue":[{"url":PAGE,"title":"Avviso MIM"}]}
+        promotion.apply_promotions(result,TODAY,loader=loader)
+        self.assertEqual(len(result["opportunities"]),1)
+        self.assertEqual(len(result["opportunities"][0]["supplementary_documents"]),1)
+        self.assertEqual(result["documentPromotion"]["checks"][0]["documents"][1]["status"],"verified_support")
+        def failed(url,document):
+            if url==faq_url:raise TimeoutError("FAQ timeout")
+            return loader(url,document)
+        pending={"opportunities":[item],"discoveryQueue":[{"url":PAGE,"title":"Avviso MIM"}]}
+        promotion.apply_promotions(pending,TODAY,loader=failed)
+        self.assertEqual(pending["documentPromotion"]["checks"][0]["status"],"review")
+        self.assertEqual(len(pending["discoveryQueue"]),1)
+
     def test_deferred_notices_get_a_turn_next_run(self):
         leads = [{"url": f"https://anci.lombardia.it/avviso/{n}", "title": f"Avviso MIM {n}"} for n in range(13)]
         loader = lambda url, document: {"text": "Nessun allegato"}
@@ -187,6 +291,9 @@ class PromotionTests(unittest.TestCase):
         import materialize_opportunity_release_favicons as icons
         items = [promotion.parse_notice(receipt(name), URL, TODAY)
                  for name in ("otto-per-mille.txt", "vulnerabilita-sismica.txt")]
+        culture=self.culture_receipts()
+        items.append(promotion.parse_reading_notice(culture["reading-call"],culture["reading-call"]["resolvedUrl"],
+                                                    culture["qualified-towns"],culture["evaluation-criteria"],TODAY))
         with TemporaryDirectory() as tmp:
             payload = {"opportunities": items}
             provenance = icons.materialize(payload, Path(tmp))
@@ -194,7 +301,8 @@ class PromotionTests(unittest.TestCase):
             for item in items:
                 asset = Path(tmp) / item["presentation"]["source_favicon"].replace("../", "")
                 self.assertTrue(asset.exists())
-                self.assertIn("MIM", asset.read_text())
+                if item["coverage_id"].startswith("mim-"):
+                    self.assertIn("MIM", asset.read_text())
 
 
 if __name__ == "__main__":

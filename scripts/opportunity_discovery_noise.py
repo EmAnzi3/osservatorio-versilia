@@ -25,6 +25,9 @@ REOPENING = re.compile(r"prorog\w*|riapert\w*|nuova\s+finestra|"
 
 
 def classify_signal(item, reference_date=None):
+    from opportunity_review_actions import publication_exclusion
+    if publication_exclusion(item):
+        return "outside_municipal_scope"
     title = re.sub(r"\s+", " ", str(item.get("title") or "")).strip()
     location = urlsplit(str(item.get("url") or ""))
     path = unquote(location.path).casefold().rstrip("/")
@@ -49,8 +52,48 @@ def classify_signal(item, reference_date=None):
         return "outside_municipal_scope"
     if (location.hostname == "prefettura.interno.gov.it" and re.search(
             r"^Ordinanza prefettizia (?:divieto vetro|prescrizioni)|"
-            r"^Misure sulla movida, chiusi", title, re.I)):
+            r"^Misure sulla movida, chiusi|"
+            r"^(?:AVVISO:\s*)?Chiusura temporanea degli uffici|"
+            r"^(?:Esito sorteggio revisore|Pubblicazione data sorteggio nomina dell.organo)|"
+            r"^Sequestro/fermo veicoli|^DECRETO FLUSSI\b|"
+            r"^Videosorveglianza urbana Protocolli fra sale operative", title, re.I)):
         return "administrative_update"
+    if (location.hostname == "prefettura.interno.gov.it" and
+            re.search(r"^Avviso pubblico iscrizione Depositerie e Centri di Raccolta$", title, re.I)):
+        return "outside_municipal_scope"
+    if (location.hostname == "www.casaitalia.governo.it" and
+            re.search(r"^Avviso Isole minori marine", title, re.I)):
+        return "outside_municipal_scope"
+    if ((location.hostname == "www.padigitale2026.gov.it" and path == "/enti/comuni"
+         and title == "Avvisi di finanziamento") or
+        (location.hostname == "dait.interno.gov.it" and path == "/finanza-locale"
+         and title == "Banche dati degli enti locali") or
+        (location.hostname == "www.masaf.gov.it" and path == "/svilupporurale"
+         and title.startswith("Valutazione Ambientale Strategica"))):
+        return "catalog_or_navigation"
+    if ((location.hostname == "www.sport.governo.it" and path == "/it/bandi-e-avvisi/sport-e-periferie"
+         and title == "Sport e periferie") or
+        (location.hostname == "urbact.eu" and path == "/get-involved"
+         and title == "Discover URBACT's latest opportunities and get involved!") or
+        (location.hostname == "cinea.ec.europa.eu" and re.fullmatch(r"/life-calls-proposals-\d{4}_en", path)
+         and title == "Coordination and Support Action Grants (CSA) for clean energy transition sub-programme")):
+        return "catalog_or_navigation"
+    if (location.hostname == "www.sviluppo.toscana.it" and path.endswith("_var")
+            and re.search(r"\(varianti\)$",title,re.I)):
+        return "administrative_update"
+    if (location.hostname == "www.pariopportunita.gov.it" and
+            re.search(r"^Avviso Violenza \d{4}: pubblicate le Linee Guida.*rendicontazione",title,re.I)):
+        return "administrative_update"
+    if (location.hostname == "www.regione.toscana.it" and title.startswith("I vincitori del concorso")):
+        return "administrative_update"
+    if ((location.hostname == "www.funzionepubblica.gov.it" and path == "/it/il-dipartimento/notizie-del-dipartimento"
+         and title == "Banda ultra larga e comunicazioni elettroniche") or
+        (location.hostname == "www.politichecoesione.governo.it" and path in {
+            "/it/finanziamenti-avvisi-e-bandi/dottorati-comunali",
+            "/it/finanziamenti-avvisi-e-bandi/fondo-concorsi-progettazione-e-idee-per-la-coesione-territoriale",
+            "/it/finanziamenti-avvisi-e-bandi/fondo-di-sostegno-ai-comuni-marginali"}
+         and title in {"Dottorati comunali","Fondo concorsi progettazione e idee per la coesione territoriale","Fondo di sostegno ai comuni marginali"})):
+        return "catalog_or_navigation"
     # Never derive expiry from a decree year or a multi-year programme.
     # Only an explicitly archived route or matching annual archive heading
     # qualifies; a reopening or a still-current structured deadline wins.

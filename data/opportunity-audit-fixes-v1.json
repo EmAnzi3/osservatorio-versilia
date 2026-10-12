@@ -964,54 +964,57 @@
     },
     {
       "url": "https://anci.lombardia.it/dettaglio-circolari/20251215928-edilizia-scolastica-–-normativa-antincendio-e-messa-in-sicurezza/",
-      "sourceTextSha256": "569a9ed190dde23830b58eabb81158fcff629662ea52e8d8aa3fea1acf8ef8fb",
+      "sourceTextSha256": "5f6fa7c6fef789815e0ee3fba92c1b224fc5c963cea57d709734a5d04de109b6",
       "status": "expired",
       "reasonCode": "reviewed_document_expiry",
       "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
       "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
       "deadline": "2025-12-19",
-      "verifiedAt": "2026-10-11",
+      "verifiedAt": "2026-10-12",
       "documents": [
         {
           "url": "https://anci.lombardia.it/documenti/22765-Edilizia scolastica - Avviso MIM n. 217015 del 12 dicembre 2025.pdf",
           "sha256": "eeb913b80a09a22b9fce7659085729f606d9fb1aee7676bbf55b11052edaa707",
           "pages": 1
         }
-      ]
+      ],
+      "sourceTextSelector": ".corpo_news"
     },
     {
       "url": "https://anci.lombardia.it/dettaglio-circolari/20251128924-edilizia-scolastica-–-normativa-antincendio-e-messa-in-sicurezza/",
-      "sourceTextSha256": "b24b27ccd90e8330d1b8fa576945579716c49a82b1b1957efd152f59ba5411b4",
+      "sourceTextSha256": "b473b05680812d20596b752849375d3d1646440e2f2c280da2f5ef08677b9dc1",
       "status": "expired",
       "reasonCode": "reviewed_document_expiry",
       "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
       "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
       "deadline": "2025-12-15",
-      "verifiedAt": "2026-10-11",
+      "verifiedAt": "2026-10-12",
       "documents": [
         {
           "url": "https://anci.lombardia.it/documenti/22685-Edilizia scolastica- Avviso MIM n. 207071 del 26 novembre 2025.pdf",
           "sha256": "d1ca7a01f16d8e9d23f30d20e60db87f453aa426eb2c33172d7555660b83faef",
           "pages": 14
         }
-      ]
+      ],
+      "sourceTextSelector": ".corpo_news"
     },
     {
       "url": "https://anci.lombardia.it/dettaglio-circolari/202668942-edilizia-scolastica-–-richiesta-risorse-aggiuntive-per-esigenze-urgenti/",
-      "sourceTextSha256": "f170c37a485bc3cc80f8c3ff9c039abbd5bf8787f8e5223cc361d99165e5ee9b",
+      "sourceTextSha256": "9552e0949f0a411430bf1f39a28810d23c695131ffe571dde255e7e21aa6b559",
       "status": "expired",
       "reasonCode": "reviewed_document_expiry",
       "reason": "Termine di candidatura concluso, verificato nel PDF integrale e nella pagina sorgente.",
       "action": "Nessuna verifica richiesta al proprietario; una nuova apertura richiede una nuova verifica della fonte.",
       "deadline": "2026-06-12",
-      "verifiedAt": "2026-10-11",
+      "verifiedAt": "2026-10-12",
       "documents": [
         {
           "url": "https://anci.lombardia.it/documenti/23541-Richiesta risorse aggiuntive PNRR_Avviso 135383 del 27 maggio 2026.pdf",
           "sha256": "b8aa2b7c14080848db1f51e6c0881b7296154a0e508298d0036b4b8b9a70bdf9",
           "pages": 8
         }
-      ]
+      ],
+      "sourceTextSelector": ".corpo_news"
     },
     {
       "url": "https://anci.lombardia.it/dettaglio-circolari/20261071633-edilizia-scolastica-–-vulnerabilità-sismica/",
@@ -1036,17 +1039,35 @@
     },
     {
       "url": "https://anci.lombardia.it/dettaglio-circolari/202511281429-interventi-urgenti-di-edilizia-scolastica/",
-      "sourceTextSha256": "84f0f79b374f3bbb415c87970785c1b09046847d2a6432cc08936e26b8c0dd7c",
+      "sourceTextSha256": "6a9715a9efc75b3eda778c61f071bd57e5416e676c995c47669388dc1ed68781",
       "status": "monitor",
       "reasonCode": "administrative_update",
       "reason": "Nota sulla legge 164/2025: stanziamenti futuri, non apertura di candidature. Articolo 6 letto; nessun termine o procedura di domanda vigente in questo documento.",
       "action": "Scartata dalla coda; monitorare separatamente eventuali nuovi avvisi attuativi.",
-      "verifiedAt": "2026-10-11",
+      "verifiedAt": "2026-10-12",
       "documents": [
         {
           "url": "https://anci.lombardia.it/documenti/22687-d.l. 127 MaturitÃ  conv. in L.164 del 2025.pdf",
           "sha256": "4aa63b5d3ebba5588878927c66f9496899ece8d7873f174268c5e3fb763ac33a",
           "pages": 14
+        }
+      ],
+      "sourceTextSelector": ".corpo_news"
+    },
+    {
+      "url": "https://www.anci.piemonte.it/bando-legami-in-comune/",
+      "sourceTextSelector": ".td-post-content",
+      "sourceTextSha256": "b13f8b2e520092384f7604078187ab57496e1d7d24a22f70669b9d8842bc750d",
+      "status": "monitor",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Bando riservato a Comuni del Piemonte e della Valle d’Aosta sotto 5.000 abitanti; nessun Comune della Versilia nel territorio ammesso.",
+      "action": "Esclusa dalla coda; nuove condizioni richiedono una nuova verifica della pagina.",
+      "verifiedAt": "2026-10-12",
+      "documents": [
+        {
+          "url": "https://www.anci.piemonte.it/wp-content/uploads/2026/10/Bando-Legami-in-Comune-–-Risorse-per-la-rigenerazione-degli-spazi-comunali-e-il-protagonismo-giovanile.pdf",
+          "sha256": "7d0a378261aa78961711caf333eda535621a32ce6400507eb2608ff070a43896",
+          "pages": 3
         }
       ]
     }
@@ -1065,6 +1086,20 @@
       "reasonCode": "outside_municipal_call",
       "reason": "Progetto nella regione di Kiev con esperienza umanitaria e partner operativi in Ucraina: nessun percorso di candidatura concreto documentato per i Comuni della Versilia.",
       "reviewed_at": "2026-10-11"
+    },
+    {
+      "coverage_id": "review:rt-libri-gratis-famiglie-2026-2027",
+      "url": "https://www.regione.toscana.it/it/-/bando-libri-gratis-anno-scolastico-2026-2027-contributi-per-l-acquisto-di-libri",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Libri Gratis 2026/2027: beneficiario Regione Toscana, domanda delle studentesse e degli studenti; non è una candidatura comunale. Articoli 4 e 5 dell’avviso di riapertura letti integralmente.",
+      "verifiedAt": "2026-10-12",
+      "documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5530795&nomeFile=Decreto+n.20385+del+16-09-2026-+Allegato+A+",
+          "sha256": "e8968755d7fbff238d50b09d397391c37edd3f926c8e6754d2cc6d14ae34cc8a",
+          "pages": 18
+        }
+      ]
     }
   ]
 }
