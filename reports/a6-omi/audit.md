@@ -1,6 +1,6 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; motore `d8d9955053e55b3dd22df0a6be91712b9a84d86a39ce3f4499eece48c5da1ed6`.
+Catalogo SHA-256 `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; motore `789ff9fbda98182bf009884dbfaf01c744eb7dbae055c9e20758ad6a4017dc9f`.
 
 225 indicatori censiti; 221 con adapter e 4 senza adapter. 63 profili fonte.
 
