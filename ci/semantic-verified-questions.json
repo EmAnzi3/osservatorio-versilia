@@ -82009,6 +82009,4045 @@
           "road_network_pair_not_jointly_reviewed"
         ]
       }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046005",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046005",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 11
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046013",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046013",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046018",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046018",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 5
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046024",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046024",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 6
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046028",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046028",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 15
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046030",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046030",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 25
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_total_046033",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_total_046033",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 4
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_rank",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_rank",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046013"
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_series_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_series_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_absolute_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_absolute_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_relative_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_relative_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_percentage_points_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_percentage_points_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_trend_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_trend_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_weighted_ratio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_weighted_ratio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_municipal_memberships_overlap_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_anomaly_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_anomaly_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_benchmark_tuscany_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_benchmark_tuscany_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_benchmark_versilia_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_benchmark_versilia_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_period_2025_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_period_2025_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_period_2027_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_period_2027_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_period_2026-01-01_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_period_2026-01-01_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_dimension_nativeRatio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_dimension_nativeRatio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_dimension_view_normalized_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_dimension_view_normalized_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_dimension_kilometres_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_dimension_kilometres_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "kilometres"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_dimension_quality_A0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_dimension_quality_A0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "quality:A0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_dimension_denominator_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_dimension_denominator_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_correlation_0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_correlation_0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "slowMobilityRoutes"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityRoutes_correlation_1_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityRoutes_correlation_1_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "slowMobilityRoutes"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046005",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046005",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046013",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046013",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046018",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046018",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046024",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046024",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046028",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046028",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 12
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046030",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046030",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 23
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_total_046033",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_total_046033",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_rank",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_rank",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046033"
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_series_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_series_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_absolute_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_absolute_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_relative_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_relative_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_percentage_points_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_percentage_points_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_trend_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_trend_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_weighted_ratio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_weighted_ratio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_municipal_memberships_overlap_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_anomaly_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_anomaly_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_benchmark_tuscany_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_benchmark_tuscany_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_benchmark_versilia_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_benchmark_versilia_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_period_2025_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_period_2025_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_period_2027_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_period_2027_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_period_2026-01-01_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_period_2026-01-01_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_dimension_nativeRatio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_dimension_nativeRatio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_dimension_view_normalized_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_dimension_view_normalized_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_dimension_kilometres_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_dimension_kilometres_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "kilometres"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_dimension_quality_A0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_dimension_quality_A0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "quality:A0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_dimension_denominator_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_dimension_denominator_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_correlation_0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_correlation_0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "slowMobilityTrekking"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityTrekking_correlation_1_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityTrekking_correlation_1_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "slowMobilityTrekking"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046005",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046005",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046013",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046013",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046018",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046018",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046024",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046024",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046028",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046028",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046030",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046030",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_total_046033",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_total_046033",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_rank",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_rank",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046033"
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_series_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_series_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_absolute_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_absolute_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_relative_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_relative_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_percentage_points_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_percentage_points_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_trend_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_trend_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_weighted_ratio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_weighted_ratio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_municipal_memberships_overlap_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_anomaly_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_anomaly_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_benchmark_tuscany_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_benchmark_tuscany_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_benchmark_versilia_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_benchmark_versilia_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_period_2025_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_period_2025_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_period_2027_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_period_2027_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_period_2026-01-01_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_period_2026-01-01_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_dimension_nativeRatio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_dimension_nativeRatio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_dimension_view_normalized_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_dimension_view_normalized_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_dimension_kilometres_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_dimension_kilometres_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "kilometres"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_dimension_quality_A0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_dimension_quality_A0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "quality:A0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_dimension_denominator_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_dimension_denominator_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_correlation_0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_correlation_0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "slowMobilityCammini"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityCammini_correlation_1_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityCammini_correlation_1_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "slowMobilityCammini"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046005",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046005",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 5
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046013",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046013",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046018",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046018",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046024",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046024",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046028",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046028",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046030",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046030",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 2
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_total_046033",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_total_046033",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 3
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_rank",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_rank",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_series_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_series_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_absolute_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_absolute_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_relative_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_relative_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_percentage_points_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_percentage_points_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_trend_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_trend_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_weighted_ratio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_weighted_ratio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_municipal_memberships_overlap_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_anomaly_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_anomaly_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_benchmark_tuscany_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_benchmark_tuscany_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_benchmark_versilia_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_benchmark_versilia_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_period_2025_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_period_2025_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_period_2027_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_period_2027_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_period_2026-01-01_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_period_2026-01-01_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_dimension_nativeRatio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_dimension_nativeRatio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_dimension_view_normalized_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_dimension_view_normalized_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_dimension_kilometres_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_dimension_kilometres_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "kilometres"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_dimension_quality_A0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_dimension_quality_A0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "quality:A0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_dimension_denominator_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_dimension_denominator_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_correlation_0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_correlation_0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "slowMobilityBici"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityBici_correlation_1_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityBici_correlation_1_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "slowMobilityBici"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046005",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046005",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/0/countedRouteIds",
+            "value": [
+              "mm-vrg-mtb-05"
+            ]
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046013",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046013",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": []
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046018",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046018",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": [
+              "mm-vrg-mtb-05"
+            ]
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046024",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046024",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": []
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046028",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046028",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": []
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046030",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046030",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 0
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": []
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_total_046033",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_total_046033",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046005"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 1
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "count"
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-08-12"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": true
+          },
+          {
+            "path": "/observations/1/countedRouteIds",
+            "value": [
+              "mm-vrg-mtb-05"
+            ]
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_rank",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_rank",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ],
+        "warnings": [
+          "slow_mobility_inventory_not_exhaustive_or_current_safety",
+          "slow_mobility_A0_B1_provenance_not_accessibility_quality",
+          "slow_mobility_municipal_memberships_overlap_not_additive_unique_routes",
+          "slow_mobility_primary_mode_not_all_possible_activities",
+          "slow_mobility_membership_replay_not_geometry_intersection_replay",
+          "slow_mobility_inventory_20260812_not_current_route_status",
+          "slow_mobility_no_municipal_lengths_or_reverse_derived_rates",
+          "slow_mobility_numeric_rank_not_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_series_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_series_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_absolute_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_absolute_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_relative_change_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_relative_change_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_percentage_points_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_percentage_points_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_trend_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_trend_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_history_editorial_not_territorial_series"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_weighted_ratio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_weighted_ratio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_municipal_memberships_overlap_no_pooling"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_anomaly_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_anomaly_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_inventory_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_benchmark_tuscany_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_benchmark_tuscany_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_benchmark_versilia_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_benchmark_versilia_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_period_2025_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_period_2025_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_period_2027_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_period_2027_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_period_2026-01-01_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_period_2026-01-01_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_dimension_nativeRatio_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_dimension_nativeRatio_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_dimension_view_normalized_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_dimension_view_normalized_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "view:normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_dimension_kilometres_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_dimension_kilometres_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "kilometres"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_dimension_quality_A0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_dimension_quality_A0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "quality:A0"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_dimension_denominator_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_dimension_denominator_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_correlation_0_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_correlation_0_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "slowMobilityMtb"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "slow_slowMobilityMtb_correlation_1_refused",
+      "question": "Inventario Percorsi Versilia · slowMobilityMtb_correlation_1_refused",
+      "reference": "Fixed public inventory counts in test_semantic_slow_mobility_adapters.py, 41 native A0/B1 records and 68 municipal memberships; primary modes; snapshot 12 August 2026; docs/A6_SLOW_MOBILITY_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "slowMobilityMtb"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "slow_mobility_shared_route_records_pair_not_reviewed"
+        ]
+      }
     }
   ]
 }

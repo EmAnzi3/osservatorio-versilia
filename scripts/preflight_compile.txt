@@ -193,3 +193,6 @@ scripts/semantic_query_road_network_adapters.py
 scripts/test_semantic_road_network_adapters.py
 scripts/update_runts_public.py
 scripts/test_runts_public.py
+
+scripts/semantic_query_slow_mobility_adapters.py
+scripts/test_semantic_slow_mobility_adapters.py
