@@ -572,6 +572,39 @@ def _test_live_open_detail_restores_listing_false_negative() -> None:
     assert restored_item["continuity_revalidation"]["transport"] == "http_browser", restored_item
 
 
+def _test_alias_and_last_published_detail_restore_continuity() -> None:
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    original_reconcile = stable.h4.daily._reconcile_final_continuity
+    original_recompute = stable.h4.daily._recompute_after_continuity_restore
+    try:
+        for declared in (True, False):
+            rule, result, previous = _detail_fixture()
+            previous["opportunities"][0]["source_id"] = "regional-all-notices"
+            result["sourceCoverage"]["rows"][0]["source_id"] = "regional-all-notices"
+            rule["evidence_url"] = "https://www.sviluppo.toscana.it/stale-detail"
+            aliases = {"regional-all-notices": rule["source_id"]} if declared else {}
+            stable.h4.radar_module.load_rules = lambda: ([rule], {}, aliases)
+            calls = []
+            def fetch(url):
+                calls.append(url)
+                assert url == _DETAIL_URL, url
+                return ("<h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+                        "Scadenza 15 settembre 2026. Presenta domanda.</p>", _direct_detail_diagnostics())
+            stable._fetch_continuity_detail = fetch
+            stable.h4.daily._reconcile_final_continuity = lambda payload: payload.update({"continuityHold": []})
+            stable.h4.daily._recompute_after_continuity_restore = lambda _payload: None
+            restored = stable._revalidate_unresolved_continuity_details(result, previous, date(2026, 9, 10))
+            assert len(restored) == int(declared), restored
+            assert calls == ([_DETAIL_URL] if declared else []), calls
+            assert len(result["continuityHold"]) == int(not declared), result
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+        stable.h4.daily._reconcile_final_continuity = original_reconcile
+        stable.h4.daily._recompute_after_continuity_restore = original_recompute
+
+
 def _test_closed_or_404_detail_keeps_continuity_hold() -> None:
     rule, _, _ = _detail_fixture()
     original_rules = stable.h4.radar_module.load_rules
@@ -774,6 +807,7 @@ def main() -> int:
     _test_blocked_critical_families_persist_failure_diagnostic()
     _test_base_failure_diagnostic_evaluates_runtime_and_persists_backtest()
     _test_live_open_detail_restores_listing_false_negative()
+    _test_alias_and_last_published_detail_restore_continuity()
     _test_closed_or_404_detail_keeps_continuity_hold()
     _test_reader_proxy_detail_cannot_clear_continuity_hold()
     _test_same_host_canonical_redirect_is_verification_grade()

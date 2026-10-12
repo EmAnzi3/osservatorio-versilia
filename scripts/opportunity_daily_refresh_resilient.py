@@ -282,7 +282,7 @@ def main() -> int:
     discovery.reset_trace()
     previous_budget = discovery.LIVE_BUDGET
     config, _ = _compose_runtime_hardened()
-    discovery.LIVE_BUDGET = TransportBudget(config)
+    discovery.LIVE_BUDGET = TransportBudget(config, continuity_reserve_seconds=30)
     original_http = revalidated._fetch_browser_html
     original_browser = revalidated._fetch_playwright_text
     original_pdf = revalidated.pdf_evidence.fetch_pdf_text

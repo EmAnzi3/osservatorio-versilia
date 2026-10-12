@@ -9,9 +9,10 @@ from html import unescape
 from html.parser import HTMLParser
 from typing import Callable
 from urllib.parse import urljoin, urlsplit, parse_qs
+from opportunity_discovery_noise import content_html, unrelated_document
 
 UA = "OsservatorioVersilia-OpportunityRadar/0.2.4 (+https://osservatorioversilia.it/)"
-LINK_EXTRACTOR_VERSION = 2
+LINK_EXTRACTOR_VERSION = 3
 KEYS = (
     "soggetti beneficiari",
     "destinatari / beneficiari",
@@ -50,12 +51,14 @@ class Links(HTMLParser):
 
 def pdf_links(payload: str, page_url: str, limit: int = 2) -> list[str]:
     parser = Links()
-    parser.feed(payload or "")
+    parser.feed(content_html(payload))
     parser.close()
     ranked: list[tuple[int, str]] = []
     seen: set[str] = set()
     for href, label in parser.links:
         absolute = urljoin(page_url, unescape(href))
+        if unrelated_document(absolute):
+            continue
         probe = f"{href} {label}"
         is_pdf = bool(re.search(r"\.pdf(?:$|[/?#])", href, re.I))
         document_like = "/documents/" in href.lower() or "download" in href.lower()

@@ -18,15 +18,11 @@ from datetime import date
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 import opportunity_pdf_evidence as pdf
+from opportunity_discovery_noise import GENERIC, classify_signal, unrelated_document
 
 LABELS = {"human": "Verifica di persona", "retry": "Ritentativo automatico", "technical": "Intervento sul Radar",
           "covered": "Già rappresentata", "expired": "Termine concluso",
           "monitor": "Pagina di monitoraggio"}
-GENERIC = re.compile(r"^(?:aggiornamenti da .+|navigazione(?: principale)?|main navigation|footer\b.*|"
-                     r"menu bottom|briciole di pane|breadcrumb|cerca nel sito|sezione link utili|"
-                     r"seguici su|siti collegati|non hai trovato quello che cerchi\?|"
-                     r"identità e loghi|guide e risorse|notizie|latest news|related content|"
-                     r"bandi e avvisi(?: pubblici)?|avvisi e bandi|archivio bandi|calls for proposals)$", re.I)
 
 
 def normalized_url(value):
@@ -140,7 +136,7 @@ def build_actions(payload):
                 represented[key] = item.get("title", "Scheda pubblicata")
     groups = {}
     signals = [*(payload.get("discoveryQueue") or []), *(payload.get("reviewQueue") or []),
-               *(payload.get("qualityHold") or [])]
+               *(payload.get("qualityHold") or []), *(payload.get("discoveryNoise") or [])]
     if payload.get("publicationBlocked"):
         represented_ids = {x.get("coverage_id") for x in payload.get("opportunities") or []}
         for check_rows in checks.values():
@@ -157,17 +153,19 @@ def build_actions(payload):
         groups.setdefault(key, []).append(item)
     rows = []
     for key, items in groups.items():
-        # Prefer a specific headline over navigation fragments at the same URL.
-        item = max(items, key=lambda x: (not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
-        check_rows = checks.get(key, [])
+        # A discarded headline must not hide a valid signal at the same URL.
+        surviving = [x for x in items if not classify_signal(x, payload.get("referenceDate"))]
+        item = max(surviving or items, key=lambda x: (not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
+        check_rows = [c for c in checks.get(key, []) if not (
+            c.get("documents") and all(unrelated_document(d.get("url", "")) for d in c["documents"]))]
         documents = {}
         lookup = lookups.get(key, {})
         for document in lookup.get("documents") or []:
-            if normalized_url(document.get("url")):
+            if normalized_url(document.get("url")) and not unrelated_document(document["url"]):
                 documents[normalized_url(document["url"])] = document
         for check in check_rows:
             for document in check.get("documents") or []:
-                if normalized_url(document.get("url")):
+                if normalized_url(document.get("url")) and not unrelated_document(document["url"]):
                     documents[normalized_url(document["url"])] = document
         check = {"errors": [e for c in check_rows for e in c.get("errors") or []] + list(lookup.get("errors") or []), "documents": list(documents.values())}
         if any(c.get("status") == "deferred" for c in check_rows):
@@ -175,6 +173,7 @@ def build_actions(payload):
         deadline = str(item.get("deadline_at") or "")
         expired = bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", deadline) and deadline < str(payload.get("referenceDate") or ""))
         exclusion = next((publication_exclusion(x) for x in items if publication_exclusion(x)), None)
+        noise_reason = classify_signal(item, payload.get("referenceDate"))
         if exclusion:
             status, code, reason, action = "monitor", exclusion["reasonCode"], exclusion["reason"], "Esclusa dal Radar pubblico per il perimetro concreto dei Comuni della Versilia; nessuna ricerca documentale richiesta."
         elif any(x.get("_verifiedPublicationPending") for x in items):
@@ -183,8 +182,15 @@ def build_actions(payload):
             status, code, reason, action = "covered", "exact_public_reference", "La stessa fonte è già associata a una scheda del Radar.", "Gli eventuali aggiornamenti restano soggetti alla riconferma della scheda; non è una nuova opportunità da inserire."
         elif expired or (check_rows and all(c.get("status") == "expired" for c in check_rows)):
             status, code, reason, action = "expired", "verified_expiry", "Il termine strutturato di candidatura risulta concluso.", "Nessun inserimento tra le opportunità aperte; verificare solo eventuali successive proroghe."
-        elif all(GENERIC.fullmatch(str(x.get("title") or "")) for x in items):
-            status, code, reason, action = "monitor", "catalog_or_navigation", "È una pagina di catalogo o navigazione, non una scheda di bando.", "Monitoraggio automatico della fonte; nessuna richiesta di inserimento manuale."
+        elif noise_reason:
+            status, code = "monitor", noise_reason
+            reason = {"catalog_or_navigation": "È una pagina di catalogo o navigazione, non una scheda di bando.",
+                      "archive_page": "È una pagina di archivio, non una nuova finestra di candidatura verificata.",
+                      "procurement_notice": "È una procedura di acquisto della Prefettura, non un contributo per i Comuni.",
+                      "administrative_update": "È una comunicazione amministrativa, senza nuova candidatura.",
+                      "outside_municipal_scope": "Riguarda incarichi interni o domande individuali, senza candidatura comunale.",
+                      "informational_event": "È un evento o servizio informativo, non un bando."}[code]
+            action = "Esclusa dalla coda di verifica documentale; il monitoraggio della fonte resta attivo."
         elif lookup.get("assessment"):
             assessment = lookup["assessment"]
             status, code, reason, action = assessment["status"], assessment["reasonCode"], assessment["reason"], assessment["action"]
@@ -207,7 +213,9 @@ def build_actions(payload):
                      "documentLookup": document_lookup,
                      "technicalDetails": check["errors"], "signalCount": len(items),
                      "representedBy": represented.get(key)})
-    discarded = [x for x in rows if x["status"] == "expired" or x["reasonCode"] in {"outside_municipal_call", "reviewed_closed_catalogue", "administrative_update"}]
+    discarded = [x for x in rows if x["status"] == "expired" or x["reasonCode"] in {
+        "outside_municipal_call", "reviewed_closed_catalogue", "administrative_update",
+        "catalog_or_navigation", "archive_page", "procurement_notice", "informational_event", "outside_municipal_scope"}]
     rows = [x for x in rows if x not in discarded]
     order = {"human": 0, "technical": 1, "retry": 2, "covered": 3, "expired": 4, "monitor": 5}
     rows.sort(key=lambda x: (order[x["status"]], x["deadline"] or "9999-99-99", x["title"].casefold()))
@@ -237,7 +245,8 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     for row in actions["items"] + actions["discarded"]:
         key = normalized_url(row["url"])
         if key in previous_rows:
-            result[key] = dict(previous_rows[key])
+            result[key] = {**previous_rows[key], "documents": [d for d in previous_rows[key].get("documents") or []
+                           if not unrelated_document(d.get("url", ""))]}
     hosts = HOSTS | ({urlsplit("https://"+h).hostname for h in budget.hosts} if budget is not None else set())
     def fetch(url, cap):
         if loader is not None:

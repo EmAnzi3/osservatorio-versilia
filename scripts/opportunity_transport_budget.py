@@ -21,9 +21,11 @@ from concurrent.futures import ThreadPoolExecutor
 
 class TransportBudget:
     def __init__(self, config, *, endpoint_seconds=60, source_seconds=180,
-                 scan_seconds=1200, journal=Path("reports/runtime/opportunity-transport-progress.jsonl")):
+                 scan_seconds=1200, journal=Path("reports/runtime/opportunity-transport-progress.jsonl"),
+                 continuity_reserve_seconds=0):
         self.endpoint_seconds = endpoint_seconds
         self.source_seconds = source_seconds
+        self.continuity_reserve_seconds = min(source_seconds, max(0, continuity_reserve_seconds))
         self.deadline = time.monotonic() + scan_seconds
         self.journal = Path(journal)
         self.journal.parent.mkdir(parents=True, exist_ok=True)
@@ -80,6 +82,10 @@ class TransportBudget:
         host = urlsplit(url).netloc
         ids = self.hosts.get(host, set())
         source = self.sources.get(url) or (next(iter(ids)) if len(ids) == 1 else host)
+        # Reserve part of the existing host/source budget for verifying a
+        # published opportunity missing from today's listing. Do not increase
+        # either the source cap or the global scan deadline.
+        source_limit = self.source_seconds - (0 if kind == "continuity" else self.continuity_reserve_seconds)
         # Lock only shared accounting. I/O must never hold this lock.
         with self.lock:
             while key in self.pending:
@@ -88,10 +94,10 @@ class TransportBudget:
                 return self.cache[key]
             while True:
                 remaining_scan = self.deadline - time.monotonic()
-                remaining_source = self.source_seconds - max(self.spent.get(source, 0), self.host_spent.get(host, 0))
+                remaining_source = source_limit - max(self.spent.get(source, 0), self.host_spent.get(host, 0))
                 available = min(
-                    self.source_seconds - self.spent.get(source, 0) - self.source_reserved.get(source, 0),
-                    self.source_seconds - self.host_spent.get(host, 0) - self.host_reserved.get(host, 0),
+                    source_limit - self.spent.get(source, 0) - self.source_reserved.get(source, 0),
+                    source_limit - self.host_spent.get(host, 0) - self.host_reserved.get(host, 0),
                 )
                 wanted = min(self.endpoint_seconds, remaining_source, remaining_scan,
                              max_seconds if max_seconds is not None else self.endpoint_seconds)

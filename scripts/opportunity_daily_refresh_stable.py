@@ -554,7 +554,7 @@ def _revalidate_unresolved_continuity_details(
     if not holds:
         return []
 
-    rules, _, _ = h4.radar_module.load_rules()
+    rules, _, aliases = h4.radar_module.load_rules()
     rules_by_id = {str(rule.get("id") or ""): rule for rule in rules if rule.get("id")}
     previous_items = list(previous.get("opportunities") or [])
     by_rule = {
@@ -594,12 +594,13 @@ def _revalidate_unresolved_continuity_details(
 
         source_id = str(old.get("source_id") or "")
         rule_source_id = str(rule.get("source_id") or "")
-        if not source_id or (rule_source_id and rule_source_id != source_id):
+        if not source_id or (rule_source_id and
+                             aliases.get(rule_source_id, rule_source_id) != aliases.get(source_id, source_id)):
             continue
         if runtime_by_source.get(source_id) not in {"ok", "degraded"}:
             continue
 
-        evidence_url = str(rule.get("evidence_url") or old.get("url") or "").strip()
+        evidence_url = str(old.get("url") or rule.get("evidence_url") or "").strip()
         if not evidence_url.startswith(("http://", "https://")):
             continue
         if evidence_url.casefold().split("?", 1)[0].endswith(".pdf"):
