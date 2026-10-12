@@ -23,6 +23,7 @@ from urllib.parse import urljoin
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import opportunity_radar_v025 as v025
+from opportunity_discovery_noise import content_html, classify_signal
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "data" / "opportunity-sources-v03.json"
@@ -63,8 +64,9 @@ def _matches_any(text: str, terms: list[str]) -> bool:
 
 
 def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) -> list[dict[str, Any]]:
+    html_payload = content_html(payload)
     parser = base.Cards()
-    parser.feed(payload)
+    parser.feed(html_payload)
     parser.close()
     cards = parser.out
     structured_listing = False
@@ -75,7 +77,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
         if urlsplit(page_url).hostname == "anci.lombardia.it":
             structured_listing = True
             cards = []
-            for heading in BeautifulSoup(payload, "html.parser").select("a[href] > h2"):
+            for heading in BeautifulSoup(html_payload, "html.parser").select("a[href] > h2"):
                 link = heading.parent
                 if link["href"].startswith(("/dettaglio-news/", "/dettaglio-circolari/")):
                     cards.append((heading.get_text(" ", strip=True), link["href"], ""))
@@ -84,7 +86,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
         from urllib.parse import urlsplit
         location = urlsplit(page_url)
         if location.hostname in {"ancitoscana.it", "www.ancitoscana.it"}:
-            loops = BeautifulSoup(payload, "html.parser").select(".e-loop-item")
+            loops = BeautifulSoup(html_payload, "html.parser").select(".e-loop-item")
             if loops:
                 structured_listing = True
                 short_tuscany_listing = location.path.rstrip("/") == "/categorie/bandi"
@@ -103,7 +105,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
             # Bind each headline to its own official detail anchor instead.
             structured_listing = True
             cards = []
-            for link in BeautifulSoup(payload, "html.parser").select("a[href]"):
+            for link in BeautifulSoup(html_payload, "html.parser").select("a[href]"):
                 location = urlsplit(urljoin(page_url, link["href"]))
                 if location.hostname in {"www.lavoro.gov.it", "lavoro.gov.it"} and location.path.lower().startswith("/notizie/pagine/") and location.path.lower().rstrip("/") != "/notizie/pagine/notizie":
                     card = link.find_parent(class_="item")
@@ -122,7 +124,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
         ]
     elif source.get("id") == "mim-enti-locali":
         from bs4 import BeautifulSoup
-        table = BeautifulSoup(payload, "html.parser").find("table", id="table-avvisi")
+        table = BeautifulSoup(html_payload, "html.parser").find("table", id="table-avvisi")
         if table is not None:
             structured_listing = True
             cards = []
@@ -151,7 +153,7 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
         # leads only. Beneficiaries still require primary-document verification.
         if municipal_terms and not _matches_any(combined, municipal_terms) and not short_tuscany_listing:
             continue
-        out.append(
+        candidate = (
             {
                 "source_id": source["id"],
                 "source_label": source.get("label") or source["id"],
@@ -168,9 +170,14 @@ def discovery_candidates(source: dict[str, Any], payload: str, page_url: str) ->
                 ),
             }
         )
+        # Exclude non-call sections before the collector's per-source cap.
+        # Annual archive expiry remains tied to the run's reference date later.
+        if classify_signal(candidate) not in {None, "archive_page"}:
+            continue
+        out.append(candidate)
 
     if not out and not structured_listing:
-        visible = base.visible(payload)
+        visible = base.visible(html_payload)
         if _matches_any(visible, include_terms) and _matches_any(visible, municipal_terms):
             title = source.get("label") or source["id"]
             out.append(
