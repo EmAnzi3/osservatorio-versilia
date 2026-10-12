@@ -281,7 +281,12 @@
     {
       "path": ".github/workflows/refresh-agid-indicators.yml",
       "category": "automation",
-      "status": "active"
+      "status": "active",
+      "allowedTriggers": [
+        "workflow_dispatch",
+        "issue_comment"
+      ],
+      "note": "Explicit live acquisition only. Canonical Quick owns offline extractor tests; merging importer changes must not launch a download from an unavailable provider. Live source errors remain failures, with no fallback publication."
     },
     {
       "path": ".github/workflows/social-calendar.yml",

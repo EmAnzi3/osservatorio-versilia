@@ -1,24 +1,7 @@
 name: Aggiorna imprese, ATECO e banda larga
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/refresh-agid-indicators.yml"
-      - "scripts/update_agid_indicators*.py"
-      - "scripts/test_agid_refresh_idempotent.py"
-      - "scripts/restore_partial_agcom_metrics.py"
-      - "scripts/enrich_ateco_agcom_audit.py"
-      - "scripts/audit_agcom_primary.py"
-      - "scripts/apply_agcom_primary_percentages.py"
-      - "scripts/apply_agcom_absolute_policy.py"
-      - "scripts/test_ateco_agcom_audit.py"
-      - "scripts/test_agcom_primary_percentages.py"
-      - "scripts/monthly_data_check_coverage.py"
-      - "scripts/build_static.py"
-      - "scripts/capture_agid_preview.py"
-      - "assets/ateco-detail.js"
-      - "assets/ateco-detail.css"
+  # Live acquisition is explicit; offline extractor tests run in canonical Quick.
   workflow_dispatch:
   issue_comment:
     types: [created]
@@ -35,7 +18,6 @@ concurrency:
 jobs:
   update:
     if: >-
-      github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request == null &&
