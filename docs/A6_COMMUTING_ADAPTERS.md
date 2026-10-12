@@ -32,7 +32,7 @@ L'autocontenimento ponderato del gruppo è la quota che lavora **nel proprio com
 
 Gli scostamenti verso Toscana/Italia sono abilitati per i quattro rapporti sulle medesime definizioni e date. Il confronto tra il volume assoluto di un comune e l'intero volume regionale/nazionale è rifiutato. Le correlazioni sono descrittive, su coppie scelte con scopo esplicito; componenti condivise e dimensione demografica possono generare associazioni meccaniche. Tassi 2021/2026 e tasso di saldo 2021/2021 non vengono associati automaticamente come misure contemporanee omogenee.
 
-`outsideMunicipality` resta senza adapter: la quota censuaria non è riconciliata all'universo della matrice per lavoro e non è il complemento di `selfContainment`. Non si deducono mobilità per studio, accesso alle scuole, qualità della rete, fabbisogno di corse o effetti delle politiche.
+`outsideMunicipality` è ora consultabile separatamente tramite `docs/A6_OUTSIDE_MUNICIPALITY_ADAPTERS.md`: la quota censuaria non è riconciliata all'universo della matrice per lavoro e non è il complemento di `selfContainment`. Non si deducono mobilità per studio, accesso alle scuole, qualità della rete, fabbisogno di corse o effetti delle politiche.
 
 ## Domande e controlli
 

@@ -55,7 +55,10 @@ def regressions(path):
         r=e.query(request('weighted_ratio',key));assert r['status']=='computed',r
         assert r['result']['numerator']==n and r['result']['denominator']==d
         assert math.isclose(r['result']['value'],n/d*scale,abs_tol=1e-9)
-    rejected(e,request('compare','outsideMunicipality'),'adapter_not_implemented')
+    census=e.query(request('compare','outsideMunicipality'));assert census['status']=='computed',census
+    mass=next(o for o in census['observations'] if o['geography']=='046018')
+    assert mass['value']==62.9 and not math.isclose(mass['value'],5568/7800*100,abs_tol=1e-9)
+    assert not mass['nativeComponentsAvailable'] and 'outside_not_complement_of_matrix_self_containment' in census['warnings']
     pair=dict(operation='correlation',selectors=[{'metric':'inboundCommutersRate'},{'metric':'commuterBalanceRate'}],
               axis='municipalities',method='spearman',purpose='Check denominator mismatch, no causal claim')
     rejected(e,pair,'hybrid_denominator_pair_not_aligned')

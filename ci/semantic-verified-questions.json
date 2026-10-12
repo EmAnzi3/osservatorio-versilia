@@ -4267,7 +4267,7 @@
     },
     {
       "id": "commuting_census_share_refused",
-      "question": "Lavoratori fuori comune è ricostruibile dal complemento dell’autocontenimento per lavoro?",
+      "question": "Come si confrontano le quote censuarie pubblicate, senza ricostruirle dal complemento dell’autocontenimento?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -4277,12 +4277,60 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "adapter_not_implemented"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              484,
+              10
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              493,
+              10
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              629,
+              10
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              491,
+              10
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              642,
+              10
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              632,
+              10
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              318,
+              10
+            ]
+          }
         ]
       },
-      "reference": "Componenti Istat 2021 congelate, riferimenti trascritti e controlli indipendenti; nessuna inferenza causale"
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale. Caso legacy migrato: ID/query conservati, adapter ora disponibile, limite non-complemento verificato nelle regressioni."
     },
     {
       "id": "commuting_hybrid_pair_refused",
@@ -107725,6 +107773,1147 @@
         ]
       },
       "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "outside_046005",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046005 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              484,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046013",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046013 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              493,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046018",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046018 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              629,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046024",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046024 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              491,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046028",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046028 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              642,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046030",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046030 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              632,
+              10
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_046033",
+      "question": "Qual è la quota censuaria di lavoratori fuori Comune per 046033 nel 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              318,
+              10
+            ]
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2021"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "percent"
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_compare_all",
+      "question": "Come si confrontano le sette quote censuarie pubblicate?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              484,
+              10
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              493,
+              10
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              629,
+              10
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              491,
+              10
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              642,
+              10
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              632,
+              10
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              318,
+              10
+            ]
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_explicit_2021",
+      "question": "La quota pubblicata è consultabile al riferimento esatto 2021?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "periods": [
+              "2021"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              484,
+              10
+            ]
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              493,
+              10
+            ]
+          },
+          {
+            "path": "/observations/2/value",
+            "fraction": [
+              629,
+              10
+            ]
+          },
+          {
+            "path": "/observations/3/value",
+            "fraction": [
+              491,
+              10
+            ]
+          },
+          {
+            "path": "/observations/4/value",
+            "fraction": [
+              642,
+              10
+            ]
+          },
+          {
+            "path": "/observations/5/value",
+            "fraction": [
+              632,
+              10
+            ]
+          },
+          {
+            "path": "/observations/6/value",
+            "fraction": [
+              318,
+              10
+            ]
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_rank",
+      "question": "Come si ordinano le sette quote censuarie 2021?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_period_2020",
+      "question": "È consultabile la quota al riferimento 2020?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "periods": [
+              "2020"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_only_census_2021_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_period_2022",
+      "question": "È consultabile la quota al riferimento 2022?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "periods": [
+              "2022"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_only_census_2021_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_period_2026",
+      "question": "È consultabile la quota al riferimento 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_only_census_2021_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_period_2021-01-01",
+      "question": "È consultabile la quota al riferimento 2021-01-01?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "periods": [
+              "2021-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_only_census_2021_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_series",
+      "question": "È ammessa l’operazione temporale series sulla sola fotografia censuaria?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_single_census_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_absolute_change",
+      "question": "È ammessa l’operazione temporale absolute_change sulla sola fotografia censuaria?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_single_census_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_relative_change",
+      "question": "È ammessa l’operazione temporale relative_change sulla sola fotografia censuaria?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_single_census_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_percentage_points",
+      "question": "È ammessa l’operazione temporale percentage_points sulla sola fotografia censuaria?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_single_census_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_trend",
+      "question": "È ammessa l’operazione temporale trend sulla sola fotografia censuaria?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_single_census_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_weighted_ratio",
+      "question": "È ammessa weighted_ratio sulle quote senza componenti censuarie?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_census_components_not_frozen_no_pooling"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_anomaly",
+      "question": "È ammessa anomaly sulle quote senza componenti censuarie?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_benchmark_tuscany",
+      "question": "È riconciliato un confronto censuario verso tuscany?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_geographic_benchmark_not_reconciled"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_benchmark_italy",
+      "question": "È riconciliato un confronto censuario verso italy?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_geographic_benchmark_not_reconciled"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_benchmark_versilia",
+      "question": "È riconciliato un confronto censuario verso versilia?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_geographic_benchmark_not_reconciled"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_numerator",
+      "question": "La quota pubblicata consente la vista numerator?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "numerator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_denominator",
+      "question": "La quota pubblicata consente la vista denominator?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "denominator"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_nativeRatio",
+      "question": "La quota pubblicata consente la vista nativeRatio?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_normalized",
+      "question": "La quota pubblicata consente la vista normalized?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_sex:women",
+      "question": "La quota pubblicata consente la vista sex:women?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_study",
+      "question": "La quota pubblicata consente la vista study?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "study"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_dim_outsideVersilia",
+      "question": "La quota pubblicata consente la vista outsideVersilia?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality",
+            "dimension": "outsideVersilia"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_selfContainment",
+      "question": "È revisionata l’associazione fra quota censuaria e selfContainment?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          },
+          {
+            "metric": "selfContainment"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_selfContainment_reverse",
+      "question": "È revisionata l’associazione fra quota censuaria e selfContainment?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "selfContainment"
+          },
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_outboundCommuters",
+      "question": "È revisionata l’associazione fra quota censuaria e outboundCommuters?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          },
+          {
+            "metric": "outboundCommuters"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_outboundCommuters_reverse",
+      "question": "È revisionata l’associazione fra quota censuaria e outboundCommuters?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outboundCommuters"
+          },
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_outboundCommutersRate",
+      "question": "È revisionata l’associazione fra quota censuaria e outboundCommutersRate?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          },
+          {
+            "metric": "outboundCommutersRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_outboundCommutersRate_reverse",
+      "question": "È revisionata l’associazione fra quota censuaria e outboundCommutersRate?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outboundCommutersRate"
+          },
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_population",
+      "question": "È revisionata l’associazione fra quota censuaria e population?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_population_reverse",
+      "question": "È revisionata l’associazione fra quota censuaria e population?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_income",
+      "question": "È revisionata l’associazione fra quota censuaria e income?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "outsideMunicipality"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
+    },
+    {
+      "id": "outside_pair_income_reverse",
+      "question": "È revisionata l’associazione fra quota censuaria e income?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "outsideMunicipality"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "outside_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Sette quote censuarie pubblicate 2021 trascritte indipendentemente; Massarosa 62,9% diverso da 5568/7800×100 della matrice per lavoro. Componenti censuarie non congelate; nessuna inferenza causale."
     }
   ]
 }
