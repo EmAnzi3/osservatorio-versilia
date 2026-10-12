@@ -2,20 +2,20 @@
 
 ## Stato corrente — 12 ottobre 2026
 
-- Baseline dopo merge del proprietario #416: main `4ffad7e02808a912528d201d2d8f1cb5db3a3ae7`, albero `ae40ec50f9612f99e0f5c0fa875f8de5c114dd80`. Affluenza v49: 218/225 effettivi, 160/181 sorgente, sette residui; 3.188 PASS. Quick/Full locali completi e CI Quick→Full/A3 verdi sullo stesso albero; merge distinto dal deploy pubblico.
+- Baseline dopo merge del proprietario #418: main `404ca19430b724319aa35ce16fb8a2ac632fe088`, albero `baf4fc859164db307142c7960cfa8f53732d428c`. PNRR v50: 220/225 effettivi, 162/181 sorgente, cinque residui; 3.322 PASS. Quick/Full locali completi e CI Quick→Full/A3 verdi sullo stesso albero; pubblicazione riferita dal proprietario.
 - Catalogo effettivo rigenerato: 225 indicatori, 124 storici, 137 confronti, SHA `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; registro SHA `261304eb74262058ba42f38d0b4584a3038f184e3bc602ab8e0b5d9eb9d13d5c`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-pnrr-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-energy-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; dati/UI/asset/golden/workflow/Radar, 35 letture e due riepiloghi preservati.
 
 ## Lotto in verifica
 
-PNRR v50: due carrier, sette viste 7/7; fotografia regionale 25 settembre 2026 e residenti 1 gennaio 2026 distinti. 101 ID unici attribuiti al Comune attuatore, non alla localizzazione (sei Viareggio/Camaiore, uno Stazzema/Sarteano). 36.683.107,64 € e 78 progetti macrofase ReGiS 5; quattro collaudi avviati inclusi. Viareggio 18 ReGiS contro 19 monitoraggio. Importi censiti diversi da erogazione/spesa, macrofase diversa da collaudo/servizio operativo. Replay dei 101 record normalizzati, non intero CSV originario; vecchie percentuali perTown non consumate. Pooling soltanto nativo su componenti additive della stessa fotografia. Storie/variazioni/trend, benchmark, anomalie e coppie non revisionate rifiutati. Metodo `docs/A6_PNRR_ADAPTERS.md`.
+Energia v51: due carrier, sei viste. Carburanti self: cinque fotografie e 57 mesi; mediana puntuale distinta dalla media mensile delle mediane giornaliere. Giorni osservati espliciti, Stazzema null e copertura parziale solo con consenso; conteggi impianti non ricostruiti dal massimo dei conteggi per combustibile. Densità EV pubbliche arrotondate, anno 2026; identità punto/connettore e date native/denominatore restano non certificate, diagnosi A3 irrisolta. Nessuna aggregazione di mediane o retro-derivazione dei punti. Serie consultabili solo carburanti; variazioni/trend, pooling, benchmark, anomalie e coppie non revisionate rifiutati. Metodo `docs/A6_ENERGY_ADAPTERS.md`.
 
-49 osservazioni fisse, 28 componenti, quattro rapporti territoriali, puntatori e prove ostili. 134 domande nuove e 3.188 precedenti invariate; suite 3.322 PASS (1.820 calcoli, 1.502 rifiuti). Copertura derivata 220/225 effettivi e 162/181 sorgente, cinque residui. Report `reports/a6-pnrr/`; gate canonici da completare sul medesimo albero.
+21 ancore carburanti e sette EV, cinque coppie puntuali e tre mensili Massarosa; replay distinto 868 celle normalizzate incluse 124 null, non archivi/record originari. Provenienza/giorni/periodi e prove ostili. 117 nuove domande; 3.321 precedenti invariate, solo rifiuto legacy fuel_adapter_missing aggiornato al limite reale di copertura parziale, query e ID preservati. Suite 3.439 PASS (1.869 calcoli, 1.570 rifiuti). Copertura derivata 222/225 effettivi e 164/181 sorgente, tre residui. Report `reports/a6-energy/`; gate canonici da completare sul medesimo albero.
 
 ## Prossima azione
 
-Quick locale completo su clone pulito prima del push/apertura PR PNRR. Full locale completo sequenziale e CI Quick→Full/A3 con identità degli alberi prima della prontezza. Merge del proprietario. Browser locali mai in parallelo; log/ricevute nel fascicolo. Residui: economyActivityAtlas, fuelPrices, omiResidential, outsideMunicipality, evPoints. Chiusura metodologica distinta dal numero degli adapter.
+Quick locale completo su clone pulito prima del push/apertura PR energia. Full locale completo sequenziale e CI Quick→Full/A3 con identità degli alberi prima della prontezza. Merge del proprietario. Browser locali mai in parallelo; log/ricevute nel fascicolo. Residui: economyActivityAtlas, omiResidential, outsideMunicipality. Chiusura metodologica distinta dal numero degli adapter.
 
 ## Manutenzioni e monitor separati
 

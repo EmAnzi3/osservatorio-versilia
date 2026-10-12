@@ -202,3 +202,5 @@ scripts/semantic_query_turnout_adapters.py
 scripts/test_semantic_turnout_adapters.py
 scripts/semantic_query_pnrr_adapters.py
 scripts/test_semantic_pnrr_adapters.py
+scripts/semantic_query_energy_adapters.py
+scripts/test_semantic_energy_adapters.py

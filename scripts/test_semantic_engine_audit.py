@@ -31,9 +31,15 @@ def regressions(catalog_path):
     backlog={key for g in coverage['adapterBacklog'] for key in g['withoutAdapter']}
     assert backlog=={key for key,row in metrics.items() if row['engine']['status']=='not_supported'}
     # A structured carrier must not make an unsupported metric queryable.
-    fuel=metrics['fuelPrices'];assert fuel['engine']['status']=='not_supported'
-    assert all(p['status']=='not_supported' for p in fuel['probes'])
+    unreviewed=QueryEngine(catalog_path,layer='effective')
+    fixture='unreviewed_structured_fixture'
+    unreviewed._catalog['metrics'][fixture]=copy.deepcopy(catalog['metrics']['fuelPrices'])
+    unreviewed._catalog['metrics'][fixture]['meta']['key']=fixture
+    refusal=unreviewed.query(dict(operation='compare',selectors=[dict(metric=fixture,dimension='total')]))
+    assert refusal['status']=='not_computable' and 'adapter_not_implemented' in refusal['reasons']
+    fuel=metrics['fuelPrices'];assert fuel['engine']['status']=='adapter_present_query_preconditions_apply'
     assert any(d['state']=='ACQUIRED' for d in fuel['enrichment'])
+    assert any(p['operation']=='compare' and p['status']=='not_computable' and 'partial_coverage_requires_opt_in' in p['reasons'] for p in fuel['probes'])
     graph=connections(engine,coverage)
     assert {n['metric'] for n in graph['nodes']}==set(metrics)
     assert len(graph['nodes'])==len(metrics)
