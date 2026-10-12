@@ -17,7 +17,8 @@ GENERIC = re.compile(
     r"bonus e contributi attivi|prefetture - ministero dell.interno|"
     r"osservatorio sulla finanza e la contabilità degli enti locali|"
     r"strong interreg, strong regions, strong europe|"
-    r"come mettersi in comunicazione con il ministero .+)$", re.I)
+    r"come mettersi in comunicazione con il ministero .+|our topics|"
+    r"(?:ciao,\s*)?questa pagina . stata utile\?|progetti e finanziamenti per il pnrr)$", re.I)
 REOPENING = re.compile(r"prorog\w*|riapert\w*|nuova\s+finestra|"
                       r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|"
                       r"(?:aperto|apertura)\s+(?:il\s+|del\s+)?bando", re.I)
@@ -33,6 +34,23 @@ def classify_signal(item, reference_date=None):
         return None
     if GENERIC.fullmatch(title):
         return "catalog_or_navigation"
+    if (location.hostname == "www.artea.toscana.it" and path.startswith("/fondo/")
+            and re.fullmatch(r"FEASR-PSR \d{4}-\d{4} Fondo europeo agricolo per lo sviluppo rurale", title, re.I)):
+        return "catalog_or_navigation"
+    if (location.hostname == "cinea.ec.europa.eu" and path == "/programmes/life/clean-energy-transition_en"
+            and title == "LIFE Clean Energy Transition sub-programme"):
+        return "catalog_or_navigation"
+    if (location.hostname == "www.regione.toscana.it" and re.search(
+            r"^Posizioni di elevata qualificazione: avvisi interni per incarichi|"
+            r"^Domanda per l.esercizio temporaneo della professione infermieristica$", title, re.I)):
+        return "outside_municipal_scope"
+    if (location.hostname == "www.sport.governo.it" and re.search(
+            r"^Borse di studio per studenti universitari|^Sostegno alla maternità delle atlete$", title, re.I)):
+        return "outside_municipal_scope"
+    if (location.hostname == "prefettura.interno.gov.it" and re.search(
+            r"^Ordinanza prefettizia (?:divieto vetro|prescrizioni)|"
+            r"^Misure sulla movida, chiusi", title, re.I)):
+        return "administrative_update"
     # Never derive expiry from a decree year or a multi-year programme.
     # Only an explicitly archived route or matching annual archive heading
     # qualifies; a reopening or a still-current structured deadline wins.
@@ -53,15 +71,33 @@ def classify_signal(item, reference_date=None):
             "/tax-credit-musica-old", "/tax-credit-musica-old-old"})
     ):
         return "archive_page"
+    annual_family = re.search(r"(?:-|/)(20\d{2})$", path)
+    if (location.hostname == "www.famiglia.governo.it" and annual_family
+            and path.rsplit("/", 1)[-1].startswith("finanziamento-")
+            and int(annual_family[1]) < int(reference[:4])
+            and re.search(r"elenco dei comuni beneficiari", context, re.I)):
+        return "archive_page"
     if location.hostname == "prefettura.interno.gov.it":
         if "/amministrazione-trasparente/bandi-gara-e-contratti/" in path:
             return "procurement_notice"
         if re.search(r"\b(?:riunione|visita|firmati.*patti|sigla.*(?:patti|protocolli)|"
                      r"terminata.*istruttoria|graduatoria definitiva)\b", title, re.I):
             return "administrative_update"
+        if re.search(r"controlli (?:serali )?interforze ad alto impatto", context, re.I):
+            return "administrative_update"
     if (location.hostname == "www.interregeurope.eu" and "/news-events/events/" in path
             and re.search(r"\bstrong regions\b.*\bstrong europe\b", title, re.I)):
         return "informational_event"
+    if (location.hostname == "interreg-marittimo.eu"
+            and re.search(r"^Rendez-vous Express,.*help desk per la comunicazione dei progetti", title, re.I)):
+        return "informational_event"
+    if (location.hostname == "cultura.gov.it" and path == "/comunicati/avvisi"
+            and re.search(r"^Recovery: Franceschini,.*la cultura guiderà la ripartenza", title, re.I)):
+        return "administrative_update"
+    if (location.hostname == "www.lavoro.gov.it" and re.search(
+            r"^Nasce la .Rete Nazionale delle Città di Fondazione", title, re.I)
+            and re.search(r"firma dell.Accordo", context, re.I)):
+        return "administrative_update"
     from opportunity_review_actions import is_administrative_update
     if is_administrative_update(title, str(item.get("url") or "")):
         return "administrative_update"

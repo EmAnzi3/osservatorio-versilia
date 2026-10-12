@@ -404,6 +404,23 @@ def _test_discovery_noise():
         {"title": "Riunione per la videosorveglianza", "url": "https://prefettura.interno.gov.it/it/prefetture/asti/notizie/riunione"},
         {"title": "Fornitura pasti", "url": "https://prefettura.interno.gov.it/it/prefetture/pavia/amministrazione-trasparente/bandi-gara-e-contratti/pasti"},
         {"title": "Strong Interreg, strong regions, strong Europe", "url": "https://www.interregeurope.eu/"},
+        {"title": "Ciao, questa pagina è stata utile?", "url": "https://www.padigitale2026.gov.it/enti/comuni"},
+        {"title": "Our topics", "url": "https://www.interregeurope.eu/"},
+        {"title": "Progetti e finanziamenti per il PNRR", "url": "https://dait.interno.gov.it/finanza-locale"},
+        {"title": "FEASR-PSR 2023-2027 Fondo europeo agricolo per lo sviluppo rurale", "url": "https://www.artea.toscana.it/fondo/feasr-2023-2027/"},
+        {"title": "LIFE Clean Energy Transition sub-programme", "url": "https://cinea.ec.europa.eu/programmes/life/clean-energy-transition_en"},
+        {"title": "Posizioni di elevata qualificazione: avvisi interni per incarichi, ottobre 2026", "url": "https://www.regione.toscana.it/it/-/incarichi"},
+        {"title": "Domanda per l'esercizio temporaneo della professione infermieristica", "url": "https://www.regione.toscana.it/it/-/professione"},
+        {"title": "Borse di studio per studenti universitari con alti meriti sportivi", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/borse/"},
+        {"title": "Sostegno alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/atlete/"},
+        {"title": "Ordinanza Prefettizia Divieto Vetro AS Roma-Real Madrid 14/10/2026", "url": "https://prefettura.interno.gov.it/it/prefetture/roma/comunicazioni/ordinanza", "deadline_at": "2026-10-14"},
+        {"title": "Ordinanza Prefettizia prescrizioni AS Roma-Genoa CFC", "url": "https://prefettura.interno.gov.it/it/prefetture/roma/comunicazioni/ordinanza-2"},
+        {"title": "Misure sulla movida, chiusi tre minimarket dal Prefetto", "url": "https://prefettura.interno.gov.it/it/prefetture/torino/comunicati-stampa/chiusura"},
+        {"title": "GENOVA - CENTRO STORICO E DARSENA", "url": "https://prefettura.interno.gov.it/it/prefetture/genova/comunicazioni/genova-centro-storico-e-darsena", "summary": "Controlli serali interforze ad alto impatto"},
+        {"title": "Recovery: Franceschini, con oltre 6 miliardi la cultura guiderà la ripartenza del Paese", "url": "https://cultura.gov.it/comunicati/avvisi"},
+        {"title": "Rendez-vous Express, ecco il nuovo help desk per la comunicazione dei progetti Leggi di più", "url": "https://interreg-marittimo.eu/web/interreg21-27/-/help-desk"},
+        {"title": "Nasce la \"Rete Nazionale delle Città di Fondazione – CITTÀ DEL ’900\"", "url": "https://www.lavoro.gov.it/notizie/pagine/rete", "summary": "Firma dell’Accordo tra 11 Comuni"},
+        {"title": "Finanziamento centri estivi 2022", "url": "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/finanziamento-centri-estivi-2022/", "summary": "Elenco dei comuni beneficiari. Monitoraggio. Restituire le somme non utilizzate"},
     ]
     kept = [
         {"title": "Avviso pubblico musica jazz annualità 2027", "url": "https://ancitoscana.it/jazz/"},
@@ -418,6 +435,11 @@ def _test_discovery_noise():
         {"title": "Approvati progetti di videosorveglianza", "url": discarded[3]["url"],
          "summary": "Riapertura delle domande entro il 22 ottobre 2026"},
         {"title": "Launch of the new municipal funding call", "url": "https://www.interregeurope.eu/news-events/events/call-launch"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Elenco dei comuni beneficiari. Riapertura delle domande"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Elenco dei comuni beneficiari", "deadline_at": "2026-11-01"},
+        {"title": "Finanziamento centri estivi 2026", "url": "https://www.famiglia.governo.it/finanziamento-centri-estivi-2026/", "summary": "Elenco dei comuni beneficiari"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Programma pluriennale, verificare il nuovo avviso"},
+        {"title": "Avviso per contributi comunali alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/comuni/"},
     ]
     assert all(classify_signal(x, reference) for x in discarded)
     assert all(classify_signal(x, reference) is None for x in kept)
@@ -430,9 +452,9 @@ def _test_discovery_noise():
     assert payload["discoveryQueue"] == kept and payload["opportunities"] == public
     assert payload["counts"]["reviewInternal"] == len(payload["reviewQueue"]) == 1
     assert payload["archive"] == [{"title": "Storico"}] and payload["transportAudit"]["summary"]["failureCount"] == 8
-    assert len(payload["discoveryNoise"]) == 6
+    assert len(payload["discoveryNoise"]) == len(discarded)
     clean_review_queues(payload, reference)
-    assert len(payload["discoveryNoise"]) == 6, "Pulizia idempotente"
+    assert len(payload["discoveryNoise"]) == len(discarded), "Pulizia idempotente"
     payload = {"referenceDate": reference, "discoveryQueue": discarded + kept[:2], "opportunities": []}
     calls = []
     def loader(url):
@@ -450,7 +472,8 @@ def _test_discovery_noise():
         "error": "PDF scansionato"}]}]}
     assert all(not x["documents"] for x in build_actions(payload)["items"])
     assert not build_actions(payload)["counts"].get("human"), "Un allegato estraneo non deve generare lavoro manuale"
-    assert build_actions(payload)["discardedCount"] == 6
+    # The two Interreg homepage headings are one document reference.
+    assert build_actions(payload)["discardedCount"] == len(discarded) - 1
 
 
 if __name__ == "__main__":

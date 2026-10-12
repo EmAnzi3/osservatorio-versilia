@@ -186,8 +186,9 @@ def build_actions(payload):
             reason = {"catalog_or_navigation": "È una pagina di catalogo o navigazione, non una scheda di bando.",
                       "archive_page": "È una pagina di archivio, non una nuova finestra di candidatura verificata.",
                       "procurement_notice": "È una procedura di acquisto della Prefettura, non un contributo per i Comuni.",
-                      "administrative_update": "È un resoconto amministrativo, non una nuova candidatura.",
-                      "informational_event": "È la pagina di un evento informativo, non un bando."}[code]
+                      "administrative_update": "È una comunicazione amministrativa, senza nuova candidatura.",
+                      "outside_municipal_scope": "Riguarda incarichi interni o domande individuali, senza candidatura comunale.",
+                      "informational_event": "È un evento o servizio informativo, non un bando."}[code]
             action = "Esclusa dalla coda di verifica documentale; il monitoraggio della fonte resta attivo."
         elif lookup.get("assessment"):
             assessment = lookup["assessment"]
@@ -213,7 +214,7 @@ def build_actions(payload):
                      "representedBy": represented.get(key)})
     discarded = [x for x in rows if x["status"] == "expired" or x["reasonCode"] in {
         "outside_municipal_call", "reviewed_closed_catalogue", "administrative_update",
-        "catalog_or_navigation", "archive_page", "procurement_notice", "informational_event"}]
+        "catalog_or_navigation", "archive_page", "procurement_notice", "informational_event", "outside_municipal_scope"}]
     rows = [x for x in rows if x not in discarded]
     order = {"human": 0, "technical": 1, "retry": 2, "covered": 3, "expired": 4, "monitor": 5}
     rows.sort(key=lambda x: (order[x["status"]], x["deadline"] or "9999-99-99", x["title"].casefold()))
