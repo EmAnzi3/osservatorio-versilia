@@ -111,6 +111,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     library_regressions(catalog_path)
     from test_semantic_social_spending_adapters import regressions as social_regressions
     social_regressions(catalog_path)
+    from test_semantic_third_sector_adapters import regressions as third_sector_regressions
+    third_sector_regressions(catalog_path)
     from test_semantic_slow_mobility_adapters import regressions as slow_mobility_regressions
     slow_mobility_regressions(catalog_path)
     from test_semantic_road_network_adapters import regressions as road_network_regressions

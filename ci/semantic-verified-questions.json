@@ -86048,6 +86048,2522 @@
           "slow_mobility_shared_route_records_pair_not_reviewed"
         ]
       }
+    },
+    {
+      "id": "runts_total_046005",
+      "question": "RUNTS · total_046005",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              85000,
+              31763
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046013",
+      "question": "RUNTS · total_046013",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              24000,
+              6550
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046018",
+      "question": "RUNTS · total_046018",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53000,
+              21782
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046024",
+      "question": "RUNTS · total_046024",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              67000,
+              22678
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046028",
+      "question": "RUNTS · total_046028",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              50000,
+              12284
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046030",
+      "question": "RUNTS · total_046030",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              13000,
+              2783
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_046033",
+      "question": "RUNTS · total_046033",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              173000,
+              60680
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_rank",
+      "question": "RUNTS · total_rank",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046018"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_year_alias",
+      "question": "RUNTS · total_year_alias",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_series_refused",
+      "question": "RUNTS · total_series_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_absolute_change_refused",
+      "question": "RUNTS · total_absolute_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_relative_change_refused",
+      "question": "RUNTS · total_relative_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_percentage_points_refused",
+      "question": "RUNTS · total_percentage_points_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_trend_refused",
+      "question": "RUNTS · total_trend_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_period_2025_refused",
+      "question": "RUNTS · total_period_2025_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_period_2026-01-01_refused",
+      "question": "RUNTS · total_period_2026-01-01_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_period_2026-10-10_refused",
+      "question": "RUNTS · total_period_2026-10-10_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "periods": [
+              "2026-10-10"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_period_2027_refused",
+      "question": "RUNTS · total_period_2027_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_gap_tuscany_refused",
+      "question": "RUNTS · total_gap_tuscany_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_gap_italy_refused",
+      "question": "RUNTS · total_gap_italy_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_gap_versilia_refused",
+      "question": "RUNTS · total_gap_versilia_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_anomaly_refused",
+      "question": "RUNTS · total_anomaly_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_pair_False_refused",
+      "question": "RUNTS · total_pair_False_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_pair_True_refused",
+      "question": "RUNTS · total_pair_True_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_total_weighted_ratio_refused",
+      "question": "RUNTS · total_weighted_ratio_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_native_ratio_dimension_required"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046005",
+      "question": "RUNTS · registeredEntities_046005",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 85
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046013",
+      "question": "RUNTS · registeredEntities_046013",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 24
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046018",
+      "question": "RUNTS · registeredEntities_046018",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 53
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046024",
+      "question": "RUNTS · registeredEntities_046024",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 67
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046028",
+      "question": "RUNTS · registeredEntities_046028",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 50
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046030",
+      "question": "RUNTS · registeredEntities_046030",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 13
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_046033",
+      "question": "RUNTS · registeredEntities_046033",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 173
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_rank",
+      "question": "RUNTS · registeredEntities_rank",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_year_alias",
+      "question": "RUNTS · registeredEntities_year_alias",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_series_refused",
+      "question": "RUNTS · registeredEntities_series_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_absolute_change_refused",
+      "question": "RUNTS · registeredEntities_absolute_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_relative_change_refused",
+      "question": "RUNTS · registeredEntities_relative_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_percentage_points_refused",
+      "question": "RUNTS · registeredEntities_percentage_points_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_trend_refused",
+      "question": "RUNTS · registeredEntities_trend_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_period_2025_refused",
+      "question": "RUNTS · registeredEntities_period_2025_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_period_2026-01-01_refused",
+      "question": "RUNTS · registeredEntities_period_2026-01-01_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_period_2026-10-10_refused",
+      "question": "RUNTS · registeredEntities_period_2026-10-10_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "periods": [
+              "2026-10-10"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_period_2027_refused",
+      "question": "RUNTS · registeredEntities_period_2027_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_gap_tuscany_refused",
+      "question": "RUNTS · registeredEntities_gap_tuscany_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_gap_italy_refused",
+      "question": "RUNTS · registeredEntities_gap_italy_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_gap_versilia_refused",
+      "question": "RUNTS · registeredEntities_gap_versilia_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_anomaly_refused",
+      "question": "RUNTS · registeredEntities_anomaly_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_pair_False_refused",
+      "question": "RUNTS · registeredEntities_pair_False_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_pair_True_refused",
+      "question": "RUNTS · registeredEntities_pair_True_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_registeredEntities_weighted_ratio_refused",
+      "question": "RUNTS · registeredEntities_weighted_ratio_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "registeredEntities"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_native_ratio_dimension_required"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046005",
+      "question": "RUNTS · nativeRatio_046005",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              85000,
+              31763
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/0/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/0/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/0/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046013",
+      "question": "RUNTS · nativeRatio_046013",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              24000,
+              6550
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046018",
+      "question": "RUNTS · nativeRatio_046018",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              53000,
+              21782
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046024",
+      "question": "RUNTS · nativeRatio_046024",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046024"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              67000,
+              22678
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046028",
+      "question": "RUNTS · nativeRatio_046028",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046028"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              50000,
+              12284
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046030",
+      "question": "RUNTS · nativeRatio_046030",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              13000,
+              2783
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_046033",
+      "question": "RUNTS · nativeRatio_046033",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              173000,
+              60680
+            ],
+            "tolerance": 1e-12
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/nativeRecordReplayAvailable",
+            "value": false
+          },
+          {
+            "path": "/observations/1/numeratorPeriod",
+            "value": "2026-10-11"
+          },
+          {
+            "path": "/observations/1/denominatorPeriod",
+            "value": "2026-01-01"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_rank",
+      "question": "RUNTS · nativeRatio_rank",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046018"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_year_alias",
+      "question": "RUNTS · nativeRatio_year_alias",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-11"
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_series_refused",
+      "question": "RUNTS · nativeRatio_series_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_absolute_change_refused",
+      "question": "RUNTS · nativeRatio_absolute_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_relative_change_refused",
+      "question": "RUNTS · nativeRatio_relative_change_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_percentage_points_refused",
+      "question": "RUNTS · nativeRatio_percentage_points_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_trend_refused",
+      "question": "RUNTS · nativeRatio_trend_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_legal_seat_history_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_period_2025_refused",
+      "question": "RUNTS · nativeRatio_period_2025_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_period_2026-01-01_refused",
+      "question": "RUNTS · nativeRatio_period_2026-01-01_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2026-01-01"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_period_2026-10-10_refused",
+      "question": "RUNTS · nativeRatio_period_2026-10-10_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2026-10-10"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_period_2027_refused",
+      "question": "RUNTS · nativeRatio_period_2027_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2027"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_period_not_frozen"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_gap_tuscany_refused",
+      "question": "RUNTS · nativeRatio_gap_tuscany_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_gap_italy_refused",
+      "question": "RUNTS · nativeRatio_gap_italy_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "italy"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_gap_versilia_refused",
+      "question": "RUNTS · nativeRatio_gap_versilia_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "versilia"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_geographic_benchmark_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_anomaly_refused",
+      "question": "RUNTS · nativeRatio_anomaly_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_peer_anomaly_not_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_pair_False_refused",
+      "question": "RUNTS · nativeRatio_pair_False_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_nativeRatio_pair_True_refused",
+      "question": "RUNTS · nativeRatio_pair_True_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "third_sector_pair_not_jointly_reviewed"
+        ]
+      }
+    },
+    {
+      "id": "runts_pooled_all",
+      "question": "RUNTS · pooled_all",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              465000,
+              158520
+            ],
+            "tolerance": 1e-12
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_pooled_subset",
+      "question": "RUNTS · pooled_subset",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              138000,
+              53545
+            ],
+            "tolerance": 1e-12
+          }
+        ],
+        "warnings": [
+          "third_sector_legal_seat_not_activity_services_or_volunteer_count",
+          "third_sector_register_20261011_population_20260101_distinct_dates",
+          "third_sector_normalized_snapshot_not_original_excel_entity_replay",
+          "third_sector_all_registered_sections_not_all_local_associations",
+          "third_sector_no_reconstructed_2025_history_or_seat_transfers",
+          "third_sector_numeric_rank_not_quality_or_policy_priority"
+        ]
+      }
+    },
+    {
+      "id": "runts_dimension_volunteers_refused",
+      "question": "RUNTS · dimension_volunteers_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "volunteers"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "runts_dimension_employees_refused",
+      "question": "RUNTS · dimension_employees_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "employees"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "runts_dimension_sections_refused",
+      "question": "RUNTS · dimension_sections_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "sections"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "runts_dimension_normalized_refused",
+      "question": "RUNTS · dimension_normalized_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "normalized"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
+    },
+    {
+      "id": "runts_dimension_sex:women_refused",
+      "question": "RUNTS · dimension_sex:women_refused",
+      "reference": "Independent fixed counts and 1 January 2026 population anchors in test_semantic_third_sector_adapters.py; register 11 October 2026; normalized snapshot, no individual Excel replay; docs/A6_THIRD_SECTOR_ADAPTERS.md",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "thirdSector",
+            "dimension": "sex:women"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      }
     }
   ]
 }
