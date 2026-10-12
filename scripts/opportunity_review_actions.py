@@ -343,6 +343,27 @@ def build_actions(payload):
             "discardedCount": len(discarded), "discarded": discarded, "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
 
 
+def retain_pending_discovery(payload, previous, reference_date):
+    """A listing is not an acknowledgement that every old lead was resolved."""
+    pending = {normalized_url(x.get("url")) for x in build_actions({**previous, "referenceDate": reference_date})["items"]
+               if x["status"] in {"technical", "retry", "human"}}
+    queue = payload.setdefault("discoveryQueue", [])
+    current = {normalized_url(x.get("url")) for x in queue}
+    represented = {normalized_url(x.get(field)) for x in payload.get("opportunities") or []
+                   for field in ("url", "discovery_url") if x.get(field)}
+    retained = 0
+    for item in previous.get("discoveryQueue") or []:
+        key = normalized_url(item.get("url"))
+        if not key or key not in pending or key in current or key in represented:
+            continue
+        queue.append(dict(item, discovery_last_checked_at=item.get("discovery_last_checked_at")
+                          or previous.get("referenceDate")))
+        current.add(key)
+        retained += 1
+    payload.setdefault("counts", {})["discoveryReview"] = len(queue)
+    return retained
+
+
 def collect_document_links(payload, *, previous=None, budget=None, loader=None, max_pages=24, max_seconds=90):
     """Locate attachments before requesting human work, within the live budget.
 

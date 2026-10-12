@@ -78,6 +78,49 @@ class PromotionTests(unittest.TestCase):
         promotion.apply_promotions(missing,TODAY,loader=lambda u,d:by_url[u] if d else {"text":f'<a href="{receipts["reading-call"]["resolvedUrl"]}">Bando</a>'})
         self.assertEqual(missing["opportunities"],[])
 
+    def test_daily_preserves_unresolved_call_absent_from_current_listing(self):
+        import opportunity_daily_refresh_audit_fixed as daily
+        receipts = self.culture_receipts()
+        by_url = {r["resolvedUrl"]: r for r in receipts.values()}
+        page_url = "https://cultura.gov.it/comunicato/29352"
+        reopening_url = "https://ancitoscana.it/avviso-energia/"
+        covered_url = "https://ancitoscana.it/avviso-gia-pubblico/"
+        previous = {"referenceDate": "2026-10-09", "opportunities": [{"url": covered_url}],
+                    "discoveryQueue": [
+                        {"url": page_url, "source_id": "mic-generale", "title": "Bando Città che legge"},
+                        {"url": reopening_url, "title": "Bando energia", "deadline_at": "2026-10-01"},
+                        {"url": "https://example.test/closed", "title": "Avviso chiuso", "deadline_at": "2026-10-01"},
+                        {"url": "https://example.test/closed-yesterday", "title": "Avviso concluso ieri", "deadline_at": "2026-10-09"},
+                        {"url": "https://prefettura.interno.gov.it/it/chiusura", "title": "AVVISO: Chiusura temporanea degli uffici della Prefettura"},
+                        {"url": covered_url, "title": "Avviso già pubblico"}]}
+        previous["reviewDocumentLookup"] = [{"url": page_url, "status": "ok", "checkedAt": "2026-10-09",
+                                             "documents": [{"url": u, "status": "located"} for u in by_url]}]
+        fresh = {"url": reopening_url, "title": "Proroga bando energia", "deadline_at": "2026-11-30"}
+        result = {"opportunities": [], "discoveryQueue": [fresh]}
+        calls = []
+        def loader(url, document):
+            calls.append(url)
+            if not document:
+                raise TimeoutError("Ministry listing/detail inaccessible")
+            return by_url[url]
+        original = promotion.apply_promotions
+        def apply(payload, today, **kwargs):
+            carried = next(x for x in payload["discoveryQueue"] if x["url"] == page_url)
+            self.assertEqual(carried["discovery_last_checked_at"], "2026-10-09")
+            return original(payload, today, loader=loader, **kwargs)
+        with TemporaryDirectory() as directory:
+            path = Path(directory)/"previous.json"
+            path.write_text(json.dumps(previous))
+            with patch.object(daily, "_BASE_RUN_V04", return_value=result), \
+                 patch.object(daily.audit_promotions, "apply_complete_promotions"), \
+                 patch.object(promotion, "apply_promotions", side_effect=apply):
+                candidate = daily._run_v04_with_audit_promotions(TODAY, previous_path=path, payloads={})
+        self.assertEqual(candidate["counts"]["public"], 1)
+        self.assertIn("Città che legge", candidate["opportunities"][0]["title"])
+        self.assertEqual(candidate["discoveryQueue"], [fresh])
+        self.assertEqual(set(calls), {page_url, *by_url})
+        self.assertEqual(candidate["documentPromotion"]["checks"][0]["sourcePageFallback"], "recent_attachment_references")
+
     def test_inaccessible_national_pdf_uses_fresh_exact_protocol_copy(self):
         original="https://www.anci.it/wp-content/uploads/2026/10/m_pi.AOODGFIESD.REGISTRO-UFFICIALEU.0078918.01-10-2026.pdf"
         copy="https://anci.lombardia.it/documenti/24093-Avviso%20MIM%20n.%2078918%20del%201%20ottobre%202026.pdf"

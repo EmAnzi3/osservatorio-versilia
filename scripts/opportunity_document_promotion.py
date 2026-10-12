@@ -371,6 +371,10 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                         raise
                     check.update(sourcePageFallback="recent_attachment_references",sourcePageError=str(exc))
             urls = [url] if lead.get("document_promotion_version") or direct_pdf else cached_urls or pdf.pdf_links(page, url, limit=8)
+            # Qualification/criteria annexes support the call; they are not
+            # standalone notices, even when a listing orders them first.
+            urls.sort(key=lambda u: bool(urlsplit(u).hostname == "centroperillibro.cultura.gov.it"
+                                        and re.search(r"allegato-[ab]-", u, re.I)))
             check["documents"] = [{"url": u, "status": "not_checked" if trusted(u) else "untrusted_host"} for u in urls]
             from opportunity_review_actions import is_administrative_update, assessed_source, reviewed_source
             assessment = (assessed_source(page, url, today.isoformat()) or reviewed_source(page, url)) if page else None

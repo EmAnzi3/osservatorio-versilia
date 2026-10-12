@@ -21,6 +21,14 @@ Sport/Cultura Missione Comune restano da verificare: le pagine ICSC reperite pre
 
 Il rapporto completo resta negli artifact. Una pubblicazione senza variazioni pubbliche né verifiche umane non crea una issue; i blocchi continuano a essere notificati.
 
+## Prima verifica dal runner
+
+Il refresh della prima versione della PR #424 (run 38305062227, head `2ceb0ed0f8ab3eb15eec9c24e90cae66d89a1db6`) riconferma le due schede MIM tramite PDF regionali, ma resta a 60 schede. Il listing MiC va in timeout e la segnalazione CEPELL, pur presente nello snapshot verificato del 12 ottobre, non viene conservata per le fonti giornaliere. Le FAQ nazionali MIM vanno ancora in timeout.
+
+La correzione conserva le segnalazioni irrisolte prima dei filtri e della promozione documentale, distinguendole dalle fonti riconfermate live. Non ripristina scaduti, rumore o riferimenti già coperti; una segnalazione corrente prevale sulla versione precedente. La regressione usa il bando CEPELL integrale e i due allegati reali: anche con pagina MiC in timeout, i riferimenti già individuati consentono una nuova acquisizione completa dei tre PDF ufficiali. La pagina nazionale non è per questo dichiarata recuperata.
+
+Diagnostico del primo head: artifact 11772178622, SHA-256 `7b478272010928724df3194d5b046f9d4a5298cfde33bc2bd25bfb71e0fa4600`. I conteggi del replay precedente restano una verifica locale, non una promessa sul risultato live.
+
 ## Disposizioni delle 79 segnalazioni
 
 | Segnalazione | Esito |

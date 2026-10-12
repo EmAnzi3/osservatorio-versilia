@@ -212,10 +212,11 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     il gate continua a bloccare soltanto vere sparizioni.
     """
     result = _BASE_RUN_V04(today, **kwargs)
-    clean_review_queues(result, today.isoformat())
-    audit_promotions.apply_complete_promotions(result, today)
     previous_path = kwargs.get("previous_path")
     previous = core._load(previous_path) if previous_path and previous_path.exists() else {}
+    review_actions.retain_pending_discovery(result, previous, today.isoformat())
+    clean_review_queues(result, today.isoformat())
+    audit_promotions.apply_complete_promotions(result, today)
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
     if kwargs.get("payloads") is None:
         import opportunity_discovery_resilient as discovery
