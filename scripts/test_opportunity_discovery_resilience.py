@@ -701,6 +701,18 @@ def _test_live_transport_budget_and_journal() -> None:
             rows = [json.loads(line) for line in journal.read_text().splitlines()]
             assert [row["event"] for row in rows] == ["start", "end"] * 4
             assert rows[3]["status"] == "error" and rows[3]["sourceId"] == "official"
+            reserved = TransportBudget({}, endpoint_seconds=5, source_seconds=10, scan_seconds=20,
+                                       continuity_reserve_seconds=2, journal=Path(tmp) / "reserved.jsonl")
+            host = f"127.0.0.1:{server.server_port}"
+            reserved.host_spent[host] = 8.1  # discovery used its share on other endpoints
+            payload, diagnostics = reserved.fetch(base + "/another")
+            assert payload is None and diagnostics["budgetScope"] == "source"
+            payload, diagnostics = reserved.fetch(base + "/ok", kind="continuity")
+            assert "official notice" in payload and diagnostics["status"] == "ok"
+            assert reserved.source_seconds == 10 and reserved.host_spent[host] < 10
+            reserved.deadline = time.monotonic() - 1
+            payload, diagnostics = reserved.fetch(base + "/expired-scan", kind="continuity")
+            assert payload is None and diagnostics["budgetScope"] == "scan" and reserved.scan_exhausted
     finally:
         server.shutdown()
         server.server_close()
