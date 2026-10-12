@@ -98998,6 +98998,3740 @@
           "partial_coverage_requires_opt_in"
         ]
       }
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046005",
+      "question": "PNRR · pnrrFunding total 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              327051141,
+              3176300
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046013",
+      "question": "PNRR · pnrrFunding total 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              66882223,
+              327500
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046018",
+      "question": "PNRR · pnrrFunding total 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              298260407,
+              1089100
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046024",
+      "question": "PNRR · pnrrFunding total 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              473911899,
+              1133900
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046028",
+      "question": "PNRR · pnrrFunding total 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2994561,
+              14800
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046030",
+      "question": "PNRR · pnrrFunding total 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              102775117,
+              139150
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_046033",
+      "question": "PNRR · pnrrFunding total 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              151131471,
+              758500
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_rank",
+      "question": "PNRR · pnrrFunding total rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046005"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_series_refused",
+      "question": "PNRR · pnrrFunding total series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_absolute_change_refused",
+      "question": "PNRR · pnrrFunding total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_relative_change_refused",
+      "question": "PNRR · pnrrFunding total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_percentage_points_refused",
+      "question": "PNRR · pnrrFunding total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_trend_refused",
+      "question": "PNRR · pnrrFunding total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_benchmark_gap_refused",
+      "question": "PNRR · pnrrFunding total benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_anomaly_refused",
+      "question": "PNRR · pnrrFunding total anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_2025_refused",
+      "question": "PNRR · pnrrFunding total 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_location_dimension_refused",
+      "question": "PNRR · pnrrFunding total location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_total_pooling_refused",
+      "question": "PNRR · pnrrFunding total pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046005",
+      "question": "PNRR · pnrrFunding nativeRatio 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              327051141,
+              3176300
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046013",
+      "question": "PNRR · pnrrFunding nativeRatio 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              66882223,
+              327500
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046018",
+      "question": "PNRR · pnrrFunding nativeRatio 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              298260407,
+              1089100
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046024",
+      "question": "PNRR · pnrrFunding nativeRatio 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              473911899,
+              1133900
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046028",
+      "question": "PNRR · pnrrFunding nativeRatio 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2994561,
+              14800
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046030",
+      "question": "PNRR · pnrrFunding nativeRatio 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              102775117,
+              139150
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_046033",
+      "question": "PNRR · pnrrFunding nativeRatio 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              151131471,
+              758500
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_rank",
+      "question": "PNRR · pnrrFunding nativeRatio rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046005"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_series_refused",
+      "question": "PNRR · pnrrFunding nativeRatio series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_absolute_change_refused",
+      "question": "PNRR · pnrrFunding nativeRatio absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_relative_change_refused",
+      "question": "PNRR · pnrrFunding nativeRatio relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_percentage_points_refused",
+      "question": "PNRR · pnrrFunding nativeRatio percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_trend_refused",
+      "question": "PNRR · pnrrFunding nativeRatio trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_benchmark_gap_refused",
+      "question": "PNRR · pnrrFunding nativeRatio benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_anomaly_refused",
+      "question": "PNRR · pnrrFunding nativeRatio anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_2025_refused",
+      "question": "PNRR · pnrrFunding nativeRatio 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_nativeRatio_location_dimension_refused",
+      "question": "PNRR · pnrrFunding nativeRatio location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046005",
+      "question": "PNRR · pnrrFunding fundingEuro 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              327051141,
+              100
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046013",
+      "question": "PNRR · pnrrFunding fundingEuro 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              66882223,
+              50
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046018",
+      "question": "PNRR · pnrrFunding fundingEuro 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              298260407,
+              50
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046024",
+      "question": "PNRR · pnrrFunding fundingEuro 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              473911899,
+              50
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046028",
+      "question": "PNRR · pnrrFunding fundingEuro 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              248548563,
+              100
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046030",
+      "question": "PNRR · pnrrFunding fundingEuro 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              102775117,
+              50
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_046033",
+      "question": "PNRR · pnrrFunding fundingEuro 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              302262942,
+              25
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_rank",
+      "question": "PNRR · pnrrFunding fundingEuro rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_series_refused",
+      "question": "PNRR · pnrrFunding fundingEuro series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_absolute_change_refused",
+      "question": "PNRR · pnrrFunding fundingEuro absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_relative_change_refused",
+      "question": "PNRR · pnrrFunding fundingEuro relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_percentage_points_refused",
+      "question": "PNRR · pnrrFunding fundingEuro percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_trend_refused",
+      "question": "PNRR · pnrrFunding fundingEuro trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_benchmark_gap_refused",
+      "question": "PNRR · pnrrFunding fundingEuro benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_anomaly_refused",
+      "question": "PNRR · pnrrFunding fundingEuro anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_2025_refused",
+      "question": "PNRR · pnrrFunding fundingEuro 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_location_dimension_refused",
+      "question": "PNRR · pnrrFunding fundingEuro location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_fundingEuro_pooling_refused",
+      "question": "PNRR · pnrrFunding fundingEuro pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "fundingEuro"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_pooled_all",
+      "question": "PNRR · pnrrFunding pooled all?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              917077691,
+              3963000
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_pooled_subset",
+      "question": "PNRR · pnrrFunding pooled subset?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              184714391,
+              1070900
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_alias_2026",
+      "question": "PNRR · pnrrFunding alias 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrFunding",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              298260407,
+              1089100
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_pair_False_refused",
+      "question": "PNRR · pnrrFunding pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pnrrFunding"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrFunding_pair_True_refused",
+      "question": "PNRR · pnrrFunding pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "pnrrFunding"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046005",
+      "question": "PNRR · pnrrConcluded total 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              275,
+              4
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046013",
+      "question": "PNRR · pnrrConcluded total 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              200,
+              3
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046018",
+      "question": "PNRR · pnrrConcluded total 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1000,
+              11
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046024",
+      "question": "PNRR · pnrrConcluded total 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              250,
+              3
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046028",
+      "question": "PNRR · pnrrConcluded total 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              75,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046030",
+      "question": "PNRR · pnrrConcluded total 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1000,
+              11
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_046033",
+      "question": "PNRR · pnrrConcluded total 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              75,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_rank",
+      "question": "PNRR · pnrrConcluded total rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_series_refused",
+      "question": "PNRR · pnrrConcluded total series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_absolute_change_refused",
+      "question": "PNRR · pnrrConcluded total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_relative_change_refused",
+      "question": "PNRR · pnrrConcluded total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_percentage_points_refused",
+      "question": "PNRR · pnrrConcluded total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_trend_refused",
+      "question": "PNRR · pnrrConcluded total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_benchmark_gap_refused",
+      "question": "PNRR · pnrrConcluded total benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_anomaly_refused",
+      "question": "PNRR · pnrrConcluded total anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_2025_refused",
+      "question": "PNRR · pnrrConcluded total 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_location_dimension_refused",
+      "question": "PNRR · pnrrConcluded total location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_total_pooling_refused",
+      "question": "PNRR · pnrrConcluded total pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046005",
+      "question": "PNRR · pnrrConcluded nativeRatio 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              275,
+              4
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046013",
+      "question": "PNRR · pnrrConcluded nativeRatio 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              200,
+              3
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046018",
+      "question": "PNRR · pnrrConcluded nativeRatio 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1000,
+              11
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046024",
+      "question": "PNRR · pnrrConcluded nativeRatio 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              250,
+              3
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046028",
+      "question": "PNRR · pnrrConcluded nativeRatio 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              75,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046030",
+      "question": "PNRR · pnrrConcluded nativeRatio 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1000,
+              11
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_046033",
+      "question": "PNRR · pnrrConcluded nativeRatio 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              75,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_rank",
+      "question": "PNRR · pnrrConcluded nativeRatio rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046013"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_series_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_absolute_change_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_relative_change_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_percentage_points_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_trend_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_benchmark_gap_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_anomaly_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_2025_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_nativeRatio_location_dimension_refused",
+      "question": "PNRR · pnrrConcluded nativeRatio location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046005",
+      "question": "PNRR · pnrrConcluded concludedProjects 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              11,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046013",
+      "question": "PNRR · pnrrConcluded concludedProjects 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046018",
+      "question": "PNRR · pnrrConcluded concludedProjects 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046024",
+      "question": "PNRR · pnrrConcluded concludedProjects 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046028",
+      "question": "PNRR · pnrrConcluded concludedProjects 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              9,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046030",
+      "question": "PNRR · pnrrConcluded concludedProjects 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_046033",
+      "question": "PNRR · pnrrConcluded concludedProjects 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              18,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_rank",
+      "question": "PNRR · pnrrConcluded concludedProjects rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046028"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_series_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_absolute_change_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_relative_change_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_percentage_points_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_trend_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_benchmark_gap_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_anomaly_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_2025_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_location_dimension_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_concludedProjects_pooling_refused",
+      "question": "PNRR · pnrrConcluded concludedProjects pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "concludedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046005",
+      "question": "PNRR · pnrrConcluded selectedProjects 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              16,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046013",
+      "question": "PNRR · pnrrConcluded selectedProjects 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              15,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046018",
+      "question": "PNRR · pnrrConcluded selectedProjects 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              11,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046024",
+      "question": "PNRR · pnrrConcluded selectedProjects 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              12,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046028",
+      "question": "PNRR · pnrrConcluded selectedProjects 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              12,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046030",
+      "question": "PNRR · pnrrConcluded selectedProjects 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              11,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_046033",
+      "question": "PNRR · pnrrConcluded selectedProjects 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              24,
+              1
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2026-09-25"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_rank",
+      "question": "PNRR · pnrrConcluded selectedProjects rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_series_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_absolute_change_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_relative_change_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_percentage_points_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_trend_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_portfolio_history_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_benchmark_gap_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_anomaly_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_2025_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects 2025 refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_period_not_frozen"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_location_dimension_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects location dimension refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "locationProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "dimension_adapter_not_implemented"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_selectedProjects_pooling_refused",
+      "question": "PNRR · pnrrConcluded selectedProjects pooling refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "selectedProjects"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_native_ratio_dimension_required"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_pooled_all",
+      "question": "PNRR · pnrrConcluded pooled all?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046013",
+              "046018",
+              "046024",
+              "046028",
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              7800,
+              101
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_pooled_subset",
+      "question": "PNRR · pnrrConcluded pooled subset?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "nativeRatio",
+            "towns": [
+              "046005",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              700,
+              9
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_alias_2026",
+      "question": "PNRR · pnrrConcluded alias 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1000,
+              11
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_pair_False_refused",
+      "question": "PNRR · pnrrConcluded pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "pnrrConcluded"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "pnrr_pnrrConcluded_pair_True_refused",
+      "question": "PNRR · pnrrConcluded pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "pnrrConcluded"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "pnrr_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
     }
   ]
 }
