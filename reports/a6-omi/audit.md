@@ -1,8 +1,8 @@
 # A6 — audit completo del motore
 
-Catalogo SHA-256 `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; motore `789ff9fbda98182bf009884dbfaf01c744eb7dbae055c9e20758ad6a4017dc9f`.
+Catalogo SHA-256 `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; motore `bf6a5e8c2c9d78a17d98656bf1620f5c880e17d0a01323f6dc877ebbcbdf0361`.
 
-225 indicatori censiti; 221 con adapter e 4 senza adapter. 63 profili fonte.
+225 indicatori censiti; 223 con adapter e 2 senza adapter. 63 profili fonte.
 
 La presenza di dati A3 ACQUIRED non certifica interrogabilità. Ogni prova conserva la query esatta nel JSON. Le correlazioni richiedono una coppia scelta e motivata.
 
@@ -68,7 +68,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | environmentMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/environmentMissionExpenditurePerResident/v1 | total | 8 / 0 | 3 |
 | erpArrears | abitare | erp-lucca-annual-balance-sheet | 2024 | erp/erpArrears/total/v1 | total, nativeRatio | 7 / 0 | 3 |
 | essentialServicesAccessibility | ambiente | istat-fragility-2022 | 2019 | fragility/essentialServicesAccessibility/v1 | total | 4 / 0 | 2 |
-| evPoints | mobilita | pun-continuous | 2026 | adapter_not_implemented | — | 0 / 0 | 0 |
+| evPoints | mobilita | pun-continuous | 2026 | energy/ev_published_density/v1 | total | 2 / 0 | 0 |
 | extractivePlanning | ambiente | regione-toscana-prc-annual | PRC vigente · variante 2025 | extractive/extractivePlanning/g_ha/v1 | total, view:g_ha, view:g_pct, view:g_n, view:gp_ha, view:gp_pct, view:gp_n, view:acc_ha, view:acc_pct, view:acc_n, view:mos, view:pmos, view:sed, share:g, share:gp, share:acc | 35 / 0 | 1 |
 | extractiveProduction | ambiente | regione-toscana-prc-annual | 2025 | extractive/extractiveProduction/total/v1 | total | 2 / 1 | 1 |
 | extractiveSites | ambiente | regione-toscana-rtcave-continuous | 2 settembre 2026 | extractive/extractiveSites/total/v1 | total, view:state_active, view:state_inactive, view:state_suspended, view:state_expired, view:state_restoration, view:state_closed, view:state_nd, view:type_ordinary, view:type_restoreworks, view:type_recovery, view:prod_ornamental, view:prod_industrial, view:prod_construction | 28 / 0 | 2 |
@@ -86,7 +86,7 @@ Una prova può essere rifiutata anche con adapter presente: per esempio un trend
 | ftthCoverageDesi | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthCoverageDesi/v1 | total | 4 / 0 | 2 |
 | ftthReachedHouseholds | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthReachedHouseholds/v1 | total | 0 / 2 | 0 |
 | ftthUnreachedHouseholds | mobilita | agcom-quarterly | 6 luglio 2026 | connectivity/ftthUnreachedHouseholds/v1 | total | 0 / 2 | 0 |
-| fuelPrices | mobilita | mimit-fuel-daily | 2026-10-10 | adapter_not_implemented | — | 0 / 0 | 3 |
+| fuelPrices | mobilita | mimit-fuel-daily | 2026-10-10 | energy/fuel/daily/benzina/v1 | total, fuel:benzina, fuel:gasolio, monthly:benzina, monthly:gasolio | 5 / 10 | 3 |
 | generalAdministrationMissionExpenditurePerResident | bilanci | openbdap-annual | 2025 | rgs-finance/generalAdministrationMissionExpenditurePerResident/v1 | total | 7 / 0 | 1 |
 | grossOperatingMargin | economia | istat-business-annual | 2023 | istat-business/frame-sbs/v1 | total, sector:industry, sector:services | 23 / 0 | 5 |
 | heartFailurePrevalence | salute | ars-toscana-mixed | 2025 | ars-272-reviewed/v1 | total, sex:men, sex:women, age:16-44\|total, age:16-44\|sex:men, age:16-44\|sex:women, age:45-64\|total, age:45-64\|sex:men, age:45-64\|sex:women, age:65-84\|total, age:65-84\|sex:men, age:65-84\|sex:women, age:85+\|total, age:85+\|sex:men, age:85+\|sex:women | 79 / 0 | 8 |
@@ -342,8 +342,6 @@ I gruppi per tema/fonte coprono tutti i nodi, senza generare migliaia di pseudo-
 | Profilo | Indicatori senza adapter | Dimensioni A3 già acquisite su questi indicatori |
 |---|---|---|
 | regione-toscana-infocamere-annual | 1 | 6 |
-| mimit-fuel-daily | 1 | 3 |
 | istat-commuting-irregular | 1 | 0 |
-| pun-continuous | 1 | 0 |
 
 Ordine diagnostico per riuso di dati acquisiti, non priorità politica o stima di costo. Le lacune di acquisizione A3 restano distinte dalle lacune del motore. Nessuna nuova acquisizione, UI o modifica dei dati.

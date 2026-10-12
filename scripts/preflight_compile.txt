@@ -198,9 +198,12 @@ scripts/semantic_query_slow_mobility_adapters.py
 scripts/test_semantic_slow_mobility_adapters.py
 scripts/semantic_query_third_sector_adapters.py
 scripts/test_semantic_third_sector_adapters.py
+scripts/opportunity_discovery_noise.py
 scripts/semantic_query_turnout_adapters.py
 scripts/test_semantic_turnout_adapters.py
 scripts/semantic_query_pnrr_adapters.py
 scripts/test_semantic_pnrr_adapters.py
 scripts/semantic_query_omi_adapters.py
 scripts/test_semantic_omi_adapters.py
+scripts/semantic_query_energy_adapters.py
+scripts/test_semantic_energy_adapters.py

@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
   "catalogSha256": "d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278",
-  "engineSha256": "789ff9fbda98182bf009884dbfaf01c744eb7dbae055c9e20758ad6a4017dc9f",
+  "engineSha256": "bf6a5e8c2c9d78a17d98656bf1620f5c880e17d0a01323f6dc877ebbcbdf0361",
   "adapterImplementationHashes": {
     "adapterImplementationSha256": "988d1d32a0a754c0707a8c7b0acc4c3af1218bb7548ea824fd2ab6df71a1ff52",
+    "energyAdapterSha256": "fcde594889fe625ca24c5732e6970e7db1e785db3e1b827c4fd73199c99de5eb",
     "pnrrAdapterSha256": "ab9f8d2aa1d5de625e66ee59d5d9abaf7e6ebf961551280a6c7fb7f1f0327728",
     "turnoutAdapterSha256": "bb448bf1c9c2e14bb073f4f762c4a9576598ba04c54f797082a98f732e10266a",
     "thirdSectorAdapterSha256": "b51d20ee878f726d4d329c34746e9f0ef210f28d5b4c129b8f2be5268750ade7",
@@ -53,12 +54,12 @@
     "arsAdapterSha256": "6b13af3d84f9313adf9aff0b39f6338fc2a227981053ca7748d54d348b47ef6f",
     "territorialAdapterSha256": "403f4143cf5557763af3b90f0b122afe33ee6db8d3270a3299e51e482576b465"
   },
-  "questionManifestSha256": "185eef97b9c4c81f05c4d8a9197db78d2ab2a38d294dd1e8cb1c02844d1d7ba7",
+  "questionManifestSha256": "ae4d98a6cf4678bc9958bae94afc993fd2d81716cf4a58316594e58e5f4edcc3",
   "correctnessSuite": {
-    "questions": 3385,
-    "passed": 3385,
-    "computed": 1844,
-    "refused": 1541
+    "questions": 3502,
+    "passed": 3502,
+    "computed": 1893,
+    "refused": 1609
   },
   "environment": {
     "python": "3.12.14",
@@ -72,10 +73,10 @@
   },
   "engineConstruction": {
     "samples": 5,
-    "minMs": 123.286852,
-    "medianMs": 130.539344,
-    "p95Ms": 138.4546062,
-    "maxMs": 140.047013
+    "minMs": 113.607416,
+    "medianMs": 118.755995,
+    "p95Ms": 214.91582339999997,
+    "maxMs": 238.418679
   },
   "workloads": [
     {
@@ -96,17 +97,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.78093,
-        "medianMs": 1.859999,
-        "p95Ms": 2.125538,
-        "maxMs": 2.181109
+        "minMs": 1.77392,
+        "medianMs": 1.974874,
+        "p95Ms": 1.9940366,
+        "maxMs": 1.998249
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.365302,
-        "medianMs": 1.437576,
-        "p95Ms": 1.6408455,
-        "maxMs": 2.128875
+        "minMs": 1.392614,
+        "medianMs": 1.426555,
+        "p95Ms": 1.49479015,
+        "maxMs": 2.031409
       }
     },
     {
@@ -127,17 +128,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.805697,
-        "medianMs": 1.976395,
-        "p95Ms": 2.322984,
-        "maxMs": 2.332262
+        "minMs": 1.787029,
+        "medianMs": 1.931898,
+        "p95Ms": 2.0094032,
+        "maxMs": 2.027242
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.359904,
-        "medianMs": 1.48333,
-        "p95Ms": 2.2024880499999995,
-        "maxMs": 2.395908
+        "minMs": 1.385623,
+        "medianMs": 1.4160495000000002,
+        "p95Ms": 1.5514759,
+        "maxMs": 2.077919
       }
     },
     {
@@ -154,17 +155,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.566225,
-        "medianMs": 2.629251,
-        "p95Ms": 3.1887098,
-        "maxMs": 3.31054
+        "minMs": 2.597353,
+        "medianMs": 2.638566,
+        "p95Ms": 2.7112502000000003,
+        "maxMs": 2.712508
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.992308,
-        "medianMs": 2.354791,
-        "p95Ms": 3.282801599999999,
-        "maxMs": 4.775482
+        "minMs": 2.0457,
+        "medianMs": 2.0967475,
+        "p95Ms": 2.36541335,
+        "maxMs": 2.745478
       }
     },
     {
@@ -181,17 +182,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.371451,
-        "medianMs": 1.433825,
-        "p95Ms": 1.5386138,
-        "maxMs": 1.547958
+        "minMs": 1.462118,
+        "medianMs": 1.497853,
+        "p95Ms": 1.5187346,
+        "maxMs": 1.519576
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.33783,
-        "medianMs": 1.3782265,
-        "p95Ms": 1.5391168,
-        "maxMs": 1.949844
+        "minMs": 0.990826,
+        "medianMs": 1.0247885,
+        "p95Ms": 1.07371405,
+        "maxMs": 1.388468
       }
     },
     {
@@ -212,17 +213,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.713148,
-        "medianMs": 3.969765,
-        "p95Ms": 4.2062506,
-        "maxMs": 4.242808
+        "minMs": 3.605527,
+        "medianMs": 3.738908,
+        "p95Ms": 3.7862332,
+        "maxMs": 3.791487
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.594888,
-        "medianMs": 2.7918615,
-        "p95Ms": 3.1652811499999998,
-        "maxMs": 3.414096
+        "minMs": 2.599617,
+        "medianMs": 2.657134,
+        "p95Ms": 2.7577888,
+        "maxMs": 3.384653
       }
     },
     {
@@ -239,17 +240,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 8.047764,
-        "medianMs": 11.447988,
-        "p95Ms": 11.6572258,
-        "maxMs": 11.703794
+        "minMs": 7.231825,
+        "medianMs": 7.344104,
+        "p95Ms": 7.4979286,
+        "maxMs": 7.518818
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 6.349339,
-        "medianMs": 7.043416499999999,
-        "p95Ms": 10.480492749999998,
-        "maxMs": 10.875343
+        "minMs": 6.264814,
+        "medianMs": 6.3648305,
+        "p95Ms": 14.584797799999965,
+        "maxMs": 101.00612
       }
     },
     {
@@ -275,17 +276,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 7.457872,
-        "medianMs": 7.698125,
-        "p95Ms": 8.529880799999999,
-        "maxMs": 8.667829
+        "minMs": 7.263082,
+        "medianMs": 7.447782,
+        "p95Ms": 7.4834194,
+        "maxMs": 7.483616
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 6.398443,
-        "medianMs": 7.582996,
-        "p95Ms": 10.7176511,
-        "maxMs": 10.868443
+        "minMs": 6.415161,
+        "medianMs": 6.507645999999999,
+        "p95Ms": 6.8162947,
+        "maxMs": 7.065574
       }
     },
     {
@@ -306,17 +307,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.463621,
-        "medianMs": 3.612425,
-        "p95Ms": 5.1362664,
-        "maxMs": 5.465854
+        "minMs": 3.64772,
+        "medianMs": 3.651867,
+        "p95Ms": 3.9698676,
+        "maxMs": 4.03106
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.567608,
-        "medianMs": 2.842803,
-        "p95Ms": 3.21416945,
-        "maxMs": 3.861041
+        "minMs": 2.651135,
+        "medianMs": 2.893446,
+        "p95Ms": 4.572186999999997,
+        "maxMs": 10.168637
       }
     },
     {
@@ -337,17 +338,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.467607,
-        "medianMs": 3.487427,
-        "p95Ms": 3.6074152,
-        "maxMs": 3.626526
+        "minMs": 3.790877,
+        "medianMs": 4.145082,
+        "p95Ms": 5.343102,
+        "maxMs": 5.562894
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.779919,
-        "medianMs": 3.1448745000000002,
-        "p95Ms": 3.9661861,
-        "maxMs": 4.45656
+        "minMs": 2.652387,
+        "medianMs": 3.148727,
+        "p95Ms": 4.130208799999999,
+        "maxMs": 4.238693
       }
     },
     {
@@ -373,17 +374,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 7.15119,
-        "medianMs": 7.571304,
-        "p95Ms": 8.194732,
-        "maxMs": 8.29661
+        "minMs": 7.887706,
+        "medianMs": 9.507203,
+        "p95Ms": 12.421983800000001,
+        "maxMs": 12.459072
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 6.164359,
-        "medianMs": 6.5621145,
-        "p95Ms": 7.118777099999999,
-        "maxMs": 7.381287
+        "minMs": 6.356713,
+        "medianMs": 7.0274515,
+        "p95Ms": 10.803584699999996,
+        "maxMs": 11.715649
       }
     },
     {
@@ -400,17 +401,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.266793,
-        "medianMs": 1.293233,
-        "p95Ms": 1.677992,
-        "maxMs": 1.759387
+        "minMs": 1.350871,
+        "medianMs": 1.4168,
+        "p95Ms": 1.4630143999999998,
+        "maxMs": 1.465334
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.91398,
-        "medianMs": 0.945823,
-        "p95Ms": 1.0799899999999998,
-        "maxMs": 1.356358
+        "minMs": 1.372193,
+        "medianMs": 1.421743,
+        "p95Ms": 1.47905315,
+        "maxMs": 1.991147
       }
     },
     {
@@ -434,17 +435,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 10.0717,
-        "medianMs": 10.735803,
-        "p95Ms": 16.082357000000002,
-        "maxMs": 16.281638
+        "minMs": 10.671702,
+        "medianMs": 11.588171,
+        "p95Ms": 14.3263552,
+        "maxMs": 14.99266
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 7.85379,
-        "medianMs": 8.4014675,
-        "p95Ms": 8.752637250000001,
-        "maxMs": 9.527598
+        "minMs": 7.902117,
+        "medianMs": 13.2829115,
+        "p95Ms": 14.0106631,
+        "maxMs": 14.168605
       }
     },
     {
@@ -461,17 +462,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 30.589025,
-        "medianMs": 31.051553,
-        "p95Ms": 39.07157,
-        "maxMs": 40.130383
+        "minMs": 30.639957,
+        "medianMs": 31.79977,
+        "p95Ms": 36.25067,
+        "maxMs": 36.974928
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 28.422673,
-        "medianMs": 31.019444999999997,
-        "p95Ms": 39.5199924,
-        "maxMs": 46.478771
+        "minMs": 28.49688,
+        "medianMs": 39.6405595,
+        "p95Ms": 49.0404936,
+        "maxMs": 52.330184
       }
     },
     {
@@ -488,17 +489,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 39.211926,
-        "medianMs": 45.962301,
-        "p95Ms": 49.7377206,
-        "maxMs": 50.249124
+        "minMs": 33.981816,
+        "medianMs": 41.277933,
+        "p95Ms": 51.7524104,
+        "maxMs": 51.794466
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 28.542704,
-        "medianMs": 37.577228000000005,
-        "p95Ms": 48.16316,
-        "maxMs": 48.608347
+        "minMs": 32.677154,
+        "medianMs": 46.9238085,
+        "p95Ms": 49.25603345,
+        "maxMs": 49.54131
       }
     },
     {
@@ -518,17 +519,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 71.718076,
-        "medianMs": 73.615152,
-        "p95Ms": 96.4765736,
-        "maxMs": 101.629217
+        "minMs": 121.846558,
+        "medianMs": 124.277651,
+        "p95Ms": 133.3457776,
+        "maxMs": 135.282415
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 70.062336,
-        "medianMs": 73.904538,
-        "p95Ms": 84.61515004999998,
-        "maxMs": 92.694565
+        "minMs": 91.007336,
+        "medianMs": 116.7229255,
+        "p95Ms": 119.8945717,
+        "maxMs": 122.257895
       }
     },
     {
@@ -545,17 +546,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 30.27489,
-        "medianMs": 34.725722,
-        "p95Ms": 48.2405232,
-        "maxMs": 49.591872
+        "minMs": 33.383982,
+        "medianMs": 43.82228,
+        "p95Ms": 57.2716946,
+        "maxMs": 58.849342
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 28.380299,
-        "medianMs": 30.5176575,
-        "p95Ms": 45.73356335,
-        "maxMs": 61.126363
+        "minMs": 30.821128,
+        "medianMs": 45.268913999999995,
+        "p95Ms": 49.0411301,
+        "maxMs": 74.244077
       }
     },
     {
@@ -579,17 +580,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 12.058591,
-        "medianMs": 17.561641,
-        "p95Ms": 23.039570599999998,
-        "maxMs": 23.282071
+        "minMs": 10.802839,
+        "medianMs": 16.863064,
+        "p95Ms": 25.266592999999997,
+        "maxMs": 27.249124
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 7.976516,
-        "medianMs": 8.534219,
-        "p95Ms": 9.5653841,
-        "maxMs": 11.428204
+        "minMs": 8.580822,
+        "medianMs": 13.578586999999999,
+        "p95Ms": 14.260716799999999,
+        "maxMs": 14.500304
       }
     },
     {
@@ -609,17 +610,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.4837,
-        "medianMs": 1.56977,
-        "p95Ms": 1.675248,
-        "maxMs": 1.675971
+        "minMs": 1.550392,
+        "medianMs": 1.897927,
+        "p95Ms": 1.9562938,
+        "maxMs": 1.966271
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.928452,
-        "medianMs": 0.9769805,
-        "p95Ms": 1.1951929999999997,
-        "maxMs": 1.586326
+        "minMs": 0.945258,
+        "medianMs": 1.273644,
+        "p95Ms": 1.8247990499999989,
+        "maxMs": 3.153558
       }
     },
     {
@@ -636,17 +637,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.49002,
-        "medianMs": 1.803634,
-        "p95Ms": 2.3815728,
-        "maxMs": 2.493706
+        "minMs": 1.843895,
+        "medianMs": 1.903436,
+        "p95Ms": 2.0588165999999997,
+        "maxMs": 2.090178
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.239342,
-        "medianMs": 1.2857515,
-        "p95Ms": 1.556032,
-        "maxMs": 1.56932
+        "minMs": 1.246012,
+        "medianMs": 1.365538,
+        "p95Ms": 1.7547715499999992,
+        "maxMs": 2.259173
       }
     },
     {
@@ -667,17 +668,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.245922,
-        "medianMs": 2.307766,
-        "p95Ms": 2.5830248,
-        "maxMs": 2.607598
+        "minMs": 2.448428,
+        "medianMs": 2.633979,
+        "p95Ms": 2.843645,
+        "maxMs": 2.89337
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.227424,
-        "medianMs": 1.4859235000000002,
-        "p95Ms": 3.473729199999995,
-        "maxMs": 9.692949
+        "minMs": 1.649912,
+        "medianMs": 1.730469,
+        "p95Ms": 2.250837599999999,
+        "maxMs": 2.367276
       }
     },
     {
@@ -694,17 +695,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.250579,
-        "medianMs": 2.551634,
-        "p95Ms": 8.206122599999999,
-        "maxMs": 9.314937
+        "minMs": 2.979871,
+        "medianMs": 3.029666,
+        "p95Ms": 3.1410869999999997,
+        "maxMs": 3.14436
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.56253,
-        "medianMs": 1.8308205,
-        "p95Ms": 3.3619404999999998,
-        "maxMs": 3.454567
+        "minMs": 1.594358,
+        "medianMs": 2.444708,
+        "p95Ms": 2.5240134999999997,
+        "maxMs": 3.010528
       }
     },
     {
@@ -725,17 +726,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.064488,
-        "medianMs": 2.16579,
-        "p95Ms": 2.4816034,
-        "maxMs": 2.548929
+        "minMs": 2.118857,
+        "medianMs": 2.504279,
+        "p95Ms": 2.6655901999999996,
+        "maxMs": 2.702463
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.299683,
-        "medianMs": 2.0088885000000003,
-        "p95Ms": 3.0334976999999985,
-        "maxMs": 3.300725
+        "minMs": 1.479732,
+        "medianMs": 1.612743,
+        "p95Ms": 1.9060972999999994,
+        "maxMs": 2.353602
       }
     },
     {
@@ -752,17 +753,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.614048,
-        "medianMs": 2.84722,
-        "p95Ms": 3.2848804,
-        "maxMs": 3.295797
+        "minMs": 2.686062,
+        "medianMs": 3.161115,
+        "p95Ms": 3.3362678,
+        "maxMs": 3.359579
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.636311,
-        "medianMs": 2.1504175,
-        "p95Ms": 3.2165679,
-        "maxMs": 4.295837
+        "minMs": 2.287616,
+        "medianMs": 2.562506,
+        "p95Ms": 3.79553035,
+        "maxMs": 4.690215
       }
     },
     {
@@ -783,17 +784,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.795121,
-        "medianMs": 2.187994,
-        "p95Ms": 2.5732885999999997,
-        "maxMs": 2.648891
+        "minMs": 1.94618,
+        "medianMs": 2.552165,
+        "p95Ms": 2.593678,
+        "maxMs": 2.60163
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.167914,
-        "medianMs": 1.2102925,
-        "p95Ms": 1.44384455,
-        "maxMs": 1.833559
+        "minMs": 1.695651,
+        "medianMs": 1.8259984999999999,
+        "p95Ms": 2.0184490499999996,
+        "maxMs": 2.586577
       }
     },
     {
@@ -810,17 +811,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.332172,
-        "medianMs": 1.597743,
-        "p95Ms": 1.9265356,
-        "maxMs": 1.97308
+        "minMs": 1.625495,
+        "medianMs": 2.024973,
+        "p95Ms": 2.225638,
+        "maxMs": 2.272643
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.956664,
-        "medianMs": 1.2823915000000001,
-        "p95Ms": 1.47935065,
-        "maxMs": 1.851115
+        "minMs": 1.253934,
+        "medianMs": 1.343194,
+        "p95Ms": 1.5224933499999997,
+        "maxMs": 1.989325
       }
     },
     {
@@ -841,17 +842,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.480747,
-        "medianMs": 4.674089,
-        "p95Ms": 5.875976,
-        "maxMs": 5.991208
+        "minMs": 5.442011,
+        "medianMs": 6.506049,
+        "p95Ms": 6.6092546,
+        "maxMs": 6.611989
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.204879,
-        "medianMs": 2.4722385,
-        "p95Ms": 3.17395495,
-        "maxMs": 3.37705
+        "minMs": 2.557954,
+        "medianMs": 3.4076779999999998,
+        "p95Ms": 4.0061801,
+        "maxMs": 4.260076
       }
     },
     {
@@ -872,17 +873,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.569361,
-        "medianMs": 4.89361,
-        "p95Ms": 5.732445,
-        "maxMs": 5.812578
+        "minMs": 6.244113,
+        "medianMs": 6.404695,
+        "p95Ms": 6.880503999999999,
+        "maxMs": 6.971181
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.292442,
-        "medianMs": 2.789838,
-        "p95Ms": 4.608281949999999,
-        "maxMs": 4.797205
+        "minMs": 3.493757,
+        "medianMs": 3.5494765,
+        "p95Ms": 3.763466999999999,
+        "maxMs": 4.009877
       }
     },
     {
@@ -903,17 +904,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.516991,
-        "medianMs": 4.994453,
-        "p95Ms": 7.279772199999999,
-        "maxMs": 7.676123
+        "minMs": 6.223566,
+        "medianMs": 6.457285,
+        "p95Ms": 6.975018799999999,
+        "maxMs": 7.052038
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.520336,
-        "medianMs": 2.9200299999999997,
-        "p95Ms": 3.8842672499999993,
-        "maxMs": 4.063506
+        "minMs": 2.235696,
+        "medianMs": 3.4261685,
+        "p95Ms": 4.29507605,
+        "maxMs": 4.443649
       }
     },
     {
@@ -934,17 +935,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.661259,
-        "medianMs": 5.290179,
-        "p95Ms": 6.6457277999999995,
-        "maxMs": 6.82731
+        "minMs": 4.495317,
+        "medianMs": 6.225299,
+        "p95Ms": 6.4305394,
+        "maxMs": 6.431411
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 3.063186,
-        "medianMs": 3.3562585,
-        "p95Ms": 3.8017084499999996,
-        "maxMs": 4.065299
+        "minMs": 2.203958,
+        "medianMs": 2.2735325,
+        "p95Ms": 2.6942750999999996,
+        "maxMs": 3.016904
       }
     },
     {
@@ -965,17 +966,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.541588,
-        "medianMs": 4.744294,
-        "p95Ms": 5.944142599999999,
-        "maxMs": 6.235847
+        "minMs": 4.561788,
+        "medianMs": 4.831184,
+        "p95Ms": 6.422661000000001,
+        "maxMs": 6.455136
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.137117,
-        "medianMs": 2.2403079999999997,
-        "p95Ms": 2.5544910499999993,
-        "maxMs": 3.041393
+        "minMs": 2.193461,
+        "medianMs": 2.384595,
+        "p95Ms": 3.114763999999999,
+        "maxMs": 3.61603
       }
     },
     {
@@ -992,17 +993,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 6.831908,
-        "medianMs": 7.870191,
-        "p95Ms": 10.48486,
-        "maxMs": 10.992751
+        "minMs": 7.781508,
+        "medianMs": 8.406018,
+        "p95Ms": 10.5828702,
+        "maxMs": 10.943441
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 4.756964,
-        "medianMs": 5.365398,
-        "p95Ms": 6.24909825,
-        "maxMs": 6.670644
+        "minMs": 6.257272,
+        "medianMs": 8.023134500000001,
+        "p95Ms": 8.24235525,
+        "maxMs": 8.536975
       }
     },
     {
@@ -1019,17 +1020,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.376539,
-        "medianMs": 1.461437,
-        "p95Ms": 1.6170278,
-        "maxMs": 1.624623
+        "minMs": 1.78714,
+        "medianMs": 1.826169,
+        "p95Ms": 1.8692462,
+        "maxMs": 1.878338
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.899799,
-        "medianMs": 0.9502805000000001,
-        "p95Ms": 1.4243356999999994,
-        "maxMs": 2.892028
+        "minMs": 1.278491,
+        "medianMs": 1.329193,
+        "p95Ms": 1.461142,
+        "maxMs": 5.022968
       }
     },
     {
@@ -1046,17 +1047,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.289668,
-        "medianMs": 1.37012,
-        "p95Ms": 1.6889028,
-        "maxMs": 1.755201
+        "minMs": 1.485544,
+        "medianMs": 1.664835,
+        "p95Ms": 1.8796172,
+        "maxMs": 1.894722
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.246102,
-        "medianMs": 1.3286315,
-        "p95Ms": 1.757961149999999,
-        "maxMs": 2.599986
+        "minMs": 0.918708,
+        "medianMs": 0.9524684999999999,
+        "p95Ms": 1.2986593999999991,
+        "maxMs": 1.437722
       }
     },
     {
@@ -1077,17 +1078,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.914301,
-        "medianMs": 3.252572,
-        "p95Ms": 3.9076378,
-        "maxMs": 3.986421
+        "minMs": 3.061975,
+        "medianMs": 3.09778,
+        "p95Ms": 3.3255871999999997,
+        "maxMs": 3.344041
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.066621,
-        "medianMs": 2.2821015,
-        "p95Ms": 2.8435366999999987,
-        "maxMs": 3.460386
+        "minMs": 2.0386,
+        "medianMs": 2.1303134999999997,
+        "p95Ms": 2.9710851499999986,
+        "maxMs": 3.231582
       }
     },
     {
@@ -1104,17 +1105,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 5.401978,
-        "medianMs": 6.596842,
-        "p95Ms": 7.940579199999999,
-        "maxMs": 8.19146
+        "minMs": 5.145862,
+        "medianMs": 5.542953,
+        "p95Ms": 5.8093954000000005,
+        "maxMs": 5.870205
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 6.139852,
-        "medianMs": 6.9722095,
-        "p95Ms": 7.31823415,
-        "maxMs": 7.341367
+        "minMs": 4.222878,
+        "medianMs": 4.5918695,
+        "p95Ms": 8.478791649999991,
+        "maxMs": 10.720992
       }
     },
     {
@@ -1140,17 +1141,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 5.087393,
-        "medianMs": 5.090096,
-        "p95Ms": 7.3319884,
-        "maxMs": 7.835032
+        "minMs": 5.18463,
+        "medianMs": 5.644325,
+        "p95Ms": 5.9598964,
+        "maxMs": 6.037167
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 4.312845,
-        "medianMs": 4.635853,
-        "p95Ms": 5.00364425,
-        "maxMs": 5.425485
+        "minMs": 4.245162,
+        "medianMs": 4.7299690000000005,
+        "p95Ms": 5.654032,
+        "maxMs": 6.348458
       }
     },
     {
@@ -1167,17 +1168,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.633137,
-        "medianMs": 1.824256,
-        "p95Ms": 2.1323991999999996,
-        "maxMs": 2.197049
+        "minMs": 1.56254,
+        "medianMs": 1.614598,
+        "p95Ms": 1.7461365999999998,
+        "maxMs": 1.769672
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.001292,
-        "medianMs": 1.1818455,
-        "p95Ms": 1.6283188999999996,
-        "maxMs": 1.896695
+        "minMs": 1.024588,
+        "medianMs": 1.0776525000000001,
+        "p95Ms": 1.3520703999999997,
+        "maxMs": 1.877736
       }
     },
     {
@@ -1198,17 +1199,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.73436,
-        "medianMs": 1.958849,
-        "p95Ms": 2.0925204,
-        "maxMs": 2.118129
+        "minMs": 1.721811,
+        "medianMs": 1.857405,
+        "p95Ms": 1.912168,
+        "maxMs": 1.924827
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.110768,
-        "medianMs": 1.215336,
-        "p95Ms": 1.5397893,
-        "maxMs": 2.241406
+        "minMs": 1.132551,
+        "medianMs": 1.2408489999999999,
+        "p95Ms": 1.47849785,
+        "maxMs": 1.923034
       }
     },
     {
@@ -1225,17 +1226,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.922384,
-        "medianMs": 2.12504,
-        "p95Ms": 2.3426884,
-        "maxMs": 2.368217
+        "minMs": 1.924086,
+        "medianMs": 2.034423,
+        "p95Ms": 2.440886,
+        "maxMs": 2.530982
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.333705,
-        "medianMs": 1.407461,
-        "p95Ms": 1.8550092999999994,
-        "maxMs": 1.975925
+        "minMs": 1.348727,
+        "medianMs": 1.4270450000000001,
+        "p95Ms": 1.9226997999999997,
+        "maxMs": 2.037728
       }
     },
     {
@@ -1256,17 +1257,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.816374,
-        "medianMs": 2.362168,
-        "p95Ms": 2.6595923999999997,
-        "maxMs": 2.706587
+        "minMs": 1.887972,
+        "medianMs": 2.042545,
+        "p95Ms": 2.0669276,
+        "maxMs": 2.071168
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.177468,
-        "medianMs": 1.2833130000000001,
-        "p95Ms": 1.7146320999999993,
-        "maxMs": 2.072419
+        "minMs": 1.200483,
+        "medianMs": 1.4165995,
+        "p95Ms": 3.225770549999997,
+        "maxMs": 4.120244
       }
     },
     {
@@ -1283,17 +1284,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.474136,
-        "medianMs": 1.520056,
-        "p95Ms": 1.9164379999999999,
-        "maxMs": 1.996655
+        "minMs": 1.365322,
+        "medianMs": 1.419784,
+        "p95Ms": 1.4594684,
+        "maxMs": 1.469019
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.912188,
-        "medianMs": 0.9820135,
-        "p95Ms": 1.2417894499999995,
-        "maxMs": 1.398802
+        "minMs": 0.936304,
+        "medianMs": 0.9756235,
+        "p95Ms": 1.2136373,
+        "maxMs": 1.464463
       }
     },
     {
@@ -1314,17 +1315,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.626016,
-        "medianMs": 1.686367,
-        "p95Ms": 1.7330590000000001,
-        "maxMs": 1.741119
+        "minMs": 1.79414,
+        "medianMs": 1.883945,
+        "p95Ms": 2.0661114,
+        "maxMs": 2.094334
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.116035,
-        "medianMs": 1.198685,
-        "p95Ms": 1.3462263499999998,
-        "maxMs": 1.765576
+        "minMs": 1.144128,
+        "medianMs": 1.181765,
+        "p95Ms": 1.8651782499999994,
+        "maxMs": 1.974803
       }
     },
     {
@@ -1341,17 +1342,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.875583,
-        "medianMs": 1.936865,
-        "p95Ms": 1.9694486,
-        "maxMs": 1.977016
+        "minMs": 1.968483,
+        "medianMs": 2.028304,
+        "p95Ms": 2.2386871999999998,
+        "maxMs": 2.250539
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.34373,
-        "medianMs": 1.386399,
-        "p95Ms": 1.7597948499999998,
-        "maxMs": 1.975944
+        "minMs": 1.407956,
+        "medianMs": 1.642501,
+        "p95Ms": 2.11332205,
+        "maxMs": 2.245502
       }
     },
     {
@@ -1368,17 +1369,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.296338,
-        "medianMs": 1.321386,
-        "p95Ms": 1.366606,
-        "maxMs": 1.368477
+        "minMs": 1.386084,
+        "medianMs": 1.42336,
+        "p95Ms": 1.7977156,
+        "maxMs": 1.824376
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.918117,
-        "medianMs": 0.9628595,
-        "p95Ms": 1.08326735,
-        "maxMs": 1.792087
+        "minMs": 0.960591,
+        "medianMs": 1.1618300000000001,
+        "p95Ms": 2.1664357999999986,
+        "maxMs": 2.827851
       }
     },
     {
@@ -1402,17 +1403,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 42.222234,
-        "medianMs": 48.192112,
-        "p95Ms": 64.6353814,
-        "maxMs": 65.780863
+        "minMs": 48.649909,
+        "medianMs": 51.575999,
+        "p95Ms": 54.8222622,
+        "maxMs": 55.629722
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 10.084525,
-        "medianMs": 11.2077115,
-        "p95Ms": 13.175929449999998,
-        "maxMs": 14.45088
+        "minMs": 10.388391,
+        "medianMs": 11.382171,
+        "p95Ms": 13.135041749999997,
+        "maxMs": 13.387911
       }
     },
     {
@@ -1432,17 +1433,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 155.73957,
-        "medianMs": 156.483835,
-        "p95Ms": 171.729131,
-        "maxMs": 172.985493
+        "minMs": 90.857189,
+        "medianMs": 94.608134,
+        "p95Ms": 99.41820059999999,
+        "maxMs": 99.883241
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 45.819265,
-        "medianMs": 58.922085,
-        "p95Ms": 73.12899845,
-        "maxMs": 75.257833
+        "minMs": 44.342334,
+        "medianMs": 47.4100325,
+        "p95Ms": 56.10392604999999,
+        "maxMs": 72.233103
       }
     },
     {
@@ -1462,17 +1463,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 46.72329,
-        "medianMs": 65.549121,
-        "p95Ms": 72.1227266,
-        "maxMs": 72.842045
+        "minMs": 41.603427,
+        "medianMs": 52.084517,
+        "p95Ms": 54.3417268,
+        "maxMs": 54.662351
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 9.988855,
-        "medianMs": 11.8232645,
-        "p95Ms": 16.4550709,
-        "maxMs": 17.37518
+        "minMs": 9.748124,
+        "medianMs": 10.4827035,
+        "p95Ms": 11.981519749999999,
+        "maxMs": 16.185997
       }
     },
     {
@@ -1496,17 +1497,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.335066,
-        "medianMs": 1.690874,
-        "p95Ms": 1.7893962,
-        "maxMs": 1.813779
+        "minMs": 1.317651,
+        "medianMs": 1.413936,
+        "p95Ms": 1.6771893999999998,
+        "maxMs": 1.7146
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.117267,
-        "medianMs": 1.2749255000000002,
-        "p95Ms": 1.9122130999999996,
-        "maxMs": 2.041654
+        "minMs": 0.911797,
+        "medianMs": 0.955418,
+        "p95Ms": 1.0928353499999999,
+        "maxMs": 1.672236
       }
     },
     {
@@ -1530,17 +1531,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.479426,
-        "medianMs": 2.649403,
-        "p95Ms": 6.2445151999999995,
-        "maxMs": 7.052346
+        "minMs": 2.516091,
+        "medianMs": 2.609482,
+        "p95Ms": 3.4759202,
+        "maxMs": 3.53537
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.796364,
-        "medianMs": 2.1791574999999996,
-        "p95Ms": 3.058564449999999,
-        "maxMs": 3.29576
+        "minMs": 1.856124,
+        "medianMs": 2.2595075,
+        "p95Ms": 3.807878649999996,
+        "maxMs": 5.889966
       }
     },
     {
@@ -1560,17 +1561,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.594862,
-        "medianMs": 6.556185,
-        "p95Ms": 7.5044682,
-        "maxMs": 7.728016
+        "minMs": 4.240085,
+        "medianMs": 4.942174,
+        "p95Ms": 5.993781599999999,
+        "maxMs": 6.202639
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 3.573669,
-        "medianMs": 4.148147,
-        "p95Ms": 6.113401899999999,
-        "maxMs": 8.450828
+        "minMs": 3.637434,
+        "medianMs": 4.264817,
+        "p95Ms": 5.1392247,
+        "maxMs": 5.372355
       }
     },
     {
@@ -1594,17 +1595,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.3765,
-        "medianMs": 1.627298,
-        "p95Ms": 1.6728254,
-        "maxMs": 1.675201
+        "minMs": 1.374346,
+        "medianMs": 1.422078,
+        "p95Ms": 1.4794544,
+        "maxMs": 1.481788
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.868983,
-        "medianMs": 0.908783,
-        "p95Ms": 1.1894280999999993,
-        "maxMs": 1.58161
+        "minMs": 0.907181,
+        "medianMs": 1.0444624999999998,
+        "p95Ms": 2.780432749999998,
+        "maxMs": 3.44875
       }
     },
     {
@@ -1625,17 +1626,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.147984,
-        "medianMs": 2.435538,
-        "p95Ms": 3.0371892,
-        "maxMs": 3.102636
+        "minMs": 2.546476,
+        "medianMs": 2.730715,
+        "p95Ms": 3.386535,
+        "maxMs": 3.426185
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.826829,
-        "medianMs": 2.1465915,
-        "p95Ms": 2.9092316999999994,
-        "maxMs": 3.056095
+        "minMs": 1.493146,
+        "medianMs": 1.7254260000000001,
+        "p95Ms": 2.1621369499999994,
+        "maxMs": 2.341106
       }
     },
     {
@@ -1656,17 +1657,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.242918,
-        "medianMs": 2.709528,
-        "p95Ms": 2.8674886,
-        "maxMs": 2.875022
+        "minMs": 2.144139,
+        "medianMs": 2.490262,
+        "p95Ms": 4.547469199999999,
+        "maxMs": 5.047014
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.977746,
-        "medianMs": 2.17536,
-        "p95Ms": 2.7376534999999995,
-        "maxMs": 2.916895
+        "minMs": 1.488419,
+        "medianMs": 1.8389225,
+        "p95Ms": 3.5514870999999992,
+        "maxMs": 4.309289
       }
     },
     {
@@ -1683,17 +1684,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.281445,
-        "medianMs": 4.117978,
-        "p95Ms": 4.2203334,
-        "maxMs": 4.242547
+        "minMs": 3.054684,
+        "medianMs": 3.208036,
+        "p95Ms": 4.4841616,
+        "maxMs": 4.718758
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 3.060432,
-        "medianMs": 3.470416,
-        "p95Ms": 3.895649899999999,
-        "maxMs": 4.970957
+        "minMs": 2.170929,
+        "medianMs": 2.6386505,
+        "p95Ms": 3.4757140999999994,
+        "maxMs": 3.609953
       }
     },
     {
@@ -1719,17 +1720,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.362498,
-        "medianMs": 1.491042,
-        "p95Ms": 1.7320897999999998,
-        "maxMs": 1.773899
+        "minMs": 1.332002,
+        "medianMs": 1.430381,
+        "p95Ms": 1.511523,
+        "maxMs": 1.52932
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.879579,
-        "medianMs": 0.902648,
-        "p95Ms": 1.27295455,
-        "maxMs": 1.434867
+        "minMs": 0.915843,
+        "medianMs": 0.9564145,
+        "p95Ms": 1.1094567999999998,
+        "maxMs": 1.436039
       }
     },
     {
@@ -1750,17 +1751,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.09207,
-        "medianMs": 2.450212,
-        "p95Ms": 2.5892316,
-        "maxMs": 2.611295
+        "minMs": 2.169497,
+        "medianMs": 2.17115,
+        "p95Ms": 2.4684908,
+        "maxMs": 2.531434
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.448087,
-        "medianMs": 1.6077590000000002,
-        "p95Ms": 2.0373713999999996,
-        "maxMs": 2.443802
+        "minMs": 1.421528,
+        "medianMs": 1.4754990000000001,
+        "p95Ms": 1.7311274499999998,
+        "maxMs": 2.386785
       }
     },
     {
@@ -1781,17 +1782,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.098861,
-        "medianMs": 2.345233,
-        "p95Ms": 2.4475796,
-        "maxMs": 2.468509
+        "minMs": 2.337251,
+        "medianMs": 2.496761,
+        "p95Ms": 3.7032912,
+        "maxMs": 3.986621
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.467797,
-        "medianMs": 1.7600385,
-        "p95Ms": 2.1692007499999995,
-        "maxMs": 2.881403
+        "minMs": 1.528458,
+        "medianMs": 1.7181955,
+        "p95Ms": 1.9862673,
+        "maxMs": 2.545084
       }
     },
     {
@@ -1812,17 +1813,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.029436,
-        "medianMs": 2.163729,
-        "p95Ms": 2.6916886,
-        "maxMs": 2.728933
+        "minMs": 2.11884,
+        "medianMs": 2.480347,
+        "p95Ms": 2.6955289999999996,
+        "maxMs": 2.710183
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.345603,
-        "medianMs": 1.5039025000000001,
-        "p95Ms": 2.0652035999999994,
-        "maxMs": 2.352594
+        "minMs": 1.363259,
+        "medianMs": 1.493751,
+        "p95Ms": 1.8109290999999998,
+        "maxMs": 2.256769
       }
     },
     {
@@ -1841,17 +1842,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.248105,
-        "medianMs": 1.328017,
-        "p95Ms": 1.435999,
-        "maxMs": 1.459224
+        "minMs": 1.347375,
+        "medianMs": 1.419244,
+        "p95Ms": 1.493081,
+        "maxMs": 1.497802
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.88055,
-        "medianMs": 0.9243065,
-        "p95Ms": 1.4339424499999998,
-        "maxMs": 1.470321
+        "minMs": 0.917336,
+        "medianMs": 0.979419,
+        "p95Ms": 1.34111425,
+        "maxMs": 1.420756
       }
     },
     {
@@ -1872,17 +1873,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 112.281839,
-        "medianMs": 115.319146,
-        "p95Ms": 118.37288819999999,
-        "maxMs": 118.408622
+        "minMs": 117.919979,
+        "medianMs": 123.696085,
+        "p95Ms": 131.1436072,
+        "maxMs": 131.447945
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 63.139599,
-        "medianMs": 63.814423500000004,
-        "p95Ms": 138.99053809999978,
-        "maxMs": 197.238535
+        "minMs": 65.21317,
+        "medianMs": 76.89716050000001,
+        "p95Ms": 153.12501369999964,
+        "maxMs": 241.425935
       }
     },
     {
@@ -1908,17 +1909,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 285.817431,
-        "medianMs": 388.622063,
-        "p95Ms": 438.8294642,
-        "maxMs": 442.42372
+        "minMs": 320.606479,
+        "medianMs": 423.05579,
+        "p95Ms": 498.7177802,
+        "maxMs": 503.867587
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 215.399349,
-        "medianMs": 247.5333485,
-        "p95Ms": 385.0718705,
-        "maxMs": 400.545017
+        "minMs": 218.010357,
+        "medianMs": 227.2005615,
+        "p95Ms": 348.8677885,
+        "maxMs": 362.735602
       }
     },
     {
@@ -1939,17 +1940,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 125.456053,
-        "medianMs": 129.643448,
-        "p95Ms": 224.42319559999999,
-        "maxMs": 247.975471
+        "minMs": 114.261772,
+        "medianMs": 115.298316,
+        "p95Ms": 234.90932439999995,
+        "maxMs": 259.433612
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 62.016297,
-        "medianMs": 68.316505,
-        "p95Ms": 137.77486829999978,
-        "maxMs": 211.571763
+        "minMs": 62.901873,
+        "medianMs": 64.44740250000001,
+        "p95Ms": 151.29338179999982,
+        "maxMs": 181.315195
       }
     },
     {
@@ -1966,17 +1967,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.260764,
-        "medianMs": 1.50957,
-        "p95Ms": 1.7924031999999999,
-        "maxMs": 1.816894
+        "minMs": 1.308917,
+        "medianMs": 1.318802,
+        "p95Ms": 1.3688372,
+        "maxMs": 1.378071
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.890044,
-        "medianMs": 0.953886,
-        "p95Ms": 2.8794143999999946,
-        "maxMs": 5.959426
+        "minMs": 0.917145,
+        "medianMs": 0.9397495,
+        "p95Ms": 1.1787819499999999,
+        "maxMs": 1.374366
       }
     },
     {
@@ -1997,17 +1998,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 20.201501,
-        "medianMs": 22.545772,
-        "p95Ms": 26.1862988,
-        "maxMs": 26.539985
+        "minMs": 20.590571,
+        "medianMs": 21.094142,
+        "p95Ms": 25.1044018,
+        "maxMs": 26.01826
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.897015,
-        "medianMs": 2.516736,
-        "p95Ms": 2.9660918499999998,
-        "maxMs": 3.019921
+        "minMs": 1.81385,
+        "medianMs": 1.9508665,
+        "p95Ms": 2.3392156999999996,
+        "maxMs": 2.614359
       }
     },
     {
@@ -2028,17 +2029,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 20.25296,
-        "medianMs": 23.480754,
-        "p95Ms": 31.8843268,
-        "maxMs": 31.958669
+        "minMs": 20.024415,
+        "medianMs": 22.200932,
+        "p95Ms": 26.5105146,
+        "maxMs": 27.276239
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.777595,
-        "medianMs": 2.5718195,
-        "p95Ms": 2.936176949999999,
-        "maxMs": 3.182587
+        "minMs": 1.80747,
+        "medianMs": 1.9725695,
+        "p95Ms": 2.3053198,
+        "maxMs": 2.715281
       }
     },
     {
@@ -2059,17 +2060,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 20.766345,
-        "medianMs": 21.748868,
-        "p95Ms": 23.78807,
-        "maxMs": 23.846406
+        "minMs": 21.685264,
+        "medianMs": 22.312001,
+        "p95Ms": 25.8685604,
+        "maxMs": 26.647569
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.113912,
-        "medianMs": 2.165395,
-        "p95Ms": 3.3788018,
-        "maxMs": 3.415128
+        "minMs": 2.208726,
+        "medianMs": 2.397031,
+        "p95Ms": 2.78923515,
+        "maxMs": 3.70095
       }
     },
     {
@@ -2089,17 +2090,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 24.127011,
-        "medianMs": 24.62976,
-        "p95Ms": 29.8463008,
-        "maxMs": 30.983236
+        "minMs": 24.56254,
+        "medianMs": 25.155185,
+        "p95Ms": 31.0714356,
+        "maxMs": 32.450094
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 5.080063,
-        "medianMs": 5.599622,
-        "p95Ms": 8.396489149999999,
-        "maxMs": 8.602272
+        "minMs": 5.327938,
+        "medianMs": 6.289524999999999,
+        "p95Ms": 9.673240849999997,
+        "maxMs": 10.264233
       }
     },
     {
@@ -2119,17 +2120,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.245812,
-        "medianMs": 2.477732,
-        "p95Ms": 3.2646812,
-        "maxMs": 3.317581
+        "minMs": 2.32357,
+        "medianMs": 2.474888,
+        "p95Ms": 2.7351954,
+        "maxMs": 2.756834
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.555319,
-        "medianMs": 1.9388835,
-        "p95Ms": 2.580339299999999,
-        "maxMs": 2.950096
+        "minMs": 1.464763,
+        "medianMs": 1.7080899999999999,
+        "p95Ms": 3.72917225,
+        "maxMs": 3.966672
       }
     },
     {
@@ -2149,17 +2150,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.256278,
-        "medianMs": 2.598585,
-        "p95Ms": 3.9920071999999998,
-        "maxMs": 4.143458
+        "minMs": 2.291922,
+        "medianMs": 2.448819,
+        "p95Ms": 2.5739516,
+        "maxMs": 2.58877
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.454827,
-        "medianMs": 1.820214,
-        "p95Ms": 2.2948942999999997,
-        "maxMs": 2.534528
+        "minMs": 1.491573,
+        "medianMs": 1.6674985,
+        "p95Ms": 2.0486941,
+        "maxMs": 2.399414
       }
     },
     {
@@ -2176,17 +2177,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.067593,
-        "medianMs": 3.289348,
-        "p95Ms": 3.4481402,
-        "maxMs": 3.486416
+        "minMs": 3.088705,
+        "medianMs": 3.463642,
+        "p95Ms": 3.85706,
+        "maxMs": 3.910797
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.414827,
-        "medianMs": 2.7107795,
-        "p95Ms": 3.516952699999999,
-        "maxMs": 3.861062
+        "minMs": 2.275167,
+        "medianMs": 2.474828,
+        "p95Ms": 2.9020946999999997,
+        "maxMs": 3.113873
       }
     },
     {
@@ -2202,17 +2203,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.142806,
-        "medianMs": 3.322469,
-        "p95Ms": 4.6537185999999995,
-        "maxMs": 4.983687
+        "minMs": 3.080723,
+        "medianMs": 3.405373,
+        "p95Ms": 3.7873026,
+        "maxMs": 3.873621
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.58872,
-        "medianMs": 3.586893,
-        "p95Ms": 4.940923,
-        "maxMs": 30.637329
+        "minMs": 2.25068,
+        "medianMs": 2.318692,
+        "p95Ms": 2.7622481999999997,
+        "maxMs": 3.003898
       }
     },
     {
@@ -2228,17 +2229,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 209.646525,
-        "medianMs": 293.052513,
-        "p95Ms": 344.890497,
-        "maxMs": 350.58617
+        "minMs": 137.219151,
+        "medianMs": 162.587397,
+        "p95Ms": 165.1778146,
+        "maxMs": 165.423412
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 106.590909,
-        "medianMs": 115.661423,
-        "p95Ms": 147.4398631,
-        "maxMs": 159.160833
+        "minMs": 98.993604,
+        "medianMs": 105.13771750000001,
+        "p95Ms": 115.65342629999999,
+        "maxMs": 124.171385
       }
     },
     {
@@ -2258,17 +2259,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 66.142361,
-        "medianMs": 76.340083,
-        "p95Ms": 95.4847238,
-        "maxMs": 99.604868
+        "minMs": 52.802807,
+        "medianMs": 67.920139,
+        "p95Ms": 81.9640974,
+        "maxMs": 83.579669
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 29.950275,
-        "medianMs": 31.9738885,
-        "p95Ms": 34.557044149999996,
-        "maxMs": 35.924925
+        "minMs": 31.161568,
+        "medianMs": 33.650197000000006,
+        "p95Ms": 37.8999963,
+        "maxMs": 44.082956
       }
     },
     {
@@ -2284,17 +2285,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 12.375211,
-        "medianMs": 12.522533,
-        "p95Ms": 12.860764,
-        "maxMs": 12.905161
+        "minMs": 11.843198,
+        "medianMs": 12.549866,
+        "p95Ms": 13.6825102,
+        "maxMs": 13.810049
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 9.690295,
-        "medianMs": 10.439988,
-        "p95Ms": 12.715003849999997,
-        "maxMs": 14.063991
+        "minMs": 10.275371,
+        "medianMs": 10.9253225,
+        "p95Ms": 12.392273099999999,
+        "maxMs": 13.02859
       }
     },
     {
@@ -2313,17 +2314,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.97983,
-        "medianMs": 3.13184,
-        "p95Ms": 6.081503,
-        "maxMs": 6.672047
+        "minMs": 3.09832,
+        "medianMs": 3.212683,
+        "p95Ms": 3.7014776,
+        "maxMs": 3.816295
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.331862,
-        "medianMs": 2.629196,
-        "p95Ms": 3.09297565,
-        "maxMs": 3.176477
+        "minMs": 2.312601,
+        "medianMs": 2.4969,
+        "p95Ms": 2.7913997999999998,
+        "maxMs": 3.152038
       }
     },
     {
@@ -2340,17 +2341,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.783234,
-        "medianMs": 2.887641,
-        "p95Ms": 3.0344998000000003,
-        "maxMs": 3.048395
+        "minMs": 3.135965,
+        "medianMs": 3.23825,
+        "p95Ms": 3.5816828,
+        "maxMs": 3.609679
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.141184,
-        "medianMs": 2.395508,
-        "p95Ms": 2.9671740499999997,
-        "maxMs": 3.151109
+        "minMs": 2.218249,
+        "medianMs": 2.46371,
+        "p95Ms": 2.9952331499999993,
+        "maxMs": 3.300493
       }
     },
     {
@@ -2369,17 +2370,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.238871,
-        "medianMs": 1.677204,
-        "p95Ms": 2.0298401999999998,
-        "maxMs": 2.078079
+        "minMs": 1.300784,
+        "medianMs": 1.366593,
+        "p95Ms": 1.5118122,
+        "maxMs": 1.515758
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.869873,
-        "medianMs": 0.8946215,
-        "p95Ms": 1.1163648999999995,
-        "maxMs": 1.305502
+        "minMs": 0.918077,
+        "medianMs": 0.9409955,
+        "p95Ms": 1.263342299999999,
+        "maxMs": 1.556239
       }
     },
     {
@@ -2397,17 +2398,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 16.104653,
-        "medianMs": 19.212608,
-        "p95Ms": 24.526571999999998,
-        "maxMs": 24.835721
+        "minMs": 15.807467,
+        "medianMs": 18.734004,
+        "p95Ms": 21.858674,
+        "maxMs": 21.914246
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 14.008238,
-        "medianMs": 21.787361,
-        "p95Ms": 23.383698349999996,
-        "maxMs": 29.757875
+        "minMs": 14.206809,
+        "medianMs": 14.8902715,
+        "p95Ms": 16.1605356,
+        "maxMs": 17.353129
       }
     },
     {
@@ -2428,17 +2429,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 8.025481,
-        "medianMs": 9.318684,
-        "p95Ms": 11.421851,
-        "maxMs": 11.505928
+        "minMs": 8.029143,
+        "medianMs": 8.241854,
+        "p95Ms": 11.060323,
+        "maxMs": 11.644301
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 4.958709,
-        "medianMs": 5.7756335,
-        "p95Ms": 7.790882099999998,
-        "maxMs": 9.800462
+        "minMs": 5.042683,
+        "medianMs": 5.429702499999999,
+        "p95Ms": 6.177595650000001,
+        "maxMs": 6.195934
       }
     },
     {
@@ -2458,17 +2459,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 16.318734,
-        "medianMs": 22.688698,
-        "p95Ms": 24.378089199999998,
-        "maxMs": 24.683275
+        "minMs": 15.08813,
+        "medianMs": 16.634855,
+        "p95Ms": 21.395100199999998,
+        "maxMs": 22.40523
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 13.426858,
-        "medianMs": 17.526221,
-        "p95Ms": 21.71725534999999,
-        "maxMs": 25.076719
+        "minMs": 12.76476,
+        "medianMs": 13.917815999999998,
+        "p95Ms": 15.09523095,
+        "maxMs": 16.550527
       }
     },
     {
@@ -2488,17 +2489,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.333634,
-        "medianMs": 1.738076,
-        "p95Ms": 1.7998091999999999,
-        "maxMs": 1.802884
+        "minMs": 1.359613,
+        "medianMs": 1.393324,
+        "p95Ms": 1.7121118,
+        "maxMs": 1.745306
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.260544,
-        "medianMs": 1.3282509999999998,
-        "p95Ms": 1.4796902499999998,
-        "maxMs": 1.796534
+        "minMs": 0.92047,
+        "medianMs": 1.012013,
+        "p95Ms": 1.5416626999999998,
+        "maxMs": 2.187513
       }
     },
     {
@@ -2515,17 +2516,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.424262,
-        "medianMs": 3.441849,
-        "p95Ms": 3.5804161999999997,
-        "maxMs": 3.610013
+        "minMs": 3.444352,
+        "medianMs": 3.548249,
+        "p95Ms": 3.818191,
+        "maxMs": 3.875624
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.686227,
-        "medianMs": 4.159132,
-        "p95Ms": 4.68822565,
-        "maxMs": 14.948249
+        "minMs": 2.579276,
+        "medianMs": 2.842423,
+        "p95Ms": 4.672440099999998,
+        "maxMs": 5.118201
       }
     },
     {
@@ -2545,17 +2546,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 8.287598,
-        "medianMs": 10.806103,
-        "p95Ms": 13.2337232,
-        "maxMs": 13.296003
+        "minMs": 8.239093,
+        "medianMs": 8.822213,
+        "p95Ms": 10.0523892,
+        "maxMs": 10.280946
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 7.668743,
-        "medianMs": 8.7154395,
-        "p95Ms": 11.5904846,
-        "maxMs": 14.021996
+        "minMs": 7.183409,
+        "medianMs": 7.887201,
+        "p95Ms": 8.5548152,
+        "maxMs": 8.662432
       }
     },
     {
@@ -2571,17 +2572,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.312813,
-        "medianMs": 1.699608,
-        "p95Ms": 2.0543332,
-        "maxMs": 2.141515
+        "minMs": 1.312342,
+        "medianMs": 1.471752,
+        "p95Ms": 1.7277727999999999,
+        "maxMs": 1.733317
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.883144,
-        "medianMs": 0.9450825,
-        "p95Ms": 1.35078045,
-        "maxMs": 1.770885
+        "minMs": 0.918277,
+        "medianMs": 1.0209715,
+        "p95Ms": 1.4650873999999998,
+        "maxMs": 1.488718
       }
     },
     {
@@ -2601,17 +2602,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.991448,
-        "medianMs": 2.222137,
-        "p95Ms": 2.4126499999999997,
-        "maxMs": 2.424692
+        "minMs": 2.141214,
+        "medianMs": 2.314676,
+        "p95Ms": 2.6677592,
+        "maxMs": 2.743724
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.328577,
-        "medianMs": 1.4593295,
-        "p95Ms": 1.7617227999999996,
-        "maxMs": 1.996736
+        "minMs": 1.383058,
+        "medianMs": 1.520151,
+        "p95Ms": 2.16995735,
+        "maxMs": 5.146332
       }
     },
     {
@@ -2630,17 +2631,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.760939,
-        "medianMs": 1.839339,
-        "p95Ms": 2.2548296,
-        "maxMs": 2.353775
+        "minMs": 1.899288,
+        "medianMs": 1.930675,
+        "p95Ms": 2.0265044,
+        "maxMs": 2.030176
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.161895,
-        "medianMs": 1.236017,
-        "p95Ms": 1.5659386999999998,
-        "maxMs": 1.956795
+        "minMs": 1.218701,
+        "medianMs": 1.39381,
+        "p95Ms": 1.7486662499999999,
+        "maxMs": 2.061793
       }
     },
     {
@@ -2656,17 +2657,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.286194,
-        "medianMs": 1.929905,
-        "p95Ms": 2.1150741999999996,
-        "maxMs": 2.158711
+        "minMs": 1.35741,
+        "medianMs": 1.383048,
+        "p95Ms": 1.7329147999999999,
+        "maxMs": 1.806638
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.15202,
-        "medianMs": 1.240755,
-        "p95Ms": 1.28540595,
-        "maxMs": 1.715372
+        "minMs": 0.923745,
+        "medianMs": 0.963435,
+        "p95Ms": 1.1799400999999998,
+        "maxMs": 1.419594
       }
     },
     {
@@ -2683,17 +2684,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.74021,
-        "medianMs": 3.029938,
-        "p95Ms": 3.6680408,
-        "maxMs": 3.817008
+        "minMs": 2.86687,
+        "medianMs": 3.040462,
+        "p95Ms": 3.5522866,
+        "maxMs": 3.608279
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.856996,
-        "medianMs": 2.77935,
-        "p95Ms": 2.93543295,
-        "maxMs": 3.025532
+        "minMs": 1.901822,
+        "medianMs": 2.2344340000000003,
+        "p95Ms": 4.2506831499999995,
+        "maxMs": 4.991518
       }
     },
     {
@@ -2713,17 +2714,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 185.620459,
-        "medianMs": 213.017639,
-        "p95Ms": 327.99564119999997,
-        "maxMs": 345.662853
+        "minMs": 193.148372,
+        "medianMs": 202.606985,
+        "p95Ms": 247.00333039999998,
+        "maxMs": 254.551111
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 94.865731,
-        "medianMs": 96.821897,
-        "p95Ms": 99.76588124999999,
-        "maxMs": 137.152981
+        "minMs": 100.663879,
+        "medianMs": 119.882379,
+        "p95Ms": 144.81365415,
+        "maxMs": 178.527929
       }
     },
     {
@@ -2743,17 +2744,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.316158,
-        "medianMs": 1.381918,
-        "p95Ms": 1.4992374,
-        "maxMs": 1.505625
+        "minMs": 1.383079,
+        "medianMs": 1.498904,
+        "p95Ms": 1.6085266,
+        "maxMs": 1.620086
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.925399,
-        "medianMs": 1.138516,
-        "p95Ms": 1.2351367999999998,
-        "maxMs": 1.693129
+        "minMs": 0.911376,
+        "medianMs": 0.942454,
+        "p95Ms": 1.1210065499999997,
+        "maxMs": 1.689231
       }
     },
     {
@@ -2770,17 +2771,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.100013,
-        "medianMs": 2.161867,
-        "p95Ms": 2.7011155999999996,
-        "maxMs": 2.80591
+        "minMs": 2.115134,
+        "medianMs": 2.144659,
+        "p95Ms": 2.1857409999999997,
+        "maxMs": 2.187864
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.443641,
-        "medianMs": 1.5873135,
-        "p95Ms": 2.3781432999999987,
-        "maxMs": 2.745248
+        "minMs": 1.445793,
+        "medianMs": 1.568734,
+        "p95Ms": 3.3045434999999994,
+        "maxMs": 4.80069
       }
     },
     {
@@ -2801,17 +2802,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.937898,
-        "medianMs": 2.065431,
-        "p95Ms": 2.5144498,
-        "maxMs": 2.625678
+        "minMs": 2.094503,
+        "medianMs": 2.215736,
+        "p95Ms": 2.2431122,
+        "maxMs": 2.243469
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.490081,
-        "medianMs": 1.759919,
-        "p95Ms": 2.0081464999999996,
-        "maxMs": 2.404753
+        "minMs": 1.21786,
+        "medianMs": 1.382558,
+        "p95Ms": 2.8076754999999993,
+        "maxMs": 3.537813
       }
     },
     {
@@ -2828,17 +2829,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.624295,
-        "medianMs": 1.68784,
-        "p95Ms": 2.0069844,
-        "maxMs": 2.041194
+        "minMs": 1.413535,
+        "medianMs": 1.829493,
+        "p95Ms": 2.0209258,
+        "maxMs": 2.028413
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.905518,
-        "medianMs": 1.2016855,
-        "p95Ms": 1.4997868499999996,
-        "maxMs": 1.603073
+        "minMs": 0.935012,
+        "medianMs": 1.121434,
+        "p95Ms": 1.7621637499999998,
+        "maxMs": 2.54948
       }
     },
     {
@@ -2855,17 +2856,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.001595,
-        "medianMs": 3.155408,
-        "p95Ms": 4.329876,
-        "maxMs": 4.330603
+        "minMs": 3.006671,
+        "medianMs": 3.174053,
+        "p95Ms": 3.8883064,
+        "maxMs": 3.99934
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.301227,
-        "medianMs": 3.3388055000000003,
-        "p95Ms": 4.0257871,
-        "maxMs": 4.304063
+        "minMs": 2.18247,
+        "medianMs": 2.258581,
+        "p95Ms": 4.104659749999998,
+        "maxMs": 5.611041
       }
     },
     {
@@ -2882,17 +2883,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 10.778105,
-        "medianMs": 11.923325,
-        "p95Ms": 19.9821192,
-        "maxMs": 21.243357
+        "minMs": 9.142076,
+        "medianMs": 13.354087,
+        "p95Ms": 16.395265199999997,
+        "maxMs": 17.117312
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 7.627264,
-        "medianMs": 11.957827,
-        "p95Ms": 12.7676145,
-        "maxMs": 12.991829
+        "minMs": 7.903027,
+        "medianMs": 8.218373,
+        "p95Ms": 9.005475049999998,
+        "maxMs": 9.276789
       }
     },
     {
@@ -2914,17 +2915,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.525757,
-        "medianMs": 3.319576,
-        "p95Ms": 6.874642399999999,
-        "maxMs": 7.660123
+        "minMs": 2.866402,
+        "medianMs": 3.355289,
+        "p95Ms": 6.4437342,
+        "maxMs": 7.055729
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.439906,
-        "medianMs": 1.5523305,
-        "p95Ms": 1.71251785,
-        "maxMs": 2.083738
+        "minMs": 1.062683,
+        "medianMs": 1.109043,
+        "p95Ms": 1.3443176999999997,
+        "maxMs": 1.766244
       }
     },
     {
@@ -2947,17 +2948,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.207757,
-        "medianMs": 4.419757,
-        "p95Ms": 4.7076268,
-        "maxMs": 4.773282
+        "minMs": 3.056689,
+        "medianMs": 3.230031,
+        "p95Ms": 3.5785729999999996,
+        "maxMs": 3.630295
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.682372,
-        "medianMs": 1.8987435000000001,
-        "p95Ms": 3.2079862499999994,
-        "maxMs": 5.064788
+        "minMs": 1.701716,
+        "medianMs": 1.753564,
+        "p95Ms": 2.0584081,
+        "maxMs": 2.998281
       }
     },
     {
@@ -2977,17 +2978,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.974626,
-        "medianMs": 5.541485,
-        "p95Ms": 6.576211,
-        "maxMs": 6.809504
+        "minMs": 3.586608,
+        "medianMs": 3.806479,
+        "p95Ms": 4.0609904000000006,
+        "maxMs": 4.068526
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.150947,
-        "medianMs": 2.349767,
-        "p95Ms": 3.4999944,
-        "maxMs": 4.304568
+        "minMs": 2.207825,
+        "medianMs": 2.4693794999999996,
+        "p95Ms": 2.854108899999999,
+        "maxMs": 2.988423
       }
     },
     {
@@ -3004,17 +3005,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.214183,
-        "medianMs": 1.262897,
-        "p95Ms": 1.3920553999999998,
-        "maxMs": 1.401706
+        "minMs": 1.273574,
+        "medianMs": 1.342357,
+        "p95Ms": 1.4968506000000001,
+        "maxMs": 1.530912
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.865647,
-        "medianMs": 0.8860925,
-        "p95Ms": 1.1192422999999994,
-        "maxMs": 1.292281
+        "minMs": 0.900419,
+        "medianMs": 0.938362,
+        "p95Ms": 1.2822896499999998,
+        "maxMs": 1.478683
       }
     },
     {
@@ -3035,17 +3036,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.957705,
-        "medianMs": 2.082794,
-        "p95Ms": 2.1517632,
-        "maxMs": 2.163166
+        "minMs": 2.104098,
+        "medianMs": 2.208265,
+        "p95Ms": 2.3135564,
+        "maxMs": 2.336529
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.340955,
-        "medianMs": 1.492214,
-        "p95Ms": 2.0487436999999997,
-        "maxMs": 2.877498
+        "minMs": 1.35759,
+        "medianMs": 1.4196840000000002,
+        "p95Ms": 1.8840291999999998,
+        "maxMs": 2.119761
       }
     },
     {
@@ -3062,17 +3063,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.29073,
-        "medianMs": 1.366404,
-        "p95Ms": 1.7020051999999999,
-        "maxMs": 1.722432
+        "minMs": 1.434276,
+        "medianMs": 2.031057,
+        "p95Ms": 2.140771,
+        "maxMs": 2.158019
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.190549,
-        "medianMs": 1.248386,
-        "p95Ms": 1.3903214999999998,
-        "maxMs": 1.73373
+        "minMs": 0.899528,
+        "medianMs": 1.02652,
+        "p95Ms": 1.4919671499999998,
+        "maxMs": 2.2714
       }
     },
     {
@@ -3089,17 +3090,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.493837,
-        "medianMs": 2.592587,
-        "p95Ms": 2.9000978,
-        "maxMs": 2.916747
+        "minMs": 2.64167,
+        "medianMs": 3.031518,
+        "p95Ms": 3.5982027999999997,
+        "maxMs": 3.722152
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.812579,
-        "medianMs": 1.88643,
-        "p95Ms": 2.21551975,
-        "maxMs": 2.763375
+        "minMs": 1.983796,
+        "medianMs": 2.3540555,
+        "p95Ms": 3.4550680999999996,
+        "maxMs": 3.47624
       }
     },
     {
@@ -3119,17 +3120,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.677465,
-        "medianMs": 2.749043,
-        "p95Ms": 3.6429263999999995,
-        "maxMs": 3.859682
+        "minMs": 2.797365,
+        "medianMs": 3.358993,
+        "p95Ms": 4.1319517999999995,
+        "maxMs": 4.289047
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.0055,
-        "medianMs": 2.3043769999999997,
-        "p95Ms": 3.2141745999999967,
-        "maxMs": 5.721414
+        "minMs": 2.051248,
+        "medianMs": 2.383024,
+        "p95Ms": 2.769064749999999,
+        "maxMs": 2.960681
       }
     },
     {
@@ -3146,17 +3147,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.268847,
-        "medianMs": 1.306504,
-        "p95Ms": 1.6140746,
-        "maxMs": 1.690494
+        "minMs": 1.346233,
+        "medianMs": 1.362077,
+        "p95Ms": 1.4454832,
+        "maxMs": 1.457942
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.887271,
-        "medianMs": 0.965814,
-        "p95Ms": 1.3292529999999998,
-        "maxMs": 1.433676
+        "minMs": 0.903774,
+        "medianMs": 0.9540204999999999,
+        "p95Ms": 1.5581278999999995,
+        "maxMs": 1.699867
       }
     },
     {
@@ -3177,17 +3178,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.257971,
-        "medianMs": 2.811758,
-        "p95Ms": 3.1216046,
-        "maxMs": 3.152283
+        "minMs": 2.296338,
+        "medianMs": 2.31083,
+        "p95Ms": 2.4333344,
+        "maxMs": 2.451552
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.599557,
-        "medianMs": 1.9867869999999999,
-        "p95Ms": 2.4632888499999996,
-        "maxMs": 2.946842
+        "minMs": 1.536851,
+        "medianMs": 1.6092005,
+        "p95Ms": 1.9870063999999998,
+        "maxMs": 2.375537
       }
     },
     {
@@ -3207,17 +3208,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.754482,
-        "medianMs": 3.959482,
-        "p95Ms": 5.374449599999999,
-        "maxMs": 5.415181
+        "minMs": 3.720188,
+        "medianMs": 4.137448,
+        "p95Ms": 5.1563646,
+        "maxMs": 5.32074
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.974073,
-        "medianMs": 3.2884385,
-        "p95Ms": 4.3285352999999995,
-        "maxMs": 4.509243
+        "minMs": 2.896785,
+        "medianMs": 3.160608,
+        "p95Ms": 3.6354290999999996,
+        "maxMs": 3.839628
       }
     },
     {
@@ -3237,17 +3238,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.297861,
-        "medianMs": 1.341226,
-        "p95Ms": 1.8035168,
-        "maxMs": 1.898288
+        "minMs": 1.349317,
+        "medianMs": 1.413155,
+        "p95Ms": 1.6130001999999999,
+        "maxMs": 1.613387
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.145932,
-        "medianMs": 1.265903,
-        "p95Ms": 1.34343,
-        "maxMs": 1.807791
+        "minMs": 0.926019,
+        "medianMs": 1.0580530000000001,
+        "p95Ms": 1.2874315,
+        "maxMs": 1.472925
       }
     },
     {
@@ -3264,17 +3265,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 24.896115,
-        "medianMs": 25.447067,
-        "p95Ms": 29.674616999999998,
-        "maxMs": 30.549647
+        "minMs": 18.900973,
+        "medianMs": 24.141367,
+        "p95Ms": 24.842481,
+        "maxMs": 24.873682
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 6.215541,
-        "medianMs": 6.9380625,
-        "p95Ms": 9.7559761,
-        "maxMs": 9.761539
+        "minMs": 5.879289,
+        "medianMs": 6.1132215,
+        "p95Ms": 6.8080020999999995,
+        "maxMs": 6.960812
       }
     },
     {
@@ -3291,17 +3292,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 19.921208,
-        "medianMs": 25.749765,
-        "p95Ms": 31.316906,
-        "maxMs": 31.698112
+        "minMs": 18.459917,
+        "medianMs": 19.640089,
+        "p95Ms": 24.8929854,
+        "maxMs": 26.095427
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 5.997932,
-        "medianMs": 6.4556635,
-        "p95Ms": 9.5496287,
-        "maxMs": 11.348526
+        "minMs": 5.898618,
+        "medianMs": 6.2380755,
+        "p95Ms": 7.20967595,
+        "maxMs": 7.951558
       }
     },
     {
@@ -3323,17 +3324,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.332563,
-        "medianMs": 1.438594,
-        "p95Ms": 1.7244477999999999,
-        "maxMs": 1.791397
+        "minMs": 1.353203,
+        "medianMs": 1.41704,
+        "p95Ms": 1.9188161999999997,
+        "maxMs": 1.988854
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.901352,
-        "medianMs": 1.009961,
-        "p95Ms": 1.3278738999999997,
-        "maxMs": 1.431753
+        "minMs": 0.939459,
+        "medianMs": 1.0617585,
+        "p95Ms": 1.4716274,
+        "maxMs": 1.588259
       }
     },
     {
@@ -3350,17 +3351,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 314.685069,
-        "medianMs": 359.459973,
-        "p95Ms": 392.9940604,
-        "maxMs": 395.65845
+        "minMs": 301.663295,
+        "medianMs": 320.58201,
+        "p95Ms": 323.67657699999995,
+        "maxMs": 324.401803
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 307.082447,
-        "medianMs": 339.8227415,
-        "p95Ms": 390.41834389999997,
-        "maxMs": 422.560278
+        "minMs": 309.193523,
+        "medianMs": 321.68800550000003,
+        "p95Ms": 361.16788245,
+        "maxMs": 380.973672
       }
     },
     {
@@ -3377,17 +3378,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 338.641063,
-        "medianMs": 349.39292,
-        "p95Ms": 361.6026444,
-        "maxMs": 362.756709
+        "minMs": 306.045558,
+        "medianMs": 308.048068,
+        "p95Ms": 315.2977966,
+        "maxMs": 316.11865
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 302.466258,
-        "medianMs": 328.7395855,
-        "p95Ms": 393.26263099999994,
-        "maxMs": 413.607236
+        "minMs": 310.375122,
+        "medianMs": 332.7790655,
+        "p95Ms": 401.70268565,
+        "maxMs": 421.463976
       }
     },
     {
@@ -3404,17 +3405,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.532766,
-        "medianMs": 1.698466,
-        "p95Ms": 1.876918,
-        "maxMs": 1.913291
+        "minMs": 1.361787,
+        "medianMs": 1.398202,
+        "p95Ms": 1.4615532,
+        "maxMs": 1.466144
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.103437,
-        "medianMs": 1.2261575,
-        "p95Ms": 1.3362144999999999,
-        "maxMs": 1.76734
+        "minMs": 0.909644,
+        "medianMs": 0.9504954999999999,
+        "p95Ms": 1.2436619999999998,
+        "maxMs": 1.783924
       }
     },
     {
@@ -3435,17 +3436,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.907863,
-        "medianMs": 3.033343,
-        "p95Ms": 3.4064408,
-        "maxMs": 3.485286
+        "minMs": 3.202807,
+        "medianMs": 3.347135,
+        "p95Ms": 3.455513,
+        "maxMs": 3.467447
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.645265,
-        "medianMs": 1.8339005,
-        "p95Ms": 2.2254799499999995,
-        "maxMs": 2.512756
+        "minMs": 1.732807,
+        "medianMs": 1.8762029999999998,
+        "p95Ms": 2.4097055499999986,
+        "maxMs": 3.242617
       }
     },
     {
@@ -3462,17 +3463,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.876596,
-        "medianMs": 4.061076,
-        "p95Ms": 4.5894612,
-        "maxMs": 4.684667
+        "minMs": 4.281365,
+        "medianMs": 4.643463,
+        "p95Ms": 5.1065016,
+        "maxMs": 5.216818
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.717235,
-        "medianMs": 2.884928,
-        "p95Ms": 3.40577035,
-        "maxMs": 3.413666
+        "minMs": 2.971097,
+        "medianMs": 3.2770285,
+        "p95Ms": 3.7994435999999996,
+        "maxMs": 4.151449
       }
     },
     {
@@ -3492,17 +3493,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.896126,
-        "medianMs": 4.078972,
-        "p95Ms": 5.9094494,
-        "maxMs": 6.289832
+        "minMs": 4.271701,
+        "medianMs": 4.627238,
+        "p95Ms": 5.255844,
+        "maxMs": 5.343711
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.770936,
-        "medianMs": 2.935485,
-        "p95Ms": 3.40659885,
-        "maxMs": 3.455961
+        "minMs": 2.99296,
+        "medianMs": 3.3744915,
+        "p95Ms": 4.491908199999999,
+        "maxMs": 6.057849
       }
     },
     {
@@ -3520,17 +3521,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.633739,
-        "medianMs": 2.942646,
-        "p95Ms": 3.1308236,
-        "maxMs": 3.135186
+        "minMs": 2.844115,
+        "medianMs": 2.972499,
+        "p95Ms": 3.3252502,
+        "maxMs": 3.364161
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.868913,
-        "medianMs": 2.2434545,
-        "p95Ms": 3.1684819999999996,
-        "maxMs": 3.336991
+        "minMs": 1.899919,
+        "medianMs": 2.254585,
+        "p95Ms": 3.4386944999999995,
+        "maxMs": 4.145721
       }
     },
     {
@@ -3548,17 +3549,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.625517,
-        "medianMs": 2.833711,
-        "p95Ms": 3.0401985999999996,
-        "maxMs": 3.052351
+        "minMs": 2.803183,
+        "medianMs": 2.932889,
+        "p95Ms": 3.2631246,
+        "maxMs": 3.345323
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.854793,
-        "medianMs": 2.035665,
-        "p95Ms": 2.4660728499999993,
-        "maxMs": 2.579387
+        "minMs": 1.933701,
+        "medianMs": 2.1508434999999997,
+        "p95Ms": 2.4164427,
+        "maxMs": 2.944738
       }
     },
     {
@@ -3579,17 +3580,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.27762,
-        "medianMs": 1.386235,
-        "p95Ms": 1.4455419999999999,
-        "maxMs": 1.448769
+        "minMs": 1.456529,
+        "medianMs": 1.766378,
+        "p95Ms": 2.0416098000000003,
+        "maxMs": 2.09927
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.229067,
-        "medianMs": 1.2847214999999998,
-        "p95Ms": 1.4743763,
-        "maxMs": 1.806229
+        "minMs": 0.914663,
+        "medianMs": 0.9496560000000001,
+        "p95Ms": 1.07060685,
+        "maxMs": 1.459257
       }
     },
     {
@@ -3612,17 +3613,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.167785,
-        "medianMs": 2.480297,
-        "p95Ms": 2.7509628,
-        "maxMs": 2.760291
+        "minMs": 2.009779,
+        "medianMs": 2.065864,
+        "p95Ms": 2.1700866000000003,
+        "maxMs": 2.176991
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.307896,
-        "medianMs": 1.4755690000000001,
-        "p95Ms": 2.5167918999999994,
-        "maxMs": 5.88422
+        "minMs": 1.305554,
+        "medianMs": 1.416572,
+        "p95Ms": 1.9941006499999996,
+        "maxMs": 2.319737
       }
     },
     {
@@ -3645,17 +3646,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.904477,
-        "medianMs": 1.954883,
-        "p95Ms": 2.1571512,
-        "maxMs": 2.162297
+        "minMs": 1.988457,
+        "medianMs": 2.151002,
+        "p95Ms": 2.3619432,
+        "maxMs": 2.402853
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.526897,
-        "medianMs": 1.60486,
-        "p95Ms": 1.8508880499999998,
-        "maxMs": 2.397322
+        "minMs": 1.251473,
+        "medianMs": 1.308834,
+        "p95Ms": 1.5770417499999998,
+        "maxMs": 2.035017
       }
     },
     {
@@ -3675,17 +3676,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.610264,
-        "medianMs": 2.873331,
-        "p95Ms": 4.094917199999999,
-        "maxMs": 4.203141
+        "minMs": 2.68529,
+        "medianMs": 2.738136,
+        "p95Ms": 3.25855,
+        "maxMs": 3.380306
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.600638,
-        "medianMs": 1.7642704999999999,
-        "p95Ms": 5.543736149999993,
-        "maxMs": 6.687734
+        "minMs": 1.632986,
+        "medianMs": 1.6874935,
+        "p95Ms": 2.1492256,
+        "maxMs": 2.374196
       }
     },
     {
@@ -3708,17 +3709,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.764075,
-        "medianMs": 1.882414,
-        "p95Ms": 2.3583772,
-        "maxMs": 2.375499
+        "minMs": 1.880851,
+        "medianMs": 2.00615,
+        "p95Ms": 2.4680712,
+        "maxMs": 2.552615
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.463722,
-        "medianMs": 1.637784,
-        "p95Ms": 1.7332059,
-        "maxMs": 2.258703
+        "minMs": 1.150427,
+        "medianMs": 1.2143389999999998,
+        "p95Ms": 1.4796828,
+        "maxMs": 1.863455
       }
     },
     {
@@ -3741,17 +3742,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.334427,
-        "medianMs": 2.416961,
-        "p95Ms": 2.4791133999999997,
-        "maxMs": 2.486086
+        "minMs": 1.882373,
+        "medianMs": 2.128454,
+        "p95Ms": 2.9848566,
+        "maxMs": 3.180334
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.469971,
-        "medianMs": 1.6870889999999998,
-        "p95Ms": 2.2749785999999994,
-        "maxMs": 2.375439
+        "minMs": 1.305021,
+        "medianMs": 1.657013,
+        "p95Ms": 2.322319699999999,
+        "maxMs": 2.60886
       }
     },
     {
@@ -3774,17 +3775,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.246163,
-        "medianMs": 1.374527,
-        "p95Ms": 1.7248260000000002,
-        "maxMs": 1.737475
+        "minMs": 1.420866,
+        "medianMs": 1.528819,
+        "p95Ms": 1.8431074,
+        "maxMs": 1.906579
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.24479,
-        "medianMs": 1.293098,
-        "p95Ms": 1.598426349999999,
-        "maxMs": 1.788803
+        "minMs": 0.9336,
+        "medianMs": 1.00973,
+        "p95Ms": 1.3047440499999996,
+        "maxMs": 1.421016
       }
     },
     {
@@ -3803,17 +3804,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.913641,
-        "medianMs": 2.071549,
-        "p95Ms": 2.4811,
-        "maxMs": 2.577113
+        "minMs": 2.0262,
+        "medianMs": 2.117799,
+        "p95Ms": 2.7266162,
+        "maxMs": 2.729122
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.216518,
-        "medianMs": 1.2697835,
-        "p95Ms": 1.6710040499999999,
-        "maxMs": 1.897937
+        "minMs": 1.266313,
+        "medianMs": 1.3370095000000002,
+        "p95Ms": 1.7873092499999996,
+        "maxMs": 2.108575
       }
     },
     {
@@ -3833,17 +3834,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 9.911124,
-        "medianMs": 10.770803,
-        "p95Ms": 19.8205718,
-        "maxMs": 21.706375
+        "minMs": 10.581271,
+        "medianMs": 11.401109,
+        "p95Ms": 13.9368332,
+        "maxMs": 14.140577
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 5.53357,
-        "medianMs": 6.222110499999999,
-        "p95Ms": 8.926631650000001,
-        "maxMs": 9.095292
+        "minMs": 5.702842,
+        "medianMs": 6.0573429999999995,
+        "p95Ms": 7.378809899999998,
+        "maxMs": 9.353026
       }
     },
     {
@@ -3862,17 +3863,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.274956,
-        "medianMs": 1.509982,
-        "p95Ms": 1.658035,
-        "maxMs": 1.658776
+        "minMs": 1.417661,
+        "medianMs": 1.521859,
+        "p95Ms": 1.6035814,
+        "maxMs": 1.621989
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.888873,
-        "medianMs": 0.933751,
-        "p95Ms": 1.3005258999999998,
-        "maxMs": 1.634359
+        "minMs": 0.926039,
+        "medianMs": 0.999705,
+        "p95Ms": 1.2461054,
+        "maxMs": 1.531263
       }
     },
     {
@@ -3893,17 +3894,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.01916,
-        "medianMs": 2.176497,
-        "p95Ms": 2.586759,
-        "maxMs": 2.687499
+        "minMs": 2.031138,
+        "medianMs": 2.121965,
+        "p95Ms": 2.2774153999999998,
+        "maxMs": 2.286393
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.176277,
-        "medianMs": 1.3477605000000001,
-        "p95Ms": 1.81161405,
-        "maxMs": 2.203569
+        "minMs": 1.200503,
+        "medianMs": 1.3657375,
+        "p95Ms": 1.7546227499999991,
+        "maxMs": 2.212522
       }
     },
     {
@@ -3924,17 +3925,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.900891,
-        "medianMs": 2.018058,
-        "p95Ms": 2.1523072,
-        "maxMs": 2.169898
+        "minMs": 2.188466,
+        "medianMs": 2.232672,
+        "p95Ms": 3.1309568,
+        "maxMs": 3.301146
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.213262,
-        "medianMs": 1.2852615,
-        "p95Ms": 1.6986911499999997,
-        "maxMs": 2.136347
+        "minMs": 1.276788,
+        "medianMs": 1.565264,
+        "p95Ms": 2.450547049999998,
+        "maxMs": 3.476731
       }
     },
     {
@@ -3956,17 +3957,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.086893,
-        "medianMs": 3.368058,
-        "p95Ms": 3.9467577999999994,
-        "maxMs": 4.077995
+        "minMs": 3.387356,
+        "medianMs": 3.737284,
+        "p95Ms": 3.95181,
+        "maxMs": 3.951888
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.196788,
-        "medianMs": 2.3573060000000003,
-        "p95Ms": 2.8825232,
-        "maxMs": 3.762644
+        "minMs": 2.366515,
+        "medianMs": 2.718571,
+        "p95Ms": 3.26367685,
+        "maxMs": 3.608159
       }
     },
     {
@@ -3987,17 +3988,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.91962,
-        "medianMs": 1.963646,
-        "p95Ms": 2.5206361999999998,
-        "maxMs": 2.656123
+        "minMs": 2.12574,
+        "medianMs": 2.287055,
+        "p95Ms": 2.9595773999999997,
+        "maxMs": 3.100923
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.404672,
-        "medianMs": 1.588149,
-        "p95Ms": 1.8918711499999987,
-        "maxMs": 2.156467
+        "minMs": 1.189327,
+        "medianMs": 1.354876,
+        "p95Ms": 2.1685453499999987,
+        "maxMs": 2.957557
       }
     },
     {
@@ -4018,17 +4019,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.871246,
-        "medianMs": 1.896214,
-        "p95Ms": 2.5291843999999997,
-        "maxMs": 2.647439
+        "minMs": 2.316348,
+        "medianMs": 2.376269,
+        "p95Ms": 2.8683321999999998,
+        "maxMs": 2.978058
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.340385,
-        "medianMs": 1.542234,
-        "p95Ms": 1.77295995,
-        "maxMs": 2.18489
+        "minMs": 1.267314,
+        "medianMs": 1.7725015,
+        "p95Ms": 4.065740749999998,
+        "maxMs": 5.864111
       }
     },
     {
@@ -4051,17 +4052,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.539196,
-        "medianMs": 2.560077,
-        "p95Ms": 2.8045622000000003,
-        "maxMs": 2.865238
+        "minMs": 2.839479,
+        "medianMs": 3.497091,
+        "p95Ms": 4.9250578,
+        "maxMs": 5.05886
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.63534,
-        "medianMs": 1.689247,
-        "p95Ms": 2.1897420499999996,
-        "maxMs": 2.48219
+        "minMs": 1.68863,
+        "medianMs": 1.8661435,
+        "p95Ms": 2.2819443499999994,
+        "maxMs": 2.93352
       }
     },
     {
@@ -4082,17 +4083,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.885357,
-        "medianMs": 1.894822,
-        "p95Ms": 2.0551964,
-        "maxMs": 2.091509
+        "minMs": 2.049285,
+        "medianMs": 2.163858,
+        "p95Ms": 2.4051464,
+        "maxMs": 2.420836
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.066321,
-        "medianMs": 1.0891600000000001,
-        "p95Ms": 1.27992885,
-        "maxMs": 2.131499
+        "minMs": 1.102155,
+        "medianMs": 1.1292455000000001,
+        "p95Ms": 1.602240199999999,
+        "maxMs": 1.835803
       }
     },
     {
@@ -4113,17 +4114,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.731375,
-        "medianMs": 1.761771,
-        "p95Ms": 1.8100467999999998,
-        "maxMs": 1.819419
+        "minMs": 1.873319,
+        "medianMs": 1.925388,
+        "p95Ms": 1.9608298,
+        "maxMs": 1.969555
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.104398,
-        "medianMs": 1.1447595000000002,
-        "p95Ms": 1.3620458999999998,
-        "maxMs": 1.757846
+        "minMs": 1.152641,
+        "medianMs": 1.188535,
+        "p95Ms": 1.3690474499999996,
+        "maxMs": 1.947341
       }
     },
     {
@@ -4145,17 +4146,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.639057,
-        "medianMs": 3.042135,
-        "p95Ms": 5.470699,
-        "maxMs": 5.947966
+        "minMs": 2.964227,
+        "medianMs": 3.671945,
+        "p95Ms": 5.8924718,
+        "maxMs": 6.238843
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.580889,
-        "medianMs": 1.637489,
-        "p95Ms": 2.2255726999999985,
-        "maxMs": 5.142909
+        "minMs": 1.678986,
+        "medianMs": 2.0295855,
+        "p95Ms": 3.174489799999998,
+        "maxMs": 3.812668
       }
     },
     {
@@ -4172,17 +4173,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.945699,
-        "medianMs": 3.267987,
-        "p95Ms": 9.285973799999997,
-        "maxMs": 10.708547
+        "minMs": 3.457722,
+        "medianMs": 4.540698,
+        "p95Ms": 10.4296762,
+        "maxMs": 11.515532
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.415839,
-        "medianMs": 1.6859065000000002,
-        "p95Ms": 2.5380827999999998,
-        "maxMs": 2.982736
+        "minMs": 1.465283,
+        "medianMs": 1.713398,
+        "p95Ms": 2.459471999999999,
+        "maxMs": 3.807401
       }
     },
     {
@@ -4199,17 +4200,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.082606,
-        "medianMs": 2.235397,
-        "p95Ms": 2.8486736,
-        "maxMs": 2.881924
+        "minMs": 2.03914,
+        "medianMs": 2.094142,
+        "p95Ms": 2.5983684,
+        "maxMs": 2.622491
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.252262,
-        "medianMs": 1.6715300000000002,
-        "p95Ms": 1.9033084999999998,
-        "maxMs": 2.498013
+        "minMs": 1.288957,
+        "medianMs": 1.385262,
+        "p95Ms": 2.156166249999999,
+        "maxMs": 2.742663
       }
     },
     {
@@ -4231,17 +4232,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.13149,
-        "medianMs": 2.35724,
-        "p95Ms": 3.123268,
-        "maxMs": 3.129878
+        "minMs": 2.421897,
+        "medianMs": 2.517953,
+        "p95Ms": 3.5186588,
+        "maxMs": 3.722693
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.4828,
-        "medianMs": 1.6124554999999998,
-        "p95Ms": 1.9629648999999998,
-        "maxMs": 2.359214
+        "minMs": 1.493345,
+        "medianMs": 1.5676675,
+        "p95Ms": 2.0779432999999994,
+        "maxMs": 2.466155
       }
     },
     {
@@ -4262,17 +4263,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.758207,
-        "medianMs": 3.768332,
-        "p95Ms": 7.919502799999998,
-        "maxMs": 8.940585
+        "minMs": 2.62194,
+        "medianMs": 3.053421,
+        "p95Ms": 7.309138399999999,
+        "maxMs": 8.035295
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.132671,
-        "medianMs": 1.505995,
-        "p95Ms": 2.240786999999999,
-        "maxMs": 2.626954
+        "minMs": 1.120413,
+        "medianMs": 1.261646,
+        "p95Ms": 2.01350125,
+        "maxMs": 2.420355
       }
     },
     {
@@ -4289,17 +4290,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.90011,
-        "medianMs": 2.027252,
-        "p95Ms": 2.5549076,
-        "maxMs": 2.611345
+        "minMs": 2.128264,
+        "medianMs": 2.171539,
+        "p95Ms": 2.3482646,
+        "maxMs": 2.388978
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.255156,
-        "medianMs": 1.447667,
-        "p95Ms": 2.0147466,
-        "maxMs": 2.514258
+        "minMs": 1.3043,
+        "medianMs": 1.401697,
+        "p95Ms": 2.1179668999999994,
+        "maxMs": 3.034012
       }
     },
     {
@@ -4320,17 +4321,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.245053,
-        "medianMs": 4.317923,
-        "p95Ms": 9.284004199999998,
-        "maxMs": 10.484167
+        "minMs": 4.181215,
+        "medianMs": 4.567048,
+        "p95Ms": 9.1852944,
+        "maxMs": 10.193405
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.054613,
-        "medianMs": 1.089511,
-        "p95Ms": 1.2974903,
-        "maxMs": 1.687829
+        "minMs": 1.113081,
+        "medianMs": 1.2157715,
+        "p95Ms": 1.4917236499999997,
+        "maxMs": 1.888352
       }
     },
     {
@@ -4358,17 +4359,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 3.430582,
-        "medianMs": 3.715703,
-        "p95Ms": 8.249977,
-        "maxMs": 8.963581
+        "minMs": 3.470691,
+        "medianMs": 3.685337,
+        "p95Ms": 6.874891599999999,
+        "maxMs": 7.661071
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.857896,
-        "medianMs": 2.187895,
-        "p95Ms": 4.291980849999999,
-        "maxMs": 5.078832
+        "minMs": 1.864867,
+        "medianMs": 2.0120135,
+        "p95Ms": 2.5637845499999994,
+        "maxMs": 2.869745
       }
     },
     {
@@ -4390,17 +4391,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.923587,
-        "medianMs": 3.103218,
-        "p95Ms": 6.892013799999999,
-        "maxMs": 7.79101
+        "minMs": 3.053812,
+        "medianMs": 3.720249,
+        "p95Ms": 6.932583999999999,
+        "maxMs": 7.7073
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.459364,
-        "medianMs": 1.5693905,
-        "p95Ms": 1.9544731,
-        "maxMs": 2.106873
+        "minMs": 1.505403,
+        "medianMs": 1.662561,
+        "p95Ms": 2.2044183499999996,
+        "maxMs": 2.260704
       }
     },
     {
@@ -4421,17 +4422,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.38261,
-        "medianMs": 4.516854,
-        "p95Ms": 8.5687992,
-        "maxMs": 9.576047
+        "minMs": 3.974312,
+        "medianMs": 4.15796,
+        "p95Ms": 8.0060598,
+        "maxMs": 8.747021
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.146262,
-        "medianMs": 1.222292,
-        "p95Ms": 1.4983969999999995,
-        "maxMs": 1.821012
+        "minMs": 1.172491,
+        "medianMs": 1.2240285000000002,
+        "p95Ms": 1.8052186499999998,
+        "maxMs": 1.951017
       }
     },
     {
@@ -4452,17 +4453,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 4.372946,
-        "medianMs": 4.487159,
-        "p95Ms": 8.9285508,
-        "maxMs": 9.999096
+        "minMs": 3.955804,
+        "medianMs": 4.102015,
+        "p95Ms": 7.1191764,
+        "maxMs": 7.869125
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.114294,
-        "medianMs": 1.3159035000000001,
-        "p95Ms": 1.7577553,
-        "maxMs": 1.883225
+        "minMs": 1.1256,
+        "medianMs": 1.157303,
+        "p95Ms": 1.3040892499999999,
+        "maxMs": 1.828792
       }
     },
     {
@@ -4479,17 +4480,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.38959,
-        "medianMs": 3.058501,
-        "p95Ms": 4.1212501999999995,
-        "maxMs": 4.174867
+        "minMs": 2.444191,
+        "medianMs": 2.477973,
+        "p95Ms": 2.7956042,
+        "maxMs": 2.870365
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.283459,
-        "medianMs": 1.3361040000000002,
-        "p95Ms": 1.7803786999999998,
-        "maxMs": 1.970647
+        "minMs": 1.306063,
+        "medianMs": 1.371597,
+        "p95Ms": 1.5813461999999998,
+        "maxMs": 2.091599
       }
     },
     {
@@ -4508,17 +4509,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.429019,
-        "medianMs": 1.518584,
-        "p95Ms": 1.8196248,
-        "maxMs": 1.842183
+        "minMs": 1.518243,
+        "medianMs": 1.606166,
+        "p95Ms": 1.8328662,
+        "maxMs": 1.852548
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.917666,
-        "medianMs": 0.9858945,
-        "p95Ms": 1.50441245,
-        "maxMs": 1.834141
+        "minMs": 0.937155,
+        "medianMs": 1.0123440000000001,
+        "p95Ms": 1.2836161999999998,
+        "maxMs": 1.698676
       }
     },
     {
@@ -4539,17 +4540,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.384482,
-        "medianMs": 2.715052,
-        "p95Ms": 2.725155,
-        "maxMs": 2.726609
+        "minMs": 2.359153,
+        "medianMs": 2.462108,
+        "p95Ms": 2.7212416,
+        "maxMs": 2.776543
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.42932,
-        "medianMs": 1.590528,
-        "p95Ms": 1.81397575,
-        "maxMs": 2.312084
+        "minMs": 1.134544,
+        "medianMs": 1.2499525,
+        "p95Ms": 1.7569252999999994,
+        "maxMs": 1.862513
       }
     },
     {
@@ -4569,17 +4570,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.296709,
-        "medianMs": 1.657344,
-        "p95Ms": 1.8839882,
-        "maxMs": 1.922875
+        "minMs": 1.368497,
+        "medianMs": 1.471232,
+        "p95Ms": 1.5464072,
+        "maxMs": 1.55617
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.891106,
-        "medianMs": 0.9392935,
-        "p95Ms": 1.2274444999999998,
-        "maxMs": 1.386054
+        "minMs": 0.938177,
+        "medianMs": 0.982749,
+        "p95Ms": 1.3107153499999995,
+        "maxMs": 1.52952
       }
     },
     {
@@ -4599,17 +4600,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.255367,
-        "medianMs": 2.332303,
-        "p95Ms": 2.5751062,
-        "maxMs": 2.59481
+        "minMs": 2.469549,
+        "medianMs": 2.634999,
+        "p95Ms": 2.6952776,
+        "maxMs": 2.704796
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.12532,
-        "medianMs": 1.1647245000000002,
-        "p95Ms": 1.6448366499999996,
-        "maxMs": 1.774691
+        "minMs": 1.228255,
+        "medianMs": 1.4613565,
+        "p95Ms": 1.86541765,
+        "maxMs": 2.03273
       }
     },
     {
@@ -4629,17 +4630,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.113703,
-        "medianMs": 2.230119,
-        "p95Ms": 2.4982181999999997,
-        "maxMs": 2.507999
+        "minMs": 2.197779,
+        "medianMs": 2.458132,
+        "p95Ms": 2.6852398,
+        "maxMs": 2.731606
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.9265,
-        "medianMs": 0.9757845,
-        "p95Ms": 1.3353919999999995,
-        "maxMs": 1.686748
+        "minMs": 0.967932,
+        "medianMs": 1.0896255,
+        "p95Ms": 1.6176802499999996,
+        "maxMs": 2.660328
       }
     },
     {
@@ -4656,17 +4657,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.699519,
-        "medianMs": 2.797226,
-        "p95Ms": 2.943976,
-        "maxMs": 2.953853
+        "minMs": 2.794391,
+        "medianMs": 3.154595,
+        "p95Ms": 3.496407,
+        "maxMs": 3.526867
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.313884,
-        "medianMs": 1.433075,
-        "p95Ms": 1.79502125,
-        "maxMs": 1.99283
+        "minMs": 1.359112,
+        "medianMs": 1.5163545,
+        "p95Ms": 2.0268428999999997,
+        "maxMs": 2.243899
       }
     },
     {
@@ -4686,17 +4687,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.637644,
-        "medianMs": 1.746388,
-        "p95Ms": 1.8574554,
-        "maxMs": 1.868482
+        "minMs": 1.410611,
+        "medianMs": 1.459614,
+        "p95Ms": 1.7181842,
+        "maxMs": 1.746006
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.90043,
-        "medianMs": 0.932579,
-        "p95Ms": 1.3269830499999997,
-        "maxMs": 1.391823
+        "minMs": 0.969194,
+        "medianMs": 1.147127,
+        "p95Ms": 1.52340145,
+        "maxMs": 1.627749
       }
     },
     {
@@ -4717,17 +4718,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 22.63145,
-        "medianMs": 26.086789,
-        "p95Ms": 43.830099399999995,
-        "maxMs": 46.966038
+        "minMs": 21.408433,
+        "medianMs": 24.675798,
+        "p95Ms": 30.0005538,
+        "maxMs": 31.011126
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.59556,
-        "medianMs": 1.765352,
-        "p95Ms": 1.9061536,
-        "maxMs": 2.543202
+        "minMs": 1.158821,
+        "medianMs": 1.3108695,
+        "p95Ms": 1.57796575,
+        "maxMs": 2.166282
       }
     },
     {
@@ -4748,17 +4749,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 20.235811,
-        "medianMs": 21.97652,
-        "p95Ms": 25.7212274,
-        "maxMs": 26.490219
+        "minMs": 20.347942,
+        "medianMs": 21.672873,
+        "p95Ms": 26.3624354,
+        "maxMs": 27.364669
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.21119,
-        "medianMs": 1.58865,
-        "p95Ms": 1.9810884,
-        "maxMs": 2.021293
+        "minMs": 1.203608,
+        "medianMs": 1.2558565,
+        "p95Ms": 1.5572829499999998,
+        "maxMs": 2.256489
       }
     },
     {
@@ -4786,17 +4787,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 23.782739,
-        "medianMs": 27.518363,
-        "p95Ms": 44.3166928,
-        "maxMs": 47.370865
+        "minMs": 21.258187,
+        "medianMs": 23.226159,
+        "p95Ms": 28.370313200000002,
+        "maxMs": 28.685984
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 2.054484,
-        "medianMs": 2.275517,
-        "p95Ms": 2.8009883999999996,
-        "maxMs": 3.120374
+        "minMs": 2.105029,
+        "medianMs": 2.312763,
+        "p95Ms": 3.221770499999999,
+        "maxMs": 3.995264
       }
     },
     {
@@ -4820,17 +4821,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.460346,
-        "medianMs": 1.664956,
-        "p95Ms": 3.4559933999999997,
-        "maxMs": 3.900493
+        "minMs": 1.39055,
+        "medianMs": 1.655861,
+        "p95Ms": 2.0626472,
+        "maxMs": 2.157939
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 0.92706,
-        "medianMs": 1.0630709999999999,
-        "p95Ms": 1.4317862499999996,
-        "maxMs": 1.617603
+        "minMs": 0.968172,
+        "medianMs": 1.1700475,
+        "p95Ms": 2.374136649999998,
+        "maxMs": 3.154825
       }
     },
     {
@@ -4846,17 +4847,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 43.664114,
-        "medianMs": 48.237022,
-        "p95Ms": 52.9915468,
-        "maxMs": 53.25661
+        "minMs": 44.522752,
+        "medianMs": 46.392647,
+        "p95Ms": 49.6898104,
+        "maxMs": 50.229086
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.233243,
-        "medianMs": 1.264205,
-        "p95Ms": 1.4679321999999997,
-        "maxMs": 1.795362
+        "minMs": 1.269738,
+        "medianMs": 1.3487870000000002,
+        "p95Ms": 1.6510460999999994,
+        "maxMs": 2.180713
       }
     },
     {
@@ -4872,17 +4873,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 45.715864,
-        "medianMs": 53.167822,
-        "p95Ms": 68.94671059999999,
-        "maxMs": 69.407164
+        "minMs": 44.010596,
+        "medianMs": 47.743333,
+        "p95Ms": 50.3996032,
+        "maxMs": 50.912705
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.262317,
-        "medianMs": 1.3766295,
-        "p95Ms": 1.66050535,
-        "maxMs": 1.979841
+        "minMs": 1.31763,
+        "medianMs": 1.4395695000000002,
+        "p95Ms": 1.9707966499999996,
+        "maxMs": 2.055895
       }
     },
     {
@@ -4904,17 +4905,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 47.211293,
-        "medianMs": 52.165287,
-        "p95Ms": 54.141985000000005,
-        "maxMs": 54.190516
+        "minMs": 43.959558,
+        "medianMs": 45.687528,
+        "p95Ms": 47.933389,
+        "maxMs": 48.419435
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.360465,
-        "medianMs": 1.4355085,
-        "p95Ms": 1.9266309499999994,
-        "maxMs": 2.32327
+        "minMs": 1.387406,
+        "medianMs": 1.502785,
+        "p95Ms": 1.8457142,
+        "maxMs": 2.316458
       }
     },
     {
@@ -4930,17 +4931,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 2.531545,
-        "medianMs": 2.6209,
-        "p95Ms": 2.7273724,
-        "maxMs": 2.734401
+        "minMs": 2.543381,
+        "medianMs": 2.553306,
+        "p95Ms": 2.746456,
+        "maxMs": 2.790685
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.192241,
-        "medianMs": 1.348748,
-        "p95Ms": 1.9293740999999993,
-        "maxMs": 2.238372
+        "minMs": 1.239973,
+        "medianMs": 1.293523,
+        "p95Ms": 1.9820603999999993,
+        "maxMs": 3.669792
       }
     },
     {
@@ -4956,17 +4957,17 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 19.273958,
-        "medianMs": 20.14955,
-        "p95Ms": 23.882323799999998,
-        "maxMs": 24.61714
+        "minMs": 18.250974,
+        "medianMs": 20.186185,
+        "p95Ms": 25.3005314,
+        "maxMs": 26.455694
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.089315,
-        "medianMs": 1.122946,
-        "p95Ms": 1.4403150999999996,
-        "maxMs": 1.620328
+        "minMs": 1.115074,
+        "medianMs": 1.1505429999999999,
+        "p95Ms": 1.4103570499999996,
+        "maxMs": 2.135335
       }
     },
     {
@@ -4986,17 +4987,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.748592,
-        "medianMs": 1.960962,
-        "p95Ms": 3.3585386,
-        "maxMs": 3.601662
+        "minMs": 1.756363,
+        "medianMs": 2.056255,
+        "p95Ms": 2.8783692,
+        "maxMs": 3.02595
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.063326,
-        "medianMs": 1.1887055,
-        "p95Ms": 1.6661933999999998,
-        "maxMs": 1.855313
+        "minMs": 1.061393,
+        "medianMs": 1.193738,
+        "p95Ms": 1.6103485999999994,
+        "maxMs": 1.740719
       }
     },
     {
@@ -5022,17 +5023,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.925509,
-        "medianMs": 2.226003,
-        "p95Ms": 2.576342,
-        "maxMs": 2.593498
+        "minMs": 1.92028,
+        "medianMs": 1.988043,
+        "p95Ms": 2.1652698,
+        "maxMs": 2.192501
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.750454,
-        "medianMs": 1.8415469999999998,
-        "p95Ms": 1.92178915,
-        "maxMs": 2.387938
+        "minMs": 1.287544,
+        "medianMs": 1.3439395,
+        "p95Ms": 1.9422970499999987,
+        "maxMs": 2.591534
       }
     },
     {
@@ -5058,17 +5059,17 @@
       "expectedStatus": "computed",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.894793,
-        "medianMs": 2.109287,
-        "p95Ms": 2.6947414,
-        "maxMs": 2.72028
+        "minMs": 1.941903,
+        "medianMs": 1.971538,
+        "p95Ms": 2.1265136,
+        "maxMs": 2.155876
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.258051,
-        "medianMs": 1.318712,
-        "p95Ms": 1.5702838499999996,
-        "maxMs": 2.052441
+        "minMs": 1.312472,
+        "medianMs": 1.3747315,
+        "p95Ms": 1.8313432499999998,
+        "maxMs": 1.992669
       }
     },
     {
@@ -5090,24 +5091,228 @@
       "expectedStatus": "not_computable",
       "firstQueryFreshEngine": {
         "samples": 5,
-        "minMs": 1.910666,
-        "medianMs": 2.160654,
-        "p95Ms": 3.2523957999999995,
-        "maxMs": 3.436422
+        "minMs": 1.855341,
+        "medianMs": 1.865357,
+        "p95Ms": 1.8943192,
+        "maxMs": 1.896795
       },
       "warmQuery": {
         "samples": 30,
-        "minMs": 1.272763,
-        "medianMs": 1.3838854999999999,
-        "p95Ms": 1.8550255999999994,
-        "maxMs": 1.995335
+        "minMs": 1.255557,
+        "medianMs": 1.3249054999999998,
+        "p95Ms": 2.123258,
+        "maxMs": 2.855012
+      }
+    },
+    {
+      "id": "energy_fuel_total_046018",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 2.44982,
+        "medianMs": 2.793428,
+        "p95Ms": 2.8219855999999996,
+        "maxMs": 2.828241
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 1.785216,
+        "medianMs": 1.9417925,
+        "p95Ms": 2.32027735,
+        "maxMs": 2.759408
+      }
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.571483,
+        "medianMs": 3.812929,
+        "p95Ms": 3.8540702,
+        "maxMs": 3.859899
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 2.885378,
+        "medianMs": 3.106912,
+        "p95Ms": 3.6315893499999996,
+        "maxMs": 4.444572
+      }
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_series",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 94.916601,
+        "medianMs": 97.393832,
+        "p95Ms": 99.57803820000001,
+        "maxMs": 99.659373
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 91.405468,
+        "medianMs": 94.5819805,
+        "p95Ms": 99.83941475,
+        "maxMs": 108.372132
+      }
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_2026-09",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "periods": [
+              "2026-09"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 5.412555,
+        "medianMs": 5.976576,
+        "p95Ms": 7.333576,
+        "maxMs": 7.559958
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 4.250791,
+        "medianMs": 4.489766,
+        "p95Ms": 4.9048671,
+        "maxMs": 4.96549
+      }
+    },
+    {
+      "id": "energy_ev_rank",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "computed",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.847119,
+        "medianMs": 1.943595,
+        "p95Ms": 2.2050859999999997,
+        "maxMs": 2.258831
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 1.282587,
+        "medianMs": 1.35062,
+        "p95Ms": 1.6981795999999998,
+        "maxMs": 1.998538
+      }
+    },
+    {
+      "id": "energy_evPoints_total_weighted_ratio_refused",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 1.351892,
+        "medianMs": 1.394847,
+        "p95Ms": 1.6456716,
+        "maxMs": 1.687469
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 0.920861,
+        "medianMs": 0.977286,
+        "p95Ms": 1.28212895,
+        "maxMs": 1.484121
+      }
+    },
+    {
+      "id": "energy_fuel_total_partial_refused",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expectedStatus": "not_computable",
+      "firstQueryFreshEngine": {
+        "samples": 5,
+        "minMs": 3.486536,
+        "medianMs": 3.552144,
+        "p95Ms": 3.5882114,
+        "maxMs": 3.593177
+      },
+      "warmQuery": {
+        "samples": 30,
+        "minMs": 2.74073,
+        "medianMs": 2.848988,
+        "p95Ms": 3.3787224499999993,
+        "maxMs": 4.28468
       }
     }
   ],
   "pythonAllocationBytes": {
-    "retained": 52855762,
-    "peak": 65171370,
-    "scope": "one fresh engine plus 168 representative queries; tracemalloc, excludes native allocations"
+    "retained": 53007382,
+    "peak": 65171301,
+    "scope": "one fresh engine plus 175 representative queries; tracemalloc, excludes native allocations"
   },
   "notes": [
     "Local sequential microbenchmark; not a production concurrency or load test",

@@ -739,7 +739,7 @@
     },
     {
       "id": "fuel_adapter_missing",
-      "question": "I carburanti pubblicati sono già interrogabili da questo motore?",
+      "question": "Carburanti nei sette Comuni: posso ottenere il confronto completo senza consentire esclusioni?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -752,10 +752,10 @@
       "expected": {
         "status": "not_computable",
         "reasons": [
-          "adapter_not_implemented"
+          "partial_coverage_requires_opt_in"
         ]
       },
-      "reference": "Dati/archivio MIMIT presenti; adapter esterno mensile ancora mancante"
+      "reference": "Adapter carburanti ora presente: richiesta sui sette Comuni senza allowPartial, Stazzema senza prezzo. Il rifiuto legacy adapter_not_implemented è migrato al limite di copertura reale."
     },
     {
       "id": "ars_hypertension_current",
@@ -102732,6 +102732,3214 @@
         ]
       },
       "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "energy_fuel_total_046005",
+      "question": "Energia · fuel total 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              203,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_046013",
+      "question": "Energia · fuel total 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2011,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_046018",
+      "question": "Energia · fuel total 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2077,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_046024",
+      "question": "Energia · fuel total 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              201,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_046028",
+      "question": "Energia · fuel total 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              203,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_stazzema_refused",
+      "question": "Energia · fuel total stazzema refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_046033",
+      "question": "Energia · fuel total 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              997,
+              500
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_rank",
+      "question": "Energia · fuel total rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_total_partial_refused",
+      "question": "Energia · fuel total partial refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046005",
+      "question": "Energia · fuel fuel:benzina 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              203,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046013",
+      "question": "Energia · fuel fuel:benzina 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2011,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046018",
+      "question": "Energia · fuel fuel:benzina 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2077,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046024",
+      "question": "Energia · fuel fuel:benzina 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              201,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046028",
+      "question": "Energia · fuel fuel:benzina 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              203,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_stazzema_refused",
+      "question": "Energia · fuel fuel:benzina stazzema refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046030",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_046033",
+      "question": "Energia · fuel fuel:benzina 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              997,
+              500
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_rank",
+      "question": "Energia · fuel fuel:benzina rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046033"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_partial_refused",
+      "question": "Energia · fuel fuel:benzina partial refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046005",
+      "question": "Energia · fuel fuel:gasolio 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2289,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046013",
+      "question": "Energia · fuel fuel:gasolio 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1121,
+              500
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046018",
+      "question": "Energia · fuel fuel:gasolio 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2277,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046024",
+      "question": "Energia · fuel fuel:gasolio 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              223,
+              100
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046028",
+      "question": "Energia · fuel fuel:gasolio 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2291,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_stazzema_refused",
+      "question": "Energia · fuel fuel:gasolio stazzema refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046030",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_046033",
+      "question": "Energia · fuel fuel:gasolio 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              1127,
+              500
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_rank",
+      "question": "Energia · fuel fuel:gasolio rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ],
+        "allowPartial": true
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046024"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_partial_refused",
+      "question": "Energia · fuel fuel:gasolio partial refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_2026-08-14",
+      "question": "Energia · fuel fuel:benzina 2026-08-14?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-08-14"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1987,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-14"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_2026-08-27",
+      "question": "Energia · fuel fuel:benzina 2026-08-27?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-08-27"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1009,
+              500
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-27"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_2026-08-28",
+      "question": "Energia · fuel fuel:benzina 2026-08-28?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-08-28"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1009,
+              500
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-28"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_2026-10-03",
+      "question": "Energia · fuel fuel:benzina 2026-10-03?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-10-03"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2097,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-03"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_2026-10-10",
+      "question": "Energia · fuel fuel:benzina 2026-10-10?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-10-10"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2077,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-10"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_series",
+      "question": "Energia · fuel fuel:benzina series?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1987,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:benzina_stazzema_series_refused",
+      "question": "Energia · fuel fuel:benzina stazzema series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_2026-08-14",
+      "question": "Energia · fuel fuel:gasolio 2026-08-14?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "periods": [
+              "2026-08-14"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              261,
+              125
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-14"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_2026-08-27",
+      "question": "Energia · fuel fuel:gasolio 2026-08-27?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "periods": [
+              "2026-08-27"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2147,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-27"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_2026-08-28",
+      "question": "Energia · fuel fuel:gasolio 2026-08-28?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "periods": [
+              "2026-08-28"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2147,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-08-28"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_2026-10-03",
+      "question": "Energia · fuel fuel:gasolio 2026-10-03?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "periods": [
+              "2026-10-03"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2299,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-03"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_2026-10-10",
+      "question": "Energia · fuel fuel:gasolio 2026-10-10?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "periods": [
+              "2026-10-10"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2277,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-10-10"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_series",
+      "question": "Energia · fuel fuel:gasolio series?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              261,
+              125
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_fuel:gasolio_stazzema_series_refused",
+      "question": "Energia · fuel fuel:gasolio stazzema series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_2022-01",
+      "question": "Energia · fuel monthly:benzina 2022-01?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "periods": [
+              "2022-01"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              441,
+              250
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022-01"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 31
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_2022-03",
+      "question": "Energia · fuel monthly:benzina 2022-03?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "periods": [
+              "2022-03"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              997,
+              500
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022-03"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 29
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_2026-09",
+      "question": "Energia · fuel monthly:benzina 2026-09?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "periods": [
+              "2026-09"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              264,
+              125
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 29
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_series",
+      "question": "Energia · fuel monthly:benzina series?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              441,
+              250
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:benzina_stazzema_series_refused",
+      "question": "Energia · fuel monthly:benzina stazzema series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_2022-01",
+      "question": "Energia · fuel monthly:gasolio 2022-01?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "periods": [
+              "2022-01"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1637,
+              1000
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022-01"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 31
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_2022-03",
+      "question": "Energia · fuel monthly:gasolio 2022-03?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "periods": [
+              "2022-03"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              491,
+              250
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2022-03"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 29
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_2026-09",
+      "question": "Energia · fuel monthly:gasolio 2026-09?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "periods": [
+              "2026-09"
+            ],
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1133,
+              500
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2026-09"
+          },
+          {
+            "path": "/observations/0/observationDays",
+            "value": 29
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_series",
+      "question": "Energia · fuel monthly:gasolio series?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              1637,
+              1000
+            ],
+            "tolerance": 1e-10
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_monthly:gasolio_stazzema_series_refused",
+      "question": "Energia · fuel monthly:gasolio stazzema series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio",
+            "towns": [
+              "046030"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "partial_coverage_requires_opt_in"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046005",
+      "question": "Energia · ev 046005?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              27,
+              50
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046013",
+      "question": "Energia · ev 046013?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              119,
+              20
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046018",
+      "question": "Energia · ev 046018?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              23,
+              50
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046024",
+      "question": "Energia · ev 046024?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              33,
+              25
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046028",
+      "question": "Energia · ev 046028?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              6,
+              25
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046030",
+      "question": "Energia · ev 046030?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              18,
+              25
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/0/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_046033",
+      "question": "Energia · ev 046033?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              79,
+              100
+            ],
+            "tolerance": 1e-10
+          },
+          {
+            "path": "/observations/1/nativeComponentsAvailable",
+            "value": false
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_rank",
+      "question": "Energia · ev rank?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046030"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046028"
+          }
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_ev_series_refused",
+      "question": "Energia · ev series refused?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_ev_history_not_frozen"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_absolute_change_refused",
+      "question": "Energia · fuelPrices total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_relative_change_refused",
+      "question": "Energia · fuelPrices total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_percentage_points_refused",
+      "question": "Energia · fuelPrices total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_trend_refused",
+      "question": "Energia · fuelPrices total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_weighted_ratio_refused",
+      "question": "Energia · fuelPrices total weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_benchmark_gap_refused",
+      "question": "Energia · fuelPrices total benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_anomaly_refused",
+      "question": "Energia · fuelPrices total anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_pair_False_refused",
+      "question": "Energia · fuelPrices total pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_total_pair_True_refused",
+      "question": "Energia · fuelPrices total pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "fuelPrices",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_absolute_change_refused",
+      "question": "Energia · fuelPrices fuel:benzina absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_relative_change_refused",
+      "question": "Energia · fuelPrices fuel:benzina relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_percentage_points_refused",
+      "question": "Energia · fuelPrices fuel:benzina percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_trend_refused",
+      "question": "Energia · fuelPrices fuel:benzina trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_weighted_ratio_refused",
+      "question": "Energia · fuelPrices fuel:benzina weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_benchmark_gap_refused",
+      "question": "Energia · fuelPrices fuel:benzina benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_anomaly_refused",
+      "question": "Energia · fuelPrices fuel:benzina anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_pair_False_refused",
+      "question": "Energia · fuelPrices fuel:benzina pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:benzina_pair_True_refused",
+      "question": "Energia · fuelPrices fuel:benzina pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_absolute_change_refused",
+      "question": "Energia · fuelPrices fuel:gasolio absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_relative_change_refused",
+      "question": "Energia · fuelPrices fuel:gasolio relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_percentage_points_refused",
+      "question": "Energia · fuelPrices fuel:gasolio percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_trend_refused",
+      "question": "Energia · fuelPrices fuel:gasolio trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_weighted_ratio_refused",
+      "question": "Energia · fuelPrices fuel:gasolio weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_benchmark_gap_refused",
+      "question": "Energia · fuelPrices fuel:gasolio benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_anomaly_refused",
+      "question": "Energia · fuelPrices fuel:gasolio anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_pair_False_refused",
+      "question": "Energia · fuelPrices fuel:gasolio pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_fuel:gasolio_pair_True_refused",
+      "question": "Energia · fuelPrices fuel:gasolio pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:gasolio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_absolute_change_refused",
+      "question": "Energia · fuelPrices monthly:benzina absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_relative_change_refused",
+      "question": "Energia · fuelPrices monthly:benzina relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_percentage_points_refused",
+      "question": "Energia · fuelPrices monthly:benzina percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_trend_refused",
+      "question": "Energia · fuelPrices monthly:benzina trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_weighted_ratio_refused",
+      "question": "Energia · fuelPrices monthly:benzina weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_benchmark_gap_refused",
+      "question": "Energia · fuelPrices monthly:benzina benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_anomaly_refused",
+      "question": "Energia · fuelPrices monthly:benzina anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_pair_False_refused",
+      "question": "Energia · fuelPrices monthly:benzina pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:benzina_pair_True_refused",
+      "question": "Energia · fuelPrices monthly:benzina pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_absolute_change_refused",
+      "question": "Energia · fuelPrices monthly:gasolio absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_relative_change_refused",
+      "question": "Energia · fuelPrices monthly:gasolio relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_percentage_points_refused",
+      "question": "Energia · fuelPrices monthly:gasolio percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_trend_refused",
+      "question": "Energia · fuelPrices monthly:gasolio trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_weighted_ratio_refused",
+      "question": "Energia · fuelPrices monthly:gasolio weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_benchmark_gap_refused",
+      "question": "Energia · fuelPrices monthly:gasolio benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_anomaly_refused",
+      "question": "Energia · fuelPrices monthly:gasolio anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_pair_False_refused",
+      "question": "Energia · fuelPrices monthly:gasolio pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuelPrices_monthly:gasolio_pair_True_refused",
+      "question": "Energia · fuelPrices monthly:gasolio pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:gasolio"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_absolute_change_refused",
+      "question": "Energia · evPoints total absolute change refused?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_relative_change_refused",
+      "question": "Energia · evPoints total relative change refused?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_percentage_points_refused",
+      "question": "Energia · evPoints total percentage points refused?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_trend_refused",
+      "question": "Energia · evPoints total trend refused?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_temporal_continuity_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_weighted_ratio_refused",
+      "question": "Energia · evPoints total weighted ratio refused?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_native_pooling_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_benchmark_gap_refused",
+      "question": "Energia · evPoints total benchmark gap refused?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_anomaly_refused",
+      "question": "Energia · evPoints total anomaly refused?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_pair_False_refused",
+      "question": "Energia · evPoints total pair False refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          },
+          {
+            "metric": "population"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_evPoints_total_pair_True_refused",
+      "question": "Energia · evPoints total pair True refused?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population"
+          },
+          {
+            "metric": "evPoints",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_month_on_daily_refused",
+      "question": "Energia · fuel month on daily refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "fuel:benzina",
+            "periods": [
+              "2026-09"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_period_not_frozen_for_selected_statistic"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_daily_on_month_refused",
+      "question": "Energia · fuel daily on month refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "monthly:benzina",
+            "periods": [
+              "2026-10-10"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_period_not_frozen_for_selected_statistic"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
+    },
+    {
+      "id": "energy_fuel_annual_alias_refused",
+      "question": "Energia · fuel annual alias refused?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "fuelPrices",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "energy_period_not_frozen"
+        ]
+      },
+      "reference": "Catalogo pubblico congelato e snapshot MIMIT normalizzati: mediane puntuali self diverse dalla media mensile delle mediane giornaliere. Ancore indipendenti in test_semantic_energy_adapters.py; EV senza componenti native certificate."
     },
     {
       "id": "omi_total_046005",

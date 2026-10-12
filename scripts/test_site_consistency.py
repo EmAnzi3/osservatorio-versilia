@@ -44,7 +44,7 @@ def _build_assertions_from_dist_catalog(dist) -> None:
             query = {"operation": "lookup" if item["metric"] == "drinkingWaterQuality" else "compare", "selectors": [selector]}
             coastal = item["metric"] in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS)
             is_library = item["metric"] in library.KEYS
-            if coastal or is_library or item["metric"] in connectivity.COUNTS or item["metric"] in invalsi.KEYS or item["metric"]==extractive.KEYS[1]:
+            if coastal or is_library or item["metric"] in connectivity.COUNTS or item["metric"] in invalsi.KEYS or item["metric"] in ('fuelPrices',extractive.KEYS[1]):
                 refusal = query_engine.query(query)
                 assert refusal["status"] == "not_computable" and "partial_coverage_requires_opt_in" in refusal["reasons"], refusal
                 query["allowPartial"] = True
@@ -54,6 +54,9 @@ def _build_assertions_from_dist_catalog(dist) -> None:
                 assert result["interpretationLevel"] == "source_lookup" and result["coverage"]["usable"] == 70, result
             if item["metric"] in connectivity.COUNTS:
                 assert result["coverage"]["usable"] == 6 and {x["observation"]["geography"] for x in result["excluded"]} == {"046013"}, result
+            if item["metric"] == "fuelPrices":
+                assert result["coverage"]["usable"] == 6 and {x["observation"]["geography"] for x in result["excluded"]} == {"046030"}, result
+                assert all(x["observation"]["value"] is None for x in result["excluded"]), result
             if is_library:
                 assert result["coverage"]["usable"] == 5 and {x["observation"]["geography"] for x in result["excluded"]} == {"046018", "046030"}, result
             if coastal:
@@ -113,6 +116,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     social_regressions(catalog_path)
     from test_semantic_omi_adapters import regressions as omi_regressions
     omi_regressions(catalog_path)
+    from test_semantic_energy_adapters import regressions as energy_regressions
+    energy_regressions(catalog_path)
     from test_semantic_pnrr_adapters import regressions as pnrr_regressions
     pnrr_regressions(catalog_path)
     from test_semantic_turnout_adapters import regressions as turnout_regressions

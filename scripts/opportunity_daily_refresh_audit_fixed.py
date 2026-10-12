@@ -24,6 +24,7 @@ import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
 import opportunity_document_promotion as document_promotion
 import opportunity_review_actions as review_actions
+from opportunity_discovery_noise import clean_review_queues
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -211,6 +212,7 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     il gate continua a bloccare soltanto vere sparizioni.
     """
     result = _BASE_RUN_V04(today, **kwargs)
+    clean_review_queues(result, today.isoformat())
     audit_promotions.apply_complete_promotions(result, today)
     previous_path = kwargs.get("previous_path")
     previous = core._load(previous_path) if previous_path and previous_path.exists() else {}
@@ -285,6 +287,7 @@ def _write_full_publishability_diagnostic(
         "backtest": dict(result.get("backtest") or {}),
         "transportAudit": transport,
         "discoveryQueue": list(result.get("discoveryQueue") or []),
+        "discoveryNoise": list(result.get("discoveryNoise") or []),
         "reviewQueue": list(result.get("reviewQueue") or []),
         "qualityHold": list(result.get("qualityHold") or []),
         "documentPromotion": dict(result.get("documentPromotion") or {}),

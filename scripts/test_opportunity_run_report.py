@@ -73,6 +73,7 @@ def _test_coverage_failure_names_expired_evidence() -> None:
 def main() -> int:
     _test_coverage_failure_names_expired_evidence()
     _test_actionable_document_review()
+    _test_discovery_noise()
     prior = _snapshot([])
     candidate = _snapshot([])
     candidate["discoveryQueue"] = [{"title": "Nuovo avviso da verificare", "url": "https://example.test/lead", "source_label": "Fonte istituzionale"}]
@@ -239,8 +240,9 @@ Sono ammessi anche enti pubblici titolari della superficie forestale.
     current["documentPromotion"] = {"checks": [{"url": page, "status": "review", "errors": ["PDF scansionato"],
         "documents": [{"url": document, "status": "review", "error": "PDF scansionato"}]}]}
     actions = build_actions(current)
-    assert actions["signalCount"] == 4 and actions["uniqueCount"] == 3 and actions["duplicatesGrouped"] == 1
-    assert actions["counts"] == {"human": 1, "covered": 1, "monitor": 1}
+    assert actions["signalCount"] == 3 and actions["uniqueCount"] == 2 and actions["duplicatesGrouped"] == 1
+    assert actions["counts"] == {"human": 1, "covered": 1}
+    assert actions["discardedCount"] == 1 and actions["discarded"][0]["reasonCode"] == "catalog_or_navigation"
     row = actions["items"][0]
     assert row["reasonCode"] == "scanned_pdf" and row["documents"][0]["url"] == document
     report = build_report(current, current, phase_statuses={"scan": "success", "validation": "success", "build": "success"})
@@ -373,6 +375,126 @@ Sono ammessi anche enti pubblici titolari della superficie forestale.
     technical = {**current, "documentPromotion": {"checks": [{"url": page, "errors": ["Struttura non supportata"], "documents": [{"url": document}]}]}}
     assert build_actions(technical)["counts"].get("technical") == 1
     assert "Interventi sul Radar: 1" in render_actions_markdown(build_actions(technical))
+
+
+def _test_discovery_noise():
+    from opportunity_discovery_noise import classify_signal, clean_review_queues
+    from opportunity_pdf_evidence import pdf_links
+    from opportunity_review_actions import build_actions, collect_document_links
+    from opportunity_radar_v03 import discovery_candidates
+    from copy import deepcopy
+    reference = "2026-10-12"
+    chrome = '<header><h2><a href="/menu">Bandi per i Comuni</a></h2></header><nav><h2><a href="/other">Avviso per i Comuni</a></h2></nav>'
+    article = '<main><article><header><h2><a href="/avviso">Avviso per i Comuni</a></h2></header><p>Presentare le domande entro il 22 ottobre 2026.</p><a href="/avviso.pdf">Avviso pubblico</a></article></main>'
+    footer = '<div class="elementor-location-footer"><a href="/statuto_anci_toscana_2021.pdf">Statuto</a><h2><a href="/fake">Bando per i Comuni</a></h2></div>'
+    page = chrome + article + footer
+    assert pdf_links(page, "https://ancitoscana.it/") == ["https://ancitoscana.it/avviso.pdf"]
+    assert pdf_links('<a href="statuto_anci_toscana_2021.pdf">Statuto</a>', "https://ancitoscana.it/") == []
+    assert pdf_links('<a href="avviso-statuto.pdf">Avviso</a>', "https://ancitoscana.it/") == ["https://ancitoscana.it/avviso-statuto.pdf"]
+    assert pdf_links('<main><article><footer><a href="allegato.pdf">Allegato A</a></footer></article></main>'
+                     '<footer><a href="altro-avviso.pdf">Avviso nel menu</a></footer>', "https://ancitoscana.it/") == ["https://ancitoscana.it/allegato.pdf"]
+    source = {"id": "sample", "includeTerms": ["avviso", "bando"], "municipalTerms": ["Comuni"]}
+    found = discovery_candidates(source, page, "https://ancitoscana.it/")
+    assert len(found) == 1 and found[0]["url"] == "https://ancitoscana.it/avviso"
+    discarded = [
+        {"title": "AMMINISTRAZIONE TRASPARENTE", "url": "https://ancitoscana.portaletrasparenza.net/"},
+        {"title": "Avviso 2021", "url": "https://www.sport.governo.it/it/bandi/avviso-2021/",
+         "summary": "Elenco degli eventi ammessi al contributo"},
+        {"title": "Tax credit musica", "url": "https://spettacolo.cultura.gov.it/tax-credit-musica-old-old/"},
+        {"title": "Riunione per la videosorveglianza", "url": "https://prefettura.interno.gov.it/it/prefetture/asti/notizie/riunione"},
+        {"title": "Fornitura pasti", "url": "https://prefettura.interno.gov.it/it/prefetture/pavia/amministrazione-trasparente/bandi-gara-e-contratti/pasti"},
+        {"title": "Strong Interreg, strong regions, strong Europe", "url": "https://www.interregeurope.eu/"},
+        {"title": "Ciao, questa pagina è stata utile?", "url": "https://www.padigitale2026.gov.it/enti/comuni"},
+        {"title": "Our topics", "url": "https://www.interregeurope.eu/"},
+        {"title": "Progetti e finanziamenti per il PNRR", "url": "https://dait.interno.gov.it/finanza-locale"},
+        {"title": "FEASR-PSR 2023-2027 Fondo europeo agricolo per lo sviluppo rurale", "url": "https://www.artea.toscana.it/fondo/feasr-2023-2027/"},
+        {"title": "LIFE Clean Energy Transition sub-programme", "url": "https://cinea.ec.europa.eu/programmes/life/clean-energy-transition_en"},
+        {"title": "Posizioni di elevata qualificazione: avvisi interni per incarichi, ottobre 2026", "url": "https://www.regione.toscana.it/it/-/incarichi"},
+        {"title": "Domanda per l'esercizio temporaneo della professione infermieristica", "url": "https://www.regione.toscana.it/it/-/professione"},
+        {"title": "Borse di studio per studenti universitari con alti meriti sportivi", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/borse/"},
+        {"title": "Sostegno alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/atlete/"},
+        {"title": "Ordinanza Prefettizia Divieto Vetro AS Roma-Real Madrid 14/10/2026", "url": "https://prefettura.interno.gov.it/it/prefetture/roma/comunicazioni/ordinanza", "deadline_at": "2026-10-14"},
+        {"title": "Ordinanza Prefettizia prescrizioni AS Roma-Genoa CFC", "url": "https://prefettura.interno.gov.it/it/prefetture/roma/comunicazioni/ordinanza-2"},
+        {"title": "Misure sulla movida, chiusi tre minimarket dal Prefetto", "url": "https://prefettura.interno.gov.it/it/prefetture/torino/comunicati-stampa/chiusura"},
+        {"title": "GENOVA - CENTRO STORICO E DARSENA", "url": "https://prefettura.interno.gov.it/it/prefetture/genova/comunicazioni/genova-centro-storico-e-darsena", "summary": "Controlli serali interforze ad alto impatto"},
+        {"title": "Recovery: Franceschini, con oltre 6 miliardi la cultura guiderà la ripartenza del Paese", "url": "https://cultura.gov.it/comunicati/avvisi"},
+        {"title": "Rendez-vous Express, ecco il nuovo help desk per la comunicazione dei progetti Leggi di più", "url": "https://interreg-marittimo.eu/web/interreg21-27/-/help-desk"},
+        {"title": "Nasce la \"Rete Nazionale delle Città di Fondazione – CITTÀ DEL ’900\"", "url": "https://www.lavoro.gov.it/notizie/pagine/rete", "summary": "Firma dell’Accordo tra 11 Comuni"},
+        {"title": "Finanziamento centri estivi 2022", "url": "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/finanziamento-centri-estivi-2022/", "summary": "Elenco dei comuni beneficiari. Monitoraggio. Restituire le somme non utilizzate"},
+    ]
+    kept = [
+        {"title": "Avviso pubblico musica jazz annualità 2027", "url": "https://ancitoscana.it/jazz/"},
+        {"title": "Avviso MIM edilizia scolastica", "url": "https://anci.lombardia.it/avviso/"},
+        {"title": "Programma 2014-2020: nuova finestra 2026", "url": "https://example.test/bando/"},
+        {"title": "Avviso 2021", "url": discarded[1]["url"], "summary": "Riapertura delle domande"},
+        {"title": "Avviso 2021", "url": discarded[1]["url"]},
+        {"title": "Avviso 2021", "url": discarded[1]["url"], "deadline_at": "2026-10-22"},
+        {"title": "Avviso 2027", "url": "https://www.sport.governo.it/it/bandi/avviso-2027/"},
+        {"title": "Riunione: aperto il bando, presentare le domande", "url": discarded[3]["url"]},
+        {"title": "Call for proposals", "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/real-call"},
+        {"title": "Approvati progetti di videosorveglianza", "url": discarded[3]["url"],
+         "summary": "Riapertura delle domande entro il 22 ottobre 2026"},
+        {"title": "Launch of the new municipal funding call", "url": "https://www.interregeurope.eu/news-events/events/call-launch"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Elenco dei comuni beneficiari. Riapertura delle domande"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Elenco dei comuni beneficiari", "deadline_at": "2026-11-01"},
+        {"title": "Finanziamento centri estivi 2026", "url": "https://www.famiglia.governo.it/finanziamento-centri-estivi-2026/", "summary": "Elenco dei comuni beneficiari"},
+        {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Programma pluriennale, verificare il nuovo avviso"},
+        {"title": "Avviso per contributi comunali alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/comuni/"},
+    ]
+    assert all(classify_signal(x, reference) for x in discarded)
+    assert all(classify_signal(x, reference) is None for x in kept)
+    public = [{"title": "Scheda già pubblicata", "url": "https://example.test/current"}]
+    payload = {"referenceDate": reference, "discoveryQueue": deepcopy(discarded + kept),
+               "reviewQueue": deepcopy([discarded[0], kept[0]]), "counts": {"reviewInternal": 2},
+               "opportunities": deepcopy(public), "archive": [{"title": "Storico"}],
+               "transportAudit": {"summary": {"failureCount": 8}}}
+    clean_review_queues(payload, reference)
+    assert payload["discoveryQueue"] == kept and payload["opportunities"] == public
+    assert payload["counts"]["reviewInternal"] == len(payload["reviewQueue"]) == 1
+    assert payload["archive"] == [{"title": "Storico"}] and payload["transportAudit"]["summary"]["failureCount"] == 8
+    assert len(payload["discoveryNoise"]) == len(discarded)
+    clean_review_queues(payload, reference)
+    assert len(payload["discoveryNoise"]) == len(discarded), "Pulizia idempotente"
+    payload = {"referenceDate": reference, "discoveryQueue": discarded + kept[:2], "opportunities": []}
+    calls = []
+    def loader(url):
+        calls.append(url)
+        return '<main><p>Avviso da verificare</p></main>' + footer
+    from types import SimpleNamespace
+    import time
+    budget = SimpleNamespace(hosts={"ancitoscana.it"}, deadline=time.monotonic() + 60)
+    collect_document_links(payload, loader=loader, budget=budget, max_pages=2)
+    assert set(calls) == {x["url"] for x in kept[:2]}, "Il rumore non deve consumare il budget documentale"
+    assert all(not x["documents"] for x in payload["reviewDocumentLookup"])
+    payload["reviewDocumentLookup"][0]["documents"] = [{"url": "https://ancitoscana.it/statuto_anci_toscana_2021.pdf"}]
+    payload["documentPromotion"] = {"checks": [{"url": kept[0]["url"], "status": "review",
+        "errors": ["PDF scansionato"], "documents": [{"url": "https://ancitoscana.it/statuto_anci_toscana_2021.pdf",
+        "error": "PDF scansionato"}]}]}
+    assert all(not x["documents"] for x in build_actions(payload)["items"])
+    assert not build_actions(payload)["counts"].get("human"), "Un allegato estraneo non deve generare lavoro manuale"
+    # The two Interreg homepage headings are one document reference.
+    assert build_actions(payload)["discardedCount"] == len(discarded) - 1
+
+    shared_url = discarded[3]["url"]
+    valid = {"title": "Avviso per i Comuni", "url": shared_url, "deadline_at": "2026-10-22"}
+    noisy = {**discarded[3], "title": "Riunione per la videosorveglianza e la sicurezza del territorio comunale"}
+    for reversed_order in (False, True):
+        mixed = {"referenceDate": reference, "opportunities": [],
+                 "discoveryQueue": [noisy, valid] if reversed_order else [valid, noisy]}
+        clean_review_queues(mixed, reference)
+        actions = build_actions(mixed)
+        assert actions["discardedCount"] == 0 and len(actions["items"]) == 1
+        assert actions["items"][0]["title"] == valid["title"]
+        assert actions["items"][0]["deadline"] == valid["deadline_at"]
+        visited = []
+        def mixed_loader(url):
+            visited.append(url)
+            return '<main><a href="/avviso.pdf">Avviso pubblico</a></main>'
+        mixed_budget = SimpleNamespace(hosts={"prefettura.interno.gov.it"}, deadline=time.monotonic() + 60)
+        collect_document_links(mixed, loader=mixed_loader, budget=mixed_budget, max_pages=1)
+        assert visited == [shared_url], "Un segnale valido con URL condiviso deve conservare la ricerca allegati"
+    noise_only = {"referenceDate": reference, "discoveryNoise": [noisy, discarded[3]]}
+    assert build_actions(noise_only)["discardedCount"] == 1
 
 
 if __name__ == "__main__":
