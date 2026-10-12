@@ -121,6 +121,32 @@ class PromotionTests(unittest.TestCase):
         self.assertEqual(set(calls), {page_url, *by_url})
         self.assertEqual(candidate["documentPromotion"]["checks"][0]["sourcePageFallback"], "recent_attachment_references")
 
+    def test_slow_complete_annexes_fit_existing_transport_caps(self):
+        import opportunity_discovery_resilient as transport
+        receipts = self.culture_receipts()
+        by_url = {r["resolvedUrl"]: r for r in receipts.values()}
+        page_url = "https://cultura.gov.it/comunicato/29352"
+        page = '<main>'+''.join(f'<a href="{u}">Bando o Allegato</a>' for u in by_url)+'</main>'
+        class SlowSource:
+            spent = 0
+            def fetch(self, url, *, kind, timeout, attempts):
+                if kind == "promotion_page":
+                    return {"text": page}, {}
+                # A valid source responds after the old 15-second allowance,
+                # while remaining inside the real 60/180-second budget caps.
+                delay = 25
+                self.spent += min(timeout, delay)
+                if timeout < delay:
+                    return None, {"errors": ["urlopen timed out"]}
+                return by_url[url], {}
+        budget = SlowSource()
+        result = {"opportunities": [], "discoveryQueue": [{"url": page_url, "title": "Bando Città che legge"}]}
+        with patch.object(transport, "LIVE_BUDGET", budget):
+            promotion.apply_promotions(result, TODAY)
+        self.assertEqual(result["documentPromotion"]["added"], 1)
+        self.assertEqual(result["opportunities"][0]["qualification_evidence"]["pages"], 30)
+        self.assertLessEqual(budget.spent, 180)
+
     def test_inaccessible_national_pdf_uses_fresh_exact_protocol_copy(self):
         original="https://www.anci.it/wp-content/uploads/2026/10/m_pi.AOODGFIESD.REGISTRO-UFFICIALEU.0078918.01-10-2026.pdf"
         copy="https://anci.lombardia.it/documenti/24093-Avviso%20MIM%20n.%2078918%20del%201%20ottobre%202026.pdf"

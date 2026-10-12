@@ -304,7 +304,7 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
             from opportunity_transport_budget import TransportBudget
             budget = TransportBudget({}, scan_seconds=120)
         def loader(url, document):
-            receipt, trace = budget.fetch(url, kind="promotion_document" if document else "promotion_page", timeout=15, attempts=1)
+            receipt, trace = budget.fetch(url, kind="promotion_document" if document else "promotion_page", timeout=60 if document else 15, attempts=1)
             if receipt is None:
                 raise ValueError("; ".join(trace.get("errors") or ["Acquisizione fallita"]))
             return receipt

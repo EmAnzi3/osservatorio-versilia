@@ -29,6 +29,8 @@ La correzione conserva le segnalazioni irrisolte prima dei filtri e della promoz
 
 Diagnostico del primo head: artifact 11772178622, SHA-256 `7b478272010928724df3194d5b046f9d4a5298cfde33bc2bd25bfb71e0fa4600`. I conteggi del replay precedente restano una verifica locale, non una promessa sul risultato live.
 
+Il diagnostico del head con continuità corretta (`22dcd920`, run 38311323575, artifact 11775715822, SHA-256 `68ae8719a6a47b43537bd9f6173f7d6efa198f44db6e165c85afcee3bcaacd72`) conserva CEPELL e i riferimenti ai tre allegati, ma tutti i PDF vanno in timeout a 15 secondi; le schede restano 60. L’alias istituzionale `cepell.it` rimanda agli stessi originali e non costituisce una copia indipendente. Da questo ambiente i tre originali sono stati riacquisiti integralmente con hash identici (16, 30 e 1 pagine); l’alias ha impiegato circa 14–15 secondi. L’attesa dei PDF è portata a 60 secondi, entro i limiti già esistenti di 60 secondi per endpoint, 180 per fonte e 1.200 per scansione. Nessuna estensione della cache o promozione basata su un fetch fallito.
+
 ## Disposizioni delle 79 segnalazioni
 
 | Segnalazione | Esito |
