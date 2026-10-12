@@ -2,20 +2,20 @@
 
 ## Stato corrente — 12 ottobre 2026
 
-- Baseline dopo merge del proprietario #412: main `0aaf14dda8ab8fb1ac657afae934a8668f80b0d0`, albero `3164d9f164c21b1a75d657c179a784e1a5406ccc`, identico al lotto con Quick/Full locali completi e CI Quick→Full/A3 verdi. Include manutenzioni #407/#411 e separazione refresh AGCOM #413. Copertura 216/225 effettivi, 159/181 sorgente, nove residui; 2.847 PASS.
+- Baseline dopo merge del proprietario #414: main `8b2726ea023b84ffc58d6a9b34556cac2d7696e5`, albero `d20dde15c4eb0a31c51a107e1bdf114d40e67f2b`. Include RUNTS v48, manutenzioni #407/#411 e separazione refresh AGCOM #413. Quick/Full locali completi e CI Quick→Full/A3 verdi sullo stesso albero; ricevuta Full conclusiva dopo riesecuzione completa della prima esecuzione interrotta. 217/225 effettivi, 160/181 sorgente, otto residui; 2.928 PASS.
 - Catalogo effettivo corrente rigenerato: 225 indicatori, 124 storici, 137 confronti, SHA `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; registro SHA `261304eb74262058ba42f38d0b4584a3038f184e3bc602ab8e0b5d9eb9d13d5c`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-third-sector-adapter`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-turnout-adapter`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; dati/UI/asset/golden/workflow/Radar, 35 letture e due riepiloghi conservati.
 
 ## Lotto in verifica
 
-RUNTS v48: un carrier, tre viste densità/conteggio/rapporto nativo, confronto/rango 7/7; pooling soltanto nativo con sedi legali disgiunte per fotografia. Registro 11 ottobre 2026 distinto da residenti 1 gennaio 2026. 465 enti su 158.520 residenti; nessuna misura di attività, servizi o volontari. Snapshot normalizzato riconciliato, workbook/record individuali non rigiocati. Storia/trasferimenti, benchmark, anomalie e coppie non revisionate rifiutati. Metodo `docs/A6_THIRD_SECTOR_ADAPTERS.md`.
+Affluenza v49: carrier solo effettivo, 26 viste, 71 consultazioni sovracomunali 7/7; conteggi elettori/votanti, quattro famiglie, sesso solo con componenti completi. ID esatti e quesiti distinti, valori pubblici a quattro decimali separati dai rapporti nativi; alias corrente referendum marzo 2026. Pooling solo nativo entro stessa consultazione/sesso, serie irregolari per Camera/Europee/Regionali. Referendum come consultazioni distinte, nessuna serie univoca del quesito. Regionali 1990: flag mfComplete insufficiente, zero/null femminili trattati come mancanza di componenti. Comunali a date diverse e contesti provinciali esclusi; nessuna interpolazione, trend/variazione, benchmark, anomalia o coppia inferita. Metodo `docs/A6_TURNOUT_ADAPTERS.md`.
 
-21 osservazioni fisse, 14 componenti, due aggregati, puntatori/date/alias e prove ostili dopo cache. 81 domande nuove e 2.847 precedenti invariate; suite 2.928 PASS (1.596 calcoli, 1.332 rifiuti). Copertura derivata 217/225 effettivi, 160/181 sorgente, otto residui. Report `reports/a6-third-sector/`; gate canonici da completare sul medesimo albero.
+28 coppie correnti, 28 per sesso e 41 storiche fisse; replay distinto 2.982 celle normalizzate incluse mancanti, non file DAIT originali. Puntatori, formule/aggregati, ID, lacune e prove ostili. 260 domande nuove e 2.928 precedenti invariate; 3.188 PASS (1.758 calcoli, 1.430 rifiuti). Copertura derivata 218/225 effettivi, 160/181 sorgente invariata, sette residui. Report `reports/a6-turnout/`; gate canonici da completare sul medesimo albero.
 
 ## Prossima azione
 
-Quick locale completo su clone pulito prima del push e apertura PR; Full locale completo sequenziale, identità alberi e CI Quick→Full/A3 prima della prontezza. Merge riservato al proprietario. Browser locali mai in parallelo; ricevute e log nel fascicolo. Residui: voterTurnout, economyActivityAtlas, fuelPrices, pnrrConcluded, pnrrFunding, omiResidential, outsideMunicipality, evPoints. Chiusura metodologica distinta dal numero degli adapter.
+Quick locale completo su clone pulito prima del push/apertura PR del lotto affluenza. Full locale completo sequenziale e CI Quick→Full/A3 con identità degli alberi prima della prontezza. Merge del proprietario. Browser locali mai in parallelo; log/ricevute nel fascicolo. Residui: economyActivityAtlas, fuelPrices, pnrrConcluded, pnrrFunding, omiResidential, outsideMunicipality, evPoints. Chiusura metodologica distinta dal numero degli adapter.
 
 ## Manutenzioni e monitor separati
 
