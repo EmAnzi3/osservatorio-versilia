@@ -102732,6 +102732,1791 @@
         ]
       },
       "reference": "Snapshot regionale 25/09/2026: 101 ID unici, Comune soggetto attuatore (non codistat); importi in centesimi, macrofase ReGiS 5; POSAS 01/01/2026. Ancore comunali indipendenti in test_semantic_pnrr_adapters.py."
+    },
+    {
+      "id": "omi_total_046005",
+      "question": "Qual è il riferimento OMI di vendita per 046005 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2200,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046013",
+      "question": "Qual è il riferimento OMI di vendita per 046013 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5520,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046018",
+      "question": "Qual è il riferimento OMI di vendita per 046018 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10750,
+              7
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046024",
+      "question": "Qual è il riferimento OMI di vendita per 046024 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2750,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046028",
+      "question": "Qual è il riferimento OMI di vendita per 046028 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              6325,
+              4
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046030",
+      "question": "Qual è il riferimento OMI di vendita per 046030 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              8985,
+              11
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_046033",
+      "question": "Qual è il riferimento OMI di vendita per 046033 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2200,
+              1
+            ]
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_rank",
+      "question": "Come si ordinano i Comuni per il riferimento OMI total nel secondo semestre 2025?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_series_refused",
+      "question": "È possibile ricostruire lo storico OMI total?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_absolute_change_refused",
+      "question": "È possibile ricostruire lo storico OMI total?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_relative_change_refused",
+      "question": "È possibile ricostruire lo storico OMI total?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_percentage_points_refused",
+      "question": "È possibile ricostruire lo storico OMI total?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_trend_refused",
+      "question": "È possibile ricostruire lo storico OMI total?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_weighted_ratio_refused",
+      "question": "È verificata l’operazione OMI total weighted_ratio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_benchmark_gap_refused",
+      "question": "È verificata l’operazione OMI total benchmark_gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_anomaly_refused",
+      "question": "È verificata l’operazione OMI total anomaly?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_2025_refused",
+      "question": "Posso trattare la fotografia OMI come 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_2026_refused",
+      "question": "Posso trattare la fotografia OMI come 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_2025-S1_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S1?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "periods": [
+              "2025-S1"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_pair_False_refused",
+      "question": "È revisionata l’associazione tra quotazioni total e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_pair_True_refused",
+      "question": "È revisionata l’associazione tra quotazioni total e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "omiResidential",
+            "dimension": "total"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046005",
+      "question": "Qual è il riferimento OMI di vendita per 046005 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2200,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046013",
+      "question": "Qual è il riferimento OMI di vendita per 046013 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              5520,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046018",
+      "question": "Qual è il riferimento OMI di vendita per 046018 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              10750,
+              7
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046024",
+      "question": "Qual è il riferimento OMI di vendita per 046024 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              2750,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046028",
+      "question": "Qual è il riferimento OMI di vendita per 046028 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              6325,
+              4
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046030",
+      "question": "Qual è il riferimento OMI di vendita per 046030 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              8985,
+              11
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_046033",
+      "question": "Qual è il riferimento OMI di vendita per 046033 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              2200,
+              1
+            ]
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "eurm2"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_rank",
+      "question": "Come si ordinano i Comuni per il riferimento OMI saleMean nel secondo semestre 2025?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_series_refused",
+      "question": "È possibile ricostruire lo storico OMI saleMean?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_absolute_change_refused",
+      "question": "È possibile ricostruire lo storico OMI saleMean?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_relative_change_refused",
+      "question": "È possibile ricostruire lo storico OMI saleMean?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_percentage_points_refused",
+      "question": "È possibile ricostruire lo storico OMI saleMean?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_trend_refused",
+      "question": "È possibile ricostruire lo storico OMI saleMean?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_weighted_ratio_refused",
+      "question": "È verificata l’operazione OMI saleMean weighted_ratio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_benchmark_gap_refused",
+      "question": "È verificata l’operazione OMI saleMean benchmark_gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_anomaly_refused",
+      "question": "È verificata l’operazione OMI saleMean anomaly?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_2025_refused",
+      "question": "Posso trattare la fotografia OMI come 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_2026_refused",
+      "question": "Posso trattare la fotografia OMI come 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_2025-S1_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S1?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "periods": [
+              "2025-S1"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_pair_False_refused",
+      "question": "È revisionata l’associazione tra quotazioni saleMean e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_pair_True_refused",
+      "question": "È revisionata l’associazione tra quotazioni saleMean e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046005",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046005 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046005",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              7,
+              1
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046013",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046013 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046013",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              382,
+              25
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046018",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046018 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046018",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              26,
+              5
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046024",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046024 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046024",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              212,
+              25
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046028",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046028 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046028",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              81,
+              16
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046030",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046030 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046030",
+              "046033"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              133,
+              55
+            ]
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/0/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_046033",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046033 nel secondo semestre 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "towns": [
+              "046033",
+              "046018"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              579,
+              80
+            ]
+          },
+          {
+            "path": "/observations/1/period",
+            "value": "2025-S2"
+          },
+          {
+            "path": "/observations/1/unit",
+            "value": "eurm2month"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_rank",
+      "question": "Come si ordinano i Comuni per il riferimento OMI rentMean nel secondo semestre 2025?",
+      "query": {
+        "operation": "rank",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/ranking/0/geography",
+            "value": "046013"
+          },
+          {
+            "path": "/result/ranking/1/geography",
+            "value": "046024"
+          },
+          {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
+            "path": "/result/ranking/4/geography",
+            "value": "046018"
+          },
+          {
+            "path": "/result/ranking/5/geography",
+            "value": "046028"
+          },
+          {
+            "path": "/result/ranking/6/geography",
+            "value": "046030"
+          }
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_series_refused",
+      "question": "È possibile ricostruire lo storico OMI rentMean?",
+      "query": {
+        "operation": "series",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_absolute_change_refused",
+      "question": "È possibile ricostruire lo storico OMI rentMean?",
+      "query": {
+        "operation": "absolute_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_relative_change_refused",
+      "question": "È possibile ricostruire lo storico OMI rentMean?",
+      "query": {
+        "operation": "relative_change",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_percentage_points_refused",
+      "question": "È possibile ricostruire lo storico OMI rentMean?",
+      "query": {
+        "operation": "percentage_points",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_trend_refused",
+      "question": "È possibile ricostruire lo storico OMI rentMean?",
+      "query": {
+        "operation": "trend",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_single_semester_no_comparable_history_frozen"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_weighted_ratio_refused",
+      "question": "È verificata l’operazione OMI rentMean weighted_ratio?",
+      "query": {
+        "operation": "weighted_ratio",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_benchmark_gap_refused",
+      "question": "È verificata l’operazione OMI rentMean benchmark_gap?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_geographic_benchmark_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_anomaly_refused",
+      "question": "È verificata l’operazione OMI rentMean anomaly?",
+      "query": {
+        "operation": "anomaly",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_peer_anomaly_not_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_2025_refused",
+      "question": "Posso trattare la fotografia OMI come 2025?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "periods": [
+              "2025"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_2026_refused",
+      "question": "Posso trattare la fotografia OMI come 2026?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "periods": [
+              "2026"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_2025-S1_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S1?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "periods": [
+              "2025-S1"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_pair_False_refused",
+      "question": "È revisionata l’associazione tra quotazioni rentMean e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          },
+          {
+            "metric": "income"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_pair_True_refused",
+      "question": "È revisionata l’associazione tra quotazioni rentMean e redditi?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income"
+          },
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "pearson",
+        "purpose": "descriptive"
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_pair_not_jointly_reviewed"
+        ]
+      },
+      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
     }
   ]
 }

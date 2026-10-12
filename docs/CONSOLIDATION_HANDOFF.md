@@ -2,20 +2,20 @@
 
 ## Stato corrente — 12 ottobre 2026
 
-- Baseline dopo merge del proprietario #416: main `4ffad7e02808a912528d201d2d8f1cb5db3a3ae7`, albero `ae40ec50f9612f99e0f5c0fa875f8de5c114dd80`. Affluenza v49: 218/225 effettivi, 160/181 sorgente, sette residui; 3.188 PASS. Quick/Full locali completi e CI Quick→Full/A3 verdi sullo stesso albero; merge distinto dal deploy pubblico.
+- Baseline dopo merge del proprietario #418: main `404ca19430b724319aa35ce16fb8a2ac632fe088`, albero `baf4fc859164db307142c7960cfa8f53732d428c`. PNRR v50: 220/225 effettivi, 162/181 sorgente, cinque residui; 3.322 PASS. Quick/Full locali e CI Quick→Full/A3 conclusi verdi nella #418; pubblicazione comunicata dal proprietario.
 - Catalogo effettivo rigenerato: 225 indicatori, 124 storici, 137 confronti, SHA `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`; registro SHA `261304eb74262058ba42f38d0b4584a3038f184e3bc602ab8e0b5d9eb9d13d5c`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-pnrr-adapters`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
+- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-omi-adapter`. A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte; A7 non avviata.
 - Camaiore protetta al checkpoint `5aaf159870912eb49bffbd044963549bfb920150`; dati/UI/asset/golden/workflow/Radar, 35 letture e due riepiloghi preservati.
 
 ## Lotto in verifica
 
-PNRR v50: due carrier, sette viste 7/7; fotografia regionale 25 settembre 2026 e residenti 1 gennaio 2026 distinti. 101 ID unici attribuiti al Comune attuatore, non alla localizzazione (sei Viareggio/Camaiore, uno Stazzema/Sarteano). 36.683.107,64 € e 78 progetti macrofase ReGiS 5; quattro collaudi avviati inclusi. Viareggio 18 ReGiS contro 19 monitoraggio. Importi censiti diversi da erogazione/spesa, macrofase diversa da collaudo/servizio operativo. Replay dei 101 record normalizzati, non intero CSV originario; vecchie percentuali perTown non consumate. Pooling soltanto nativo su componenti additive della stessa fotografia. Storie/variazioni/trend, benchmark, anomalie e coppie non revisionate rifiutati. Metodo `docs/A6_PNRR_ADAPTERS.md`.
+OMI v51: un carrier, tre viste comunali (alias vendita, vendita e affitto mensile); secondo semestre 2025 esplicito. Riferimenti territoriali, non prezzi effettivi o canoni registrati. 46 zone/92 valori pubblicati riconciliati con medie semplici comunali e media dei sette Comuni; nessuna ponderazione per transazioni/abitazioni. Originali OMI e intervalli min/max non rigiocati. Query comunali, nessuna equivalenza tra codici di zona di Comuni diversi. Metodo `docs/A6_OMI_ADAPTERS.md`.
 
-49 osservazioni fisse, 28 componenti, quattro rapporti territoriali, puntatori e prove ostili. 134 domande nuove e 3.188 precedenti invariate; suite 3.322 PASS (1.820 calcoli, 1.502 rifiuti). Copertura derivata 220/225 effettivi e 162/181 sorgente, cinque residui. Report `reports/a6-pnrr/`; gate canonici da completare sul medesimo albero.
+14 riferimenti comunali fissi, alias/pari merito, puntatori e guardie su input/cache; 63 domande nuove con 3.322 precedenti preservate. Suite 3.385/3.385 PASS (1.844 calcoli e 1.541 rifiuti); copertura derivata 221/225 effettivi, 163/181 sorgente, quattro residui. Report `reports/a6-omi/`; gate canonici ancora da completare.
 
 ## Prossima azione
 
-Quick locale completo su clone pulito prima del push/apertura PR PNRR. Full locale completo sequenziale e CI Quick→Full/A3 con identità degli alberi prima della prontezza. Merge del proprietario. Browser locali mai in parallelo; log/ricevute nel fascicolo. Residui: economyActivityAtlas, fuelPrices, omiResidential, outsideMunicipality, evPoints. Chiusura metodologica distinta dal numero degli adapter.
+Concludere suite/audit/benchmark OMI. Quick locale completo su clone pulito prima del push/apertura PR. Full locale completo sequenziale e CI Quick→Full/A3 con identità degli alberi prima della prontezza. Merge del proprietario. Browser locali mai in parallelo; log/ricevute nel fascicolo. Residui dopo OMI da confermare: economyActivityAtlas, fuelPrices, outsideMunicipality, evPoints. Chiusura metodologica distinta dal numero degli adapter.
 
 ## Manutenzioni e monitor separati
 
