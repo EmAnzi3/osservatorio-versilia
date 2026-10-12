@@ -52,7 +52,9 @@ def regressions():
     income=engine.query(request('absolute_change','income',towns=['046018'],periods=['2011','2024']))
     assert income['status']=='computed' and math.isclose(income['result']['value'],5174.99,abs_tol=1e-8)
     assert 'raw_income_archive_not_verified_by_adapter' in income['warnings']
-    rejected(engine,request('compare','fuelPrices'),'adapter_not_implemented')
+    rejected(engine,request('compare','fuelPrices'),'partial_coverage_requires_opt_in')
+    fuel=engine.query(dict(request('compare','fuelPrices'),allowPartial=True))
+    assert fuel['status']=='computed' and fuel['coverage']['usable']==6
     rejected(engine,request('compare',dimension='women'),'dimension_adapter_not_implemented')
     rejected(engine,request('series',towns=['046018'],periods=['2024/25']),'unsupported_annual_period')
     rejected(engine,request('series',towns=['046018'],periods=['2026','2019']),'ordered_periods')
@@ -362,6 +364,8 @@ def audit(path, layer):
     import semantic_query_demography_school_adapters as demography
     expected.update(k for k in demography.KEYS if k in catalog["metrics"])
     import semantic_query_library_adapters as library
+    import semantic_query_energy_adapters as energy
+    expected.update(k for k in energy.KEYS if k in catalog["metrics"])
     import semantic_query_pnrr_adapters as pnrr
     expected.update(k for k in pnrr.KEYS if k in catalog["metrics"])
     import semantic_query_turnout_adapters as turnout
@@ -410,13 +414,14 @@ def audit(path, layer):
     for key in adapters:
         dimensions=next(x for x in matrix if x['metric']==key)['engine']['dimensions']
         query=request('lookup' if key in water_quality.KEYS else 'compare',key,dimension=dimensions[0])
-        if key in (*connectivity.COUNTS,*invalsi.KEYS,*library.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key==extractive.KEYS[1]:
+        if key in (*connectivity.COUNTS,*invalsi.KEYS,*library.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS) or key in ('fuelPrices',extractive.KEYS[1]):
             rejected(engine,query,'partial_coverage_requires_opt_in')
             query['allowPartial']=True
         report=engine.query(query)
         assert report['status']=='computed',report
         assert report['coverage']['requested']==(70 if key in water_quality.KEYS else 7)
         if key in (*coast.KEYS,*bathing.KEYS,*maritime.KEYS):assert report['coverage']['usable']==4 and len(report['excluded'])==3
+        if key=='fuelPrices':assert report['coverage']['usable']==6 and len(report['excluded'])==1
         if key in CENSUS:
             for year in ['2021','2023']:
                 r=engine.query(request('weighted_ratio',key,periods=[year]))
