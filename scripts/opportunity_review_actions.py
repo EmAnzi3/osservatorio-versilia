@@ -153,8 +153,9 @@ def build_actions(payload):
         groups.setdefault(key, []).append(item)
     rows = []
     for key, items in groups.items():
-        # Prefer a specific headline over navigation fragments at the same URL.
-        item = max(items, key=lambda x: (not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
+        # A discarded headline must not hide a valid signal at the same URL.
+        surviving = [x for x in items if not classify_signal(x, payload.get("referenceDate"))]
+        item = max(surviving or items, key=lambda x: (not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
         check_rows = [c for c in checks.get(key, []) if not (
             c.get("documents") and all(unrelated_document(d.get("url", "")) for d in c["documents"]))]
         documents = {}

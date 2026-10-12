@@ -201,3 +201,5 @@ scripts/test_semantic_third_sector_adapters.py
 scripts/opportunity_discovery_noise.py
 scripts/semantic_query_turnout_adapters.py
 scripts/test_semantic_turnout_adapters.py
+scripts/semantic_query_pnrr_adapters.py
+scripts/test_semantic_pnrr_adapters.py

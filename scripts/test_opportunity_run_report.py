@@ -475,6 +475,27 @@ def _test_discovery_noise():
     # The two Interreg homepage headings are one document reference.
     assert build_actions(payload)["discardedCount"] == len(discarded) - 1
 
+    shared_url = discarded[3]["url"]
+    valid = {"title": "Avviso per i Comuni", "url": shared_url, "deadline_at": "2026-10-22"}
+    noisy = {**discarded[3], "title": "Riunione per la videosorveglianza e la sicurezza del territorio comunale"}
+    for reversed_order in (False, True):
+        mixed = {"referenceDate": reference, "opportunities": [],
+                 "discoveryQueue": [noisy, valid] if reversed_order else [valid, noisy]}
+        clean_review_queues(mixed, reference)
+        actions = build_actions(mixed)
+        assert actions["discardedCount"] == 0 and len(actions["items"]) == 1
+        assert actions["items"][0]["title"] == valid["title"]
+        assert actions["items"][0]["deadline"] == valid["deadline_at"]
+        visited = []
+        def mixed_loader(url):
+            visited.append(url)
+            return '<main><a href="/avviso.pdf">Avviso pubblico</a></main>'
+        mixed_budget = SimpleNamespace(hosts={"prefettura.interno.gov.it"}, deadline=time.monotonic() + 60)
+        collect_document_links(mixed, loader=mixed_loader, budget=mixed_budget, max_pages=1)
+        assert visited == [shared_url], "Un segnale valido con URL condiviso deve conservare la ricerca allegati"
+    noise_only = {"referenceDate": reference, "discoveryNoise": [noisy, discarded[3]]}
+    assert build_actions(noise_only)["discardedCount"] == 1
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
