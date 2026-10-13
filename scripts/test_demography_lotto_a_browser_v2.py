@@ -6,6 +6,7 @@ import argparse
 from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
+from browser_view_readiness import goto_reading_view
 
 
 def require(condition: bool, message: str) -> None:
@@ -979,7 +980,7 @@ def main() -> None:
                 'Blocco duplicato componenti variazione ancora presente nel comune')
 
         # Cittadinanza / paese di nascita: nessun testo può essere tagliato.
-        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=foreignResidents'), wait_until='networkidle')
+        goto_reading_view(page, urljoin(args.base, 'confronta/demografia/?indicatore=foreignResidents'))
         compare_origins = page.locator('details.compare-foreign-origins').first
         require(compare_origins.count() == 1, 'Dettaglio RCS aggregato Versilia assente')
         compare_origins.locator('summary').click()
@@ -988,7 +989,7 @@ def main() -> None:
             require(label in compare_text, f'Dettaglio RCS aggregato incompleto: {label}')
         assert_foreign_detail_not_clipped(compare_origins, 'foreignResidents confronto desktop')
 
-        page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=foreignResidents'), wait_until='networkidle')
+        goto_reading_view(page, urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=foreignResidents'))
         origins = page.locator('details.foreign-origins-detail').first
         require(origins.count() == 1, 'Dettaglio cittadinanza/paese di nascita assente')
         origins.locator('summary').click()
@@ -1008,12 +1009,12 @@ def main() -> None:
         page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
         page.locator('details.age-pyramid-detail summary').click()
         assert_no_horizontal_overflow(page, 'ageDistribution town mobile')
-        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=foreignResidents'), wait_until='networkidle')
+        goto_reading_view(page, urljoin(args.base, 'confronta/demografia/?indicatore=foreignResidents'))
         compare_origins = page.locator('details.compare-foreign-origins').first
         compare_origins.locator('summary').click()
         assert_foreign_detail_not_clipped(compare_origins, 'foreignResidents confronto mobile')
         assert_no_horizontal_overflow(page, 'foreignResidents compare mobile')
-        page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=foreignResidents'), wait_until='networkidle')
+        goto_reading_view(page, urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=foreignResidents'))
         origins = page.locator('details.foreign-origins-detail').first
         origins.locator('summary').click()
         assert_foreign_detail_not_clipped(origins, 'foreignResidents comune mobile')
