@@ -68,7 +68,7 @@ import semantic_query_regional_adapters as regional
 import semantic_query_tourism_adapters as tourism
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '54'
+VERSION = '55'
 NUMERICAL_SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
@@ -610,7 +610,7 @@ class QueryEngine:
         if 'localities' in selector:raise ValueError('locality_selector_requires_water_quality_adapter')
         if operation == 'lookup':raise ValueError('lookup_adapter_not_implemented')
         dimension=selector.get('dimension','total')
-        if key in atlas.KEYS and dimension=='total':raise ValueError('atlas_explicit_view_required_unreconciled_scalar_carrier')
+        if key in atlas.KEYS and dimension=='total':raise ValueError('atlas_explicit_view_required')
         if dimension not in dimensions(key):
             raise ValueError('explicit_age_band_required' if key=='ageDistribution' else 'dimension_adapter_not_implemented')
         self.context(key,dimension)

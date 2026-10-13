@@ -16,9 +16,26 @@ Il conteggio riguarda unità locali registrate, non numero di imprese, addetti o
 
 Totale 2.457 viste esplicite. Confronto/rango e, solo per i conteggi attivi, serie consultabili; zeri e null conservati. Il confronto parziale richiede `allowPartial` e almeno due osservazioni utilizzabili. La serie non certifica continuità classificatoria: variazioni, trend e differenze in punti percentuali sono rifiutati. Quote artigiane, LQ, peso regionale e aggregazioni gerarchiche richiedono una riconciliazione dei rispettivi universi e non sono abilitate. Il valore regionale del medesimo record è solo contesto, non un benchmark municipale. Pooling, anomalie e coppie non revisionate rifiutati.
 
-## Divergenza del carrier pubblico
+## Riconciliazione del carrier pubblico — v55
 
-Il materializzatore `latest_town_totals` somma soltanto le righe dirette di divisione: (58, 13, 31, 43, 25, 2, 120), totale 292. Il payload conserva invece i totali territoriali 2025 (3.822, 1.556, 1.940, 3.327, 1.437, 245, 7.998), totale 20.325. Il primo non riconcilia il totale delle UL territoriali. Il lotto non riscrive il carrier o l’interfaccia: `total` implicito è rifiutato con `atlas_explicit_view_required_unreconciled_scalar_carrier`; occorre scegliere `territoryTotal` o un codice/misura espliciti. Nessuna sostituzione silenziosa del292. La divergenza deve essere risolta nel lavoro di qualità dei dati prima della chiusura metodologica A6, con i gate dei dati/UI applicabili; non viene nascosta dal conteggio225/225.
+La #423 ha completato gli adapter mantenendo esplicita la discrepanza del carrier. La correzione v55 legge `tt[Comune][2025]` nel materializzatore di produzione `materialize_economy_atlas_release.py`, invece di sommare record diretti di divisione ATECO. `make_metric` associa slug e nome al codice ISTAT del catalogo; righe, formato e aggregato pubblico vengono derivati dai totali nativi. Le identità duplicate e i totali correnti mancanti fanno fallire la build: nessuna Versilia parziale etichettata come completa.
+
+| ISTAT | Comune | Totale territoriale 2025 | Sole righe dirette di divisione |
+|---|---|---:|---:|
+| 046005 | Camaiore | 3.822 | 58 |
+| 046013 | Forte dei Marmi | 1.556 | 13 |
+| 046018 | Massarosa | 1.940 | 31 |
+| 046024 | Pietrasanta | 3.327 | 43 |
+| 046028 | Seravezza | 1.437 | 25 |
+| 046030 | Stazzema | 245 | 2 |
+| 046033 | Viareggio | 7.998 | 120 |
+| Totale | Sette Comuni | 20.325 | 292 |
+
+La tabella indipendente era già trascritta nei test della #423 prima della correzione. Il runtime pubblico usa già `DATA.tt` come totale territoriale per quote e LQ: non si modificano queste formule, le gerarchie, le serie, le misure artigiane o i file congelati. Si corregge il carrier pubblico e si dichiarano formula/universo del riepilogo nei metadati. I totali provengono dal payload compatto congelato; gli hash dei CSV originali sono censiti nei metadata ma questo intervento non rigioca originali non conservati e non verifica la disponibilità live della fonte.
+
+La selezione della query resta esplicita: `total` implicito è rifiutato per `atlas_explicit_view_required`, per distinguere totale territoriale, codice diretto e misura artigiana. Il vecchio motivo riferito al carrier non riconciliato viene rimosso. Restano tutte le restrizioni metodologiche sulle operazioni. Nessuna nuova dimensione o operazione viene autorizzata.
+
+`test_economy_atlas_totals.py`, richiamato dal gate Atlante post-build, riconcilia sette identità e valori, 20.325 contro 292, tutte le 84 celle territoriali 2014–2025 via query, formato pubblico, indipendenza dalle categorie duplicate/vuote, zero, null storico conservato, null corrente rifiutato, assi duplicati/incompleti e conteggi invalidi. Gli altri test ripetono il replay delle 111.832 celle e le guardie della #423 sul nuovo carrier.
 
 ## Evidenze e cache
 

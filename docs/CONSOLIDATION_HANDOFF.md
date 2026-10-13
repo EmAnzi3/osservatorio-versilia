@@ -1,24 +1,24 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente — 12 ottobre 2026
+## Stato corrente — 13 ottobre 2026
 
-- #422 mergiata e pubblicata dal proprietario: main `cdb953e923c002b248d29395a1e8b62d50e2824f`, albero `09fad950adc83b4c4226d9c6af4b15cb6ef23169`. v53, 224/225 effettivi e 166/181 sorgente; 3.543 PASS. CI Pages Quick→Full e A3 verificate verdi sul branch.
-- Catalogo effettivo: 225 indicatori, 124 storici, 137 confronti; SHA `d9fea44f9cf3e56309e1193bf63b5cfe32bfbc3ba088860843db8d14b9c12278`, registro SHA `261304eb74262058ba42f38d0b4584a3038f184e3bc602ab8e0b5d9eb9d13d5c`.
-- A0–A5 DONE; A6 attiva, issue #330, branch `feat/a6-economy-atlas-adapter`; A6.1–A6.3 pubblicate, A6.4 parziale, A6.5–A6.6 aperte, A7 non avviata.
-- Camaiore checkpoint `5aaf159870912eb49bffbd044963549bfb920150`, dati/UI/asset/golden/workflow/Radar, 35 letture e due riepiloghi protetti.
+- Baseline reale `main` `16bb319b2cda57127e9b66d1c1a75c68b6280519`, albero `ef94d1bf09a1ede9f4d7692e173f2afbb9b2d32c`: #423 e #424 mergiate dal proprietario. Deploy e live-status su main risultano SUCCESS; nessun merge/deploy dell'assistente.
+- #423 completa gli adapter: 225/225 effettivi, 166/181 sorgente, zero carrier residui, 2.457 viste Atlante. Baseline 3.727 casi (2.033 calcoli/1.694 rifiuti); copertura non equivale a chiusura metodologica.
+- A0–A5 DONE; A6 attiva, issue #330. A6.1–A6.3 integrate, A6.4 parziale e A6.5–A6.6 aperte; A7 non avviata.
+- Camaiore checkpoint `5aaf159870912eb49bffbd044963549bfb920150`, 40 golden master, UI/asset, 35 letture e due riepiloghi conservati. Radar #424 è baseline separata, non modificata da questo lotto.
 
-## Lotto in verifica
+## Lotto candidato — correzione Atlante v55
 
-v54 Atlante: ultimo carrier, solo effettivo. 2.457 viste esplicite: totali territoriali, 1.228 codici diretti attivi 2014–2025 e artigiani solo 2025. Confronto/rango, serie attive consultabili; null distinti da zero e copertura parziale con consenso. Registro Imprese diverso da ASIA/addetti; classificazione ATECO2007/2022 distinta da ATECO2025. Nessuna somma gerarchica, quota/LQ non riconciliata, variazione/trend, benchmark municipale, pooling, anomalia o coppia inferita.
+Branch `fix/a6-atlas-territorial-total`, base main sopra. Materializzatore di produzione: riepilogo dai totali nativi `tt`, non dalle sole divisioni ATECO (292). Totali 2025 per ISTAT: 046005=3822, 046013=1556, 046018=1940, 046024=3327, 046028=1437, 046030=245, 046033=7998; somma 20.325. Metadati esplicitano formula e universo. File congelati, serie 2014–2025, classificazioni, gerarchie e runtime invariati.
 
-Divergenza esplicita: carrier pubblico292 deriva dalle sole righe dirette di divisione, contro 20.325 nei totali territoriali congelati. `total` implicito rifiutato, scelta esplicita necessaria; dati/UI non riscritti. Correzione del carrier e riconciliazione delle gerarchie da affrontare prima della chiusura metodologica A6. Metodo `docs/A6_ECONOMY_ATLAS_ADAPTERS.md`.
+`total` implicito ancora rifiutato per scelta esplicita (`atlas_explicit_view_required`), senza più motivazione di carrier non riconciliato. Nessuna nuova operazione autorizzata. Fingerprint del carrier aggiornato; regressioni avversarie su assi, identità, null/zeri, totali incompleti, categorie duplicate e tutte le 84 celle territoriali via query. Fonte delle aspettative: tabella congelata, già trascritta nella #423; nessun replay dei CSV originali o verifica live dichiarato.
 
-119 ancore fisse, replay separato 111.832 celle comunali compatte (56.238 null), file verificati dopo cache e cache immutabile. 184 domande nuove, tutte le 3.543 precedenti conservate. Report rigenerati `reports/a6-economy-atlas/`; 3.727/3.727 PASS (2.033 calcoli, 1.694 rifiuti). Copertura derivata 225/225 effettivi, 166/181 sorgente; nessun residuo di carrier, restano limiti delle operazioni e revisione A6.5–A6.6.
+Test mirati e suite 3.727/3.727 PASS sul catalogo effettivo corretto. Il primo Full ha fallito il controllo RCS immediato dopo navigazione; il test originale passa integralmente su baseline e candidato in replay sequenziale, e otto navigazioni mirate confermano il dettaglio. Le quattro navigazioni RCS ora usano il helper condiviso di prontezza client/vista/font, preservando tutte le asserzioni geometriche e di contenuto. Nuovi Quick/Full locali sequenziali e CI Quick→Full/A3 devono verificare il candidato con questa correzione prima del merge. Nessun gate della #423 viene riutilizzato come prova del candidato.
 
 ## Prossima azione
 
-Quick canonico locale completo su clone pulito prima del push/apertura PR. Full locale completo sequenziale e CI Quick→Full/A3 sullo stesso albero prima della prontezza. Merge del proprietario. Browser locali mai paralleli. Dopo il merge: riconciliare il carrier Atlante e completare revisione metodologica/letture A6; A7 solo dopo chiusura A6.
+Concludere gate locali, aprire PR Atlante Draft e verificare CI/effetti pubblici; approvazione e merge riservati al proprietario. Dopo correzione e integrazione: audit globale A6.4/A6.6, revisione integrale A6.5 (35 letture e due riepiloghi), repertorio di domande e lacune. PR di chiusura soltanto dopo integrazione/verifica delle precedenti, quindi handoff A7. Non dichiarare A6 DONE anticipatamente.
 
-## Manutenzioni e monitor separati
+## Manutenzioni separate
 
-#407: SISBON 154 codici (58 attivi/96 chiusi), MIMIT puntuale 10 ottobre/storico fino a settembre, ARS timeout 120 secondi; ZIP 255 del proprietario 2015–2025 invariato. #411: RUNTS Excel 11 ottobre verificato (SHA invariato), 465 sedi/residenti 1 gennaio 2026; AGCOM consistenze 6 luglio/revisione 14 luglio corrette su input congelati, nessun CSV acquisito. #413: refresh AGCOM soltanto dispatch/comando esplicito, test offline preservati. Radar #402, PNRR 25 settembre, #338 mensile, #329 ASIA/AGCOM e #117 watchdog separati; #306 archiviata. Nessuna acquisizione nel lotto A6.
+Monitor fonti #338/#329/#117, Radar e acquisizioni live fuori perimetro. Nessuna nuova UI A7, modello linguistico o servizio esterno introdotto.

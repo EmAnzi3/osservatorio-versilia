@@ -31,6 +31,8 @@ def query(dim='territoryTotal',op='compare',**selection):
 
 
 def regressions(path):
+    from test_economy_atlas_totals import regressions as total_regressions
+    total_regressions(path)
     e=QueryEngine(path,layer='effective');codes=sorted(a.TOWNS)
     for dim,period,values in [('territoryTotal','2025',TOTALS),('territoryTotal','2014',FIRST_TOTALS)]+[(f'ateco:{c}|{m}',y,v) for c in ACTIVE for m,y,v in [('active','2025',ACTIVE[c]),('active','2014',FIRST[c]),('artisan','2025',ARTISAN[c])]]:
         q=query(dim,periods=[period]);q['allowPartial']=True;r=e.query(q);assert r['status']=='computed',r
@@ -41,8 +43,8 @@ def regressions(path):
             assert not o['nativeComponentsAvailable'] and all(len(x['sha256'])==64 for x in o['provenance'])
             assert any(x.get('valuePointer') and x.get('decodedScope') for x in o['provenance'])
         assert set(a.NOTES)<=set(r['warnings'])
-    assert sum(TOTALS)==20325 and e.catalog['metrics']['economyActivityAtlas']['aggregate']['value']==292
-    rejected(e,dict(operation='compare',selectors=[dict(metric='economyActivityAtlas')]),'atlas_explicit_view_required_unreconciled_scalar_carrier')
+    assert sum(TOTALS)==20325 and e.catalog['metrics']['economyActivityAtlas']['aggregate']['value']==20325
+    rejected(e,dict(operation='compare',selectors=[dict(metric='economyActivityAtlas')]),'atlas_explicit_view_required')
     rank=e.query(query('territoryTotal','rank'));assert rank['status']=='computed'
     assert [o['geography'] for o in rank['result']['ranking']]==['046033','046005','046024','046018','046013','046028','046030']
     series=e.query(query('territoryTotal','series',towns=['046018']));assert series['status']=='computed',series
@@ -90,7 +92,7 @@ def regressions(path):
             for n in ['metadata.json','atlas-00.b64','ateco-taxonomy-00.b64']:
                 b=(dest/n).read_bytes();(dest/n).write_bytes(b+b' ');rejected(g,query(),'atlas_frozen_file_bytes_changed');(dest/n).write_bytes(b)
     finally:a.ROOT=original_root
-    print(f'Atlas PASS: 119 fixed counts, exact categories and periods, 111832 compact cells including {nulls} nulls replayed separately; carrier292/territorial20325 distinction, frozen bytes, immutable cache and refusal boundaries; no original-register replay')
+    print(f'Atlas PASS: 119 fixed counts, exact categories and periods, 111832 compact cells including {nulls} nulls replayed separately; reconciled carrier20325/direct division292 distinction, frozen bytes, immutable cache and refusal boundaries; no original-register replay')
 
 
 if __name__=='__main__':regressions(ROOT/'dist/data/site-data.json')

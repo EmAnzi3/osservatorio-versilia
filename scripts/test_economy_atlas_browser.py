@@ -33,6 +33,11 @@ def load_catalog_expectations(directory: Path) -> None:
     catalog_path = directory / "data" / "site-data.json"
     data = json.loads(catalog_path.read_text(encoding="utf-8"))
     metrics = data.get("metrics")
+    from test_economy_atlas_totals import EXPECTED
+    atlas = metrics["economyActivityAtlas"]
+    assert {r["code"]: (r["town"], r["value"]) for r in atlas["rows"]} == {
+        code: (v[0], v[2]) for code, v in EXPECTED.items()}
+    assert atlas["aggregate"]["value"] == 20325
     economy = (data.get("themes") or {}).get("economia")
     assert isinstance(metrics, dict) and metrics, "Catalogo pubblico privo di metriche"
     assert isinstance(economy, dict), "Tema Economia assente dal catalogo pubblico"
