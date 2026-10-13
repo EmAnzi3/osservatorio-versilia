@@ -101,26 +101,36 @@ def load_atlas_payload() -> tuple[dict, dict]:
 
 
 def latest_town_totals(payload: dict) -> dict[str, int]:
-    latest = len(payload["y"]) - 1
-    divisions = [
-        row for row in payload["c"]
-        if re.fullmatch(r"[A-Z]\s+\d{2}", str(row[0] or ""))
-    ]
-    if not divisions:
-        raise RuntimeError("Divisioni ATECO non trovate nel payload")
-    totals: dict[str, int] = {}
-    for town_index, (slug, name) in enumerate(payload["t"]):
-        total = 0
-        seen = False
-        for row in divisions:
-            value = row[3 + town_index][0][latest]
-            if value is None:
-                continue
-            total += int(value)
-            seen = True
-        if not seen:
-            raise RuntimeError(f"Nessuna UL aggregabile per {name}")
-        totals[slug] = total
+    """Read native active-local-unit totals, never sum ATECO hierarchy rows.
+
+    `tt` is aligned to `t` (territories) and `y` (annual snapshots).
+    An incomplete latest snapshot must stop publication, not become zero or
+    a partial aggregate labelled as the whole Versilia.
+    """
+    years = payload.get("y")
+    towns = payload.get("t")
+    native = payload.get("tt")
+    if years != list(range(2014, 2026)) or any(type(y) is not int for y in years):
+        raise RuntimeError("Asse annuale Atlante non univoco o fuori copertura 2014–2025")
+    if not isinstance(towns, list) or len(towns) != 7:
+        raise RuntimeError("Asse territoriale Atlante incompleto")
+    if any(not isinstance(t, list) or len(t) != 2 or
+           not all(isinstance(v, str) and v for v in t) for t in towns):
+        raise RuntimeError("Identità territoriale Atlante non valida")
+    if len({t[0] for t in towns}) != len(towns) or len({t[1] for t in towns}) != len(towns):
+        raise RuntimeError("Territori Atlante duplicati")
+    if not isinstance(native, list) or len(native) != len(towns):
+        raise RuntimeError("Totali territoriali nativi Atlante assenti o incompleti")
+    totals = {}
+    for (slug, name), values in zip(towns, native):
+        if not isinstance(values, list) or len(values) != len(years):
+            raise RuntimeError(f"Serie totale territoriale non allineata per {name}")
+        if any(v is not None and (type(v) is not int or v < 0) for v in values):
+            raise RuntimeError(f"Conteggio territoriale non valido per {name}")
+        value = values[-1]
+        if value is None:
+            raise RuntimeError(f"Totale territoriale corrente mancante per {name}")
+        totals[slug] = value
     return totals
 
 
@@ -130,10 +140,12 @@ def make_metric(data: dict, payload: dict) -> dict:
         re.sub(r"[^a-z0-9]+", "-", town["name"].lower()).strip("-"): town
         for town in data.get("towns", [])
     }
+    if len(towns_by_slug) != len(data.get("towns", [])):
+        raise RuntimeError("Identità comunali duplicate nel catalogo")
     rows = []
     for slug, name in payload["t"]:
         site_town = towns_by_slug.get(slug)
-        if not site_town:
+        if not site_town or site_town["name"] != name:
             raise RuntimeError(f"Comune Atlante non presente nel catalogo: {name}")
         value = totals[slug]
         rows.append({
@@ -147,6 +159,8 @@ def make_metric(data: dict, payload: dict) -> dict:
             "year": 2025,
         })
 
+    if len({row["code"] for row in rows}) != len(rows):
+        raise RuntimeError("Codici ISTAT duplicati nel riepilogo Atlante")
     aggregate_value = sum(row["value"] for row in rows)
     return {
         "meta": {
@@ -187,10 +201,12 @@ def make_metric(data: dict, payload: dict) -> dict:
         "aggregate": {
             "value": aggregate_value,
             "label": "Versilia · unità locali attive",
-            "note": "Somma delle unità locali attive dei sette Comuni nel 2025.",
+            "note": "Somma dei totali territoriali nativi delle unità locali attive dei sette Comuni nel 2025; non somma dei record ATECO.",
         },
         "method": {
             "type": "Atlante gerarchico ATECO",
+            "summaryFormula": "tt[Comune][2025]; Versilia = somma dei sette totali territoriali nativi",
+            "summaryUniverse": "Unità locali attive del Registro Imprese; non imprese ASIA, addetti od occupati",
             "formula": (
                 "Valori diretti quando pubblicati dalla fonte; ai livelli privi di valore diretto "
                 "l'interfaccia somma i discendenti disponibili e segnala il dato derivato."
