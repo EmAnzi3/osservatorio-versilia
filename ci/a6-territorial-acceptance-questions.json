@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "scope": "Editorial acceptance questions; referenced deterministic requests retain their declared geographies and periods. Housing and finance are supplemental, not original A6.5 pilots.",
+  "questions": [
+    {
+      "id": "lavoro-residenti",
+      "question": "Qual è il tasso di occupazione dei residenti 25–64 anni nei Comuni confrontati?",
+      "problem": "Occupazione residente e differenze di età.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "census_employment_primary",
+        "census_young_employment"
+      ],
+      "answerToday": "Confronti dei tassi nel 2024, con la fascia esplicita per i giovani.",
+      "unjustifiedConclusions": "Non misura i posti di lavoro localizzati né descrive il 2026.",
+      "missingData": [
+        "Dati più recenti per decisioni attuali"
+      ],
+      "decisionValue": "Distingue le persone residenti dall’attività economica presente nel territorio."
+    },
+    {
+      "id": "attivita-locali",
+      "question": "La base delle attività economiche è cresciuta rispetto al 2018?",
+      "problem": "Evoluzione delle unità locali e consistenza degli addetti ASIA.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "business_asia_cumulative",
+        "business_asia_employment"
+      ],
+      "answerToday": "Variazione cumulata delle unità locali 2018–2023 e addetti nel periodo proprio.",
+      "unjustifiedConclusions": "Unità locali non sono imprese, e addetti sul luogo di lavoro non sono occupati residenti.",
+      "missingData": [
+        "Nessun dato aggiuntivo per questo confronto storico; servono anni recenti per la congiuntura"
+      ],
+      "decisionValue": "Offre una base verificabile per discutere lo sviluppo produttivo senza confondere crescita delle sedi e occupazione."
+    },
+    {
+      "id": "trasformazione-produttiva",
+      "question": "Il territorio si sta spostando dall’industria ai servizi?",
+      "problem": "Composizione e cambiamenti produttivi.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "business_frame_industry_va",
+        "business_frame_services_history",
+        "business_frame_industry_wages"
+      ],
+      "answerToday": "Valore aggiunto industriale, variazione nominale dei servizi e retribuzione industriale nei perimetri acquisiti.",
+      "unjustifiedConclusions": "Questi esempi non dimostrano spostamenti di lavoratori fra settori o crescita reale.",
+      "missingData": [
+        "Pannello settoriale con prezzi costanti",
+        "Transizioni individuali e profili professionali",
+        "Dati recenti e domanda delle aziende"
+      ],
+      "decisionValue": "Separa produzione nominale, specializzazione e lavoro; orienta il fabbisogno di analisi professionali."
+    },
+    {
+      "id": "nidi-lavoro",
+      "question": "Più posti nei nidi farebbero aumentare l’occupazione femminile?",
+      "problem": "Conciliazione fra lavoro e servizi educativi.",
+      "classification": "not_determinable",
+      "requestCaseIds": [
+        "female_weighted",
+        "child_weighted"
+      ],
+      "answerToday": "Il motore descrive occupazione e ricettività potenziale; la lettura dedicata conserva periodi e universi differenti.",
+      "unjustifiedConclusions": "Nessun effetto causale o numero di posti necessari è stimabile dai due indicatori.",
+      "missingData": [
+        "Domanda e liste d’attesa",
+        "Costi, orari e accessi intercomunali",
+        "Occupazione dei genitori",
+        "Disegno di valutazione dell’intervento"
+      ],
+      "decisionValue": "Trasforma uno slogan causale in una domanda di servizio e valutazione misurabile."
+    },
+    {
+      "id": "organizzazione-scolastica",
+      "question": "Come differiscono dimensione delle classi e tempo pieno della primaria?",
+      "problem": "Organizzazione scolastica nell’anno 2024/25.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "school_class_size",
+        "school_full_time"
+      ],
+      "answerToday": "Rapporto alunni/classi e quota primaria a tempo pieno, con denominatori distinti.",
+      "unjustifiedConclusions": "Non equivale a qualità didattica o copertura di tutti i bambini residenti.",
+      "missingData": [
+        "Nessun dato aggiuntivo per le misure definite; dettagli per sede per interventi locali"
+      ],
+      "decisionValue": "Permette un confronto preciso dell’offerta osservata."
+    },
+    {
+      "id": "rete-scolastica",
+      "question": "Le scuole sono poche, troppe o mal distribuite?",
+      "problem": "Adeguatezza territoriale della rete scolastica.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "school_students",
+        "school_class_size",
+        "school_access_defined"
+      ],
+      "answerToday": "Alunni localizzati, classi e accessibilità dichiarata sono contesto verificabile.",
+      "unjustifiedConclusions": "Non autorizzano automaticamente aperture, chiusure o una graduatoria di adeguatezza.",
+      "missingData": [
+        "Iscritti per residenza ed età",
+        "Bacini e spostamenti intercomunali",
+        "Capienza e domanda per sede",
+        "Proiezioni demografiche con assunzioni"
+      ],
+      "decisionValue": "Identifica quali dati servono prima di intervenire su sedi e classi."
+    },
+    {
+      "id": "esiti-educativi",
+      "question": "Quali differenze emergono nelle prove di italiano della seconda primaria?",
+      "problem": "Esiti educativi nel perimetro scolastico osservato.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "invalsi_invalsiResults_g2-italiano_current",
+        "invalsi_invalsiResults_g2-italiano_tuscany"
+      ],
+      "answerToday": "Punteggi del grado e materia selezionati, copertura e gap verso Toscana per Viareggio.",
+      "unjustifiedConclusions": "Plesso nel Comune non significa residenza dell’alunno; nessuna classifica generale di qualità.",
+      "missingData": [
+        "Copertura e partecipazione dei singoli plessi",
+        "Composizione e condizioni degli alunni",
+        "Altre materie e gradi per un quadro più ampio"
+      ],
+      "decisionValue": "Consente di individuare domande da approfondire evitando un voto universale alle scuole."
+    },
+    {
+      "id": "invecchiamento-assistenza",
+      "question": "L’assistenza domiciliare risponde ai bisogni degli anziani?",
+      "problem": "Invecchiamento e adeguatezza dell’assistenza.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "age85_mass",
+        "ars_total",
+        "ars_gap"
+      ],
+      "answerToday": "Le 7 letture invecchiamento/assistenza affiancano quota 85+ POSAS 2026 e tasso standardizzato ARS 2024 con benchmark separati.",
+      "unjustifiedConclusions": "Il tasso erogato non misura bisogno insoddisfatto; non aggregare tassi standardizzati dai conteggi grezzi.",
+      "missingData": [
+        "Bisogni accertati e domanda inevasa",
+        "Intensità, attese e accessibilità dei servizi",
+        "Allineamento temporale"
+      ],
+      "decisionValue": "Distingue pressione demografica, servizio registrato e bisogno da accertare."
+    },
+    {
+      "id": "fragilita-sociale",
+      "question": "Quante famiglie unipersonali indicano una possibile fragilità sociale?",
+      "problem": "Struttura familiare e vulnerabilità.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "census_single",
+        "census_ageing"
+      ],
+      "answerToday": "Quote unipersonali e indice di vecchiaia nei periodi dichiarati.",
+      "unjustifiedConclusions": "Famiglia unipersonale non prova solitudine, età anziana, povertà o non autosufficienza.",
+      "missingData": [
+        "Incrocio età e composizione familiare",
+        "Reti di supporto, redditi e bisogni accertati"
+      ],
+      "decisionValue": "Evita di trasformare un dato demografico in una diagnosi sociale individuale."
+    },
+    {
+      "id": "spesa-sociale",
+      "question": "Quali priorità mostrano le risorse sociali e quali bisogni restano scoperti?",
+      "problem": "Risorse sociali Istat e missione di bilancio, universi distinti.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "social_spending_046018",
+        "social_area_disability",
+        "finance_social"
+      ],
+      "answerToday": "Spesa Istat 2022, quote di utenza e impegni della missione sociale sono descritti separatamente.",
+      "unjustifiedConclusions": "Missione contabile e spesa sociale statistica non sono la stessa misura; maggiore spesa non prova efficacia.",
+      "missingData": [
+        "Utenti, domanda inevasa, costi unitari e prestazioni",
+        "Perimetri e periodi comuni per confronti congiunti"
+      ],
+      "decisionValue": "Collega risorse e futuri indicatori di servizio senza stimare risultati inesistenti."
+    },
+    {
+      "id": "quotazioni-casa",
+      "question": "Come si confrontano le quotazioni residenziali di vendita e affitto?",
+      "problem": "Livelli delle quotazioni di riferimento.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "omi_total_046018",
+        "omi_rentMean_046018"
+      ],
+      "answerToday": "Medie semplici delle zone mostrate, vendita €/m² e affitto €/m²/mese, secondo semestre 2025.",
+      "unjustifiedConclusions": "Non sono prezzi delle transazioni o canoni effettivi; media comunale diversa dalla media di tutte le zone.",
+      "missingData": [
+        "Nessun dato aggiuntivo per il confronto delle quotazioni pubblicate"
+      ],
+      "decisionValue": "Offre un confronto trasparente senza inventare pesi di abitazioni o compravendite."
+    },
+    {
+      "id": "accessibilita-casa",
+      "question": "Le famiglie possono permettersi una casa nel proprio Comune?",
+      "problem": "Accessibilità economica dell’abitazione.",
+      "classification": "not_determinable",
+      "requestCaseIds": [
+        "omi_rentMean_046018",
+        "income_change",
+        "omi_rentMean_pair_False_refused"
+      ],
+      "answerToday": "Quotazioni e imponibile medio individuale restano contesti separati.",
+      "unjustifiedConclusions": "Un rapporto fra media OMI e reddito fiscale individuale non misura lo sforzo abitativo familiare.",
+      "missingData": [
+        "Reddito disponibile e composizione delle famiglie",
+        "Canoni e prezzi effettivi",
+        "Superfici, mutui e costi abitativi",
+        "Distribuzioni congiunte e periodi omogenei"
+      ],
+      "decisionValue": "Definisce la base informativa necessaria per politiche abitative fondate."
+    },
+    {
+      "id": "abitazioni-non-residenti",
+      "question": "Le abitazioni non occupate da residenti sono disponibili per nuove famiglie?",
+      "problem": "Patrimonio abitativo e usi.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "census_vacancy"
+      ],
+      "answerToday": "Quota censuaria delle abitazioni non occupate da residenti nel 2023.",
+      "unjustifiedConclusions": "Non significa case vuote, inutilizzate o disponibili sul mercato.",
+      "missingData": [
+        "Uso da non residenti, locazioni e seconde case",
+        "Disponibilità, condizioni e vincoli degli immobili"
+      ],
+      "decisionValue": "Separa il patrimonio statistico dall’offerta effettivamente mobilitabile."
+    },
+    {
+      "id": "pendolarismo",
+      "question": "Quali Comuni attraggono o perdono pendolari per lavoro nel 2021?",
+      "problem": "Margini comunali del pendolarismo abituale per lavoro.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "commuting_inboundCommuters",
+        "commuting_outboundCommuters",
+        "commuting_commuterBalance"
+      ],
+      "answerToday": "Ingressi, uscite e saldo 2021; le 7 letture e il riepilogo mantengono il perimetro.",
+      "unjustifiedConclusions": "La somma degli ingressi comunali non è il flusso al confine Versilia; non descrive lo studio o il 2026.",
+      "missingData": [
+        "Nessun dato aggiuntivo per i margini; matrice origine-destinazione per flussi al confine"
+      ],
+      "decisionValue": "Rende leggibili ruoli territoriali diversi senza doppie contabilizzazioni."
+    },
+    {
+      "id": "adeguatezza-tpl",
+      "question": "Le corse programmate bastano per raggiungere lavoro, scuola e servizi?",
+      "problem": "Accessibilità e domanda di mobilità.",
+      "classification": "not_determinable",
+      "requestCaseIds": [
+        "tpl_scheduledTplTripsPer1000_total_046018",
+        "commuting_outboundCommuters"
+      ],
+      "answerToday": "Fotografia delle corse programmate e pendolarismo storico, con date proprie.",
+      "unjustifiedConclusions": "Trip-comune non è corsa territoriale unica; quantità programmata non prova affidabilità o adeguatezza.",
+      "missingData": [
+        "Origini, destinazioni, modi, orari e carichi",
+        "Tempi di viaggio e coincidenze",
+        "Esecuzione e affidabilità delle corse",
+        "Domanda aggiornata e flussi scolastici"
+      ],
+      "decisionValue": "Indica cosa misurare prima di proporre linee o frequenze."
+    },
+    {
+      "id": "risorse-comunali",
+      "question": "Come si distinguono risorse accertate, incassi e margini del bilancio?",
+      "problem": "Conti comunali con basi differenti.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "finance_revenue",
+        "finance_cash_date",
+        "finance_rigid",
+        "finance_balance"
+      ],
+      "answerToday": "Valori per residente e rigidità nel periodo contabile proprio, con date del denominatore esplicite.",
+      "unjustifiedConclusions": "Flusso di cassa non è competenza o fondo finale; somme comunali lorde non sono bilancio territoriale consolidato.",
+      "missingData": [
+        "Nessun dato aggiuntivo per le misure contabili; consolidamento per trasferimenti fra enti"
+      ],
+      "decisionValue": "Impedisce confronti contabili impropri e rende verificabili le risorse descritte."
+    },
+    {
+      "id": "risorse-risultati",
+      "question": "Un Comune che spende di più offre servizi migliori?",
+      "problem": "Relazione fra risorse e risultati.",
+      "classification": "not_determinable",
+      "requestCaseIds": [
+        "finance_social",
+        "school_full_time",
+        "social_spending_046018"
+      ],
+      "answerToday": "Il motore descrive impegni, offerta scolastica e spesa sociale nei rispettivi periodi.",
+      "unjustifiedConclusions": "Nessun effetto causale o giudizio di efficienza è deducibile da questi confronti.",
+      "missingData": [
+        "Prestazioni, qualità, beneficiari, tempi e domanda",
+        "Costi omogenei e fattori di contesto",
+        "Valutazione dell’intervento"
+      ],
+      "decisionValue": "Fornisce una traccia di indicatori di risultato da affiancare ai conti."
+    },
+    {
+      "id": "turismo-servizi",
+      "question": "Come è cambiato il movimento turistico e quale pressione potenziale descrive?",
+      "problem": "Flussi turistici e servizi.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "tour_change",
+        "tour_weighted",
+        "tourism_tourismArrivals_current"
+      ],
+      "answerToday": "Le letture turismo calcolano notti 2023–2025 e intensità 2025/residenti 2026; arrivi e presenze restano distinti.",
+      "unjustifiedConclusions": "Notti non sono persone uniche o presenze giornaliere; intensità non misura i carichi effettivi.",
+      "missingData": [
+        "Escursionisti e locazioni escluse",
+        "Picchi giornalieri e carichi/costi dei servizi"
+      ],
+      "decisionValue": "Orienta misurazioni stagionali senza convertire flussi annui in fabbisogni automatici."
+    },
+    {
+      "id": "atlante-registro",
+      "question": "Quante unità locali attive registra l’Atlante nei sette Comuni nel 2025?",
+      "problem": "Consistenza territoriale e attività specifica del Registro Imprese.",
+      "classification": "supported",
+      "requestCaseIds": [
+        "atlas_territory_2025",
+        "atlas_I_561011_active_2025"
+      ],
+      "answerToday": "Totali nativi comunali e confronto del record diretto ristorazione selezionato; totale territoriale 20.325.",
+      "unjustifiedConclusions": "Record ATECO non è branca esaustiva; 292 dalle sole divisioni non è il totale; Registro Imprese diverso da ASIA.",
+      "missingData": [
+        "Nessun dato aggiuntivo per i conteggi congelati; omogeneità classificatoria per variazioni"
+      ],
+      "decisionValue": "Corregge l’immagine del tessuto produttivo e conserva le differenze fra universi."
+    },
+    {
+      "id": "erp-morosita",
+      "question": "Come si distribuisce la morosità ERP e cosa dice sulla difficoltà delle famiglie?",
+      "problem": "Morosità degli importi emessi e fragilità abitativa.",
+      "classification": "partially_supported",
+      "requestCaseIds": [
+        "erp_native_046018_2024"
+      ],
+      "answerToday": "Rapporto morosità cumulata/emesso cumulato ERP Lucca nel 2024; importi in euro, non famiglie.",
+      "unjustifiedConclusions": "Non misura quante famiglie siano in difficoltà o l’efficacia della gestione; discontinuità dei prospetti esplicite.",
+      "missingData": [
+        "Numero e caratteristiche dei nuclei",
+        "Canoni correnti, transizioni e motivi della morosità",
+        "Domanda abitativa non soddisfatta"
+      ],
+      "decisionValue": "Consente di separare un problema contabile dall’accertamento del bisogno abitativo."
+    }
+  ]
+}
