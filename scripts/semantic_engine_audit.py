@@ -22,8 +22,13 @@ import semantic_query_library_adapters as library
 import semantic_query_invalsi_adapters as invalsi
 
 
-def compact(result):
-    return {k: result[k] for k in ('status', 'reasons', 'warnings', 'coverage') if k in result}
+def compact(result, verifier=None):
+    value = {k: result[k] for k in ('status', 'reasons', 'warnings', 'coverage') if k in result}
+    if verifier is not None:
+        errors=verifier.verify(result)
+        value['independentVerification']={'status':'FAIL' if errors else 'PASS','errors':errors}
+        value['responseSha256']=hashlib.sha256(json.dumps(result,sort_keys=True,ensure_ascii=False,separators=(',',':'),allow_nan=False).encode()).hexdigest()
+    return value
 
 
 def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
@@ -60,7 +65,7 @@ def probe_query(engine, key, dimension, operation, scope=None, catalog=None):
     return query
 
 
-def audit(engine):
+def audit(engine, verifier=None):
     catalog = engine.catalog
     registry_path = engine.path.with_name('source-registry.json')
     body = registry_path.read_bytes()
@@ -82,15 +87,30 @@ def audit(engine):
                         status='requires_selected_pair', reasons=['second_variable_and_purpose_required']))
                     continue
                 if operation not in operations:
-                    probes.append(dict(dimension=dimension, operation=operation,
-                        status='not_supported', reasons=['operation_not_advertised_by_adapter']))
+                    if verifier is not None and operation != 'correlation':
+                        # Refusal probes must not pre-read an unsupported history.
+                        selector={'metric':key,'dimension':dimension}
+                        query={'operation':operation,'selectors':[selector]}
+                        if operation in TEMPORAL or operation=='benchmark_gap':selector['towns']=[sorted(engine.codes)[0]]
+                        if operation=='benchmark_gap':query['benchmark']='tuscany'
+                        if operation=='anomaly':query.update(rule='tukey_1_5_iqr',reference='selected_municipalities',purpose='Explicit refusal boundary, no policy priority')
+                        response=engine.query(query)
+                        probe=dict(dimension=dimension,operation=operation,query=query,
+                                   advertisedByAdapter=False,**compact(response,verifier))
+                        if response['status']=='computed':
+                            probe['independentVerification']['status']='FAIL'
+                            probe['independentVerification']['errors'].append('operation_computed_but_not_advertised')
+                        probes.append(probe)
+                    else:
+                        probes.append(dict(dimension=dimension, operation=operation,
+                            status='not_supported', reasons=['operation_not_advertised_by_adapter']))
                     continue
-                scopes = declared['benchmarkScopes'] if operation == 'benchmark_gap' else [None]
+                scopes = declared['benchmarkScopesByDimension'][dimension] if operation == 'benchmark_gap' else [None]
                 for scope in scopes:
                     query = probe_query(engine, key, dimension, operation, scope, catalog)
                     result = engine.query(query)
                     probes.append(dict(dimension=dimension, operation=operation, query=query,
-                        benchmarkScope=scope, **compact(result)))
+                        benchmarkScope=scope, **compact(result, verifier)))
         if not available:
             probes = [dict(dimension='unresolved', operation=o, status='not_supported',
                 reasons=[declared['reason']]) for o in SUPPORTED]

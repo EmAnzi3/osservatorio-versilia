@@ -1,24 +1,24 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente — 13 ottobre 2026
+## Stato corrente — candidato metodologico
 
-- Baseline reale `main` `16bb319b2cda57127e9b66d1c1a75c68b6280519`, albero `ef94d1bf09a1ede9f4d7692e173f2afbb9b2d32c`: #423 e #424 mergiate dal proprietario. Deploy e live-status su main risultano SUCCESS; nessun merge/deploy dell'assistente.
-- #423 completa gli adapter: 225/225 effettivi, 166/181 sorgente, zero carrier residui, 2.457 viste Atlante. Baseline 3.727 casi (2.033 calcoli/1.694 rifiuti); copertura non equivale a chiusura metodologica.
-- A0–A5 DONE; A6 attiva, issue #330. A6.1–A6.3 integrate, A6.4 parziale e A6.5–A6.6 aperte; A7 non avviata.
-- Camaiore checkpoint `5aaf159870912eb49bffbd044963549bfb920150`, 40 golden master, UI/asset, 35 letture e due riepiloghi conservati. Radar #424 è baseline separata, non modificata da questo lotto.
+- Main dopo merge del proprietario della #425: `37928e86a057c883f77b180175e681d87fad50da`, albero `8dd1048073b3d79aa2ed9fda0cbec5576054eb4a`; #423/#424 preservate; A6 IN_PROGRESS, issue #330, A7 NOT_STARTED.
+- PR #425 `fix/a6-atlas-territorial-total`: riepilogo nativo 2025 pari a 20.325, distinto dai 292 delle sole divisioni dirette; invariati payload, classificazioni, storici e universi. Integrata dal proprietario. Quick/Full locali sequenziali PASS; CI Quick `38350927492`, Full `38354234979`, A3 `38350927459` PASS sul medesimo candidato. Deploy main `38357820460` e controllo live `38359296744` SUCCESS; non sostituiscono l'attestazione metodologica A6.
+- Adapter completi 225/225 effettivi e 166/181 sorgente; baseline 3.727 casi, 2.033 consultazioni/calcoli e 1.694 rifiuti. Copertura non equivale a chiusura metodologica.
+- A0–A5 DONE; A6.1–A6.3 integrate; A6.4–A6.6 restano aperte fino alla verifica e chiusura amministrata. Non modificare i 40 golden o Camaiore `5aaf159870912eb49bffbd044963549bfb920150`.
 
-## Lotto candidato — correzione Atlante v55
+## Candidato PR 2
 
-Branch `fix/a6-atlas-territorial-total`, base main sopra. Materializzatore di produzione: riepilogo dai totali nativi `tt`, non dalle sole divisioni ATECO (292). Totali 2025 per ISTAT: 046005=3822, 046013=1556, 046018=1940, 046024=3327, 046028=1437, 046030=245, 046033=7998; somma 20.325. Metadati esplicitano formula e universo. File congelati, serie 2014–2025, classificazioni, gerarchie e runtime invariati.
+Branch locale `feat/a6-methodological-closure`, basato sulla main integrata della #425. Motore v56: contesti e benchmark per dimensione, senza nuove operazioni/adapter. Verificatore indipendente razionale di formule, pairing/campioni/sensibilità e provenienza (inclusi payload ricostruiti da frammenti). Audit di tutte le viste e rifiuti delle operazioni non dichiarate; nessuna scansione indiscriminata di coppie.
 
-`total` implicito ancora rifiutato per scelta esplicita (`atlas_explicit_view_required`), senza più motivazione di carrier non riconciliato. Nessuna nuova operazione autorizzata. Fingerprint del carrier aggiornato; regressioni avversarie su assi, identità, null/zeri, totali incompleti, categorie duplicate e tutte le 84 celle territoriali via query. Fonte delle aspettative: tabella congelata, già trascritta nella #423; nessun replay dei CSV originali o verifica live dichiarato.
+35 letture e due riepiloghi preservati, annotazioni esplicative e confronto rapporto di somme/media comunale separati. Repertorio di domande concrete con evidenze già verificate, classificazioni supportata/parziale/non determinabile e lacune informative. Abitazione e bilanci supplementari, non nuovi percorsi dentro i cinque A6.5. Metodo `docs/A6_METHODOLOGICAL_REVIEW.md`; CLI `scripts/semantic_methodological_audit.py`.
 
-Test mirati e suite 3.727/3.727 PASS sul catalogo effettivo corretto. Il primo Full ha fallito il controllo RCS immediato dopo navigazione; il test originale passa integralmente su baseline e candidato in replay sequenziale, e otto navigazioni mirate confermano il dettaglio. Le quattro navigazioni RCS ora usano il helper condiviso di prontezza client/vista/font, preservando tutte le asserzioni geometriche e di contenuto. Nuovi Quick/Full locali sequenziali e CI Quick→Full/A3 devono verificare il candidato con questa correzione prima del merge. Nessun gate della #423 viene riutilizzato come prova del candidato.
+Verifiche analitiche locali preliminari PASS sui dati effettivi corretti; report con query, hash e limiti. Quick/Full canonici sequenziali, browser, CI Quick→Full/A3 sul medesimo candidato e integrazione approvata ancora necessari. Nessuna attestazione DONE, merge o deploy dell'assistente.
 
 ## Prossima azione
 
-Concludere gate locali, aprire PR Atlante Draft e verificare CI/effetti pubblici; approvazione e merge riservati al proprietario. Dopo correzione e integrazione: audit globale A6.4/A6.6, revisione integrale A6.5 (35 letture e due riepiloghi), repertorio di domande e lacune. PR di chiusura soltanto dopo integrazione/verifica delle precedenti, quindi handoff A7. Non dichiarare A6 DONE anticipatamente.
+Concludere i gate del candidato metodologico, preparare PR 2 separata e integrare soltanto su approvazione del proprietario. PR amministrativa finale dopo integrazione/verifica delle precedenti; handoff A7 dopo chiusura A6.
 
-## Manutenzioni separate
+## Perimetro escluso
 
-Monitor fonti #338/#329/#117, Radar e acquisizioni live fuori perimetro. Nessuna nuova UI A7, modello linguistico o servizio esterno introdotto.
+Radar #424, monitor/acquisizioni live, nuove UI A7, modelli linguistici e servizi esterni separati. Snapshot, valori pubblici oltre alla correzione Atlante, asset, workflow e golden non riscritti dal lotto metodologico.

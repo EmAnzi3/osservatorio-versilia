@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "administrativeStatus": "A6_IN_PROGRESS_APPROVAL_AND_MERGE_REQUIRED",
+  "catalogSha256": "1416209ca86f27b4eaeede51e59a90edd0b24167f75c60e5157df4583678d710",
+  "engineSha256": "5b4689d302a28fa58f17246bce3ecd045eb8876b30c51ee9772685be05f02815",
+  "verifierSha256": "64ae41912c7f7b87905376db162c06429b3cc4302e6071a36befd3e19b0d51f1",
+  "auditSha256": "cf9954aa35eff2f7ce9163f9632bbcc2b64b2192defd79891adcd4d4935ac544",
+  "baselineSuite": {
+    "questions": 3727,
+    "passed": 3727,
+    "computed": 2033,
+    "refused": 1694
+  },
+  "limits": [
+    "Frozen inputs only; no current online-source availability certification",
+    "All declared dimensions inventoried; probes keep their exact municipalities, years and scopes, not all possible query combinations",
+    "Every baseline question response independently checked; profile suites provide native reconciliation and adversarial/cache coverage",
+    "Descriptive ecological associations, sample and leave-one-out sensitivity; no causality, prediction or individual inference",
+    "Missing or unsupported data remain explicit; no automatic administrative recommendations",
+    "No new UI, acquisitions or A7 service; golden masters and budgets remain external mandatory gates"
+  ],
+  "coverage": {
+    "metrics": 225,
+    "withAdapter": 225,
+    "withoutAdapter": 0,
+    "probes": {
+      "computed": 4926,
+      "not_computable": 32358,
+      "not_supported": 2844,
+      "requires_selected_pair": 515
+    },
+    "sourceProfiles": 63
+  },
+  "dimensionCount": 3359,
+  "readings": 35,
+  "groupReadings": 2,
+  "questionClassifications": {
+    "supported": 7,
+    "partially_supported": 9,
+    "not_determinable": 4
+  },
+  "unexpectedResiduals": 0,
+  "reportSha256": "31156feaa52744bf42281a63b2dc890a3cd53fc91d8a0815713e4d085ae5254f"
+}

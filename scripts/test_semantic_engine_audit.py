@@ -71,18 +71,60 @@ def regressions(catalog_path):
         assert link['evidence'] or link['reasons']
         assert all(k in metrics for k in link['references'].values() if k not in link['unresolvedReferences'])
     suite=run_suite(engine);assert suite['status']=='PASS',[(r['id'],r['errors']) for r in suite['results'] if r['errors']]
+    from semantic_methodological_checks import MethodologicalVerifier
+    verifier=MethodologicalVerifier(catalog_path,ROOT)
+    independent=verifier.suite(suite['results'])
+    assert independent['status']=='PASS', [r for r in independent['results'] if r['errors']]
+    from semantic_methodological_audit import acceptance_report, reading_review
+    from semantic_territorial_readings import build_readings, PILOTS
+    acceptance=acceptance_report(suite['results'])
+    assert acceptance['status']=='PASS'
+    assert set(acceptance['classifications'])=={'supported','partially_supported','not_determinable'}
+    baseline_readings=build_readings(engine)
+    review=reading_review(baseline_readings,verifier)
+    assert review['status']=='PASS' and review['baselineReadingsPreserved']
+    assert {r['id'] for r in review['readings']}=={r['id'] for r in baseline_readings['readings']}
+    assert len(review['readings'])==len(engine.codes)*len(PILOTS) and len(review['groupReadings'])==2
+    for original,annotation in zip(baseline_readings['readings'],review['readings']):
+        assert annotation['calculations']==original['calculations']
+        assert annotation['association']==original['association']
+        assert annotation['missingData'] and annotation['monitoringIndicators'] and annotation['explanation']
+    for key in ('landUse','incomeSourceProfile','roadSafety','municipalEmployeesPer1000','incomeVsInflation'):
+        item=metrics[key]['engine']
+        assert set(item['benchmarkScopesByDimension'])==set(item['dimensions'])
+        assert set(item['contextsByDimension'])==set(item['dimensions'])
+    assert metrics['incomeSourceProfile']['engine']['benchmarkScopesByDimension']['source:pension']==[]
+    assert metrics['landUse']['engine']['benchmarkScopesByDimension']['view:hectares']==[]
+    assert metrics['employmentRate']['engine']['benchmarkScopesByDimension']['age:15-24|sex:total']==[]
+    assert metrics['businessValueAdded']['engine']['benchmarkScopesByDimension']['sector:industry']==[]
     assert suite['summary']['computed']>0 and suite['summary']['refused']>0
     assert suite==run_suite(engine), 'Question results must be deterministic'
     # The acceptance checker must catch altered arithmetic, lost warnings and false refusal success.
     calculated=next(r for r in suite['results'] if r['id']=='female_weighted')
     altered=copy.deepcopy(calculated['actual']);altered['result']['value']+=1
     assert 'unexpected_value:/result/value' in check_expected(altered,calculated['expected'])
+    assert 'independent_arithmetic:weighted_ratio' in verifier.verify(altered)
+    # Independently check provenance corruption, not only its presence.
+    corrupted=copy.deepcopy(calculated['actual'])
+    corrupted['observations'][0]['provenance'][0]['sha256']='f'*64
+    assert any(e.startswith('provenance_bytes_mismatch:') for e in verifier.verify(corrupted))
+    corrupted=copy.deepcopy(calculated['actual'])
+    corrupted['observations'][0]['provenance'][0]['valuePointer']='/missing/value'
+    assert any(e.startswith('provenance_reference_unresolved:') for e in verifier.verify(corrupted))
+    corrupted=copy.deepcopy(calculated['actual'])
+    corrupted['observations'][0]['denominator']=0
+    assert 'independent_arithmetic:denominator' in verifier.verify(corrupted)
+
     associated=next(r for r in suite['results'] if r['id']=='aligned_association')
     altered=copy.deepcopy(associated['actual']);altered['warnings']=[]
     assert 'missing_warning:association_not_causation' in check_expected(altered,associated['expected'])
+    assert 'correlation_warning_missing:association_not_causation' in verifier.verify(altered)
     refusal=next(r for r in suite['results'] if r['id']=='mismatched_association')
     altered=copy.deepcopy(refusal['actual']);altered['status']='computed';altered['reasons']=[]
     assert 'unexpected_status' in check_expected(altered,refusal['expected'])
+    # Reject an empty refusal instead of treating not_computable as sufficient.
+    empty=copy.deepcopy(refusal['actual']);empty['reasons']=[]
+    assert 'refusal_without_reason_or_with_result' in verifier.verify(empty)
     with tempfile.TemporaryDirectory(prefix='a6-question-gate-') as directory:
         p=Path(directory)/'questions.json';manifest=json.loads(QUESTIONS.read_text())
         manifest['questions'].append(copy.deepcopy(manifest['questions'][0]));p.write_text(json.dumps(manifest))
