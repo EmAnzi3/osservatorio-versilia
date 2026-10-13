@@ -11,7 +11,7 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 
 ROOT = Path(__file__).resolve().parents[1]
 KEYS = ('economyActivityAtlas',)
-PUBLIC_HASH = '2e531144693245b7ef7ac190f660b1edcbc407504ffbe81a65f439c28efb27fe'
+PUBLIC_HASH = '85e540a37d121924b93ae9428bfff6a32cff32d8b7ffd214be154b0da17c89a2'
 FILES = {'metadata.json': '0a98bd33d959e0ef6576fec6547ecaaa2be5ac5c2fb43925a6d71e4781dfc93b', 'atlas-00.b64': '676cda3d36a33f92d7b9367f3136da22ca5e512a363cabeca3f9006cbd542550', 'atlas-01.b64': 'a95c66c11d2f0157ad72f638d8900af1400037d5157b52b43c1208b68995dca5', 'atlas-02.b64': '37749d7c6b283518b88c0273ff27606c44fb73502eb3374a442a7074fee39e29', 'atlas-03.b64': '9e250808c909415e27a8e98697431b2ec48c7f162f30776c6c0a996b94e1bb81', 'atlas-04.b64': '1df5848c8e3c0eb00f172e10dee6b0c0b9394ae768eba096f80c3f64b4231295', 'atlas-05.b64': '79866c7a42b1500a7147bfd2af908bad50e1d672106ebea9cb82cd4a4ee0d36f', 'atlas-06.b64': '86203e202cfda93c476255385103b2975600c6fce76ec54acaed94636c05984c', 'atlas-07.b64': 'ab875f28adf073e567ab332a79b695ef9608b45b4e7329f50adc84b01c9eff01', 'atlas-08.b64': '12eb46c5b97d7f660f8dfba5d83c6bd81992afa34b67ba49cd24c7a0e340ae7c', 'atlas-09.b64': 'a4183edb8518b531ea924e6ab9ae3b629bcaab5aec4580ffd9b743ad65d41244', 'ateco-taxonomy-00.b64': 'e280ff179c210456a0a72f73b7b8cdf1c918275ec2168768e53c7eff45c42085', 'ateco-taxonomy-01.b64': 'b93d4770f3c9ae315df4cfc7094cf33fbe0671b0ceb3b8bae73c6f90bf4b36c7', 'ateco-taxonomy-02.b64': '65fbeca3e02f8530d7e6caa0c941975ff8f726035bf9d51b1237018ad736c759', 'ateco-taxonomy-03.b64': '9f52215a8bb4a8a23c6cdc75bc110d33ceced61b9fdb28fa84f86de622726c5b', 'ateco-taxonomy-04.b64': 'f4d815363384a7bfd738eca2b4abb6c0d5681431fa64d210e71d27b56f4b160f'}
 NOTES = ['atlas_register_local_units_not_enterprises_jobs_or_istat_asia',
          'atlas_exact_category_row_not_exhaustive_hierarchy_branch_total',
@@ -19,7 +19,7 @@ NOTES = ['atlas_register_local_units_not_enterprises_jobs_or_istat_asia',
          'atlas_null_not_zero_no_imputation_or_descendant_substitution',
          'atlas_compact_normalized_replay_not_original_register_files',
          'atlas_2014_2025_series_continuity_not_certified_for_changes',
-         'atlas_scalar_division_sum_292_not_territorial_total_20325',
+         'atlas_territorial_total_reconciled_no_ateco_hierarchy_sum',
          'atlas_artisan_count_only_2025_not_historical_series',
          'atlas_numerical_rank_not_economic_strength_or_policy_priority']
 
