@@ -1,5 +1,7 @@
 # A6.2–A6.3 — operazioni e comparabilità
 
+**Stato corrente — 13 ottobre 2026:** revisione metodologica #427 integrata, motore v56, 225/225 indicatori effettivi, 35 letture e due riepiloghi verificati. Chiusura amministrativa subordinata alla PR conclusiva approvata, mergiata e verificata; A7 NOT_STARTED. [Attestazione e limiti](A6_CLOSURE_AUDIT.md), [metodo riproducibile](A6_METHODOLOGICAL_REVIEW.md). Le sezioni di sviluppo/versione seguenti documentano i lotti storici: i vecchi conteggi e residui non descrivono la copertura corrente.
+
 ## Perimetro e stato
 
 A6.1 è pubblicata con #301, main `5abab28dbb3b82fbb76eb9fee5ef4ca5c1a5f79c`, deploy `37235624195` SUCCESS. Questo lotto definisce il contratto delle operazioni e controlli eseguibili di **ammissibilità**, senza modificare dati o interfaccia. Non è il motore di calcolo A6.4 e non certifica automaticamente la comparabilità dei 225 indicatori effettivi. A6.5 e A7 devono attendere adapter e risultati riproducibili.
