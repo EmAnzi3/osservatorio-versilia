@@ -1,6 +1,6 @@
 # A6.4–A6.6 — revisione metodologica riproducibile
 
-Questo documento accompagna il candidato metodologico successivo alla correzione Atlante #425. **Non è l'attestazione amministrativa di A6 DONE**. A6 rimane IN_PROGRESS fino ai gate, all'integrazione approvata e alla PR conclusiva verificata. A7 non è avviata.
+Questo documento descrive la revisione metodologica #427, integrata dopo la correzione Atlante #425. La main verificata è `cb73eadd9be1c46cc1196652d6068d41ae5d4363`; l’attestazione amministrativa proposta è in [A6_CLOSURE_AUDIT.md](A6_CLOSURE_AUDIT.md). **Non è l'attestazione amministrativa di A6 DONE**. A6 rimane IN_PROGRESS fino ai gate, all'integrazione approvata e alla PR conclusiva verificata. A7 non è avviata.
 
 ## Cosa viene verificato
 

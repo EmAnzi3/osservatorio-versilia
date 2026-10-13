@@ -1,5 +1,7 @@
 # A6.5 — prototipo di letture territoriali
 
+**Stato corrente — 13 ottobre 2026:** revisione metodologica #427 integrata, motore v56, 225/225 indicatori effettivi, 35 letture e due riepiloghi verificati. Chiusura amministrativa subordinata alla PR conclusiva approvata, mergiata e verificata; A7 NOT_STARTED. [Attestazione e limiti](A6_CLOSURE_AUDIT.md), [metodo riproducibile](A6_METHODOLOGICAL_REVIEW.md). Le sezioni di sviluppo/versione seguenti documentano i lotti storici: i vecchi conteggi e residui non descrivono la copertura corrente.
+
 Cinque percorsi riproducibili per ciascuno dei sette Comuni: invecchiamento/assistenza domiciliare; lavoro femminile/servizi per l’infanzia; turismo/organizzazione dei servizi; pendolarismo per lavoro; organizzazione scolastica. Le ricette selezionano il catalogo canonico, non duplicano indicatori o valori. Nessuna UI o conclusione di politica viene pubblicata. Questa estensione dipende dagli adapter v11 della #349; non aumenta la copertura del motore né il numero di domande della suite generale.
 
 Ogni record separa osservazioni, calcoli con formula e provenienza, associazione, ipotesi non verificata e opzione da valutare. Una proposta conserva destinatari, evidenze, indicatori di risultato da predisporre, dati mancanti, assunzioni, `approved: false` ed effetto atteso null. Nessuna graduatoria universale o raccomandazione automatica.
