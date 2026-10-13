@@ -49,6 +49,7 @@ jobs:
       archived: ${{ steps.run_report.outputs.archived }}
       removed: ${{ steps.run_report.outputs.removed }}
       human_review: ${{ steps.run_report.outputs.human_review }}
+      owner_notification_needed: ${{ steps.run_report.outputs.owner_notification_needed }}
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v4
@@ -240,7 +241,9 @@ jobs:
             --build-status "${{ steps.validate_build.outcome }}"
           cat reports/runtime/opportunity-run-report.md >> "$GITHUB_STEP_SUMMARY"
           python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
+          import json, sys
+          sys.path.insert(0, 'scripts')
+          from opportunity_owner_notification import publication_requires_notification
           report = json.load(open('reports/runtime/opportunity-run-report.json', encoding='utf-8'))
           counts = report['counts']
           changed = any(int(counts[key]) > 0 for key in ('added', 'modified', 'archived', 'removed'))
@@ -248,6 +251,7 @@ jobs:
           print(f"reference_date={report.get('referenceDate') or 'n.d.'}")
           print(f"fingerprint={report['fingerprint']}")
           print(f"human_review={(report.get('reviewActions') or {}).get('counts', {}).get('human', 0)}")
+          print(f"owner_notification_needed={'true' if publication_requires_notification(report) else 'false'}")
           for key in ('added', 'modified', 'archived', 'removed'):
               print(f"{key}={int(counts[key])}")
           PY
@@ -397,6 +401,7 @@ jobs:
           path: reports/runtime
 
       - name: Notify owner after successful publication
+        if: needs.refresh.outputs.owner_notification_needed == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}

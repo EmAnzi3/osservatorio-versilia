@@ -2,10 +2,16 @@
 import json
 import subprocess
 from pathlib import Path
-from opportunity_owner_notification import notify_owner, split_markdown
+from opportunity_owner_notification import notify_owner, split_markdown, publication_requires_notification
 
 
 def main():
+    unchanged = {'counts': dict(added=0, modified=0, archived=0, removed=0),
+                 'reviewActions': {'counts': dict(human=0, technical=58, retry=21)}}
+    assert not publication_requires_notification(unchanged)
+    for key in ('added', 'modified', 'archived', 'removed'):
+        assert publication_requires_notification({**unchanged, 'counts': {**unchanged['counts'], key: 1}})
+    assert publication_requires_notification({**unchanged, 'reviewActions': {'counts': {'human': 1}}})
     body = '<!-- radar:test -->\n| Segnalazione | Documenti | Termine |\n|---|---|---|\n' + '\n'.join(f'| Segnalazione {n} àè | [Documento](<https://example.test/avviso-{n}.pdf>) | 2026-10-23 |' for n in range(2200))
     pieces = split_markdown(body)
     assert len(pieces)>2 and ''.join(pieces)==body

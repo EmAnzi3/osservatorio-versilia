@@ -1,0 +1,52 @@
+{
+  "referenceDate": "2026-10-12",
+  "baselineFingerprint": "8eba560dcc3f403a",
+  "before": {
+    "technical": 58,
+    "retry": 21,
+    "covered": 6
+  },
+  "after": {
+    "technical": 14,
+    "retry": 23,
+    "covered": 7
+  },
+  "discarded": 100,
+  "publicBefore": 60,
+  "publicAfter": 61,
+  "changes": {
+    "previous": 60,
+    "current": 61,
+    "added": 1,
+    "modified": 1,
+    "archived": 0,
+    "removed": 0,
+    "unchanged": 59
+  },
+  "new": [
+    "Città che legge · 10ª edizione — progetti comunali di promozione della lettura"
+  ],
+  "mode": "Complete offline reassessment; source collection errors are local receipts, not runner-health claims.",
+  "sourceRun": 38269522840,
+  "sourceHead": "4dfe03af24d6be7954b32952e3ccd0def6243906",
+  "sourceSnapshotSha256": "31af094630fe0b736f5141cdcee4f3abf1d926ef1cd4fe88cd61acb1a0d18b62",
+  "runReportArtifactSha256": "cfc756ff1647c6fd78108fe743d5a83d6362d45a6ce782fe4ffdcb15c1e269db",
+  "scope": "79 original technical/retry references; publication gates remain unchanged.",
+  "dispositions": {
+    "monitor": 23,
+    "technical": 14,
+    "expired": 15,
+    "retry": 23,
+    "promoted": 1,
+    "covered": 3
+  },
+  "productionLookupLimit": {
+    "maxPages": 24,
+    "maxSeconds": 90
+  },
+  "localLookupLimit": {
+    "maxPages": 200,
+    "maxSeconds": 900
+  },
+  "humanChecks": 0
+}

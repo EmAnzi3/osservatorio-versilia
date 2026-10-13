@@ -14,6 +14,7 @@ import unicodedata
 from datetime import date
 from pathlib import Path
 from typing import Any
+from opportunity_pdf_evidence import verified_document_links
 
 from site_chrome import synchronize_native_page
 
@@ -136,6 +137,10 @@ def card_markup(item: dict[str, Any]) -> str:
     towns = eligible_town_slugs(item)
     requirements = display_value(item.get("project_requirements"), "")
     source_url = str(item.get("url") or (item.get("eligibility_evidence") or {}).get("source_url") or "#")
+    evidence_links = [f'<li><a href="{esc(url)}" target="_blank" rel="noopener noreferrer">{esc(label)}</a></li>'
+                      for label,url in verified_document_links(item)]
+    documents = ('<details class="op-condition"><summary>Documenti ufficiali</summary><ul>'
+                 + ''.join(evidence_links) + '</ul></details>') if evidence_links else ''
     applicant = display_value(item.get("applicant_type"))
     scope = display_value(item.get("geographic_scope"))
     final_beneficiaries = display_value(item.get("final_beneficiaries"))
@@ -184,6 +189,7 @@ def card_markup(item: dict[str, Any]) -> str:
         <div><dt>Ambito</dt><dd>{esc(scope)}</dd></div>
       </dl>
       {condition}
+      {documents}
       <div class="op-town-block">
         <h4>Comuni della Versilia</h4>
         <ul class="op-town-list">{render_town_chips(item)}</ul>

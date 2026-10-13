@@ -30,6 +30,7 @@ _HOST_ALIASES = {
     "spettacolo.cultura.gov.it": "mic-spettacolo",
     "cinema.cultura.gov.it": "mic-dgcc",
     "cultura.gov.it": "mic-spettacolo",
+    "centroperillibro.cultura.gov.it": "mic-spettacolo",
     "fnasilo.dlci.interno.it": "ministero-interno-prefetture",
     "urban-initiative.eu": "eu-eui",
     "www.urban-initiative.eu": "eu-eui",

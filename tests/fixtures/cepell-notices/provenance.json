@@ -1,0 +1,17 @@
+{
+  "qualified-towns": {
+    "url": "https://centroperillibro.cultura.gov.it/wp-content/uploads/2026/09/Allegato-B-Elenco-Qualifica-Citta-che-legge-2024-2025-2026.pdf",
+    "sha256": "2c055e40f77907ed3261b0d4cdc1009e1a9d86eadb3195dace1129761cdb6feb",
+    "pages": 30
+  },
+  "reading-call": {
+    "url": "https://centroperillibro.cultura.gov.it/wp-content/uploads/2026/09/Bando_Citta_che_legge_10ed.pdf",
+    "sha256": "0b123e8d895c4da106001a9bd38a28101bfd4bb8cecc0c1e307a087327c7d5de",
+    "pages": 16
+  },
+  "evaluation-criteria": {
+    "url": "https://centroperillibro.cultura.gov.it/wp-content/uploads/2026/09/Allegato-A-Criteri-di-valutazione.pdf",
+    "sha256": "2489e41fcf59dc9c8ccf4f9f15e13001fd01473c193d60139c0a72fbe7001192",
+    "pages": 1
+  }
+}

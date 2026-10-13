@@ -44,7 +44,8 @@ def main() -> int:
         "- name: Notify owner after successful publication", 1
     )[1].split("- name: Close legacy daily snapshot pull request", 1)[0]
     assert "if:" not in report_download
-    assert "if:" not in report_notification
+    assert "if: needs.refresh.outputs.owner_notification_needed == 'true'" in report_notification
+    assert "publication_requires_notification(report)" in daily
     assert (
         'marker="radar-published:${{ needs.refresh.outputs.reference_date }}:'
         '${{ needs.refresh.outputs.fingerprint }}"'

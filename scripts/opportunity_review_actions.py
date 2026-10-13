@@ -32,7 +32,10 @@ def normalized_url(value):
             return ""
         query = [(k, v) for k, v in parse_qsl(p.query, keep_blank_values=True)
                  if not k.lower().startswith("utm_") and k.lower() not in ("fbclid", "gclid")]
-        return urlunsplit((p.scheme.lower(), p.netloc.lower(), unquote(p.path).rstrip("/") or "/", urlencode(query), ""))
+        path = unquote(p.path).rstrip("/") or "/"
+        if p.hostname == "www.regione.toscana.it":
+            path = re.sub(r"^/it/-/", "/-/", path)
+        return urlunsplit((p.scheme.lower(), p.netloc.lower(), path, urlencode(query), ""))
     except ValueError:
         return ""
 
@@ -84,9 +87,14 @@ def publication_exclusion(item):
     return None
 
 
-def source_text_hash(page):
+def source_text_hash(page, selector=None):
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(page, "html.parser")
+    if selector:
+        selected = soup.select(selector)
+        if len(selected) != 1:
+            return ""
+        soup = selected[0]
     for element in soup(["script", "style", "nav", "header", "footer"]):
         element.decompose()
     text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True)).strip()
@@ -97,9 +105,109 @@ def reviewed_source(page, url):
     path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
     assessments = json.loads(path.read_text(encoding="utf-8")).get("reviewAssessments", [])
     for entry in assessments:
-        if normalized_url(entry["url"]) == normalized_url(url) and source_text_hash(page) == entry["sourceTextSha256"]:
+        if normalized_url(entry["url"]) == normalized_url(url) and source_text_hash(page, entry.get("sourceTextSelector")) == entry["sourceTextSha256"]:
             return entry
     return None
+
+
+def assessment_version():
+    path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
+    entries = json.loads(path.read_text(encoding="utf-8")).get("reviewAssessments", [])
+    return hashlib.sha256(json.dumps(entries, sort_keys=True).encode()).hexdigest()[:16]
+
+
+def assessed_source(page, url, reference_date):
+    """Read explicit closed status/deadlines on supported source layouts."""
+    from bs4 import BeautifulSoup
+    host = urlsplit(url).hostname
+    soup = BeautifulSoup(page, "html.parser")
+    selector = None
+    if host == "ancitoscana.it":
+        selector = ".elementor-widget-theme-post-content"
+        elements = soup.select(selector)
+        if len(elements) != 1:
+            return None
+        text = elements[0].get_text(" ", strip=True)
+        if "Scadenza" in text:
+            text = text.split("Scadenza", 1)[1]
+        else:
+            paragraphs = [p.get_text(" ",strip=True) for p in elements[0].find_all(["p","li"])]
+            text = " ".join(p for p in paragraphs if re.search(r"domand|istanze|richieste|propost",p,re.I)
+                            and re.search(r"entro|fino al|fissato|termine ultimo",p,re.I))
+        from opportunity_document_promotion import MONTHS
+        dates = []
+        for day, month, year in re.findall(r"\b(\d{1,2})\s+(\w+)\s+(20\d{2})\b", text):
+            if month.casefold() in MONTHS:
+                try: dates.append(date(int(year), MONTHS[month.casefold()], int(day)))
+                except ValueError: return None
+        for day, month, year in re.findall(r"\b(\d{2})[./](\d{2})[./](20\d{2})\b", text):
+            try: dates.append(date(int(year), int(month), int(day)))
+            except ValueError: return None
+        if len(set(dates)) != 1 or not re.search(r"domand|istanze|richieste|propost", text, re.I):
+            return None
+        deadline = dates[0]
+    elif host in {"cinea.ec.europa.eu", "new-european-bauhaus.europa.eu"}:
+        lines = soup.get_text("\n", strip=True).splitlines()
+        if not any(lines[i:i+2] == ["Status", "Closed"] for i in range(len(lines)-1)):
+            return None
+        raw_dates = [lines[i+1] for i,line in enumerate(lines[:-1]) if line == "Deadline date"]
+        if len(raw_dates) != 1:
+            return None
+        import datetime
+        try: deadline = datetime.datetime.strptime(raw_dates[0].split(",")[0].strip(), "%d %B %Y").date()
+        except ValueError: return None
+    elif host in {"www.sport.governo.it","www.famiglia.governo.it"}:
+        elements = soup.select("main, #main")
+        if len(elements) != 1:
+            return None
+        paragraphs = [p.get_text(" ",strip=True) for p in elements[0].find_all(["p","li"])]
+        application_text = " ".join(p for p in paragraphs if re.search(r"domand|istanze|candidatur|presentare progetti",p,re.I)
+                                    and re.search(r"entro|fino al|fissato|termine ultimo",p,re.I))
+        if re.search(r"riapertur|nuova finestra",application_text,re.I):
+            return None
+        from opportunity_document_promotion import MONTHS
+        dates = []
+        for day,month,year in re.findall(r"\b(\d{1,2})\s+(\w+)\s+(20\d{2})\b",application_text):
+            if month.casefold() in MONTHS:
+                try: dates.append(date(int(year),MONTHS[month.casefold()],int(day)))
+                except ValueError: return None
+        if not dates or max(dates) >= date.fromisoformat(reference_date):
+            return None
+        deadline=max(dates)
+        selector="main, #main"
+    else:
+        return None
+    if deadline >= date.fromisoformat(reference_date):
+        return None
+    return {"status":"expired", "reasonCode":"verified_expiry", "deadline":deadline.isoformat(),
+            "reason":"Termine di candidatura concluso, riportato esplicitamente nella pagina della fonte.",
+            "action":"Esclusa dalla coda; nuove finestre richiedono una nuova verifica della pagina.",
+            "sourceTextSha256":source_text_hash(page, selector), "sourceTextSelector":selector,
+            "verifiedAt":reference_date}
+
+
+def linked_public_reference(page, url, opportunities):
+    """Exact primary reference inside a supported article, never related links."""
+    from bs4 import BeautifulSoup
+    from urllib.parse import urljoin
+    selector = {"ancitoscana.it":".elementor-widget-theme-post-content",
+                "anci.lombardia.it":".corpo_news"}.get(urlsplit(url).hostname)
+    if not selector:
+        return None
+    elements = BeautifulSoup(page,"html.parser").select(selector)
+    if len(elements) != 1:
+        return None
+    represented = {normalized_url(x.get("url")):x for x in opportunities if x.get("coverage_id") or x.get("id")}
+    hits = {key:represented[key] for a in elements[0].select('a[href]')
+            if (key:=normalized_url(urljoin(url,a['href']))) in represented}
+    if len(hits) != 1:
+        return None
+    item = next(iter(hits.values()))
+    return {"status":"covered","reasonCode":"reviewed_cross_source_reference",
+            "reason":"L’articolo collega direttamente la fonte primaria di una scheda già pubblicata.",
+            "action":"Nessuna nuova scheda; gli aggiornamenti restano soggetti alla riconferma della fonte primaria.",
+            "representedCoverageId":item.get("coverage_id") or item["id"],"evidenceUrl":item["url"],
+            "sourceTextSha256":source_text_hash(page,selector),"sourceTextSelector":selector}
 
 
 def is_administrative_update(page, url=""):
@@ -113,6 +221,13 @@ def is_administrative_update(page, url=""):
         return False
     if re.search(r"(?:approvata\s+la\s+graduatoria\s+definitiva|approvate\s+le\s+graduatorie\s+definitive)", text, re.I):
         return True
+    if urlsplit(url).hostname in {"www.famiglia.governo.it","www.politichecoesione.governo.it"}:
+        if (re.search(r"elenco dei progetti finanziati",text,re.I)
+                and re.search(r"materiali per soggetti attuatori",text,re.I)):
+            return True
+        if (re.search(r"decreto dipartimentale.*approvazione dell.elenco dei comuni beneficiari",text,re.I)
+                and re.search(r"monitoraggio",text,re.I)):
+            return True
     # Prefecture headlines report named municipalities' existing projects.
     # Do not extrapolate this rule to other publishers or generic funding news.
     if urlsplit(url).hostname != "prefettura.interno.gov.it":
@@ -129,6 +244,7 @@ def build_actions(payload):
     for check in (payload.get("documentPromotion") or {}).get("checks") or []:
         checks.setdefault(normalized_url(check.get("url")), []).append(check)
     represented = {}
+    represented_ids = {x.get("coverage_id"):x.get("title") for x in payload.get("opportunities") or [] if x.get("coverage_id")}
     for item in payload.get("opportunities") or []:
         for field in ("url", "discovery_url"):
             key = normalized_url(item.get(field))
@@ -145,7 +261,7 @@ def build_actions(payload):
                 if check.get("status") != "published_candidate" or not identity or identity in represented_ids:
                     continue
                 represented_ids.add(identity)
-                signals.append({"url": check.get("url"), "title": check.get("title"), "source_label": "MIM · Avviso documentale verificato",
+                signals.append({"url": check.get("url"), "title": check.get("title"), "source_label": "Avviso ufficiale verificato",
                                 "deadline_at": next((d.get("deadline") for d in check.get("documents") or [] if d.get("status") == "verified"), ""),
                                 "_verifiedPublicationPending": True})
     for item in signals:
@@ -155,7 +271,10 @@ def build_actions(payload):
     for key, items in groups.items():
         # A discarded headline must not hide a valid signal at the same URL.
         surviving = [x for x in items if not classify_signal(x, payload.get("referenceDate"))]
-        item = max(surviving or items, key=lambda x: (not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
+        from opportunity_discovery_noise import REOPENING
+        reference = str(payload.get("referenceDate") or "")
+        item = max(surviving or items, key=lambda x: (bool(REOPENING.search(str(x.get("title") or ""))) or bool(reference and str(x.get("deadline_at") or "") >= reference),
+                                                     not bool(GENERIC.fullmatch(str(x.get("title") or ""))), len(str(x.get("title") or ""))))
         check_rows = [c for c in checks.get(key, []) if not (
             c.get("documents") and all(unrelated_document(d.get("url", "")) for d in c["documents"]))]
         documents = {}
@@ -170,7 +289,7 @@ def build_actions(payload):
         check = {"errors": [e for c in check_rows for e in c.get("errors") or []] + list(lookup.get("errors") or []), "documents": list(documents.values())}
         if any(c.get("status") == "deferred" for c in check_rows):
             check["status"] = "deferred"
-        deadline = str(item.get("deadline_at") or "")
+        deadline = str(item.get("deadline_at") or next((c.get("deadline") for c in check_rows if c.get("deadline")), ""))
         expired = bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", deadline) and deadline < str(payload.get("referenceDate") or ""))
         exclusion = next((publication_exclusion(x) for x in items if publication_exclusion(x)), None)
         noise_reason = classify_signal(item, payload.get("referenceDate"))
@@ -178,8 +297,8 @@ def build_actions(payload):
             status, code, reason, action = "monitor", exclusion["reasonCode"], exclusion["reason"], "Esclusa dal Radar pubblico per il perimetro concreto dei Comuni della Versilia; nessuna ricerca documentale richiesta."
         elif any(x.get("_verifiedPublicationPending") for x in items):
             status, code, reason, action = "retry", "publication_blocked", "Il documento è verificato, ma la pubblicazione è bloccata da un altro controllo del run.", "Il Radar ritenterà la pubblicazione. Se il blocco persiste, correggere il controllo segnalato in cima al rapporto: il documento è già collegato qui e non va ricercato nuovamente."
-        elif key in represented:
-            status, code, reason, action = "covered", "exact_public_reference", "La stessa fonte è già associata a una scheda del Radar.", "Gli eventuali aggiornamenti restano soggetti alla riconferma della scheda; non è una nuova opportunità da inserire."
+        elif key in represented or any(c.get("status") == "published_candidate" and c.get("coverage_id") in represented_ids for c in check_rows):
+            status, code, reason, action = "covered", "exact_public_reference", "La fonte o il documento verificato sono già associati a una scheda del Radar.", "Gli eventuali aggiornamenti restano soggetti alla riconferma della scheda; non è una nuova opportunità da inserire."
         elif expired or (check_rows and all(c.get("status") == "expired" for c in check_rows)):
             status, code, reason, action = "expired", "verified_expiry", "Il termine strutturato di candidatura risulta concluso.", "Nessun inserimento tra le opportunità aperte; verificare solo eventuali successive proroghe."
         elif noise_reason:
@@ -191,11 +310,11 @@ def build_actions(payload):
                       "outside_municipal_scope": "Riguarda incarichi interni o domande individuali, senza candidatura comunale.",
                       "informational_event": "È un evento o servizio informativo, non un bando."}[code]
             action = "Esclusa dalla coda di verifica documentale; il monitoraggio della fonte resta attivo."
-        elif lookup.get("assessment"):
-            assessment = lookup["assessment"]
+        elif lookup.get("assessment") or any(c.get("pageAssessment") for c in check_rows):
+            assessment = lookup.get("assessment") or next(c["pageAssessment"] for c in check_rows if c.get("pageAssessment"))
             status, code, reason, action = assessment["status"], assessment["reasonCode"], assessment["reason"], assessment["action"]
             deadline = assessment.get("deadline") or deadline
-            if status == "covered" and not any(x.get("coverage_id") == assessment.get("representedCoverageId") for x in payload.get("opportunities") or []):
+            if status == "covered" and not any((x.get("coverage_id") or x.get("id")) == assessment.get("representedCoverageId") for x in payload.get("opportunities") or []):
                 status, code, reason, action = "technical", "published_reference_missing", "La scheda precedentemente verificata non è presente nello snapshot corrente.", "Responsabilità del Radar: verificare il motivo della mancata pubblicazione."
         elif is_administrative_update(str(item.get("title") or ""), str(item.get("url") or "")) or lookup.get("classification") == "administrative_update" or (check_rows and all(c.get("status") == "administrative_update" for c in check_rows)):
             status, code, reason, action = "monitor", "administrative_update", "La notizia riguarda progetti già candidati, approvati o fondi assegnati; non documenta una nuova candidatura.", "Nessuna nuova candidatura da pubblicare. Il Radar continua a monitorare eventuali riaperture."
@@ -224,6 +343,27 @@ def build_actions(payload):
             "discardedCount": len(discarded), "discarded": discarded, "counts": dict(Counter(x["status"] for x in rows)), "items": rows}
 
 
+def retain_pending_discovery(payload, previous, reference_date):
+    """A listing is not an acknowledgement that every old lead was resolved."""
+    pending = {normalized_url(x.get("url")) for x in build_actions({**previous, "referenceDate": reference_date})["items"]
+               if x["status"] in {"technical", "retry", "human"}}
+    queue = payload.setdefault("discoveryQueue", [])
+    current = {normalized_url(x.get("url")) for x in queue}
+    represented = {normalized_url(x.get(field)) for x in payload.get("opportunities") or []
+                   for field in ("url", "discovery_url") if x.get(field)}
+    retained = 0
+    for item in previous.get("discoveryQueue") or []:
+        key = normalized_url(item.get("url"))
+        if not key or key not in pending or key in current or key in represented:
+            continue
+        queue.append(dict(item, discovery_last_checked_at=item.get("discovery_last_checked_at")
+                          or previous.get("referenceDate")))
+        current.add(key)
+        retained += 1
+    payload.setdefault("counts", {})["discoveryReview"] = len(queue)
+    return retained
+
+
 def collect_document_links(payload, *, previous=None, budget=None, loader=None, max_pages=24, max_seconds=90):
     """Locate attachments before requesting human work, within the live budget.
 
@@ -236,10 +376,13 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     actions = build_actions(payload)
     promotion_urls = {normalized_url(c.get("url")) for c in (payload.get("documentPromotion") or {}).get("checks") or [] if c.get("documents")}
     assessment_path = Path(__file__).resolve().parents[1] / "data/opportunity-audit-fixes-v1.json"
-    reviewed_urls = {normalized_url(x["url"]) for x in json.loads(assessment_path.read_text(encoding="utf-8")).get("reviewAssessments", [])}
-    candidates = [x for x in actions["items"] + actions["discarded"] if (x["status"] in ("human", "technical", "retry") or normalized_url(x["url"]) in reviewed_urls)
+    registered_reviews = {normalized_url(x["url"]):x for x in json.loads(assessment_path.read_text(encoding="utf-8")).get("reviewAssessments", [])}
+    reviewed_urls = set(registered_reviews)
+    assessed_urls = reviewed_urls | {key for key,row in previous_rows.items() if row.get("assessment")}
+    candidates = [x for x in actions["items"] + actions["discarded"] if (x["status"] in ("human", "technical", "retry") or normalized_url(x["url"]) in assessed_urls)
                   and (normalized_url(x["url"]) not in promotion_urls or normalized_url(x["url"]) in reviewed_urls)]
     today = date.fromisoformat(payload["referenceDate"])
+    current_assessment_version = assessment_version()
     result = {}
     # Keep located attachments even when a later diagnostic changes category.
     for row in actions["items"] + actions["discarded"]:
@@ -262,8 +405,19 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
     def fresh(row):
         old = previous_rows.get(normalized_url(row["url"]), {})
         try:
+            prior_assessment = old.get("assessment") or {}
+            reviewed_unchanged = bool(prior_assessment and prior_assessment == registered_reviews.get(normalized_url(row["url"])))
+            if prior_assessment.get("status") == "expired":
+                from opportunity_discovery_noise import REOPENING
+                if ((row.get("deadline") and row["deadline"] >= payload["referenceDate"])
+                        or REOPENING.search(row.get("title", ""))):
+                    return False
+            cached = budget.cache.get(("discovery", row["url"], "{}")) if budget is not None and hasattr(budget, "cache") else None
+            if cached and isinstance(cached[0], str) and source_text_hash(cached[0]) != old.get("sourceTextSha256"):
+                return False
             return (old.get("status") == "ok"
-                    and old.get("extractorVersion") == pdf.LINK_EXTRACTOR_VERSION
+                    and (reviewed_unchanged or old.get("extractorVersion") == pdf.LINK_EXTRACTOR_VERSION)
+                    and (reviewed_unchanged or old.get("assessmentVersion") == current_assessment_version)
                     and 0 <= (today-date.fromisoformat(old["checkedAt"])).days < 7)
         except (ValueError, KeyError):
             return False
@@ -282,7 +436,8 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
         attempted += 1
         old_docs = [{**d, "status": "previously_located"} for d in (result.get(key, {}).get("documents") or [])]
         entry = {"url": row["url"], "checkedAt": today.isoformat(), "status": "error", "documents": old_docs, "errors": [],
-                 "extractorVersion": pdf.LINK_EXTRACTOR_VERSION}
+                 "extractorVersion": pdf.LINK_EXTRACTOR_VERSION,
+                 "assessmentVersion": current_assessment_version}
         result[key] = entry
         try:
             if re.search(r"\.pdf(?:$|[?#])", row["url"], re.I):
@@ -294,7 +449,10 @@ def collect_document_links(payload, *, previous=None, budget=None, loader=None, 
                 urls = pdf.pdf_links(page, base, limit=8)
                 text = page
             entry.update(status="ok", documents=[{"url": u, "status": "located", "lastSeen": today.isoformat()} for u in urls if normalized_url(u)])
-            assessment = reviewed_source(text, row["url"])
+            entry["sourceTextSha256"] = source_text_hash(text)
+            assessment = (assessed_source(text, row["url"], payload["referenceDate"])
+                          or reviewed_source(text, row["url"])
+                          or linked_public_reference(text, row["url"], payload.get("opportunities") or []))
             if assessment:
                 entry["assessment"] = assessment
             if is_administrative_update(text, row["url"]):

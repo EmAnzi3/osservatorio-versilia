@@ -74,6 +74,15 @@ def main() -> int:
     _test_coverage_failure_names_expired_evidence()
     _test_actionable_document_review()
     _test_discovery_noise()
+    document_base = _snapshot([{"id":"document-test","title":"Bando comunale","url":"https://example.test/avviso.pdf"}])
+    from copy import deepcopy
+    document_update=deepcopy(document_base)
+    document_update["opportunities"][0].update(document_evidence={"resolvedUrl":"https://example.test/avviso.pdf","transport":"direct_https"},
+        supplementary_documents=[{"resolvedUrl":"https://example.test/faq.pdf","transport":"direct_https"}])
+    phases={"scan":"success","validation":"success","build":"success"}
+    assert build_report(document_base,document_update,phase_statuses=phases)["counts"]["modified"] == 1
+    timestamp_only=deepcopy(document_update);timestamp_only["opportunities"][0]["document_evidence"]["checkedAt"]="2026-10-13"
+    assert build_report(document_update,timestamp_only,phase_statuses=phases)["counts"]["modified"] == 0
     prior = _snapshot([])
     candidate = _snapshot([])
     candidate["discoveryQueue"] = [{"title": "Nuovo avviso da verificare", "url": "https://example.test/lead", "source_label": "Fonte istituzionale"}]
@@ -380,10 +389,38 @@ Sono ammessi anche enti pubblici titolari della superficie forestale.
 def _test_discovery_noise():
     from opportunity_discovery_noise import classify_signal, clean_review_queues
     from opportunity_pdf_evidence import pdf_links
-    from opportunity_review_actions import build_actions, collect_document_links
+    from opportunity_review_actions import build_actions, collect_document_links, assessed_source, linked_public_reference
     from opportunity_radar_v03 import discovery_candidates
     from copy import deepcopy
+    from types import SimpleNamespace
+    import time
     reference = "2026-10-12"
+    closed_page = '<div class="elementor-widget-theme-post-content"><h2>Scadenza</h2><p>Le domande devono essere presentate entro il 7 agosto 2026.</p></div><footer>Nuovo bando 2027</footer>'
+    assessed = assessed_source(closed_page, "https://ancitoscana.it/bando/", reference)
+    assert assessed["status"] == "expired" and assessed["deadline"] == "2026-08-07"
+    assert assessed_source(closed_page.replace("7 agosto", "30 ottobre"), "https://ancitoscana.it/bando/", reference) is None
+    assert assessed_source(closed_page.replace("7 agosto 2026.", "7 agosto 2026 e 30 ottobre 2026."), "https://ancitoscana.it/bando/", reference) is None
+    eu_page = '<main><dl><dt>Status</dt><dd>Closed</dd><dt>Deadline date</dt><dd>16 September 2026, 17:00 (CEST)</dd></dl></main>'
+    assert assessed_source(eu_page,"https://cinea.ec.europa.eu/call",reference)["deadline"] == "2026-09-16"
+    assert assessed_source(eu_page.replace("Closed","Open"),"https://cinea.ec.europa.eu/call",reference) is None
+    assert assessed_source(eu_page.replace("2026","2027"),"https://cinea.ec.europa.eu/call",reference) is None
+    primary = {"coverage_id":"known-call","url":"https://www.regione.toscana.it/it/-/bando-comunale"}
+    article = '<div class="elementor-widget-theme-post-content"><a href="https://www.regione.toscana.it/-/bando-comunale">Avviso</a></div>'
+    assert linked_public_reference(article,"https://ancitoscana.it/news/",[primary])["representedCoverageId"] == "known-call"
+    unrelated = '<div class="elementor-widget-theme-post-content">Altro argomento</div><footer><a href="https://www.regione.toscana.it/-/bando-comunale">Avviso</a></footer>'
+    assert linked_public_reference(unrelated,"https://ancitoscana.it/news/",[primary]) is None
+    old_source = {"referenceDate":reference,"opportunities":[],"discoveryQueue":[{"url":"https://ancitoscana.it/bando/","title":"Avviso comunale"}]}
+    source_budget=SimpleNamespace(hosts={"ancitoscana.it"},deadline=time.monotonic()+60)
+    collect_document_links(old_source,loader=lambda u:closed_page,budget=source_budget)
+    assert build_actions(old_source)["discardedCount"] == 1
+    reopened = {"referenceDate":reference,"opportunities":[],"discoveryQueue":[{"url":"https://ancitoscana.it/bando/","title":"Riapertura del bando","deadline_at":"2026-10-30"}]}
+    visits=[]
+    def reopened_loader(url):
+        visits.append(url)
+        return closed_page.replace("7 agosto","30 ottobre")
+    collect_document_links(reopened,previous=old_source,loader=reopened_loader,budget=source_budget)
+    assert visits == ["https://ancitoscana.it/bando/"]
+    assert build_actions(reopened)["discardedCount"] == 0, "Una riapertura non deve restare bloccata dalla cache di scadenza"
     chrome = '<header><h2><a href="/menu">Bandi per i Comuni</a></h2></header><nav><h2><a href="/other">Avviso per i Comuni</a></h2></nav>'
     article = '<main><article><header><h2><a href="/avviso">Avviso per i Comuni</a></h2></header><p>Presentare le domande entro il 22 ottobre 2026.</p><a href="/avviso.pdf">Avviso pubblico</a></article></main>'
     footer = '<div class="elementor-location-footer"><a href="/statuto_anci_toscana_2021.pdf">Statuto</a><h2><a href="/fake">Bando per i Comuni</a></h2></div>'

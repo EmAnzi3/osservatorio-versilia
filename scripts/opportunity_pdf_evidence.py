@@ -26,6 +26,24 @@ KEYS = (
 RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat\w*|decreto|disciplinare|linee guida)\b", re.I)
 
 
+def verified_document_links(item):
+    """The document links displayed in a public card, with no receipt metadata."""
+    rows = [("Avviso PDF",item.get("document_evidence")),
+            ("Elenco dei Comuni qualificati",item.get("qualification_evidence")),
+            ("Criteri di valutazione",item.get("criteria_evidence"))]
+    rows += [("FAQ ufficiali",x) for x in item.get("supplementary_documents") or []]
+    links,seen=[],set()
+    for label,evidence in rows:
+        url=(evidence or {}).get("resolvedUrl", "")
+        try: parsed=urlsplit(url)
+        except ValueError: continue
+        if (parsed.scheme!="https" or not parsed.hostname or parsed.username or url in seen
+                or (evidence or {}).get("transport")!="direct_https"):
+            continue
+        seen.add(url);links.append((label,url))
+    return links if len(links)>1 else []
+
+
 class Links(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
