@@ -13,7 +13,7 @@ Branch `fix/a6-atlas-territorial-total`, base main sopra. Materializzatore di pr
 
 `total` implicito ancora rifiutato per scelta esplicita (`atlas_explicit_view_required`), senza più motivazione di carrier non riconciliato. Nessuna nuova operazione autorizzata. Fingerprint del carrier aggiornato; regressioni avversarie su assi, identità, null/zeri, totali incompleti, categorie duplicate e tutte le 84 celle territoriali via query. Fonte delle aspettative: tabella congelata, già trascritta nella #423; nessun replay dei CSV originali o verifica live dichiarato.
 
-Test mirati e suite 3.727/3.727 PASS sul catalogo effettivo corretto. Quick e Full canonici locali, verifiche browser/preview e CI Quick→Full/A3 devono essere completati sul medesimo candidato prima della prontezza per il merge. Nessun gate della #423 viene riutilizzato come prova del candidato.
+Test mirati e suite 3.727/3.727 PASS sul catalogo effettivo corretto. Il primo Full ha fallito il controllo RCS immediato dopo navigazione; il test originale passa integralmente su baseline e candidato in replay sequenziale, e otto navigazioni mirate confermano il dettaglio. Le quattro navigazioni RCS ora usano il helper condiviso di prontezza client/vista/font, preservando tutte le asserzioni geometriche e di contenuto. Nuovi Quick/Full locali sequenziali e CI Quick→Full/A3 devono verificare il candidato con questa correzione prima del merge. Nessun gate della #423 viene riutilizzato come prova del candidato.
 
 ## Prossima azione
 
