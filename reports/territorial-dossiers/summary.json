@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "status": "PASS",
+  "catalogSha256": "1416209ca86f27b4eaeede51e59a90edd0b24167f75c60e5157df4583678d710",
+  "engineSha256": "5b4689d302a28fa58f17246bce3ecd045eb8876b30c51ee9772685be05f02815",
+  "programSha256": "08d1f0d842c67e421ebdc317d3b9b4bc634dd34d6aa1dcc002a1e2302825d03b",
+  "limits": [
+    "No new acquisitions, adapters, political rankings or causal evaluation.",
+    "Periods and units belong to each selected observation; no automatic cross-period joining.",
+    "External methodological references are not data acquired by the observatory.",
+    "A6 closure attested after PR428 merge and post-merge verification; dossier program remains a separate proposal."
+  ],
+  "baselineCommit": "d09d8e2f695a859e555cae28db69655f7b6d7130",
+  "dossiers": 17,
+  "executedRequests": 295,
+  "computed": 201,
+  "expectedRefusals": 94,
+  "unexpectedFailures": 0,
+  "baselineQuestions": 20,
+  "evidenceSha256": "d2dc079885a1fc4143b59860afaa93d92543abce67764834c1036089765e436a",
+  "precisionReconciliation": "Native ARS standardized total parts or exact chronicTotal series endpoint; separately reconcile two-decimal public card. No adapter or tolerance change.",
+  "reproduce": "python scripts/build_territorial_dossier_evidence.py --catalog dist/data/site-data.json --output-dir /tmp/territorial-dossiers",
+  "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
+  "questionPlans": 51,
+  "subdossiers": 45,
+  "readableDemonstrations": 2,
+  "editorialInterpretationStatus": "Reviewed as bounded descriptive interpretation; not automatically certified by numeric PASS",
+  "originalRequestsPreserved": 294,
+  "addedPurposefulRequest": "business_frame_services_history: independent frozen Frame expectation for the labour demonstration",
+  "editorialGeneratorSha256": "7cf4b58d8fc0eab1d3d1b5edc59824ab5019820fced25f24bde1fe8938eee30f",
+  "evidenceBuilderSha256": "97e97033ca1714e83e7364a0ba31fb12592dd06a9ba37fb57e7a984b00619724"
+}
