@@ -5,7 +5,7 @@ import copy
 import json
 from pathlib import Path
 from territorial_dossier_editorial import validate_plans, render_questions, render_modules, render_demos
-from build_territorial_dossier_evidence import build, render
+from build_territorial_dossier_evidence import build, render, summary, evidence_text, render_pilots
 from semantic_query_engine import ROOT
 
 
@@ -64,8 +64,29 @@ def main():
                  ROOT/'docs/dossiers/QUESTIONS.md':render_questions(report),
                  ROOT/'docs/dossiers/MODULES.md':render_modules(report)}
         outputs.update({ROOT/'docs/dossiers'/name:content for name,content in render_demos(report).items()})
+        pilots_path=ROOT/'docs/dossiers/PILOTS.md'
+        outputs[pilots_path]=render_pilots(report,pilots_path.read_text())
         for path,content in outputs.items():
             assert path.read_text()==content,'stale editorial output: '+str(path.relative_to(ROOT))
+        assert json.loads((ROOT/'reports/territorial-dossiers/summary.json').read_text())==summary(report),'stale dossier summary'
+        relocated=copy.deepcopy(report)
+        catalog_paths={e['response']['catalogPath'] for e in report['evidence'].values()}
+        def relocate(value):
+            if isinstance(value,dict):
+                if value.get('path') in catalog_paths and value.get('sha256')==report['catalogSha256']:
+                    value['path']='/different/workspace/catalog.json'
+                if value.get('catalogPath') in catalog_paths:value['catalogPath']='/different/workspace/catalog.json'
+                for v in value.values():relocate(v)
+            elif isinstance(value,list):
+                for v in value:relocate(v)
+        relocate(relocated)
+        assert evidence_text(relocated)==evidence_text(report),'catalog location leaked into evidence hash'
+        altered=copy.deepcopy(report)
+        altered['evidence']['child_weighted']['response']['result']['denominator']+=1
+        assert evidence_text(altered)!=evidence_text(report),'altered denominator omitted from evidence hash'
+        assert render_pilots(altered,pilots_path.read_text())!=pilots_path.read_text(),'stale pilot aggregate undetected'
+        stale=pilots_path.read_text().replace('| 046018 | 2024 | 73.4 |','| 046018 | 2024 | 0.0 |',1)
+        assert stale!=pilots_path.read_text() and render_pilots(report,stale)!=stale,'stale pilot observation undetected'
         # Reject a silently stale comparison or an incorrect aggregation in readable prose.
         bad=copy.deepcopy(report);bad['evidence']['census_employment_primary']['response']['observations'][0]['value']=0
         rejects(lambda:render_demos(bad),'labour_narrative_direction_changed')

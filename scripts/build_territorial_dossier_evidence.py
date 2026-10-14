@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from semantic_query_engine import QueryEngine, ROOT, operations, benchmark_scopes, dimensions
 from semantic_question_suite import check_expected
@@ -98,6 +99,93 @@ def build(catalog):
         limits=['No new acquisitions, adapters, political rankings or causal evaluation.','Periods and units belong to each selected observation; no automatic cross-period joining.',
                 'External methodological references are not data acquired by the observatory.','A6 closure attested after PR428 merge and post-merge verification; dossier program remains a separate proposal.'])
 
+def portable_evidence(value, catalog_paths=None):
+    """Canonicalize only the location of hash-addressed catalog evidence."""
+    if catalog_paths is None:
+        catalog_paths = {}
+        def collect(item):
+            if isinstance(item, dict):
+                if item.get('catalogPath') and item.get('catalogSha256'):
+                    catalog_paths[item['catalogPath']] = item['catalogSha256']
+                for child in item.values():
+                    collect(child)
+            elif isinstance(item, list):
+                for child in item:
+                    collect(child)
+        collect(value)
+    if isinstance(value, list):
+        return [portable_evidence(v, catalog_paths) for v in value]
+    if isinstance(value, dict):
+        result = {k: portable_evidence(v, catalog_paths) for k, v in value.items()}
+        if result.get('sha256') and catalog_paths.get(result.get('path')) == result['sha256']:
+            result['path'] = 'sha256:' + result['sha256']
+        if result.get('catalogSha256') and catalog_paths.get(result.get('catalogPath')) == result['catalogSha256']:
+            result['catalogPath'] = 'sha256:' + result['catalogSha256']
+        return result
+    return value
+
+
+def evidence_text(report):
+    return json.dumps(portable_evidence(report), ensure_ascii=False, indent=2,
+                      sort_keys=True, allow_nan=False) + '\n'
+
+
+def summary(report):
+    evidence = report['evidence']
+    return dict(schemaVersion=3, status=report['status'],
+        catalogSha256=report['catalogSha256'], engineSha256=report['engineSha256'],
+        programSha256=report['programSha256'], limits=report['limits'],
+        baselineCommit='d09d8e2f695a859e555cae28db69655f7b6d7130',
+        dossiers=len(report['dossiers']), executedRequests=len(evidence),
+        computed=sum(e['response']['status']=='computed' for e in evidence.values()),
+        expectedRefusals=sum(e['response']['status']!='computed' for e in evidence.values()),
+        unexpectedFailures=len(report['failures']),
+        baselineQuestions=len(report['baselineQuestionsPreserved']['questions']),
+        evidenceSha256=hashlib.sha256(evidence_text(report).encode()).hexdigest(),
+        evidenceHashFormat='UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved',
+        baselineQuestionsSha256=hashlib.sha256((ROOT/json.loads((ROOT/'ci/territorial-dossier-program.json').read_text())['baselineQuestionsPath']).read_bytes()).hexdigest(),
+        questionPlans=sum(len(d['questionEvidence']) for d in report['dossiers']),
+        subdossiers=sum(len(d['modules']) for d in report['dossiers']),
+        readableDemonstrations=len(render_demos(report)),
+        editorialInterpretationStatus='Reviewed as bounded descriptive interpretation; not automatically certified by numeric PASS',
+        originalRequestsPreserved=294,
+        addedPurposefulRequest='business_frame_services_history: independent frozen Frame expectation for the labour demonstration',
+        editorialGeneratorSha256=hashlib.sha256((ROOT/'scripts/territorial_dossier_editorial.py').read_bytes()).hexdigest(),
+        evidenceBuilderSha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        reproduce='python scripts/build_territorial_dossier_evidence.py --catalog dist/data/site-data.json --output-dir /tmp/territorial-dossiers')
+
+
+def render_pilots(report, template):
+    """Preserve editorial specifications; derive every example from verified cases."""
+    pattern = r'^### Esempio `([^`]+)`\n.*?(?=^### Esempio |^\*\*Valore rispetto a una scheda:|^## |\Z)'
+    def example(match):
+        cid = match.group(1)
+        case = report['evidence'].get(cid)
+        if not case or case['verification'] != 'PASS':
+            raise ValueError('unverified_pilot_case:' + cid)
+        response = case['response']
+        if response['status'] != 'computed':
+            raise ValueError('pilot_case_not_computed:' + cid)
+        lines = [f'### Esempio `{cid}`', '', '```json',
+                 json.dumps(case['query'], ensure_ascii=False, indent=2), '```', '',
+                 '| Territorio | Periodo | Valore | Unità | Universo |',
+                 '|---|---|---:|---|---|']
+        for o in response['observations']:
+            lines.append('| ' + ' | '.join(str(o.get(k)).replace('|', r'\|')
+                         for k in ('geography', 'period', 'value', 'unit', 'population')) + ' |')
+        if response['query']['operation'] in ('weighted_ratio', 'benchmark_gap'):
+            lines += ['', '**Risultato dell’operazione:**', '', '```json',
+                      json.dumps(response['result'], ensure_ascii=False, indent=2), '```']
+        sources = '; '.join(sorted({o['source'] for o in response['observations']}))
+        methods = '; '.join(sorted({o['method'] for o in response['observations']}))
+        lines += ['', '**Fonte e metodo:** ' + sources + '; ' + methods + '.', '',
+                  '**Limiti della risposta:** Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.', '', '']
+        return '\n'.join(lines)
+    if not re.search(pattern, template, flags=re.MULTILINE | re.DOTALL):
+        raise ValueError('pilot_examples_missing')
+    return re.sub(pattern, example, template, flags=re.MULTILINE | re.DOTALL)
+
+
 def render(report):
     def cell(value):
         return str(value).replace('|',r'\|').replace('\n',' ')
@@ -127,7 +215,9 @@ def render(report):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--catalog',type=Path,required=True);p.add_argument('--output-dir',type=Path,required=True);a=p.parse_args()
     report=build(a.catalog);a.output_dir.mkdir(parents=True,exist_ok=True)
-    (a.output_dir/'evidence.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    (a.output_dir/'evidence.json').write_text(evidence_text(report), encoding='utf-8')
+    (a.output_dir/'summary.json').write_text(json.dumps(summary(report),ensure_ascii=False,indent=2)+'\n', encoding='utf-8')
+    (a.output_dir/'PILOTS.md').write_text(render_pilots(report,(ROOT/'docs/dossiers/PILOTS.md').read_text()), encoding='utf-8')
     (a.output_dir/'program-and-feasibility.md').write_text(render(report))
     (a.output_dir/'QUESTIONS.md').write_text(render_questions(report))
     (a.output_dir/'MODULES.md').write_text(render_modules(report))

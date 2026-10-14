@@ -47,6 +47,8 @@ Il JSON conserva richieste complete, aspettative, risposta, provenienza, operazi
 
 Gli hash e il riepilogo dell’esecuzione candidata sono in `reports/territorial-dossiers/summary.json`. Sono verificati gli input congelati; la consultazione dei riferimenti metodologici online non certifica la disponibilità corrente di tutte le fonti statistiche. I dati ulteriori indicati sono fabbisogni informativi, non dati acquisiti.
 
+La stessa rigenerazione produce `summary.json` e autentica i byte di `evidence.json`: JSON UTF-8 con chiavi ordinate, indentazione di due spazi e LF finale. Le collocazioni del catalogo dichiarate dalle risposte vengono indirizzate tramite il loro SHA256, anche quando il catalogo ospita una nota metodologica; la corrispondenza percorso/hash è obbligatoria. Hash, valori, puntatori e percorsi degli snapshot sorgente distinti restano presenti. Quick verifica anche il riepilogo derivato e tutti gli esempi numerici di `PILOTS.md`, preservandone la prosa editoriale. Un percorso locale diverso non cambia l’hash; un denominatore o un valore alterato lo cambia e rende obsoleti gli output.
+
 ## Criteri di consegna di un dossier
 
 Una versione pubblicabile deve avere domanda esatta, richieste riproducibili, copertura territoriale e temporale, valori con fonti e universi, distinzione osservazione/analisi/ipotesi/opzione, lacune e monitoraggio. La redazione e la verifica dei dati precedono una futura PR UI con preview e browser. Questi documenti non modificano dati, adapter, 35 letture, due riepiloghi, 20 domande originarie, golden o interfacce.

@@ -11,6 +11,7 @@
 - #429, `docs/a7-functional-handoff`: documento tecnico e funzionale A7. Non introduce UI, modelli o servizi esterni. Gate e stato effettivo nella PR; non presumere Full verde da Quick verde.
 - #430, `docs/territorial-dossiers-program`: programma editoriale separato, 17 ambiti con piani per domanda, sotto-dossier e lacune. Le 20 domande A6 restano immutate. Sei piloti sono specifiche; due dimostrazioni leggibili su Massarosa (lavoro e infanzia/scuola) collegano risultati, interpretazioni e fabbisogni. Gli altri ambiti non sono dichiarati dossier completi.
 - Nuovo contratto editoriale nel Quick: piani e input ostili prima della build; replay numerico e rigenerazione dei documenti dopo la build. Nessuna modifica a dati, adapter, interfacce, Radar o acquisizioni.
+- Revisione P2 #430: riepilogo/hash derivati e verificati, percorso del catalogo indirizzato per hash; esempi numerici di PILOTS inclusi nella riproduzione. Test mirati: 295 richieste e sei documenti PASS; Quick/Full e CI da riconfermare sul candidato aggiornato, senza riutilizzare i verdi della head precedente.
 
 ## Prossima azione
 
