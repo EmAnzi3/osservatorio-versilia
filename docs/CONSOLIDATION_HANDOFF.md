@@ -14,7 +14,7 @@
 
 ## Proposta in revisione
 
-- #429, `docs/a7-functional-handoff`: `docs/A7_FUNCTIONAL_TECHNICAL_HANDOFF.md` riallineato alla main integrata e al repertorio #430. Aggiorna soltanto documentazione; non introduce UI, modelli, servizi o infrastrutture. A6 non viene riaperta; A7 implementazione non avviata. Gate e stato effettivo della proposta nella PR.
+- #429, `docs/a7-functional-handoff`: `docs/A7_FUNCTIONAL_TECHNICAL_HANDOFF.md` riallineato alla main integrata e al repertorio #430. Distingue campi comuni della risposta A6 e campi condizionali post-valutazione: preservare anche i rifiuti senza coverage/formula/policy. Aggiorna soltanto documentazione; non introduce UI, modelli, servizi o infrastrutture. A6 non viene riaperta; A7 implementazione non avviata. Gate e stato effettivo della proposta nella PR.
 
 ## Prossima azione
 
