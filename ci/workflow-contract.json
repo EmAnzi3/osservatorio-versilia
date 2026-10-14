@@ -243,7 +243,17 @@
       "updates": "monitoring state only; catalog and values remain on main"
     },
     "publicRoutesContext": "ov-public-routes",
-    "radarRefreshContext": "ov-radar-refresh"
+    "radarRefreshContext": "ov-radar-refresh",
+    "effectiveCatalogChecks": [
+      {
+        "label": "A7 static pilot integrity, answers and browser parity",
+        "script": "scripts/test_a7_static_pilot.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      }
+    ]
   },
   "workflows": [
     {

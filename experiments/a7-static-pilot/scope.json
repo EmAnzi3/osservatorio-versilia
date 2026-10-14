@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "dossierRefs": ["lavoro", "infanzia"],
+  "refusalCaseRefs": ["census_primary_history_refused", "child_year_conversion", "invalsi_invalsiImplicitDispersion_partial_refused"]
+}

@@ -215,3 +215,5 @@ scripts/test_semantic_economy_atlas_adapters.py
 scripts/build_territorial_dossier_evidence.py
 scripts/territorial_dossier_editorial.py
 scripts/test_territorial_dossier_program.py
+scripts/build_a7_static_pilot.py
+scripts/test_a7_static_pilot.py

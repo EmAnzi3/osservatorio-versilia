@@ -1,27 +1,26 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Stato corrente
+## Baseline integrata
 
-- Main verificata: `201be08ef46320c181ce9e4d97eb1f84ee524ea7`, albero `c08c0a77271c877b4e34723cb967d6beaf68d478`, merge del proprietario della #430 il 14 ottobre 2026. Albero identico al candidato verificato; build/deploy `38543139366` e controllo live `38545155775` SUCCESS sul commit integrato, comprese le route Stato dati, PNRR e Percorsi.
-- A6 DONE efficace dopo #428 e verifica post-merge, attestata nella #428/issue #330 chiusa. Baseline certificata: 225/225 adapter, 3.727 PASS (2.033 calcoli, 1.694 rifiuti), 35 letture e due riepiloghi; Atlante 2025 20.325 unità locali del Registro Imprese, distinto da ASIA e dalle righe ATECO dirette. Catalogo sorgente 166/181 distinto dall'effettivo. A7 implementazione NOT_STARTED.
-- Limiti, rifiuti, 552 opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Nessuna acquisizione o manutenzione Radar in questo lotto.
+- Main verificata: `4c4a03f7ad47a4261cf4c65de674dfbde0e5fba3`, tree `f450b7852e573b68014623dbb2b818ad0f70cc2b`, merge del proprietario della #429 il 14 ottobre 2026. Deploy `38566370077` e controllo live `38568149233` PASS sul commit integrato; attestazione nella #429.
+- A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese, distinto da ASIA e dalle righe dirette ATECO. Catalogo sorgente 166/181 distinto dall'effettivo. Nessuna riapertura o modifica A6.
+- #430 integrata: 17 ambiti, 45 sotto-dossier, 51 piani collegati alle evidenze, 20 domande A6 preservate, sei specifiche pilota e due dimostrazioni Massarosa. 295 richieste (201 calcoli/94 rifiuti), sei documenti riprodotti. Non sono 51 dossier completi.
+- Limiti, rifiuti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Nessuna manutenzione Radar in questo lotto.
 
-## Programma dossier integrato
+## Primo esperimento A7 — candidato in revisione
 
-- #430: 17 ambiti, 45 sotto-dossier e 51 piani di domanda collegati alle evidenze. Le 20 domande A6 restano immutate. Sei piloti sono specifiche; due dimostrazioni leggibili Massarosa lavoro e infanzia/scuola collegano risultati, interpretazioni e fabbisogni. Gli altri ambiti non sono dichiarati dossier completi.
-- Manifest editoriale `ci/territorial-dossier-program.json`, repertorio e moduli in `docs/dossiers/`, evidenze derivate in `reports/territorial-dossiers/`. Nessun catalogo canonico parallelo. Replay di 295 richieste (201 calcoli, 94 rifiuti attesi), sei documenti e riepilogo/hash riprodotti; gate nel Quick. Correzione del test Agricoltura conservata: attesa della percentuale visibile dopo gli enhancer, senza modificare runtime o golden.
-- Gate propri #430 Quick→Full locali PASS sul medesimo albero; CI Quick→Full `38523942443` e A3 `38523942469` SUCCESS. Evidenze e limiti dell'ambiente nella PR. I gate #430 non attestano quelli della #429.
+Il proprietario ha autorizzato la prova statica sui due dossier Massarosa. Branch `experiment/a7-static-pilot`; specifica `docs/A7_STATIC_PILOT.md`. Il builder usa piani/casi canonici e motore Python originale; il lettore ES module consulta i risultati offline. Scope con soli riferimenti, senza un catalogo parallelo.
 
-## Proposta in revisione
+Sei domande curate, 13 calcoli e tre rifiuti pertinenti. Richieste esatte o selezioni per ID; chiarimento per altro testo, consenso esplicito per copertura parziale anche nei rifiuti A6 che conservano osservazioni numeriche. Il consenso non promuove il rifiuto a calcolo. Ogni fatto numerico ha un puntatore alla risposta A6 e citazioni; classificazione parziale, periodi, universi, null/zero, esclusioni e campi condizionali dei rifiuti restano distinti. Bundle e release identificati da hash; output derivati e misure sono artefatti di verifica, non dati canonici.
 
-- #429, `docs/a7-functional-handoff`: `docs/A7_FUNCTIONAL_TECHNICAL_HANDOFF.md` riallineato alla main integrata e al repertorio #430. Distingue campi comuni della risposta A6 e campi condizionali post-valutazione: preservare anche i rifiuti senza coverage/formula/policy. Aggiorna soltanto documentazione; non introduce UI, modelli, servizi o infrastrutture. A6 non viene riaperta; A7 implementazione non avviata. Gate e stato effettivo della proposta nella PR.
+A7 IN_PROGRESS nel candidato: A7.1–A7.4 provati soltanto su questo perimetro; nessuno step è dichiarato DONE. UI, modelli e servizi esterni non introdotti e architettura definitiva non selezionata. Dati, adapter, interfacce, dossier approvati e golden invariati.
 
-## Prossima azione
+## Gate e prossima azione
 
-Completare Quick→Full locali in sequenza sul candidato aggiornato #429, verificare CI Quick→Full e A3 sullo stesso albero, quindi consegnare l'handoff al proprietario per revisione e approvazione del merge. Nessun merge o deploy dell'assistente; gli esiti della baseline non sostituiscono quelli del nuovo candidato.
+Verifiche mirate su aspettative indipendenti, provenance, frasi ancorate, input alterati, cache, null/zero, rifiuti e parità Node/browser. Gate A7 sul catalogo effettivo nel Quick ordinario, dichiarato nel contratto workflow. Quick→Full locali obbligatori in sequenza sul medesimo albero, poi CI Quick→Full e A3 sullo stesso candidato. Stato, commit e log effettivi nella PR: nessun verde della baseline sostituisce questi gate.
 
-Dopo l'integrazione dell'handoff, sviluppare i dossier per lotti motivati e decidere separatamente il primo esperimento tecnico A7. Hosting statico, calcolo deterministico, fonti, rifiuti e chiarimenti restano vincoli; nessuna architettura esterna è stata selezionata. Non ampliare indefinitamente il programma dei dossier prima di realizzare i piloti.
+Dopo revisione e merge del proprietario: verifica commit/albero integrato, deploy e live. Valutare poi utilità e presentazione delle risposte prima di autorizzare un primo lotto UI; eventuali servizi/modelli richiedono una decisione separata. Non ampliare indefinitamente il programma dossier prima di realizzare i piloti.
 
 ## Limiti
 
-Dati congelati verificati nei perimetri dichiarati; disponibilità online delle fonti distinta dalla riconciliazione degli snapshot. Numeri e provenance verificabili non certificano automaticamente pertinenza editoriale o adeguatezza di una decisione. Correlazioni, spesa e stati amministrativi non sono prove causali o risultati di politica; nessuna inferenza individuale.
+Misure Node/Chromium locali non sono prestazioni mobile o di rete. Matching esatto del repertorio non equivale a comprensione generale del linguaggio. Integrità rispetto a una release fidata non autentica manifest forniti da soggetti non fidati. Dati congelati e disponibilità online restano distinti; associazioni e variazioni non provano causalità o risultati di politica. Nessuna inferenza individuale o raccomandazione automatica.

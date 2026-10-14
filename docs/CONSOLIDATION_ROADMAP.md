@@ -232,9 +232,11 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS` — prima prova tecnica statica, in revisione su branch dedicato.
 
 Scopo: aggiungere linguaggio naturale solo sopra un layer semantico già governato.
+
+Prima prova circoscritta: `docs/A7_STATIC_PILOT.md`, dossier Massarosa lavoro/infanzia-scuola, domande curate e risposte precalcolate dal motore A6 originale. Interpretazione libera, UI e architettura definitiva rimangono da decidere; nessun punto A7 è dichiarato completato da questa prova.
 
 - [ ] **A7.1** Tradurre la domanda utente in operazioni consentite dal motore semantico.
 - [ ] **A7.2** Vietare risposte che inventino metriche, periodi o relazioni assenti.
