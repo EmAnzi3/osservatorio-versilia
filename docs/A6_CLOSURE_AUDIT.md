@@ -1,6 +1,12 @@
-# A6 — attestazione conclusiva proposta e condizioni di efficacia
+# A6 — attestazione conclusiva e condizioni di efficacia
 
-## Stato e baseline
+## Efficacia verificata — 13 ottobre 2026
+
+**A6 DONE effettivo.** #428 mergiata dal proprietario, commit `d09d8e2f695a859e555cae28db69655f7b6d7130`, albero `c96760860332737c0532c1b532ed240e4857ed07` identico al candidato approvato. Build/deploy `38401356844` e controllo live `38403216866` SUCCESS sul commit integrato. Catalogo HTTP 225 indicatori e Atlante 20.325; replay post-merge 3.727/3.727 PASS, 225/225 adapter, 35+2 letture e zero residui inattesi. Report SHA `b3eeb39cdba5dad18bc3c111c3e19174173afb15dbd7bee89ab382a82673e3ea`. Attestazione dettagliata nella #428 e issue #330 chiusa. A7 NOT_STARTED come implementazione.
+
+Le sezioni seguenti conservano la proposta e le condizioni verificate, senza riscrivere la cronologia delle evidenze.
+
+## Stato e baseline della proposta
 
 **A6 è IN_PROGRESS fino all'approvazione, al merge e alla verifica della PR amministrativa conclusiva.** Questo documento propone il passaggio a DONE sulle evidenze sotto elencate; non attesta come avvenuti eventi futuri. A7 è NOT_STARTED. Le verifiche tecniche degli step A6.1–A6.6 sono completate e integrate; l'efficacia della chiusura amministrativa resta condizionata.
 

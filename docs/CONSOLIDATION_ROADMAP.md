@@ -203,7 +203,7 @@ Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e 
 
 ## A6 — Semantic Data Layer e interrogazione deterministica
 
-**Stato proposto dalla PR conclusiva:** `DONE`. **Stato effettivo:** `IN_PROGRESS` fino ad approvazione, merge e verifica della PR conclusiva. La proposta non dichiara A6 già conclusa. La verifica deve confermare il commit integrato, CI Quick→Full/A3, deploy e controllo live; esiti registrati nella PR e nell’issue #330.
+**Stato effettivo:** `DONE`. #428 approvata e mergiata dal proprietario il 13 ottobre 2026, commit `d09d8e2f695a859e555cae28db69655f7b6d7130`, albero identico al candidato conclusivo verificato. Gate propri #428 Quick→Full/A3 PASS; build/deploy del commit integrato e controllo live SUCCESS. Replay post-merge sugli input HTTP pubblicati PASS, zero residui inattesi. Attestazione nella #428 e issue #330 chiusa; nessuna attestazione di disponibilità online delle fonti originarie o di risposta universale.
 
 Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre conclusioni causali non supportate.
 
@@ -217,7 +217,7 @@ Scopo: permettere di interrogare e mettere in relazione i dati senza introdurre 
 
 **Definition of done:** domande analitiche multi-indicatore possono essere risolte con operazioni riproducibili, citando esattamente dati e metodo.
 
-**Evidenza corrente — 13 ottobre 2026:** #423 completa gli adapter, #425 corregge il riepilogo Atlante a 20.325 totali territoriali nativi del 2025, #427 integra la revisione metodologica v56. Main verificata `cb73eadd9be1c46cc1196652d6068d41ae5d4363`, 225/225 effettivi, zero carrier senza adapter; catalogo sorgente separato 166/181. Suite 3.727 PASS (2.033 consultazioni/calcoli, 1.694 rifiuti), matrice di 3.359 viste e operazioni per dimensione, 35 letture e due riepiloghi verificati. Repertorio: 7 domande supportate, 9 parziali, 4 non determinabili. Limiti, dati mancanti e rifiuti non sono eliminati per chiudere A6. Metodo e criteri: `docs/A6_CLOSURE_AUDIT.md`, `docs/A6_METHODOLOGICAL_REVIEW.md`; evidenze riproducibili in `reports/a6-methodological-review/`. A7 rimane NOT_STARTED.
+**Evidenza corrente — 13 ottobre 2026:** 225/225 adapter effettivi, sorgente distinto 166/181; 3.727/3.727 casi PASS (2.033 calcoli, 1.694 rifiuti attesi), 3.359 viste dichiarate, 35 letture e due riepiloghi. Atlante HTTP 2025 pari a 20.325. Verifica post-merge dalla main integrata `d09d8e2f`: report SHA `b3eeb39cdba5dad18bc3c111c3e19174173afb15dbd7bee89ab382a82673e3ea`; catalogo HTTP SHA `1416209ca86f27b4eaeede51e59a90edd0b24167f75c60e5157df4583678d710`. Repertorio A6: 7 domande supportate, 9 parziali, 4 non determinabili. Limiti, dati mancanti e rifiuti conservati. Metodo e perimetro: `docs/A6_CLOSURE_AUDIT.md`, `docs/A6_METHODOLOGICAL_REVIEW.md`. Handoff funzionale/tecnico A7 in `docs/A7_FUNCTIONAL_TECHNICAL_HANDOFF.md`; A7 NOT_STARTED come implementazione. Programma editoriale dei dossier integrato con #430 il 14 ottobre 2026, main `201be08ef46320c181ce9e4d97eb1f84ee524ea7`, deploy/live SUCCESS. 17 ambiti, 45 sotto-dossier e 51 piani; sei specifiche pilota e due dimostrazioni Massarosa, senza nuove acquisizioni o catalogo parallelo. Non sono dichiarati 51 dossier o risposte complete.
 
 Le note di avanzamento v9–v54 riportate nella roadmap sono **storiche**: i loro conteggi/residui descrivono i candidati dell’epoca, non la situazione corrente.
 
