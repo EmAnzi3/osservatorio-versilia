@@ -217,3 +217,6 @@ scripts/territorial_dossier_editorial.py
 scripts/test_territorial_dossier_program.py
 scripts/build_a7_static_pilot.py
 scripts/test_a7_static_pilot.py
+
+scripts/build_a7_dossier_preview.py
+scripts/test_a7_dossier_preview.py

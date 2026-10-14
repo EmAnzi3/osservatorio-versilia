@@ -104,7 +104,9 @@ def verify(catalog, output):
                 browser.close()
     finally:
         server.shutdown(); server.server_close(); thread.join()
-    report = dict(status='PASS', candidateTree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=ROOT,text=True).strip(),
+    from test_a7_dossier_preview import verify_preview
+    preview_report = verify_preview(bundle, release, output/'preview')
+    report = dict(preview=preview_report, status='PASS', candidateTree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=ROOT,text=True).strip(),
                   release=release, build=measurement, node=node, browser=browser_measurement,
                   gzipBytes=len(gzip.compress(encode(bundle).encode(), mtime=0)),
                   evidence='Canonical independent expectations + frozen sources; raw response replay; fact anchors; hostile reader inputs; exact browser/Node parity')
