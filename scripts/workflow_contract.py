@@ -60,6 +60,10 @@ def validate_workflow_contract() -> dict[str, Any]:
         )
 
     canonical = contract["canonical"]
+    effective_checks = canonical.get("effectiveCatalogChecks", [])
+    assert any(check.get("script") == "scripts/test_a7_static_pilot.py" and check.get("args") == ["--catalog", "dist/data/site-data.json"] for check in effective_checks), (
+        "Gate A7 sul catalogo effettivo assente dal Quick canonico"
+    )
     required_checks = canonical["requiredPullRequestChecks"]
     assert required_checks == ["quick", "full"], f"Required checks inattesi: {required_checks}"
 
