@@ -1,5 +1,7 @@
 # A6 — audit del motore e criteri verificabili
 
+**Stato corrente — 13 ottobre 2026:** revisione metodologica #427 integrata, motore v56, 225/225 indicatori effettivi, 35 letture e due riepiloghi verificati. Chiusura amministrativa subordinata alla PR conclusiva approvata, mergiata e verificata; A7 NOT_STARTED. [Attestazione e limiti](A6_CLOSURE_AUDIT.md), [metodo riproducibile](A6_METHODOLOGICAL_REVIEW.md). Le sezioni di sviluppo/versione seguenti documentano i lotti storici: i vecchi conteggi e residui non descrivono la copertura corrente.
+
 Questo lotto governa quattro risultati: copertura completa dell’inventario pubblico, mappa tipizzata dei collegamenti, domande con aspettative indipendenti e baseline locale delle prestazioni. Non chiude automaticamente A6.4–A6.6 e non avvia A7. Nessuna UI o acquisizione nuova.
 
 ## Copertura

@@ -1,0 +1,2533 @@
+{
+  "schemaVersion": 2,
+  "scope": "Programma editoriale separato da A6 chiusa e dall’implementazione A7. Le query verificano componenti e confini di risposta, non certificano tutte le domande decisionali.",
+  "baselineQuestionsPath": "ci/a6-territorial-acceptance-questions.json",
+  "dossiers": [
+    {
+      "id": "demografia",
+      "title": "Famiglie, natalità e ricambio",
+      "centralQuestion": "Quali dinamiche demografiche cambiano la domanda di servizi?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali componenti del ricambio demografico devono entrare nella programmazione dei servizi? La struttura delle famiglie segnala esigenze diverse di sostegno e prossimità?",
+      "metricRefs": [
+        "population",
+        "naturalDemographicDynamics",
+        "internalResidentialMobility",
+        "foreignResidentialMobility",
+        "singleHouseholds",
+        "householdSize"
+      ],
+      "missingData": [
+        "Proiezioni per frazione e coorte",
+        "Composizione e bisogni dei nuclei, residenti effettivi"
+      ],
+      "competences": "Comune: anagrafe e pianificazione dei servizi; programmazione sovracomunale da coordinare.",
+      "optionsToInvestigate": "Scenari di dimensionamento dei servizi e consultazione delle frazioni, senza proiezioni inventate.",
+      "monitoring": "Coorti, saldi e composizione familiare; registrare definizioni e confini a ogni aggiornamento.",
+      "knowledgeValue": "Separa stock, flussi e domanda futura; non trasforma il calo dei residenti in una previsione.",
+      "relatedDossiers": [
+        "infanzia",
+        "anziani",
+        "abitazione"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Affiancare stock POSAS, saldo naturale, migrazioni e famiglie nei periodi propri. Separare contributi osservati da scenari di domanda futura: una somma di flussi richiede stesso periodo e definizioni; proiezioni richiedono assunzioni ulteriori.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Separa stock, flussi e domanda futura; non trasforma il calo dei residenti in una previsione. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Il saldo naturale e la mobilità raccontano lo stesso fenomeno?",
+          "classification": "supported",
+          "reason": "No: saldo naturale e mobilità sono flussi differenti, nei periodi 2025 e 2024 delle viste eseguite; non descrivono un’identica variazione né permettono una previsione."
+        },
+        {
+          "question": "Quali famiglie restano invisibili nella media comunale?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Composizione e bisogni dei nuclei, residenti effettivi. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "demografia-1",
+          "question": "Quali componenti del ricambio demografico devono entrare nella programmazione dei servizi?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "demography_natural",
+            "demography_internal",
+            "demography_foreign_events"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Separare nascite e decessi dalle iscrizioni e cancellazioni interne ed estere nel periodo osservato; non attribuire i cambiamenti a una sola causa.",
+          "missingData": [
+            "Serie armonizzate per età e frazione",
+            "Proiezioni con scenari e assunzioni"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "demografia-2",
+          "question": "La struttura delle famiglie segnala esigenze diverse di sostegno e prossimità?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "census_single",
+            "census_size"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere famiglie unipersonali e dimensione media nei rispettivi universi; vivere soli non equivale a isolamento o bisogno assistenziale.",
+          "missingData": [
+            "Età e condizioni delle persone sole",
+            "Reti di cura e domanda espressa"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "demografia-centrale",
+        "requiredCaseRefs": [
+          "demography_natural",
+          "demography_internal",
+          "demography_foreign_events",
+          "census_single",
+          "census_size"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Affiancare stock POSAS, saldo naturale, migrazioni e famiglie nei periodi propri. Separare contributi osservati da scenari di domanda futura: una somma di flussi richiede stesso periodo e definizioni; proiezioni richiedono assunzioni ulteriori.",
+        "missingData": [
+          "Proiezioni per frazione e coorte",
+          "Composizione e bisogni dei nuclei, residenti effettivi",
+          "Serie armonizzate per età e frazione",
+          "Proiezioni con scenari e assunzioni",
+          "Età e condizioni delle persone sole",
+          "Reti di cura e domanda espressa"
+        ]
+      },
+      "modules": [
+        {
+          "id": "demografia/approfondimento-1",
+          "title": "Quali componenti del ricambio demografico devono entrare nella programmazione dei servizi?",
+          "question": "Quali componenti del ricambio demografico devono entrare nella programmazione dei servizi?",
+          "availableCaseRefs": [
+            "demography_natural",
+            "demography_internal",
+            "demography_foreign_events"
+          ],
+          "missingData": [
+            "Serie armonizzate per età e frazione",
+            "Proiezioni con scenari e assunzioni"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "demografia/approfondimento-2",
+          "title": "La struttura delle famiglie segnala esigenze diverse di sostegno e prossimità?",
+          "question": "La struttura delle famiglie segnala esigenze diverse di sostegno e prossimità?",
+          "availableCaseRefs": [
+            "census_single",
+            "census_size"
+          ],
+          "missingData": [
+            "Età e condizioni delle persone sole",
+            "Reti di cura e domanda espressa"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "fragilita-sociale"
+      ]
+    },
+    {
+      "id": "lavoro",
+      "title": "Lavoro e trasformazioni produttive",
+      "centralQuestion": "La crescita economica localizzata si accompagna a opportunità per i residenti?",
+      "classification": "partially_supported",
+      "decisionProblem": "A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio? Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa?",
+      "metricRefs": [
+        "employmentRate",
+        "femaleEmploymentRate",
+        "localEmployees",
+        "localUnitsChange",
+        "businessValueAdded",
+        "industryWorkerShare",
+        "industryValueAddedShare",
+        "averageGrossRemunerationPerEmployee",
+        "incomeVsInflation",
+        "economyActivityAtlas"
+      ],
+      "missingData": [
+        "Transizioni professionali e qualità dei contratti",
+        "Pannello settoriale a prezzi costanti e dati recenti"
+      ],
+      "competences": "Comune: pianificazione e servizi locali; Regione: lavoro/formazione; imprese e parti sociali come interlocutori, non decisori comunali sostitutivi.",
+      "optionsToInvestigate": "Approfondire formazione, accessibilità delle aree produttive e sportelli, previa analisi di domanda e competenze.",
+      "monitoring": "Occupazione residente per coorte, addetti localizzati e risultati dei programmi con denominatori separati.",
+      "knowledgeValue": "Evita di scambiare unità locali per imprese o addetti per occupati residenti.",
+      "relatedDossiers": [
+        "mobilita",
+        "redditi",
+        "capacita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Aprire con occupazione dei residenti per fascia/sesso, poi addetti e unità locali ASIA, composizione Frame e Atlante Registro Imprese. Gli storici rimangono interni a ciascuna fonte: le basi non formano una serie unica. Affiancare retribuzioni e redditi con platee esplicite, distinguendo nominale e indicatore reale autorizzato.",
+      "pilotTier": "ready_for_composition",
+      "possibleInterpretation": "Negli esempi selezionati Massarosa ha un tasso di occupazione residente 2024 superiore a Viareggio, mentre la crescita cumulata delle unità locali ASIA 2018–2023 è inferiore. Universi e intervalli differenti rendono visibili più trasformazioni; non identificano un unico giudizio di sviluppo o transizioni individuali.",
+      "methodologicalChecks": [
+        {
+          "question": "La composizione industria/servizi cambia nei periodi realmente confrontabili?",
+          "classification": "partially_supported",
+          "reason": "Le viste settoriali e storiche eseguite descrivono quote e variazioni nei propri periodi; non misurano transizioni di lavoratori o crescita reale."
+        },
+        {
+          "question": "Produzione nominale, addetti e redditi dei dichiaranti descrivono la stessa popolazione?",
+          "classification": "supported",
+          "reason": "Gli universi sono esplicitamente differenti: addetti localizzati, residenti occupati e dichiaranti fiscali; non esiste identità autorizzata fra le tre platee."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "lavoro-1",
+          "question": "A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "census_employment_primary",
+            "business_asia_cumulative",
+            "business_asia_employment"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2023 e addetti localizzati 2023 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.",
+          "missingData": [
+            "Serie omogenee contemporanee di occupazione e attività",
+            "Transizioni dei residenti, contratti e profili richiesti"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "lavoro-2",
+          "question": "Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "business_frame_industry_va",
+            "business_frame_industry_wages",
+            "business_frame_services_history"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare industria 2023 e variazione nominale dei servizi 2015–2023. Non dimostra passaggi di lavoratori fra settori né crescita reale.",
+          "missingData": [
+            "Pannello settoriale comparabile a prezzi costanti",
+            "Transizioni professionali e domanda delle imprese"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "lavoro-centrale",
+        "requiredCaseRefs": [
+          "census_employment_primary",
+          "business_asia_cumulative",
+          "business_asia_employment",
+          "business_frame_industry_va",
+          "business_frame_industry_wages",
+          "business_frame_services_history"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Aprire con occupazione dei residenti per fascia/sesso, poi addetti e unità locali ASIA, composizione Frame e Atlante Registro Imprese. Gli storici rimangono interni a ciascuna fonte: le basi non formano una serie unica. Affiancare retribuzioni e redditi con platee esplicite, distinguendo nominale e indicatore reale autorizzato.",
+        "missingData": [
+          "Transizioni professionali e qualità dei contratti",
+          "Pannello settoriale a prezzi costanti e dati recenti",
+          "Serie omogenee contemporanee di occupazione e attività",
+          "Transizioni dei residenti, contratti e profili richiesti",
+          "Pannello settoriale comparabile a prezzi costanti",
+          "Transizioni professionali e domanda delle imprese"
+        ]
+      },
+      "modules": [
+        {
+          "id": "lavoro/approfondimento-1",
+          "title": "A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio?",
+          "question": "A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio?",
+          "availableCaseRefs": [
+            "census_employment_primary",
+            "business_asia_cumulative",
+            "business_asia_employment"
+          ],
+          "missingData": [
+            "Serie omogenee contemporanee di occupazione e attività",
+            "Transizioni dei residenti, contratti e profili richiesti"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "lavoro/approfondimento-2",
+          "title": "Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa?",
+          "question": "Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa?",
+          "availableCaseRefs": [
+            "business_frame_industry_va",
+            "business_frame_industry_wages",
+            "business_frame_services_history"
+          ],
+          "missingData": [
+            "Pannello settoriale comparabile a prezzi costanti",
+            "Transizioni professionali e domanda delle imprese"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "lavoro-residenti",
+        "attivita-locali",
+        "trasformazione-produttiva",
+        "atlante-registro"
+      ]
+    },
+    {
+      "id": "redditi",
+      "title": "Redditi e vulnerabilità economica",
+      "centralQuestion": "Quali segnali economici giustificano approfondire il bisogno di sostegno?",
+      "classification": "partially_supported",
+      "decisionProblem": "La distribuzione dei redditi dichiarati individua gruppi da approfondire per le politiche di sostegno? Come cambia il potere di acquisto misurabile e quanto pesa il reddito da pensione?",
+      "metricRefs": [
+        "income",
+        "incomeDistribution",
+        "incomeSourceProfile",
+        "pensionIncomeShare",
+        "taxpayersAdultPopulationRate",
+        "incomeVsInflation"
+      ],
+      "missingData": [
+        "ISEE, reddito disponibile familiare e patrimonio",
+        "Costi essenziali e persone non dichiaranti"
+      ],
+      "competences": "Comune: servizi sociali e tributi locali; prestazioni fiscali/previdenziali nazionali non di competenza comunale.",
+      "optionsToInvestigate": "Verificare accesso alle misure e informazione sui diritti, prima di definire soglie o platee.",
+      "monitoring": "Accessi, esclusioni e tempi delle misure; redditi fiscali come contesto, non risultato attribuito.",
+      "knowledgeValue": "Trasforma medie fiscali in domande sulla distribuzione senza stimare povertà da una proxy.",
+      "relatedDossiers": [
+        "welfare",
+        "abitazione",
+        "bilanci"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Trasforma medie fiscali in domande sulla distribuzione senza stimare povertà da una proxy. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Il reddito medio nasconde composizioni diverse dei dichiaranti?",
+          "classification": "partially_supported",
+          "reason": "I risultati selezionati descrivono il contesto; ISEE, reddito disponibile familiare e patrimonio impedisce di rispondere integralmente alla domanda."
+        },
+        {
+          "question": "Quali redditi non sono misurati dall’imponibile MEF?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Costi essenziali e persone non dichiaranti. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "redditi-1",
+          "question": "La distribuzione dei redditi dichiarati individua gruppi da approfondire per le politiche di sostegno?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "mef_incomeDistribution_total",
+            "mef_incomeSourceProfile_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere distribuzione e composizione degli imponibili, non povertà dei nuclei o reddito disponibile.",
+          "missingData": [
+            "Redditi disponibili equivalenti e composizione dei nuclei",
+            "Costi essenziali, patrimonio e accesso ai sostegni"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "redditi-2",
+          "question": "Come cambia il potere di acquisto misurabile e quanto pesa il reddito da pensione?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "real_income_total_series_046018",
+            "mef_pensionIncomeShare_history"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Leggere separatamente il deflazionamento autorizzato e la quota fiscale delle pensioni. Una quota di reddito non conta i pensionati.",
+          "missingData": [
+            "Spese dei nuclei e differenze distributive nel tempo"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "redditi-centrale",
+        "requiredCaseRefs": [
+          "mef_incomeDistribution_total",
+          "mef_incomeSourceProfile_total",
+          "real_income_total_series_046018",
+          "mef_pensionIncomeShare_history"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "ISEE, reddito disponibile familiare e patrimonio",
+          "Costi essenziali e persone non dichiaranti",
+          "Redditi disponibili equivalenti e composizione dei nuclei",
+          "Costi essenziali, patrimonio e accesso ai sostegni",
+          "Spese dei nuclei e differenze distributive nel tempo"
+        ]
+      },
+      "modules": [
+        {
+          "id": "redditi/approfondimento-1",
+          "title": "La distribuzione dei redditi dichiarati individua gruppi da approfondire per le politiche di sostegno?",
+          "question": "La distribuzione dei redditi dichiarati individua gruppi da approfondire per le politiche di sostegno?",
+          "availableCaseRefs": [
+            "mef_incomeDistribution_total",
+            "mef_incomeSourceProfile_total"
+          ],
+          "missingData": [
+            "Redditi disponibili equivalenti e composizione dei nuclei",
+            "Costi essenziali, patrimonio e accesso ai sostegni"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "redditi/approfondimento-2",
+          "title": "Come cambia il potere di acquisto misurabile e quanto pesa il reddito da pensione?",
+          "question": "Come cambia il potere di acquisto misurabile e quanto pesa il reddito da pensione?",
+          "availableCaseRefs": [
+            "real_income_total_series_046018",
+            "mef_pensionIncomeShare_history"
+          ],
+          "missingData": [
+            "Spese dei nuclei e differenze distributive nel tempo"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "accessibilita-casa"
+      ]
+    },
+    {
+      "id": "infanzia",
+      "title": "Infanzia, scuola e giovani",
+      "centralQuestion": "L’offerta educativa risponde ai bisogni delle famiglie e dei giovani?",
+      "classification": "partially_supported",
+      "decisionProblem": "Dove la ricettività educativa potenziale 2024/25 è più limitata, e basta per decidere nuovi posti? Che cosa distingue l’organizzazione scolastica di Massarosa e quali risultati educativi richiedono approfondimento?",
+      "metricRefs": [
+        "earlyChildhoodPotentialCapacityRate",
+        "femaleEmploymentRate",
+        "schoolStudents",
+        "studentsPerClass",
+        "primaryFullTimeShare",
+        "schoolBuildingAccessibility",
+        "schoolBuildingSafetyDocs",
+        "schoolBuildingTransport",
+        "invalsiImplicitDispersion",
+        "youthOtherStatus"
+      ],
+      "missingData": [
+        "Utenti residenti, domanda inevasa, tariffe e orari",
+        "Bacini degli alunni, capienza effettiva e tempi di percorso"
+      ],
+      "competences": "Comune: servizi scolastici ed edilizia non provinciale; Provincia: edilizia secondaria superiore; scuole autonome/Regione per offerta e programmazione.",
+      "optionsToInvestigate": "Approfondire orari, trasporto, accessibilità e uso degli edifici; nessuna conclusione automatica scuole troppe/poche.",
+      "monitoring": "Attese, frequenza, accessibilità, tempi e risultati per coorte; evitare attribuzione causale ai soli indicatori INVALSI.",
+      "knowledgeValue": "Collega quantità, fruibilità e domanda non misurata senza equiparare alunni localizzati a residenti.",
+      "relatedDossiers": [
+        "demografia",
+        "mobilita",
+        "investimenti"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Descrivere ricettività potenziale e denominatore 3–36 mesi, poi classi, tempo pieno, edifici e perimetro scolastico. Affiancare lavoro femminile come contesto con periodo proprio. Richiedere bacini, domanda, frequenza e attese prima di dimensionare posti o sedi.",
+      "pilotTier": "ready_for_composition",
+      "possibleInterpretation": "Nel confronto selezionato 2024/25 Massarosa presenta classi medie meno numerose e una quota primaria a tempo pieno maggiore di Viareggio. Il risultato riguarda organizzazione scolastica localizzata; bacini, accesso e qualità didattica richiedono evidenze ulteriori.",
+      "methodologicalChecks": [
+        {
+          "question": "Posti potenziali, utenti effettivi e liste d’attesa sono distinti?",
+          "classification": "supported",
+          "reason": "Le definizioni distinguono capacità potenziale da utenti e domanda inevasa: solo la prima è calcolata negli esempi. La differenza quantitativa richiede altri dati."
+        },
+        {
+          "question": "Le scuole localizzate nel Comune servono quali bacini?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Bacini degli alunni, capienza effettiva e tempi di percorso. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "infanzia-1",
+          "question": "Dove la ricettività educativa potenziale 2024/25 è più limitata, e basta per decidere nuovi posti?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "child_weighted",
+            "child_zero"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Confrontare posti potenziali e bambini residenti di 3–36 mesi nei sette Comuni; disponibilità locale non misura utenti, domanda insoddisfatta o accessi fuori Comune.",
+          "missingData": [
+            "Liste di attesa e domanda per età e zona",
+            "Orari, tariffe, occupazione effettiva e accessi intercomunali"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "infanzia-2",
+          "question": "Che cosa distingue l’organizzazione scolastica di Massarosa e quali risultati educativi richiedono approfondimento?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "school_students",
+            "school_class_size",
+            "school_full_time",
+            "school_access_defined",
+            "invalsi_invalsiImplicitDispersion_g8_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare alunni, classi e tempo pieno 2024/25 alla dispersione implicita del grado 8 con copertura parziale. Non collegare causalmente bambini della primaria e studenti testati.",
+          "missingData": [
+            "Bacini e capacità per plesso",
+            "Partecipazione alle prove e contesto degli alunni",
+            "Transizioni scuola–formazione–lavoro"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "infanzia-centrale",
+        "requiredCaseRefs": [
+          "child_weighted",
+          "child_zero",
+          "school_students",
+          "school_class_size",
+          "school_full_time",
+          "school_access_defined",
+          "invalsi_invalsiImplicitDispersion_g8_current"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Descrivere ricettività potenziale e denominatore 3–36 mesi, poi classi, tempo pieno, edifici e perimetro scolastico. Affiancare lavoro femminile come contesto con periodo proprio. Richiedere bacini, domanda, frequenza e attese prima di dimensionare posti o sedi.",
+        "missingData": [
+          "Utenti residenti, domanda inevasa, tariffe e orari",
+          "Bacini degli alunni, capienza effettiva e tempi di percorso",
+          "Liste di attesa e domanda per età e zona",
+          "Orari, tariffe, occupazione effettiva e accessi intercomunali",
+          "Bacini e capacità per plesso",
+          "Partecipazione alle prove e contesto degli alunni",
+          "Transizioni scuola–formazione–lavoro"
+        ]
+      },
+      "modules": [
+        {
+          "id": "infanzia/servizi-03",
+          "title": "Servizi educativi 0–3",
+          "question": "Dove verificare domanda insoddisfatta e accessibilità dei servizi?",
+          "availableCaseRefs": [
+            "child_weighted",
+            "child_zero"
+          ],
+          "missingData": [
+            "Domanda, liste di attesa, tariffe, orari e accessi fuori Comune"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "infanzia/rete-scolastica",
+          "title": "Rete scolastica",
+          "question": "Quali sedi e bacini richiedono una verifica di capacità e collegamenti?",
+          "availableCaseRefs": [
+            "school_students",
+            "school_class_size",
+            "school_access_defined"
+          ],
+          "missingData": [
+            "Iscritti per residenza, capienza per plesso, tempi di viaggio e scenari demografici"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "infanzia/esiti-educativi",
+          "title": "Risultati educativi",
+          "question": "Quali segnali delle prove meritano approfondimenti sul contesto degli alunni?",
+          "availableCaseRefs": [
+            "invalsi_invalsiImplicitDispersion_g8_current"
+          ],
+          "missingData": [
+            "Copertura/partecipazione per plesso e contesto socioeconomico"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "infanzia/scuola-lavoro",
+          "title": "Transizione scuola–lavoro",
+          "question": "Quali percorsi aiutano i giovani a passare da istruzione a formazione e lavoro?",
+          "availableCaseRefs": [
+            "regional_youthOtherStatus_current"
+          ],
+          "missingData": [
+            "Transizioni longitudinali e risultati dei programmi; l’indicatore di stato non segue percorsi individuali"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "nidi-lavoro",
+        "organizzazione-scolastica",
+        "rete-scolastica",
+        "esiti-educativi"
+      ]
+    },
+    {
+      "id": "anziani",
+      "title": "Invecchiamento, autonomia e assistenza",
+      "centralQuestion": "Quali bisogni degli anziani sono osservati e quali restano non misurati?",
+      "classification": "partially_supported",
+      "decisionProblem": "Come differiscono invecchiamento e assistenza domiciliare fra Massarosa e Viareggio? Quali segnali di solitudine e fragilità orientano un’indagine sui bisogni di cura?",
+      "metricRefs": [
+        "ageDistribution",
+        "oldAgeIndex",
+        "singleHouseholds",
+        "elderlyHomeCare",
+        "permanentRsaAssisted",
+        "dementia",
+        "socialSpendingPerResident",
+        "socialSpendingByUserArea"
+      ],
+      "missingData": [
+        "Non autosufficienza, caregiver e bisogni non soddisfatti",
+        "Utenti unici, intensità/ore di assistenza e attese"
+      ],
+      "competences": "Comune e organismi di zona/SdS: integrazione sociale; azienda sanitaria: assistenza territoriale; Regione: programmazione. Accordi gestionali locali da verificare.",
+      "optionsToInvestigate": "Approfondire presa in carico integrata, trasporto sociale e sostegno ai caregiver con responsabili e platee verificate.",
+      "monitoring": "Utenti unici, ore, attese, continuità e bisogni non soddisfatti; stock demografico come contesto.",
+      "knowledgeValue": "Separa bisogno, accesso e intensità; non usa il tasso standardizzato come conteggio di utenti.",
+      "relatedDossiers": [
+        "sanita",
+        "welfare",
+        "abitazione"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Separare pressione demografica 85+, famiglie unipersonali e servizi ARS. Il tasso standardizzato ha benchmark ufficiali ma non va ponderato dai conteggi grezzi. Spesa sociale, utenti unici, intensità e domanda inevasa sono passaggi distinti verso la copertura del bisogno.",
+      "pilotTier": "ready_for_composition",
+      "possibleInterpretation": "Massarosa mostra una quota 85+ POSAS 2026 inferiore a Viareggio e un tasso domiciliare standardizzato ARS 2024 superiore. Gli ordinamenti differenti aprono un’istruttoria su domanda, accesso e intensità; non dimostrano copertura migliore o bisogno minore.",
+      "methodologicalChecks": [
+        {
+          "question": "Quota degli 85+ e assistenza standardizzata sono confrontabili come copertura?",
+          "classification": "supported",
+          "reason": "No: quota anagrafica e tasso standardizzato sanitario hanno denominatori, metodi e periodi propri. Le definizioni consentono di escludere il rapporto di copertura."
+        },
+        {
+          "question": "Quanti bisogni di autonomia e cura restano fuori dai dati?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Utenti unici, intensità/ore di assistenza e attese. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "anziani-1",
+          "question": "Come differiscono invecchiamento e assistenza domiciliare fra Massarosa e Viareggio?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "age85_mass",
+            "ars_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare quota 85+ del 2026 e tasso standardizzato di assistenza del 2024; non calcolare copertura degli ultraottantacinquenni da universi diversi.",
+          "missingData": [
+            "Utenti e non utenti per età, bisogno e intensità",
+            "Domanda insoddisfatta e tempi di accesso"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "anziani-2",
+          "question": "Quali segnali di solitudine e fragilità orientano un’indagine sui bisogni di cura?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "census_single",
+            "dossier_primary_dementia",
+            "social_spending_history"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Usare famiglie unipersonali, misura sanitaria e spesa come segnali distinti; non contare persone fragili dalla loro combinazione.",
+          "missingData": [
+            "Persone anziane sole, autonomia e caregiver",
+            "Prestazioni, accessi e risultati individuali anonimizzati"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "anziani-centrale",
+        "requiredCaseRefs": [
+          "age85_mass",
+          "ars_total",
+          "census_single",
+          "dossier_primary_dementia",
+          "social_spending_history"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Separare pressione demografica 85+, famiglie unipersonali e servizi ARS. Il tasso standardizzato ha benchmark ufficiali ma non va ponderato dai conteggi grezzi. Spesa sociale, utenti unici, intensità e domanda inevasa sono passaggi distinti verso la copertura del bisogno.",
+        "missingData": [
+          "Non autosufficienza, caregiver e bisogni non soddisfatti",
+          "Utenti unici, intensità/ore di assistenza e attese",
+          "Utenti e non utenti per età, bisogno e intensità",
+          "Domanda insoddisfatta e tempi di accesso",
+          "Persone anziane sole, autonomia e caregiver",
+          "Prestazioni, accessi e risultati individuali anonimizzati"
+        ]
+      },
+      "modules": [
+        {
+          "id": "anziani/approfondimento-1",
+          "title": "Come differiscono invecchiamento e assistenza domiciliare fra Massarosa e Viareggio?",
+          "question": "Come differiscono invecchiamento e assistenza domiciliare fra Massarosa e Viareggio?",
+          "availableCaseRefs": [
+            "age85_mass",
+            "ars_total"
+          ],
+          "missingData": [
+            "Utenti e non utenti per età, bisogno e intensità",
+            "Domanda insoddisfatta e tempi di accesso"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "anziani/approfondimento-2",
+          "title": "Quali segnali di solitudine e fragilità orientano un’indagine sui bisogni di cura?",
+          "question": "Quali segnali di solitudine e fragilità orientano un’indagine sui bisogni di cura?",
+          "availableCaseRefs": [
+            "census_single",
+            "dossier_primary_dementia",
+            "social_spending_history"
+          ],
+          "missingData": [
+            "Persone anziane sole, autonomia e caregiver",
+            "Prestazioni, accessi e risultati individuali anonimizzati"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "invecchiamento-assistenza",
+        "fragilita-sociale"
+      ]
+    },
+    {
+      "id": "welfare",
+      "title": "Inclusione e servizi sociali",
+      "centralQuestion": "Come collegare fragilità, accesso ai servizi e risorse senza dedurre gli esiti dalla spesa?",
+      "classification": "partially_supported",
+      "decisionProblem": "Dove fragilità territoriale e risorse sociali suggeriscono di approfondire l’accesso ai servizi? Quali risorse comunitarie e barriere all’inclusione sono osservabili?",
+      "metricRefs": [
+        "municipalFragility",
+        "socialSpendingPerResident",
+        "socialSpendingByUserArea",
+        "disability064Per1000",
+        "foreignResidents",
+        "thirdSector"
+      ],
+      "missingData": [
+        "Platee eleggibili, utenti e domanda inevasa",
+        "Tempi, continuità, esiti e accesso per sottogruppo"
+      ],
+      "competences": "Comune e servizi sociali associati/organismi di zona; enti del terzo settore come interlocutori, sedi legali non servizi erogati.",
+      "optionsToInvestigate": "Approfondire punti di accesso, coordinamento e inclusione, verificando copertura e costo dei servizi.",
+      "monitoring": "Accessi, rinunce, attese ed esiti; separare classificazioni ordinali da quantità cardinali.",
+      "knowledgeValue": "Non produce una graduatoria politica dalla fragilità o dalla sola spesa.",
+      "relatedDossiers": [
+        "redditi",
+        "anziani",
+        "capacita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Non produce una graduatoria politica dalla fragilità o dalla sola spesa. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Quali dimensioni del bisogno sono misurate e quali sono proxy?",
+          "classification": "partially_supported",
+          "reason": "I risultati selezionati descrivono il contesto; Platee eleggibili, utenti e domanda inevasa impedisce di rispondere integralmente alla domanda."
+        },
+        {
+          "question": "La distribuzione delle risorse coincide con l’accesso alle prestazioni?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Tempi, continuità, esiti e accesso per sottogruppo. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "welfare-1",
+          "question": "Dove fragilità territoriale e risorse sociali suggeriscono di approfondire l’accesso ai servizi?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "ifc_municipalFragility_current",
+            "social_spending_046018",
+            "social_area_families-minors"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare indice composito, spesa per residente e destinazione per area. Non dedurre bisogno o qualità dalla spesa.",
+          "missingData": [
+            "Utenti eleggibili, domande respinte e attese",
+            "Costi e prestazioni con lo stesso perimetro"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "welfare-2",
+          "question": "Quali risorse comunitarie e barriere all’inclusione sono osservabili?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "regional_disability064Per1000_current",
+            "demography_citizenship",
+            "runts_total_046018"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere indicatori di contesto e sedi legali RUNTS separatamente; sedi di enti non misurano servizi erogati né inclusione.",
+          "missingData": [
+            "Accessibilità, attività e beneficiari per servizio",
+            "Copertura dei gruppi non raggiunti"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "welfare-centrale",
+        "requiredCaseRefs": [
+          "ifc_municipalFragility_current",
+          "social_spending_046018",
+          "social_area_families-minors",
+          "regional_disability064Per1000_current",
+          "demography_citizenship",
+          "runts_total_046018"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Platee eleggibili, utenti e domanda inevasa",
+          "Tempi, continuità, esiti e accesso per sottogruppo",
+          "Utenti eleggibili, domande respinte e attese",
+          "Costi e prestazioni con lo stesso perimetro",
+          "Accessibilità, attività e beneficiari per servizio",
+          "Copertura dei gruppi non raggiunti"
+        ]
+      },
+      "modules": [
+        {
+          "id": "welfare/approfondimento-1",
+          "title": "Dove fragilità territoriale e risorse sociali suggeriscono di approfondire l’accesso ai servizi?",
+          "question": "Dove fragilità territoriale e risorse sociali suggeriscono di approfondire l’accesso ai servizi?",
+          "availableCaseRefs": [
+            "ifc_municipalFragility_current",
+            "social_spending_046018",
+            "social_area_families-minors"
+          ],
+          "missingData": [
+            "Utenti eleggibili, domande respinte e attese",
+            "Costi e prestazioni con lo stesso perimetro"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "welfare/approfondimento-2",
+          "title": "Quali risorse comunitarie e barriere all’inclusione sono osservabili?",
+          "question": "Quali risorse comunitarie e barriere all’inclusione sono osservabili?",
+          "availableCaseRefs": [
+            "regional_disability064Per1000_current",
+            "demography_citizenship",
+            "runts_total_046018"
+          ],
+          "missingData": [
+            "Accessibilità, attività e beneficiari per servizio",
+            "Copertura dei gruppi non raggiunti"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "spesa-sociale",
+        "fragilita-sociale"
+      ]
+    },
+    {
+      "id": "sanita",
+      "title": "Salute e accessibilità delle cure",
+      "centralQuestion": "I dati descrivono la salute, l’uso dei servizi o la loro accessibilità?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali differenze tra condizioni di salute, utilizzo delle cure e tempi di soccorso meritano approfondimento? I punti di servizio osservabili bastano a descrivere l’accesso effettivo alle cure?",
+      "metricRefs": [
+        "chronicTotal",
+        "lifeExpectancy",
+        "emergencyAccess",
+        "emsResponseTimeP75",
+        "specialistVisits7Psr",
+        "diagnosticImagingServices",
+        "pharmaciesPer1000",
+        "accreditedRsaCount",
+        "essentialServicesAccessibility"
+      ],
+      "missingData": [
+        "Tempi di attesa e capacità operativa per servizio",
+        "Percorsi effettivi, rinunce e bacini di utenza"
+      ],
+      "competences": "Azienda sanitaria e Regione: cure e programmazione; Comune/organismi di zona: integrazione sociale e accessibilità locale.",
+      "optionsToInvestigate": "Approfondire raccordo territoriale, trasporti e informazione; nessuna prescrizione clinica o decisione sulla rete da soli conteggi.",
+      "monitoring": "Attese, rinunce, presa in carico e tempi per bacino; distinguere percentile da media.",
+      "knowledgeValue": "Evita di interpretare più accessi come migliore salute o strutture come posti disponibili.",
+      "relatedDossiers": [
+        "anziani",
+        "mobilita",
+        "welfare"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Evita di interpretare più accessi come migliore salute o strutture come posti disponibili. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Una struttura censita corrisponde a capacità disponibile?",
+          "classification": "supported",
+          "reason": "No: una struttura censita indica dotazione, non capacità operativa o appuntamenti disponibili."
+        },
+        {
+          "question": "I tempi e gli accessi indicano un bisogno soddisfatto?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Percorsi effettivi, rinunce e bacini di utenza. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "sanita-1",
+          "question": "Quali differenze tra condizioni di salute, utilizzo delle cure e tempi di soccorso meritano approfondimento?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "dossier_primary_chronicTotal",
+            "dossier_primary_emergencyAccess",
+            "regional_emsResponseTimeP75_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Presentare morbosità, accessi e percentile dei tempi con i propri universi, senza identificare utilizzo con accessibilità.",
+          "missingData": [
+            "Bisogni non soddisfatti e rinuncia alle cure",
+            "Tempi di attesa e distribuzione per frazione"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "sanita-2",
+          "question": "I punti di servizio osservabili bastano a descrivere l’accesso effettivo alle cure?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "health_pharmaciesPer1000_046005",
+            "health_accreditedRsaCount_046005",
+            "ifc_access_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Offrire densità, strutture e indicatore composito come contesto; non stimare posti disponibili o tempi di viaggio da un conteggio.",
+          "missingData": [
+            "Capacità, orari, accesso economico e prenotazioni",
+            "Tempi di viaggio con diversi mezzi"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "sanita-centrale",
+        "requiredCaseRefs": [
+          "dossier_primary_chronicTotal",
+          "dossier_primary_emergencyAccess",
+          "regional_emsResponseTimeP75_current",
+          "health_pharmaciesPer1000_046005",
+          "health_accreditedRsaCount_046005",
+          "ifc_access_current"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Tempi di attesa e capacità operativa per servizio",
+          "Percorsi effettivi, rinunce e bacini di utenza",
+          "Bisogni non soddisfatti e rinuncia alle cure",
+          "Tempi di attesa e distribuzione per frazione",
+          "Capacità, orari, accesso economico e prenotazioni",
+          "Tempi di viaggio con diversi mezzi"
+        ]
+      },
+      "modules": [
+        {
+          "id": "sanita/approfondimento-1",
+          "title": "Quali differenze tra condizioni di salute, utilizzo delle cure e tempi di soccorso meritano approfondimento?",
+          "question": "Quali differenze tra condizioni di salute, utilizzo delle cure e tempi di soccorso meritano approfondimento?",
+          "availableCaseRefs": [
+            "dossier_primary_chronicTotal",
+            "dossier_primary_emergencyAccess",
+            "regional_emsResponseTimeP75_current"
+          ],
+          "missingData": [
+            "Bisogni non soddisfatti e rinuncia alle cure",
+            "Tempi di attesa e distribuzione per frazione"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "sanita/approfondimento-2",
+          "title": "I punti di servizio osservabili bastano a descrivere l’accesso effettivo alle cure?",
+          "question": "I punti di servizio osservabili bastano a descrivere l’accesso effettivo alle cure?",
+          "availableCaseRefs": [
+            "health_pharmaciesPer1000_046005",
+            "health_accreditedRsaCount_046005",
+            "ifc_access_current"
+          ],
+          "missingData": [
+            "Capacità, orari, accesso economico e prenotazioni",
+            "Tempi di viaggio con diversi mezzi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "invecchiamento-assistenza"
+      ]
+    },
+    {
+      "id": "abitazione",
+      "title": "Casa, affitti e ERP",
+      "centralQuestion": "Chi incontra difficoltà abitative e quali segnali possiamo osservare oggi?",
+      "classification": "partially_supported",
+      "decisionProblem": "Come differiscono i segnali del mercato abitativo di Massarosa e Viareggio e che cosa dicono sull’accessibilità? Alloggi non occupati ed ERP possono spiegare dove intervenire sull’offerta?",
+      "metricRefs": [
+        "omiResidential",
+        "vacantHomes",
+        "nonOccupiedHomesPer1000",
+        "cohabitingHouseholds",
+        "incomeDistribution",
+        "erpArrears",
+        "territorialPlanningMissionExpenditurePerResident"
+      ],
+      "missingData": [
+        "Canoni/transazioni effettivi, redditi disponibili e nuclei",
+        "Domanda ERP, sfratti, alloggi disponibili e seconde case"
+      ],
+      "competences": "Comune: politiche abitative locali e urbanistica; Regione e gestore ERP secondo atti/accordi da verificare; mercato privato non controllato dai conteggi.",
+      "optionsToInvestigate": "Approfondire accesso ERP, sostegno e uso del patrimonio, senza stimare un numero di alloggi necessari dai soli indicatori.",
+      "monitoring": "Domanda/assegnazioni, attese, morosità con platee coerenti e onere abitativo reale.",
+      "knowledgeValue": "Rende visibile il limite delle proxy: OMI non è canone contrattuale, non occupato non significa vuoto.",
+      "relatedDossiers": [
+        "redditi",
+        "turismo",
+        "suolo"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Mostrare vendita e affitto OMI con unità distinte e media semplice di zone; affiancare abitazioni non occupate e morosità ERP nei propri universi. Nessun rapporto OMI/MEF diventa onere dei nuclei: costo effettivo, redditi disponibili e domanda ERP restano fabbisogni istruttori.",
+      "pilotTier": "exploratory_priority",
+      "possibleInterpretation": "Le medie semplici OMI 2025-S2 di Massarosa sono inferiori a quelle di Viareggio sia per vendita sia per affitto. Il confronto orienta l’approfondimento dei mercati locali; non dimostra che le famiglie di Massarosa possano sostenere il costo della casa.",
+      "methodologicalChecks": [
+        {
+          "question": "Quotazioni di zona e redditi fiscali permettono di misurare l’onere familiare?",
+          "classification": "supported",
+          "reason": "No: medie OMI di zona e redditi individuali dei dichiaranti non identificano spesa e reddito disponibile dei nuclei."
+        },
+        {
+          "question": "Abitazioni non occupate da residenti sono disponibili sul mercato?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Domanda ERP, sfratti, alloggi disponibili e seconde case. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "abitazione-1",
+          "question": "Come differiscono i segnali del mercato abitativo di Massarosa e Viareggio e che cosa dicono sull’accessibilità?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "omi_total_046018",
+            "omi_rentMean_046018",
+            "mef_incomeDistribution_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Mostrare quotazioni medie semplici di zone OMI e redditi individuali come contesti distinti; non costruire un rapporto affitto/reddito familiare.",
+          "missingData": [
+            "Canoni contrattuali, redditi e dimensione dei nuclei",
+            "Dimensioni e disponibilità effettiva degli alloggi"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "abitazione-2",
+          "question": "Alloggi non occupati ed ERP possono spiegare dove intervenire sull’offerta?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "census_vacancy",
+            "housing_weighted",
+            "erp_public_046018_2020"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere stock e morosità ERP nei periodi propri; alloggi non occupati non equivalgono ad abitazioni immediatamente disponibili.",
+          "missingData": [
+            "Uso stagionale, proprietà e stato degli alloggi",
+            "Domanda ERP, graduatorie e assegnazioni aggiornate"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "abitazione-centrale",
+        "requiredCaseRefs": [
+          "omi_total_046018",
+          "omi_rentMean_046018",
+          "mef_incomeDistribution_total",
+          "census_vacancy",
+          "housing_weighted",
+          "erp_public_046018_2020"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Mostrare vendita e affitto OMI con unità distinte e media semplice di zone; affiancare abitazioni non occupate e morosità ERP nei propri universi. Nessun rapporto OMI/MEF diventa onere dei nuclei: costo effettivo, redditi disponibili e domanda ERP restano fabbisogni istruttori.",
+        "missingData": [
+          "Canoni/transazioni effettivi, redditi disponibili e nuclei",
+          "Domanda ERP, sfratti, alloggi disponibili e seconde case",
+          "Canoni contrattuali, redditi e dimensione dei nuclei",
+          "Dimensioni e disponibilità effettiva degli alloggi",
+          "Uso stagionale, proprietà e stato degli alloggi",
+          "Domanda ERP, graduatorie e assegnazioni aggiornate"
+        ]
+      },
+      "modules": [
+        {
+          "id": "abitazione/approfondimento-1",
+          "title": "Come differiscono i segnali del mercato abitativo di Massarosa e Viareggio e che cosa dicono sull’accessibilità?",
+          "question": "Come differiscono i segnali del mercato abitativo di Massarosa e Viareggio e che cosa dicono sull’accessibilità?",
+          "availableCaseRefs": [
+            "omi_total_046018",
+            "omi_rentMean_046018",
+            "mef_incomeDistribution_total"
+          ],
+          "missingData": [
+            "Canoni contrattuali, redditi e dimensione dei nuclei",
+            "Dimensioni e disponibilità effettiva degli alloggi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "abitazione/approfondimento-2",
+          "title": "Alloggi non occupati ed ERP possono spiegare dove intervenire sull’offerta?",
+          "question": "Alloggi non occupati ed ERP possono spiegare dove intervenire sull’offerta?",
+          "availableCaseRefs": [
+            "census_vacancy",
+            "housing_weighted",
+            "erp_public_046018_2020"
+          ],
+          "missingData": [
+            "Uso stagionale, proprietà e stato degli alloggi",
+            "Domanda ERP, graduatorie e assegnazioni aggiornate"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "quotazioni-casa",
+        "accessibilita-casa",
+        "abitazioni-non-residenti",
+        "erp-morosita"
+      ]
+    },
+    {
+      "id": "mobilita",
+      "title": "Mobilità quotidiana e collegamenti",
+      "centralQuestion": "Come collegare spostamenti per lavoro e offerta di trasporto senza inventare la domanda?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quanto il lavoro dei residenti dipende da spostamenti fuori Comune e che cosa offre il TPL? Quali problemi di sicurezza e possibilità di mobilità lenta richiedono un’indagine locale?",
+      "metricRefs": [
+        "inboundCommuters",
+        "outboundCommuters",
+        "selfContainment",
+        "outsideMunicipality",
+        "scheduledTplTripsPer1000",
+        "activeTplAccessPoints",
+        "tplServiceSpan",
+        "roadSafety",
+        "slowMobilityRoutes"
+      ],
+      "missingData": [
+        "Matrice origine-destinazione e mobilità per studio",
+        "Tempi porta a porta, frequenze per fascia, passeggeri e regolarità"
+      ],
+      "competences": "Comune: viabilità e servizi locali; Regione/enti competenti e gestori: programmazione TPL e collegamenti, verificando contratti e proprietà delle strade.",
+      "optionsToInvestigate": "Approfondire interscambi, accesso scolastico e servizio per fascia oraria con domanda e responsabilità documentate.",
+      "monitoring": "Tempi, regolarità, uso, accessibilità e sicurezza; niente somma dei percorsi condivisi come itinerari unici.",
+      "knowledgeValue": "Trasforma margini e inventari in domande sull’accessibilità, non in ordini di nuove corse.",
+      "relatedDossiers": [
+        "lavoro",
+        "infanzia",
+        "sanita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Leggere residenti che lavorano fuori, addetti in entrata e autocontenimento con universo censuario esplicito. Il rapporto di somme autorizzato non ricostruisce attraversamenti del confine Versilia. TPL è una fotografia programmata separata: non misura passeggeri, regolarità o tempi porta a porta.",
+      "pilotTier": "ready_for_composition",
+      "possibleInterpretation": "Nel confronto censuario 2021 selezionato, l’autocontenimento di Massarosa è inferiore a quello di Camaiore. È una domanda pertinente su collegamenti e opportunità localizzate; destinazioni, modalità e qualità dei viaggi restano da misurare.",
+      "methodologicalChecks": [
+        {
+          "question": "I margini comunali descrivono attraversamenti del confine Versilia?",
+          "classification": "supported",
+          "reason": "No: i margini comunali non identificano le coppie origine-destinazione. Serve la matrice OD per quantificare attraversamenti del confine Versilia."
+        },
+        {
+          "question": "Orari programmati e fermate descrivono viaggi possibili e affidabili?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Tempi porta a porta, frequenze per fascia, passeggeri e regolarità. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "mobilita-1",
+          "question": "Quanto il lavoro dei residenti dipende da spostamenti fuori Comune e che cosa offre il TPL?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "commuting_selfContainment",
+            "outside_046018",
+            "tpl_scheduledTplTripsPer1000_total_046018"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare pendolarismo 2021 e offerta programmata TPL nella fotografia propria; non stimare un bacino o una quota modale.",
+          "missingData": [
+            "Origini–destinazioni e orari dei pendolari",
+            "Percorrenze reali, affidabilità e tempi porta a porta"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "mobilita-2",
+          "question": "Quali problemi di sicurezza e possibilità di mobilità lenta richiedono un’indagine locale?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "road_roadSafety_measure_incidents_history_046018",
+            "slow_slowMobilityRoutes_total_046005"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Usare incidenti e inventario editoriale dei percorsi come contesti; conteggi di itinerari non certificano sicurezza o continuità della rete.",
+          "missingData": [
+            "Localizzazione e gravità degli incidenti",
+            "Esposizione al traffico, stato e continuità dei percorsi"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "mobilita-centrale",
+        "requiredCaseRefs": [
+          "commuting_selfContainment",
+          "outside_046018",
+          "tpl_scheduledTplTripsPer1000_total_046018",
+          "road_roadSafety_measure_incidents_history_046018",
+          "slow_slowMobilityRoutes_total_046005"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Leggere residenti che lavorano fuori, addetti in entrata e autocontenimento con universo censuario esplicito. Il rapporto di somme autorizzato non ricostruisce attraversamenti del confine Versilia. TPL è una fotografia programmata separata: non misura passeggeri, regolarità o tempi porta a porta.",
+        "missingData": [
+          "Matrice origine-destinazione e mobilità per studio",
+          "Tempi porta a porta, frequenze per fascia, passeggeri e regolarità",
+          "Origini–destinazioni e orari dei pendolari",
+          "Percorrenze reali, affidabilità e tempi porta a porta",
+          "Localizzazione e gravità degli incidenti",
+          "Esposizione al traffico, stato e continuità dei percorsi"
+        ]
+      },
+      "modules": [
+        {
+          "id": "mobilita/pendolarismo",
+          "title": "Pendolarismo",
+          "question": "Quali spostamenti di lavoro richiedono un’analisi dei bacini funzionali?",
+          "availableCaseRefs": [
+            "commuting_selfContainment",
+            "outside_046018"
+          ],
+          "missingData": [
+            "Matrice origini–destinazioni, orari e mezzi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "mobilita/tpl",
+          "title": "Trasporto pubblico",
+          "question": "I collegamenti programmati incontrano le esigenze di lavoro, scuola e cura?",
+          "availableCaseRefs": [
+            "tpl_scheduledTplTripsPer1000_total_046018"
+          ],
+          "missingData": [
+            "Domanda per fascia oraria, affidabilità, percorrenze e tempi porta a porta"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "mobilita/sicurezza-stradale",
+          "title": "Sicurezza stradale",
+          "question": "Dove approfondire incidenti e protezione degli utenti vulnerabili?",
+          "availableCaseRefs": [
+            "road_roadSafety_measure_incidents_history_046018"
+          ],
+          "missingData": [
+            "Localizzazione, gravità, utenza ed esposizione al traffico"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "mobilita/mobilita-lenta",
+          "title": "Mobilità lenta",
+          "question": "Quali percorsi possono essere collegati e resi effettivamente fruibili?",
+          "availableCaseRefs": [
+            "slow_slowMobilityRoutes_total_046005"
+          ],
+          "missingData": [
+            "Continuità, manutenzione, agibilità e sicurezza; inventario editoriale non esaustivo"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "pendolarismo",
+        "adeguatezza-tpl"
+      ]
+    },
+    {
+      "id": "turismo",
+      "title": "Turismo e pressione sui servizi",
+      "centralQuestion": "Come cambia l’uso del territorio turistico e quali carichi dei servizi restano ignoti?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali periodi concentrano la presenza turistica e quali servizi vanno approfonditi? Acqua e rifiuti mostrano carichi attribuibili al turismo?",
+      "metricRefs": [
+        "tourismPresences",
+        "tourismSeasonality",
+        "tourismAverageStay",
+        "tourismBedsPer1000",
+        "tourismIntensity",
+        "wastePerResident",
+        "waterNetworkLosses"
+      ],
+      "missingData": [
+        "Escursionisti, popolazione giornaliera e picchi",
+        "Consumi/rifiuti per mese e area, capacità dei servizi"
+      ],
+      "competences": "Comune: servizi locali e gestione territoriale; Regione e gestori competenti per reti e programmazione; imprese come interlocutori.",
+      "optionsToInvestigate": "Approfondire gestione stagionale e interscambio, separando domanda osservata e ipotesi.",
+      "monitoring": "Carichi per mese/giorno, regolarità e costi di servizio; presenze come contesto.",
+      "knowledgeValue": "Non scambia pernottamenti per persone né pressione potenziale per carico misurato.",
+      "relatedDossiers": [
+        "abitazione",
+        "ambiente",
+        "mobilita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Non scambia pernottamenti per persone né pressione potenziale per carico misurato. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Pernottamenti annuali misurano i picchi giornalieri?",
+          "classification": "supported",
+          "reason": "No: pernottamenti sono un flusso; picchi giornalieri e escursionisti richiedono informazioni diverse."
+        },
+        {
+          "question": "I rapporti per residente descrivono utenti effettivi dei servizi?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Consumi/rifiuti per mese e area, capacità dei servizi. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "turismo-1",
+          "question": "Quali periodi concentrano la presenza turistica e quali servizi vanno approfonditi?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "tourism_tourismPresences_history",
+            "seasonality_compare_046005",
+            "tourism_tourismBedsPer1000_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere pernottamenti, concentrazione stagionale e ricettività; non ricostruire presenze giornaliere o escursionisti.",
+          "missingData": [
+            "Escursionismo e occupazione giornaliera",
+            "Domanda oraria e stagionale dei servizi"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "turismo-2",
+          "question": "Acqua e rifiuti mostrano carichi attribuibili al turismo?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "environment_waste_current",
+            "environment_water_current",
+            "tourism_tourismPresences_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare indicatori annuali nei rispettivi anni. Nessuna attribuzione causale o ripartizione dei costi per visitatore.",
+          "missingData": [
+            "Volumi e costi mensili per bacino",
+            "Popolazione effettivamente servita e usi non turistici"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "turismo-centrale",
+        "requiredCaseRefs": [
+          "tourism_tourismPresences_history",
+          "seasonality_compare_046005",
+          "tourism_tourismBedsPer1000_current",
+          "environment_waste_current",
+          "environment_water_current",
+          "tourism_tourismPresences_current"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Escursionisti, popolazione giornaliera e picchi",
+          "Consumi/rifiuti per mese e area, capacità dei servizi",
+          "Escursionismo e occupazione giornaliera",
+          "Domanda oraria e stagionale dei servizi",
+          "Volumi e costi mensili per bacino",
+          "Popolazione effettivamente servita e usi non turistici"
+        ]
+      },
+      "modules": [
+        {
+          "id": "turismo/approfondimento-1",
+          "title": "Quali periodi concentrano la presenza turistica e quali servizi vanno approfonditi?",
+          "question": "Quali periodi concentrano la presenza turistica e quali servizi vanno approfonditi?",
+          "availableCaseRefs": [
+            "tourism_tourismPresences_history",
+            "seasonality_compare_046005",
+            "tourism_tourismBedsPer1000_current"
+          ],
+          "missingData": [
+            "Escursionismo e occupazione giornaliera",
+            "Domanda oraria e stagionale dei servizi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "turismo/approfondimento-2",
+          "title": "Acqua e rifiuti mostrano carichi attribuibili al turismo?",
+          "question": "Acqua e rifiuti mostrano carichi attribuibili al turismo?",
+          "availableCaseRefs": [
+            "environment_waste_current",
+            "environment_water_current",
+            "tourism_tourismPresences_current"
+          ],
+          "missingData": [
+            "Volumi e costi mensili per bacino",
+            "Popolazione effettivamente servita e usi non turistici"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "turismo-servizi"
+      ]
+    },
+    {
+      "id": "ambiente",
+      "title": "Ambiente, clima e rischio",
+      "centralQuestion": "Quali esposizioni e trasformazioni richiedono verifiche di protezione e adattamento?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali esposizioni a frane e alluvioni e quali tendenze climatiche orientano verifiche di adattamento? Che cosa mostrano costa e bonifiche e quali interventi richiedono evidenze ulteriori?",
+      "metricRefs": [
+        "climateTemperatureTrend50y",
+        "climatePrecipitationTrend50y",
+        "floodExposure",
+        "landslideExposure",
+        "shorelineDynamics",
+        "rigidDefenceProtectedCoast",
+        "drinkingWaterQuality",
+        "remediationProceedings"
+      ],
+      "missingData": [
+        "Vulnerabilità, danni ed efficacia delle opere",
+        "Geometrie e scenari locali aggiornati, qualità dell’aria dove non misurata"
+      ],
+      "competences": "Comune: urbanistica/protezione civile e servizi; Regione, enti di bacino e gestori secondo competenze di ciascun intervento da verificare.",
+      "optionsToInvestigate": "Approfondire vulnerabilità, manutenzione e piani di protezione; non sommare scenari annidati.",
+      "monitoring": "Esposizioni coerenti, danni, continuità dei servizi ed esiti degli interventi con baseline.",
+      "knowledgeValue": "Separa classificazioni, esposizioni e risultati, senza trasformare una mappa in previsione individuale.",
+      "relatedDossiers": [
+        "suolo",
+        "investimenti",
+        "sanita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Separa classificazioni, esposizioni e risultati, senza trasformare una mappa in previsione individuale. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Pericolosità, esposizione e rischio sono distinti?",
+          "classification": "supported",
+          "reason": "Le definizioni degli adapter separano esposizione da probabilità/danno: non producono un indice universale di rischio."
+        },
+        {
+          "question": "Serie ricostruite e opere censite dimostrano efficacia degli interventi?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Geometrie e scenari locali aggiornati, qualità dell’aria dove non misurata. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "ambiente-1",
+          "question": "Quali esposizioni a frane e alluvioni e quali tendenze climatiche orientano verifiche di adattamento?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "hazard_flood_current",
+            "hazard_landslide_current",
+            "climate_temperature_series",
+            "climate_precipitation_series"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Distinguere esposizione cartografica, tendenza climatica e rischio; non prevedere danni o eventi per singolo immobile.",
+          "missingData": [
+            "Vulnerabilità di persone e infrastrutture",
+            "Scenari, eventi e misure di adattamento localizzate"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "ambiente-2",
+          "question": "Che cosa mostrano costa e bonifiche e quali interventi richiedono evidenze ulteriori?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "coast_dynamics_erosion",
+            "coast_protection_current",
+            "remediation_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere tratti costieri e procedimenti nelle fotografie proprie; protezione rigida e procedimento non misurano efficacia o risanamento concluso.",
+          "missingData": [
+            "Monitoraggi degli effetti delle opere costiere",
+            "Stato operativo, contaminanti e risultati delle bonifiche"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "ambiente-centrale",
+        "requiredCaseRefs": [
+          "hazard_flood_current",
+          "hazard_landslide_current",
+          "climate_temperature_series",
+          "climate_precipitation_series",
+          "coast_dynamics_erosion",
+          "coast_protection_current",
+          "remediation_total"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Vulnerabilità, danni ed efficacia delle opere",
+          "Geometrie e scenari locali aggiornati, qualità dell’aria dove non misurata",
+          "Vulnerabilità di persone e infrastrutture",
+          "Scenari, eventi e misure di adattamento localizzate",
+          "Monitoraggi degli effetti delle opere costiere",
+          "Stato operativo, contaminanti e risultati delle bonifiche"
+        ]
+      },
+      "modules": [
+        {
+          "id": "ambiente/rischio-idrogeologico",
+          "title": "Rischio idrogeologico",
+          "question": "Quali popolazioni e infrastrutture esposte richiedono approfondimento?",
+          "availableCaseRefs": [
+            "hazard_flood_current",
+            "hazard_landslide_current"
+          ],
+          "missingData": [
+            "Vulnerabilità, scenari e piani di protezione con localizzazione"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "ambiente/adattamento-climatico",
+          "title": "Adattamento climatico",
+          "question": "Quali servizi e spazi richiedono una verifica di adattamento?",
+          "availableCaseRefs": [
+            "climate_temperature_series",
+            "climate_precipitation_series"
+          ],
+          "missingData": [
+            "Esposizione a caldo, vulnerabilità e misure localizzate; trend non previsione di evento"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "ambiente/erosione-costa",
+          "title": "Erosione costiera",
+          "question": "Quali tratti cambiano e come verificare gli effetti degli interventi?",
+          "availableCaseRefs": [
+            "coast_dynamics_erosion",
+            "coast_protection_current"
+          ],
+          "missingData": [
+            "Monitoraggi prima/dopo, sedimenti, opere e conseguenze sui tratti contigui"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "ambiente/bonifiche",
+          "title": "Bonifiche",
+          "question": "Quali procedimenti richiedono chiarimenti su stato operativo e risultati?",
+          "availableCaseRefs": [
+            "remediation_total"
+          ],
+          "missingData": [
+            "Contaminanti, stato operativo, tempi e risultati; procedimento non risanamento"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "ambiente/acqua-rifiuti",
+          "title": "Acqua e rifiuti",
+          "question": "Quanto incidono stagionalità e utenti effettivi sui servizi?",
+          "availableCaseRefs": [
+            "environment_water_current",
+            "environment_waste_current"
+          ],
+          "missingData": [
+            "Volumi/costi mensili e bacini serviti"
+          ],
+          "relatedDossiers": [
+            "turismo",
+            "bilanci"
+          ],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": []
+    },
+    {
+      "id": "suolo",
+      "title": "Suolo, agricoltura e biodiversità",
+      "centralQuestion": "Quali trasformazioni del territorio incidono sulle risorse naturali e produttive?",
+      "classification": "partially_supported",
+      "decisionProblem": "Dove consumo di suolo e usi del territorio cambiano il patrimonio naturale? Quali caratteristiche dell’agricoltura aiutano a discutere il ricambio produttivo?",
+      "metricRefs": [
+        "landUse",
+        "landUseChange",
+        "landCoverProfile",
+        "forestCoverIndex",
+        "protectedNaturalAreas",
+        "agriculturalUsedArea",
+        "cropProfile",
+        "agriculturalRenewalAndLeadership",
+        "organicAgriculturalAreaShare"
+      ],
+      "missingData": [
+        "Habitat/specie e stato ecologico",
+        "Continuità metodologica, uso effettivo e qualità del suolo"
+      ],
+      "competences": "Comune: pianificazione locale; Regione/enti gestori: pianificazione e tutela di settore; imprese agricole come interlocutori.",
+      "optionsToInvestigate": "Approfondire riuso del suolo e supporto alle filiere, senza dedurre biodiversità da ettari protetti.",
+      "monitoring": "Superfici omogenee, habitat e pressioni; categorie sovrapposte non additive.",
+      "knowledgeValue": "Collega produzione e risorse naturali preservando geografie e classificazioni.",
+      "relatedDossiers": [
+        "ambiente",
+        "lavoro",
+        "energia"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Collega produzione e risorse naturali preservando geografie e classificazioni. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Coperture e aree protette misurano lo stato della biodiversità?",
+          "classification": "supported",
+          "reason": "Copertura del suolo e vincolo territoriale descrivono superfici, non stato di habitat o specie."
+        },
+        {
+          "question": "Centro aziendale e superfici localizzate sono lo stesso perimetro?",
+          "classification": "supported",
+          "reason": "I metadati agricoli esplicitano il perimetro aziendale/localizzazione: non è autorizzata l’identità fra centro aziendale e superficie nel Comune."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "suolo-1",
+          "question": "Dove consumo di suolo e usi del territorio cambiano il patrimonio naturale?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "soil_stock_current",
+            "soil_flow_gross",
+            "soil_ucs_forest",
+            "territory_protected_union"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Distinguere stock, flussi e unione di aree protette; superficie tutelata non misura stato della biodiversità.",
+          "missingData": [
+            "Habitat, specie e qualità ecologica",
+            "Dettaglio territoriale dei nuovi interventi"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "suolo-2",
+          "question": "Quali caratteristiche dell’agricoltura aiutano a discutere il ricambio produttivo?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "agriculture_localized",
+            "agriculture_profiles_agriculturalRenewalAndLeadership_total",
+            "agriculture_profiles_organicAgriculturalAreaShare_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere superficie secondo localizzazione/attribuzione della fonte e profili aziendali; non dedurre produttività o rinnovo individuale.",
+          "missingData": [
+            "Redditività e domanda di lavoro",
+            "Transizioni, accesso alla terra e successioni"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "suolo-centrale",
+        "requiredCaseRefs": [
+          "soil_stock_current",
+          "soil_flow_gross",
+          "soil_ucs_forest",
+          "territory_protected_union",
+          "agriculture_localized",
+          "agriculture_profiles_agriculturalRenewalAndLeadership_total",
+          "agriculture_profiles_organicAgriculturalAreaShare_total"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Habitat/specie e stato ecologico",
+          "Continuità metodologica, uso effettivo e qualità del suolo",
+          "Habitat, specie e qualità ecologica",
+          "Dettaglio territoriale dei nuovi interventi",
+          "Redditività e domanda di lavoro",
+          "Transizioni, accesso alla terra e successioni"
+        ]
+      },
+      "modules": [
+        {
+          "id": "suolo/approfondimento-1",
+          "title": "Dove consumo di suolo e usi del territorio cambiano il patrimonio naturale?",
+          "question": "Dove consumo di suolo e usi del territorio cambiano il patrimonio naturale?",
+          "availableCaseRefs": [
+            "soil_stock_current",
+            "soil_flow_gross",
+            "soil_ucs_forest",
+            "territory_protected_union"
+          ],
+          "missingData": [
+            "Habitat, specie e qualità ecologica",
+            "Dettaglio territoriale dei nuovi interventi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "suolo/approfondimento-2",
+          "title": "Quali caratteristiche dell’agricoltura aiutano a discutere il ricambio produttivo?",
+          "question": "Quali caratteristiche dell’agricoltura aiutano a discutere il ricambio produttivo?",
+          "availableCaseRefs": [
+            "agriculture_localized",
+            "agriculture_profiles_agriculturalRenewalAndLeadership_total",
+            "agriculture_profiles_organicAgriculturalAreaShare_total"
+          ],
+          "missingData": [
+            "Redditività e domanda di lavoro",
+            "Transizioni, accesso alla terra e successioni"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": []
+    },
+    {
+      "id": "energia",
+      "title": "Energia e transizione accessibile",
+      "centralQuestion": "Che cosa sappiamo della transizione energetica e dei suoi costi per le famiglie?",
+      "classification": "partially_supported",
+      "decisionProblem": "Dove colonnine e prezzi dei carburanti descrivono condizioni della mobilità energetica? Quali edifici e famiglie potrebbero beneficiare di efficienza energetica, rinnovabili o comunità energetiche?",
+      "metricRefs": [
+        "evPoints",
+        "fuelPrices",
+        "incomeDistribution"
+      ],
+      "missingData": [
+        "Consumi, bollette, potenza e uso degli impianti",
+        "Produzione rinnovabile, reti e nuclei vulnerabili"
+      ],
+      "competences": "Comune: patrimonio e pianificazione nel proprio ambito; autorità e gestori energetici da identificare per ogni progetto; competenze autorizzative non inferite dai dati.",
+      "optionsToInvestigate": "Approfondire accesso e uso del patrimonio energetico; fattibilità tecnica/economica e autorizzazioni da verificare separatamente.",
+      "monitoring": "Consumi, costi, produzione e accesso per platea; non dedurre numero di connettori dalla densità EV.",
+      "knowledgeValue": "Evita promesse sulla povertà energetica basate su proxy non sufficienti.",
+      "relatedDossiers": [
+        "redditi",
+        "mobilita",
+        "suolo"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Evita promesse sulla povertà energetica basate su proxy non sufficienti. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Densità EV permette di conoscere capacità e uso della ricarica?",
+          "classification": "supported",
+          "reason": "Il censimento dei punti descrive dotazione, non potenza, utilizzo o accessibilità effettiva."
+        },
+        {
+          "question": "Prezzi carburanti misurano spesa o povertà energetica?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Produzione rinnovabile, reti e nuclei vulnerabili. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "energia-1",
+          "question": "Dove colonnine e prezzi dei carburanti descrivono condizioni della mobilità energetica?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "energy_ev_046018",
+            "energy_fuel_fuel:benzina_series"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere punti inventariati e prezzi nei propri periodi. Non misurare utilizzo, potenza disponibile o povertà energetica.",
+          "missingData": [
+            "Potenza e disponibilità reale delle colonnine",
+            "Consumi, percorrenze e utilizzatori"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "energia-2",
+          "question": "Quali edifici e famiglie potrebbero beneficiare di efficienza energetica, rinnovabili o comunità energetiche?",
+          "classification": "not_determinable",
+          "requiredCaseRefs": [],
+          "contextCaseRefs": [
+            "energy_ev_046018",
+            "mef_incomeDistribution_total"
+          ],
+          "answer": "Non determinabile: colonnine, carburanti e redditi fiscali non identificano consumi elettrici, superfici utilizzabili o condivisione in una CER.",
+          "missingData": [
+            "Consumi e curve di carico, costi energetici dei nuclei",
+            "Patrimonio edilizio pubblico, vincoli e impianti",
+            "Produzione rinnovabile e perimetri delle cabine"
+          ],
+          "reason": "Mancano le misure necessarie alla domanda; i dati di contesto non le sostituiscono."
+        }
+      ],
+      "centralPlan": {
+        "id": "energia-centrale",
+        "requiredCaseRefs": [
+          "energy_ev_046018",
+          "energy_fuel_fuel:benzina_series"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Consumi, bollette, potenza e uso degli impianti",
+          "Produzione rinnovabile, reti e nuclei vulnerabili",
+          "Potenza e disponibilità reale delle colonnine",
+          "Consumi, percorrenze e utilizzatori",
+          "Consumi e curve di carico, costi energetici dei nuclei",
+          "Patrimonio edilizio pubblico, vincoli e impianti",
+          "Produzione rinnovabile e perimetri delle cabine"
+        ]
+      },
+      "modules": [
+        {
+          "id": "energia/mobilita-energetica",
+          "title": "Energia per la mobilità",
+          "question": "Come verificare disponibilità della ricarica e costo dell’uso dei veicoli?",
+          "availableCaseRefs": [
+            "energy_ev_046018",
+            "energy_fuel_fuel:benzina_series"
+          ],
+          "missingData": [
+            "Potenza disponibile, funzionamento, consumi e utilizzatori"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "energia/cer",
+          "title": "Comunità energetiche",
+          "question": "Quali configurazioni avrebbero produzione e consumi condivisibili?",
+          "availableCaseRefs": [],
+          "missingData": [
+            "Curve di produzione e carico, cabine, aderenti e vincoli; nessuno di questi dati è acquisito"
+          ],
+          "relatedDossiers": [],
+          "stage": "additional_data_required",
+          "composition": "Definire prima dati, universo e unità di analisi. Nessuna composizione dei dati attuali risolve la domanda."
+        },
+        {
+          "id": "energia/consumi-costi",
+          "title": "Consumi e costi energetici",
+          "question": "Quali nuclei incontrano costi energetici difficili da sostenere?",
+          "availableCaseRefs": [],
+          "missingData": [
+            "Consumi, bollette, redditi disponibili dei nuclei, prestazioni degli edifici"
+          ],
+          "relatedDossiers": [],
+          "stage": "additional_data_required",
+          "composition": "Definire prima dati, universo e unità di analisi. Nessuna composizione dei dati attuali risolve la domanda."
+        },
+        {
+          "id": "energia/patrimonio-rinnovabili",
+          "title": "Patrimonio pubblico e rinnovabili",
+          "question": "Dove approfondire efficienza energetica e generazione rinnovabile?",
+          "availableCaseRefs": [],
+          "missingData": [
+            "Inventario edilizio pubblico, consumi, superfici, vincoli, impianti e produzione"
+          ],
+          "relatedDossiers": [],
+          "stage": "additional_data_required",
+          "composition": "Definire prima dati, universo e unità di analisi. Nessuna composizione dei dati attuali risolve la domanda."
+        }
+      ],
+      "baselineQuestionRefs": []
+    },
+    {
+      "id": "bilanci",
+      "title": "Bilanci e risultati dei servizi",
+      "centralQuestion": "Le risorse comunali sono sostenibili e quali risultati dei servizi possiamo verificare?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali risorse e vincoli finanziari osservabili distinguono Massarosa e Viareggio? Spesa per servizi e fiscalità aiutano a capire adeguatezza e sostenibilità?",
+      "metricRefs": [
+        "currentRevenueAccruedPerResident",
+        "currentCollectionCapacity",
+        "rigidExpenditureShare",
+        "financialDebtProfile",
+        "cashBalancePerResident",
+        "socialMissionExpenditurePerResident",
+        "educationMissionExpenditurePerResident",
+        "wasteServiceCost",
+        "municipalIrpef",
+        "tariStandardHousehold",
+        "capitalExpenditureCommittedPerResident"
+      ],
+      "missingData": [
+        "Costi e utenti per servizio, qualità ed esiti",
+        "Fabbisogni/costi standard confrontabili e perimetri gestionali"
+      ],
+      "competences": "Comune: programmazione finanziaria e controllo; gestori/enti associati per servizi con perimetri distinti.",
+      "optionsToInvestigate": "Approfondire combinazioni di risorse e livelli di servizio, senza classifica di efficienza dalla spesa pro capite.",
+      "monitoring": "Utenti, costi omogenei, tempi ed esiti; dati contabili come input, non prova di effetto.",
+      "knowledgeValue": "Rende leggibile la catena risorse–prestazioni–risultati e i suoi anelli mancanti.",
+      "relatedDossiers": [
+        "capacita",
+        "welfare",
+        "investimenti"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Descrivere entrate di competenza, riscossione, rigidità, debito e cassa nei propri perimetri. Affiancare missioni e servizi senza equiparare impegni a prestazioni. Rapporti di somme solo se ammessi; tariffe standard non sono gettito o spesa effettiva familiare.",
+      "pilotTier": "ready_for_composition",
+      "possibleInterpretation": "Negli esempi 2025 Massarosa ha entrate correnti per residente e quota di spesa rigida inferiori a Viareggio. I valori aprono domande diverse sulla programmazione; vincoli, gestione e prestazioni impediscono di dedurne un margine libero o una graduatoria di efficienza.",
+      "methodologicalChecks": [
+        {
+          "question": "Cassa, competenza e risorse vincolate raccontano lo stesso margine?",
+          "classification": "supported",
+          "reason": "I metadati distinguono flussi di competenza, incassi e stock: non autorizzano una somma come disponibilità discrezionale."
+        },
+        {
+          "question": "Più spesa significa più utenti o servizi migliori?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Fabbisogni/costi standard confrontabili e perimetri gestionali. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "bilanci-1",
+          "question": "Quali risorse e vincoli finanziari osservabili distinguono Massarosa e Viareggio?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "finance_revenue",
+            "finance_rigid",
+            "distinct_debt_current",
+            "finance_balance"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere accertamenti, rigidità, debito e cassa con basi separate; non calcolare margine disponibile per nuovi interventi.",
+          "missingData": [
+            "Vincoli, residui, FCDE e cronoprogrammi",
+            "Serie armonizzate delle risorse disponibili"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "bilanci-2",
+          "question": "Spesa per servizi e fiscalità aiutano a capire adeguatezza e sostenibilità?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "finance_social",
+            "dossier_primary_educationMissionExpenditurePerResident",
+            "environment_cost_current",
+            "tax_tariStandardHousehold_total_046018"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare missioni, costi del servizio e tariffa convenzionale; non equiparare spesa di missione a costo unitario o risultato.",
+          "missingData": [
+            "Fabbisogni, utenti e standard di servizio comparabili",
+            "Costi, qualità, accesso e risultati per prestazione"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "bilanci-centrale",
+        "requiredCaseRefs": [
+          "finance_revenue",
+          "finance_rigid",
+          "distinct_debt_current",
+          "finance_balance",
+          "finance_social",
+          "dossier_primary_educationMissionExpenditurePerResident",
+          "environment_cost_current",
+          "tax_tariStandardHousehold_total_046018"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Descrivere entrate di competenza, riscossione, rigidità, debito e cassa nei propri perimetri. Affiancare missioni e servizi senza equiparare impegni a prestazioni. Rapporti di somme solo se ammessi; tariffe standard non sono gettito o spesa effettiva familiare.",
+        "missingData": [
+          "Costi e utenti per servizio, qualità ed esiti",
+          "Fabbisogni/costi standard confrontabili e perimetri gestionali",
+          "Vincoli, residui, FCDE e cronoprogrammi",
+          "Serie armonizzate delle risorse disponibili",
+          "Fabbisogni, utenti e standard di servizio comparabili",
+          "Costi, qualità, accesso e risultati per prestazione"
+        ]
+      },
+      "modules": [
+        {
+          "id": "bilanci/risorse-vincoli",
+          "title": "Risorse e vincoli",
+          "question": "Quali margini finanziari possono essere verificati prima di proporre interventi?",
+          "availableCaseRefs": [
+            "finance_revenue",
+            "finance_rigid",
+            "finance_balance"
+          ],
+          "missingData": [
+            "Vincoli, residui, FCDE, cassa dedicata e cronoprogrammi"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "bilanci/fabbisogni-servizi",
+          "title": "Fabbisogni e risorse",
+          "question": "Quali bisogni e livelli dei servizi vanno affiancati alla spesa?",
+          "availableCaseRefs": [
+            "finance_social",
+            "dossier_primary_educationMissionExpenditurePerResident"
+          ],
+          "missingData": [
+            "Utenti eleggibili, fabbisogni e standard comparabili; OpenCivitas studiato, dati non acquisiti"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "bilanci/qualita-servizi",
+          "title": "Qualità dei servizi",
+          "question": "Che cosa ricevono gli utenti a fronte dei costi osservati?",
+          "availableCaseRefs": [
+            "environment_cost_current"
+          ],
+          "missingData": [
+            "Prestazioni, qualità, accesso e soddisfazione nello stesso periodo/perimetro"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "bilanci/capacita-spesa",
+          "title": "Capacità di spesa",
+          "question": "Dove verificare ostacoli tra risorse impegnate e servizi realizzati?",
+          "availableCaseRefs": [
+            "dossier_primary_capitalExpenditureCommittedPerResident"
+          ],
+          "missingData": [
+            "Impegni/pagamenti per progetto, tempi, vincoli e avanzamento fisico"
+          ],
+          "relatedDossiers": [
+            "investimenti",
+            "capacita"
+          ],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "risorse-comunali",
+        "risorse-risultati"
+      ]
+    },
+    {
+      "id": "investimenti",
+      "title": "Investimenti, PNRR e opere",
+      "centralQuestion": "Quali investimenti sono osservati e quali risultati delle opere non sono ancora misurabili?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali finanziamenti e stati amministrativi delle opere sono osservabili? Le opere concluse e la spesa in conto capitale producono miglioramenti misurabili?",
+      "metricRefs": [
+        "pnrrFunding",
+        "pnrrConcluded",
+        "publicWorks",
+        "capitalExpenditureCommittedPerResident",
+        "pabInterventionsCompleted",
+        "pabCompletedOperationalGrossValue"
+      ],
+      "missingData": [
+        "CUP e localizzazioni riconciliati, costi finali e cronoprogrammi",
+        "Collaudi, messa in esercizio, utenti e risultati"
+      ],
+      "competences": "Ente attuatore e proprietario/gestore dell’opera da identificare per progetto; Comune: monitoraggio locale e programmazione di competenza.",
+      "optionsToInvestigate": "Approfondire schede progetto e baseline dei risultati, senza sommare due volte spesa e finanziamento.",
+      "monitoring": "Milestone, apertura, uso, qualità e manutenzione; distinguere importi programmati, impegnati, pagati e conclusi.",
+      "knowledgeValue": "Sposta la lettura dal finanziamento al servizio effettivamente prodotto.",
+      "relatedDossiers": [
+        "bilanci",
+        "infanzia",
+        "ambiente"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Sposta la lettura dal finanziamento al servizio effettivamente prodotto. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Comune attuatore e localizzazione dell’opera coincidono?",
+          "classification": "partially_supported",
+          "reason": "I risultati selezionati descrivono il contesto; CUP e localizzazioni riconciliati, costi finali e cronoprogrammi impedisce di rispondere integralmente alla domanda."
+        },
+        {
+          "question": "Macro-fase conclusa prova apertura o beneficio del servizio?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Collaudi, messa in esercizio, utenti e risultati. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "investimenti-1",
+          "question": "Quali finanziamenti e stati amministrativi delle opere sono osservabili?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "pnrr_pnrrFunding_total_046018",
+            "pnrr_pnrrConcluded_total_046018",
+            "distinct_works_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere finanziamenti e conclusioni amministrative nelle fotografie di monitoraggio; non attribuire importi ai risultati o ai residenti beneficiari.",
+          "missingData": [
+            "Avanzamento fisico, tempi, costi e collaudi per opera"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "investimenti-2",
+          "question": "Le opere concluse e la spesa in conto capitale producono miglioramenti misurabili?",
+          "classification": "not_determinable",
+          "requiredCaseRefs": [],
+          "contextCaseRefs": [
+            "pab_pabInterventionsCompleted",
+            "dossier_primary_capitalExpenditureCommittedPerResident"
+          ],
+          "answer": "Le evidenze descrivono completamento e impegni, non effetti: occorre definire risultati e baseline per singola opera.",
+          "missingData": [
+            "Messa in esercizio, utilizzo e manutenzione",
+            "Indicatori prima/dopo e disegno di valutazione"
+          ],
+          "reason": "Completamento e impegni sono solo contesto: mancano le misure degli esiti e il disegno di valutazione."
+        }
+      ],
+      "centralPlan": {
+        "id": "investimenti-centrale",
+        "requiredCaseRefs": [
+          "pnrr_pnrrFunding_total_046018",
+          "pnrr_pnrrConcluded_total_046018",
+          "distinct_works_current"
+        ],
+        "contextCaseRefs": [
+          "pab_pabInterventionsCompleted",
+          "dossier_primary_capitalExpenditureCommittedPerResident"
+        ],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "CUP e localizzazioni riconciliati, costi finali e cronoprogrammi",
+          "Collaudi, messa in esercizio, utenti e risultati",
+          "Avanzamento fisico, tempi, costi e collaudi per opera",
+          "Messa in esercizio, utilizzo e manutenzione",
+          "Indicatori prima/dopo e disegno di valutazione"
+        ]
+      },
+      "modules": [
+        {
+          "id": "investimenti/avanzamento-opere",
+          "title": "Avanzamento delle opere",
+          "question": "Quali progetti passano dal finanziamento alla messa in esercizio?",
+          "availableCaseRefs": [
+            "pnrr_pnrrFunding_total_046018",
+            "pnrr_pnrrConcluded_total_046018",
+            "distinct_works_current"
+          ],
+          "missingData": [
+            "Milestone fisiche, collaudi e messa in esercizio per opera"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "investimenti/risultati-opere",
+          "title": "Risultati delle opere",
+          "question": "Quali miglioramenti possono essere misurati dopo l’apertura?",
+          "availableCaseRefs": [
+            "pab_pabInterventionsCompleted"
+          ],
+          "missingData": [
+            "Baseline, utilizzo, manutenzione, esiti e disegno di valutazione"
+          ],
+          "relatedDossiers": [],
+          "stage": "additional_data_required",
+          "composition": "Gli stati amministrativi sono solo contesto. Occorrono misure dirette dei risultati e un disegno di valutazione; nessuna nuova composizione delle sole capacità attuali risolve la domanda.",
+          "evidenceRole": "context_only"
+        }
+      ],
+      "baselineQuestionRefs": [
+        "risorse-risultati"
+      ]
+    },
+    {
+      "id": "capacita",
+      "title": "Capacità amministrativa e digitale",
+      "centralQuestion": "Quali condizioni organizzative aiutano a rendere accessibili i servizi pubblici?",
+      "classification": "partially_supported",
+      "decisionProblem": "Dotazione, età e ricambio del personale segnalano capacità amministrative da approfondire? Digitalizzazione e connettività rendono i servizi più accessibili?",
+      "metricRefs": [
+        "municipalEmployeesPer1000",
+        "municipalStaffAgeStructure",
+        "municipalStaffTurnover",
+        "municipalStaffTraining",
+        "municipalOnlineServicesAdvanced",
+        "ftthCoverageDesi"
+      ],
+      "missingData": [
+        "Carichi per funzione, tempi, competenze e gestione associata",
+        "Utenti, completamenti, abbandoni e barriere digitali"
+      ],
+      "competences": "Comune: organizzazione e servizi locali; gestioni associate/fornitori nei rispettivi contratti, senza attribuire automaticamente responsabilità dai tassi.",
+      "optionsToInvestigate": "Approfondire semplificazione e accesso assistito prima di dedurre fabbisogni di organico.",
+      "monitoring": "Tempi, completamenti, errori e soddisfazione per servizio; stock del personale come contesto.",
+      "knowledgeValue": "Collega risorse organizzative e esperienza del cittadino senza assimilare personale a produttività.",
+      "relatedDossiers": [
+        "bilanci",
+        "welfare",
+        "partecipazione"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Collega risorse organizzative e esperienza del cittadino senza assimilare personale a produttività. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Quantità e formazione del personale descrivono capacità per funzione?",
+          "classification": "partially_supported",
+          "reason": "I risultati selezionati descrivono il contesto; Carichi per funzione, tempi, competenze e gestione associata impedisce di rispondere integralmente alla domanda."
+        },
+        {
+          "question": "Disponibilità online significa uso, accessibilità e completamento?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Utenti, completamenti, abbandoni e barriere digitali. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "capacita-1",
+          "question": "Dotazione, età e ricambio del personale segnalano capacità amministrative da approfondire?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "rgs_municipalEmployeesPer1000_total",
+            "rgs_municipalStaffAgeStructure_total",
+            "rgs_municipalStaffTurnover_total"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Descrivere dotazione e struttura del personale solo nei periodi acquisiti; non dedurre produttività o qualità del lavoro.",
+          "missingData": [
+            "Carichi, competenze e tempi dei procedimenti",
+            "Reclutamento e uscite per funzione"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "capacita-2",
+          "question": "Quali offerte digitali e condizioni di connettività sono osservabili, e che cosa manca per verificarne l’accessibilità?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "regional_municipalOnlineServicesAdvanced_current",
+            "connectivity_ftthCoverageDesi_046005"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Affiancare livello dei servizi online e copertura FTTH nello snapshot proprio. Sono condizioni di offerta: non misurano utilizzo, inclusione o riduzione dei tempi.",
+          "missingData": [
+            "Utenti, abbandoni, assistenza e accessibilità",
+            "Tempi/esiti delle pratiche e copertura effettiva"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "capacita-centrale",
+        "requiredCaseRefs": [
+          "rgs_municipalEmployeesPer1000_total",
+          "rgs_municipalStaffAgeStructure_total",
+          "rgs_municipalStaffTurnover_total",
+          "regional_municipalOnlineServicesAdvanced_current",
+          "connectivity_ftthCoverageDesi_046005"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Carichi per funzione, tempi, competenze e gestione associata",
+          "Utenti, completamenti, abbandoni e barriere digitali",
+          "Carichi, competenze e tempi dei procedimenti",
+          "Reclutamento e uscite per funzione",
+          "Utenti, abbandoni, assistenza e accessibilità",
+          "Tempi/esiti delle pratiche e copertura effettiva"
+        ]
+      },
+      "modules": [
+        {
+          "id": "capacita/approfondimento-1",
+          "title": "Dotazione, età e ricambio del personale segnalano capacità amministrative da approfondire?",
+          "question": "Dotazione, età e ricambio del personale segnalano capacità amministrative da approfondire?",
+          "availableCaseRefs": [
+            "rgs_municipalEmployeesPer1000_total",
+            "rgs_municipalStaffAgeStructure_total",
+            "rgs_municipalStaffTurnover_total"
+          ],
+          "missingData": [
+            "Carichi, competenze e tempi dei procedimenti",
+            "Reclutamento e uscite per funzione"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "capacita/approfondimento-2",
+          "title": "Quali offerte digitali e condizioni di connettività sono osservabili, e che cosa manca per verificarne l’accessibilità?",
+          "question": "Quali offerte digitali e condizioni di connettività sono osservabili, e che cosa manca per verificarne l’accessibilità?",
+          "availableCaseRefs": [
+            "regional_municipalOnlineServicesAdvanced_current",
+            "connectivity_ftthCoverageDesi_046005"
+          ],
+          "missingData": [
+            "Utenti, abbandoni, assistenza e accessibilità",
+            "Tempi/esiti delle pratiche e copertura effettiva"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "risorse-risultati"
+      ]
+    },
+    {
+      "id": "partecipazione",
+      "title": "Partecipazione, cultura e vita quotidiana",
+      "centralQuestion": "Quali forme di partecipazione e accesso culturale sono osservabili?",
+      "classification": "partially_supported",
+      "decisionProblem": "Quali segnali di partecipazione elettorale e accesso alla cultura sono osservabili? La rete civica e l’apertura dei servizi culturali bastano a descrivere la vita comunitaria?",
+      "metricRefs": [
+        "voterTurnout",
+        "libraryLoansPerResident",
+        "libraryActiveBorrowersPer100",
+        "libraryWeeklyOpeningHours",
+        "thirdSector",
+        "cultureSportMissionExpenditurePerResident",
+        "slowMobilityRoutes"
+      ],
+      "missingData": [
+        "Partecipazione non elettorale, accesso e barriere",
+        "Qualità percepita, uso degli spazi e copertura di gruppi"
+      ],
+      "competences": "Comune: servizi culturali e spazi di competenza; enti culturali/terzo settore e comunità come interlocutori, non campione automaticamente rappresentativo.",
+      "optionsToInvestigate": "Approfondire accesso a biblioteche, spazi e consultazioni senza dedurre consenso politico dai servizi.",
+      "monitoring": "Accessi e partecipazione per platea, barriere e qualità percepita; non aggregare quesiti o enti condivisi impropriamente.",
+      "knowledgeValue": "Distingue uso, partecipazione e qualità della vita senza un indice politico sintetico.",
+      "relatedDossiers": [
+        "capacita",
+        "welfare",
+        "mobilita"
+      ],
+      "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
+      "composition": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+      "pilotTier": "program_backlog",
+      "possibleInterpretation": "Distingue uso, partecipazione e qualità della vita senza un indice politico sintetico. La lettura di contesto non identifica ancora adeguatezza o effetto di interventi.",
+      "methodologicalChecks": [
+        {
+          "question": "Affluenza a consultazioni diverse è una stessa serie?",
+          "classification": "supported",
+          "reason": "No: il periodo è un identificativo di consultazione/quesito; elezioni e referendum diversi non costituiscono automaticamente una serie omogenea."
+        },
+        {
+          "question": "Sedi di enti e prestiti rappresentano inclusione o benessere?",
+          "classification": "not_determinable",
+          "reason": "Non determinabile dai dati acquisiti: Qualità percepita, uso degli spazi e copertura di gruppi. Nessuna stima sostitutiva è autorizzata."
+        }
+      ],
+      "secondaryQuestions": [
+        {
+          "id": "partecipazione-1",
+          "question": "Quali segnali di partecipazione elettorale e accesso alla cultura sono osservabili?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "turnout_total_046018",
+            "library_libraryLoansPerResident_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Tenere separati consultazioni e corpi elettorali da prestiti bibliotecari e utenti; non sintetizzare qualità della vita in un punteggio.",
+          "missingData": [
+            "Partecipazione a processi e barriere di accesso",
+            "Condizioni di vita e domanda culturale"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        },
+        {
+          "id": "partecipazione-2",
+          "question": "La rete civica e l’apertura dei servizi culturali bastano a descrivere la vita comunitaria?",
+          "classification": "partially_supported",
+          "requiredCaseRefs": [
+            "runts_total_046018",
+            "library_libraryWeeklyOpeningHours_current"
+          ],
+          "contextCaseRefs": [],
+          "answer": "Sedi legali e orari descrivono risorse potenziali; non misurano attività, beneficiari o soddisfazione.",
+          "missingData": [
+            "Attività e beneficiari, tariffe e accessibilità",
+            "Indagini imparziali sulla soddisfazione e inclusione"
+          ],
+          "reason": "La risposta è circoscritta alle componenti osservate; restano le lacune elencate."
+        }
+      ],
+      "centralPlan": {
+        "id": "partecipazione-centrale",
+        "requiredCaseRefs": [
+          "turnout_total_046018",
+          "library_libraryLoansPerResident_current",
+          "runts_total_046018",
+          "library_libraryWeeklyOpeningHours_current"
+        ],
+        "contextCaseRefs": [],
+        "answer": "Comporre risposte deterministiche separate, preservando periodi, universi, fonti, missing e rifiuti; nessuna fusione causale o aritmetica non autorizzata.",
+        "missingData": [
+          "Partecipazione non elettorale, accesso e barriere",
+          "Qualità percepita, uso degli spazi e copertura di gruppi",
+          "Partecipazione a processi e barriere di accesso",
+          "Condizioni di vita e domanda culturale",
+          "Attività e beneficiari, tariffe e accessibilità",
+          "Indagini imparziali sulla soddisfazione e inclusione"
+        ]
+      },
+      "modules": [
+        {
+          "id": "partecipazione/approfondimento-1",
+          "title": "Quali segnali di partecipazione elettorale e accesso alla cultura sono osservabili?",
+          "question": "Quali segnali di partecipazione elettorale e accesso alla cultura sono osservabili?",
+          "availableCaseRefs": [
+            "turnout_total_046018",
+            "library_libraryLoansPerResident_current"
+          ],
+          "missingData": [
+            "Partecipazione a processi e barriere di accesso",
+            "Condizioni di vita e domanda culturale"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        },
+        {
+          "id": "partecipazione/approfondimento-2",
+          "title": "La rete civica e l’apertura dei servizi culturali bastano a descrivere la vita comunitaria?",
+          "question": "La rete civica e l’apertura dei servizi culturali bastano a descrivere la vita comunitaria?",
+          "availableCaseRefs": [
+            "runts_total_046018",
+            "library_libraryWeeklyOpeningHours_current"
+          ],
+          "missingData": [
+            "Attività e beneficiari, tariffe e accessibilità",
+            "Indagini imparziali sulla soddisfazione e inclusione"
+          ],
+          "relatedDossiers": [],
+          "stage": "descriptive_components_available",
+          "composition": "Comporre le evidenze nei propri universi e periodi; verificare i fabbisogni prima di proporre interventi."
+        }
+      ],
+      "baselineQuestionRefs": [
+        "risorse-risultati"
+      ]
+    }
+  ]
+}

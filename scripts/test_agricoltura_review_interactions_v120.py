@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import subprocess
+import re
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -44,7 +45,13 @@ def main() -> None:
             page.wait_for_function("document.querySelector('#compare-bars button[data-scale=\"normalized\"]')?.classList.contains('active')")
             heading = page.locator("#compare-definition h2").inner_text().strip()
             assert "Quota" in heading and "superficie comunale" in heading, heading
-            first_value = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
+            first_value_normalized = page.locator("#compare-bars .bar-row strong").first
+            # The switch is active before ux-history/visual-grammar complete.
+            # fidelity.css intentionally hides those intermediate bars. Wait
+            # for the user-visible percentage, not just the switch's class.
+            expect(first_value_normalized).to_be_visible()
+            expect(first_value_normalized).to_have_text(re.compile(r".+%"), use_inner_text=True)
+            first_value = first_value_normalized.inner_text().strip()
             assert "%" in first_value, f"Lettura rapportata non applicata: {first_value}"
             raw.click()
             page.wait_for_function(

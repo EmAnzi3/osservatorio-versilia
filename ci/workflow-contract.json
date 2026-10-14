@@ -222,6 +222,11 @@
         "label": "Radar complete owner notifications",
         "script": "scripts/test_opportunity_owner_notification.py",
         "args": []
+      },
+      {
+        "label": "territorial dossier editorial structure",
+        "script": "scripts/test_territorial_dossier_program.py",
+        "args": []
       }
     ],
     "monitorRuntime": {

@@ -211,3 +211,7 @@ scripts/semantic_query_outside_municipality_adapters.py
 scripts/test_semantic_outside_municipality_adapters.py
 scripts/semantic_query_economy_atlas_adapters.py
 scripts/test_semantic_economy_atlas_adapters.py
+
+scripts/build_territorial_dossier_evidence.py
+scripts/territorial_dossier_editorial.py
+scripts/test_territorial_dossier_program.py

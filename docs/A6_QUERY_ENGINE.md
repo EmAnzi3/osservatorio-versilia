@@ -1,5 +1,7 @@
 # A6.4 — primo motore deterministico
 
+**Stato corrente — 13 ottobre 2026:** revisione metodologica #427 integrata, motore v56, 225/225 indicatori effettivi, 35 letture e due riepiloghi verificati. Chiusura amministrativa subordinata alla PR conclusiva approvata, mergiata e verificata; A7 NOT_STARTED. [Attestazione e limiti](A6_CLOSURE_AUDIT.md), [metodo riproducibile](A6_METHODOLOGICAL_REVIEW.md). Le sezioni di sviluppo/versione seguenti documentano i lotti storici: i vecchi conteggi e residui non descrivono la copertura corrente.
+
 ## Stato e perimetro
 
 Dopo #331, #332 e il merge manuale di #333 (`84bbadec`, deploy `37271484406` SUCCESS), il motore `scripts/semantic_query_engine.py` esegue query strutturate sui dati già pubblicati. Il motore supporta **residenti POSAS**, **reddito imponibile medio MEF** distribuzione per otto fasce d’età POSAS e quattro rapporti censuari: occupazione femminile/maschile 15–64 anni, abitazioni totali e non occupate da residenti ogni 1.000 abitanti. Dimensione `total`: i due indicatori di occupazione hanno già un universo per sesso esplicito; non sono un adapter generico dei carrier sesso. La copertura rimane parziale: A6.4 non è chiusa e non abilita A7 o nuove superfici pubbliche. Contratto A6.2–A6.3, interfaccia, dati e golden preservati.
