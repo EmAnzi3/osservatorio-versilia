@@ -34,7 +34,7 @@ pilot.resolve({caseId: 'child_year_conversion'}); // resolved + not_computable A
 
 La normalizzazione riguarda soltanto maiuscole, spazi, apostrofi e punteggiatura finale. Non è un interprete generale: «Come va il lavoro?» o una domanda causale non vengono trasformate silenziosamente in un indicatore. La scelta del piano non autorizza classifiche politiche, previsioni o raccomandazioni automatiche.
 
-`components` conserva query e risposta A6, comprese reasons, warnings, null, zero, esclusioni e campi condizionali. Un rifiuto prima di `assess()` rimane privo di coverage/formula/policy; un rifiuto successivo li può includere. `facts` è vuoto nei rifiuti. Le sole normalizzazioni dei percorsi riguardano il catalogo verificato: il percorso assoluto della macchina diventa `sha256:<hash>`, senza cambiare snapshot fonte, puntatori, hash o valori.
+`components` conserva query e risposta A6, comprese reasons, warnings, null, zero, esclusioni e campi condizionali. Il consenso è richiesto anche se la query non contiene `allowPartial` ma la risposta dichiara copertura parziale o un rifiuto `partial_coverage_requires_opt_in`: un rifiuto A6 può conservare osservazioni numeriche. Dopo il consenso il rifiuto resta `not_computable`, senza generare frasi numeriche o nuovi calcoli. Un rifiuto prima di `assess()` rimane privo di coverage/formula/policy; un rifiuto successivo li può includere. `facts` è vuoto nei rifiuti. Le sole normalizzazioni dei percorsi riguardano il catalogo verificato: il percorso assoluto della macchina diventa `sha256:<hash>`, senza cambiare snapshot fonte, puntatori, hash o valori.
 
 ## Integrità, cache e sicurezza
 

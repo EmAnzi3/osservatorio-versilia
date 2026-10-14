@@ -11,7 +11,7 @@
 
 Il proprietario ha autorizzato la prova statica sui due dossier Massarosa. Branch `experiment/a7-static-pilot`; specifica `docs/A7_STATIC_PILOT.md`. Il builder usa piani/casi canonici e motore Python originale; il lettore ES module consulta i risultati offline. Scope con soli riferimenti, senza un catalogo parallelo.
 
-Sei domande curate, 13 calcoli e tre rifiuti pertinenti. Richieste esatte o selezioni per ID; chiarimento per altro testo, consenso esplicito per copertura parziale. Ogni fatto numerico ha un puntatore alla risposta A6 e citazioni; classificazione parziale, periodi, universi, null/zero, esclusioni e campi condizionali dei rifiuti restano distinti. Bundle e release identificati da hash; output derivati e misure sono artefatti di verifica, non dati canonici.
+Sei domande curate, 13 calcoli e tre rifiuti pertinenti. Richieste esatte o selezioni per ID; chiarimento per altro testo, consenso esplicito per copertura parziale anche nei rifiuti A6 che conservano osservazioni numeriche. Il consenso non promuove il rifiuto a calcolo. Ogni fatto numerico ha un puntatore alla risposta A6 e citazioni; classificazione parziale, periodi, universi, null/zero, esclusioni e campi condizionali dei rifiuti restano distinti. Bundle e release identificati da hash; output derivati e misure sono artefatti di verifica, non dati canonici.
 
 A7 IN_PROGRESS nel candidato: A7.1–A7.4 provati soltanto su questo perimetro; nessuno step è dichiarato DONE. UI, modelli e servizi esterni non introdotti e architettura definitiva non selezionata. Dati, adapter, interfacce, dossier approvati e golden invariati.
 

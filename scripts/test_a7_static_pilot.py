@@ -86,12 +86,18 @@ def verify(catalog, output):
                     const early = pilot.resolve({caseId:'child_year_conversion'});
                     const partial = pilot.resolve({questionId:'infanzia-2'});
                     const accepted = pilot.resolve({questionId:'infanzia-2',approvedPartial:true});
-                    return {loadMilliseconds, work, early, partial, accepted};
+                    const refusedPartial = pilot.resolve({caseId:'invalsi_invalsiImplicitDispersion_partial_refused'});
+                    const refusedConfirmed = pilot.resolve({caseId:'invalsi_invalsiImplicitDispersion_partial_refused',approvedPartial:true});
+                    return {loadMilliseconds, work, early, partial, accepted, refusedPartial, refusedConfirmed};
                 }''', dict(text=encode(bundle), release=release))
                 assert browser_result['work'] == browser_reference, 'browser/Node envelope differs'
                 assert browser_result['early']['components'][0]['response'] == bundle['cases']['child_year_conversion']['response']
                 assert browser_result['partial']['resolution'] == 'needs_confirmation'
                 assert browser_result['accepted']['classification'] == 'partially_supported'
+                assert browser_result['refusedPartial']['resolution'] == 'needs_confirmation'
+                assert 'components' not in browser_result['refusedPartial']
+                assert browser_result['refusedConfirmed']['classification'] == 'not_computable'
+                assert browser_result['refusedConfirmed']['components'][0]['response'] == bundle['cases']['invalsi_invalsiImplicitDispersion_partial_refused']['response']
                 browser_measurement = dict(environment=browser.version, loadMilliseconds=browser_result['loadMilliseconds'],
                                            scope='Local headless Chromium; not a mobile/network benchmark', status='PASS')
             finally:

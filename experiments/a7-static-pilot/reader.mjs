@@ -45,7 +45,13 @@ export async function loadPilot(text, trustedRelease) {
       if (scoped.length !== 1) return boundary(modes[0] === 'questionId' ? 'out_of_scope' : 'needs_clarification', 'select_a_verified_question', input.dossierId);
       q = scoped[0]; ids = [...q.requiredCaseRefs, ...q.contextCaseRefs]; classification = q.classification;
     }
-    const partial = ids.filter(cid => bundle.cases[cid].query.allowPartial === true);
+    const partial = ids.filter(cid => {
+      const c = bundle.cases[cid], r = c.response, coverage = r.coverage;
+      // A6 can refuse partial computation while retaining numeric observations.
+      // Consent protects those observations as well; it never upgrades a refusal.
+      return c.query.allowPartial === true || r.reasons.includes('partial_coverage_requires_opt_in') ||
+        (coverage?.usable > 0 && coverage.usable < coverage.requested && r.observations.some(o => Number.isFinite(o.value)));
+    });
     if (partial.length && input.approvedPartial !== true) return { ...boundary('needs_confirmation', 'partial_coverage_requires_explicit_consent', q?.dossierId), affectedCaseIds: partial };
     return copy({ schemaVersion: 1, resolution: 'resolved', classification,
       cacheKey: `${digest}/${modes[0]}/${q?.id || input.caseId}/${input.approvedPartial === true}`,
