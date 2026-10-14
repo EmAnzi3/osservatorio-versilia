@@ -8,7 +8,7 @@ const detail = (title, value) => {const d=node('details');d.append(node('summary
 // Snapshot links stay on a pinned, reviewed repository commit. Never accept URLs
 // from questions or source strings; only canonical repository-relative paths.
 const repositoryPath = path => typeof path==='string' && /^(docs|data)\/[A-Za-z0-9_./-]+$/u.test(path) && !path.split('/').includes('..');
-const repoLink = (path,text) => {if(!repositoryPath(path))return node('span',text);const a=node('a',text);a.href=`https://github.com/EmAnzi3/osservatorio-versilia/blob/${release.repositoryCommit}/${path}`;return a;};
+const repoLink = (path,text,directory=false) => {if(!repositoryPath(path))return node('span',text);const a=node('a',text);a.href=`https://github.com/EmAnzi3/osservatorio-versilia/${directory?'tree':'blob'}/${release.repositoryCommit}/${path}`;return a;};
 let pilot, choices, pending;
 function reset(){pending=null;$('consenso').hidden=true;$('risposta').hidden=true;$('risposta').replaceChildren();}
 function questions(){reset();$('domanda').replaceChildren();for(const q of choices.filter(q=>q.dossierId===$('dossier').value)){const o=node('option',q.question);o.value=q.questionId;$('domanda').append(o);}$('stato').textContent='Scegli una domanda e apri le sue evidenze.';}
@@ -25,9 +25,9 @@ function present(answer){
     if(c.response.coverage)section.append(node('p',`Copertura: ${c.response.coverage.usable} osservazioni utilizzabili su ${c.response.coverage.requested} richieste.`));
     if(c.response.status!=='computed')section.append(node('p','Il motore ha rifiutato questa operazione. Il consenso non modifica il rifiuto.'));
     const ul=node('ul',undefined,'facts');
-    for(const f of c.facts){const li=node('li');li.append(node('p',f.text));
+    for(const f of c.facts){const li=node('li');li.append(node('p',f.text));if(f.kind==='result')li.append(node('p','Perimetro del risultato (codici ISTAT): '+f.geographies.join(', ')+'.','meta'));
       const dl=node('dl');for(const [key,value] of [['Periodo',f.period],['Universo',f.population],['Definizione',f.definition],['Metodo',f.method],['Fonte',f.source]])if(value!==undefined){dl.append(node('dt',key),node('dd',typeof value==='string'?value:JSON.stringify(value)));}const provenance=node('details');provenance.append(node('summary','Fonte, universo e metodo'),dl);li.append(provenance);
-      for(const e of f.evidence){if(e.path&&repositoryPath(e.path)){const p=node('p',undefined,'meta');p.append(repoLink(e.path,'Snapshot della fonte'),node('span',` · SHA256 ${e.sha256||'non presente'} · puntatore ${e.recordPointer||e.valuePointer||e.jsonPointer||'vedi evidenza completa'}`));provenance.append(p);}}
+      for(const e of f.evidence){if(e.path&&repositoryPath(e.path)){const p=node('p',undefined,'meta');p.append(repoLink(e.path,'Snapshot della fonte',e.encoding==='concatenate_ascii_base64_gzip_json'),node('span',` · SHA256 ${e.sha256||'non presente'} · puntatore ${e.recordPointer||e.valuePointer||e.jsonPointer||'vedi evidenza completa'}`));provenance.append(p);}}
       li.append(node('p',`Riferimento verificabile: ${c.caseId}${f.responsePointer}`,'meta'));ul.append(li);
     }section.append(ul);
     // Original codes stay visible, accompanied by the complete original response.

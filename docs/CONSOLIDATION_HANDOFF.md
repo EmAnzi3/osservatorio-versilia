@@ -2,7 +2,7 @@
 
 ## Baseline integrata
 
-- Main integrata: `ae1249784c6e3ba25a99da52cc35780049a88380`, tree `77d24913d6603c63461abd8f080442fa16beb55f`, merge del proprietario della #432 il 14 ottobre 2026. Albero identico al candidato con Quick→Full locali e CI/A3 PASS; pubblicazione e live da attestare nella #432 con gli esiti effettivi. I job push skipped non sono nuovi PASS.
+- Main integrata: `ae1249784c6e3ba25a99da52cc35780049a88380`, tree `77d24913d6603c63461abd8f080442fa16beb55f`, merge del proprietario della #432 il 14 ottobre 2026. Albero identico al candidato con Quick→Full locali e CI/A3 PASS; deploy `38629658417` e live `38631526143` PASS sul commit integrato, attestati nella #432. I job push skipped non sono nuovi PASS.
 - A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese, distinto da ASIA e dalle righe dirette ATECO. Catalogo sorgente 166/181 distinto dall'effettivo. Nessuna riapertura o modifica A6.
 - #430 integrata: 17 ambiti, 45 sotto-dossier, 51 piani collegati alle evidenze, 20 domande A6 preservate, sei specifiche pilota e due dimostrazioni Massarosa. 295 richieste (201 calcoli/94 rifiuti), sei documenti riprodotti. Non sono 51 dossier completi.
 - Limiti, rifiuti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Nessuna manutenzione Radar in questo lotto.
@@ -19,7 +19,7 @@ A7 IN_PROGRESS: A7.1–A7.4 provati soltanto su questo perimetro; nessuno step �
 
 Verifiche mirate su aspettative indipendenti, provenance, frasi ancorate, input alterati, cache, null/zero, rifiuti e parità Node/browser. Gate A7 sul catalogo effettivo nel Quick ordinario, dichiarato nel contratto workflow. Quick→Full locali obbligatori in sequenza sul medesimo albero, poi CI Quick→Full e A3 sullo stesso candidato. Stato, commit e log effettivi nella PR: nessun verde della baseline sostituisce questi gate.
 
-Dopo il via del proprietario successivo al merge #432: branch `experiment/a7-dossier-preview`, prima preview navigabile isolata sui due dossier e sulle sei domande esistenti. Specifica `docs/A7_DOSSIER_PREVIEW.md`. Nessuna route o modifica al sito pubblico: la preview serve alla revisione di utilità, fonti, limiti e consenso. Gate browser integrato nel test A7 esistente; Quick→Full locali e CI/A3 sullo stesso candidato prima della prontezza al merge. Nuova PR Draft fino alla verifica browser locale; integrazione pubblica, servizi e modelli restano decisioni successive.
+Dopo il via del proprietario successivo al merge #432: branch `experiment/a7-dossier-preview`, prima preview navigabile isolata sui due dossier e sulle sei domande esistenti. Specifica `docs/A7_DOSSIER_PREVIEW.md`. Nessuna route o modifica al sito pubblico: la preview serve alla revisione di utilità, fonti, limiti e consenso. Commit dei link risolto in Git e riconciliato con programma, dossier e hash snapshot, inclusi sorgenti ricostruiti. P2 corretto; il Full locale della prima head interrotto non vale PASS. Gate browser integrato nel test A7 esistente; Quick→Full locali e CI/A3 sullo stesso candidato prima della prontezza al merge. Nuova PR Draft fino alla verifica browser locale; integrazione pubblica, servizi e modelli restano decisioni successive.
 
 ## Limiti
 
