@@ -258,6 +258,7 @@ def quick(*, plan: bool = False) -> None:
 
     run_python("build pre-rendered site", "scripts/build_static_brand.py", plan=plan)
     run_python("A3 publication contract", "scripts/test_a3_publication_contract.py", plan=plan)
+    run_python("territorial dossier evidence and editorial reproduction", "scripts/test_territorial_dossier_program.py", "--catalog", "dist/data/site-data.json", plan=plan)
     git_source_clean(plan=plan)
     run_python("composite indicators fail-fast", "scripts/test_composite_indicators.py", plan=plan)
     run_python("visual grammar fail-fast", "scripts/test_visual_grammar.py", plan=plan)
