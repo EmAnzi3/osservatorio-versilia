@@ -71,7 +71,7 @@ def safe_name(route: str) -> str:
 
 
 def wait_for_page(page: Page) -> None:
-    page.wait_for_function("document.fonts ? document.fonts.status === 'loaded' : true")
+    page.wait_for_function("() => document.fonts ? document.fonts.status === 'loaded' : true")
     # Due frame sono sufficienti per applicare layout e rendering client-side senza pagare
     # il costo di networkidle su centinaia di route statiche.
     page.evaluate(

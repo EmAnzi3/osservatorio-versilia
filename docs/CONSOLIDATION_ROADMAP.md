@@ -232,11 +232,11 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — prima prova tecnica statica #432 e preview navigabile isolata #433 integrate; accesso per domanda scritta e download verificabile in preparazione.
+**Stato:** `IN_PROGRESS` — prova statica #432, preview isolata #433 e domanda scritta/download verificabile #434 integrati. In revisione la prima pagina pubblica guidata, ancora da approvare e pubblicare.
 
 Scopo: aggiungere linguaggio naturale solo sopra un layer semantico già governato.
 
-Prima prova circoscritta: `docs/A7_STATIC_PILOT.md`, dossier Massarosa lavoro/infanzia-scuola, domande curate e risposte precalcolate dal motore A6 originale. La preview navigabile isolata della #433 (`docs/A7_DOSSIER_PREVIEW.md`) rende revisionabili queste risposte. Il successivo incremento riusa il lettore approvato per riconoscere il testo delle domande curate, chiedere una scelta esplicita per le altre richieste ed esportare risposta e provenienza originali; rimane isolato dal sito pubblico. Interpretazione libera, integrazione UI pubblica e architettura definitiva rimangono da decidere; nessun punto A7 è dichiarato completato da questa prova.
+Prima prova circoscritta: `docs/A7_STATIC_PILOT.md`, dossier Massarosa lavoro/infanzia-scuola, domande curate e risposte precalcolate dal motore A6 originale. La preview (`docs/A7_DOSSIER_PREVIEW.md`) riusa il lettore approvato per riconoscere le domande curate, chiarire le altre richieste ed esportare risposta e provenienza originali. La nuova integrazione candidata `/chiedi/`, descritta in `docs/A7_PUBLIC_GUIDED_PAGE.md`, applica shell e contratti pubblici agli stessi contenuti senza modificare i percorsi approvati. Accesso iniziale tramite URL e sitemap, nessuna nuova voce globale; pubblicazione solo dopo revisione e merge del proprietario. Interpretazione libera, ulteriori dossier e architettura definitiva rimangono distinti. Nessun punto A7 è dichiarato completato da questa prova.
 
 - [ ] **A7.1** Tradurre la domanda utente in operazioni consentite dal motore semantico.
 - [ ] **A7.2** Vietare risposte che inventino metriche, periodi o relazioni assenti.

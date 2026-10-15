@@ -25,6 +25,7 @@
       "segnala/index.html"
     ],
     "standalone": [
+      "chiedi/index.html",
       "confronta/meteo-clima/index.html",
       "pnrr/index.html",
       "stato-dati/index.html",
@@ -33,6 +34,7 @@
       "percorsi/metodo.html"
     ],
     "builderTraceExceptions": [
+      "chiedi/index.html",
       "confronta/meteo-clima/index.html",
       "confronta/economia/atlante-attivita-economiche/index.html",
       "confronta/comunita/affluenza/index.html",

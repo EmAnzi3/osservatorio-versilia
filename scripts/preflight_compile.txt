@@ -219,4 +219,6 @@ scripts/build_a7_static_pilot.py
 scripts/test_a7_static_pilot.py
 
 scripts/build_a7_dossier_preview.py
+scripts/build_a7_public_page.py
+scripts/a7_public_release.py
 scripts/test_a7_dossier_preview.py
