@@ -257,6 +257,10 @@ def verify_public_page(bundle, release, dist, output):
                     open_page(page,origin,'chiedi/');wait_for_page(page);page.locator('#mostra:enabled').wait_for()
                     page.evaluate('scrollTo(0,0)')
                     assert page.locator('.site-header').is_visible() and page.locator('.site-footer').count()==1
+                    for selector in ['#domanda-testo','#dossier','#domanda','#testo','#selezione']:
+                        target=page.locator(selector) if selector.startswith('#d') else page.locator(selector).locator('..')
+                        assert target.evaluate('(el)=>getComputedStyle(el).backgroundColor')=='rgb(255, 255, 255)',selector
+                    assert 'hero-project.svg' in page.locator('.a7-hero').evaluate('(el)=>getComputedStyle(el).backgroundImage')
                     page.locator('.global-search-trigger').click();page.locator('.search-overlay').wait_for()
                     page.keyboard.press('Escape');page.locator('.search-overlay').wait_for(state='hidden')
                     before=page.evaluate('JSON.stringify([Object.entries(localStorage),Object.entries(sessionStorage)])')
@@ -268,15 +272,25 @@ def verify_public_page(bundle, release, dist, output):
                         page.locator('#domanda-testo').fill(q['question']);page.locator('#verifica-testo').click()
                         if page.locator('#consenso').is_visible():page.locator('#accetta').click()
                         assert page.locator('#risposta h2').inner_text()==q['question']
+                        assert page.locator('#a7-selected-question').inner_text()==q['question']
                         page.wait_for_function("() => {const r=document.querySelector('#risposta h2').getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return r.top>=h.bottom && r.bottom<=innerHeight;}")
                         text=page.locator('#risposta').inner_text()
-                        assert q['answerBoundary'] in text and q['interpretationLimit'] in text
+                        assert q['interpretationLimit'] in text
+                        assert q['answerBoundary'] in page.locator('#risposta').text_content()
                         for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
-                            for fact in bundle['cases'][cid]['facts']:assert fact['text'] in text
+                            for fact in bundle['cases'][cid]['facts']:
+                                assert fact['text'].replace('persone/addetti secondo definizione.','persone.') in text
                         with page.expect_download() as got:page.locator('#esporta-risposta').click()
                         data=json.loads(Path(got.value.path()).read_text())
                         replay=page.evaluate('''async ({data,relative})=>{const {loadPilot}=await import('./'+relative+'reader.mjs');return(await loadPilot(await(await fetch('./'+relative+'bundle.json')).text(),data.answer.release)).resolve(data.request);}''',dict(data=data,relative=relative))
                         assert data['answer']==replay and data['repositoryCommit']==public_release['repositoryCommit']
+                        technical=page.locator('#risposta [data-a7-technical]')
+                        assert not technical.evaluate('(el)=>el.open')
+                        assert json.loads(technical.locator('pre').text_content())==data['answer']
+                        for token in ['resident population','SHA256','cacheKey','/observations/','frame_and_asia_universes_differ']:
+                            assert token not in text, 'technical field leaked into public reading: '+token
+                        technical.locator('summary').click();assert technical.locator('pre').is_visible()
+                        technical.locator('summary').click()
                         assert data['answer']['components']==[dict(caseId=cid,**bundle['cases'][cid]) for cid in q['requiredCaseRefs']+q['contextCaseRefs']]
                         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'public page overflow'
                         report['questions'].append({'id':q['id'],'width':width,'status':'PASS'})
@@ -305,7 +319,7 @@ def verify_public_page(bundle, release, dist, output):
                     page.close();overrides.clear();blocked.clear();report['checks'].append(mode+'_bundle_fail_closed_with_shell_available')
                 page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
                 assert page.locator('noscript a[href="'+relative+'answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
-                page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle']
+                page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export']
                 assert (dist/'service-worker.js').read_bytes()==(ROOT/'service-worker.js').read_bytes()
                 context=browser.new_context()
                 # Routing disables HTTP caching: exercise the actual HTTP cache.

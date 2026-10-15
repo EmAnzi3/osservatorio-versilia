@@ -22,3 +22,31 @@
 .a7-guided textarea{resize:vertical;min-height:7rem}.a7-guided #alternative{display:grid;gap:.6rem}.a7-guided #alternative button{margin:0;text-align:left}.a7-guided #chiarimento{border-left:4px solid #527e88}
 .a7-guided #risposta,.a7-guided #titolo-chiarimento{scroll-margin-block-start:6rem}
 @media(max-width:540px){.a7-guided{padding-inline:1rem}.a7-guided section,.a7-guided article{padding:1rem}.a7-guided button{width:100%;margin-right:0}.a7-guided select{font-size:1rem}.a7-guided .component{padding:.8rem}}
+/* Public reading: white controls, an OV editorial banner and plain-language data. */
+.a7-guided{max-width:1160px}
+.a7-guided section,.a7-guided article,.a7-guided select,.a7-guided textarea,.a7-guided option{background:#fff}
+.a7-guided .a7-hero{position:relative;overflow:hidden;min-height:340px;margin:1.2rem 0 2rem;padding:3rem 2.5rem;border-radius:0;color:#fff;background:linear-gradient(90deg,rgba(12,36,52,.98),rgba(12,36,52,.88) 48%,rgba(12,36,52,.12)),url('../../../assets/hero-project.svg') center/cover no-repeat}
+.a7-guided .a7-hero h1{font-size:clamp(2.5rem,5vw,4rem);max-width:18ch;margin:.7rem 0 1rem;color:#fff;letter-spacing:-.045em}
+.a7-guided .a7-hero .eyebrow{color:#a9d8ce;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+.a7-guided .a7-hero h1+p{font-size:1.2rem;max-width:48ch;color:#edf5fa;line-height:1.6}
+.a7-guided .a7-hero .notice{max-width:62ch;margin-top:1.3rem;padding:0;border:0;background:transparent;color:#d9e8ef;font-size:.94rem}
+.a7-guided .a7-how{margin-top:1.5rem;color:#a9d8ce;font-size:.87rem;font-weight:650}
+.a7-guided h2{font-size:1.4rem;font-weight:700;letter-spacing:-.025em;margin-bottom:.8rem}
+.a7-guided h3{font-size:1.2rem;font-weight:700;margin-top:1.5rem;margin-bottom:.7rem}
+.a7-guided h4{font-size:1.05rem;font-weight:700;margin-bottom:1rem}
+.a7-guided .a7-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:stretch}
+.a7-guided .a7-question-grid>section{box-shadow:0 8px 25px #16344a08;border-top:4px solid #477f86}
+.a7-guided #aiuto-testo,.a7-guided #selezione+p{font-size:.93rem;color:#405968;margin-top:.7rem}
+.a7-guided .component{background:#fff;border:1px solid #cbdce2;border-left:4px solid #477f86;box-shadow:0 4px 18px #16344a05}
+.a7-guided .facts{list-style:none;padding:0;margin:0}
+.a7-guided .facts li{border-top:1px solid #e0e9ed;padding-top:1rem;margin-bottom:1rem}
+.a7-guided .facts li:first-child{border-top:0;padding-top:0}
+.a7-guided .a7-fact{font-size:1.12rem;font-weight:600;line-height:1.55}
+.a7-guided .a7-source,.a7-guided .a7-scope{font-size:.92rem;color:#405968;margin-top:.4rem}
+.a7-guided .a7-source a{font-weight:650;text-decoration:underline}
+.a7-guided .a7-answer-intro{font-size:1.1rem;margin:1.2rem 0 1.5rem;max-width:74ch}
+.a7-guided .a7-coverage{padding:.7rem;background:#fff5df;border-radius:6px;margin:.7rem 0}
+.a7-guided [data-a7-technical]{margin:1.5rem 0;color:#405968}
+@media(max-width:700px){.a7-guided .a7-question-grid{grid-template-columns:1fr}.a7-guided .a7-hero{padding:2rem 1.3rem;min-height:360px;background-position:60% center}.a7-guided .a7-hero h1{font-size:2.6rem}.a7-guided .a7-hero h1+p{font-size:1.08rem}.a7-guided .a7-how{line-height:1.8}}
+
+.a7-guided .a7-selected-question{font-size:.96rem;line-height:1.6;margin-top:.7rem;color:#244e58;font-weight:600}

@@ -40,3 +40,5 @@ Il gate A7 esistente esegue anche la preview reale, domande scritte normalizzate
 Il browser verifica etichette, tastiera e focus dei controlli nativi; questo non certifica una revisione completa con tecnologie assistive. Le soglie Lighthouse e i 40 golden pubblici restano invariati. La preview non aggiunge una famiglia al contratto delle route perché non viene pubblicata; una futura integrazione deve dichiararla esplicitamente e preservare shell, ricerca, Stato dati e regole tematiche.
 
 Prima dell'integrazione pubblica il proprietario valuta leggibilità, pertinenza delle sei domande e chiarezza dei dati parziali. L'integrazione candidata è descritta separatamente in `A7_PUBLIC_GUIDED_PAGE.md`; questo builder continua a produrre una preview isolata. L'architettura definitiva e l'eventuale interpretazione libera restano aperte. Questa preview non conclude A7.5 o la Definition of Done di A7.
+
+La pagina pubblica può registrare un renderer di sola presentazione nel modulo UI. La preview isolata conserva la resa originaria; selezione, consenso, revoca, lettore e download non vengono sostituiti. La documentazione della resa pubblica è in `A7_PUBLIC_GUIDED_PAGE.md`.

@@ -48,8 +48,30 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     hero.name = 'section'
     hero['class'] = ['a7-hero']
     hero.h1.string = 'Chiedi alla Versilia'
-    hero.select_one('.eyebrow').string = 'Percorsi guidati · Massarosa'
-    hero.select_one('.notice').string = 'Primi percorsi sperimentali: Massarosa, lavoro e infanzia/scuola. Le evidenze si riferiscono ai periodi indicati, non automaticamente alla situazione di oggi.'
+    hero.select_one('.eyebrow').string = 'Conoscere il territorio, una domanda alla volta'
+    hero.select_one('h1 + p').string = 'Lavoro, famiglie, scuola: parti dalle tue domande e scopri che cosa raccontano i dati di Massarosa.'
+    hero.select_one('.notice').string = 'Si parte da Massarosa: lavoro e infanzia/scuola. Ogni lettura indica a quale periodo si riferiscono i dati e che cosa resta da approfondire.'
+    for selector, text in {
+        '#scrivi':'Da dove vuoi partire?',
+        'label[for=domanda-testo]':'Scrivi la tua domanda',
+        '#aiuto-testo':'Scrivi ciò che ti interessa: ti aiutiamo a scegliere fra le domande disponibili qui sotto.',
+        '#verifica-testo':'Trova un percorso',
+        '#scegli':'Lasciati guidare dalle domande',
+        'label[for=dossier]':'Di cosa vuoi sapere di più?',
+        'label[for=domanda]':'Scegli una domanda',
+        '#mostra':'Scopri cosa dicono i dati',
+        '#titolo-consenso':'Prima di proseguire',
+        '#accetta':'Prosegui con questi limiti',
+    }.items(): original.select_one(selector).string=text
+    original.select_one('#domanda-testo')['placeholder']='Per esempio: come cambia il lavoro a Massarosa?'
+    original.select_one('#selezione + p').string='Questi primi percorsi riguardano lavoro e infanzia/scuola a Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
+    original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
+    original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
+    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Scegli una domanda · Esplora i dati · Approfondisci le fonti';hero.append(local_note)
+    grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
+    original.main.insert(0,grid)
+    grid.append(original.select_one('#scrivi').parent)
+    grid.append(original.select_one('#scegli').parent)
     local_footer = original.footer
     local_footer.name = 'section'
     local_footer['aria-label'] = 'Limiti delle letture'
