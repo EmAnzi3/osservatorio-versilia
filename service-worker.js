@@ -97,6 +97,13 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // The guided answer release and bundle must refresh together. A cached
+  // mismatch still fails closed in the original reader, including offline.
+  if (/\/chiedi\/(?:bundle\.json|release\.mjs|reader\.mjs|preview\.mjs)$/.test(url.pathname)) {
+    event.respondWith(networkFirst(request).catch(() => caches.match(request, { ignoreSearch: true })));
+    return;
+  }
+
   // I moduli app-parts sono codice JavaScript anche se hanno estensione .txt:
   // devono aggiornarsi insieme all'HTML e agli altri asset applicativi.
   if (

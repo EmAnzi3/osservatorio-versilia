@@ -151,3 +151,7 @@ if __name__ == "__main__":
             _ORIGINAL_RUN_PATH(str(IMPLEMENTATION), run_name="__main__")
         finally:
             runpy.run_path = _ORIGINAL_RUN_PATH
+    # Provenance must read the restored canonical snapshots, never temporary
+    # materialization overlays. Only derived dist/ is written by the A7 step.
+    from build_a7_public_page import build as build_a7_public_page
+    build_a7_public_page(DIST)

@@ -44,7 +44,7 @@ def open_page(page: Page, base: str, route: str) -> None:
     page.mouse.move(0, 0)
     page.goto(urljoin(base, route), wait_until="domcontentloaded")
     page.wait_for_selector(".site-header .global-search-trigger", state="visible")
-    page.wait_for_function("document.fonts ? document.fonts.status === 'loaded' : true")
+    page.wait_for_function("() => document.fonts ? document.fonts.status === 'loaded' : true")
     # Alcune route rimontano la shell subito dopo DOMContentLoaded. Aspettiamo il
     # remount e richiediamo nuovamente l'header visibile prima delle misure.
     page.wait_for_timeout(350)

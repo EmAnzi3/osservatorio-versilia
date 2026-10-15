@@ -3,14 +3,18 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import re
 import sys
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 TOWNS = ("camaiore", "forte-dei-marmi", "massarosa", "pietrasanta", "seravezza", "stazzema", "viareggio")
-STATIC_ROUTES = ("/stato-dati/", "/pnrr/", "/percorsi/")
+STATIC_ROUTES = ("/stato-dati/", "/pnrr/", "/percorsi/", "/chiedi/")
 STATIC_MARKERS = {
+    "/chiedi/": ('data-page="special"', 'id="a7-guided"', 'Chiedi alla Versilia', 'preview.mjs'),
     "/stato-dati/": ('data-page="status"', "Stato dei dati."),
     "/percorsi/": ('data-page="special"', "Percorsi e mobilità lenta"),
 }
@@ -20,6 +24,20 @@ PNRR_MARKERS = {
     "/comuni/massarosa/": ("pnrr-town-detail.js",),
 }
 REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", "assets/pnrr-deep-dive.css")
+A7_ASSETS = ('chiedi/bundle.json', 'chiedi/release.mjs', 'chiedi/reader.mjs', 'chiedi/preview.mjs', 'chiedi/public.css', 'chiedi/answers.md')
+
+
+def validate_a7(read, failures: list[str]) -> None:
+    """Require the complete guided reader and hash-consistent frozen bundle."""
+    try:
+        values = {path: read(path) for path in A7_ASSETS}
+        require(all(values.values()), 'asset A7 vuoto', failures)
+        release = json.loads(values['chiedi/release.mjs'].removeprefix('export default ').strip().removesuffix(';'))
+        require(bool(re.fullmatch(r'[a-f0-9]{40}', release.get('repositoryCommit', ''))), 'commit fonti A7 non valido', failures)
+        require(hashlib.sha256(values['chiedi/bundle.json'].encode()).hexdigest() == release['bundleSha256'], 'bundle A7 diverso dalla release', failures)
+        require(hashlib.sha256(values['chiedi/reader.mjs'].encode()).hexdigest() == release['readerSha256'], 'lettore A7 diverso dalla release', failures)
+    except (OSError, URLError, TimeoutError, RuntimeError, UnicodeDecodeError, ValueError, KeyError) as exc:
+        failures.append(f'asset A7 non verificabili: {exc}')
 
 
 def require(condition: bool, message: str, failures: list[str]) -> None:
@@ -51,6 +69,7 @@ def validate_dist(root: Path) -> list[str]:
     if (root / "pnrr" / "index.html").is_file():
         content = (root / "pnrr" / "index.html").read_text(encoding="utf-8")
         require("pnrr-deep-dive.css" in content, "stile PNRR assente", failures)
+    validate_a7(lambda path: (root / path).read_text(encoding='utf-8'), failures)
     return failures
 
 
@@ -76,6 +95,7 @@ def validate_live(base_url: str) -> list[str]:
                 require("pnrr-town-detail.js" in content, f"dettaglio PNRR live assente in {route}", failures)
         except (URLError, TimeoutError, RuntimeError, UnicodeDecodeError) as exc:
             failures.append(f"{route}: {exc}")
+    validate_a7(lambda path: fetch(base + '/' + path), failures)
     return failures
 
 
@@ -91,7 +111,7 @@ def main() -> int:
         for failure in failures:
             print(f"- {failure}", file=sys.stderr)
         return 1
-    print("Public site integrity PASS: Stato dati, PNRR, Percorsi e dettagli PNRR comunali/tematici presenti.")
+    print("Public site integrity PASS: Stato dati, PNRR, Percorsi, Chiedi con asset/hash e dettagli PNRR comunali/tematici presenti.")
     return 0
 
 

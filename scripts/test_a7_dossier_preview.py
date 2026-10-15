@@ -195,3 +195,133 @@ def verify_preview(bundle, release, output):
         finally:server.shutdown();server.server_close();thread.join()
     (output/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     return report
+
+
+def verify_public_page(bundle, release, dist, output):
+    """Exercise the emitted public page and its shared runtime, not a mock shell."""
+    from playwright.sync_api import sync_playwright
+    from site_chrome import assert_navigation_contract
+    from test_browser_quality_gate import wait_for_page
+    from test_site_chrome_browser import open_page
+    from bs4 import BeautifulSoup
+    dist=Path(dist);output=Path(output);output.mkdir(parents=True,exist_ok=True)
+    folder=dist/'chiedi'
+    document=BeautifulSoup((folder/'index.html').read_text(),'html.parser')
+    assert_navigation_contract(str(document.select_one('#site-header-mount')),str(document.select_one('#site-footer-mount')))
+    assert document.select_one('link[rel="canonical"]')['href']=='https://osservatorioversilia.it/chiedi/'
+    assert (dist/'sitemap.xml').read_text().count('https://osservatorioversilia.it/chiedi/')==1
+    assert (folder/'bundle.json').read_bytes()==__import__('build_a7_static_pilot').encode(bundle).encode()
+    assert (folder/'preview.mjs').read_bytes()==(ROOT/'experiments/a7-dossier-preview/preview.mjs').read_bytes()
+    assert (folder/'reader.mjs').read_bytes()==(ROOT/'experiments/a7-static-pilot/reader.mjs').read_bytes()
+    public_release=json.loads((folder/'release.mjs').read_text().removeprefix('export default ').strip().removesuffix(';'))
+    assert all(public_release[k]==v for k,v in release.items())
+    validate_repository_commit(bundle,public_release['repositoryCommit'])
+    from validate_public_site import A7_ASSETS, validate_a7
+    assets={path:(dist/path).read_text() for path in A7_ASSETS}
+    failures=[];validate_a7(assets.__getitem__,failures);assert not failures,failures
+    for asset in ['chiedi/bundle.json','chiedi/reader.mjs']:
+        bad=dict(assets);bad[asset]+='altered'
+        failures=[];validate_a7(bad.__getitem__,failures);assert failures,'public validator accepted corrupt '+asset
+    missing=dict(assets);missing.pop('chiedi/public.css')
+    failures=[];validate_a7(missing.__getitem__,failures);assert failures,'public validator accepted missing asset'
+    overrides={}
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def log_message(self,*args):pass
+        def do_GET(self):
+            if self.path in overrides:
+                body=overrides[self.path].encode();self.send_response(200);self.send_header('Content-Type','text/plain; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+            else:super().do_GET()
+    server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(dist)))
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    origin=f'http://127.0.0.1:{server.server_port}/';report={'status':'PASS','viewports':[],'questions':[],'checks':[]}
+    try:
+        with sync_playwright() as p:
+            browser=p.chromium.launch(headless=True)
+            try:
+                for width,height in [(1280,900),(390,844)]:
+                    page=browser.new_page(viewport={'width':width,'height':height});errors=[];external=[]
+                    page.on('pageerror',lambda error:errors.append(str(error)))
+                    page.on('console',lambda msg:errors.append(msg.text) if msg.type=='error' else None)
+                    page.route('**/*',lambda route:route.continue_() if route.request.url.startswith(origin) else (external.append(route.request.url),route.abort())[-1])
+                    open_page(page,origin,'chiedi/');wait_for_page(page);page.locator('#mostra:enabled').wait_for()
+                    page.evaluate('scrollTo(0,0)')
+                    assert page.locator('.site-header').is_visible() and page.locator('.site-footer').count()==1
+                    page.locator('.global-search-trigger').click();page.locator('.search-overlay').wait_for()
+                    page.keyboard.press('Escape');page.locator('.search-overlay').wait_for(state='hidden')
+                    before=page.evaluate('JSON.stringify([Object.entries(localStorage),Object.entries(sessionStorage)])')
+                    page.locator('#domanda-testo').fill('Come sta Massarosa?');page.locator('#verifica-testo').click()
+                    assert page.locator('#chiarimento').is_visible() and page.locator('#risposta').is_hidden()
+                    assert page.locator('#alternative button').count()==len(bundle['questions'])
+                    for q in bundle['questions']:
+                        page.locator('#domanda-testo').fill(q['question']);page.locator('#verifica-testo').click()
+                        if page.locator('#consenso').is_visible():page.locator('#accetta').click()
+                        assert page.locator('#risposta h2').inner_text()==q['question']
+                        text=page.locator('#risposta').inner_text()
+                        assert q['answerBoundary'] in text and q['interpretationLimit'] in text
+                        for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
+                            for fact in bundle['cases'][cid]['facts']:assert fact['text'] in text
+                        with page.expect_download() as got:page.locator('#esporta-risposta').click()
+                        data=json.loads(Path(got.value.path()).read_text())
+                        replay=page.evaluate('''async data=>{const {loadPilot}=await import('./reader.mjs');return(await loadPilot(await(await fetch('./bundle.json')).text(),data.answer.release)).resolve(data.request);}''',data)
+                        assert data['answer']==replay and data['repositoryCommit']==public_release['repositoryCommit']
+                        assert data['answer']['components']==[dict(caseId=cid,**bundle['cases'][cid]) for cid in q['requiredCaseRefs']+q['contextCaseRefs']]
+                        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'public page overflow'
+                        report['questions'].append({'id':q['id'],'width':width,'status':'PASS'})
+                    page.locator('#domanda-testo').fill('Quanti posti nido servono nel 2026?')
+                    assert page.locator('#risposta').is_hidden() and page.locator('#esporta-risposta').count()==0
+                    page.locator('#verifica-testo').click();assert page.locator('#chiarimento').is_visible()
+                    assert page.evaluate('JSON.stringify([Object.entries(localStorage),Object.entries(sessionStorage)])')==before
+                    assert not errors and not external,(errors,external)
+                    page.evaluate('scrollTo(0,0)');page.wait_for_function('() => scrollY===0');page.screenshot(path=str(output/f'public-clarification-{width}.png'),full_page=True)
+                    page.locator('#alternative button').first.click()
+                    if page.locator('#consenso').is_visible():page.locator('#accetta').click()
+                    page.evaluate('scrollTo(0,0)');page.wait_for_function('() => scrollY===0');page.screenshot(path=str(output/f'public-answer-{width}.png'),full_page=True)
+                    report['viewports'].append({'width':width,'errors':errors,'externalRequests':external});page.close()
+                for mode in ['unavailable','corrupt']:
+                    page=browser.new_page()
+                    page.route('**/chiedi/bundle.json',lambda route:route.fulfill(status=404 if mode=='unavailable' else 200,content_type='application/json',body='{}'))
+                    page.goto(origin+'chiedi/');page.wait_for_function("() => document.querySelector('#stato').textContent.includes('non verificabili')")
+                    assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
+                    page.locator('.global-search-trigger').click();page.locator('.search-overlay').wait_for()
+                    page.close();report['checks'].append(mode+'_bundle_fail_closed_with_shell_available')
+                page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
+                assert page.locator('noscript a[href="answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
+                page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle']
+                assert (dist/'service-worker.js').read_bytes()==(ROOT/'service-worker.js').read_bytes()
+                context=browser.new_context();page=context.new_page();page.goto(origin+'chiedi/')
+                page.locator('#mostra:enabled').wait_for();page.wait_for_function('() => navigator.serviceWorker.controller !== null')
+                # Real worker + HTTP fixture: old cached bytes must not win while online.
+                for filename in ['bundle.json','release.mjs','reader.mjs','preview.mjs']:
+                    marker='a7-fresh-network-'+filename;overrides['/chiedi/'+filename]=marker
+                    actual=page.evaluate('''async filename=>{
+                        await fetch(filename);
+                        const key=(await caches.keys()).find(k=>k.endsWith('-runtime'));
+                        if(!key)throw new Error('runtime_cache_missing');
+                        const cache=await caches.open(key);
+                        await cache.put(new URL(filename,location.href),new Response('old-cached-evidence'));
+                        return await(await fetch(filename)).text();
+                    }''',filename)
+                    assert actual==marker,'A7 worker served stale online asset: '+filename
+                    overrides.clear()
+                    assert page.evaluate('async filename=>(await fetch(filename)).text()',filename)==(folder/filename).read_text()
+                # The reader must reject mixed offline cache, never turn it into a result.
+                page.evaluate('''async ()=>{
+                    const keys=await caches.keys();
+                    for(const key of keys.filter(k=>k.endsWith('-runtime'))){
+                        const cache=await caches.open(key);await cache.put(new URL('bundle.json',location.href),new Response('{}'));
+                    }
+                }''')
+                context.set_offline(True)
+                failure=page.evaluate('''async release=>{
+                    const {loadPilot}=await import('./reader.mjs');
+                    try{await loadPilot(await(await fetch('./bundle.json')).text(),release);return 'accepted';}
+                    catch(error){return error.message;}
+                }''',public_release)
+                assert failure=='bundle_integrity_mismatch',failure
+                context.set_offline(False);context.close()
+                report['checks']+=['real_worker_four_assets_network_first','mixed_offline_cache_refused']
+                report['browser']=browser.version
+            finally:browser.close()
+    finally:server.shutdown();server.server_close();thread.join()
+    (output/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+    return report

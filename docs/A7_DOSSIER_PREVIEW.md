@@ -6,7 +6,7 @@ Preview isolata integrata dal proprietario nella #433 (`4b972e4e8197064522bc3a05
 
 Il lettore sceglie lavoro oppure infanzia/scuola e una delle domande canoniche. La risposta mostra subito la classificazione parziale, il confine della risposta, ciò che non si può concludere e i dati mancanti per decidere. Seguono i fatti numerici già prodotti da A6, con periodi, universi, definizioni, metodi, fonti, snapshot e puntatori. Richiesta e risposta originali restano consultabili per componente. Il dossier completo è raggiungibile con un link al commit congelato.
 
-La selezione usa gli ID restituiti dal lettore della #432: nessun nuovo repertorio, numero o indicatore è copiato nel codice UI. Non ci sono input liberi, interpretazione linguistica o raccomandazioni automatiche. Le sei domande restano parzialmente supportate. La vista non determina posti nido necessari, qualità complessiva dei servizi o trasformazioni congiunturali del 2026.
+La selezione usa gli ID restituiti dal lettore della #432: nessun nuovo repertorio, numero o indicatore è copiato nel codice UI. Il testo scritto viene confrontato soltanto con il repertorio, senza interpretazione libera o raccomandazioni automatiche. Le sei domande restano parzialmente supportate. La vista non determina posti nido necessari, qualità complessiva dei servizi o trasformazioni congiunturali del 2026.
 
 Il consenso precede l'esposizione di qualsiasi componente di un piano parziale. Annullare o cambiare domanda/ambito rimuove risultati e consenso: non si eredita l'autorizzazione della domanda precedente. Il lettore originale conserva i rifiuti anche dopo il consenso. Un bundle mancante, corrotto o non corrispondente alla release blocca la preview, senza mostrare numeri.
 
@@ -39,4 +39,4 @@ Il gate A7 esistente esegue anche la preview reale, domande scritte normalizzate
 
 Il browser verifica etichette, tastiera e focus dei controlli nativi; questo non certifica una revisione completa con tecnologie assistive. Le soglie Lighthouse e i 40 golden pubblici restano invariati. La preview non aggiunge una famiglia al contratto delle route perché non viene pubblicata; una futura integrazione deve dichiararla esplicitamente e preservare shell, ricerca, Stato dati e regole tematiche.
 
-Prima dell'integrazione pubblica il proprietario valuta leggibilità, pertinenza delle sei domande e chiarezza dei dati parziali. L'architettura definitiva e l'eventuale interpretazione libera restano aperte. Questa preview non conclude A7.5 o la Definition of Done di A7.
+Prima dell'integrazione pubblica il proprietario valuta leggibilità, pertinenza delle sei domande e chiarezza dei dati parziali. L'integrazione candidata è descritta separatamente in `A7_PUBLIC_GUIDED_PAGE.md`; questo builder continua a produrre una preview isolata. L'architettura definitiva e l'eventuale interpretazione libera restano aperte. Questa preview non conclude A7.5 o la Definition of Done di A7.
