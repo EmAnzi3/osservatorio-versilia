@@ -1,5 +1,6 @@
 // Public wording and layout only. The original reader, answer and export stay intact.
-let sourceCommit;
+import {loadEducation,presentEducation} from './education.mjs';
+let sourceCommit, education;
 const node=(tag,text,className)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;};
 const list=items=>{const ul=node('ul');for(const item of items)ul.append(node('li',item));return ul;};
 const fold=(title,child,technical=false)=>{const el=node('details');if(technical)el.dataset.a7Technical='true';el.append(node('summary',title),child);return el;};
@@ -62,6 +63,9 @@ function selectedQuestion(){const el=document.getElementById('a7-selected-questi
 function presentPublic(out,answer){
  selectedQuestion();
  const q=answer.questionPlan;
+ out.classList.remove('edu-answer');
+ document.getElementById('a7-guided').classList.toggle('education-reading',q.id==='infanzia-centrale');
+ if(q.id==='infanzia-centrale'){presentEducation(out,answer,education);return;}
  out.append(node('p','La tua domanda','eyebrow'),node('h2',q.question));
  out.append(node('p',introductions[q.id]||q.interpretationLimit,'a7-answer-intro'),node('h3',q.id.startsWith('lavoro')?'Lavoro e attività: le due facce del territorio':'Bambini, servizi e scuole: il territorio a confronto'));
  for(const c of answer.components){
@@ -121,16 +125,22 @@ function presentPublic(out,answer){
  verification.append(snapshots,node('pre',JSON.stringify(answer,null,2)));
  out.append(fold('Dettagli tecnici per verificare la lettura',verification,true));
 }
+new MutationObserver(()=>{if(document.getElementById('risposta').hidden)document.getElementById('a7-guided').classList.remove('education-reading');}).observe(document.getElementById('risposta'),{attributes:true,attributeFilter:['hidden']});
 document.getElementById('a7-guided').addEventListener('focusin',event=>{
  const target=event.target;if(!['risposta','titolo-chiarimento'].includes(target.id))return;
  requestAnimationFrame(()=>{if(document.activeElement===target&&!target.closest('[hidden]'))target.scrollIntoView({block:'start',behavior:'instant'});});
 });
 try{
- const ui=await import('./preview.mjs');
  const {default:release}=await import('./release.mjs');sourceCommit=release.repositoryCommit;
+ education=await loadEducation(release);
+ const ui=await import('./preview.mjs');
  ui.setAnswerPresentation(presentPublic);
  const choice=document.getElementById('domanda');const description=node('p',undefined,'a7-selected-question');description.id='a7-selected-question';choice.after(description);choice.setAttribute('aria-describedby',description.id);
  for(const id of ['domanda','dossier'])document.getElementById(id).addEventListener('change',selectedQuestion);selectedQuestion();
+ if(new URLSearchParams(location.search).get('lettura')==='educazione'){
+  document.getElementById('dossier').value='infanzia';document.getElementById('dossier').dispatchEvent(new Event('change'));
+  document.getElementById('domanda').value='infanzia-centrale';selectedQuestion();document.getElementById('mostra').click();
+ }
 }catch(error){
  document.getElementById('stato').textContent='Evidenze non disponibili o non verificabili. Nessun risultato mostrato. Ricarica la pagina.';
  for(const id of ['dossier','domanda','mostra','domanda-testo','verifica-testo'])document.getElementById(id).disabled=true;
