@@ -1,6 +1,6 @@
 # A7 — preview navigabile dei dossier Massarosa
 
-Primo passo di presentazione dopo il merge del proprietario della #432 (`ae1249784c6e3ba25a99da52cc35780049a88380`, tree `77d24913d6603c63461abd8f080442fa16beb55f`). A6 resta DONE e A7 IN_PROGRESS. È una preview isolata per revisione: nessuna route, shell, pagina pubblica, navigazione globale o golden master cambia.
+Preview isolata integrata dal proprietario nella #433 (`4b972e4e8197064522bc3a058df2dcc70d8b0a1b`, tree `0ebe0e074e0a8effdd9faef1922019e37a4420e4`), con un incremento circoscritto per domanda scritta, chiarimento ed esportazione verificabile. A6 resta DONE e A7 IN_PROGRESS. È una preview isolata per revisione: nessuna route, shell, pagina pubblica, navigazione globale o golden master cambia.
 
 ## Esperienza da verificare
 
@@ -10,10 +10,22 @@ La selezione usa gli ID restituiti dal lettore della #432: nessun nuovo repertor
 
 Il consenso precede l'esposizione di qualsiasi componente di un piano parziale. Annullare o cambiare domanda/ambito rimuove risultati e consenso: non si eredita l'autorizzazione della domanda precedente. Il lettore originale conserva i rifiuti anche dopo il consenso. Un bundle mancante, corrotto o non corrispondente alla release blocca la preview, senza mostrare numeri.
 
+## Domanda scritta e chiarimento guidato
+
+Il lettore può scrivere una domanda oppure scegliere dal repertorio. Il testo passa al modulo originale della #432: la corrispondenza riguarda soltanto domande canoniche, con la normalizzazione già approvata di maiuscole, spazi e punteggiatura. Una richiesta ampia, causale, di un altro territorio o di un periodo non previsto non viene trasformata in una query. La preview mostra le domande disponibili, senza numeri, e richiede una scelta esplicita; l'alternativa selezionata è una nuova domanda verificata, non una risposta alla richiesta iniziale.
+
+Il campo è limitato a 2.048 caratteri e non viene memorizzato o trasmesso. Modificare il testo, cambiare selezione o annullare revoca risultati, consenso e download della risposta precedente. Il consenso delle componenti parziali resta necessario anche quando si arriva dal testo o da un suggerimento. La prova non introduce un classificatore semantico, un interprete libero o una conversazione.
+
+## Esportazione verificabile
+
+Dopo una risposta risolta è disponibile **Scarica la risposta verificabile (JSON)**. Il download conserva il piano canonico, la selezione esatta, il consenso, la release, il commit delle fonti e tutte le componenti A6 originali, comprese osservazioni, valori null/zero, puntatori, limiti, rifiuti e precisione. Non include testi ambigui o richieste precedenti. Conserva la modalità di selezione del lettore (testo canonico oppure ID), così il replay riproduce anche l’identità di cache; nel file il testo riconosciuto è quello canonico, non la digitazione originale. Il risultato è un file locale generato soltanto su azione del lettore: nessun endpoint, storage della domanda o invio a terzi.
+
+Il JSON è un'evidenza portabile, non una nuova fonte canonica né un'autenticazione del file dopo la modifica da parte di terzi. Hash e commit consentono di risalire agli input congelati; la disponibilità corrente delle fonti resta distinta. Una risposta scaricata conserva i periodi di origine e non diventa un aggiornamento del dato.
+
 ## Build e distribuzione di revisione
 
 ```bash
-python scripts/build_a7_dossier_preview.py --catalog dist/data/site-data.json --output-dir /tmp/a7-preview --repository-commit ae1249784c6e3ba25a99da52cc35780049a88380
+python scripts/build_a7_dossier_preview.py --catalog dist/data/site-data.json --output-dir /tmp/a7-preview --repository-commit 4b972e4e8197064522bc3a058df2dcc70d8b0a1b
 python -m http.server 8765 --directory /tmp/a7-preview
 ```
 
@@ -23,7 +35,7 @@ I file generati costituiscono una cartella portabile di preview: index, CSS, mod
 
 ## Verifiche e limiti
 
-Il gate A7 esistente esegue anche la preview reale: sei piani in due viewport, identità dei fatti e dei limiti, consenso/annullamento/cambio selezione, dettagli originali, link congelati, assenza di overflow, errori browser, richieste esterne e memorizzazione delle domande. Fixture isolate verificano commit inesistenti o estranei, hash di programma/snapshot incoerenti, dossier mancanti, blocco su bundle alterato e resa di testo simile a HTML senza esecuzione. Nessun dato o sorgente del candidato viene alterato per queste prove. I report e screenshot sono output QA, non nuovi golden.
+Il gate A7 esistente esegue anche la preview reale, domande scritte normalizzate, chiarimenti senza numeri per richieste ambigue/causali/fuori scope, nuova selezione e consenso, reset del download dopo modifica, ed esportazione JSON riconciliata con le risposte A6 originali: sei piani in due viewport, identità dei fatti e dei limiti, consenso/annullamento/cambio selezione, dettagli originali, link congelati, assenza di overflow, errori browser, richieste esterne e memorizzazione delle domande. Fixture isolate verificano commit inesistenti o estranei, hash di programma/snapshot incoerenti, dossier mancanti, blocco su bundle alterato e resa di testo simile a HTML senza esecuzione. Nessun dato o sorgente del candidato viene alterato per queste prove. I report e screenshot sono output QA, non nuovi golden.
 
 Il browser verifica etichette, tastiera e focus dei controlli nativi; questo non certifica una revisione completa con tecnologie assistive. Le soglie Lighthouse e i 40 golden pubblici restano invariati. La preview non aggiunge una famiglia al contratto delle route perché non viene pubblicata; una futura integrazione deve dichiararla esplicitamente e preservare shell, ricerca, Stato dati e regole tematiche.
 

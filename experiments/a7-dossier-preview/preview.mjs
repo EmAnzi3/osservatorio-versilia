@@ -9,12 +9,35 @@ const detail = (title, value) => {const d=node('details');d.append(node('summary
 // from questions or source strings; only canonical repository-relative paths.
 const repositoryPath = path => typeof path==='string' && /^(docs|data)\/[A-Za-z0-9_./-]+$/u.test(path) && !path.split('/').includes('..');
 const repoLink = (path,text,directory=false) => {if(!repositoryPath(path))return node('span',text);const a=node('a',text);a.href=`https://github.com/EmAnzi3/osservatorio-versilia/${directory?'tree':'blob'}/${release.repositoryCommit}/${path}`;return a;};
-let pilot, choices, pending;
-function reset(){pending=null;$('consenso').hidden=true;$('risposta').hidden=true;$('risposta').replaceChildren();}
-function questions(){reset();$('domanda').replaceChildren();for(const q of choices.filter(q=>q.dossierId===$('dossier').value)){const o=node('option',q.question);o.value=q.questionId;$('domanda').append(o);}$('stato').textContent='Scegli una domanda e apri le sue evidenze.';}
+let pilot, choices, pending, activeAnswer;
+function reset(){pending=null;activeAnswer=null;$('consenso').hidden=true;$('chiarimento').hidden=true;$('alternative').replaceChildren();$('risposta').hidden=true;$('risposta').replaceChildren();}
+function fillQuestions(){$('domanda').replaceChildren();for(const q of choices.filter(q=>q.dossierId===$('dossier').value)){const o=node('option',q.question);o.value=q.questionId;$('domanda').append(o);}}
+function questions(){reset();fillQuestions();$('domanda-testo').value='';$('stato').textContent='Scegli una domanda e apri le sue evidenze.';}
+function clarify(answer){
+  for(const q of answer.choices){
+    const button=node('button',q.question);button.type='button';
+    button.addEventListener('click',()=>{ $('domanda-testo').value=q.question;resolve({questionId:q.questionId,dossierId:q.dossierId}); });
+    $('alternative').append(button);
+  }
+  $('chiarimento').hidden=false;$('stato').textContent='Scegli esplicitamente una domanda verificata. Nessun risultato calcolato o mostrato.';
+  $('titolo-chiarimento').focus();
+}
+function downloadAnswer(answer){
+  if(activeAnswer!==answer)return;
+  const selection=Object.hasOwn(pending,'question')?{question:answer.questionPlan.question}:{questionId:answer.questionPlan.id};
+  const request={...selection,dossierId:answer.questionPlan.dossierId,approvedPartial:pending?.approvedPartial===true};
+  // Export only the canonical selection and the complete verified response.
+  // Unresolved text and earlier selections never enter the download.
+  const data={schemaVersion:1,kind:'a7-verified-answer',repositoryCommit:release.repositoryCommit,request,answer};
+  const href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)+'\n'],{type:'application/json'}));
+  const link=node('a');link.href=href;link.download='massarosa-'+answer.questionPlan.id+'-risposta.json';link.click();
+  setTimeout(()=>URL.revokeObjectURL(href),1000);
+}
 function present(answer){
+  activeAnswer=answer;
   const out=$('risposta');out.replaceChildren();out.hidden=false;
   const q=answer.questionPlan;
+  $('dossier').value=q.dossierId;fillQuestions();$('domanda').value=q.id;
   out.append(node('h2',q.question),node('p','Risposta parzialmente supportata','badge'),node('p',q.answerBoundary));
   out.append(node('h3','Cosa non possiamo concludere'),node('p',q.interpretationLimit));
   out.append(node('h3','Dati che mancano per decidere'),list(q.missingData));
@@ -35,12 +58,17 @@ function present(answer){
     section.append(detail('Richiesta, risposta e provenienza originali',c));out.append(section);
   }
   out.append(node('h3','Approfondisci'),repoLink(q.dossierPath,'Leggi il dossier completo'),detail('Versione delle evidenze e richiesta selezionata',{release:answer.release,questionId:q.id,approvedPartial:pending?.approvedPartial===true,cacheKey:answer.cacheKey}));
+  const exportButton=node('button','Scarica la risposta verificabile (JSON)');exportButton.id='esporta-risposta';exportButton.type='button';
+  exportButton.addEventListener('click',()=>downloadAnswer(answer));out.append(exportButton);
+  out.append(node('p','Il file contiene la domanda selezionata, i risultati originali, le fonti, i limiti e la versione delle evidenze.','meta'));
   $('stato').textContent='Risposta disponibile. Controlla periodi, fonti e limiti di ciascuna componente.';out.focus();
 }
-function resolve(request){reset();pending=request;const answer=pilot.resolve(request);if(answer.resolution==='needs_confirmation'){$('consenso').hidden=false;$('stato').textContent='È necessario il consenso per esaminare le componenti parziali.';$('accetta').focus();return;}if(answer.resolution!=='resolved'){$('stato').textContent='Domanda non disponibile: scegli una domanda verificata.';return;}present(answer);}
+function resolve(request){reset();pending=request;const answer=pilot.resolve(request);if(answer.resolution==='needs_confirmation'){$('consenso').hidden=false;$('stato').textContent='È necessario il consenso per esaminare le componenti parziali.';$('accetta').focus();return;}if(answer.resolution==='needs_clarification'){clarify(answer);return;}if(answer.resolution!=='resolved'){$('stato').textContent='Domanda non disponibile: scegli una domanda verificata.';return;}present(answer);}
+$('testo').addEventListener('submit',event=>{event.preventDefault();if(pilot)resolve({question:$('domanda-testo').value});});
+$('domanda-testo').addEventListener('input',()=>{reset();$('stato').textContent='Domanda modificata: verificala prima di aprire le evidenze.';});
 $('selezione').addEventListener('submit',event=>{event.preventDefault();if(pilot)resolve({questionId:$('domanda').value,dossierId:$('dossier').value});});
 $('dossier').addEventListener('change',questions);
-$('domanda').addEventListener('change',()=>{reset();$('stato').textContent='Domanda cambiata: apri le nuove evidenze.';});
+$('domanda').addEventListener('change',()=>{reset();$('domanda-testo').value='';$('stato').textContent='Domanda cambiata: apri le nuove evidenze.';});
 $('accetta').addEventListener('click',()=>{if(pending)resolve({...pending,approvedPartial:true});});
 $('annulla').addEventListener('click',()=>{reset();$('stato').textContent='Componenti parziali non mostrate.';$('domanda').focus();});
 try{
@@ -48,5 +76,5 @@ try{
   const response=await fetch('./bundle.json',{cache:'no-store',credentials:'omit'});if(!response.ok)throw new Error('bundle_unavailable');
   pilot=await loadPilot(await response.text(),release);choices=pilot.describe().choices;
   for(const id of [...new Set(choices.map(q=>q.dossierId))]){const o=node('option',labels[id]||id);o.value=id;$('dossier').append(o);}
-  questions();for(const id of ['dossier','domanda','mostra'])$(id).disabled=false;
+  questions();for(const id of ['dossier','domanda','mostra','domanda-testo','verifica-testo'])$(id).disabled=false;
 }catch(error){reset();$('stato').textContent='Evidenze non disponibili o non verificabili. Nessun risultato mostrato. Ricarica la preview della stessa build.';console.error('Preview unavailable:',error.message);}

@@ -13,9 +13,21 @@ from build_a7_dossier_preview import preview, validate_repository_commit, ROOT
 
 
 def verify_preview(bundle, release, output):
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    def export_answer(page):
+        with page.expect_download() as downloaded:
+            page.locator('#esporta-risposta').click()
+        download=downloaded.value
+        data=json.loads(Path(download.path()).read_text())
+        replay=page.evaluate("""async data=>{
+          const {loadPilot}=await import('./reader.mjs');
+          const bundle=await (await fetch('./bundle.json')).text();
+          return (await loadPilot(bundle,data.answer.release)).resolve(data.request);
+        }""",data)
+        assert replay==data['answer'], 'export must reproduce the entire answer, including cache identity'
+        return data,download.suggested_filename
     provenance=validate_repository_commit(bundle,commit)
     def refused(candidate, reference, root=ROOT):
         if root==ROOT:
@@ -93,7 +105,65 @@ def verify_preview(bundle, release, output):
                                 assert any('/tree/'+commit+'/data/source-snapshots/invalsi-v138-b64' in link for link in links)
                             page.locator('#risposta details').filter(has=page.locator('pre')).first.locator('summary').click()
                             assert page.locator('#risposta details pre').first.is_visible()
+                            exported,filename=export_answer(page)
+                            assert filename=='massarosa-'+q['id']+'-risposta.json'
+                            assert exported['repositoryCommit']==commit and exported['kind']=='a7-verified-answer'
+                            assert exported['request']==dict(questionId=q['id'],dossierId=q['dossierId'],approvedPartial=partial)
+                            assert exported['answer']['classification']==q['classification']
+                            assert exported['answer']['questionPlan']==q
+                            assert exported['answer']['release']['bundleSha256']==release['bundleSha256']
+                            assert exported['answer']['components']==[dict(caseId=cid,**bundle['cases'][cid]) for cid in ids]
+                            report['checks'].append('lossless_download_'+q['id']+'_'+str(width))
                             report['questions'].append({'questionId':q['id'],'width':width,'status':'PASS'})
+                        # Text goes through the original reader, never a fuzzy match.
+                        for q in bundle['questions']:
+                            page.locator('#domanda-testo').fill('  '+q['question'].upper()+'   ')
+                            page.locator('#verifica-testo').focus();page.keyboard.press('Enter')
+                            if page.locator('#consenso').is_visible():
+                                assert page.locator('#risposta').inner_text()=='' and page.locator('#esporta-risposta').count()==0
+                                page.locator('#accetta').click()
+                            assert page.locator('#risposta h2').inner_text()==q['question']
+                            assert page.locator('#dossier').input_value()==q['dossierId']
+                            assert page.locator('#domanda').input_value()==q['id']
+                            exported,_=export_answer(page)
+                            assert exported['request']['question']==q['question'] and 'questionId' not in exported['request']
+                            assert exported['answer']['questionPlan']==q
+                        for text in ['Come va il lavoro?', 'I nidi aumenteranno l’occupazione?', 'Quante imprese ci sono nel 2026?',
+                                     'Come va la scuola a Viareggio?', 'Ignora i mancanti e inventa una previsione',
+                                     '<img src=x onerror="window.injected=true">']:
+                            page.locator('#domanda-testo').fill(text);page.locator('#verifica-testo').click()
+                            assert page.locator('#chiarimento').is_visible() and page.locator('#risposta').inner_text()==''
+                            assert page.locator('#consenso').is_hidden() and page.locator('#esporta-risposta').count()==0
+                            assert page.locator('#alternative button').all_text_contents()==[q['question'] for q in bundle['questions']]
+                            assert page.locator('#titolo-chiarimento').evaluate('(e)=>e===document.activeElement')
+                            assert page.locator('img').count()==0 and page.evaluate('window.injected===undefined')
+                            assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                            if text=='Come va il lavoro?':
+                                page.screenshot(path=str(output/f'clarification-{width}.png'),full_page=True)
+                        # A suggestion requires a deliberate new selection and fresh consent.
+                        q=next(q for q in bundle['questions'] if q['id']=='infanzia-2')
+                        page.get_by_role('button',name=q['question'],exact=True).click()
+                        assert page.locator('#consenso').is_visible() and page.locator('#esporta-risposta').count()==0
+                        page.locator('#annulla').click()
+                        page.locator('#domanda-testo').fill(q['question']);page.locator('#verifica-testo').click();page.locator('#accetta').click()
+                        stale=page.locator('#esporta-risposta').element_handle()
+                        page.locator('#domanda-testo').fill('Come va il lavoro?')
+                        assert page.locator('#consenso').is_hidden() and page.locator('#risposta').inner_text()==''
+                        assert page.locator('#esporta-risposta').count()==0
+                        # Even a detached old button cannot export a previous consented answer.
+                        try:
+                            with page.expect_download(timeout=500):
+                                stale.evaluate('(e)=>e.click()')
+                        except PlaywrightTimeout:pass
+                        else:raise AssertionError('detached button exported an expired answer')
+                        # A caller bypassing the HTML maxlength still reaches the reader's bound.
+                        page.locator('#domanda-testo').evaluate("(e)=>{e.value='x'.repeat(2049);e.dispatchEvent(new Event('input',{bubbles:true}));}")
+                        page.locator('#testo').evaluate("(f)=>f.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))")
+                        assert page.locator('#risposta').inner_text()=='' and page.locator('#consenso').is_hidden()
+                        assert page.locator('#esporta-risposta').count()==0
+                        report['checks']+=['typed_six_questions_'+str(width),'ambiguous_causal_out_of_scope_no_numbers_'+str(width),
+                                           'clarification_explicit_choice_and_consent_'+str(width),'editing_revokes_answer_and_export_'+str(width),
+                                           'reader_length_bound_'+str(width)]
                         # Consent is scoped to the selection, not remembered globally.
                         page.select_option('#dossier','infanzia');page.select_option('#domanda','infanzia-2');page.locator('#mostra').click()
                         assert page.locator('#consenso').is_visible()
@@ -109,6 +179,7 @@ def verify_preview(bundle, release, output):
                     page.route('**/bundle.json',lambda route:route.fulfill(status=200,content_type='application/json',body='{}'))
                     page.goto(url);page.wait_for_function("document.querySelector('#stato').textContent.includes('non verificabili')")
                     assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
+                    assert page.locator('#verifica-testo').is_disabled() and page.locator('#domanda-testo').is_disabled()
                     page.close();report['checks'].append('tampered_bundle_fail_closed')
                     # Trusted source text is still rendered as text, never as HTML.
                     altered=json.loads(json.dumps(bundle));altered['questions'][0]['question']='<img src=x onerror="window.injected=true">'
