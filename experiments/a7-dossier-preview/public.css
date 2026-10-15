@@ -50,3 +50,28 @@
 @media(max-width:700px){.a7-guided .a7-question-grid{grid-template-columns:1fr}.a7-guided .a7-hero{padding:2rem 1.3rem;min-height:360px;background-position:60% center}.a7-guided .a7-hero h1{font-size:2.6rem}.a7-guided .a7-hero h1+p{font-size:1.08rem}.a7-guided .a7-how{line-height:1.8}}
 
 .a7-guided .a7-selected-question{font-size:.96rem;line-height:1.6;margin-top:.7rem;color:#244e58;font-weight:600}
+
+/* Same full-width editorial geometry and type scale as the published secondary pages.
+   Scoped here so the seven approved routes and their golden masters stay intact. */
+.a7-banner .a7-hero{position:relative;width:100%;max-width:none;min-height:360px;margin:18px 0 34px;padding:44px max(24px,calc((100vw - 1240px)/2)) 40px;border:0;border-radius:0;overflow:hidden;color:#fff;background:linear-gradient(90deg,rgba(6,31,49,.95),rgba(6,31,49,.84) 38%,rgba(6,31,49,.50) 68%,rgba(6,31,49,.20)),linear-gradient(0deg,rgba(6,31,49,.34),transparent 54%),url('../../../assets/hero-project.svg') center/cover no-repeat}
+.a7-banner .a7-hero::before{content:"";position:absolute;top:0;left:max(24px,calc((100vw - 1240px)/2));width:72px;height:4px;background:#ffdb4d}
+.a7-banner .a7-hero::after{display:none}
+.a7-banner .eyebrow{color:#ffdb4d;font-size:12px;font-weight:750;letter-spacing:.12em}
+.a7-banner .a7-hero h1{max-width:900px;margin:12px 0 16px;font-size:clamp(48px,5.8vw,76px);line-height:.94;letter-spacing:-.06em;color:#fff}
+.a7-banner .a7-hero p{max-width:790px;font-size:14px;line-height:1.58;color:rgba(255,255,255,.91)}
+.a7-banner .a7-hero .notice{padding:0;border:0;background:none;margin-top:20px}
+.a7-banner .a7-how{border-top:1px solid #ffffff40;margin-top:22px;padding-top:16px;font-weight:650}
+.a7-guided .a7-bar-track{height:16px;margin:10px 0 14px;background:#edf2f5;border-radius:0;overflow:hidden}
+.a7-guided .a7-bar{display:block;height:100%;background:#63899f;transform-origin:left;animation:a7-reveal .45s ease-out}
+.a7-guided .a7-bar-focus{background:#145b78}
+.a7-guided .facts li:has(.a7-bar-focus) .a7-fact{color:#0d425c}
+@keyframes a7-reveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.a7-guided .a7-bar{animation:none}}
+@media(max-width:700px){.a7-banner .a7-hero{padding:34px 20px 32px;min-height:360px}.a7-banner .a7-hero::before{left:20px}.a7-banner .a7-hero h1{font-size:clamp(44px,12vw,62px)}.a7-banner .a7-hero p{font-size:14px}}
+.a7-banner .a7-hero{display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.a7-banner .a7-hero>p{margin-left:0;margin-right:0;width:auto}
+.a7-banner .a7-hero .eyebrow{color:#ffdb4d;margin-top:0}
+
+/* A clear measure heading above the territorial values. */
+.a7-guided .component .a7-indicator-title{font-size:clamp(1.3rem,2.2vw,1.65rem);font-weight:800;line-height:1.3;letter-spacing:-.02em;color:#0d425c;background:#e4eff2;border-left:5px solid #145b78;margin:0 0 1.2rem;padding:1rem 1.1rem;border-radius:0 8px 8px 0}
+@media(max-width:540px){.a7-guided .component .a7-indicator-title{padding:.8rem;font-size:1.3rem}}

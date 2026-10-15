@@ -30,3 +30,7 @@ Il proprietario rivede la pagina nella preview prima del merge. Dopo l'eventuale
 ## Limiti
 
 Matching del repertorio diverso da comprensione generale. Misure locali diverse da prestazioni mobile/rete o certificazione completa delle tecnologie assistive. Integrità di release diversa da autenticità di hosting/file alterati. Snapshot congelati diversi da disponibilità corrente online. Nessuna causalità, previsione, inferenza individuale o raccomandazione automatica.
+
+Revisione editoriale richiesta dal proprietario: banner a tutta larghezza con geometria e scala tipografica delle pagine secondarie pubblicate. Nessuna etichetta generica di parzialità in apertura: limiti specifici, copertura mancante e consenso restano espliciti. Confronti a barre da zero ricavati esclusivamente dalle osservazioni del lettore; stesso universo/definizione/unità/fonte, stesso periodo o medesimo Comune per gli anni osservati. Null senza barra, zeri conservati; risultati aggregati separati. Animazione breve disattivata con preferenza di movimento ridotto. Export originale invariato. Nuova revisione in Draft; gate precedenti non attestano il nuovo albero.
+
+Titoli degli indicatori con fascia azzurra e gerarchia tipografica superiore ai valori; righe comunali senza ripetizione del titolo condiviso. Periodi, unità e precisione conservati; formulazioni originali nel JSON e nei dettagli tecnici. Nuova preview e gate sul candidato aggiornato prima della review.

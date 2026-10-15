@@ -4,12 +4,12 @@ const node=(tag,text,className)=>{const el=document.createElement(tag);if(text!=
 const list=items=>{const ul=node('ul');for(const item of items)ul.append(node('li',item));return ul;};
 const fold=(title,child,technical=false)=>{const el=node('details');if(technical)el.dataset.a7Technical='true';el.append(node('summary',title),child);return el;};
 const introductions={
- 'lavoro-centrale':'Per capire il lavoro a Massarosa, guardiamo sia chi vive nel Comune sia le attività che vi operano. Sono prospettive diverse: più attività sul territorio non significa automaticamente più opportunità per ogni residente.',
- 'lavoro-1':'Il confronto con Viareggio affianca l’occupazione dei residenti e l’andamento delle unità locali. I dati riguardano periodi diversi e non dimostrano che un fenomeno abbia causato l’altro.',
- 'lavoro-2':'Produzione industriale, retribuzioni e servizi descrivono aspetti diversi dell’economia locale. Gli importi sono nominali: la loro variazione non misura da sola una crescita reale.',
- 'infanzia-centrale':'Mettiamo a fianco la capacità potenziale dei servizi per la prima infanzia, gli alunni e l’organizzazione delle scuole. La dotazione disponibile non dice da sola quante famiglie riescano a usare i servizi.',
- 'infanzia-1':'Il confronto mostra la capacità potenziale dichiarata rispetto ai bambini della fascia considerata. Non misura presenze o liste d’attesa: per decidere nuovi posti servono anche questi elementi.',
- 'infanzia-2':'Alunni, classi, tempo pieno e accessibilità aiutano a descrivere la rete scolastica. I risultati educativi richiedono un approfondimento distinto e hanno una copertura territoriale incompleta.'
+ 'lavoro-centrale':'Vivere e lavorare a Massarosa: due prospettive per leggere il cambiamento. Il confronto con Viareggio affianca l’occupazione dei residenti, le attività economiche e gli addetti presenti sul territorio.',
+ 'lavoro-1':'Che cosa cambia tra Massarosa e Viareggio? Guardiamo quante persone lavorano fra i residenti e come sono cambiate le unità locali: ogni confronto mantiene il proprio periodo di riferimento.',
+ 'lavoro-2':'Industria e servizi raccontano due volti dell’economia di Massarosa. I grafici affiancano valore aggiunto e retribuzioni nell’industria e mostrano i due anni disponibili per i servizi.',
+ 'infanzia-centrale':'Dai primi anni di vita alla scuola: come si presenta la rete dei servizi? Partiamo dalla capacità dei servizi educativi, dagli alunni e dalle classi per mettere a fuoco la situazione di Massarosa.',
+ 'infanzia-1':'Quale capacità offrono i servizi per la prima infanzia rispetto ai bambini residenti? Il confronto fra i Comuni aiuta a leggere differenze e dotazioni potenziali.',
+ 'infanzia-2':'Una scuola è fatta di alunni, tempo, spazi e opportunità. Affianchiamo dimensione delle classi, tempo pieno e caratteristiche degli edifici; i risultati educativi restano una prospettiva distinta.'
 };
 const populations={
  'resident population; 25–64 total residents':'Residenti tra 25 e 64 anni.',
@@ -62,16 +62,41 @@ function selectedQuestion(){const el=document.getElementById('a7-selected-questi
 function presentPublic(out,answer){
  selectedQuestion();
  const q=answer.questionPlan;
- out.append(node('p','La tua domanda','eyebrow'),node('h2',q.question),node('p','Risposta parziale · scopri cosa sappiamo e cosa manca','badge'));
- out.append(node('p',introductions[q.id]||q.interpretationLimit,'a7-answer-intro'),node('h3','Partiamo dai dati'));
+ out.append(node('p','La tua domanda','eyebrow'),node('h2',q.question));
+ out.append(node('p',introductions[q.id]||q.interpretationLimit,'a7-answer-intro'),node('h3',q.id.startsWith('lavoro')?'Lavoro e attività: le due facce del territorio':'Bambini, servizi e scuole: il territorio a confronto'));
  for(const c of answer.components){
   const section=node('section',undefined,'component');section.setAttribute('aria-label','Dati della lettura');
-  const first=c.facts[0];section.append(node('h4',first?first.text.split(' — ')[0]:'Un confronto che non possiamo calcolare'));
+  const first=c.facts[0];const title=first?first.text.split(' — ')[0]:'Un confronto che non possiamo calcolare';
+  section.append(node('h4',title,'a7-indicator-title'));
   if(c.response.coverage && c.response.coverage.usable<c.response.coverage.requested)section.append(node('p',`Dati disponibili per ${c.response.coverage.usable} delle ${c.response.coverage.requested} osservazioni richieste. I mancanti restano esclusi.`, 'a7-coverage'));
   if(c.response.status!=='computed')section.append(node('p','I dati disponibili non permettono questo calcolo. Il consenso a leggere risultati parziali non cambia questo limite.'));
+  // Plot only comparable observations already returned by the certified reader.
+  // Results/pooled totals remain text: never mix them into territorial bars.
+  const observations=c.facts.filter(f=>f.kind==='observation');
+  const base=observations[0];
+  const comparable=base&&observations.length>1&&observations.every(f=>
+   f.unit===base.unit&&f.definition===base.definition&&f.dimension===base.dimension&&f.population===base.population&&f.method===base.method&&(f.source===base.source||(f.geography===base.geography&&new URL(f.source).origin===new URL(base.source).origin)))&&
+   (observations.every(f=>f.period===base.period)||observations.every(f=>f.geography===base.geography));
+  const numeric=observations.filter(f=>typeof f.value==='number'&&Number.isFinite(f.value));
+  const plot=comparable&&numeric.length>0&&numeric.every(f=>f.value>=0);
+  const maximum=plot?(base.unit==='percent'&&numeric.every(f=>f.value<=100)&&!base.definition.includes('cumulative')?100:Math.max(...numeric.map(f=>f.value))||1):1;
+  if(plot){section.dataset.a7Chart='bars';section.append(node('p',`Confronto visivo · ${base.unit==='percent'?'scala percentuale':base.unit==='millionCurrency'?'milioni di euro':base.unit==='currency'?'euro':base.unit==='studentsPerClass'?'alunni per classe':'persone'} · da 0 a ${new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(maximum)}. ${observations.every(f=>f.period===base.period)?'Periodo: '+base.period:'Anni osservati: '+observations.map(f=>f.period).join(' e ')+'. Importi nominali; non è un andamento annuale.'}`,'meta'));}
   const ul=node('ul',undefined,'facts');
   for(const f of c.facts){
-   const li=node('li');li.append(node('p',f.text.replace('persone/addetti secondo definizione.','persone.'),'a7-fact'));
+   const li=node('li');
+   // The measure is named once in the component heading. Keep canonical
+   // wording, periods and precision in export; shorten only matching labels.
+   const prefix=title+' — ';
+   const label=f.text.startsWith(prefix)?f.text.slice(prefix.length):f.text;
+   li.append(node('p',label.replace('persone/addetti secondo definizione.','persone.'),'a7-fact'));
+   if(plot&&f.kind==='observation'){
+    if(typeof f.value==='number'&&Number.isFinite(f.value)){
+     const track=node('div',undefined,'a7-bar-track');track.setAttribute('aria-hidden','true');
+     const bar=node('span',undefined,'a7-bar');bar.style.width=(100*f.value/maximum)+'%';
+     bar.dataset.value=String(f.value);bar.dataset.maximum=String(maximum);bar.dataset.geography=f.geography;bar.dataset.period=f.period;
+     if(f.geography==='046018')bar.classList.add('a7-bar-focus');track.append(bar);li.append(track);
+    }else li.append(node('p','Dato non disponibile: nessuna barra e nessun valore zero attribuito.','meta'));
+   }
    if(f.period!==undefined)li.append(node('p','Periodo: '+f.period,'meta'));
    if(f.population!==undefined)li.append(node('p',populations[f.population]||'Il perimetro di questo dato è descritto nei dettagli di verifica.','a7-scope'));
    li.append(source(f.source));ul.append(li);
@@ -80,7 +105,7 @@ function presentPublic(out,answer){
   if(c.response.warnings.length)section.append(fold('Come leggere questo dato',list([...new Set(c.response.warnings.map(w=>warnings[w]||'Sono presenti ulteriori limiti metodologici, conservati nei dettagli di verifica.'))])));
   out.append(section);
  }
- out.append(node('h3','Fin dove possiamo arrivare'),node('p',q.interpretationLimit));
+ out.append(node('h3','Che cosa ci racconta questo confronto'),node('p',q.interpretationLimit));
  out.append(fold('Quali dati mancano per decidere?',list(q.missingData)));
  const docs=node('p');const a=node('a','Approfondisci nel dossier');
  // The canonical source path and pinned commit are validated before publishing.

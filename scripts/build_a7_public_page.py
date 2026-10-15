@@ -46,9 +46,9 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         (folder / name).unlink(missing_ok=True)
     hero = original.header
     hero.name = 'section'
-    hero['class'] = ['a7-hero']
+    hero['class'] = ['a7-hero', 'editorial-hero']
     hero.h1.string = 'Chiedi alla Versilia'
-    hero.select_one('.eyebrow').string = 'Conoscere il territorio, una domanda alla volta'
+    hero.select_one('.eyebrow').string = 'CONOSCERE IL TERRITORIO'
     hero.select_one('h1 + p').string = 'Lavoro, famiglie, scuola: parti dalle tue domande e scopri che cosa raccontano i dati di Massarosa.'
     hero.select_one('.notice').string = 'Si parte da Massarosa: lavoro e infanzia/scuola. Ogni lettura indica a quale periodo si riferiscono i dati e che cosa resta da approfondire.'
     for selector, text in {
@@ -67,7 +67,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     original.select_one('#selezione + p').string='Questi primi percorsi riguardano lavoro e infanzia/scuola a Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
     original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
     original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
-    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Scegli una domanda · Esplora i dati · Approfondisci le fonti';hero.append(local_note)
+    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Le prime letture: lavoro · infanzia e scuola · Massarosa';hero.append(local_note)
     grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
     original.main.insert(0,grid)
     grid.append(original.select_one('#scrivi').parent)
@@ -82,7 +82,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     link.string = 'Leggi le evidenze in formato testo.'
     fallback.append(link)
     original.main.noscript.append(fallback)
-    content = str(hero) + original.main.decode_contents() + str(local_footer)
+    content = original.main.decode_contents() + str(local_footer)
     shell = extract_native_shell(dist, page)
     # The seven-route secondary-page stylesheet has its own approved scope.
     styles = '\n'.join(line for line in shell.styles.splitlines() if 'secondary-pages-ui.css' not in line)
@@ -105,7 +105,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
 {styles}<link rel="stylesheet" href="{relative}public.css"><meta name="theme-color" content="#0F3654">
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
 <a class="a7-skip" href="#a7-guided">Vai alle domande</a>
-{shell.header}<div id="app"><main id="a7-guided" data-a7-release="{relative}" class="editorial-page page-width a7-guided">
+{shell.header}<div id="app"><div class="a7-banner">{hero}</div><main id="a7-guided" data-a7-release="{relative}" class="editorial-page page-width a7-guided">
 <nav aria-label="Percorso pagina"><a href="../">Home</a> · Chiedi alla Versilia</nav>
 {content}
 <p>Approfondisci i dati: <a href="../comuni/massarosa/">scheda di Massarosa</a> · <a href="../confronta/lavoro/">lavoro</a> · <a href="../confronta/istruzione/">istruzione</a> · <a href="../stato-dati/">stato dei dati</a>.</p>

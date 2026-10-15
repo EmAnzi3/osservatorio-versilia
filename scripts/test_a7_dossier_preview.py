@@ -261,6 +261,7 @@ def verify_public_page(bundle, release, dist, output):
                         target=page.locator(selector) if selector.startswith('#d') else page.locator(selector).locator('..')
                         assert target.evaluate('(el)=>getComputedStyle(el).backgroundColor')=='rgb(255, 255, 255)',selector
                     assert 'hero-project.svg' in page.locator('.a7-hero').evaluate('(el)=>getComputedStyle(el).backgroundImage')
+                    page.wait_for_function("() => {const r=document.querySelector('.a7-hero').getBoundingClientRect();return Math.abs(r.x)<1 && Math.abs(r.width-document.body.getBoundingClientRect().width)<1;}")
                     page.locator('.global-search-trigger').click();page.locator('.search-overlay').wait_for()
                     page.keyboard.press('Escape');page.locator('.search-overlay').wait_for(state='hidden')
                     before=page.evaluate('JSON.stringify([Object.entries(localStorage),Object.entries(sessionStorage)])')
@@ -276,10 +277,26 @@ def verify_public_page(bundle, release, dist, output):
                         page.wait_for_function("() => {const r=document.querySelector('#risposta h2').getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return r.top>=h.bottom && r.bottom<=innerHeight;}")
                         text=page.locator('#risposta').inner_text()
                         assert q['interpretationLimit'] in text
+                        assert 'Risposta parziale ·' not in text and 'Partiamo dai dati' not in text
+                        bars=page.locator('#risposta .a7-bar').evaluate_all('(els)=>els.map(e=>({value:Number(e.dataset.value),maximum:Number(e.dataset.maximum),geography:e.dataset.geography,period:e.dataset.period,width:parseFloat(e.style.width)}))')
+                        canonical=[f for cid in q['requiredCaseRefs']+q['contextCaseRefs'] for f in bundle['cases'][cid]['facts'] if f['kind']=='observation' and isinstance(f.get('value'),(int,float))]
+                        assert bars, 'supported comparisons must have charts'
+                        for bar in bars:
+                            assert any(f['value']==bar['value'] and f['geography']==bar['geography'] and f['period']==bar['period'] for f in canonical)
+                            assert abs(bar['width']-100*bar['value']/bar['maximum'])<0.001
                         assert q['answerBoundary'] in page.locator('#risposta').text_content()
                         for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
-                            for fact in bundle['cases'][cid]['facts']:
-                                assert fact['text'].replace('persone/addetti secondo definizione.','persone.') in text
+                            facts=bundle['cases'][cid]['facts']
+                            component=page.locator('#risposta .component').nth((q['requiredCaseRefs']+q['contextCaseRefs']).index(cid))
+                            title=facts[0]['text'].split(' — ')[0] if facts else 'Un confronto che non possiamo calcolare'
+                            heading=component.locator('h4')
+                            assert heading.inner_text()==title
+                            assert heading.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)')>component.locator('.a7-fact').first.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)') if facts else True
+                            for index,fact in enumerate(facts):
+                                prefix=title+' — '
+                                label=fact['text'][len(prefix):] if fact['text'].startswith(prefix) else fact['text']
+                                assert component.locator('.a7-fact').nth(index).inner_text()==label.replace('persone/addetti secondo definizione.','persone.')
+                                if fact['text'].startswith(prefix):assert title not in component.locator('.a7-fact').nth(index).inner_text()
                         with page.expect_download() as got:page.locator('#esporta-risposta').click()
                         data=json.loads(Path(got.value.path()).read_text())
                         replay=page.evaluate('''async ({data,relative})=>{const {loadPilot}=await import('./'+relative+'reader.mjs');return(await loadPilot(await(await fetch('./'+relative+'bundle.json')).text(),data.answer.release)).resolve(data.request);}''',dict(data=data,relative=relative))
@@ -319,7 +336,7 @@ def verify_public_page(bundle, release, dist, output):
                     page.close();overrides.clear();blocked.clear();report['checks'].append(mode+'_bundle_fail_closed_with_shell_available')
                 page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
                 assert page.locator('noscript a[href="'+relative+'answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
-                page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export']
+                page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export','full_width_editorial_banner','charts_match_canonical_observations_and_zero_scale']
                 assert (dist/'service-worker.js').read_bytes()==(ROOT/'service-worker.js').read_bytes()
                 context=browser.new_context()
                 # Routing disables HTTP caching: exercise the actual HTTP cache.
