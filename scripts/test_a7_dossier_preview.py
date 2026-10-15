@@ -284,7 +284,9 @@ def verify_public_page(bundle, release, dist, output):
                         for bar in bars:
                             assert any(f['value']==bar['value'] and f['geography']==bar['geography'] and f['period']==bar['period'] for f in canonical)
                             assert abs(bar['width']-100*bar['value']/bar['maximum'])<0.001
-                        assert q['answerBoundary'] in page.locator('#risposta').text_content()
+                        assert q['answerBoundary'] in text
+                        assert page.locator('#risposta .a7-answer-boundary').is_visible()
+                        assert page.locator('#risposta .a7-answer-boundary').inner_text()==q['answerBoundary']
                         for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
                             facts=bundle['cases'][cid]['facts']
                             component=page.locator('#risposta .component').nth((q['requiredCaseRefs']+q['contextCaseRefs']).index(cid))

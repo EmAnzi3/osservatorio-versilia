@@ -105,6 +105,7 @@ function presentPublic(out,answer){
   if(c.response.warnings.length)section.append(fold('Come leggere questo dato',list([...new Set(c.response.warnings.map(w=>warnings[w]||'Sono presenti ulteriori limiti metodologici, conservati nei dettagli di verifica.'))])));
   out.append(section);
  }
+ out.append(node('h3','Per interpretare i confronti'),node('p',q.answerBoundary,'a7-answer-boundary'));
  out.append(node('h3','Che cosa ci racconta questo confronto'),node('p',q.interpretationLimit));
  out.append(fold('Quali dati mancano per decidere?',list(q.missingData)));
  const docs=node('p');const a=node('a','Approfondisci nel dossier');
