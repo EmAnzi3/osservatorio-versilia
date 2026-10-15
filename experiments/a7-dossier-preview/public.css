@@ -20,4 +20,5 @@
 .a7-guided dt{font-weight:650;margin-top:.6rem}.a7-guided dd{margin-left:0;overflow-wrap:anywhere}.a7-guided .facts li{margin-bottom:1.3rem}
 .a7-guided .meta{color:#384f5b;font-size:.92rem}.a7-guided #stato{min-height:1.6em}.a7-guided [hidden]{display:none!important}
 .a7-guided textarea{resize:vertical;min-height:7rem}.a7-guided #alternative{display:grid;gap:.6rem}.a7-guided #alternative button{margin:0;text-align:left}.a7-guided #chiarimento{border-left:4px solid #527e88}
+.a7-guided #risposta,.a7-guided #titolo-chiarimento{scroll-margin-block-start:6rem}
 @media(max-width:540px){.a7-guided{padding-inline:1rem}.a7-guided section,.a7-guided article{padding:1rem}.a7-guided button{width:100%;margin-right:0}.a7-guided select{font-size:1rem}.a7-guided .component{padding:.8rem}}

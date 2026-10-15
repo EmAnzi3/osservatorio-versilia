@@ -8,11 +8,13 @@ import html
 import json
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 from bs4 import BeautifulSoup
 from build_a7_dossier_preview import preview
 from site_chrome import ensure_sitemap_entries, extract_native_shell
+from a7_public_release import FILES, manifest_text
 
 ROOT = Path(__file__).resolve().parents[1]
 URL = 'https://osservatorioversilia.it/chiedi/'
@@ -21,10 +23,27 @@ URL = 'https://osservatorioversilia.it/chiedi/'
 def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     commit = commit or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     folder = dist / 'chiedi'
-    # Original builder checks Git snapshots before emitting any answer assets.
-    preview(folder, commit, catalog=dist / 'data/site-data.json')
     page = folder / 'index.html'
-    original = BeautifulSoup(page.read_text(encoding='utf-8'), 'html.parser')
+    # Build an immutable graph before changing the HTML entry point. Every
+    # relative module import and bundle fetch resolves inside this one graph.
+    with tempfile.TemporaryDirectory(prefix='a7-public-release-') as tmp:
+        stage = Path(tmp)
+        preview(stage, commit, catalog=dist / 'data/site-data.json')
+        original = BeautifulSoup((stage / 'index.html').read_text(encoding='utf-8'), 'html.parser')
+        for name in ['public.css', 'public.mjs']:
+            shutil.copyfile(ROOT / 'experiments/a7-dossier-preview' / name, stage / name)
+        assets = {name: (stage / name).read_bytes() for name in FILES}
+        manifest = manifest_text(assets)
+        relative = 'releases/' + hashlib.sha256(manifest.encode()).hexdigest() + '/'
+        destination = folder / relative
+        destination.mkdir(parents=True, exist_ok=True)
+        for name, data in dict(assets, **{'manifest.json': manifest.encode()}).items():
+            target = destination / name
+            if target.exists() and target.read_bytes() != data:
+                raise ValueError('immutable_a7_asset_changed:' + name)
+            target.write_bytes(data)
+    for name in (*FILES, 'preview.css'):
+        (folder / name).unlink(missing_ok=True)
     hero = original.header
     hero.name = 'section'
     hero['class'] = ['a7-hero']
@@ -37,7 +56,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     original.main.noscript.clear()
     fallback = original.new_tag('p')
     fallback.string = 'Per scegliere una domanda occorre JavaScript. '
-    link = original.new_tag('a', href='answers.md')
+    link = original.new_tag('a', href=relative + 'answers.md')
     link.string = 'Leggi le evidenze in formato testo.'
     fallback.append(link)
     original.main.noscript.append(fallback)
@@ -61,21 +80,18 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
 <title>{title}</title><meta name="description" content="{description}">{social}
 <link rel="canonical" href="{URL}"><script type="application/ld+json">{structured}</script>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../site.webmanifest">
-{styles}<link rel="stylesheet" href="public.css"><meta name="theme-color" content="#0F3654">
+{styles}<link rel="stylesheet" href="{relative}public.css"><meta name="theme-color" content="#0F3654">
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
 <a class="a7-skip" href="#a7-guided">Vai alle domande</a>
-{shell.header}<div id="app"><main id="a7-guided" class="editorial-page page-width a7-guided">
+{shell.header}<div id="app"><main id="a7-guided" data-a7-release="{relative}" class="editorial-page page-width a7-guided">
 <nav aria-label="Percorso pagina"><a href="../">Home</a> · Chiedi alla Versilia</nav>
 {content}
 <p>Approfondisci i dati: <a href="../comuni/massarosa/">scheda di Massarosa</a> · <a href="../confronta/lavoro/">lavoro</a> · <a href="../confronta/istruzione/">istruzione</a> · <a href="../stato-dati/">stato dei dati</a>.</p>
 </main></div>{shell.footer}
-<script src="{html.escape(shell.app_bundle, quote=True)}" defer></script><script type="module" src="preview.mjs"></script>
+<script src="{html.escape(shell.app_bundle, quote=True)}" defer></script><script type="module" src="{relative}public.mjs"></script>
 </body></html>''', encoding='utf-8')
     from build_static_brand_impl import cache_bust_app_bundle, cache_bust_favicon, inject_pwa
     page.write_text(inject_pwa(cache_bust_app_bundle(cache_bust_favicon(page.read_text(encoding='utf-8'))), '../'), encoding='utf-8')
-    shutil.copyfile(ROOT / 'experiments/a7-dossier-preview/public.css', folder / 'public.css')
-    # The isolated preview stylesheet is not used by the public shell.
-    (folder / 'preview.css').unlink()
     ensure_sitemap_entries(dist, (URL,))
     return page
 

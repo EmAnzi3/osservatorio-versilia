@@ -73,7 +73,7 @@ $('accetta').addEventListener('click',()=>{if(pending)resolve({...pending,approv
 $('annulla').addEventListener('click',()=>{reset();$('stato').textContent='Componenti parziali non mostrate.';$('domanda').focus();});
 try{
   if(!/^[a-f0-9]{40}$/u.test(release.repositoryCommit))throw new Error('invalid_repository_release');
-  const response=await fetch('./bundle.json',{cache:'no-store',credentials:'omit'});if(!response.ok)throw new Error('bundle_unavailable');
+  const response=await fetch(new URL('./bundle.json',import.meta.url),{cache:'no-store',credentials:'omit'});if(!response.ok)throw new Error('bundle_unavailable');
   pilot=await loadPilot(await response.text(),release);choices=pilot.describe().choices;
   for(const id of [...new Set(choices.map(q=>q.dossierId))]){const o=node('option',labels[id]||id);o.value=id;$('dossier').append(o);}
   questions();for(const id of ['dossier','domanda','mostra','domanda-testo','verifica-testo'])$(id).disabled=false;

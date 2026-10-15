@@ -99,8 +99,9 @@ self.addEventListener('fetch', event => {
 
   // The guided answer release and bundle must refresh together. A cached
   // mismatch still fails closed in the original reader, including offline.
-  if (/\/chiedi\/(?:bundle\.json|release\.mjs|reader\.mjs|preview\.mjs)$/.test(url.pathname)) {
-    event.respondWith(networkFirst(request).catch(() => caches.match(request, { ignoreSearch: true })));
+  if (/\/chiedi\/releases\/[a-f0-9]{64}\/(?:bundle\.json|release\.mjs|reader\.mjs|preview\.mjs|public\.mjs)$/.test(url.pathname)) {
+    // CacheStorage priority alone does not revalidate a still-fresh HTTP cache.
+    event.respondWith(networkFirst(new Request(request, { cache: 'no-cache' })).catch(() => caches.match(request, { ignoreSearch: true })));
     return;
   }
 

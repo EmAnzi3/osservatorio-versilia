@@ -15,9 +15,9 @@ Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`.
 
 ## Incremento candidato
 
-Branch `feature/a7-public-guided-dossiers`: prima integrazione `/chiedi/`, con shell e ricerca canoniche, link di approfondimento e stessa UI/lettore/bundle. Accesso iniziale tramite URL e sitemap; nessuna modifica al menu globale o ai percorsi approvati. Contratto standalone esplicito; generazione nel builder pubblico e validazione build/live di route, asset e hash. Senza JavaScript resta il testo delle letture; errori nelle evidenze bloccano i risultati.
+Branch `feature/a7-public-guided-dossiers`: prima integrazione `/chiedi/`, con shell e ricerca canoniche, link di approfondimento e stesso lettore/bundle. La UI risolve il bundle rispetto al modulo, senza variazioni ai calcoli o alle interazioni. Un adattatore pubblico mantiene visibili i titoli dopo il focus senza modificare la preview. Accesso iniziale tramite URL e sitemap; nessuna modifica al menu globale o ai percorsi approvati. Contratto standalone esplicito; generazione nel builder pubblico e validazione build/live di route, asset e hash. Senza JavaScript resta il testo delle letture; errori nelle evidenze bloccano i risultati.
 
-La cache PWA usa rete prima della cache soltanto per i quattro asset di evidenza/codice sotto `/chiedi/`. Browser reale: vecchi asset online non prevalgono sui nuovi; cache mista offline rifiutata dal lettore. Le policy delle altre route restano invariate. Il campo scritto non viene salvato o trasmesso.
+I sette asset sono legati a una cartella immutabile con hash del manifest: moduli di deployment diversi non condividono URL. Una release parziale non può riusare il vecchio lettore; l’entry point blocca i risultati se manca un modulo. La cache PWA usa rivalidazione HTTP e rete prima della cache soltanto per i cinque asset di evidenza/codice sotto la cartella di release di `/chiedi/`. Browser reale: cache HTTP attiva con TTL di un’ora e vecchi asset online non prevalgono sui nuovi; cache mista offline rifiutata dal lettore. Le policy delle altre route restano invariate. Il campo scritto non viene salvato o trasmesso.
 
 Metodo e revisione in `docs/A7_PUBLIC_GUIDED_PAGE.md`. Il candidato avanza A7.5 sul perimetro curato, senza dichiarare pubblicato il nuovo accesso o conclusa A7. Nessun nuovo dato, adapter, numero o repertorio canonico.
 
