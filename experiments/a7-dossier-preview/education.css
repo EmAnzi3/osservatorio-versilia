@@ -30,10 +30,9 @@
 .edu-missing{font-size:.8rem;color:#52616a}
 .edu-tools{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:1.2rem 0}
 .edu-tools a.edu-download{display:inline-block;background:#123f50;color:#fff;padding:.8rem 1rem;border-radius:4px;text-decoration:none;font-weight:750}
-.edu-navigation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin:1.5rem 0 2rem;padding:0;border:0;counter-reset:chapters}
-.edu-navigation a{counter-increment:chapters;display:flex;align-items:center;gap:.65rem;text-decoration:none;padding:.9rem;border:1px solid #b7cbcf;border-radius:3px;background:#fff;color:#174d5a;font-size:.9rem;font-weight:750;min-height:54px}
-.edu-navigation a:before{content:counter(chapters,decimal-leading-zero);color:#637c84;font-size:.8rem;letter-spacing:.04em}
-.edu-navigation a[aria-current]{background:#176963;color:#fff;border-color:#176963}.edu-navigation a[aria-current]:before{color:#d4ede8}
+.edu-navigation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin:1.5rem 0 2rem;padding:0;border:0}
+.edu-navigation a{display:flex;align-items:center;text-decoration:none;padding:.9rem;border:1px solid #b7cbcf;border-radius:3px;background:#fff;color:#174d5a;font-size:.9rem;font-weight:750;min-height:54px}
+.edu-navigation a[aria-current]{background:#176963;color:#fff;border-color:#176963}
 .edu-navigation a:hover{border-color:#176963;box-shadow:inset 0 -3px #e9a84b}
 .a7-guided .edu-panel{padding:0;border:0;border-radius:0;margin:0;min-height:0;display:block}
 .edu-panel>h3{font-size:clamp(1.7rem,3.5vw,2.5rem);letter-spacing:-.03em;line-height:1.15;color:#123f50;scroll-margin-top:6rem;margin:0 0 1rem;max-width:28ch}
@@ -59,6 +58,7 @@
  .edu-tools{align-items:stretch;gap:.6rem}.edu-tools a.edu-download{width:100%;text-align:center}.edu-tools .edu-change{flex:1}.edu-tools a[data-education-dossier]{flex:1;text-align:center;align-self:center;font-size:.87rem}
  .a7-guided .edu-answer{margin-inline:-.6rem}.edu-chapter-intro{font-size:1.08rem}
 }
+@media(max-width:360px){.edu-navigation{grid-template-columns:1fr}.edu-navigation a{min-height:44px}}
 /* Composed print layout; no scroll controls or oversized screen typography. */
 @media print{
  @page{size:A4}

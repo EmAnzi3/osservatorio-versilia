@@ -21,7 +21,7 @@ Branch `feature/a7-education-editorial`, baseline pulita #436. Il proprietario h
 
 Verificare contenuti, navigazione e PDF desktop/mobile; Quick→Full locali ordinari in sequenza sul medesimo albero prima della prontezza al merge, CI Quick→Full/A3 sulla head corrente. Il gate A7 esistente comprende riproducibilità del PDF, ancore indipendenti, scale/null/zeri e hash degli asset. Soglie/golden e prove della preview isolata conservate. Esiti effettivi, log e SHA nella PR; nessun verde precedente o skipped sostituisce un PASS.
 
-La PR UI resta Draft per la revisione della nuova esperienza. Nessun merge o deploy dell’assistente. Dopo eventuale merge del proprietario: verificare commit/albero, deploy e live. A7 resta IN_PROGRESS; interpretazione libera e rollout agli altri dossier separati.
+Feedback del proprietario del 16 ottobre: direzione editoriale migliorata; rimossa la numerazione dai pulsanti dei capitoli, con una colonna sugli schermi fino a 360 px per mantenere intere le parole. La PR UI passa da Draft a Ready soltanto dopo preview/browser e Quick→Full locali completi sul medesimo albero; i gate CI devono poi completarsi sulla stessa head. Nessun merge o deploy dell’assistente. Dopo eventuale merge del proprietario: verificare commit/albero, deploy e live. A7 resta IN_PROGRESS; interpretazione libera e rollout agli altri dossier separati.
 
 ## Limiti
 
