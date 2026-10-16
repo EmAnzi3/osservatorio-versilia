@@ -44,7 +44,7 @@ export function presentEducation(out,answer,model){
   const link=make('a',c.title);link.href='?lettura=educazione#'+c.id;link.dataset.chapter=c.id;
   link.addEventListener('click',event=>{event.preventDefault();history.replaceState(null,'',link.href);show(c.id,true);});nav.append(link);
   const panel=make('section',null,'edu-panel');panel.id='educazione-'+c.id;panel.setAttribute('aria-labelledby',panel.id+'-title');
-  const title=make('h3',c.id==='sintesi'?'Servizi, accesso e bisogni: leggere le differenze':c.title);title.id=panel.id+'-title';title.tabIndex=-1;panel.append(title);
+  const title=make('h3',c.id==='sintesi'?'Famiglie e scuola: la Versilia a confronto':c.title);title.id=panel.id+'-title';title.tabIndex=-1;panel.append(title);
   // Build-produced markup, checked against the release hash above. No user HTML.
   const content=make('div');content.innerHTML=c.html;panel.append(content);body.append(panel);panels.push(panel);
  }
@@ -52,5 +52,6 @@ export function presentEducation(out,answer,model){
  out.append(nav,body);
  const boundary=make('details',null,'edu-boundary');boundary.append(make('summary','Fonti, perimetro e limiti della risposta'),make('p',model.answerBoundaryPublic,'a7-answer-boundary'),make('p',q.interpretationLimit));out.append(boundary);
  const verification=make('details');verification.dataset.a7Technical='true';verification.append(make('summary','Dati originali e verifica tecnica'),make('pre',JSON.stringify(answer,null,2)));out.append(verification);
+ const territorialVerification=make('details');territorialVerification.dataset.educationTechnical='true';territorialVerification.append(make('summary','Verifica dei confronti sui sette Comuni'),make('p','Richieste e risposte del medesimo motore, conservate integralmente.'),make('pre',JSON.stringify(model.territorialCases,null,2)));out.append(territorialVerification);
  show(location.search.includes('lettura=educazione')?location.hash.slice(1):'sintesi');
 }

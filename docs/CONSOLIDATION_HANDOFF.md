@@ -15,7 +15,7 @@ Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`.
 
 ## Incremento candidato — nuova lettura educativa
 
-Branch `feature/a7-education-editorial`, baseline pulita #436. Il proprietario ha fermato l’espansione della vecchia presentazione e chiesto un modello ispirato a ONS/Openpolis. Incremento circoscritto alla domanda centrale sull’offerta educativa: sintesi, grafici selezionati, dossier interno per capitoli e rapporto PDF composto dagli stessi risultati. Le cinque altre domande conservano la lettura precedente; il JSON pubblico diventa un’opzione nei dettagli tecnici. Nessun accesso da Home/menu richiesto, nessun nuovo dato o adapter. Specifica e catena delle evidenze: `docs/A7_EDUCATION_EDITORIAL_READING.md`.
+Branch `feature/a7-education-editorial`, baseline pulita #436. Il proprietario ha fermato l’espansione della vecchia presentazione e chiesto un modello ispirato a ONS/Openpolis. Incremento circoscritto alla domanda centrale sull’offerta educativa: sintesi, grafici selezionati, dossier interno per capitoli e rapporto PDF composto dagli stessi risultati. Revisione dopo feedback del 16 ottobre: gerarchia editoriale più marcata e confronti MIM estesi ai sette Comuni, con componenti visibili; le quattro richieste aggiuntive riusano catalogo/motore e preservano integralmente il bundle dimostrativo originale. Non confondere il precedente filtro Massarosa/Viareggio con dati mancanti. Le cinque altre domande conservano la lettura precedente; il JSON pubblico diventa un’opzione nei dettagli tecnici. Nessun accesso da Home/menu richiesto, nessun nuovo dato o adapter. Specifica e catena delle evidenze: `docs/A7_EDUCATION_EDITORIAL_READING.md`.
 
 ## Gate e prossima azione
 
