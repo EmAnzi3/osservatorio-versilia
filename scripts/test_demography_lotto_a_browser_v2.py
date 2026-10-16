@@ -230,7 +230,9 @@ def main() -> None:
                 f'A5.5 bulk: temi inattesi {bulk_theme_keys}')
 
         def assert_bulk_theme(theme_key: str, mobile: bool = False) -> int:
-            page.goto(urljoin(args.base, f'confronta/{theme_key}/'), wait_until='networkidle')
+            # The prerender already has buttons; exercise client-bound controls,
+            # not a static sidebar while start() is still awaiting its catalog.
+            goto_reading_view(page, urljoin(args.base, f'confronta/{theme_key}/'))
             require(page.locator(f'main.a5-editorial-pilot[data-theme="{theme_key}"]').count() == 1,
                     f'A5.5 bulk {theme_key}: shell A5 assente')
             require(page.locator(f'.compare-context-nav a[data-context-theme="{theme_key}"].active').count() == 1,
