@@ -19,6 +19,19 @@ QUESTION = 'infanzia-centrale'
 NAMES = {'046005':'Camaiore','046013':'Forte dei Marmi','046018':'Massarosa','046024':'Pietrasanta','046028':'Seravezza','046030':'Stazzema','046033':'Viareggio'}
 SOURCES = {'dati.toscana.it':'Regione Toscana', 'dati.istruzione.it':'Ministero dell’Istruzione e del Merito', 'serviziostatistico.invalsi.it':'INVALSI'}
 E = html.escape
+ROOT = Path(__file__).resolve().parents[1]
+PUBLISHER = 'Osservatorio Versilia'
+WEBSITE = 'osservatorioversilia.it'
+LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/deed.it'
+REUSE_NOTE = ('Testi, elaborazioni e visualizzazioni originali sono disponibili con licenza '
+    'CC BY 4.0, citando Osservatorio Versilia. Dati e materiali di terzi mantengono '
+    'le condizioni d’uso e le licenze dei rispettivi titolari.')
+
+
+def report_brand(town):
+    """Use the existing canonical vector mark; no copied or remote logo asset."""
+    mark = (ROOT/'assets/brand-mark.svg').read_text().strip()
+    return '<div class="edu-report-brand">'+mark+'<div><strong>'+PUBLISHER+'</strong><span>Analisi territoriali · '+WEBSITE+'</span></div><p class="edu-kicker">'+E(town.upper())+'<br>OFFERTA EDUCATIVA</p></div>'
 
 
 def number(value, precision=1):
@@ -113,7 +126,7 @@ def build_reading(bundle, commit, territorial_cases, focus_code=FOCUS):
             bars.append(f'<li class="{"edu-focus" if f["geography"]==focus_code else ""}" data-evidence-case="{cid}" data-evidence-pointer="{f["responsePointer"]}"><span class="edu-town">{name}{components}</span>{track}<strong>{number(v,0 if unit=="alunni" else 1)}{suffix}</strong></li>')
         available=len(values)
         coverage=f'{len(rows)} Comuni della Versilia' if len(rows)==7 else 'Massarosa e Viareggio: confronto descrittivo selezionato, non un gruppo di territori equivalenti'
-        return f'''<figure class="edu-chart" data-education-case="{cid}"><figcaption><h4>{title}</h4><p>{explanation}</p></figcaption><p class="edu-chart-meta">Anno scolastico {E(base['period'])} · {coverage}. Valori disponibili: {available} su {len(rows)}.</p><ul class="edu-bars">{''.join(bars)}</ul><p class="edu-chart-meta">Scala da 0 a {number(maximum,0)} {unit}. {E(town)} è evidenziato nel confronto; Comuni in ordine alfabetico. Fonte: {source(cid)}.</p></figure>'''
+        return f'''<figure class="edu-chart" data-education-case="{cid}"><figcaption><h4>{title}</h4><p>{explanation}</p></figcaption><p class="edu-chart-meta">Anno scolastico {E(base['period'])} · {coverage}. Valori disponibili: {available} su {len(rows)}.</p><ul class="edu-bars">{''.join(bars)}</ul><p class="edu-chart-meta">Scala da 0 a {number(maximum,0)} {unit}. {E(town)} è evidenziato nel confronto; Comuni in ordine alfabetico. <span class="edu-chart-credit">Elaborazione: {PUBLISHER} · Fonte: {source(cid)}.</span></p></figure>'''
     if any(f['value'] != 0 for f in observations('child_zero')):
         raise ValueError('education_zero_narrative_needs_review')
     period=focus('school_full_time')['period']
@@ -178,11 +191,11 @@ def build_education(bundle, commit, territorial_cases):
 
 
 def report_html(reading, css):
-    parts=[f'<section class="edu-print-page"><p class="edu-kicker">OSSERVATORIO VERSILIA / {E(reading["territory"].upper())}</p><h1>Famiglie, servizi e scuola</h1><h2>{E(reading["question"])}</h2><p>Una lettura territoriale · Anno scolastico {E(reading["period"])} · Edizione {reading["editionDate"]}</p>'+reading['overview']+'</section>']
+    parts=[f'<section class="edu-print-page">{report_brand(reading["territory"])}<h1>Famiglie, servizi e scuola</h1><h2>{E(reading["question"])}</h2><p>Anno scolastico {E(reading["period"])} · Rapporto, edizione del {reading["editionDate"]}</p>'+reading['overview']+'</section>']
     for c in reading['chapters']:
         parts.append(f'<section class="edu-print-page"><p class="edu-kicker">{E(reading["territory"].upper())} / OFFERTA EDUCATIVA</p><h2>{E(c["title"])}</h2>'+c['html'].replace('<details>', '<details open>')+'</section>')
-    parts.append(f'<section class="edu-reproduction"><h2>Fonti e riproducibilità</h2><p>Rapporto generato dagli stessi risultati verificati utilizzati nella lettura web. I dati non sono aggiornati in tempo reale.</p><p>Versione del codice e delle fonti conservate:</p><p><a href="https://github.com/EmAnzi3/osservatorio-versilia/tree/{reading["repositoryCommit"]}">{reading["repositoryCommit"]}</a></p><p>Impronta del pilota originale (SHA256):<br>{reading["bundleSha256"]}</p><p>Gli identificativi e i risultati originali sono consultabili nei dettagli di verifica della lettura web.</p><p><a href="https://osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}">osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}</a></p></section>')
-    return '<!doctype html><html lang="it"><meta charset="utf-8"><title>'+E(reading['territory'])+' - Famiglie, servizi e scuola</title><style>'+css+'</style><main class="edu-report">'+''.join(parts)+'</main></html>'
+    parts.append(f'<section class="edu-reproduction"><h2>Fonti e riproducibilità</h2><p>Rapporto generato dagli stessi risultati verificati utilizzati nella lettura web. L’edizione identifica la versione del rapporto; i periodi dei dati sono indicati nei grafici e nelle fonti.</p><h3>Attribuzione e riuso</h3><p>{E(REUSE_NOTE)} <a href="{LICENSE_URL}">Licenza CC BY 4.0</a> · <a href="https://{WEBSITE}/progetto/#licenza">Condizioni di riuso del progetto</a>.</p><p>Pubblicazione civica indipendente, non documento ufficiale degli enti citati. Per usi ufficiali o amministrativi consultare la fonte originaria.</p><p>Versione del codice e delle fonti conservate:</p><p><a href="https://github.com/EmAnzi3/osservatorio-versilia/tree/{reading["repositoryCommit"]}">{reading["repositoryCommit"]}</a></p><p>Impronta del pilota originale (SHA256):<br>{reading["bundleSha256"]}</p><p>Gli identificativi e i risultati originali sono consultabili nei dettagli di verifica della lettura web.</p><p><a href="https://osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}">osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}</a></p></section>')
+    return '<!doctype html><html lang="it"><meta charset="utf-8"><meta name="author" content="'+PUBLISHER+'"><title>'+E(reading['territory'])+' - Famiglie, servizi e scuola</title><style>'+css+'</style><main class="edu-report">'+''.join(parts)+'</main></html>'
 
 
 def write_report(reading, css, path):
@@ -193,7 +206,7 @@ def write_report(reading, css, path):
             page=browser.new_page();page.set_content(report_html(reading,css));page.emulate_media(media='print')
             page.pdf(path=str(path),format='A4',print_background=True,display_header_footer=True,tagged=True,outline=True,
                 margin={'top':'15mm','bottom':'18mm','left':'16mm','right':'16mm'},header_template='<span></span>',
-                footer_template=f'<div style="font-family:Arial;font-size:8px;color:#405968;width:100%;text-align:center">Osservatorio Versilia · {E(reading["territory"])} / Offerta educativa · <span class="pageNumber"></span> / <span class="totalPages"></span></div>')
+                footer_template=f'<div style="font-family:Arial;font-size:8px;color:#405968;width:100%;margin:0 16mm;border-top:1px solid #c7d8df;padding-top:5px;display:flex;justify-content:space-between"><span>{PUBLISHER} · {WEBSITE}<br>{E(reading["territory"])} / Offerta educativa</span><span>Pagina <span class="pageNumber"></span> / <span class="totalPages"></span></span></div>')
         finally:browser.close()
     # Chromium timestamps are the only wall-clock metadata; a fixed value makes
     # the report deterministic for the same verified source and editorial text.

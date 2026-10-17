@@ -3,7 +3,7 @@ import copy
 import hashlib
 import json
 from bs4 import BeautifulSoup
-from a7_education_editorial import build_reading, build_education, write_report
+from a7_education_editorial import build_reading, build_education, write_report, report_html
 
 
 def verify_education_artifacts(bundle, folder, release, output):
@@ -83,6 +83,9 @@ def verify_education_artifacts(bundle, folder, release, output):
                 if fact['kind']=='observation':assert fact['geography']==code
         document=BeautifulSoup(view['overview']+''.join(c['html'] for c in view['chapters']),'html.parser')
         for chart in document.select('.edu-chart'):
+            credit=chart.select_one('.edu-chart-credit')
+            assert credit and 'Elaborazione: Osservatorio Versilia' in credit.get_text()
+            assert credit.select_one('a')['href']==cases[chart['data-education-case']]['facts'][0]['source']
             selected=chart.select('.edu-focus');assert len(selected)==1
             fact=next(f for f in cases[selected[0]['data-evidence-case']]['facts'] if f['responsePointer']==selected[0]['data-evidence-pointer'])
             assert fact['geography']==code
@@ -116,6 +119,27 @@ def verify_education_artifacts(bundle, folder, release, output):
         report=PdfReader(folder/filename)
         local_text=unicodedata.normalize('NFKC','\n'.join(p.extract_text() for p in report.pages))
         assert NAMES[code] in local_text and code in local_text
+        view=model['townReadings'][code]
+        markup=BeautifulSoup(report_html(view,css),'html.parser')
+        canonical=BeautifulSoup((root/'assets/brand-mark.svg').read_text(),'html.parser')
+        logo=markup.select_one('.edu-report-brand svg')
+        assert logo and [p['d'] for p in logo.select('path')]==[p['d'] for p in canonical.select('path')]
+        assert markup.select_one('meta[name="author"]')['content']=='Osservatorio Versilia'
+        assert markup.select_one('a[href="https://creativecommons.org/licenses/by/4.0/deed.it"]')
+        assert 'https://creativecommons.org/licenses/by/4.0/deed.it' in (root/'assets/app-parts/05.txt').read_text()
+        publication_text=' '.join(local_text.split())
+        for term in ['Rapporto, edizione del '+view['editionDate'],'Attribuzione e riuso','CC BY 4.0','Dati e materiali di terzi mantengono','Pubblicazione civica indipendente']:
+            assert term in publication_text, 'PDF missing publication context: '+term
+        # Branding must not spill the cover's interpretation note onto a sparse
+        # continuation page or shift the five composed chapter openings.
+        assert 'LA DOMANDA CHE CONTA' in report.pages[0].extract_text()
+        for i,chapter in enumerate(view['chapters'],1):
+            assert chapter['title'] in unicodedata.normalize('NFKC',report.pages[i].extract_text())
+        import re
+        for i,p in enumerate(report.pages,1):
+            footer=unicodedata.normalize('NFKC',p.extract_text())
+            assert 'osservatorioversilia.it' in footer
+            assert re.search(r'Pagina\s*'+str(i)+r'\s*/\s*'+str(len(report.pages))+r'\b',footer)
         assert 6<=len(report.pages)<=9
         assert all(len(p.extract_text())>150 for p in report.pages)
         reproduced=output/('reproduced-'+filename)

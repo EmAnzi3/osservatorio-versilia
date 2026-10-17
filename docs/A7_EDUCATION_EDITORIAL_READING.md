@@ -57,3 +57,16 @@ Il manifest lega sette PDF (il file storico `education.pdf` resta Massarosa), i 
 Il gate A7 esistente verifica tutte le sette viste: componenti native Toscana/MIM, testi condizionati dai valori, evidenze, highlight, null/zeri, integrità e riproducibilità di ogni PDF, selezione, capitoli e download desktop/mobile, URL e consenso, Comune sconosciuto e risposta PDF tardiva. Gli assert precedenti restano applicati al pilota e ai dodici export. Le aspettative del vecchio modello sono adattate soltanto al nuovo contenitore delle viste; non vengono ridotte le soglie o aggirati i controlli.
 
 L'enrichment su domanda, rinunce, accoglienza, utilizzo e serie recenti Toscana è un lotto successivo proposto, non dato già acquisito. La scheda di ammissione vive nel metodo dei dossier; nessun campo esterno viene introdotto nei risultati di questa estensione.
+
+
+## Firma editoriale, attribuzione e riuso — 17 ottobre
+
+I sette rapporti educativi usano il logo vettoriale canonico `assets/brand-mark.svg`, incorporato nel PDF senza risorse remote, accanto al nome Osservatorio Versilia. Il piè di pagina riporta nome, dominio, Comune e numerazione. La data di edizione del rapporto deriva dal commit sorgente per preservare la riproducibilità; è distinta dai periodi delle osservazioni, che rimangono espliciti per ogni grafico.
+
+I grafici della lettura web e gli stessi grafici esportati nel rapporto recano separatamente «Elaborazione: Osservatorio Versilia» e la fonte originaria collegata. Non attribuiscono all'Osservatorio la produzione delle rilevazioni. L'intestazione conserva misura, territorio, periodo e copertura; scale, valori, null, ordine e selezione non cambiano. Questo incremento non aggiunge formati di esportazione o controlli alla pagina.
+
+La sezione finale «Attribuzione e riuso» riprende la policy già pubblicata in `Il progetto#licenza`: CC BY 4.0 per testi, elaborazioni e visualizzazioni originali; dati e materiali di terzi conservano le rispettive condizioni. Non è una nuova licenza uniforme sui dati acquisiti e non certifica diritti ulteriori sui materiali delle fonti. La natura civica indipendente e il rinvio alla fonte originaria per usi ufficiali sono dichiarati una sola volta, insieme al metodo; nessuna clausola generale di esonero sostituisce i limiti specifici delle analisi.
+
+Riferimenti di impaginazione: [logo ONS](https://service-manual.ons.gov.uk/brand-guidelines/logo) e [fonti e note dei grafici ONS](https://service-manual.ons.gov.uk/data-visualisation/guidance/chart-text). I marchi degli enti citati non vengono inseriti come partner o approvatori. Lo standard governa questa lettura e i suoi sette rapporti; le altre cinque domande del pilota e le interfacce/export già approvati rimangono conservati.
+
+Il gate A7 esistente controlla il logo rispetto al vettore canonico, crediti e link per ogni grafico, data di edizione, policy di riuso distinta dai dati di terzi e firma/numerazione su ogni pagina dei sette PDF, oltre alle verifiche numeriche e di riproducibilità precedenti. Rendering dei PDF e controllo browser desktop/mobile restano necessari prima di Ready.

@@ -19,6 +19,7 @@
 .edu-chart h4{font-size:clamp(1.45rem,2.5vw,1.95rem);letter-spacing:-.02em;line-height:1.2;color:#123f50;font-weight:850;margin:0 0 .85rem;max-width:34ch}
 .edu-chart figcaption p{font-size:1rem;line-height:1.6;margin:.4rem 0;max-width:72ch}
 .edu-chart-meta{font-size:.79rem;color:#4a626b;line-height:1.55;margin:1rem 0}
+.edu-chart-credit{font-size:.79rem;color:#4a626b;line-height:1.55;margin:.6rem 0 0}
 .edu-bars{list-style:none;padding:0;margin:1.3rem 0}
 .edu-bars li{display:grid;grid-template-columns:155px minmax(20px,1fr) 105px;gap:.8rem;align-items:center;padding:.6rem .5rem;margin:0;min-height:48px;font-size:.93rem;border-bottom:1px solid #edf0f1}
 .edu-bars li strong{text-align:right;font-variant-numeric:tabular-nums;font-size:1rem;color:#183f4b;white-space:nowrap}
@@ -49,6 +50,11 @@
 .a7-guided.education-reading>section[aria-label="Limiti delle letture"]{display:none}
 .a7-guided.education-reading>#stato:not([data-education-error]){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .edu-reproduction{border-top:1px solid #c7d8df;margin-top:6mm;padding-top:4mm;font-size:8pt;overflow-wrap:anywhere}
+.edu-report-brand{display:flex;align-items:center;gap:10px;margin-bottom:2mm;color:#123f50;break-inside:avoid}
+.edu-report-brand svg{width:46px;height:39px;flex:none}
+.edu-report-brand>.edu-kicker{margin:0 0 0 auto;text-align:right;max-width:50mm}
+.edu-report-brand strong{display:block;font-size:14pt;line-height:1.2}
+.edu-report-brand span{display:block;font-size:8pt;line-height:1.4;margin-top:2px}
 @media(max-width:700px){
  .edu-cover-grid{grid-template-columns:1fr;gap:1rem;margin:1.2rem 0}.edu-opening{padding:1.3rem}.edu-opening h3{font-size:2.2rem}.edu-lead{font-size:1rem}
  .edu-findings{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}.edu-findings>div{padding:.8rem 0}.edu-findings strong{font-size:1.9rem}.edu-findings .edu-kicker{font-size:.59rem;letter-spacing:.025em}.edu-findings p{font-size:.76rem;line-height:1.5}
@@ -69,13 +75,15 @@
  h3{font-size:12pt;line-height:1.3;margin:4mm 0 2mm;break-after:avoid}
  p{margin:2mm 0 3mm;orphans:3;widows:3}
  .edu-print-page{break-before:page}.edu-print-page:first-child{break-before:auto}
+ .edu-print-page:first-child>h1,.edu-print-page:first-child>h2{margin:2mm 0}
  .edu-cover-grid{display:block;margin:3mm 0}
  .edu-opening{padding:3mm;border-top-width:1mm}.edu-opening h3{display:none}.edu-opening .edu-kicker{margin:0 0 2mm}.edu-opening-foot{font-size:8pt;padding-top:2mm;margin-top:2mm}
  .edu-lead{font-size:9pt;line-height:1.4}.edu-kicker,.edu-chapter-number{font-size:7pt}.edu-opening-foot{display:none}
  .edu-findings{grid-template-columns:repeat(3,minmax(0,1fr));margin:0;gap:3mm}.edu-findings>div{padding:2mm 0}.edu-findings strong{font-size:23pt;margin:1mm 0}.edu-findings p{font-size:8pt;margin:1mm 0}.edu-focus-facts>.edu-kicker{padding:1mm 0 2mm}
  .edu-reading-note{padding:3mm;margin:3mm 0;break-inside:avoid}.edu-reading-note h3{font-size:12pt;margin:1mm 0}
+ .edu-reading-note p{line-height:1.4}
  .edu-chart{padding:3mm;margin:4mm 0;border-top-width:1mm}.edu-chart h4{font-size:13pt;max-width:none;margin:0 0 2mm}.edu-chart figcaption p{font-size:9pt;line-height:1.4}
- .edu-chart-meta{font-size:7.5pt;margin:2mm 0}.edu-bars{margin:2mm 0}.edu-bars li{font-size:8pt;min-height:5mm;line-height:1.1;padding:.4mm 1mm;grid-template-columns:35mm 1fr 25mm;gap:3mm}.edu-bars li strong{font-size:9pt}.edu-bars .edu-town{line-height:1}.edu-components{font-size:6.5pt;line-height:1;margin-top:.4mm}
+ .edu-chart-meta,.edu-chart-credit{font-size:7.5pt;margin:2mm 0}.edu-bars{margin:2mm 0}.edu-bars li{font-size:8pt;min-height:5mm;line-height:1.1;padding:.4mm 1mm;grid-template-columns:35mm 1fr 25mm;gap:3mm}.edu-bars li strong{font-size:9pt}.edu-bars .edu-town{line-height:1}.edu-components{font-size:6.5pt;line-height:1;margin-top:.4mm}
  .edu-track{height:3.5mm}.edu-missing{font-size:8pt}.edu-chapter-intro{font-size:10pt;line-height:1.5}.edu-chapter-number{margin:0 0 2mm;padding-top:2mm;border-top-width:1mm}
  .edu-report details{display:block;break-inside:avoid}.edu-report details>summary{font-weight:bold;break-after:avoid}.edu-report details>p{display:block}
  .edu-sources{padding-left:5mm}.edu-sources li{margin-bottom:2mm}.edu-reproduction{overflow-wrap:anywhere}
