@@ -366,16 +366,26 @@ def verify_public_page(bundle, release, dist, output):
                     path='/chiedi/'+relative+'education.pdf'
                     if mode=='unavailable':blocked.add(path)
                     else:overrides[path]=b'%PDF-altered'
-                    downloads=[];page.on('download',lambda download:downloads.append(download))
+                    downloads=[];capture_download=lambda download:downloads.append(download);page.on('download',capture_download)
                     page.locator('[data-education-pdf]').click()
                     page.wait_for_function("() => document.querySelector('#stato').textContent.includes('Rapporto PDF non disponibile')")
                     page.wait_for_function("() => !document.querySelector('[data-education-pdf]').dataset.loading")
                     assert not downloads and page.locator('#educazione-apprendimenti').is_visible()
-                    overrides.clear();blocked.clear();page.locator('#stato').evaluate('(el)=>el.textContent=""')
+                    assert page.locator('#stato').get_attribute('data-education-error')=='true'
+                    assert page.locator('#stato').is_visible()
+                    page.remove_listener('download',capture_download)
+                    overrides.clear();blocked.clear()
+                    with page.expect_download() as recovered:page.locator('[data-education-pdf]').click()
+                    assert Path(recovered.value.path()).read_bytes()==(folder/'education.pdf').read_bytes()
+                    page.wait_for_function("() => !document.querySelector('[data-education-pdf]').dataset.loading")
+                    assert page.locator('#stato').get_attribute('data-education-error') is None
+                    assert page.locator('#stato').text_content()==''
+                    assert page.locator('#stato').evaluate("el => getComputedStyle(el).clipPath")=="inset(50%)"
+                    assert page.locator('#educazione-apprendimenti').is_visible()
                 page.locator('.edu-change').click()
                 assert page.locator('#risposta').is_hidden() and page.locator('#domanda').is_visible()
                 assert page.locator('[data-education-pdf]').count()==0
-                page.close();report['checks']+=['shared_dossier_url_preserves_consent','missing_or_corrupt_pdf_download_refused','change_question_clears_dossier_and_pdf']
+                page.close();report['checks']+=['shared_dossier_url_preserves_consent','missing_or_corrupt_pdf_download_refused','pdf_retry_clears_error_after_503_and_integrity_failure','change_question_clears_dossier_and_pdf']
                 page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
                 assert page.locator('noscript a[href="'+relative+'answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
                 page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export','full_width_editorial_banner','charts_match_canonical_observations_and_zero_scale']

@@ -26,6 +26,7 @@ export function presentEducation(out,answer,model){
    const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');
    if(digest!==model.pdfSha256)throw new Error('pdf_integrity_mismatch');
    const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));const a=make('a');a.href=url;a.download=pdf.download;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+   const status=document.getElementById('stato');delete status.dataset.educationError;status.textContent='';
   }catch{document.getElementById('stato').dataset.educationError='true';document.getElementById('stato').textContent='Rapporto PDF non disponibile o non verificabile. Riprova: la lettura resta consultabile.';}
   finally{delete pdf.dataset.loading;}
  });tools.append(pdf);
