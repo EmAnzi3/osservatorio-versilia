@@ -2,7 +2,7 @@
 
 ## Baseline integrata
 
-- Main `97350ccd7ca623dd40d1cef86002a5e356a8575b`, tree `69aa253e1398c0209cf4d1de7210710454bf9d85`: #436 mergiata dal proprietario il 15 ottobre. CI Quick→Full `38803154090` e A3 `38803154200` SUCCESS sull’albero candidato. Deploy `38810123390` e live `38812506527` SUCCESS sul commit integrato. Quick/Full locali ordinari PASS sul medesimo albero; il Full locale si è concluso dopo il merge del proprietario, come attestato nella #436. I job push skipped non sono nuovi PASS.
+- Main `c80749a1e2871f491b5087732cf8c70610cc9dce`, tree `bac4fa1b0072f0484840e567cb77d381ad35ce82`: #437 mergiata dal proprietario il 17 ottobre. Quick/Full locali ordinari PASS sul medesimo albero; CI Quick `39030351987`, Full effettivo `39032237491`, A3 `39030352000` PASS sulla head `01e0138`. Deploy post-merge `39039130288` e live `39040063783` SUCCESS sul commit integrato; pubblicazione verificata. I job push skipped non sono nuovi PASS. Il fix del ritentativo PDF è integrato.
 - A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
 - Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
 - Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
@@ -13,9 +13,13 @@
 
 Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`. Nessuno step o Definition of Done A7 dichiarato completato.
 
-## Incremento candidato — nuova lettura educativa
+## Incremento candidato — lettura educativa per sette Comuni
 
-Branch `feature/a7-education-editorial`, baseline pulita #436. Il proprietario ha fermato l’espansione della vecchia presentazione e chiesto un modello ispirato a ONS/Openpolis. Incremento circoscritto alla domanda centrale sull’offerta educativa: sintesi, grafici selezionati, dossier interno per capitoli e rapporto PDF composto dagli stessi risultati. Revisione dopo feedback del 16 ottobre: gerarchia editoriale più marcata e confronti MIM estesi ai sette Comuni, con componenti visibili; le quattro richieste aggiuntive riusano catalogo/motore e preservano integralmente il bundle dimostrativo originale. Non confondere il precedente filtro Massarosa/Viareggio con dati mancanti. Le cinque altre domande conservano la lettura precedente; il JSON pubblico diventa un’opzione nei dettagli tecnici. Nessun accesso da Home/menu richiesto, nessun nuovo dato o adapter. Specifica e catena delle evidenze: `docs/A7_EDUCATION_EDITORIAL_READING.md`.
+Branch pubblico `feature/a7-education-seven-towns`, PR #442 ancora aperta; baseline integrata #437. Il feedback del 17 ottobre chiede evidenze e conclusioni pertinenti al Comune selezionato. La stessa domanda educativa viene composta per ciascuno dei sette Comuni usando le risposte A6 già disponibili: selettore locale, sintesi argomentata, evidenziazione nei grafici, URL condivisibile e PDF del Comune, tutti legati al manifest immutabile. Null INVALSI e zeri 0–3 conservati; nessuna graduatoria di qualità o indicazione automatica di politica. Le cinque altre domande e i dodici export del pilota Massarosa restano distinti. Nessun nuovo dato/adapter o accesso da Home/menu. Metodo e contratto in `docs/A7_EDUCATION_EDITORIAL_READING.md`.
+
+Prossimo enrichment proposto, non acquisito: domanda/accoglienza/attese 0–3 dalla fonte Toscana già usata, con verifica di campi e copertura ancora necessaria; catalogo CKAN 403 al controllo del 17 ottobre. Scheda di ammissione in `docs/dossiers/METHOD.md`. Prima completare e valutare questa lettura; lavoro/redditi successivo come composizione degli acquisiti. Nessuna riapertura A6.
+
+Il proprietario ha richiesto lo standard editoriale sugli output: logo vettoriale canonico in apertura dei sette PDF, firma/dominio/pagine nel piè di pagina, edizione distinta dai periodi dei dati, crediti di elaborazione separati dalla fonte su web e PDF. Riuso conforme alla policy CC BY 4.0 del progetto per i soli contenuti originali; condizioni dei terzi conservate e natura indipendente esplicita nella nota finale. Nessun nuovo formato di export, nuova acquisizione o modifica degli adapter. #442 rimessa in Draft per questa revisione; i verdi della precedente head `bd5f0ea` non attestano il nuovo candidato.
 
 ## Gate e prossima azione
 
