@@ -3,3 +3,6 @@ playwright==1.62.0
 pypdf==6.16.2
 requests==2.34.2
 beautifulsoup4==4.15.0
+
+# Geometria del testo nei PDF pubblici: controllo del clipping oltre alla sola estrazione.
+PyMuPDF==1.26.6
