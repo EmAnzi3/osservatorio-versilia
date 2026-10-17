@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from playwright.sync_api import sync_playwright
+from browser_view_readiness import goto_reading_view
 
 KEYS = [
     ("lavoro", "employmentRate"),
@@ -43,7 +44,7 @@ def assert_monotonic_lollipop(page, key):
 
 
 def compare(page, base, theme, key):
-    page.goto(f"{base}confronta/{theme}/?indicatore={key}", wait_until="networkidle")
+    goto_reading_view(page, f"{base}confronta/{theme}/?indicatore={key}")
     page.wait_for_selector("select[data-demographic-age]")
     age = page.locator("select[data-demographic-age]")
     gender = page.locator("select[data-demographic-gender]")
@@ -73,7 +74,7 @@ def compare(page, base, theme, key):
 
 
 def town(page, base, theme, key):
-    page.goto(f"{base}comuni/massarosa/?tema={theme}&indicatore={key}", wait_until="networkidle")
+    goto_reading_view(page, f"{base}comuni/massarosa/?tema={theme}&indicatore={key}")
     age = page.locator("select[data-demographic-town-age]")
     gender = page.locator("select[data-demographic-town-gender]")
     req(age.count() == 1 and gender.count() == 1, f"{key}: filtri scheda comunale assenti")
@@ -132,7 +133,7 @@ def run(base):
             for theme, key in KEYS:
                 compare(page, base, theme, key)
                 town(page, base, theme, key)
-            page.goto(f"{base}confronta/lavoro/?indicatore=employmentRate", wait_until="networkidle")
+            goto_reading_view(page, f"{base}confronta/lavoro/?indicatore=employmentRate")
             historical = page.locator('.metric-catalog .metric-group[data-section="genere"]')
             req(historical.count() == 1, "Sezione delle serie storiche 15–64 assente")
             female = historical.locator('[data-metric="femaleEmploymentRate"]')

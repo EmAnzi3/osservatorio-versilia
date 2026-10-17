@@ -28,6 +28,9 @@ def goto_reading_view(page, url):
     if metric:
         page.locator(f'[data-metric="{metric}"].active').first.wait_for(state="visible")
         page.locator(".reading-scale").first.wait_for(state="visible")
+    elif "/confronta/" in urlparse(url).path:
+        page.locator(".topic-controls [data-metric].active").first.wait_for(state="attached")
+        page.locator("#compare-bars").wait_for(state="visible")
     elif urlparse(url).path.rstrip("/").endswith("progetto"):
         page.locator("#sistema-territoriale").wait_for(state="visible")
     else:

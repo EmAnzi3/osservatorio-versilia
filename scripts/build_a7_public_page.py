@@ -12,9 +12,10 @@ import tempfile
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from build_a7_dossier_preview import preview
+from build_a7_dossier_preview import preview, validate_repository_commit
 from site_chrome import ensure_sitemap_entries, extract_native_shell
 from a7_public_release import FILES, manifest_text
+from a7_education_editorial import build_reading, write_report, territorial_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 URL = 'https://osservatorioversilia.it/chiedi/'
@@ -30,8 +31,20 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         stage = Path(tmp)
         preview(stage, commit, catalog=dist / 'data/site-data.json')
         original = BeautifulSoup((stage / 'index.html').read_text(encoding='utf-8'), 'html.parser')
-        for name in ['public.css', 'public.mjs']:
+        for name in ['public.css', 'public.mjs', 'education.mjs']:
             shutil.copyfile(ROOT / 'experiments/a7-dossier-preview' / name, stage / name)
+        bundle = json.loads((stage / 'bundle.json').read_text())
+        territorial = territorial_evidence(bundle, dist / 'data/site-data.json')
+        validate_repository_commit(dict(bundle, cases=dict(bundle['cases'], **territorial)), commit)
+        reading = build_reading(bundle, commit, territorial)
+        css = (ROOT / 'experiments/a7-dossier-preview/education.css').read_text()
+        (stage / 'public.css').write_text((stage / 'public.css').read_text() + '\n' + css)
+        (stage / 'education.json').write_text(json.dumps(reading, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
+        write_report(reading, css, stage / 'education.pdf')
+        release = json.loads((stage / 'release.mjs').read_text().removeprefix('export default ').strip().removesuffix(';'))
+        release.update(educationSha256=hashlib.sha256((stage / 'education.json').read_bytes()).hexdigest(),
+                       educationPdfSha256=hashlib.sha256((stage / 'education.pdf').read_bytes()).hexdigest())
+        (stage / 'release.mjs').write_text('export default ' + json.dumps(release, ensure_ascii=False, sort_keys=True) + ';\n')
         assets = {name: (stage / name).read_bytes() for name in FILES}
         manifest = manifest_text(assets)
         relative = 'releases/' + hashlib.sha256(manifest.encode()).hexdigest() + '/'

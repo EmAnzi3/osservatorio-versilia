@@ -65,8 +65,10 @@ function present(answer){
   out.append(node('h3','Approfondisci'),repoLink(q.dossierPath,'Leggi il dossier completo'),detail('Versione delle evidenze e richiesta selezionata',{release:answer.release,questionId:q.id,approvedPartial:pending?.approvedPartial===true,cacheKey:answer.cacheKey}));
   }
   const exportButton=node('button',answerPresentation?'Scarica dati e fonti':'Scarica la risposta verificabile (JSON)');exportButton.id='esporta-risposta';exportButton.type='button';
-  exportButton.addEventListener('click',()=>downloadAnswer(answer));out.append(exportButton);
-  out.append(node('p',answerPresentation?'Il file JSON conserva tutti i dati, le fonti e i limiti di questa lettura.':'Il file contiene la domanda selezionata, i risultati originali, le fonti, i limiti e la versione delle evidenze.','meta'));
+  exportButton.addEventListener('click',()=>downloadAnswer(answer));
+  const technicalExport=answerPresentation?out.querySelector('[data-a7-technical]'):null;
+  (technicalExport||out).append(exportButton);
+  (technicalExport||out).append(node('p',answerPresentation?'Il file JSON conserva tutti i dati, le fonti e i limiti di questa lettura.':'Il file contiene la domanda selezionata, i risultati originali, le fonti, i limiti e la versione delle evidenze.','meta'));
   $('stato').textContent='Risposta disponibile. Controlla periodi, fonti e limiti di ciascuna componente.';out.focus();
 }
 function resolve(request){reset();pending=request;const answer=pilot.resolve(request);if(answer.resolution==='needs_confirmation'){$('consenso').hidden=false;$('stato').textContent='È necessario il consenso per esaminare le componenti parziali.';$('accetta').focus();return;}if(answer.resolution==='needs_clarification'){clarify(answer);return;}if(answer.resolution!=='resolved'){$('stato').textContent='Domanda non disponibile: scegli una domanda verificata.';return;}present(answer);}

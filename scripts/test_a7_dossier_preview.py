@@ -88,7 +88,7 @@ def verify_preview(bundle, release, output):
                                 assert page.locator('#risposta').inner_text()==''
                                 page.locator('#annulla').click();assert page.locator('#consenso').is_hidden()
                                 page.locator('#mostra').click();page.locator('#accetta').click()
-                            assert page.locator('#risposta h2').inner_text()==q['question']
+                            assert page.locator('#risposta h2').first.inner_text()==q['question']
                             assert page.locator('.badge').inner_text()=='Risposta parzialmente supportata'
                             text=page.locator('#risposta').inner_text()
                             for cid in ids:
@@ -122,7 +122,7 @@ def verify_preview(bundle, release, output):
                             if page.locator('#consenso').is_visible():
                                 assert page.locator('#risposta').inner_text()=='' and page.locator('#esporta-risposta').count()==0
                                 page.locator('#accetta').click()
-                            assert page.locator('#risposta h2').inner_text()==q['question']
+                            assert page.locator('#risposta h2').first.inner_text()==q['question']
                             assert page.locator('#dossier').input_value()==q['dossierId']
                             assert page.locator('#domanda').input_value()==q['id']
                             exported,_=export_answer(page)
@@ -222,13 +222,15 @@ def verify_public_page(bundle, release, dist, output):
     validate_repository_commit(bundle,public_release['repositoryCommit'])
     from validate_public_site import validate_a7
     asset_paths=['chiedi/index.html','chiedi/'+relative+'manifest.json']+['chiedi/'+relative+name for name in FILES]
-    assets={path:(dist/path).read_text() for path in asset_paths}
+    assets={path:(dist/path).read_bytes() for path in asset_paths}
     failures=[];validate_a7(assets.__getitem__,failures);assert not failures,failures
     for asset in ['chiedi/'+relative+name for name in (*FILES,'manifest.json')]:
-        bad=dict(assets);bad[asset]+='altered'
+        bad=dict(assets);bad[asset]+=b'altered'
         failures=[];validate_a7(bad.__getitem__,failures);assert failures,'public validator accepted corrupt '+asset
     missing=dict(assets);missing.pop('chiedi/'+relative+'public.css')
     failures=[];validate_a7(missing.__getitem__,failures);assert failures,'public validator accepted missing asset'
+    from test_a7_education_editorial import verify_education_artifacts
+    verify_education_artifacts(bundle, folder, public_release, output)
     overrides={};blocked=set()
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self,*args):pass
@@ -240,7 +242,7 @@ def verify_public_page(bundle, release, dist, output):
             path=self.path.split('?',1)[0]
             if path in blocked:self.send_error(503);return
             if path in overrides:
-                body=overrides[path].encode();self.send_response(200);self.send_header('Content-Type','text/html' if path.endswith('/') else self.guess_type(path));self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+                body=overrides[path];body=body.encode() if isinstance(body,str) else body;self.send_response(200);self.send_header('Content-Type','text/html' if path.endswith('/') else self.guess_type(path));self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
             else:super().do_GET()
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(dist)))
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
@@ -270,45 +272,54 @@ def verify_public_page(bundle, release, dist, output):
                     page.wait_for_function("() => {const r=document.querySelector('#titolo-chiarimento').getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return r.top>=h.bottom && r.bottom<=innerHeight;}")
                     assert page.locator('#alternative button').count()==len(bundle['questions'])
                     for q in bundle['questions']:
+                        if page.locator('.edu-change').is_visible():page.locator('.edu-change').click()
                         page.locator('#domanda-testo').fill(q['question']);page.locator('#verifica-testo').click()
                         if page.locator('#consenso').is_visible():page.locator('#accetta').click()
-                        assert page.locator('#risposta h2').inner_text()==q['question']
+                        assert page.locator('#risposta h2').first.inner_text()==q['question']
                         assert page.locator('#a7-selected-question').inner_text()==q['question']
                         page.wait_for_function("() => {const r=document.querySelector('#risposta h2').getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return r.top>=h.bottom && r.bottom<=innerHeight;}")
                         text=page.locator('#risposta').inner_text()
-                        assert q['interpretationLimit'] in text
-                        assert 'Risposta parziale ·' not in text and 'Partiamo dai dati' not in text
-                        bars=page.locator('#risposta .a7-bar').evaluate_all('(els)=>els.map(e=>({value:Number(e.dataset.value),maximum:Number(e.dataset.maximum),geography:e.dataset.geography,period:e.dataset.period,width:parseFloat(e.style.width)}))')
-                        canonical=[f for cid in q['requiredCaseRefs']+q['contextCaseRefs'] for f in bundle['cases'][cid]['facts'] if f['kind']=='observation' and isinstance(f.get('value'),(int,float))]
-                        assert bars, 'supported comparisons must have charts'
-                        for bar in bars:
-                            assert any(f['value']==bar['value'] and f['geography']==bar['geography'] and f['period']==bar['period'] for f in canonical)
-                            assert abs(bar['width']-100*bar['value']/bar['maximum'])<0.001
-                        assert q['answerBoundary'] in text
-                        assert page.locator('#risposta .a7-answer-boundary').is_visible()
-                        assert page.locator('#risposta .a7-answer-boundary').inner_text()==q['answerBoundary']
-                        for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
-                            facts=bundle['cases'][cid]['facts']
-                            component=page.locator('#risposta .component').nth((q['requiredCaseRefs']+q['contextCaseRefs']).index(cid))
-                            title=facts[0]['text'].split(' — ')[0] if facts else 'Un confronto che non possiamo calcolare'
-                            heading=component.locator('h4')
-                            assert heading.inner_text()==title
-                            assert heading.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)')>component.locator('.a7-fact').first.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)') if facts else True
-                            for index,fact in enumerate(facts):
-                                prefix=title+' — '
-                                label=fact['text'][len(prefix):] if fact['text'].startswith(prefix) else fact['text']
-                                assert component.locator('.a7-fact').nth(index).inner_text()==label.replace('persone/addetti secondo definizione.','persone.')
-                                if fact['text'].startswith(prefix):assert title not in component.locator('.a7-fact').nth(index).inner_text()
+                        if q['id']=='infanzia-centrale':
+                            from test_a7_education_editorial import verify_education_browser
+                            verify_education_browser(page, bundle, folder, output, width)
+                            text=page.locator('#risposta').inner_text()
+                        else:
+                            assert q['interpretationLimit'] in text
+                            assert 'Risposta parziale ·' not in text and 'Partiamo dai dati' not in text
+                            bars=page.locator('#risposta .a7-bar').evaluate_all('(els)=>els.map(e=>({value:Number(e.dataset.value),maximum:Number(e.dataset.maximum),geography:e.dataset.geography,period:e.dataset.period,width:parseFloat(e.style.width)}))')
+                            canonical=[f for cid in q['requiredCaseRefs']+q['contextCaseRefs'] for f in bundle['cases'][cid]['facts'] if f['kind']=='observation' and isinstance(f.get('value'),(int,float))]
+                            assert bars, 'supported comparisons must have charts'
+                            for bar in bars:
+                                assert any(f['value']==bar['value'] and f['geography']==bar['geography'] and f['period']==bar['period'] for f in canonical)
+                                assert abs(bar['width']-100*bar['value']/bar['maximum'])<0.001
+                            assert q['answerBoundary'] in text
+                            assert page.locator('#risposta .a7-answer-boundary').is_visible()
+                            assert page.locator('#risposta .a7-answer-boundary').inner_text()==q['answerBoundary']
+                            for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
+                                facts=bundle['cases'][cid]['facts']
+                                component=page.locator('#risposta .component').nth((q['requiredCaseRefs']+q['contextCaseRefs']).index(cid))
+                                title=facts[0]['text'].split(' — ')[0] if facts else 'Un confronto che non possiamo calcolare'
+                                heading=component.locator('h4')
+                                assert heading.inner_text()==title
+                                assert heading.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)')>component.locator('.a7-fact').first.evaluate('(e)=>parseFloat(getComputedStyle(e).fontSize)') if facts else True
+                                for index,fact in enumerate(facts):
+                                    prefix=title+' — '
+                                    label=fact['text'][len(prefix):] if fact['text'].startswith(prefix) else fact['text']
+                                    assert component.locator('.a7-fact').nth(index).inner_text()==label.replace('persone/addetti secondo definizione.','persone.')
+                                    if fact['text'].startswith(prefix):assert title not in component.locator('.a7-fact').nth(index).inner_text()
+                        technical=page.locator('#risposta [data-a7-technical]')
+                        assert not technical.evaluate('(el)=>el.open')
+                        technical.locator('summary').click()
                         with page.expect_download() as got:page.locator('#esporta-risposta').click()
                         data=json.loads(Path(got.value.path()).read_text())
                         replay=page.evaluate('''async ({data,relative})=>{const {loadPilot}=await import('./'+relative+'reader.mjs');return(await loadPilot(await(await fetch('./'+relative+'bundle.json')).text(),data.answer.release)).resolve(data.request);}''',dict(data=data,relative=relative))
                         assert data['answer']==replay and data['repositoryCommit']==public_release['repositoryCommit']
                         technical=page.locator('#risposta [data-a7-technical]')
-                        assert not technical.evaluate('(el)=>el.open')
+                        assert technical.evaluate('(el)=>el.open')
                         assert json.loads(technical.locator('pre').text_content())==data['answer']
                         for token in ['resident population','SHA256','cacheKey','/observations/','frame_and_asia_universes_differ']:
                             assert token not in text, 'technical field leaked into public reading: '+token
-                        technical.locator('summary').click();assert technical.locator('pre').is_visible()
+                        assert technical.locator('pre').is_visible()
                         technical.locator('summary').click()
                         assert data['answer']['components']==[dict(caseId=cid,**bundle['cases'][cid]) for cid in q['requiredCaseRefs']+q['contextCaseRefs']]
                         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'public page overflow'
@@ -336,6 +347,45 @@ def verify_public_page(bundle, release, dist, output):
                     assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
                     page.locator('.global-search-trigger').click();page.locator('.search-overlay').wait_for()
                     page.close();overrides.clear();blocked.clear();report['checks'].append(mode+'_bundle_fail_closed_with_shell_available')
+                for mode in ['unavailable','corrupt']:
+                    path='/chiedi/'+relative+'education.json'
+                    if mode=='unavailable':blocked.add(path)
+                    else:overrides[path]='{}'
+                    page=browser.new_page();page.goto(origin+'chiedi/')
+                    page.wait_for_function("() => document.querySelector('#stato').textContent.includes('non verificabili')")
+                    assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
+                    page.close();overrides.clear();blocked.clear()
+                    report['checks'].append(mode+'_editorial_model_fail_closed')
+                # A shared dossier URL restores only an explicit question and
+                # chapter. It never bypasses the original consent requirement.
+                page=browser.new_page();page.goto(origin+'chiedi/?lettura=educazione#apprendimenti')
+                page.locator('#consenso').wait_for();assert page.locator('#risposta').is_hidden()
+                page.locator('#accetta').click();page.locator('#educazione-apprendimenti').wait_for()
+                assert page.locator('.edu-panel:visible').count()==1
+                for mode in ['unavailable','corrupt']:
+                    path='/chiedi/'+relative+'education.pdf'
+                    if mode=='unavailable':blocked.add(path)
+                    else:overrides[path]=b'%PDF-altered'
+                    downloads=[];capture_download=lambda download:downloads.append(download);page.on('download',capture_download)
+                    page.locator('[data-education-pdf]').click()
+                    page.wait_for_function("() => document.querySelector('#stato').textContent.includes('Rapporto PDF non disponibile')")
+                    page.wait_for_function("() => !document.querySelector('[data-education-pdf]').dataset.loading")
+                    assert not downloads and page.locator('#educazione-apprendimenti').is_visible()
+                    assert page.locator('#stato').get_attribute('data-education-error')=='true'
+                    assert page.locator('#stato').is_visible()
+                    page.remove_listener('download',capture_download)
+                    overrides.clear();blocked.clear()
+                    with page.expect_download() as recovered:page.locator('[data-education-pdf]').click()
+                    assert Path(recovered.value.path()).read_bytes()==(folder/'education.pdf').read_bytes()
+                    page.wait_for_function("() => !document.querySelector('[data-education-pdf]').dataset.loading")
+                    assert page.locator('#stato').get_attribute('data-education-error') is None
+                    assert page.locator('#stato').text_content()==''
+                    assert page.locator('#stato').evaluate("el => getComputedStyle(el).clipPath")=="inset(50%)"
+                    assert page.locator('#educazione-apprendimenti').is_visible()
+                page.locator('.edu-change').click()
+                assert page.locator('#risposta').is_hidden() and page.locator('#domanda').is_visible()
+                assert page.locator('[data-education-pdf]').count()==0
+                page.close();report['checks']+=['shared_dossier_url_preserves_consent','missing_or_corrupt_pdf_download_refused','pdf_retry_clears_error_after_503_and_integrity_failure','change_question_clears_dossier_and_pdf']
                 page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
                 assert page.locator('noscript a[href="'+relative+'answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
                 page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export','full_width_editorial_banner','charts_match_canonical_observations_and_zero_scale']
@@ -348,7 +398,7 @@ def verify_public_page(bundle, release, dist, output):
                 page=context.new_page();page.goto(origin+'chiedi/')
                 page.locator('#mostra:enabled').wait_for();page.wait_for_function('() => navigator.serviceWorker.controller !== null')
                 # Real worker + HTTP fixture: old cached bytes must not win while online.
-                for filename in ['bundle.json','release.mjs','reader.mjs','preview.mjs','public.mjs']:
+                for filename in ['bundle.json','release.mjs','reader.mjs','preview.mjs','public.mjs','education.mjs','education.json']:
                     url=relative+filename
                     page.evaluate('async url=>(await fetch(url)).text()',url)
                     marker='a7-fresh-network-'+filename;overrides['/chiedi/'+url]=marker
@@ -378,7 +428,7 @@ def verify_public_page(bundle, release, dist, output):
                 }''',dict(release=public_release,relative=relative))
                 assert failure=='bundle_integrity_mismatch',failure
                 context.set_offline(False);assert not worker_external,worker_external;context.close()
-                report['checks']+=['real_worker_five_assets_http_revalidation_and_network_first','http_cache_enabled_one_hour_ttl','mixed_offline_cache_refused','focused_headings_clear_of_sticky_header']
+                report['checks']+=['real_worker_original_and_editorial_assets_http_revalidation_and_network_first','http_cache_enabled_one_hour_ttl','mixed_offline_cache_refused','focused_headings_clear_of_sticky_header']
                 # A cached old reader must not satisfy a missing module from a
                 # different deployment. Only this HTTP fixture is incomplete;
                 # candidate files and their immutable manifest stay untouched.
@@ -394,7 +444,7 @@ def verify_public_page(bundle, release, dist, output):
                 next_relative='releases/'+hashlib.sha256((relative+'incomplete-next-release').encode()).hexdigest()+'/'
                 overrides['/chiedi/']=(root/'index.html').read_text().replace(relative,next_relative)
                 for name in FILES:
-                    if name!='reader.mjs':overrides['/chiedi/'+next_relative+name]=(folder/name).read_text()
+                    if name!='reader.mjs':overrides['/chiedi/'+next_relative+name]=(folder/name).read_bytes()
                 blocked.add('/chiedi/'+next_relative+'reader.mjs')
                 # Fresh next-release evidence is present, but its reader is not.
                 assert page.evaluate('async path=>(await fetch(path)).text()',next_relative+'bundle.json')==(folder/'bundle.json').read_text()

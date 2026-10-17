@@ -61,16 +61,17 @@ def validate_dist(root: Path) -> list[str]:
     if (root / "pnrr" / "index.html").is_file():
         content = (root / "pnrr" / "index.html").read_text(encoding="utf-8")
         require("pnrr-deep-dive.css" in content, "stile PNRR assente", failures)
-    validate_a7(lambda path: (root / path).read_text(encoding='utf-8'), failures)
+    validate_a7(lambda path: (root / path).read_bytes(), failures)
     return failures
 
 
-def fetch(url: str) -> str:
+def fetch(url: str, binary: bool = False):
     request = Request(url, headers={"User-Agent": "OsservatorioVersilia-PagesHealth/1.0"})
     with urlopen(request, timeout=25) as response:
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}")
-        return response.read().decode("utf-8", errors="replace")
+        data = response.read()
+        return data if binary else data.decode("utf-8", errors="strict")
 
 
 def validate_live(base_url: str) -> list[str]:
@@ -87,7 +88,7 @@ def validate_live(base_url: str) -> list[str]:
                 require("pnrr-town-detail.js" in content, f"dettaglio PNRR live assente in {route}", failures)
         except (URLError, TimeoutError, RuntimeError, UnicodeDecodeError) as exc:
             failures.append(f"{route}: {exc}")
-    validate_a7(lambda path: fetch(base + '/' + path), failures)
+    validate_a7(lambda path: fetch(base + '/' + path, binary=True), failures)
     return failures
 
 

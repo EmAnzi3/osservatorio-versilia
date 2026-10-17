@@ -14,6 +14,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import Page, sync_playwright
+from browser_view_readiness import goto_reading_view
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -197,10 +198,7 @@ def selector_choices(metric: dict, row: dict) -> list[tuple[str, str, float, str
 def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_key: str) -> None:
     metric = data["metrics"][metric_key]
     row = next(item for item in metric["rows"] if item["town"] == town)
-    page.goto(
-        base + f"comuni/{row['slug']}/?tema={metric['meta']['theme']}&indicatore={metric_key}",
-        wait_until="networkidle",
-    )
+    goto_reading_view(page, base + f"comuni/{row['slug']}/?tema={metric['meta']['theme']}&indicatore={metric_key}")
     selector = page.locator("#town-topic .town-metric-primary > .composite-read-selector select[data-composite-choice]")
     page.wait_for_selector(".history-panel .ux-view-shell", timeout=10000)
     choices = selector_choices(metric, row)
@@ -273,7 +271,7 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
 
 
 def tooltip_checks(page: Page, base: str, theme: str, metric_key: str, expected_rows: int, parts: int) -> None:
-    page.goto(base + f"confronta/{theme}/?indicatore={metric_key}", wait_until="networkidle")
+    goto_reading_view(page, base + f"confronta/{theme}/?indicatore={metric_key}")
     page.wait_for_selector(".composite-distribution-list")
     assert page.locator(".composite-distribution-row").count() == expected_rows
     assert page.locator(".composite-legend").count() == 1
@@ -309,7 +307,7 @@ def browser_checks(data: dict) -> None:
         assert all("Reddito complessivo medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
 
         for metric_key, option_count in (("roadSafety", 4),):
-            page.goto(base + f"confronta/sicurezza/?indicatore={metric_key}", wait_until="networkidle")
+            goto_reading_view(page, base + f"confronta/sicurezza/?indicatore={metric_key}")
             page.wait_for_selector("select[data-composite-component]")
             component = page.locator("select[data-composite-component]")
             assert component.locator("option").count() == option_count
@@ -323,7 +321,7 @@ def browser_checks(data: dict) -> None:
             changed_axis = page.locator("#compare-bars .comparison-axis").inner_text()
             assert first_axis != changed_axis
 
-        page.goto(base + "confronta/demografia/?indicatore=internalResidentialMobility", wait_until="networkidle")
+        goto_reading_view(page, base + "confronta/demografia/?indicatore=internalResidentialMobility")
         page.wait_for_selector(".selectable-topic-bars")
         component = page.locator("select[data-composite-component]")
         assert component.locator("option").count() == 3
@@ -342,7 +340,7 @@ def browser_checks(data: dict) -> None:
             "fasce reddito": "incomeDistribution",
         }
         for term, metric_key in search_terms.items():
-            page.goto(base, wait_until="networkidle")
+            goto_reading_view(page, base)
             page.locator(".global-search-trigger").click()
             page.locator(".search-field input").fill(term)
             assert page.locator(f'[data-search-result][href*="/indicatori/{slugify(data["metrics"][metric_key]["meta"]["label"])}/"]').count() == 1
