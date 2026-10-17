@@ -232,7 +232,7 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — prova statica #432, preview isolata #433 e domanda scritta/download verificabile #434 integrati. Prima pagina pubblica #436 integrata e pubblicata. In revisione la riorganizzazione editoriale della domanda educativa, con sintesi, dossier interno e PDF; nessuna estensione di copertura o chiusura A7.
+**Stato:** `IN_PROGRESS` — prova statica #432, preview isolata #433 e domanda scritta/download verificabile #434 integrati. Prima pagina pubblica #436 integrata e pubblicata. Riorganizzazione editoriale #437 integrata: sintesi, confronti sui sette Comuni, dossier interno e PDF del pilota Massarosa. Incremento candidato: lettura educativa specifica per i sette Comuni, usando gli acquisiti; nessun nuovo dato o chiusura A7.
 
 Scopo: aggiungere linguaggio naturale solo sopra un layer semantico già governato.
 

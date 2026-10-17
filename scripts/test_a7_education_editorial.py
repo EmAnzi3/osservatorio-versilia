@@ -3,14 +3,14 @@ import copy
 import hashlib
 import json
 from bs4 import BeautifulSoup
-from a7_education_editorial import build_reading, write_report
+from a7_education_editorial import build_reading, build_education, write_report, report_html
 
 
 def verify_education_artifacts(bundle, folder, release, output):
     model=json.loads((folder/'education.json').read_text())
     territorial=model['territorialCases']
     cases=dict(bundle['cases'],**territorial)
-    assert model==build_reading(bundle,release['repositoryCommit'],territorial)
+    assert model==build_education(bundle,release['repositoryCommit'],territorial)
     from pathlib import Path
     from a7_education_editorial import NAMES
     root=Path(__file__).parents[1]
@@ -49,6 +49,49 @@ def verify_education_artifacts(bundle, folder, release, output):
     for binding in model['bindings']:
         fact=next(f for f in cases[binding['caseId']]['facts'] if f['responsePointer']==binding['pointer'])
         assert fact['value']==binding['value']
+    from a7_public_release import PDF_FILES
+    children=json.loads((root/'data/source-snapshots/welfare-prima-infanzia-2026-08.json').read_text())['towns']
+    native_towns=[children[name]['earlyChildhood'] for name in NAMES.values()]
+    pooled=sum(t['potentialCapacity'] for t in native_towns)/sum(t['children3to36Months'] for t in native_towns)*100
+    assert set(model['townReadings'])==set(NAMES)
+    for code,view in model['townReadings'].items():
+        assert view=={k:v for k,v in build_reading(bundle,release['repositoryCommit'],territorial,code).items() if k!='territorialCases'}
+        assert view['territory']==NAMES[code] and view['focusCode']==code
+        assert (folder.parents[2]/view['townRoute'].lstrip('/')/'index.html').is_file()
+        native=children[NAMES[code]]['earlyChildhood']
+        capacity=next(f for f in bundle['cases']['child_weighted']['facts'] if f.get('geography')==code)
+        assert abs(capacity['value']-native['potentialCapacity']/native['children3to36Months']*100)<1e-10
+        assert (capacity['value']==0)==('Nessun posto potenziale censito' in view['conclusions'][0]['text'])
+        if capacity['value']:
+            relation='inferiore al' if capacity['value']<pooled else 'superiore al' if capacity['value']>pooled else 'uguale al'
+            assert relation in view['conclusions'][0]['text']
+        for binding in view['bindings']:
+            fact=next(f for f in cases[binding['caseId']]['facts'] if f['responsePointer']==binding['pointer'])
+            assert fact['value']==binding['value']
+            if fact['kind']=='observation':assert fact['geography']==code
+        record=next(r for r in raw if r['code']==code)
+        time=record['full_time_students']/record['primary_students']*100
+        text=view['conclusions'][1]['text']
+        assert (time==100)==('tutti gli alunni' in text)
+        assert (50<time<100)==('più della metà' in text)
+        assert (time<50)==('meno della metà' in text)
+        for conclusion in view['conclusions']:
+            assert conclusion['question'] and conclusion['period'] and conclusion['reference']
+            for evidence in conclusion['evidence']:
+                fact=next(f for f in cases[evidence['caseId']]['facts'] if f['responsePointer']==evidence['pointer'])
+                assert evidence['value']==fact['value']
+                if fact['kind']=='observation':assert fact['geography']==code
+        document=BeautifulSoup(view['overview']+''.join(c['html'] for c in view['chapters']),'html.parser')
+        for chart in document.select('.edu-chart'):
+            credit=chart.select_one('.edu-chart-credit')
+            assert credit and 'Elaborazione: Osservatorio Versilia' in credit.get_text()
+            assert credit.select_one('a')['href']==cases[chart['data-education-case']]['facts'][0]['source']
+            selected=chart.select('.edu-focus');assert len(selected)==1
+            fact=next(f for f in cases[selected[0]['data-evidence-case']]['facts'] if f['responsePointer']==selected[0]['data-evidence-pointer'])
+            assert fact['geography']==code
+    try:build_reading(bundle,release['repositoryCommit'],territorial,'not-a-town')
+    except ValueError as e:assert str(e)=='education_unknown_territory'
+    else:raise AssertionError('unknown territory silently replaced')
     bad=copy.deepcopy(territorial)
     next(f for f in bad['school_full_time']['facts'] if f.get('geography')=='046018')['value']=40
     try:build_reading(bundle,release['repositoryCommit'],bad)
@@ -72,6 +115,36 @@ def verify_education_artifacts(bundle, folder, release, output):
     css=(__import__('pathlib').Path(__file__).parents[1]/'experiments/a7-dossier-preview/education.css').read_text()
     again=output/'education-reproduced.pdf';write_report(model,css,again)
     assert again.read_bytes()==(folder/'education.pdf').read_bytes(),'non-reproducible educational report'
+    for code,filename in PDF_FILES.items():
+        report=PdfReader(folder/filename)
+        local_text=unicodedata.normalize('NFKC','\n'.join(p.extract_text() for p in report.pages))
+        assert NAMES[code] in local_text and code in local_text
+        view=model['townReadings'][code]
+        markup=BeautifulSoup(report_html(view,css),'html.parser')
+        canonical=BeautifulSoup((root/'assets/brand-mark.svg').read_text(),'html.parser')
+        logo=markup.select_one('.edu-report-brand svg')
+        assert logo and [p['d'] for p in logo.select('path')]==[p['d'] for p in canonical.select('path')]
+        assert markup.select_one('meta[name="author"]')['content']=='Osservatorio Versilia'
+        assert markup.select_one('a[href="https://creativecommons.org/licenses/by/4.0/deed.it"]')
+        assert 'https://creativecommons.org/licenses/by/4.0/deed.it' in (root/'assets/app-parts/05.txt').read_text()
+        publication_text=' '.join(local_text.split())
+        for term in ['Rapporto, edizione del '+view['editionDate'],'Attribuzione e riuso','CC BY 4.0','Dati e materiali di terzi mantengono','Pubblicazione civica indipendente']:
+            assert term in publication_text, 'PDF missing publication context: '+term
+        # Branding must not spill the cover's interpretation note onto a sparse
+        # continuation page or shift the five composed chapter openings.
+        assert 'LA DOMANDA CHE CONTA' in report.pages[0].extract_text()
+        for i,chapter in enumerate(view['chapters'],1):
+            assert chapter['title'] in unicodedata.normalize('NFKC',report.pages[i].extract_text())
+        import re
+        for i,p in enumerate(report.pages,1):
+            footer=unicodedata.normalize('NFKC',p.extract_text())
+            assert 'osservatorioversilia.it' in footer
+            assert re.search(r'Pagina\s*'+str(i)+r'\s*/\s*'+str(len(report.pages))+r'\b',footer)
+        assert 6<=len(report.pages)<=9
+        assert all(len(p.extract_text())>150 for p in report.pages)
+        reproduced=output/('reproduced-'+filename)
+        write_report(model['townReadings'][code],css,reproduced)
+        assert reproduced.read_bytes()==(folder/filename).read_bytes(), 'town PDF not reproducible: '+code
     (output/'education-evidence.json').write_text(json.dumps(dict(status='PASS',anchors=expected,territorialObservationsReconciled=28,originalObservationsPreserved=8,reportSha256=hashlib.sha256(again.read_bytes()).hexdigest(),modelSha256=release['educationSha256'],caseRefs=model['requiredCaseRefs']),indent=2)+'\n')
 
 
@@ -109,3 +182,35 @@ def verify_education_browser(page,bundle,folder,output,width):
     with page.expect_download() as got:page.locator('[data-education-pdf]').click()
     assert __import__('pathlib').Path(got.value.path()).read_bytes()==(folder/'education.pdf').read_bytes()
     assert got.value.suggested_filename=='Massarosa-offerta-educativa.pdf'
+    from a7_public_release import PDF_FILES
+    from a7_education_editorial import NAMES
+    assert page.locator('#comune-educazione option:not([disabled])').count()==7
+    assert page.locator('#comune-educazione').evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(255, 255, 255)'
+    for code,name in NAMES.items():
+        page.select_option('#comune-educazione',code)
+        assert name in page.locator('#educazione-sintesi-title').inner_text()
+        assert name in page.locator('[data-a7-town-link]').inner_text()
+        assert page.locator('[data-a7-town-link]').get_attribute('href')==model['townReadings'][code]['townRoute']
+        assert page.locator('.edu-findings>div').count()==3
+        for el in page.locator('.edu-findings strong [data-evidence-case]').all():
+            cid=el.get_attribute('data-evidence-case')
+            fact=next(f for f in cases[cid]['facts'] if f.get('geography')==code)
+            assert el.get_attribute('data-evidence-pointer')==fact['responsePointer']
+        assert page.locator('.edu-findings strong').evaluate_all('''es=>es.every(e=>{const r=document.createRange();r.selectNodeContents(e);const rs=[...r.getClientRects()];const b=e.getBoundingClientRect();return rs.every(t=>Math.abs(t.top-rs[0].top)<1&&t.right<=b.right+1)})''')
+        assert page.locator('.edu-panel:visible').count()==1
+        assert page.locator('[data-education-pdf]').get_attribute('download')==name+'-offerta-educativa.pdf'
+        for chapter in ['nidi','scuola','spazi','apprendimenti','decisioni','sintesi']:
+            page.locator('[data-chapter="'+chapter+'"]').click()
+            assert page.locator('#educazione-'+chapter).is_visible()
+            for chart in page.locator('.edu-panel:visible .edu-chart').all():
+                selected=chart.locator('.edu-focus');assert selected.count()==1
+                cid=chart.get_attribute('data-education-case')
+                fact=next(f for f in cases[cid]['facts'] if f.get('geography')==code)
+                assert selected.get_attribute('data-evidence-pointer')==fact['responsePointer']
+                if fact['value'] is None:assert selected.locator('.edu-bar').count()==0
+            if code!='046018':assert 'comune='+code in page.url
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+        with page.expect_download() as got:page.locator('[data-education-pdf]').click()
+        assert __import__('pathlib').Path(got.value.path()).read_bytes()==(folder/PDF_FILES[code]).read_bytes()
+        assert got.value.suggested_filename==name+'-offerta-educativa.pdf'
+    page.select_option('#comune-educazione','046018')

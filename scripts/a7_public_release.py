@@ -2,8 +2,10 @@
 import hashlib
 import json
 import re
+from a7_education_editorial import FOCUS, NAMES
 
-FILES = ('answers.md', 'bundle.json', 'preview.mjs', 'public.css', 'public.mjs', 'reader.mjs', 'release.mjs', 'education.mjs', 'education.json', 'education.pdf')
+PDF_FILES = {code: 'education.pdf' if code == FOCUS else f'education-{code}.pdf' for code in NAMES}
+FILES = ('answers.md', 'bundle.json', 'preview.mjs', 'public.css', 'public.mjs', 'reader.mjs', 'release.mjs', 'education.mjs', 'education.json', 'education.pdf', *[name for name in PDF_FILES.values() if name != 'education.pdf'])
 
 
 def manifest_text(files):
@@ -48,6 +50,20 @@ def validate_release(read):
     if hashlib.sha256(values['reader.mjs'].encode()).hexdigest() != release['readerSha256']:
         raise ValueError('a7_reader_release_mismatch')
     education = json.loads(values['education.json'])
+    if (education.get('schemaVersion') != 2 or set(education.get('townReadings', {})) != set(NAMES)
+        or set(release.get('educationPdfs', {})) != set(NAMES)):
+        raise ValueError('a7_education_territory_set_mismatch')
+    for code, name in PDF_FILES.items():
+        view = education['townReadings'][code]
+        pdf = release['educationPdfs'][code]
+        if (view.get('focusCode') != code or view.get('territory') != NAMES[code]
+            or view.get('repositoryCommit') != release['repositoryCommit']
+            or view.get('bundleSha256') != release['bundleSha256']
+            or pdf != dict(file=name, sha256=hashlib.sha256(blobs[name]).hexdigest())
+            or not blobs[name].startswith(b'%PDF-')):
+            raise ValueError('a7_education_territory_mismatch:'+code)
+    if {k:v for k,v in education.items() if k not in ('townReadings','territorialCases')} != education['townReadings'][FOCUS]:
+        raise ValueError('a7_education_default_mismatch')
     if (hashlib.sha256(blobs['education.json']).hexdigest() != release['educationSha256'] or
         hashlib.sha256(blobs['education.pdf']).hexdigest() != release['educationPdfSha256'] or
         education['bundleSha256'] != release['bundleSha256'] or

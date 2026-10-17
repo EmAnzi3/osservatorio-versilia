@@ -35,3 +35,20 @@ La distinzione generale per l’edilizia scolastica va verificata sulla [discipl
 ## Gestione delle lacune
 
 Ogni lacuna è collegata a una conclusione impedita e a un potenziale uso: utenti/attese per copertura, canoni e redditi dei nuclei per onere, matrici OD e tempi per accessibilità, prestazioni ed esiti per efficienza, collaudo e messa in esercizio per opere. Una fonte esterna da esplorare non diventa un valore in risposta. Un’eventuale acquisizione futura richiede priorità, licenza, geografie, periodi, definizioni e snapshot, attraverso il flusso ordinario; non appartiene a questa PR.
+
+## Ammissione degli enrichment: guadagno conoscitivo
+
+Ogni proposta deve dichiarare: domanda del dossier; risposta oggi sostenuta; risposta aggiuntiva ottenibile; dati acquisiti da riusare e integrazioni realmente necessarie; copertura di Comuni/periodi/definizioni, continuità e aggiornamento. La priorità dipende dal guadagno (distinguere capacità e utilizzo, mostrare una trasformazione, documentare un divario o una risorsa), non dal numero di indicatori. Perimetri, diritti di riuso, snapshot, componenti native e test indipendenti precedono una nuova evidenza pubblica. Non si modifica a mano la matrice A3 per dichiarare acquisizioni.
+
+### Proposta successiva: domanda e utilizzo dei servizi 0–3
+
+- **Domanda esistente da approfondire:** l'offerta educativa incontra le richieste delle famiglie? Collegamento al piano `infanzia-centrale`, senza duplicarlo o aggiungere domande per conteggio.
+- **Oggi:** capacità potenziale 2024/25, posti e bambini 3–36 mesi; sette Comuni, componenti native e rapporto territoriale ponderato già acquisiti. Non sono iscritti, frequenza o bisogno insoddisfatto.
+- **Guadagno atteso:** distinguere domanda espressa, accoglienza, attese e utilizzo della ricettività; separare aumento dei posti e diminuzione dei bambini. Sono obiettivi di verifica, non conclusioni già attribuite ai Comuni.
+- **Fonte individuata:** Regione Toscana, [Uno sguardo sui servizi educativi 2024/25](https://www.regione.toscana.it/it/-/uno-sguardo-sui-servizi-educativi-anno-educativo-2024-2025), consultata il 17 ottobre 2026. La pagina ufficiale dichiara download a livello comunale, sezioni offerta/domanda e liste d'attesa, accoglienza e saturazione. [Catalogo prima infanzia](https://dati.toscana.it/dataset/serviziprimainfanzia): HTTP403 nel controllo online; nessuna osservazione acquisita o copertura 7/7 attestata da tale controllo.
+- **Verifiche prima dell'ammissione:** campi effettivi e codici territoriali per tutti i sette Comuni; conteggio delle domande e possibili duplicazioni; differenze tra domanda, rinunce, attese e bambini unici; data della fotografia e universo 3–36 mesi; tipologie/gestioni; null/zeri; annualità recenti confrontabili e discontinuità. L'esistenza di annualità nel portale non certifica una serie locale.
+- **Criterio di accettazione:** dati originali congelati e riconciliati con somme/componenti e controlli indipendenti; limiti e coperture dichiarati; uso nel dossier collegato alla domanda. Acquisizione tramite flusso ordinario in PR separata, dopo il lotto educativo territoriale. OpenCivitas resta un'integrazione successiva da valutare, non un pannello già acquisito.
+
+Dopo l'educazione, lavoro/redditi può riutilizzare anzitutto occupazione per età/genere, redditi e struttura economica già acquisiti, mantenendo universi e periodi distinti. Gli altri piloti restano nel programma esistente: nessun inventario parallelo, graduatoria politica o fabbisogno di acquisizione fissato per volume.
+
+Prima di nuove acquisizioni, le composizioni già ammesse possono affiancare tempo pieno/mensa e accessibilità/trasporto degli edifici, conservando unità e denominatori distinti (`docs/A6_DEMOGRAPHY_SCHOOL_ADAPTERS.md`). Sono capacità disponibili da valorizzare in un approfondimento mirato, non misure di capienza o accesso individuale. Lo storico MIM non è reso disponibile da questi collegamenti. Questo lotto non aggiunge tali confronti alla pagina educativa.
