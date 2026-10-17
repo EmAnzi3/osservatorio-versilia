@@ -231,7 +231,7 @@ def verify_public_page(bundle, release, dist, output):
     failures=[];validate_a7(missing.__getitem__,failures);assert failures,'public validator accepted missing asset'
     from test_a7_education_editorial import verify_education_artifacts
     verify_education_artifacts(bundle, folder, public_release, output)
-    overrides={};blocked=set()
+    overrides={};blocked=set();delayed={}
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self,*args):pass
         def end_headers(self):
@@ -240,6 +240,7 @@ def verify_public_page(bundle, release, dist, output):
             super().end_headers()
         def do_GET(self):
             path=self.path.split('?',1)[0]
+            if path in delayed:delayed[path].wait(timeout=15)
             if path in blocked:self.send_error(503);return
             if path in overrides:
                 body=overrides[path];body=body.encode() if isinstance(body,str) else body;self.send_response(200);self.send_header('Content-Type','text/html' if path.endswith('/') else self.guess_type(path));self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
@@ -356,6 +357,33 @@ def verify_public_page(bundle, release, dist, output):
                     assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
                     page.close();overrides.clear();blocked.clear()
                     report['checks'].append(mode+'_editorial_model_fail_closed')
+                # Territory belongs to the curated education view only. An
+                # unknown code must never silently display Massarosa's figures.
+                page=browser.new_page();page.goto(origin+'chiedi/?lettura=educazione&comune=unknown#nidi')
+                page.locator('#consenso').wait_for();page.locator('#accetta').click()
+                page.locator('#comune-educazione').wait_for()
+                assert page.locator('#risposta .edu-chart, [data-education-pdf]').count()==0
+                page.select_option('#comune-educazione','046030')
+                assert 'Stazzema' in page.locator('#risposta').inner_text()
+                assert 'comune=046030' in page.url and page.url.endswith('#nidi')
+                page.reload();page.locator('#consenso').wait_for()
+                assert page.locator('#risposta').is_hidden()
+                page.locator('#accetta').click();page.locator('#educazione-nidi').wait_for()
+                assert page.locator('#comune-educazione').input_value()=='046030'
+                # A slow PDF from the old selection cannot download, or publish
+                # an obsolete error, after the reader changes municipality.
+                page.select_option('#comune-educazione','046005')
+                old_pdf=page.locator('[data-education-pdf]').element_handle()
+                path='/chiedi/'+relative+'education-046005.pdf'
+                event=threading.Event();delayed[path]=event;downloads=[]
+                page.on('download',lambda download:downloads.append(download))
+                page.locator('[data-education-pdf]').click()
+                page.select_option('#comune-educazione','046030');event.set()
+                page.wait_for_function('(element)=>!element.dataset.loading',arg=old_pdf)
+                assert not downloads and page.locator('#comune-educazione').input_value()=='046030'
+                assert page.locator('#stato').get_attribute('data-education-error') is None
+                delayed.clear();page.close()
+                report['checks']+=['seven_town_readings_and_pdf_selection','unknown_territory_no_silent_fallback','shared_town_url_preserves_consent','stale_pdf_cannot_cross_town_selection']
                 # A shared dossier URL restores only an explicit question and
                 # chapter. It never bypasses the original consent requirement.
                 page=browser.new_page();page.goto(origin+'chiedi/?lettura=educazione#apprendimenti')

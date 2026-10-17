@@ -1,4 +1,4 @@
-# A7 — lettura pubblica dell’offerta educativa di Massarosa
+# A7 — lettura educativa: dal pilota Massarosa ai sette Comuni
 
 ## Problema e obiettivo
 
@@ -43,3 +43,17 @@ Il PDF viene prodotto da Chromium già richiesto dalla build; nessun servizio es
 Il gate A7 Full esistente viene esteso, senza nuovo workflow o soglie ridotte: riconciliazione delle 28 osservazioni MIM con i componenti degli snapshot congelati (alunni/classi/tempo pieno e risposte SI/NO), conservazione delle otto osservazioni precedenti, rifiuto di coperture ristrette, ancore numeriche indipendenti, tracciabilità delle frasi, scale e barre, null/zeri, navigazione e collegamento interno, identità PDF scaricato/file generato, riproducibilità PDF, testo dei capitoli e confini, manifest alterati/mancanti e cache reale. Le cinque letture precedenti e i dodici export JSON restano verificati; il JSON pubblico richiede ora l’apertura dei dettagli tecnici. La preview isolata conserva il suo export originale.
 
 Quick e Full locali ordinari in sequenza sullo stesso albero; successivamente CI Quick→Full e A3 sulla head corrente. Esiti e log effettivi nella PR. L’approvazione numerica non sostituisce il giudizio sul prodotto: il proprietario deve poter leggere la sintesi, esplorare i capitoli e aprire il PDF desktop/mobile prima del merge. Nessun merge/deploy dell’assistente, nessuna attestazione di pubblicazione prima della verifica post-merge.
+
+## Estensione dopo #437 — il Comune selezionato
+
+Il feedback del 17 ottobre chiede che il lettore riconosca ciò che emerge nel proprio Comune. Si conserva una sola domanda e la struttura approvata, con sette viste editoriali composte dai medesimi risultati A6. Il selettore bianco è interno alla lettura educativa: non estende le altre cinque domande del pilota Massarosa. Home/menu rimangono senza nuovi collegamenti.
+
+`build_reading(..., focus_code)` seleziona le osservazioni già disponibili; `build_education` conserva una sola copia delle richieste/risposte territoriali e sette viste derivate. Non è un nuovo catalogo. Le tre conclusioni iniziali dichiarano osservazione, riferimento, periodo, questione istruttoria ed evidenze con puntatori: posti potenziali rispetto ai bambini e al rapporto fra somme della Versilia; diffusione effettiva del tempo pieno nella primaria; consistenza della rete e media alunni/classe. Sono confronti descrittivi, senza equiparare copertura teorica, accesso, qualità o adeguatezza. Le condizioni dipendono dai dati, non dal nome del Comune: zero posti censiti non significa zero accessi; tempo pieno a tutti gli alunni non significa adeguatezza universale. Le informazioni mancanti rimangono esplicite, compresi i tre null INVALSI. Una risorsa osservata non diventa una raccomandazione e non si forza un pregio/difetto per territorio.
+
+URL della vista: `?lettura=educazione&comune=046030#nidi`. Il vecchio URL senza Comune conserva Massarosa; un codice sconosciuto mostra la scelta senza numeri o PDF, mai un fallback silenzioso. Il cambio Comune conserva il capitolo e aggiorna sintesi, evidenziazione e PDF; una nuova apertura mantiene il consenso richiesto. Nessuna memorizzazione della scelta. Le verifiche tecniche distinguono esplicitamente il pilota originale Massarosa dalle osservazioni territoriali.
+
+Il manifest lega sette PDF (il file storico `education.pdf` resta Massarosa), i relativi hash per Comune e il modello. Builder e validatore controllano insieme completezza dei sette territori, Comune del rapporto, bundle e commit. Nel browser il download verifica l'hash del PDF scelto; una risposta lenta della precedente selezione non può scaricare un rapporto o pubblicare un errore per il nuovo Comune. Service worker e gate cache includono i PDF territoriali. Nessun servizio aggiuntivo per GitHub Pages.
+
+Il gate A7 esistente verifica tutte le sette viste: componenti native Toscana/MIM, testi condizionati dai valori, evidenze, highlight, null/zeri, integrità e riproducibilità di ogni PDF, selezione, capitoli e download desktop/mobile, URL e consenso, Comune sconosciuto e risposta PDF tardiva. Gli assert precedenti restano applicati al pilota e ai dodici export. Le aspettative del vecchio modello sono adattate soltanto al nuovo contenitore delle viste; non vengono ridotte le soglie o aggirati i controlli.
+
+L'enrichment su domanda, rinunce, accoglienza, utilizzo e serie recenti Toscana è un lotto successivo proposto, non dato già acquisito. La scheda di ammissione vive nel metodo dei dossier; nessun campo esterno viene introdotto nei risultati di questa estensione.

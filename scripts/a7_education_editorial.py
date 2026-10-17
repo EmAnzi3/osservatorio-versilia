@@ -55,7 +55,10 @@ def territorial_evidence(bundle, catalog_path):
     return result
 
 
-def build_reading(bundle, commit, territorial_cases):
+def build_reading(bundle, commit, territorial_cases, focus_code=FOCUS):
+    if focus_code not in NAMES:
+        raise ValueError('education_unknown_territory')
+    town = NAMES[focus_code]
     date = datetime.fromisoformat(subprocess.check_output(['git','show','-s','--format=%cI',commit], cwd=Path(__file__).resolve().parents[1],text=True).strip()).astimezone(timezone.utc)
     q = next(q for q in bundle['questions'] if q['id'] == QUESTION)
     refs = q['requiredCaseRefs'] + q['contextCaseRefs']
@@ -67,10 +70,16 @@ def build_reading(bundle, commit, territorial_cases):
         if len(rows)!=7 or {f['geography'] for f in rows}!=set(NAMES):
             raise ValueError('education_territorial_coverage_incomplete:'+cid)
     cases.update(territorial_cases)
+    for cid, case in cases.items():
+        for fact in case['facts']:
+            if fact['kind'] == 'observation':
+                observation = next(o for o in case['response']['observations'] if o['geography'] == fact['geography'])
+                if fact['value'] != observation['value']:
+                    raise ValueError('education_narrative_needs_review:'+cid)
     def observations(cid):return [f for f in cases[cid]['facts'] if f['kind']=='observation']
     def focus(cid):
-        rows = [f for f in observations(cid) if f['geography']==FOCUS]
-        if len(rows)!=1 or rows[0]['value'] is None:raise ValueError('education_focus_missing:'+cid)
+        rows = [f for f in observations(cid) if f['geography']==focus_code]
+        if len(rows)!=1:raise ValueError('education_focus_missing:'+cid)
         return rows[0]
     bindings = []
     def value(cid, precision=1):
@@ -101,18 +110,35 @@ def build_reading(bundle, commit, territorial_cases):
                 components=f'<small class="edu-components">{description}</small>'
             track='<span class="edu-missing">Non disponibile</span>' if missing else f'<span class="edu-track" aria-hidden="true"><span class="edu-bar" style="width:{100*v/maximum:.8f}%" data-value="{v}" data-maximum="{maximum}" data-geography="{f["geography"]}" data-period="{f["period"]}"></span></span>'
             suffix=' %' if percent and not missing else ''
-            bars.append(f'<li class="{"edu-focus" if f["geography"]==FOCUS else ""}" data-evidence-case="{cid}" data-evidence-pointer="{f["responsePointer"]}"><span class="edu-town">{name}{components}</span>{track}<strong>{number(v,0 if unit=="alunni" else 1)}{suffix}</strong></li>')
+            bars.append(f'<li class="{"edu-focus" if f["geography"]==focus_code else ""}" data-evidence-case="{cid}" data-evidence-pointer="{f["responsePointer"]}"><span class="edu-town">{name}{components}</span>{track}<strong>{number(v,0 if unit=="alunni" else 1)}{suffix}</strong></li>')
         available=len(values)
         coverage=f'{len(rows)} Comuni della Versilia' if len(rows)==7 else 'Massarosa e Viareggio: confronto descrittivo selezionato, non un gruppo di territori equivalenti'
-        return f'''<figure class="edu-chart" data-education-case="{cid}"><figcaption><h4>{title}</h4><p>{explanation}</p></figcaption><p class="edu-chart-meta">Anno scolastico {E(base['period'])} · {coverage}. Valori disponibili: {available} su {len(rows)}.</p><ul class="edu-bars">{''.join(bars)}</ul><p class="edu-chart-meta">Scala da 0 a {number(maximum,0)} {unit}. Massarosa è evidenziata; Comuni in ordine alfabetico. Fonte: {source(cid)}.</p></figure>'''
+        return f'''<figure class="edu-chart" data-education-case="{cid}"><figcaption><h4>{title}</h4><p>{explanation}</p></figcaption><p class="edu-chart-meta">Anno scolastico {E(base['period'])} · {coverage}. Valori disponibili: {available} su {len(rows)}.</p><ul class="edu-bars">{''.join(bars)}</ul><p class="edu-chart-meta">Scala da 0 a {number(maximum,0)} {unit}. {E(town)} è evidenziato nel confronto; Comuni in ordine alfabetico. Fonte: {source(cid)}.</p></figure>'''
     if any(f['value'] != 0 for f in observations('child_zero')):
         raise ValueError('education_zero_narrative_needs_review')
     period=focus('school_full_time')['period']
-    lead='''<div class="edu-opening"><p class="edu-kicker">CRESCERE IN VERSILIA</p><h3>Un posto al nido.<br>Tempo per imparare.<br>Spazi da vivere.</h3><p class="edu-lead">Per una famiglia, l’offerta educativa entra nell’organizzazione di ogni giornata. Partiamo da Massarosa e guardiamo tutti i sette Comuni: quanti posti possono offrire i servizi, quanto è diffuso il tempo pieno e che cosa sappiamo degli edifici.</p><p class="edu-opening-foot">Tre aspetti da leggere insieme, senza confondere posti, frequenza e accesso effettivo.</p></div>'''
-    # Textual claims are guarded by actual values; no stale narrative after a data update.
-    if not 50 < focus('school_full_time')['value'] <= 100:raise ValueError('education_full_time_narrative_needs_review')
-    findings=f'''<div class="edu-findings"><div><span class="edu-kicker">PRIMA INFANZIA</span><strong>{value('child_weighted')}%</strong><p>Capacità potenziale rispetto ai bambini di 3–36 mesi, non frequenza effettiva.</p></div><div><span class="edu-kicker">TEMPO PIENO</span><strong>{value('school_full_time')}%</strong><p>Alunni della primaria a tempo pieno nelle scuole del Comune.</p></div><div><span class="edu-kicker">VITA SCOLASTICA</span><strong>{value('school_students',0)}</strong><p>Alunni nelle scuole del Comune: possono abitare anche altrove.</p></div></div>'''
-    overview='<div class="edu-cover-grid">'+lead+'<div class="edu-focus-facts"><p class="edu-kicker">MASSAROSA, TRE PUNTI DI PARTENZA</p>'+findings+'</div></div>'+chart('school_full_time','Il tempo pieno non ha la stessa diffusione in tutta la Versilia','A Massarosa riguarda oltre metà degli alunni della primaria. Qui il confronto comprende tutti i sette Comuni: il numero di alunni accanto alla quota aiuta a leggere anche le reti più piccole.')+'''<aside class="edu-reading-note"><span class="edu-kicker">LA DOMANDA CHE CONTA</span><h3>L’offerta incontra davvero le richieste delle famiglie?</h3><p>Per capirlo servono anche domande accolte, liste d’attesa, orari e tariffe. I capitoli mettono a fuoco ciò che i numeri descrivono e le informazioni da portare al tavolo.</p></aside>'''
+    lead=f'<div class="edu-opening"><p class="edu-kicker">CRESCERE A {E(town.upper())}</p><h3>Un posto al nido.<br>Tempo per imparare.<br>Spazi da vivere.</h3><p class="edu-lead">Per una famiglia, l’offerta educativa entra nell’organizzazione di ogni giornata. A {E(town)}, che cosa caratterizza i servizi e la rete scolastica? Leggiamo insieme prima infanzia, tempo pieno e spazi, nel confronto con gli altri Comuni della Versilia.</p><p class="edu-opening-foot">Posti disponibili, frequenza e accesso effettivo descrivono aspetti diversi.</p></div>'
+    local_capacity=focus('child_weighted')['value']
+    territorial_capacity=next(f for f in cases['child_weighted']['facts'] if f['kind']=='result')['value']
+    full_time=focus('school_full_time')['value']
+    relation='inferiore al' if local_capacity is not None and local_capacity<territorial_capacity else 'superiore al' if local_capacity is not None and local_capacity>territorial_capacity else 'uguale al'
+    capacity_text=('Nessun posto potenziale censito per i bambini di 3–36 mesi del Comune; questo non esclude accessi in altri territori.' if local_capacity==0 else f'Posti potenziali ogni cento bambini di 3–36 mesi: valore {relation} rapporto della Versilia ({number(territorial_capacity)}%). Non misura iscritti o domande soddisfatte.' if local_capacity is not None else 'La capacità potenziale locale non è disponibile: nessuna stima sostituisce il dato.')
+    time_text=('Il tempo pieno riguarda tutti gli alunni della primaria censiti.' if full_time==100 else 'Il tempo pieno riguarda più della metà degli alunni della primaria.' if full_time is not None and full_time>50 else 'Il tempo pieno riguarda metà degli alunni della primaria.' if full_time==50 else 'Il tempo pieno riguarda meno della metà degli alunni della primaria.' if full_time is not None else 'La diffusione del tempo pieno non è disponibile.')
+    conclusions=[dict(id='capacita',caseId='child_weighted',text=capacity_text,question='Quanta domanda è accolta e quanta rimane in attesa?',reference='Confronto con il rapporto fra somme dei sette Comuni',period=focus('child_weighted')['period']),
+        dict(id='tempo',caseId='school_full_time',text=time_text,question='La distribuzione per plesso e gli orari rispondono alle richieste?',reference='Alunni della primaria nelle scuole del Comune',period=focus('school_full_time')['period']),
+        dict(id='rete',caseId='school_students',text=f'In media {number(focus("school_class_size")["value"])} alunni per classe. Iscritti e classi descrivono la rete, senza misurare da soli capienza o qualità.',question='Da dove arrivano gli alunni e come cambiano i bacini dei plessi?',reference='Scuole presenti nel Comune; residenza degli alunni distinta',period=focus('school_students')['period'])]
+    for conclusion in conclusions:
+        cid=conclusion['caseId'];fact=focus(cid)
+        conclusion['evidence']=[dict(caseId=cid,pointer=fact['responsePointer'],value=fact['value'])]
+    conclusions[0]['evidence'].append(dict(caseId='child_weighted',pointer='/result/value',value=territorial_capacity))
+    class_fact=focus('school_class_size')
+    conclusions[2]['evidence'].append(dict(caseId='school_class_size',pointer=class_fact['responsePointer'],value=class_fact['value']))
+    cards=[]
+    for i,(cid,label,unit,precision) in enumerate([('child_weighted','PRIMA INFANZIA','%',1),('school_full_time','TEMPO PIENO','%',1),('school_students','ALUNNI NELLE SCUOLE','',0)]):
+        c=conclusions[i];suffix=unit if focus(cid)['value'] is not None else ''
+        cards.append(f'<div data-conclusion="{c["id"]}"><span class="edu-kicker">{label}</span><strong>{value(cid,precision)}{suffix}</strong><p>{E(c["text"])}</p><small>{E(c["period"])} · {E(c["reference"])}</small><details><summary>La questione da approfondire</summary><p>{E(c["question"])}</p></details></div>')
+    findings='<div class="edu-findings">'+''.join(cards)+'</div>'
+    overview='<div class="edu-cover-grid">'+lead+f'<div class="edu-focus-facts"><p class="edu-kicker">{E(town.upper())}, CHE COSA EMERGE</p>'+findings+'</div></div>'+chart('school_full_time','Il tempo pieno non ha la stessa diffusione in tutta la Versilia',f'A {E(town)}: {time_text[0].lower()+time_text[1:]} Il numero di alunni accanto alla quota aiuta a leggere anche le reti più piccole.')+'<aside class="edu-reading-note"><span class="edu-kicker">LA DOMANDA CHE CONTA</span><h3>L’offerta incontra davvero le richieste delle famiglie?</h3><p>Per capirlo servono anche domande accolte, liste d’attesa, orari e tariffe. I capitoli mettono a fuoco ciò che i numeri descrivono e le informazioni da portare al tavolo.</p></aside>'
     chapters=[]
     def chapter(id,title,intro,body):chapters.append(dict(id=id,title=title,html=f'<p class="edu-chapter-number">{len(chapters)+1:02d} / ESPLORA IL TEMA</p><p class="edu-chapter-intro">{intro}</p>'+body))
     ratio=next(f for f in cases['child_weighted']['facts'] if f['kind']=='result')
@@ -123,29 +149,40 @@ def build_reading(bundle, commit, territorial_cases):
     chapter('scuola','Tempo e organizzazione','Tra tempo pieno e dimensione delle classi, sette reti scolastiche da leggere nel loro contesto.',
         chart('school_full_time','Il tempo pieno: una componente dell’offerta','Alunni a tempo pieno sul totale degli alunni della primaria nelle scuole del Comune. Accanto alle quote, le dimensioni effettive di ciascuna rete.')+
         chart('school_class_size','Quanti alunni ci sono, in media, in una classe','La media sintetizza l’organizzazione della rete. Per capire le singole sedi occorre il dettaglio per plesso e ordine scolastico.',unit='alunni/classe',percent=False)+
-        f'<p>A Massarosa gli alunni delle scuole del Comune sono <strong>{value("school_students",0)}</strong>. Il confronto comprende tutte le sette reti scolastiche, con dimensioni diverse: i conteggi assoluti non misurano la copertura dei bisogni.</p><h3>Che cosa approfondire</h3><p>Bacini di provenienza, capienza e iscrizioni per plesso, tempi di percorso e richieste di tempo pieno non accolte. Non si ricostruisce una domanda futura da una singola fotografia.</p>')
+        f'<p>A {E(town)} gli alunni delle scuole del Comune sono <strong>{value("school_students",0)}</strong>. Il confronto comprende tutte le sette reti scolastiche, con dimensioni diverse: i conteggi assoluti non misurano la copertura dei bisogni.</p><h3>Che cosa approfondire</h3><p>Bacini di provenienza, capienza e iscrizioni per plesso, tempi di percorso e richieste di tempo pieno non accolte. Non si ricostruisce una domanda futura da una singola fotografia.</p>')
     chapter('spazi','Spazi e accessibilità','Le caratteristiche dichiarate degli edifici sono una parte della lettura, distinta dall’esperienza quotidiana degli alunni.',
         chart('school_access_defined','Accessibilità: la percentuale riguarda le risposte definite','La quota esclude le risposte non definite. Un valore del 100% non certifica l’accessibilità di tutte le scuole o di ogni percorso casa–scuola.')+
+        f'<p>A {E(town)} la quota delle risposte definite positive è {value("school_access_defined")}%. Il denominatore è riportato nel grafico: le risposte non definite non entrano nella quota.</p>'+
         '<h3>Che cosa approfondire</h3><p>Completezza delle risposte, verifiche per edificio e percorsi, barriere residue e bisogni degli alunni. Il dato dichiarato non è una certificazione tecnica di sicurezza o qualità.</p>')
+    learning=focus('invalsi_invalsiImplicitDispersion_g8_current')
+    learning_text=(f'<p>Per {E(town)} il dato di dispersione implicita al grado 8 non è disponibile nella rilevazione {E(learning["period"])}. Il dato mancante non viene sostituito con zero o con il valore di un altro Comune.</p>' if learning['value'] is None else f'<p>Per le scuole di {E(town)} la dispersione implicita al grado 8 è {value("invalsi_invalsiImplicitDispersion_g8_current")}%, nella rilevazione {E(learning["period"])}. Il fenomeno riguarda gli apprendimenti, non gli abbandoni.</p>')
     chapter('apprendimenti','Apprendimenti e giovani','L’offerta educativa va letta anche alla luce delle opportunità dei ragazzi, mantenendo distinti servizi, apprendimenti e percorsi di vita.',
         chart('invalsi_invalsiImplicitDispersion_g8_current','Apprendimenti: valori disponibili, senza graduatorie di qualità','Dispersione implicita al termine della secondaria di primo grado (grado 8): fragilità negli apprendimenti rilevate dalle prove. Non è il tasso di abbandono scolastico.')+
-        '<h3>Perché il confronto richiede prudenza</h3><p>Il Comune è quello della scuola, non della residenza. I valori non disponibili rimangono visibili e non diventano zero. Contesto degli alunni e partecipazione alle prove sono necessari per interpretare le differenze; non si attribuiscono i risultati a una politica o alla qualità delle singole scuole.</p><h3>Oltre questi indicatori</h3><p>Transizioni verso formazione e lavoro, spazi di aggregazione e opportunità extrascolastiche richiedono evidenze ulteriori: questa lettura non esaurisce i bisogni dei giovani.</p>')
+        learning_text+'<h3>Perché il confronto richiede prudenza</h3><p>Il Comune è quello della scuola, non della residenza. I valori non disponibili rimangono visibili e non diventano zero. Contesto degli alunni e partecipazione alle prove sono necessari per interpretare le differenze; non si attribuiscono i risultati a una politica o alla qualità delle singole scuole.</p><h3>Oltre questi indicatori</h3><p>Transizioni verso formazione e lavoro, spazi di aggregazione e opportunità extrascolastiche richiedono evidenze ulteriori: questa lettura non esaurisce i bisogni dei giovani.</p>')
     public_boundary='La lettura descrive capacità dei servizi, organizzazione scolastica e alcuni aspetti degli apprendimenti. Per valutare l’adeguatezza ai bisogni e dimensionare posti o sedi occorrono domanda effettiva, bacini, frequenza e attese. Non identifica effetti causali o bisogni individuali.'
     gaps=''.join(f'<li>{E(gap)}</li>' for gap in q['missingData'])
     source_rows=''.join(f'<li><strong>{E(cases[cid]["facts"][0]["text"].split(" — ")[0])}</strong> · {E(observations(cid)[0]["period"])} · {source(cid)}</li>' for cid in refs if cid!='child_zero')
     chapter('decisioni','Dalle evidenze alle scelte','Un quadro per preparare approfondimenti e verificare gli interventi, senza prescrizioni automatiche.',
         '<h3>Le domande da portare al tavolo</h3><ul><li>Prima infanzia: l’ostacolo è il numero di posti, la tariffa, l’orario o la distanza?</li><li>Scuola: dove emergono richieste di tempo pieno o difficoltà di accesso per plesso?</li><li>Giovani: quali bisogni non sono osservabili attraverso le sole rilevazioni scolastiche?</li></ul><h3>Chi coinvolgere</h3><p>Comune e gestori dei servizi educativi; istituzioni scolastiche e amministrazione scolastica per l’organizzazione didattica; Regione per la programmazione di competenza. Titolarità degli edifici e competenze vanno verificate per ogni intervento.</p><h3>Opzioni da approfondire e monitoraggio</h3><p>Valutare posti, orari, sostegni alle tariffe e accessibilità richiede prima una ricognizione della domanda. Per monitorare eventuali interventi servono domande accolte e inevase, tempi di attesa, frequenza effettiva, costi per le famiglie e barriere rimosse, con una base precedente e periodi confrontabili. Sono fabbisogni informativi, non nuove serie già disponibili.</p><h3>Le informazioni ancora necessarie</h3><ul>'+gaps+'</ul><h3>Fonti e periodi della lettura</h3><ul class="edu-sources">'+source_rows+'</ul><p>Queste sono evidenze congelate nei periodi indicati, non una verifica della situazione attuale dei servizi. I confronti tra i sette Comuni sono descrittivi; non attestano equivalenza dei territori. Non si combinano percentuali con denominatori diversi.</p><details><summary>Confine della domanda e criteri di interpretazione</summary><p>'+E(public_boundary)+'</p><p>'+E(q['interpretationLimit'])+'</p></details>')
-    return dict(schemaVersion=1,answerBoundaryPublic=public_boundary,editionDate=date.strftime('%d/%m/%Y'),pdfDate=date.strftime('%Y%m%d%H%M%S'),questionId=QUESTION,question=q['question'],territory='Massarosa',period=period,repositoryCommit=commit,
+    return dict(schemaVersion=2,focusCode=focus_code,conclusions=conclusions,answerBoundaryPublic=public_boundary,editionDate=date.strftime('%d/%m/%Y'),pdfDate=date.strftime('%Y%m%d%H%M%S'),questionId=QUESTION,question=q['question'],territory=town,townRoute='/comuni/'+town.lower().replace(' ','-')+'/',period=period,repositoryCommit=commit,
         bundleSha256=hashlib.sha256((json.dumps(bundle,ensure_ascii=False,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()).hexdigest(),
         requiredCaseRefs=refs,overview=overview,chapters=chapters,bindings=bindings,territorialCases=territorial_cases)
 
 
+def build_education(bundle, commit, territorial_cases):
+    readings={code:build_reading(bundle,commit,territorial_cases,code) for code in NAMES}
+    model=dict(readings[FOCUS])
+    # Shared query responses are stored once; these are product views, not a catalog.
+    model['townReadings']={code:{k:v for k,v in reading.items() if k!='territorialCases'} for code,reading in readings.items()}
+    return model
+
+
 def report_html(reading, css):
-    parts=[f'<section class="edu-print-page"><p class="edu-kicker">OSSERVATORIO VERSILIA / MASSAROSA</p><h1>Famiglie, servizi e scuola</h1><h2>{E(reading["question"])}</h2><p>Una lettura territoriale · Anno scolastico {E(reading["period"])} · Edizione {reading["editionDate"]}</p>'+reading['overview']+'</section>']
+    parts=[f'<section class="edu-print-page"><p class="edu-kicker">OSSERVATORIO VERSILIA / {E(reading["territory"].upper())}</p><h1>Famiglie, servizi e scuola</h1><h2>{E(reading["question"])}</h2><p>Una lettura territoriale · Anno scolastico {E(reading["period"])} · Edizione {reading["editionDate"]}</p>'+reading['overview']+'</section>']
     for c in reading['chapters']:
-        parts.append(f'<section class="edu-print-page"><p class="edu-kicker">MASSAROSA / OFFERTA EDUCATIVA</p><h2>{E(c["title"])}</h2>'+c['html'].replace('<details>', '<details open>')+'</section>')
-    parts.append(f'<section class="edu-reproduction"><h2>Fonti e riproducibilità</h2><p>Rapporto generato dagli stessi risultati verificati utilizzati nella lettura web. I dati non sono aggiornati in tempo reale.</p><p>Versione del codice e delle fonti conservate:</p><p><a href="https://github.com/EmAnzi3/osservatorio-versilia/tree/{reading["repositoryCommit"]}">{reading["repositoryCommit"]}</a></p><p>Impronta delle evidenze (SHA256):<br>{reading["bundleSha256"]}</p><p>Gli identificativi e i risultati originali sono disponibili nell’esportazione tecnica della lettura web.</p><p><a href="https://osservatorioversilia.it/chiedi/?lettura=educazione">osservatorioversilia.it/chiedi/?lettura=educazione</a></p></section>')
-    return '<!doctype html><html lang="it"><meta charset="utf-8"><title>Massarosa - Famiglie, servizi e scuola</title><style>'+css+'</style><main class="edu-report">'+''.join(parts)+'</main></html>'
+        parts.append(f'<section class="edu-print-page"><p class="edu-kicker">{E(reading["territory"].upper())} / OFFERTA EDUCATIVA</p><h2>{E(c["title"])}</h2>'+c['html'].replace('<details>', '<details open>')+'</section>')
+    parts.append(f'<section class="edu-reproduction"><h2>Fonti e riproducibilità</h2><p>Rapporto generato dagli stessi risultati verificati utilizzati nella lettura web. I dati non sono aggiornati in tempo reale.</p><p>Versione del codice e delle fonti conservate:</p><p><a href="https://github.com/EmAnzi3/osservatorio-versilia/tree/{reading["repositoryCommit"]}">{reading["repositoryCommit"]}</a></p><p>Impronta del pilota originale (SHA256):<br>{reading["bundleSha256"]}</p><p>Gli identificativi e i risultati originali sono consultabili nei dettagli di verifica della lettura web.</p><p><a href="https://osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}">osservatorioversilia.it/chiedi/?lettura=educazione&amp;comune={reading["focusCode"]}</a></p></section>')
+    return '<!doctype html><html lang="it"><meta charset="utf-8"><title>'+E(reading['territory'])+' - Famiglie, servizi e scuola</title><style>'+css+'</style><main class="edu-report">'+''.join(parts)+'</main></html>'
 
 
 def write_report(reading, css, path):
@@ -156,7 +193,7 @@ def write_report(reading, css, path):
             page=browser.new_page();page.set_content(report_html(reading,css));page.emulate_media(media='print')
             page.pdf(path=str(path),format='A4',print_background=True,display_header_footer=True,tagged=True,outline=True,
                 margin={'top':'15mm','bottom':'18mm','left':'16mm','right':'16mm'},header_template='<span></span>',
-                footer_template='<div style="font-family:Arial;font-size:8px;color:#405968;width:100%;text-align:center">Osservatorio Versilia · Massarosa / Offerta educativa · <span class="pageNumber"></span> / <span class="totalPages"></span></div>')
+                footer_template=f'<div style="font-family:Arial;font-size:8px;color:#405968;width:100%;text-align:center">Osservatorio Versilia · {E(reading["territory"])} / Offerta educativa · <span class="pageNumber"></span> / <span class="totalPages"></span></div>')
         finally:browser.close()
     # Chromium timestamps are the only wall-clock metadata; a fixed value makes
     # the report deterministic for the same verified source and editorial text.

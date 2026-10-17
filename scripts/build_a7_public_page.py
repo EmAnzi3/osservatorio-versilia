@@ -14,8 +14,8 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from build_a7_dossier_preview import preview, validate_repository_commit
 from site_chrome import ensure_sitemap_entries, extract_native_shell
-from a7_public_release import FILES, manifest_text
-from a7_education_editorial import build_reading, write_report, territorial_evidence
+from a7_public_release import FILES, PDF_FILES, manifest_text
+from a7_education_editorial import build_education, write_report, territorial_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 URL = 'https://osservatorioversilia.it/chiedi/'
@@ -36,14 +36,16 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         bundle = json.loads((stage / 'bundle.json').read_text())
         territorial = territorial_evidence(bundle, dist / 'data/site-data.json')
         validate_repository_commit(dict(bundle, cases=dict(bundle['cases'], **territorial)), commit)
-        reading = build_reading(bundle, commit, territorial)
+        reading = build_education(bundle, commit, territorial)
         css = (ROOT / 'experiments/a7-dossier-preview/education.css').read_text()
         (stage / 'public.css').write_text((stage / 'public.css').read_text() + '\n' + css)
         (stage / 'education.json').write_text(json.dumps(reading, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
-        write_report(reading, css, stage / 'education.pdf')
+        for code, filename in PDF_FILES.items():
+            write_report(reading['townReadings'][code], css, stage / filename)
         release = json.loads((stage / 'release.mjs').read_text().removeprefix('export default ').strip().removesuffix(';'))
         release.update(educationSha256=hashlib.sha256((stage / 'education.json').read_bytes()).hexdigest(),
-                       educationPdfSha256=hashlib.sha256((stage / 'education.pdf').read_bytes()).hexdigest())
+                       educationPdfSha256=hashlib.sha256((stage / 'education.pdf').read_bytes()).hexdigest(),
+                       educationPdfs={code:dict(file=filename,sha256=hashlib.sha256((stage / filename).read_bytes()).hexdigest()) for code,filename in PDF_FILES.items()})
         (stage / 'release.mjs').write_text('export default ' + json.dumps(release, ensure_ascii=False, sort_keys=True) + ';\n')
         assets = {name: (stage / name).read_bytes() for name in FILES}
         manifest = manifest_text(assets)
@@ -62,8 +64,8 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     hero['class'] = ['a7-hero', 'editorial-hero']
     hero.h1.string = 'Chiedi alla Versilia'
     hero.select_one('.eyebrow').string = 'CONOSCERE IL TERRITORIO'
-    hero.select_one('h1 + p').string = 'Lavoro, famiglie, scuola: parti dalle tue domande e scopri che cosa raccontano i dati di Massarosa.'
-    hero.select_one('.notice').string = 'Si parte da Massarosa: lavoro e infanzia/scuola. Ogni lettura indica a quale periodo si riferiscono i dati e che cosa resta da approfondire.'
+    hero.select_one('h1 + p').string = 'Famiglie, scuola, lavoro: parti dalle tue domande e scopri che cosa raccontano i dati del territorio.'
+    hero.select_one('.notice').string = 'Offerta educativa nei sette Comuni della Versilia; gli altri primi percorsi riguardano Massarosa. Ogni lettura indica periodi e informazioni da approfondire.'
     for selector, text in {
         '#scrivi':'Da dove vuoi partire?',
         'label[for=domanda-testo]':'Scrivi la tua domanda',
@@ -77,10 +79,10 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         '#accetta':'Prosegui con questi limiti',
     }.items(): original.select_one(selector).string=text
     original.select_one('#domanda-testo')['placeholder']='Per esempio: come cambia il lavoro a Massarosa?'
-    original.select_one('#selezione + p').string='Questi primi percorsi riguardano lavoro e infanzia/scuola a Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
+    original.select_one('#selezione + p').string='La domanda sull’offerta educativa permette di scegliere fra i sette Comuni. Gli altri primi percorsi riguardano Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
     original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
     original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
-    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Le prime letture: lavoro · infanzia e scuola · Massarosa';hero.append(local_note)
+    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Offerta educativa: sette Comuni · Altri percorsi: pilota Massarosa';hero.append(local_note)
     grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
     original.main.insert(0,grid)
     grid.append(original.select_one('#scrivi').parent)
@@ -121,7 +123,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
 {shell.header}<div id="app"><div class="a7-banner">{hero}</div><main id="a7-guided" data-a7-release="{relative}" class="editorial-page page-width a7-guided">
 <nav aria-label="Percorso pagina"><a href="../">Home</a> · Chiedi alla Versilia</nav>
 {content}
-<p>Approfondisci i dati: <a href="../comuni/massarosa/">scheda di Massarosa</a> · <a href="../confronta/lavoro/">lavoro</a> · <a href="../confronta/istruzione/">istruzione</a> · <a href="../stato-dati/">stato dei dati</a>.</p>
+<p>Approfondisci i dati: <a data-a7-town-link href="../comuni/massarosa/">scheda di Massarosa</a> · <a href="../confronta/lavoro/">lavoro</a> · <a href="../confronta/istruzione/">istruzione</a> · <a href="../stato-dati/">stato dei dati</a>.</p>
 </main></div>{shell.footer}
 <script src="{html.escape(shell.app_bundle, quote=True)}" defer></script><script type="module" src="{relative}public.mjs"></script>
 </body></html>''', encoding='utf-8')
