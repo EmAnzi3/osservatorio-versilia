@@ -1,0 +1,40 @@
+/* Work chapters: the shared controls retain the approved education layout. */
+.a7-guided.work-reading>.a7-question-grid,.a7-guided.work-reading>section[aria-label="Limiti delle letture"]{display:none}
+.a7-guided.work-reading>#stato:not([data-work-error]){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.work-content{line-height:1.65;max-width:100%;overflow-wrap:anywhere}
+.work-content .opening{background:#123f50;color:#fff;padding:clamp(1.2rem,3vw,2rem);border-top:7px solid #e9a84b}
+.work-content .opening h2{color:#fff;font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;margin:0 0 1rem}
+.work-content .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.5rem 0}
+.work-content .cards>div{background:#f0f7f6;padding:1rem;border-top:4px solid #176963}
+.work-content .cards span{display:block;font-size:.75rem;font-weight:800;letter-spacing:.05em}
+.work-content .cards strong{display:block;color:#123f50;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.2;margin:.6rem 0;white-space:nowrap}
+.work-content small{display:block;color:#4a626b;font-size:.8rem;line-height:1.6}
+.work-content figure{margin:1.8rem 0;padding:1.5rem;border:1px solid #d5e0e3;border-top:5px solid #176963;background:#fff}
+.work-content h3{font-size:clamp(1.45rem,2.5vw,1.95rem);line-height:1.2;color:#123f50;font-weight:850;margin:0 0 1rem}
+.work-content .bars{list-style:none;padding:0;margin:1.2rem 0}
+.work-content .bars li{display:grid;grid-template-columns:155px minmax(20px,1fr) 105px;gap:.8rem;align-items:center;padding:.6rem .5rem;border-bottom:1px solid #edf0f1;font-size:.93rem;min-height:48px}
+.work-content .bars strong{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.work-content .track{display:block;height:20px;position:relative;background:#edf2f3;overflow:hidden}
+.work-content .track.signed{background:linear-gradient(to right,#edf2f3 49.5%,#69838b 49.5%,#69838b 50.5%,#edf2f3 50.5%)}
+.work-content .bar{display:block;height:100%;position:absolute;background:#4c8c88}
+.work-content .bar.negative{background:#a95029}
+.work-content .bars li.focus{background:#fff3df;outline:1px solid #e4c590;outline-offset:-1px;font-weight:750}
+.work-content .focus .bar{background:#b45b1b}
+.work-content .endpoints{display:grid;grid-template-columns:1fr 1fr;gap:1rem;background:#f0f7f6;padding:1rem}
+.work-content .endpoints strong{display:block;color:#123f50;font-size:1.5rem}
+.work-content svg{display:block;width:100%;height:auto;min-width:0;overflow:visible}
+.work-content .history-scroll{overflow-x:auto;max-width:100%}
+.work-content .history-hint{display:none}
+.work-content svg text{font:10px Arial;fill:#173f49}
+.work-content details{margin-top:1.5rem}
+.work-content .opening p{color:#fff}
+@media(max-width:700px){
+ .work-content .history-scroll svg{min-width:520px}.work-content .history-hint{display:block}
+ .work-content figure{padding:1rem .65rem}.work-content .bars li{grid-template-columns:85px minmax(12px,1fr) 76px;gap:.35rem;font-size:.8rem;padding:.55rem .2rem}.work-content .track{height:17px}
+ .work-content .cards{grid-template-columns:1fr}.work-content .cards>div{display:grid;grid-template-columns:110px minmax(0,1fr);column-gap:.6rem}.work-content .cards span{grid-column:1/-1}.work-content .cards strong{font-size:1.7rem}.work-content .cards small{align-self:center}
+ .work-content .endpoints strong{font-size:1.15rem}.work-answer .edu-tools a[data-work-dossier]{flex:1;text-align:center;align-self:center;font-size:.87rem}
+}
+
+.work-income-consent{padding:1rem;border-left:5px solid #e9a84b;background:#f0f7f6;margin-top:1.5rem}.work-income-consent h4{font-size:1.2rem;font-weight:800;color:#123f50}.work-content [data-work-income-context][hidden]{display:none}
+
+.work-content svg circle{fill:#176c69}

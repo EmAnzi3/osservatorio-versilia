@@ -5,7 +5,8 @@ import re
 from a7_education_editorial import FOCUS, NAMES
 
 PDF_FILES = {code: 'education.pdf' if code == FOCUS else f'education-{code}.pdf' for code in NAMES}
-FILES = ('answers.md', 'bundle.json', 'preview.mjs', 'public.css', 'public.mjs', 'reader.mjs', 'release.mjs', 'education.mjs', 'education.json', 'education.pdf', *[name for name in PDF_FILES.values() if name != 'education.pdf'])
+WORK_PDF_FILES = {code: f'work-{code}.pdf' for code in NAMES}
+FILES = ('answers.md', 'bundle.json', 'preview.mjs', 'public.css', 'public.mjs', 'reader.mjs', 'release.mjs', 'education.mjs', 'education.json', 'education.pdf', *[name for name in PDF_FILES.values() if name != 'education.pdf'], 'work.mjs', 'work.json', *WORK_PDF_FILES.values())
 
 
 def manifest_text(files):
@@ -70,4 +71,23 @@ def validate_release(read):
         education['repositoryCommit'] != release['repositoryCommit'] or
         not blobs['education.pdf'].startswith(b'%PDF-')):
         raise ValueError('a7_education_release_mismatch')
+    work = json.loads(values['work.json'])
+    if (work.get('schemaVersion') != 2 or work.get('questionId') != 'lavoro-centrale'
+        or set(work.get('townReadings', {})) != set(NAMES)
+        or set(release.get('workPdfs', {})) != set(NAMES)
+        or work.get('repositoryCommit') != release['repositoryCommit']
+        or work.get('bundleSha256') != release['bundleSha256']
+        or hashlib.sha256(blobs['work.json']).hexdigest() != release.get('workSha256')):
+        raise ValueError('a7_work_release_mismatch')
+    question = next(q for q in json.loads(values['bundle.json'])['questions'] if q['id'] == 'lavoro-centrale')
+    if work['requiredCaseRefs'] != question['requiredCaseRefs'] + question['contextCaseRefs']:
+        raise ValueError('a7_work_question_mismatch')
+    for code, name in WORK_PDF_FILES.items():
+        view = work['townReadings'][code]
+        if (view.get('focusCode') != code or view.get('territory') != NAMES[code]
+            or view.get('repositoryCommit') != release['repositoryCommit']
+            or view.get('bundleSha256') != release['bundleSha256']
+            or release['workPdfs'][code] != dict(file=name, sha256=hashlib.sha256(blobs[name]).hexdigest())
+            or not blobs[name].startswith(b'%PDF-')):
+            raise ValueError('a7_work_territory_mismatch:'+code)
     return relative, values, release

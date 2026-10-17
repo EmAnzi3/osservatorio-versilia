@@ -2,7 +2,7 @@
 
 ## Baseline integrata
 
-- Main `c80749a1e2871f491b5087732cf8c70610cc9dce`, tree `bac4fa1b0072f0484840e567cb77d381ad35ce82`: #437 mergiata dal proprietario il 17 ottobre. Quick/Full locali ordinari PASS sul medesimo albero; CI Quick `39030351987`, Full effettivo `39032237491`, A3 `39030352000` PASS sulla head `01e0138`. Deploy post-merge `39039130288` e live `39040063783` SUCCESS sul commit integrato; pubblicazione verificata. I job push skipped non sono nuovi PASS. Il fix del ritentativo PDF è integrato.
+- Main `3d3ccb010b821ba4cafaa41f17b875b8c70f1905`, tree `38207e43b6f1df5b1eae80a2dd317d24b259407c`: #442 mergiata dal proprietario il 17 ottobre alle 22:14 UTC. Albero integrato identico alla head approvata `5c465b5`. Quick/Full locali e CI Quick `39055373898`, Full effettivo `39058307423`, A3 `39055373937` PASS su quella head; i job push skipped non sono nuovi PASS. Deploy post-merge `39074244546` e controllo live `39075152471` SUCCESS sul commit integrato; pubblicazione verificata.
 - A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
 - Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
 - Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
@@ -13,17 +13,13 @@
 
 Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`. Nessuno step o Definition of Done A7 dichiarato completato.
 
-## Incremento candidato — lettura educativa per sette Comuni
+## Lettura educativa integrata e incremento lavoro/redditi
 
-Branch pubblico `feature/a7-education-seven-towns`, PR #442 ancora aperta; baseline integrata #437. Il feedback del 17 ottobre chiede evidenze e conclusioni pertinenti al Comune selezionato. La stessa domanda educativa viene composta per ciascuno dei sette Comuni usando le risposte A6 già disponibili: selettore locale, sintesi argomentata, evidenziazione nei grafici, URL condivisibile e PDF del Comune, tutti legati al manifest immutabile. Null INVALSI e zeri 0–3 conservati; nessuna graduatoria di qualità o indicazione automatica di politica. Le cinque altre domande e i dodici export del pilota Massarosa restano distinti. Nessun nuovo dato/adapter o accesso da Home/menu. Metodo e contratto in `docs/A7_EDUCATION_EDITORIAL_READING.md`.
+#442: domanda educativa per sette Comuni, selettore, capitoli, confronti e PDF legati alla release immutabile. Null INVALSI e zeri 0–3 conservati; nessuna graduatoria di qualità. Standard editoriale con logo canonico, firma/dominio/pagine, edizione distinta dai periodi, fonte distinta dall'elaborazione e riuso CC BY 4.0 per i soli contenuti originali. Metodo in `docs/A7_EDUCATION_EDITORIAL_READING.md`.
 
-Prossimo enrichment proposto, non acquisito: domanda/accoglienza/attese 0–3 dalla fonte Toscana già usata, con verifica di campi e copertura ancora necessaria; catalogo CKAN 403 al controllo del 17 ottobre. Scheda di ammissione in `docs/dossiers/METHOD.md`. Prima completare e valutare questa lettura; lavoro/redditi successivo come composizione degli acquisiti. Nessuna riapertura A6.
+Branch `feature/a7-work-income-reading` riallineato alla main #442: compone la domanda centrale lavoro in sei capitoli e sette Comuni. Tutte le sei componenti obbligatorie lavoro; tre componenti fiscali come contesto distinto dal piano redditi, la cui serie pensioni non è composta. Ventuno richieste verificate A6, confronti alfabetici, segni negativi, null e coperture fiscali conservati; selezione Comune, URL, PDF verificato e cache governati dal grafo immutabile. Pilota originale, consenso, dodici export ed educazione conservati. Metodo in `docs/A7_WORK_INCOME_READING.md`. Nessun nuovo dato/adapter, acquisizione, accesso Home/menu o passo A7 dichiarato DONE.
 
-Il proprietario ha richiesto lo standard editoriale sugli output: logo vettoriale canonico in apertura dei sette PDF, firma/dominio/pagine nel piè di pagina, edizione distinta dai periodi dei dati, crediti di elaborazione separati dalla fonte su web e PDF. Riuso conforme alla policy CC BY 4.0 del progetto per i soli contenuti originali; condizioni dei terzi conservate e natura indipendente esplicita nella nota finale. Nessun nuovo formato di export, nuova acquisizione o modifica degli adapter. #442 aggiornata alla head `5c465b5`, Ready: Quick/Full locali ordinari sullo stesso albero e CI Quick `39055373898`, Full effettivo `39058307423`, A3 `39055373937` PASS. Anteprima dei sette PDF consegnata; merge/pubblicazione ancora assenti al controllo del 17 ottobre. I verdi della precedente head `bd5f0ea` restano superati.
-
-## Preparazione indipendente — lavoro e redditi
-
-Branch locale `feature/a7-work-income-reading`, basato sulla head #442 in attesa di merge del proprietario. Il preparatore riusa i piani canonici lavoro/redditi per sette Comuni: 21 richieste controllate dal verificatore A6, sei sezioni per rapporto, componenti ASIA/Frame/MEF/NIC separate, segni negativi e copertura delle fasce fiscali conservati. Metodo e riproduzione in `docs/A7_WORK_INCOME_READING.md`. Produce bozze di revisione, non una nuova lettura pubblica. Nessun dato/adapter o asset pubblico approvato modificato; nessuna nuova acquisizione. Test numerici mirati indipendenti sugli snapshot e verifica delle bozze PDF, distinti dai gate canonici ancora da eseguire prima di una PR pronta al merge. Nessuna PR aggiuntiva aperta prima dell’integrazione #442; il prossimo incremento pubblico richiede selezione del Comune, capitoli, PDF verificati e gate completi.
+Enrichment educativo domanda/accoglienza/attese 0–3 ancora proposto, non acquisito; catalogo Toscana CKAN 403 al controllo del 17 ottobre. Scheda in `docs/dossiers/METHOD.md`. Abitazione/bilanci e altri dossier rimangono sviluppi distinti.
 
 ## Gate e prossima azione
 
