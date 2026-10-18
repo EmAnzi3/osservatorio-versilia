@@ -3,9 +3,31 @@ import argparse
 import copy
 import json
 import math
+import unicodedata
 from pathlib import Path
 
 from a7_work_income_reading import ROOT, build, validate, focus, rows, chapters, chart, digest
+
+
+def pdf_text(document):
+    # Line wrapping and font ligatures differ between Chromium installations.
+    # Preserve every word/number; normalize only their text representation.
+    return ' '.join(unicodedata.normalize('NFKC', '\n'.join(page.get_text() for page in document)).split())
+
+
+def verify_pdf_text_reflow():
+    import fitz
+    phrase='non esaurisce il dossier'
+    for content,present in [('non esaurisce il\ndossier sui redditi',True),
+                            ('non esaurisce\nil dossier sui redditi',True),
+                            ('esaurisce il\ndossier sui redditi',False)]:
+        original=fitz.open()
+        original.new_page().insert_text((42,42),content,fontsize=12)
+        data=original.tobytes();original.close()
+        document=fitz.open(stream=data,filetype='pdf')
+        assert phrase not in ''.join(page.get_text() for page in document)
+        assert (phrase in pdf_text(document)) is present
+        document.close()
 
 
 def verify_work_artifacts(bundle, folder, release):
@@ -14,6 +36,7 @@ def verify_work_artifacts(bundle, folder, release):
     from a7_work_income_reading import write_reports, number
     from a7_public_release import WORK_PDF_FILES
     import tempfile
+    verify_pdf_text_reflow()
     model=json.loads((folder/'work.json').read_text())
     validate(model)
     question=next(q for q in bundle['questions'] if q['id']=='lavoro-centrale')
@@ -30,7 +53,7 @@ def verify_work_artifacts(bundle, folder, release):
         assert hashlib.sha256(pdf).hexdigest()==release['workPdfs'][code]['sha256']
         doc=fitz.open(stream=pdf,filetype='pdf')
         assert len(doc)==6
-        text=''.join(page.get_text() for page in doc)
+        text=pdf_text(doc)
         assert model['towns'][code] in text and model['repositoryCommit'] in text
         assert 'non esaurisce il dossier' in text
         for cid,decimals in [('census_employment_primary',1),('business_asia_cumulative',1),('business_asia_employment',2),('business_frame_industry_va',2),('business_frame_industry_wages',0),('mef_incomeSourceProfile_total',0)]:
