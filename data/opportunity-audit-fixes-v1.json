@@ -605,6 +605,95 @@
           "reading_method": "Formulario integrale, sezioni 15.a e 16.b: Ente Pubblico"
         }
       ]
+    },
+    {
+      "coverage_id": "rt-proloco-identita-locali-partner-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana",
+      "title": "Toscana · Identità locali: collaborazione con le Pro Loco",
+      "url": "https://www.regione.toscana.it/it/-/sostegno-a-progetti-di-particolare-rilevanza-per-la-valorizzazione-delle-identit%C3%A0-locali-promossi-dalle-associazioni-pro-loco-della-toscana",
+      "required_terms": [
+        "22288",
+        "03.11.2026 13:00",
+        "Registro regionale",
+        "enti locali",
+        "accordi",
+        "2026"
+      ],
+      "evidence_verified_at": "2026-10-18",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-10-14",
+      "first_seen_at": "2026-10-18",
+      "lifecycle_stage": "application_open",
+      "opens_at": null,
+      "deadline_at": "2026-11-03",
+      "deadline_time": "13:00",
+      "eligibility": "conditional",
+      "applicant_type": "Pro Loco iscritte al Registro regionale 2026; Comune solo come partner con accordo formalizzato",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "final_beneficiaries": "Comunità e territori interessati dai progetti delle Pro Loco",
+      "geographic_scope": "Toscana",
+      "project_requirements": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa.",
+      "category": "cultura",
+      "description": "Progetti culturali e di valorizzazione delle identità locali. Pro Loco proponente e beneficiaria; Comune possibile partner tramite accordo con attività e ruoli definiti, senza contributo diretto.",
+      "condition_label": "Pro Loco proponente e accordo operativo",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Domanda e contributo riservati alle associazioni Pro Loco iscritte al Registro regionale per il 2026 (art. 2). Il Comune può collaborare alla realizzazione delle attività tramite accordo formalizzato con attività, ruoli e territorio espliciti (artt. 1.3 e 6.1.d), non candidarsi direttamente né ricevere il contributo regionale. La compartecipazione economica comunale è prevista fra i criteri (art. 7.C1); le spese rendicontate restano intestate e sostenute dalla Pro Loco, non da altri soggetti (Allegato B, artt. 7 e 8). Occorre individuare una Pro Loco ammissibile e concordare un progetto concreto in Toscana: nessun accordo o progetto locale è già accertato. Attività e spese dal 1 gennaio al 31 dicembre 2026; fino all’80% dei costi ammissibili, almeno il 20% a carico della Pro Loco, massimo 15.000 euro per i primi tre progetti e 10.000 euro dai successivi. Domanda della Pro Loco sul formulario regionale entro il 3 novembre 2026 ore 13:00. Vietato il doppio finanziamento della stessa spesa."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5533981&nomeFile=Decreto+n.22288+del+07-10-2026-+Allegato+A+",
+        "sha256": "d350edaa454a9e24fa3db658721869f2d60f60a91a9842c8b55af5b13d2aed9f",
+        "pages": 13
+      },
+      "presentation": {
+        "category": "cultura",
+        "description": "Progetti delle Pro Loco: possibile collaborazione operativa comunale tramite accordo; domanda e contributo riservati all’associazione.",
+        "condition_label": "Pro Loco proponente e accordo operativo",
+        "source_label": "Regione Toscana",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      },
+      "supporting_documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5533983&nomeFile=Decreto+n.22288+del+07-10-2026-+Allegato+B+",
+          "sha256": "d87ab7615eeaec9db868456fc04bb84f1757c9a789350f9537cd92884524a2d2",
+          "pages": 8
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5533982&nomeFile=Decreto+n.22288+del+07-10-2026-+Allegato+C+",
+          "sha256": "6722746568df649ce2756703e629718883ead7e533a7a9277bbaf8e4d6b6c2b7",
+          "pages": 3
+        }
+      ]
     }
   ],
   "reviewAssessments": [

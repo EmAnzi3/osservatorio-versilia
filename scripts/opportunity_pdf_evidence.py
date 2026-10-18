@@ -8,7 +8,7 @@ import urllib.request
 from html import unescape
 from html.parser import HTMLParser
 from typing import Callable
-from urllib.parse import urljoin, urlsplit, parse_qs
+from urllib.parse import urljoin, urlsplit, urlunsplit, quote, parse_qs
 from opportunity_discovery_noise import content_html, unrelated_document
 
 UA = "OsservatorioVersilia-OpportunityRadar/0.2.4 (+https://osservatorioversilia.it/)"
@@ -24,6 +24,14 @@ KEYS = (
     "destinatari",
 )
 RELEVANT_LINK = re.compile(r"\b(bando|avviso|allegat\w*|decreto|disciplinare|linee guida)\b", re.I)
+
+
+def request_url(url: str) -> str:
+    """Encode raw spaces/Unicode without decoding signed or escaped URL parts."""
+    parts = urlsplit(url)
+    return urlunsplit((parts.scheme, parts.netloc,
+        quote(parts.path, safe="/%:@!$&'()*+,;=-._~"),
+        quote(parts.query, safe="=&;%:+,/?@!$'()*-._~"), ""))
 
 
 def verified_document_links(item):
@@ -74,7 +82,7 @@ def pdf_links(payload: str, page_url: str, limit: int = 2) -> list[str]:
     ranked: list[tuple[int, str]] = []
     seen: set[str] = set()
     for href, label in parser.links:
-        absolute = urljoin(page_url, unescape(href))
+        absolute = request_url(urljoin(page_url, unescape(href)))
         if unrelated_document(absolute):
             continue
         probe = f"{href} {label}"
@@ -103,7 +111,7 @@ def pdf_links(payload: str, page_url: str, limit: int = 2) -> list[str]:
 
 
 def fetch_pdf_text(url: str, max_pages: int = 18, max_chars: int = 60000) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/pdf,*/*;q=0.8"})
+    req = urllib.request.Request(request_url(url), headers={"User-Agent": UA, "Accept": "application/pdf,*/*;q=0.8"})
     with urllib.request.urlopen(req, timeout=25) as response:
         data = response.read()
     from pypdf import PdfReader
