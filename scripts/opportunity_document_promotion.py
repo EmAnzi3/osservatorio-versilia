@@ -459,10 +459,31 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                         if (identity.startswith("mim-document-") and
                                 archived.get("source_id") == "mim-enti-locali"):
                             archival_candidates.append(dict(archived, coverage_id=identity))
+                    if "proroga" in str(lead.get("title") or "").casefold():
+                        # Internal evidence audit: fail closed, but explain
+                        # precisely why a real signed amendment did not match.
+                        note_text = re.sub(r"\s+", " ", receipt.get("text") or "").strip()
+                        check["amendmentProbe"] = {
+                            "archiveCandidates": [
+                                {"id": x.get("coverage_id"), "reference": notice_reference(x.get("url", "")),
+                                 "deadline": x.get("deadline_at"), "time": x.get("deadline_time")}
+                                for x in archival_candidates
+                            ],
+                            "direct": receipt.get("transport") == "direct_https",
+                            "header": bool(re.match(r"Ministero dell[’']istruzione e del merito", note_text, re.I)),
+                            "signature": "IL DIRETTORE GENERALE" in note_text,
+                            "subject": bool(re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", note_text, re.I)),
+                            "unchangedConditions": bool(re.search(r"Restano ferme tutte le ulteriori disposizioni", note_text, re.I)),
+                            "protocol": bool(re.search(r"Avviso pubblico prot\.\s*n\.\s*\d{5,7}", note_text, re.I)),
+                            "oldWindow": bool(re.search(r"originariamente fissato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
+                            "newWindow": bool(re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
+                        }
                     for candidate in [*items, *old, *archival_candidates]:
                         amendment = verified_deadline_extension(receipt, candidate)
                         if amendment is not None:
                             break
+                    if "amendmentProbe" in check:
+                        check["amendmentProbe"]["matched"] = amendment is not None
                     if amendment is not None:
                         identity = amendment["coverage_id"]
                         current = next((x for x in items if x.get("coverage_id") == identity), None)
