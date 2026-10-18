@@ -104,6 +104,24 @@ def classify_signal(item, reference_date=None):
     current_window = bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", deadline) and deadline >= reference)
     if current_window:
         return None
+
+    # Only source-scoped, unequivocally non-actionable headlines. This is a
+    # discovery-budget filter, not a decision about a published grant. A
+    # reopening/current explicit application window already won above.
+    host = (location.hostname or "").casefold()
+    if host in {"www.mim.gov.it", "mim.gov.it"} and re.match(
+            r"^#?NoiSiamoLeScuole\b", title, re.I):
+        return "administrative_update"
+    if host in {"www.regione.toscana.it", "regione.toscana.it"}:
+        if re.match(r"^Bando Nidi gratis 20\d{2}-20\d{2} per i servizi educativi rivolto alle famiglie$", title, re.I):
+            return "outside_municipal_scope"
+        if re.match(r"^Riconoscimento dei percorsi formativi degli organismi formativi per Esperta ed Esperto di valutazione", title, re.I):
+            return "outside_municipal_scope"
+    if host == "prefettura.interno.gov.it" and re.match(
+            r"^(?:DATA ESTRAZIONE NOMINATIVI DEI REVISORI CONTABILI|"
+            r"Estrazione (?:a Sorte )?Nomina Revisori Dei Conti|"
+            r"Comunicazione estrazione nominativi revisore conti)", title, re.I):
+        return "administrative_update"
     edition = re.fullmatch(r"Avviso\s+(20\d{2})", title, re.I)
     outcome = re.search(r"chiusura\s+(?:dell[’']?\s*)?avviso|"
                         r"elenco\s+degli\s+eventi\s+ammessi\s+(?:al\s+|a\s+)?contributo", context, re.I)
