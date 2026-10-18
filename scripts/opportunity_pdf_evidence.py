@@ -38,7 +38,8 @@ def verified_document_links(item):
     """The document links displayed in a public card, with no receipt metadata."""
     rows = [("Avviso PDF",item.get("document_evidence")),
             ("Elenco dei Comuni qualificati",item.get("qualification_evidence")),
-            ("Criteri di valutazione",item.get("criteria_evidence"))]
+            ("Criteri di valutazione",item.get("criteria_evidence")),
+            ("Proroga ministeriale",item.get("amendment_evidence"))]
     rows += [("FAQ ufficiali",x) for x in item.get("supplementary_documents") or []]
     links,seen=[],set()
     for label,evidence in rows:
