@@ -280,6 +280,17 @@ IL DIRETTORE GENERALE
                 "resolvedUrl": note_url, "document": True, "transport": "direct_https"}
         changed = promotion.verified_deadline_extension(note, original)
         self.assertEqual((changed["deadline_at"], changed["deadline_time"]), ("2026-10-16", "12:00"))
+        # Reproduce pypdf text extraction with spaces within a time.
+        split_digits = text.replace("14:00 del 14 ottobre", "1 4 : 0 0 del 14 ottobre")
+        split_note = {**note, "text": split_digits,
+                      "sha256": hashlib.sha256(split_digits.encode()).hexdigest()}
+        split_result = promotion.verified_deadline_extension(split_note, original)
+        self.assertEqual((split_result["deadline_at"], split_result["deadline_time"]),
+                         ("2026-10-16", "12:00"))
+        # A changed original date/time must still be rejected.
+        wrong_clock = text.replace("14:00 del 14 ottobre", "13:00 del 14 ottobre")
+        self.assertIsNone(promotion.verified_deadline_extension(
+            {**note, "text": wrong_clock}, original))
         self.assertEqual(changed["coverage_id"], original["coverage_id"])
         self.assertIsNone(promotion.verified_deadline_extension({**note, "transport": "reader_proxy"}, original))
         self.assertIsNone(promotion.verified_deadline_extension({**note, "text": text.replace("79378", "78918")}, original))
