@@ -111,10 +111,11 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None):
     (output_dir/'release.json').write_bytes(body)
     measurement = dict(stats, schemaVersion=1, catalogSha256=workbench.engine.catalog_hash,
                        releaseSha256=digest(body), releaseBytes=len(body),
-                       metrics=len(root['metrics']), seconds=time.perf_counter()-started,
+                       metrics=len(root['metrics']),
                        scope=root['scope'], limitation='transport/access measurement; not independent numerical certification')
     (output_dir/'measurement.json').write_text(encode(measurement)+'\n', encoding='utf-8')
-    return root, measurement
+    # Timing is diagnostics returned to the caller/CLI, never a release artifact.
+    return root, dict(measurement, seconds=time.perf_counter()-started)
 
 
 def main():

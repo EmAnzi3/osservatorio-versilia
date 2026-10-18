@@ -37,9 +37,12 @@ def verify(catalog, output=None):
         copied_catalog.write_bytes(Path(catalog).read_bytes())
         again, _ = build(copied_catalog, root/'two', metrics=sorted(chosen), max_views=2)
         assert release == again
-        first = {p.name: digest(p.read_bytes()) for p in (root/'one').glob('*.gz')}
-        second = {p.name: digest(p.read_bytes()) for p in (root/'two').glob('*.gz')}
-        assert first == second, 'nonreproducible compressed artifacts'
+        first = {p.relative_to(root/'one').as_posix(): digest(p.read_bytes())
+                 for p in (root/'one').rglob('*') if p.is_file()}
+        second = {p.relative_to(root/'two').as_posix(): digest(p.read_bytes())
+                  for p in (root/'two').rglob('*') if p.is_file()}
+        assert first == second, 'nonreproducible release artifacts'
+        assert 'seconds' not in json.loads((root/'one'/'measurement.json').read_text())
         checks = 0
         samples = []
         partial = None

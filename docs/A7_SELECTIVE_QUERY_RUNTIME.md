@@ -76,13 +76,17 @@ python scripts/test_a7_query_runtime.py --catalog dist/data/site-data.json \
 L'output deve essere nuovo/vuoto, per evitare mescolanza di release. Senza filtri
 il builder percorre tutte le viste dichiarate. `--metric` e
 `--max-views-per-metric` permettono misure circoscritte, marcate `explicit_subset`.
-Il report riporta richieste, stati, byte, massimi, tempi e hash della release;
-non certifica autonomamente la correttezza numerica della fonte.
+`measurement.json` contiene richieste, stati, byte, massimi e hash della release:
+è deterministico come tutti gli altri file generati. Il tempo di esecuzione
+è restituito soltanto come diagnostica al chiamante e nello stdout della CLI,
+fuori dagli artefatti della release. Non certifica autonomamente la correttezza
+numerica della fonte.
 
 Il gate generale sceglie un carrier per ciascuna firma delle operazioni dichiarate,
 aggiunge popolazione, classificazioni e Atlante come confini avversari e verifica
 le prime due viste per carrier. È un test rappresentativo del trasporto, non
-esaustivo dei dati: due build identiche, parità Python di tutte le risposte di
+esaustivo dei dati: confronto dell'insieme e dei byte di tutti i file delle due
+build (compreso `measurement.json`), parità Python di tutte le risposte di
 quel campione, caricamento browser per carrier/profilo a 1440 e 390 px,
 assenza di caricamento anticipato, cache/isolamento, rifiuti, consenso, input
 alterati, rilascio/blocco corrotti, URL esterni e richieste non materializzate.
