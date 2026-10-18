@@ -61,6 +61,7 @@ jobs:
             scripts/test_opportunity_issue_notification.py \
             scripts/test_opportunity_content_sanitization.py \
             scripts/test_opportunity_run_report.py \
+            scripts/test_opportunity_document_promotion.py \
             scripts/test_opportunity_runtime_snapshot.py \
             scripts/test_opportunity_automation_workflow.py \
             scripts/test_opportunity_shadow_compare.py \
@@ -83,6 +84,7 @@ jobs:
           python scripts/test_opportunity_issue_notification.py
           python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
+          python scripts/test_opportunity_document_promotion.py
           python scripts/test_opportunity_runtime_snapshot.py
           python scripts/test_opportunity_automation_workflow.py
           python scripts/test_opportunity_shadow_compare.py

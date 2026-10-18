@@ -255,7 +255,7 @@ def benchmark_scopes(key, dimension):
 
 def operations(key, dimension, unit):
     existing = _existing_operations(key, dimension, unit)
-    return [*existing, 'observe'] if 'compare' in existing else existing
+    return [*existing, 'observe'] if 'compare' in existing and key not in classification.KEYS else existing
 
 
 def mean(values):
@@ -623,6 +623,8 @@ class QueryEngine:
             if key not in self._catalog['metrics']:
                 raise ValueError('unknown_metric')
             dimension = selector.get('dimension', 'total')
+            if key in classification.KEYS:
+                classification.selection_guard(key, dimension, operation)
             if key in water_quality.KEYS:
                 raise ValueError('observe_numeric_adapter_required_use_declared_lookup')
             # Reuse all native selection/provenance/period guards; compare's

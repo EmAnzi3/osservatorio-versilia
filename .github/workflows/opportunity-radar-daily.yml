@@ -79,6 +79,7 @@ jobs:
           python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
+          python scripts/test_opportunity_document_promotion.py
           python scripts/test_opportunity_runtime_snapshot.py
           python scripts/test_opportunity_automation_workflow.py
           python scripts/test_opportunity_radar_v044.py

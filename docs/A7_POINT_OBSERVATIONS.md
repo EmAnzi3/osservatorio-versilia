@@ -12,10 +12,15 @@ data odierna né massimo anno di ogni campo acquisito.
 {"operation":"observe","selectors":[{"metric":"population","dimension":"total","towns":["046030"]}]}
 ```
 
-Richiesta ammessa soltanto per viste che già dichiarano `compare`; tutte le
+Richiesta ammessa soltanto per viste numeriche che già dichiarano `compare`; tutte le
 guardie di selezione, snapshot, classificazione, periodo, universo e fonte sono
 riusate. La verifica di eleggibilità ha minimo uno e richiede esattamente una
-osservazione. L'output usa `interpretationLevel=observation`, senza confronto,
+osservazione. Le quattro viste della classificazione territoriale sono escluse:
+DEGURBA e appartenenza litoranea/costiera restano categorie con etichetta, non
+quantità numeriche. Conservano esclusivamente il confronto categoriale originario,
+con `interpretationLevel=category_lookup`; né la scoperta né la selezione puntuale
+aggirano questa guardia. Anche l'eleggibilità diretta rifiuta codici categoriali.
+L'output numerico usa `interpretationLevel=observation`, senza confronto,
 graduatoria o conclusione amministrativa. Nessun Comune di appoggio nascosto.
 
 Null, dato non applicabile e dato non disponibile restano osservazioni escluse;
@@ -56,12 +61,15 @@ python scripts/audit_a7_question_feasibility.py --catalog dist/data/site-data.js
 
 I tre controlli fanno parte del preflight sul catalogo effettivo. La suite A6
 conserva tutte le 3.727 aspettative indipendenti (2.033 calcoli / 1.694 rifiuti).
-Le 3.393 osservazioni delle risposte `compare` revisionate vengono rilette
+Le 3.337 osservazioni numeriche delle risposte `compare` revisionate vengono rilette
 singolarmente: valori, componenti, periodi e provenance devono essere identici.
 Un'ulteriore ancora usa direttamente i record POSAS congelati. Parità e ancore
-non sono due conteggi di nuove prove numeriche indipendenti.
+non sono due conteggi di nuove prove numeriche indipendenti. Le 56 osservazioni
+categoriali ripetute nelle ancore `compare` restano nella suite A6; tutte le quattro
+viste categoriali sono inoltre verificate sui sette Comuni, con etichette conservate
+e rifiuto di `observe` anche attraverso disponibilità ed eleggibilità diretta.
 
-Le sonde generate coprono tutte le 3.342 viste numeriche con un Comune esplicito
+Le sonde generate coprono tutte le 3.338 viste numeriche con un Comune esplicito
 e tutti i sette Comuni per la prima vista numerica di ogni carrier. Le 17 viste
 GAIA sono preservate dalla suite originale. Questa prova di accesso non verifica
 ogni combinazione vista×Comune×periodo e non certifica ogni valore sorgente.
@@ -83,20 +91,24 @@ Prima modalità: esplorazione guidata di tema, misura, vista, Comune, periodo e
 operazione, con spiegazioni/fonti. Testo libero successivo, eventualmente tradotto
 in piano validato; nessun modello genera numeri. I dossier usano gli stessi piani.
 
-Misura iniziale sul catalogo effettivo di questo candidato: 4.886.781 byte JSON,
-423.191 byte gzip; scoperta sintetica 41.596 byte. Nel Python locale con
+Misura iniziale sul catalogo effettivo, invariato rispetto al prototipo precedente
+dell'incremento: 4.886.781 byte JSON,
+423.191 byte gzip; scoperta sintetica 41.596 byte. Le seguenti misure Python
+precedono la correzione categoriale, non sono benchmark del nuovo candidato. Nel Python locale con
 `tracemalloc` attivo: circa 1,05 s per inizializzare il motore, 4,8 ms mediana di
 dieci letture puntuali, 2,19 s per la scoperta sintetica e circa 25 MB di picco
 tracciato. Sono misure esplorative di un ambiente, senza soglie prestazionali e
 senza valore predittivo per smartphone o JavaScript. Il catalogo non comprende
 da solo tutti i payload climatici e gli snapshot necessari al motore.
 
-Esperimento di dimensionamento su checkout isolato pulito: 3.359 viste × sette
-Comuni = 23.513 richieste correnti, 14.869 calcolabili e 8.644 rifiutate per valore
-mancante/non applicabile, senza altri motivi di rifiuto. Circa 496 MB di risposte
-complete non compresse; 21.538.761 byte gzip sommati per vista, mediana 6.695 byte
-e massimo 28.436 byte per vista. Include i lookup GAIA, non storici o combinazioni
-arbitrarie. È una misura di accesso/dimensione, non 23.513 nuovi risultati numerici
+Esperimento di dimensionamento ripetuto sul candidato con guardia categoriale:
+3.355 viste puntuali/lookup × sette Comuni = 23.485 richieste correnti, 14.841
+calcolabili e 8.644 rifiutate per valore mancante/non applicabile, senza altri
+motivi di rifiuto. Le quattro viste categoriali, comprese nelle 3.359 dichiarate,
+sono escluse da questo insieme puntuale. Circa 496 MB di risposte complete non
+compresse; 21.520.930 byte gzip sommati per vista, mediana 6.696 byte e massimo
+28.438 byte per vista. Include i lookup GAIA, non storici o combinazioni
+arbitrarie. È una misura di accesso/dimensione, non 23.485 nuovi risultati numerici
 indipendentemente certificati.
 
 Un prototipo locale Chromium 149 ha verificato fetch, SHA256 e parsing JSON del

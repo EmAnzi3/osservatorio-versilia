@@ -24,6 +24,8 @@ def verify(catalog):
             continue
         response = e.query(q)
         assert not check_expected(response, expected), case['id']
+        if response['interpretationLevel'] == 'category_lookup':
+            continue  # Preserved and exercised below; not numeric point anchors.
         for obs in response['result']['observations']:
             if 'locality' in obs:
                 continue
@@ -87,6 +89,21 @@ def verify(catalog):
     for missing in (dict(obs, value=None), dict(obs, dataUnavailable=True), dict(obs, notApplicable=True)):
         assert not assess('observe', [missing], policy={'allowPartial':True})['eligible']
     assert not assess('observe', [obs,obs])['eligible']
+    # Encoded classes/memberships remain category lookups, not numeric readings.
+    categorical = w.discover('territorialClassification')['metrics'][0]['declaration']
+    for dimension in categorical['dimensions']:
+        assert 'observe' not in categorical['operationsByDimension'][dimension]
+        selector = dict(metric='territorialClassification', dimension=dimension, towns=['046018'])
+        refused = e.query(dict(operation='observe', selectors=[selector]))
+        assert refused['status'] != 'computed'
+        assert 'classification_category_arithmetic_or_association_not_supported' in refused['reasons']
+        assert not refused['observations']
+        compared = e.query(dict(operation='compare', selectors=[dict(selector, towns=towns)]))
+        assert compared['status'] == 'computed' and compared['interpretationLevel'] == 'category_lookup'
+        assert all(o['categoryLabel'] for o in compared['result']['observations'])
+        assert not assess('observe', [compared['result']['observations'][0]])['eligible']
+        availability = w.availability('territorialClassification', dimension, '046018')
+        assert availability['current'] == refused
     bad = dict(obs); del bad['source']
     assert not assess('observe', [bad])['eligible']
     availability = w.availability('population', 'total', '046018')

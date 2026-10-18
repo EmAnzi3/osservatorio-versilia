@@ -259,6 +259,94 @@ class PromotionTests(unittest.TestCase):
         self.assertEqual(result["documentPromotion"]["checks"][0]["status"], "administrative_update")
         self.assertEqual(result["documentPromotion"]["checks"][0]["documents"][0]["url"], URL)
 
+    def test_signed_proroga_matches_original_call_and_does_not_create_new_one(self):
+        original_url = "https://www.anciabruzzo.it/wp-content/uploads/2026/10/Avviso-Pubblico-n.-79378-del-6-ottobre-2026.pdf"
+        note_url = "https://anci.lombardia.it/documenti/24173-MIM%20-%20Nota%20n.%2081468%20del%2012%20ottobre%202026%20-%20Proroga.pdf"
+        original_receipt = receipt("vulnerabilita-sismica.txt", original_url)
+        original = promotion.parse_notice(original_receipt, original_url, date(2026, 10, 13))
+        self.assertEqual(promotion.notice_reference(original_url), (79378, "2026-10-06"))
+        text = """
+Ministero dell’istruzione e del merito
+Direzione generale per l’edilizia scolastica
+AVVISO PUBBLICO PER LA VERIFICA DI VULNERABILITÀ SISMICA
+Oggetto: Proroga del termine di presentazione delle candidature.
+Con riferimento all’Avviso pubblico prot. n. 79378 del 6 ottobre 2026,
+il termine di presentazione delle stesse, originariamente fissato alle ore 14:00 del 14 ottobre 2026
+dall’articolo 3, comma 6, è prorogato alle ore 12:00 del 16 ottobre 2026.
+Restano ferme tutte le ulteriori disposizioni, modalità e condizioni previste dall’Avviso.
+IL DIRETTORE GENERALE
+"""
+        note = {"text": text, "sha256": hashlib.sha256(text.encode()).hexdigest(),
+                "resolvedUrl": note_url, "document": True, "transport": "direct_https"}
+        changed = promotion.verified_deadline_extension(note, original)
+        self.assertEqual((changed["deadline_at"], changed["deadline_time"]), ("2026-10-16", "12:00"))
+        # Reproduce pypdf text extraction with spaces within a time.
+        split_digits = text.replace("14:00 del 14 ottobre", "1 4 : 0 0 del 14 ottobre")
+        split_note = {**note, "text": split_digits,
+                      "sha256": hashlib.sha256(split_digits.encode()).hexdigest()}
+        split_result = promotion.verified_deadline_extension(split_note, original)
+        self.assertEqual((split_result["deadline_at"], split_result["deadline_time"]),
+                         ("2026-10-16", "12:00"))
+        # Exact split observed in the full 18 October production dry-run PDF:
+        # "originariamente fis sato alle ore 14:00 del 14 ottobre 2026".
+        real_extract_text = text.replace("originariamente fissato", "originariamente fis sato")
+        real_extract_note = {**note, "text": real_extract_text,
+                             "sha256": hashlib.sha256(real_extract_text.encode()).hexdigest()}
+        real_extract_update = promotion.verified_deadline_extension(real_extract_note, original)
+        self.assertIsNotNone(real_extract_update)
+        self.assertEqual((real_extract_update["deadline_at"],
+                          real_extract_update["deadline_time"]), ("2026-10-16", "12:00"))
+        # A changed original date/time must still be rejected.
+        wrong_clock = text.replace("14:00 del 14 ottobre", "13:00 del 14 ottobre")
+        self.assertIsNone(promotion.verified_deadline_extension(
+            {**note, "text": wrong_clock}, original))
+        self.assertEqual(changed["coverage_id"], original["coverage_id"])
+        self.assertIsNone(promotion.verified_deadline_extension({**note, "transport": "reader_proxy"}, original))
+        self.assertIsNone(promotion.verified_deadline_extension({**note, "text": text.replace("79378", "78918")}, original))
+        self.assertIsNone(promotion.verified_deadline_extension({**note, "text": text.replace("IL DIRETTORE GENERALE", "")}, original))
+        self.assertIsNone(promotion.verified_deadline_extension({**note, "text": text.replace("14:00", "13:00")}, original))
+
+        page = "https://anci.lombardia.it/dettaglio-circolari/202610131510-edilizia-scolastica-proroga/"
+        previous = {"opportunities": [original], "discoveryQueue": []}
+        def loader(url, document):
+            if not document:
+                return {"text": f'<main><a href="{note_url}">Nota MIM proroga</a></main>'}
+            return note if url == note_url else original_receipt
+        candidate = {"opportunities": [], "discoveryQueue": [
+            {"url": page, "title": "Edilizia scolastica – Vulnerabilità sismica - Proroga"}]}
+        promotion.apply_promotions(candidate, date(2026, 10, 13), previous=previous, loader=loader)
+        self.assertEqual(len(candidate["opportunities"]), 1)
+        self.assertEqual(candidate["opportunities"][0]["coverage_id"], original["coverage_id"])
+        self.assertEqual(candidate["opportunities"][0]["deadline_at"], "2026-10-16")
+        self.assertEqual(candidate["documentPromotion"]["checks"][-1]["status"], "published_candidate")
+        self.assertEqual(candidate["discoveryQueue"], [])
+        from opportunity_pdf_evidence import verified_document_links
+        urls = [url for _, url in verified_document_links(candidate["opportunities"][0])]
+        self.assertIn(note_url, urls)
+        expired = {"opportunities": [], "discoveryQueue": [
+            {"url": page, "title": "Edilizia scolastica – Vulnerabilità sismica - Proroga"}]}
+        promotion.apply_promotions(expired, date(2026, 10, 18), previous=previous, loader=loader)
+        self.assertFalse(expired["opportunities"])
+        self.assertEqual(expired["documentPromotion"]["checks"][-1]["status"], "expired")
+        self.assertEqual(expired["discoveryQueue"], [])
+        # Production regression: the notice was already archived on 15 October
+        # with an id but no coverage_id, so a later signed extension must
+        # update the archival deadline, not produce an unsupported-layout alert.
+        archive = [{"id": original["coverage_id"], "source_id": "mim-enti-locali",
+                    "url": original_url, "title": original["title"],
+                    "deadline_at": "2026-10-14", "deadline_time": "14:00",
+                    "archive_reason": "deadline_passed"}]
+        archived_result = {"opportunities": [], "archive": [dict(archive[0])],
+                           "discoveryQueue": [{"url": page, "title": "Edilizia scolastica – Vulnerabilità sismica - Proroga"}]}
+        promotion.apply_promotions(archived_result, date(2026, 10, 18),
+                                  previous={"opportunities": [], "archive": archive}, loader=loader)
+        self.assertEqual(archived_result["archive"][0]["id"], original["coverage_id"])
+        self.assertEqual((archived_result["archive"][0]["deadline_at"],
+                          archived_result["archive"][0]["deadline_time"]), ("2026-10-16", "12:00"))
+        self.assertEqual(archived_result["documentPromotion"]["checks"][0]["status"], "expired")
+        self.assertFalse(archived_result["discoveryQueue"])
+        self.assertFalse(archived_result["opportunities"])
+
     def test_real_notices(self):
         for name, deadline, clock in [("otto-per-mille.txt", "2026-10-23", "23:59"),
                                        ("vulnerabilita-sismica.txt", "2026-10-14", "14:00")]:

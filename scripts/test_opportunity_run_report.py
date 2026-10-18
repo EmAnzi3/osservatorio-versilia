@@ -134,6 +134,18 @@ def main() -> int:
         "unchanged": 1,
     }, report["counts"]
     assert [row["field"] for row in report["modified"][0]["changes"]] == ["deadline_at", "url"]
+    assert report["modified"][0]["changeCategory"] == "deadline_moved_later"
+    assert "atto di proroga da verificare" in report["modified"][0]["changeLabel"]
+    data_loss_old = _item("Parcheggi", "parking")
+    data_loss_old.update(themes=["opere-pubbliche", "sociale"], beneficiary_text="Comuni toscani")
+    data_loss_new = {**data_loss_old, "themes": []}
+    data_loss = build_report(_snapshot([data_loss_old]), _snapshot([data_loss_new]), phase_statuses=phases)
+    assert data_loss["modified"][0]["changeCategory"] == "metadata_loss"
+    assert "Possibile perdita" in render_markdown(data_loss)
+    assert "Possibile perdita" in render_html(data_loss)
+    cleaned_new = {**data_loss_old, "summary": "Testo più aggiornato"}
+    cleaned = build_report(_snapshot([data_loss_old]), _snapshot([cleaned_new]), phase_statuses=phases)
+    assert cleaned["modified"][0]["changeCategory"] == "metadata_update"
     assert report["added"][0]["title"] == "Bando nuovo"
     assert report["archived"][0]["title"] == "Bando scaduto"
     assert report["removed"][0]["title"] == "Bando scomparso"
@@ -479,6 +491,47 @@ def _test_discovery_noise():
         {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Programma pluriennale, verificare il nuovo avviso"},
         {"title": "Avviso per contributi comunali alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/comuni/"},
     ]
+    # Regression from the 18 October run: news about already-built schools
+    # and applications addressed only to families/training providers must not
+    # exhaust the ministry document queue.
+    known_noise = [
+        {"title": "#NoiSiamoLeScuole, nuovi istituti a Catania e a Bergamo grazie al PNRR",
+         "url": "https://www.mim.gov.it/web/guest/-/noisiamolescuole-catania"},
+        {"title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie",
+         "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie"},
+        {"title": "Riconoscimento dei percorsi formativi degli organismi formativi per Esperta ed Esperto di valutazione",
+         "url": "https://www.regione.toscana.it/it/-/riconoscimento-dei-percorsi-formativi"},
+        {"title": "DATA ESTRAZIONE NOMINATIVI DEI REVISORI CONTABILI",
+         "url": "https://prefettura.interno.gov.it/it/prefetture/padova/comunicazioni/data-estrazione"},
+    ]
+    pref = "https://prefettura.interno.gov.it/it/prefetture/pisa/notizie/"
+    for headline in (
+        "Il Prefetto incontra Sindaci e Rappresentanti Istituzioni Valle Anzasca",
+        "Il Prefetto Michele Campanaro saluta il Questore Raffaele Gargiulo",
+        "COV su cantieri stradali e viabilità alternativa",
+        "Cposp Agitazioni studentesche e controllo della movida",
+        "Operazioni brillamento ordigni residuati bellici rinvenuti nello Stretto",
+        "Sorteggio Revisore Dei Conti Comune di Cavallino Treporti",
+        "Finanza locale - Data estrazione organo di revisione contabile",
+        "Manifestazione di interesse per il servizio di interpretariato",
+    ):
+        assert classify_signal({"title": headline, "url": pref + "news"}, reference), headline
+    assert classify_signal({"title": "Bando 2027-2028 per l'assegnazione di contributi regionali ai Comuni lombardi",
+                            "url": "https://anci.lombardia.it/dettaglio-circolari/2026-bando"}, reference)
+    assert not classify_signal({"title": "Nuovo avviso per i Comuni: presentare le domande",
+                                "url": pref + "avviso"}, reference)
+    assert not classify_signal({"title": "Bando nazionale del MIM, prorogate le candidature",
+                                "url": "https://www.mim.gov.it/web/guest/-/bando"}, reference)
+    assert all(classify_signal(x, reference) for x in known_noise)
+    assert not classify_signal({
+        "title": "#NoiSiamoLeScuole, riapertura delle candidature per nuovi progetti",
+        "url": known_noise[0]["url"], "deadline_at": "2026-11-01"}, reference)
+    assert not classify_signal({
+        "title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie",
+        "url": known_noise[1]["url"], "summary": "Riapertura delle domande per gli enti", }, reference)
+    assert not classify_signal({
+        "title": "Avviso di finanziamento enti locali per nuovi asili nido",
+        "url": "https://www.mim.gov.it/web/guest/-/nuovo-avviso-nidi"}, reference)
     assert all(classify_signal(x, reference) for x in discarded)
     assert all(classify_signal(x, reference) is None for x in kept)
     public = [{"title": "Scheda già pubblicata", "url": "https://example.test/current"}]

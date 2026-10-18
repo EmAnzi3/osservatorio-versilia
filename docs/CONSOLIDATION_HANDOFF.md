@@ -2,7 +2,7 @@
 
 ## Baseline integrata
 
-- Main `ba99b98bcb18c3f99d1cd35e2d0126228c08a915` dopo #447 social: #442, #444 e #445 integrate dal proprietario. #445 mergiata il 18 ottobre alle 09:20 UTC; gate locali Quick→Full e CI/A3/Radar PASS sulla sua head; deploy `39114927336` e live `39116176854` SUCCESS sul merge. Un deploy non attesta un nuovo refresh produttivo del Radar. #443 lavoro/redditi resta una PR separata aperta, head `89127ca`, con gate locali e CI PASS e revisione editoriale del proprietario ancora richiesta.
+- Main `8e186186419f5434839e3397d0811817743cfc50` dopo #450 Radar; #447 social, #442, #444 e #445 integrate dal proprietario. Gli otto file della #450 sono preservati senza modifiche A7. #445 mergiata il 18 ottobre alle 09:20 UTC; gate locali Quick→Full e CI/A3/Radar PASS sulla sua head; deploy `39114927336` e live `39116176854` SUCCESS sul merge. Un deploy non attesta un nuovo refresh produttivo del Radar. #443 lavoro/redditi resta una PR separata aperta, head `89127ca`, con gate locali e CI PASS e revisione editoriale del proprietario ancora richiesta.
 - A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
 - Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
 - Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
@@ -29,6 +29,14 @@ ogni campo acquisito. Metodo `docs/A7_POINT_OBSERVATIONS.md`, matrice derivata
 Prima modalità pubblica prevista guidata, nessun modello/servizio scelto. Runtime
 Pages da misurare nel browser prima della decisione; dossier conservati.
 
+Review P2 della head precedente riprodotta e corretta: le quattro viste della
+classificazione territoriale non sono numeriche, quindi non dichiarano né
+ammettono `observe`. Confronto categoriale ed etichette originari conservati;
+regressione su tutte le viste e sette Comuni, disponibilità ed eleggibilità
+diretta. I 3.727 casi A6 restano integri; 3.337 parità numeriche puntuali e
+3.338 viste numeriche distinte. Verdi CI della head precedente e Full locali
+interrotti non attestano questo nuovo candidato: ripetere i gate senza scorciatoie.
+
 ## Gate e prossima azione
 
 Rieseguire Quick e Full locali ordinari in sequenza sul medesimo albero candidato,
@@ -37,3 +45,9 @@ poi CI Quick→Full effettivo e A3 sulla nuova head. I verdi della precedente he
 nessun merge o deploy dell'assistente. #443 resta separata, da riallineare dopo
 l'integrazione approvata della #448, con revisione editoriale del proprietario.
 Nessuno step A7 dichiarato DONE. Nuove acquisizioni, Radar e social fuori perimetro.
+
+Quick locale PASS il 18 ottobre sull'albero pre-#450 `6c8ec7f`, inclusa la
+sitemap; Full interrotto per riallineare la baseline dopo il merge parallelo.
+Non attestano l'albero aggiornato: nuova sequenza locale e CI sulla nuova head.
+Il precedente Quick con voce Opportunità mancante e i tentativi interrotti
+restano documentati senza convertirli in PASS.
