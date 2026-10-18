@@ -479,6 +479,29 @@ def _test_discovery_noise():
         {"title": "Finanziamento centri estivi 2022", "url": discarded[-1]["url"], "summary": "Programma pluriennale, verificare il nuovo avviso"},
         {"title": "Avviso per contributi comunali alla maternità delle atlete", "url": "https://www.sport.governo.it/it/bandi-e-avvisi/comuni/"},
     ]
+    # Regression from the 18 October run: news about already-built schools
+    # and applications addressed only to families/training providers must not
+    # exhaust the ministry document queue.
+    known_noise = [
+        {"title": "#NoiSiamoLeScuole, nuovi istituti a Catania e a Bergamo grazie al PNRR",
+         "url": "https://www.mim.gov.it/web/guest/-/noisiamolescuole-catania"},
+        {"title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie",
+         "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-alle-famiglie"},
+        {"title": "Riconoscimento dei percorsi formativi degli organismi formativi per Esperta ed Esperto di valutazione",
+         "url": "https://www.regione.toscana.it/it/-/riconoscimento-dei-percorsi-formativi"},
+        {"title": "DATA ESTRAZIONE NOMINATIVI DEI REVISORI CONTABILI",
+         "url": "https://prefettura.interno.gov.it/it/prefetture/padova/comunicazioni/data-estrazione"},
+    ]
+    assert all(classify_signal(x, reference) for x in known_noise)
+    assert not classify_signal({
+        "title": "#NoiSiamoLeScuole, riapertura delle candidature per nuovi progetti",
+        "url": known_noise[0]["url"], "deadline_at": "2026-11-01"}, reference)
+    assert not classify_signal({
+        "title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie",
+        "url": known_noise[1]["url"], "summary": "Riapertura delle domande per gli enti", }, reference)
+    assert not classify_signal({
+        "title": "Avviso di finanziamento enti locali per nuovi asili nido",
+        "url": "https://www.mim.gov.it/web/guest/-/nuovo-avviso-nidi"}, reference)
     assert all(classify_signal(x, reference) for x in discarded)
     assert all(classify_signal(x, reference) is None for x in kept)
     public = [{"title": "Scheda già pubblicata", "url": "https://example.test/current"}]
