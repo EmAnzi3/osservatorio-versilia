@@ -134,6 +134,18 @@ def main() -> int:
         "unchanged": 1,
     }, report["counts"]
     assert [row["field"] for row in report["modified"][0]["changes"]] == ["deadline_at", "url"]
+    assert report["modified"][0]["changeCategory"] == "deadline_moved_later"
+    assert "atto di proroga da verificare" in report["modified"][0]["changeLabel"]
+    data_loss_old = _item("Parcheggi", "parking")
+    data_loss_old.update(themes=["opere-pubbliche", "sociale"], beneficiary_text="Comuni toscani")
+    data_loss_new = {**data_loss_old, "themes": []}
+    data_loss = build_report(_snapshot([data_loss_old]), _snapshot([data_loss_new]), phase_statuses=phases)
+    assert data_loss["modified"][0]["changeCategory"] == "metadata_loss"
+    assert "Possibile perdita" in render_markdown(data_loss)
+    assert "Possibile perdita" in render_html(data_loss)
+    cleaned_new = {**data_loss_old, "summary": "Testo più aggiornato"}
+    cleaned = build_report(_snapshot([data_loss_old]), _snapshot([cleaned_new]), phase_statuses=phases)
+    assert cleaned["modified"][0]["changeCategory"] == "metadata_update"
     assert report["added"][0]["title"] == "Bando nuovo"
     assert report["archived"][0]["title"] == "Bando scaduto"
     assert report["removed"][0]["title"] == "Bando scomparso"
