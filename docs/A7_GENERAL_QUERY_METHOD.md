@@ -161,11 +161,21 @@ copertura, mutazioni, riproducibilità, isolamento dei risultati e piani misti.
 Sono verifiche delle capacità strutturate, non un audit di ogni combinazione
 possibile, della comprensione linguistica o della qualità delle proposte.
 
-Prima lacuna verificata: `compare` di `population` con un solo Comune è rifiutato
-con `insufficient_observations`. Una dichiarazione `compare` non promette quindi
-una query puntuale. Una futura lettura puntuale deve riferire un'osservazione di
-una risposta A6 calcolabile, dichiarandone la selezione, oppure richiede una
-capacità esplicita nuova. Non viene rimossa la guardia A6 per rendere verde A7.
+La lettura puntuale è ora esplicita: `observe` seleziona una vista, un Comune
+obbligatorio e un solo periodo, usando gli adapter e le guardie native. Non usa
+un confronto con un secondo Comune nascosto. `compare` con una sola osservazione
+resta rifiutato; `lookup` GAIA resta distinto e conserva i valori censurati.
+Disponibilità attuale e storico dichiarato sono interrogabili con `--availability`:
+la risposta conserva esiti, fonti e rifiuti; il riferimento predefinito non è
+certificato come il più recente presente in ogni snapshot. Metodo, limiti e prove
+in `docs/A7_POINT_OBSERVATIONS.md`; matrice eseguita dei trenta esempi in
+`docs/A7_QUESTION_FEASIBILITY.md`. Non è un interprete delle domande libere.
+
+La prima modalità pubblica prevista è la selezione guidata; l'eventuale testo
+libero sarà un ingresso alternativo nello stesso piano validato. Nessun modello
+esterno o backend è scelto implicitamente. La strategia di esecuzione del calcolo
+su Pages richiede ancora un prototipo misurato nel browser, distinto dal layer
+linguistico. Le misure Python iniziali non ne attestano prestazioni o parità.
 
 Prima di estendere l'interfaccia:
 

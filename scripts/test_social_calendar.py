@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import copy
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,6 +58,57 @@ def main() -> int:
     cadence = load(KIT / "config" / "editorial-cadence.json")
     rotation = load(KIT / "config" / "editorial-rotation.json")
     site = load(ROOT / "data" / "site-data.json")
+    history = PLANNER.publication_history()
+    october = run_plan("2026-10-19")
+    assert ordinary_items(october)[0]["metric"] != "recycling"
+    assert "recycling" in ordinary_items(october)[0]["excluded_published_metrics"]
+    # Un cambio d'anno riabilita l'indicatore; una rigenerazione non registra uscite.
+    assert "recycling" not in PLANNER.used_metrics(date(2027, 1, 1), history)
+    assert PLANNER.publication_history() == history
+    stale = copy.deepcopy(october)
+    stale["scheduled"][0]["metric"] = "recycling"
+    try:
+        PLANNER.check_plan_history(stale)
+    except ValueError:
+        pass
+    else:
+        fail("Un vecchio piano deve essere respinto se propone un indicatore già pubblicato")
+    exhausted = copy.deepcopy(history)
+    exhausted["publications"].append({"id": "test-exhausted", "year": 2026,
+        "published_on": "2026-10-18", "confirmed_on": "2026-10-18",
+        "metrics": site["themes"]["ambiente"]["featured"], "evidence": "test"})
+    try:
+        PLANNER.ordinary_for_slot(date(2026, 10, 19), 0, rotation, site, exhausted)
+    except ValueError:
+        pass
+    else:
+        fail("Esauriti gli inediti serve revisione, non un doppione")
+    bad_history = copy.deepcopy(history)
+    bad_history["publications"][0]["evidence"] = ""
+    try:
+        PLANNER.publication_history(bad_history)
+    except ValueError:
+        pass
+    else:
+        fail("Una pubblicazione senza prova non può entrare nel registro")
+    # Una ricorrenza non riabilita un argomento già usato; gli altri candidati restano.
+    observance_history = copy.deepcopy(history)
+    observance_history["publications"].append({"id": "test-tourism-used", "year": 2026,
+        "published_on": "2026-09-01", "confirmed_on": "2026-09-01",
+        "metrics": ["tourismArrivals"], "evidence": "test"})
+    with patch.object(PLANNER, "publication_history", return_value=observance_history):
+        event = observance_items(run_plan("2026-09-21"))[0]
+        for field in ("preferred_indicators", "matching_metrics", "generator_ready_metrics"):
+            assert "tourismArrivals" not in event[field]
+        assert "tourismPresences" in event["matching_metrics"]
+    import generate_social_kit as renderer
+    try:
+        renderer.generate_post({"date": "2026-10-20", "metric": "organicAgriculturalAreaShare",
+            "context_metric": "recycling"}, {}, {}, Path("unused-output"))
+    except ValueError as exc:
+        assert "card secondarie" in str(exc)
+    else:
+        fail("Anche le card secondarie devono rispettare il registro annuale")
 
     if cadence["weekly_post_budget"] != 2:
         fail("Il budget editoriale deve essere di due post a settimana")

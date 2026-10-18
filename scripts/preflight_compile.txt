@@ -227,3 +227,5 @@ scripts/a7_education_editorial.py
 scripts/test_a7_education_editorial.py
 scripts/a7_query_workbench.py
 scripts/test_a7_query_workbench.py
+scripts/test_a7_point_observations.py
+scripts/audit_a7_question_feasibility.py

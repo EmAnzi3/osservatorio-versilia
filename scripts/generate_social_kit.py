@@ -775,6 +775,11 @@ def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[s
 
 
 def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str, Any], destination: Path) -> dict[str, Any]:
+    from plan_social_week import parse_date, publication_history, used_metrics
+    used = used_metrics(parse_date(post["date"]), publication_history())
+    duplicates = {post[key] for key in ("metric", "history_metric", "context_metric") if post.get(key)} & used
+    if duplicates:
+        raise ValueError(f"Indicatori già pubblicati nell'anno, anche nelle card secondarie: {sorted(duplicates)}")
     model = build_model(post)
     if model["dataset_status"] == "draft" and post.get("status") != "draft":
         raise ValueError(f"Dataset draft usato in un contenuto non draft: {post['id']}")

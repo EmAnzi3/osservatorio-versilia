@@ -64,6 +64,8 @@ def assess(operation, observations, *, policy=None):
     spec = contract['operations'][operation]
     if len(valid) < spec['minimumObservations']:
         reasons.append('insufficient_observations')
+    if operation == 'observe' and len(observations) != 1:
+        reasons.append('exactly_one_observation_required')
     for field in spec['equalFields']:
         if len({str(o.get(field)) for o in valid}) > 1:
             reasons.append(f'incompatible:{field}')

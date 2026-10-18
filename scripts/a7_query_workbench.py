@@ -91,6 +91,25 @@ class QueryWorkbench:
                     interpretationStatus='not_assessed',
                     steps=output)
 
+    def availability(self, metric, dimension, town):
+        """Probe native current and declared history, never infer years from labels.
+
+        Non-computable responses retain observations, missing flags and reasons.
+        A refused series is not proof that the source has no historical data.
+        """
+        detail = self.discover(metric)['metrics'][0]['declaration']
+        allowed = detail.get('operationsByDimension', {}).get(dimension, [])
+        selector = dict(metric=metric, dimension=dimension, towns=[town])
+        operation = 'lookup' if 'lookup' in allowed else 'observe'
+        current = self.engine.query(dict(operation=operation, selectors=[selector]))
+        historical = (self.engine.query(dict(operation='series', selectors=[selector]))
+                      if 'series' in allowed else None)
+        return dict(schemaVersion=1, catalogSha256=self.engine.catalog_hash,
+                    selection=selector, current=current, history=historical,
+                    historyStatus='query_executed' if historical is not None else 'not_declared',
+                    defaultPeriodIsLatestVerified=False,
+                    note='native default reference; historical refusal is not source unavailability')
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -98,13 +117,22 @@ def main():
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--discover', action='store_true')
     mode.add_argument('--plan', type=Path)
+    mode.add_argument('--availability', action='store_true')
     parser.add_argument('--metric')
+    parser.add_argument('--dimension')
+    parser.add_argument('--town')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    if args.metric and not args.discover:
-        parser.error('--metric requires --discover')
+    if args.availability and not all((args.metric, args.dimension, args.town)):
+        parser.error('--availability requires --metric, --dimension and --town')
+    if args.metric and not (args.discover or args.availability):
+        parser.error('--metric requires --discover or --availability')
+    if (args.dimension or args.town) and not args.availability:
+        parser.error('--dimension and --town require --availability')
     workbench = QueryWorkbench(args.catalog)
-    result = workbench.discover(args.metric) if args.discover else workbench.run(json.loads(args.plan.read_text()))
+    result = (workbench.availability(args.metric, args.dimension, args.town) if args.availability
+              else workbench.discover(args.metric) if args.discover
+              else workbench.run(json.loads(args.plan.read_text())))
     body = json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False) + '\n'
     if args.output:
         args.output.write_text(body, encoding='utf-8')

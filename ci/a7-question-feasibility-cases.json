@@ -1,0 +1,812 @@
+{
+  "schemaVersion": 1,
+  "scope": "acceptance examples, never runtime question routing or canonical indicator inventory",
+  "questions": [
+    {
+      "id": 1,
+      "question": "INVALSI di Massarosa rispetto a Versilia e Toscana",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "invalsiResults",
+              "dimension": "view:g5-italiano",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "benchmark_gap",
+          "selectors": [
+            {
+              "metric": "invalsiResults",
+              "dimension": "view:g5-italiano",
+              "towns": [
+                "046018"
+              ]
+            }
+          ],
+          "benchmark": "tuscany"
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "invalsiResults",
+              "dimension": "view:g5-matematica",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Aggregato Versilia INVALSI non autorizzato; nessuna media dei punteggi comunali."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Grado scolastico e anno; g5 è una prova tecnica esplicita, non un default linguistico."
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Quota con titolo terziario a Pietrasanta e confronto comunale",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046024"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "compare",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Titolo terziario non coincide necessariamente con soli laureati; popolazione di riferimento esplicita."
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Abitanti di Stazzema e anno del dato",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "population",
+              "dimension": "total",
+              "towns": [
+                "046030"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 4,
+      "question": "Spesa sociale pro capite del Comune",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "socialSpendingPerResident",
+              "dimension": "total",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "socialMissionExpenditurePerResident",
+              "dimension": "total",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune e definizione: indagine servizi sociali diversa dalla missione contabile."
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Reddito imponibile medio a Forte dei Marmi",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "income",
+              "dimension": "total",
+              "towns": [
+                "046013"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 6,
+      "question": "Temperatura di Seravezza negli ultimi trenta anni",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "climateTemperatureTrend50y",
+              "dimension": "trend:1975-2025",
+              "towns": [
+                "046028"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Il trend 1975–2025 non risponde automaticamente alla finestra trentennale; serve selezione e operazione sul periodo esatto."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 7,
+      "question": "Pioggia e caldo estremo a Viareggio rispetto agli anni Novanta",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "climatePrecipitationTrend50y",
+              "dimension": "trend:1975-2025",
+              "towns": [
+                "046033"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "climateTmaxTrend",
+              "dimension": "trend:1975-2025",
+              "towns": [
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Tmax non è un conteggio di giorni estremi; servono soglia e periodi omogenei, nessuna conversione dal trend."
+      ],
+      "gapKind": "data_access_or_data_gap",
+      "clarifications": [
+        "Definire caldo estremo e intervalli."
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Comune con riscaldamento storico più marcato",
+      "requests": [
+        {
+          "operation": "rank",
+          "selectors": [
+            {
+              "metric": "climateTemperatureTrend50y",
+              "dimension": "trend:1975-2025",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "La prova usa il trend nativo 1975–2025, non qualsiasi finestra."
+      ]
+    },
+    {
+      "id": 9,
+      "question": "Cambiamenti di addetti e settori a Camaiore",
+      "requests": [
+        {
+          "operation": "series",
+          "selectors": [
+            {
+              "metric": "localEmployees",
+              "dimension": "total",
+              "towns": [
+                "046005"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "businessValueAdded",
+              "dimension": "sector:industry",
+              "towns": [
+                "046005"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "businessValueAdded",
+              "dimension": "sector:services",
+              "towns": [
+                "046005"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Il dettaglio industria/servizi del Frame non è un pannello storico degli addetti per tutti i codici ATECO; nessun incrocio di universi."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 10,
+      "question": "Unità locali delle costruzioni a Massarosa",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "economyActivityAtlas",
+              "dimension": "ateco:F 41|active",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "economyActivityAtlas",
+              "dimension": "ateco:F 42|active",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "economyActivityAtlas",
+              "dimension": "ateco:F 43|active",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Tre divisioni dirette non autorizzano il totale di sezione F; manca la composizione additiva riconciliata."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 11,
+      "question": "Addetti nella nautica a Viareggio e confronto",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "localEmployees",
+              "dimension": "total",
+              "towns": [
+                "046033"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "economyActivityAtlas",
+              "dimension": "ateco:C 301|active",
+              "towns": [
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Unità locali C301 non sono addetti della nautica; i due risultati sono solo contesto. Dettaglio addetti settoriale e perimetro nautica da verificare negli acquisiti."
+      ],
+      "gapKind": "data_access_or_data_gap",
+      "clarifications": []
+    },
+    {
+      "id": 12,
+      "question": "Tre settori con più unità locali",
+      "requests": [],
+      "unmetRequirements": [
+        "Rank A6 ordina Comuni di una vista, non viste ATECO. Occorrono livello omogeneo e ranking fra categorie senza doppi conteggi."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune e livello ATECO."
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Settori che hanno perso più unità locali in Versilia nel decennio",
+      "requests": [
+        {
+          "operation": "series",
+          "selectors": [
+            {
+              "metric": "economyActivityAtlas",
+              "dimension": "ateco:C 301|active",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Lo storico di un Comune/una divisione è disponibile; aggregazione Versilia, variazioni e ordinamento tra settori richiedono capacità riconciliate."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Decennio esatto e classificazione omogenea."
+      ]
+    },
+    {
+      "id": 14,
+      "question": "Peso di commercio e ospitalità sulle imprese di Forte",
+      "requests": [],
+      "unmetRequirements": [
+        "Imprese non equivalgono a unità locali; nessuna quota costruita con denominatori di universi diversi."
+      ],
+      "gapKind": "data_access_or_data_gap",
+      "clarifications": [
+        "Imprese o unità locali; sezioni economiche e periodo."
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Confronto del Comune su un tema",
+      "requests": [
+        {
+          "operation": "compare",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune, tema e misura; la quota terziaria è una prova, non un punteggio di istruzione."
+      ]
+    },
+    {
+      "id": 16,
+      "question": "Indicatori di Camaiore sopra o sotto Toscana",
+      "requests": [
+        {
+          "operation": "benchmark_gap",
+          "selectors": [
+            {
+              "metric": "income",
+              "dimension": "total",
+              "towns": [
+                "046005"
+              ]
+            }
+          ],
+          "benchmark": "tuscany"
+        },
+        {
+          "operation": "benchmark_gap",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046005"
+              ]
+            }
+          ],
+          "benchmark": "tuscany"
+        }
+      ],
+      "unmetRequirements": [
+        "Due confronti verificati non sono una scansione di tutti i benchmark; disponibilità e confrontabilità devono essere valutate per vista."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 17,
+      "question": "Confrontabilità di Stazzema con Italia",
+      "requests": [
+        {
+          "operation": "benchmark_gap",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046030"
+              ]
+            }
+          ],
+          "benchmark": "italy"
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Indicatore, dimensione e periodo; il confronto riuscito non autorizza altri indicatori."
+      ]
+    },
+    {
+      "id": 18,
+      "question": "CSV di un confronto tra sette Comuni",
+      "requests": [
+        {
+          "operation": "compare",
+          "selectors": [
+            {
+              "metric": "population",
+              "dimension": "total",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Risultato strutturato disponibile; export CSV generalizzato con metadati non implementato."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 19,
+      "question": "Principali criticità rispetto a Versilia",
+      "requests": [],
+      "unmetRequirements": [
+        "Criticità richiede criteri motivati, polarità e aggregato ammissibile; vietato punteggio automatico o media generica."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune, fenomeni e criteri."
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Indicatori in cui Massarosa è prima o ultima",
+      "requests": [
+        {
+          "operation": "rank",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Un rango numerico non è qualità amministrativa. Scansione completa con polarità e contesto non implementata."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 21,
+      "question": "Dati citabili per proposte su scuola o lavoro giovanile",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "primaryFullTimeShare",
+              "dimension": "total",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "youthOtherStatus",
+              "dimension": "total",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Servono competenze, destinatari, opzioni e monitoraggio; giovane in altra condizione non è automaticamente NEET. Nessuna efficacia causale inferita."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 22,
+      "question": "Temi che peggiorano nel tempo",
+      "requests": [
+        {
+          "operation": "series",
+          "selectors": [
+            {
+              "metric": "population",
+              "dimension": "total",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Storico numerico disponibile; peggioramento non si deduce dal segno. Valutazione trasversale e discontinuità da esplicitare."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune, tema, periodo e criterio."
+      ]
+    },
+    {
+      "id": 23,
+      "question": "Utilizzo fondi PNRR e numero progetti finanziati",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "pnrrFunding",
+              "dimension": "fundingEuro",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "pnrrConcluded",
+              "dimension": "selectedProjects",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        },
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "pnrrConcluded",
+              "dimension": "concludedProjects",
+              "towns": [
+                "046018"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [
+        "Finanziamento e macrofase non attestano spesa, qualità o risultato dell’opera; attribuzione al Comune attuatore distinta da localizzazione."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 24,
+      "question": "Bandi attivi oggi per una impresa locale",
+      "requests": [],
+      "unmetRequirements": [
+        "Resolver Radar con destinatario, settore, scadenza e freschezza non implementato nel workbench; dati Radar acquisiti separati."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Impresa, sede, settore, dimensione e data del controllo."
+      ]
+    },
+    {
+      "id": 25,
+      "question": "Opportunità recenti turismo e agricoltura",
+      "requests": [],
+      "unmetRequirements": [
+        "Resolver Radar e confronto fra aggiornamento, proroga e nuova opportunità non implementati nel workbench."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 26,
+      "question": "Percorso per conoscere il proprio Comune",
+      "requests": [],
+      "unmetRequirements": [
+        "Resolver editoriale Percorsi non implementato; non è una lacuna del catalogo numerico."
+      ],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Comune e interesse."
+      ]
+    },
+    {
+      "id": 27,
+      "question": "Fonte e anno della quota con titolo terziario",
+      "requests": [
+        {
+          "operation": "observe",
+          "selectors": [
+            {
+              "metric": "tertiary",
+              "dimension": "total",
+              "towns": [
+                "046024"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": []
+    },
+    {
+      "id": 28,
+      "question": "Significato di n.d. e differenza da zero",
+      "requests": [],
+      "unmetRequirements": [
+        "Informazione documentata e accessibile nel sito; resolver di spiegazioni/metodo non ancora implementato nel workbench."
+      ],
+      "gapKind": "metadata",
+      "clarifications": []
+    },
+    {
+      "id": 29,
+      "question": "Calcolo del valore Versilia pro capite",
+      "requests": [
+        {
+          "operation": "weighted_ratio",
+          "selectors": [
+            {
+              "metric": "currentPayments",
+              "dimension": "total",
+              "towns": [
+                "046005",
+                "046013",
+                "046018",
+                "046024",
+                "046028",
+                "046030",
+                "046033"
+              ]
+            }
+          ]
+        }
+      ],
+      "unmetRequirements": [],
+      "gapKind": "capability_gap",
+      "clarifications": [
+        "Indicatore, periodo, componenti e completezza; una formula ammessa non autorizza tutte le medie."
+      ]
+    },
+    {
+      "id": 30,
+      "question": "Segnalazione di un dato errato o non aggiornato",
+      "requests": [],
+      "unmetRequirements": [
+        "Informazione documentata e accessibile nel sito; resolver di spiegazioni/metodo non ancora implementato nel workbench."
+      ],
+      "gapKind": "metadata",
+      "clarifications": []
+    }
+  ]
+}
