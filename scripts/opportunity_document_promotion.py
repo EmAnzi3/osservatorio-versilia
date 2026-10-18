@@ -92,15 +92,18 @@ def verified_deadline_extension(receipt: dict, original: dict) -> dict | None:
     source_protocol = (int(cited[1]), date(int(cited[4]), MONTHS[cited[3].lower()], int(cited[2])).isoformat())
     if source_protocol != reference:
         return None
-    origin = re.search(r"originariamente fissato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    # Direct PDF text may split a digit or insert spaces near clock separators.
+    # Never relax date/protocol identity; compare the parsed original minute.
+    origin = re.search(r"originariamente\s+fissat[oa]\s+alle\s+ore\s+([\d\s]{1,4})\s*[:.]\s*([\d\s]{2,4})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
     later = re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
     if not origin or not later:
         return None
     def endpoint(groups):
         hour, minute, day, month, year = groups
-        if month.lower() not in MONTHS or not (0 <= int(hour) < 24 and 0 <= int(minute) < 60):
+        hour, minute = int(hour.replace(" ", "")), int(minute.replace(" ", ""))
+        if month.lower() not in MONTHS or not (0 <= hour < 24 and 0 <= minute < 60):
             raise ValueError("Data/orario di proroga non validi")
-        return date(int(year), MONTHS[month.lower()], int(day)).isoformat(), f"{int(hour):02}:{int(minute):02}"
+        return date(int(year), MONTHS[month.lower()], int(day)).isoformat(), f"{hour:02}:{minute:02}"
     old_date, old_time = endpoint(origin.groups())
     new_date, new_time = endpoint(later.groups())
     if (old_date, old_time) >= (new_date, new_time):
@@ -475,7 +478,8 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                             "subject": bool(re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", note_text, re.I)),
                             "unchangedConditions": bool(re.search(r"Restano ferme tutte le ulteriori disposizioni", note_text, re.I)),
                             "protocol": bool(re.search(r"Avviso pubblico prot\.\s*n\.\s*\d{5,7}", note_text, re.I)),
-                            "oldWindow": bool(re.search(r"originariamente fissato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
+                            "oldWindow": bool(re.search(r"originariamente\s+fissat[oa]\s+alle\s+ore\s+[\d\s]{1,4}\s*[:.]\s*[\d\s]{2,4}\s+del", note_text, re.I)),
+                            "oldWindowExcerpt": note_text[max(0, note_text.lower().find("originariamente")):][:175] if "originariamente" in note_text.lower() else None,
                             "newWindow": bool(re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
                         }
                     for candidate in [*items, *old, *archival_candidates]:
