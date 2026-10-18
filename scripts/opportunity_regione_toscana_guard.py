@@ -180,7 +180,9 @@ def _default_fetch(url: str) -> str:
     if discovery.LIVE_BUDGET is not None:
         payload, diagnostics = discovery.LIVE_BUDGET.fetch(
             url, timeout=30, attempts=1, kind="regional_completeness")
-        discovery._record_trace(url, diagnostics)
+        # TransportBudget journals this phase separately. FETCH_TRACE is the
+        # discovery endpoint's health: a later safety-net retry must not replace
+        # its success/failure, even when both phases request the same URL.
         if payload is None:
             raise discovery.DiscoveryFetchError(
                 "; ".join(diagnostics.get("errors") or []), diagnostics)

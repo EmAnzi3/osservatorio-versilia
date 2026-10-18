@@ -17,6 +17,8 @@ il safety net regionale 150 e la continuità 180, sempre cumulativi e soggetti
 alla scadenza globale. La riserva regionale non riduce il budget degli altri host.
 
 Il safety net usa un tipo di richiesta distinto nel journal. Non cambia
+lo storico diagnostico della discovery per lo stesso URL: i due esiti restano
+separati, anche se uno fallisce e l'altro riesce. Non cambia
 classificazione, finestre temporali o destinatari; se le riserve o la scansione
 scadono, la richiesta resta un errore e i gate possono ancora bloccare il run.
 La codifica degli URL PDF conserva `%2F`, `%20`, `+`, parametri e firme già

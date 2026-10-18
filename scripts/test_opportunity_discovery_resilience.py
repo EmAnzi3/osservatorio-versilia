@@ -914,6 +914,7 @@ def _test_verification_and_regional_budget_reserves() -> None:
     host = f"127.0.0.1:{server.server_port}"
     url = "http://" + host
     original = discovery.LIVE_BUDGET
+    original_trace = dict(discovery.FETCH_TRACE)
     try:
         with tempfile.TemporaryDirectory() as directory:
             budget = bounded.TransportBudget({}, endpoint_seconds=5, source_seconds=10,
@@ -927,7 +928,11 @@ def _test_verification_and_regional_budget_reserves() -> None:
             budget.host_spent[host] = 7.1
             assert budget.fetch(url+"/verification-exhausted", kind="official_http")[0] is None
             discovery.LIVE_BUDGET = budget
+            discovery._record_trace(url+"/regional", {
+                "status": "error", "failureClass": "timeout_client", "budgetScope": "source"})
+            discovery_trace = dict(discovery.FETCH_TRACE)
             assert "official regional notice" in regional._default_fetch(url+"/regional")
+            assert discovery.FETCH_TRACE == discovery_trace
             budget.host_spent[host] = 9.1
             try:
                 regional._default_fetch(url+"/regional-exhausted")
@@ -935,6 +940,12 @@ def _test_verification_and_regional_budget_reserves() -> None:
                 assert error.diagnostics["budgetScope"] == "source"
             else:
                 raise AssertionError("regional reserve exhaustion hidden")
+            assert discovery.FETCH_TRACE == discovery_trace
+            import json
+            journal = [json.loads(line) for line in budget.journal.read_text().splitlines()]
+            regional_results = [row for row in journal
+                                if row["event"] == "end" and row["kind"] == "regional_completeness"]
+            assert [row["status"] for row in regional_results] == ["ok", "error"]
             assert budget.fetch(url+"/continuity", kind="continuity")[1]["status"] == "ok"
             assert budget.source_seconds == 10 and budget.endpoint_seconds == 5
             assert budget.deadline == deadline
@@ -943,6 +954,7 @@ def _test_verification_and_regional_budget_reserves() -> None:
             assert budget.scan_exhausted
     finally:
         discovery.LIVE_BUDGET = original
+        discovery.FETCH_TRACE.clear(); discovery.FETCH_TRACE.update(original_trace)
         server.shutdown(); server.server_close()
 
 
