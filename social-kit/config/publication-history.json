@@ -1,7 +1,10 @@
 {
   "version": "social-publications-v1",
   "coverage": {
-    "2026": {"status": "partial", "note": "Ricostruzione in corso: kit generati e piani non attestano una pubblicazione social."}
+    "2026": {
+      "status": "partial",
+      "note": "Ricostruzione in corso: kit generati e piani non attestano una pubblicazione social."
+    }
   },
   "publications": [
     {
@@ -9,7 +12,9 @@
       "year": 2026,
       "published_on": null,
       "confirmed_on": "2026-10-18",
-      "metrics": ["recycling"],
+      "metrics": [
+        "recycling"
+      ],
       "evidence": "Conferma esplicita del proprietario il 18 ottobre 2026: il post sulla raccolta differenziata era già uscito mesi prima. Data esatta e permalink da recuperare."
     },
     {
@@ -17,8 +22,20 @@
       "year": 2026,
       "published_on": null,
       "confirmed_on": "2026-10-17",
-      "metrics": ["vacantHomes"],
+      "metrics": [
+        "vacantHomes"
+      ],
       "evidence": "Screenshot e discussione dei commenti al post pubblico sulle abitazioni non occupate, condivisi dal proprietario il 17 ottobre 2026. Data esatta e permalink da recuperare."
+    },
+    {
+      "id": "2026-spesa-corrente-per-abitante-confermata",
+      "year": 2026,
+      "published_on": null,
+      "confirmed_on": "2026-10-18",
+      "metrics": [
+        "currentExpenditureCommittedPerResident"
+      ],
+      "evidence": "Conferma esplicita del proprietario il 18 ottobre 2026: il contenuto sulla spesa corrente per abitante proposto per il 23 ottobre era già stato pubblicato. Data esatta e permalink da recuperare."
     }
   ]
 }
