@@ -225,3 +225,5 @@ scripts/test_a7_dossier_preview.py
 
 scripts/a7_education_editorial.py
 scripts/test_a7_education_editorial.py
+scripts/a7_query_workbench.py
+scripts/test_a7_query_workbench.py

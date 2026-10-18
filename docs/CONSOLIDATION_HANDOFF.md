@@ -2,7 +2,7 @@
 
 ## Baseline integrata
 
-- Main `c80749a1e2871f491b5087732cf8c70610cc9dce`, tree `bac4fa1b0072f0484840e567cb77d381ad35ce82`: #437 mergiata dal proprietario il 17 ottobre. Quick/Full locali ordinari PASS sul medesimo albero; CI Quick `39030351987`, Full effettivo `39032237491`, A3 `39030352000` PASS sulla head `01e0138`. Deploy post-merge `39039130288` e live `39040063783` SUCCESS sul commit integrato; pubblicazione verificata. I job push skipped non sono nuovi PASS. Il fix del ritentativo PDF è integrato.
+- Main `0ec115fad78966cf6e8269d678acdccd731e7291`, tree `2ff9054b4031bbcfe90d6251f9b60ef05523bfbb`: #442, #444 e #445 integrate dal proprietario. #445 mergiata il 18 ottobre alle 09:20 UTC; gate locali Quick→Full e CI/A3/Radar PASS sulla sua head; deploy `39114927336` e live `39116176854` SUCCESS sul merge. Un deploy non attesta un nuovo refresh produttivo del Radar. #443 lavoro/redditi resta una PR separata aperta, head `89127ca`, con gate locali e CI PASS e revisione editoriale del proprietario ancora richiesta.
 - A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
 - Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
 - Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
@@ -13,13 +13,13 @@
 
 Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`. Nessuno step o Definition of Done A7 dichiarato completato.
 
-## Incremento candidato — lettura educativa per sette Comuni
+## Incremento candidato — metodo generale di interrogazione
 
-Branch pubblico `feature/a7-education-seven-towns`, PR #442 ancora aperta; baseline integrata #437. Il feedback del 17 ottobre chiede evidenze e conclusioni pertinenti al Comune selezionato. La stessa domanda educativa viene composta per ciascuno dei sette Comuni usando le risposte A6 già disponibili: selettore locale, sintesi argomentata, evidenziazione nei grafici, URL condivisibile e PDF del Comune, tutti legati al manifest immutabile. Null INVALSI e zeri 0–3 conservati; nessuna graduatoria di qualità o indicazione automatica di politica. Le cinque altre domande e i dodici export del pilota Massarosa restano distinti. Nessun nuovo dato/adapter o accesso da Home/menu. Metodo e contratto in `docs/A7_EDUCATION_EDITORIAL_READING.md`.
+#442 educativa sette Comuni è integrata; #443 lavoro/redditi resta distinta. Il proprietario richiede capacità generali su tutti i dati, non altre risposte predefinite. Branch `feature/a7-general-query-method`: scoperta derivata dal catalogo effettivo e dalle dichiarazioni A6, piani di richieste strutturate e risposte originali integre. Nessun nuovo inventario, adapter, dato, UI, modello o servizio. Metodo in `docs/A7_GENERAL_QUERY_METHOD.md`; CLI `scripts/a7_query_workbench.py`. Giustapposizione diversa da relazione, aggregazione Versilia soltanto se autorizzata, componenti calcolate diverse da risposta amministrativa completa. A7 rimane IN_PROGRESS; nessuno step dichiarato DONE.
 
-Prossimo enrichment proposto, non acquisito: domanda/accoglienza/attese 0–3 dalla fonte Toscana già usata, con verifica di campi e copertura ancora necessaria; catalogo CKAN 403 al controllo del 17 ottobre. Scheda di ammissione in `docs/dossiers/METHOD.md`. Prima completare e valutare questa lettura; lavoro/redditi successivo come composizione degli acquisiti. Nessuna riapertura A6.
+Prove: tutte le aspettative indipendenti A6 attraverso l'involucro, tutte le dichiarazioni degli indicatori, varianti territoriali generate, parità delle risposte e rifiuti, isolamento/riproducibilità e limiti dei piani. Esiti effettivi e hash nei log del candidato/PR, non verdi attribuiti anticipatamente. Il test entra nei check del catalogo effettivo del preflight. Passi successivi: disponibilità per vista/periodo, accessibilità A3→A6→A7, scelta di esecuzione compatibile Pages misurata, poi esplorazione pubblica e dossier basati sugli stessi piani. Interpretazione libera e schede amministrative ancora da implementare.
 
-Il proprietario ha richiesto lo standard editoriale sugli output: logo vettoriale canonico in apertura dei sette PDF, firma/dominio/pagine nel piè di pagina, edizione distinta dai periodi dei dati, crediti di elaborazione separati dalla fonte su web e PDF. Riuso conforme alla policy CC BY 4.0 del progetto per i soli contenuti originali; condizioni dei terzi conservate e natura indipendente esplicita nella nota finale. Nessun nuovo formato di export, nuova acquisizione o modifica degli adapter. #442 rimessa in Draft per questa revisione; i verdi della precedente head `bd5f0ea` non attestano il nuovo candidato.
+Enrichment educativo 0–3 proposto e non acquisito; nessuna nuova acquisizione autorizzata da questo incremento. Radar e manutenzioni social conservati fuori perimetro.
 
 ## Gate e prossima azione
 

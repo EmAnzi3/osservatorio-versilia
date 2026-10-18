@@ -252,6 +252,14 @@
           "--catalog",
           "dist/data/site-data.json"
         ]
+      },
+      {
+        "label": "A7 general query discovery and evidence plans",
+        "script": "scripts/test_a7_query_workbench.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
       }
     ]
   },
