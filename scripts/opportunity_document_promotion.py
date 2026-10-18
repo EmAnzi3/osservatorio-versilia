@@ -39,7 +39,7 @@ def notice_reference(url):
     """Protocol plus issue date, not a topic/title guess, links ministry copies."""
     name = unquote(urlsplit(url).path.rsplit("/", 1)[-1])
     original = re.search(r"\.0*(\d{5,7})\.(\d{2})-(\d{2})-(\d{4})", name)
-    copy = re.search(r"n\.?\s*0*(\d{5,7})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", name, re.I)
+    copy = re.search(r"n[. -]*0*(\d{5,7})[ -]+del[ -]+(\d{1,2})[ -]+(\w+)[ -]+(\d{4})", name, re.I)
     try:
         if original:
             protocol, day, month, year = map(int, original.groups())
@@ -65,6 +65,58 @@ def supporting_faq(receipt, item):
                 and re.search(r"\bFAQ\b.*QUESITO\s+N\.?\s*1\b.*RISPOSTA",raw,re.I)
                 and "IL DIRIGENTE" in raw
                 and not re.search(r"riapertura|proroga|nuova finestra",raw,re.I))
+
+
+
+def verified_deadline_extension(receipt: dict, original: dict) -> dict | None:
+    """Accept only a signed, directly acquired MIM note tied to a verified call.
+
+    A matching institutional amendment updates the existing card identity;
+    it never creates a new funding opportunity or widens admissibility.
+    """
+    if (not original.get("coverage_id", "").startswith("mim-document-")
+            or not receipt.get("document") or receipt.get("transport") != "direct_https"
+            or not trusted(receipt.get("resolvedUrl", ""))
+            or not re.fullmatch(r"[0-9a-f]{64}", receipt.get("sha256", ""))):
+        return None
+    raw = re.sub(r"\s+", " ", receipt.get("text") or "").strip()
+    if not (re.match(r"Ministero dell[’']istruzione e del merito", raw, re.I)
+            and "IL DIRETTORE GENERALE" in raw
+            and re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", raw, re.I)
+            and re.search(r"Restano ferme tutte le ulteriori disposizioni", raw, re.I)):
+        return None
+    cited = re.search(r"Avviso pubblico prot\.\s*n\.\s*(\d{5,7})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    reference = notice_reference(original.get("url", ""))
+    if not cited or not reference or cited[3].lower() not in MONTHS:
+        return None
+    source_protocol = (int(cited[1]), date(int(cited[4]), MONTHS[cited[3].lower()], int(cited[2])).isoformat())
+    if source_protocol != reference:
+        return None
+    origin = re.search(r"originariamente fissato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    later = re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    if not origin or not later:
+        return None
+    def endpoint(groups):
+        hour, minute, day, month, year = groups
+        if month.lower() not in MONTHS or not (0 <= int(hour) < 24 and 0 <= int(minute) < 60):
+            raise ValueError("Data/orario di proroga non validi")
+        return date(int(year), MONTHS[month.lower()], int(day)).isoformat(), f"{int(hour):02}:{int(minute):02}"
+    old_date, old_time = endpoint(origin.groups())
+    new_date, new_time = endpoint(later.groups())
+    if (old_date, old_time) >= (new_date, new_time):
+        raise ValueError("La nota non posticipa il termine")
+    if (original.get("deadline_at"), original.get("deadline_time")) != (old_date, old_time):
+        # A repeated note is idempotent only when its exact signed PDF is known.
+        existing = original.get("amendment_evidence") or {}
+        if (original.get("deadline_at"), original.get("deadline_time")) == (new_date, new_time) and existing.get("sha256") == receipt["sha256"]:
+            return dict(original)
+        return None
+    item = dict(original)
+    item.update(deadline_at=new_date, deadline_time=new_time,
+                amendment_evidence={k: v for k, v in receipt.items() if k != "text"})
+    item["description"] = re.sub(r"entro il\s+\d{4}-\d{2}-\d{2}\s+alle\s+\d{2}:\d{2}",
+                                 f"entro il {new_date} alle {new_time}", item.get("description") or "")
+    return item
 
 
 class _Redirect(urllib.request.HTTPRedirectHandler):
@@ -393,6 +445,29 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                 try:
                     receipt = load_document(document_url)
                     document_check.update(resolvedUrl=receipt.get("resolvedUrl"), sha256=receipt.get("sha256"))
+                    # Amendments have no Articles 1–3. Verify the original
+                    # protocol, old window, new window and direct signed PDF.
+                    amendment = None
+                    for candidate in [*items, *old]:
+                        amendment = verified_deadline_extension(receipt, candidate)
+                        if amendment is not None:
+                            break
+                    if amendment is not None:
+                        identity = amendment["coverage_id"]
+                        current = next((x for x in items if x.get("coverage_id") == identity), None)
+                        if current is not None:
+                            current.update(amendment)
+                        elif amendment["deadline_at"] >= today.isoformat():
+                            items.append(amendment)
+                            seen.add(identity)
+                        else:
+                            core._append_archive(result, amendment)
+                        check.update(status="published_candidate" if amendment["deadline_at"] >= today.isoformat() else "expired",
+                                     coverage_id=identity, deadline=amendment["deadline_at"])
+                        document_check.update(status="verified_extension" if amendment["deadline_at"] >= today.isoformat() else "expired",
+                                              coverage_id=identity, deadline=amendment["deadline_at"])
+                        promoted_urls.add(url)
+                        break
                     existing = next((x for x in items if x.get("coverage_id") == check.get("coverage_id")), None)
                     if existing and supporting_faq(receipt,existing):
                         document_check.update(status="verified_support")
