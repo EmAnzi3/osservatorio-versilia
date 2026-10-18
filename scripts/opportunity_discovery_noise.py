@@ -122,6 +122,40 @@ def classify_signal(item, reference_date=None):
             r"Estrazione (?:a Sorte )?Nomina Revisori Dei Conti|"
             r"Comunicazione estrazione nominativi revisore conti)", title, re.I):
         return "administrative_update"
+    if host in {"www.mim.gov.it", "mim.gov.it"} and re.match(
+            r"^(?:Asili nido, quasi \d+ milioni di euro per ulteriori \d+ interventi|"
+            r"Comunicazione apertura piattaforma gestione procedurale e finanziaria\."
+            r" Interventi di cui al D\.M\. 06 agosto 2021|"
+            r"Interventi di adeguamento degli edifici scolastici alla normativa antisismica\."
+            r" Piano 2018-2021 Comunicazione apertura piattaforma)", title, re.I):
+        return "administrative_update"
+    if host == "prefettura.interno.gov.it":
+        if re.match(r"^(?:Il Prefetto (?:incontra|di .+ riceve|.+ saluta)|"
+                    r"Il Vicecapo Missione .+ ricevuto dal Prefetto|"
+                    r"Comitato Operativo Viabilità|COV su cantieri stradali|"
+                    r"Cposp Agitazioni studentesche|Operazioni brillamento|"
+                    r"Esercitazione per la gestione di un.emergenza|"
+                    r"Giornata pubblica dedicata alla prevenzione|"
+                    r"(?:VIII edizione della |Settimana Nazionale della )Settimana nazionale della Protezione Civile|"
+                    r"Settimana Nazionale della Protezione Civile|"
+                    r"Inaugurazione dei nuovi spazi|Incontro sulla sicurezza|"
+                    r"Nomina Commissario Prefettizio|"
+                    r"Tentato assalto a un.azienda orafa|"
+                    r"Nuovo servizio straordinario|"
+                    r"Banche e uffici postali, alleanza per la sicurezza|"
+                    r"Estrazione dell.organo Revisione Economico Finanziaria|"
+                    r"Finanza locale - Data estrazione organo di revisione|"
+                    r"Sorteggio Revisore Dei Conti Comune di|"
+                    r"Videosorveglianza: in Prefettura già .+ le domande di finanziamento)", title, re.I):
+            return "administrative_update"
+        if re.match(r"^(?:AVVISO ESPLORATIVO SERVIZIO DI COND\. OBBLIGATORIA|"
+                    r"Manifestazione di interesse per il servizio di interpretariato|"
+                    r"INDAGINE ESPLORATIVA DI MERCATO PER MANIFESTAZIONI D.INTERESSE)", title, re.I):
+            return "procurement_notice"
+    if host == "anci.lombardia.it" and re.search(
+            r"^Bando 2027-2028 per l.assegnazione di contributi regionali ai Comuni lombardi|"
+            r"^RECALL BANDO SISMICA REGIONE LOMBARDIA", title, re.I):
+        return "outside_municipal_scope"
     edition = re.fullmatch(r"Avviso\s+(20\d{2})", title, re.I)
     outcome = re.search(r"chiusura\s+(?:dell[’']?\s*)?avviso|"
                         r"elenco\s+degli\s+eventi\s+ammessi\s+(?:al\s+|a\s+)?contributo", context, re.I)
