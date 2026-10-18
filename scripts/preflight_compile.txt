@@ -229,3 +229,5 @@ scripts/a7_query_workbench.py
 scripts/test_a7_query_workbench.py
 scripts/test_a7_point_observations.py
 scripts/audit_a7_question_feasibility.py
+scripts/build_a7_query_runtime.py
+scripts/test_a7_query_runtime.py

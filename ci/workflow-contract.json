@@ -270,6 +270,14 @@
         ]
       },
       {
+        "label": "A7 selective static transport and browser trust boundary",
+        "script": "scripts/test_a7_query_runtime.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
         "label": "A7 acceptance question feasibility on actual catalog",
         "script": "scripts/audit_a7_question_feasibility.py",
         "args": [
