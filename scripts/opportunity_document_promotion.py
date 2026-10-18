@@ -448,7 +448,18 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                     # Amendments have no Articles 1–3. Verify the original
                     # protocol, old window, new window and direct signed PDF.
                     amendment = None
-                    for candidate in [*items, *old]:
+                    # The original notice may already be archived. Keep its
+                    # stable id and old deadline, so a signed note can close
+                    # an existing archival record without manufacturing a new
+                    # public call or treating an expired window as reopened.
+                    archival_candidates = []
+                    for archived in [*(result.get("archive") or []),
+                                     *((previous or {}).get("archive") or [])]:
+                        identity = str(archived.get("coverage_id") or archived.get("id") or "")
+                        if (identity.startswith("mim-document-") and
+                                archived.get("source_id") == "mim-enti-locali"):
+                            archival_candidates.append(dict(archived, coverage_id=identity))
+                    for candidate in [*items, *old, *archival_candidates]:
                         amendment = verified_deadline_extension(receipt, candidate)
                         if amendment is not None:
                             break
