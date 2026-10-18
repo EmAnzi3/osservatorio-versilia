@@ -11,6 +11,8 @@ from pathlib import Path
 
 from PIL import Image
 
+import generate_social_kit as renderer
+
 
 ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "social-kit"
@@ -53,6 +55,33 @@ def check_fitted_text(svg_path: Path, root: ET.Element, errors: list[str]) -> No
 
 def main() -> int:
     errors: list[str] = []
+    # Le unità lunghe devono entrare anche quando la barra positiva è al massimo.
+    design_fixture = load(KIT / "config" / "design-system.json")
+    theme_fixture = next(iter(load(KIT / "config" / "themes.json")["themes"].values()))
+    for unit in ("percent", "percentage_points", "celsius"):
+        rows = [{"town": town, "display": value} for town, value in zip(
+            ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"],
+            [123.4, -123.4, 0, 3.2, -12.3, 99.9, -0.1],
+        )]
+        comp = {"label": "dal 2014 al 2024", "section": "VARIAZIONE DAL 2014", "display": 12.3,
+                "display_unit": unit, "rows": rows}
+        parts = ['<svg xmlns="http://www.w3.org/2000/svg">']
+        renderer.change_slide(parts, design_fixture["layout"]["panel"], {}, comp, theme_fixture)
+        parts.append('</svg>')
+        svg = "\n".join(parts)
+        renderer.validate_slide_geometry(svg, f"regression-{unit}", 3)
+        root = ET.fromstring(svg)
+        values = role_elements(root, "change-value")
+        assert [element.text for element in values] == [renderer.fmt_value(row["display"], unit, True) for row in rows]
+        tracks = role_elements(root, "change-track")
+        # Una riga che invade i valori deve essere respinta anche se la barra è corta.
+        tracks[2].set("width", "900")
+        try:
+            renderer.validate_slide_geometry(ET.tostring(root, encoding="unicode"), "unsafe-track", 3)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Il gate deve rifiutare righe sovrapposte ai valori")
     plan = load(DIST / "week.json")
     manifest = load(DIST / "manifest.json")
     design = load(KIT / "config" / "design-system.json")
@@ -135,6 +164,14 @@ def main() -> int:
             if len(role_elements(root, "fixed-background")) != 1 or len(role_elements(root, "content-panel")) != 1:
                 errors.append(f"Griglia fissa incompleta: {svg_path}")
             check_fitted_text(svg_path, root, errors)
+            title = role_elements(root, "post-title")[0]
+            subtitle = role_elements(root, "post-subtitle")[0]
+            title_size = int(re.search(r"font-size:(\d+)px", title.attrib["style"]).group(1))
+            subtitle_size = int(re.search(r"font-size:(\d+)px", subtitle.attrib["style"]).group(1))
+            title_bottom = float(title.attrib["y"]) + sum(float(span.attrib.get("dy", 0)) for span in title) + title_size * 0.2
+            subtitle_top = float(subtitle.attrib["y"]) - subtitle_size
+            if title_bottom + 8 > subtitle_top:
+                errors.append(f"Titolo e sottotitolo troppo vicini: {svg_path}")
             rendered = visible_text(root)
             if BANNED.search(rendered):
                 errors.append(f"Lessico valutativo nella grafica: {svg_path}")

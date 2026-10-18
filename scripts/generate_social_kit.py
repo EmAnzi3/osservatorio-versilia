@@ -448,6 +448,8 @@ def frame(parts: list[str], index: int, title: str, subtitle: str, model: dict[s
     layout = design["layout"]
     logo = immutable["logo"]
     brand_text = immutable["brand_text"]
+    title_lines, _, _ = fit_lines(title, 820, 108, 56, 42, 2)
+    subtitle_y = layout["subtitle_y"] + (25 if len(title_lines) > 1 else 0)
     parts.extend([
         f'<image data-role="brand-logo" href="{logo_uri()}" x="{logo["x"]}" y="{logo["y"]}" width="{logo["width"]}" height="{logo["height"]}"/>',
         f'<text x="{brand_text["x"]}" y="{brand_text["y"]}" class="brand">Osservatorio Versilia</text>',
@@ -458,7 +460,7 @@ def frame(parts: list[str], index: int, title: str, subtitle: str, model: dict[s
         f'<text x="968" y="201" class="counter" fill="{theme["accent"]}" text-anchor="middle">{index} DI 4</text>',
         f'<text x="72" y="{layout["theme_y"]}" class="theme" fill="{theme["accent"]}">{esc(theme["label"].upper())}</text>',
         fitted_text(title, 72, layout["title_y"], 820, 108, "title", 56, 42, 2, "post-title"),
-        fitted_text(subtitle, 72, layout["subtitle_y"], 900, 62, "subtitle", 24, 20, 2, "post-subtitle"),
+        fitted_text(subtitle, 72, subtitle_y, 900, 62, "subtitle", 24, 20, 2, "post-subtitle"),
         f'<line x1="72" x2="1008" y1="{layout["footer_y"]}" y2="{layout["footer_y"]}" stroke="{theme["line"]}" stroke-width="2"/>',
         fitted_text(f"Fonte: {model['source']}", 72, layout["footer_y"] + 38, 820, 25, "footer", 16, 14, 1, "source"),
         f'<text x="72" y="{layout["footer_y"] + 72}" class="footer">{esc(model["year_label"])} · dati {esc(model["dataset_version"])}</text>',
@@ -568,7 +570,17 @@ def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any],
     rows = comp["rows"]
     maximum = max(abs(row["display"]) for row in rows) or 1.0
     # Corsie indipendenti: etichetta, grafico, valore. Nessuna barra entra nei numeri.
-    label_x, zero_x, value_x, half_w = x + 36, x + 570, x + w - 36, 170
+    label_x, value_x = x + 36, x + w - 36
+    value_texts = [fmt_value(row["display"], comp["display_unit"], True) for row in rows]
+    # Riserva prima la corsia del valore più lungo, inclusa l'unità (es. «punti»).
+    # L'asse zero resta al centro del grafico: positivi e negativi hanno la stessa scala.
+    value_width = max(112, max(len(text) * 18 for text in value_texts))
+    value_left = value_x - value_width
+    chart_left, chart_right = x + 300, value_left - 24
+    half_w = min(170, (chart_right - chart_left) / 2)
+    if half_w < 60:
+        raise ValueError("Etichette di variazione troppo lunghe per il grafico")
+    zero_x = (chart_left + chart_right) / 2
     row_start, step = y + 205, 58
     axis_top = row_start - 18
     axis_bottom = row_start + (len(rows) - 1) * step + 34
@@ -580,11 +592,10 @@ def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any],
         cy = row_start + index * step
         width = max(3, half_w * abs(row["display"]) / maximum)
         bar_x = zero_x if row["display"] >= 0 else zero_x - width
-        value_text = fmt_value(row["display"], comp["display_unit"], True)
-        value_left = value_x - max(112, len(value_text) * 18)
+        value_text = value_texts[index]
         parts.extend([
             f'<text x="{label_x}" y="{cy + 20}" class="label">{esc(row["town"])}</text>',
-            f'<line x1="{zero_x - half_w}" x2="{zero_x + half_w}" y1="{cy + 13}" y2="{cy + 13}" stroke="#D8DFDC" stroke-width="2"/>',
+            f'<line data-role="change-track" data-row="{index}" x="{zero_x - half_w}" width="{2 * half_w}" x1="{zero_x - half_w}" x2="{zero_x + half_w}" y1="{cy + 13}" y2="{cy + 13}" stroke="#D8DFDC" stroke-width="2"/>',
             f'<rect data-role="change-bar" data-row="{index}" x="{bar_x:.1f}" y="{cy}" width="{width:.1f}" height="26" rx="13" fill="{theme["accent"]}"/>',
             f'<text data-role="change-value" data-row="{index}" data-left="{value_left:.1f}" x="{value_x}" y="{cy + 22}" class="number" text-anchor="end">{esc(value_text)}</text>',
         ])
@@ -612,6 +623,10 @@ def validate_slide_geometry(svg: str, post_id: str, slide_index: int) -> None:
         value = by_role.get(value_role, {}).get(row)
         if value is None or right_edge(graphic) + 24 > float(value.attrib["data-left"]):
             raise ValueError(f"Sovrapposizione grafico/testo: {post_id}, tavola {slide_index}, riga {int(row) + 1}")
+    for row, track in by_role.get("change-track", {}).items():
+        value = by_role.get("change-value", {}).get(row)
+        if value is None or right_edge(track) + 24 > float(value.attrib["data-left"]) + 0.1:
+            raise ValueError(f"Sovrapposizione riga/testo: {post_id}, tavola {slide_index}, riga {int(row) + 1}")
 
 
 def context_slides(parts: list[str], box: dict[str, float], model: dict[str, Any], theme: dict[str, str], kind: str) -> None:
