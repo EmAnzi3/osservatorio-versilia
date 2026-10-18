@@ -309,6 +309,23 @@ IL DIRETTORE GENERALE
         self.assertFalse(expired["opportunities"])
         self.assertEqual(expired["documentPromotion"]["checks"][-1]["status"], "expired")
         self.assertEqual(expired["discoveryQueue"], [])
+        # Production regression: the notice was already archived on 15 October
+        # with an id but no coverage_id, so a later signed extension must
+        # update the archival deadline, not produce an unsupported-layout alert.
+        archive = [{"id": original["coverage_id"], "source_id": "mim-enti-locali",
+                    "url": original_url, "title": original["title"],
+                    "deadline_at": "2026-10-14", "deadline_time": "14:00",
+                    "archive_reason": "deadline_passed"}]
+        archived_result = {"opportunities": [], "archive": [dict(archive[0])],
+                           "discoveryQueue": [{"url": page, "title": "Edilizia scolastica – Vulnerabilità sismica - Proroga"}]}
+        promotion.apply_promotions(archived_result, date(2026, 10, 18),
+                                  previous={"opportunities": [], "archive": archive}, loader=loader)
+        self.assertEqual(archived_result["archive"][0]["id"], original["coverage_id"])
+        self.assertEqual((archived_result["archive"][0]["deadline_at"],
+                          archived_result["archive"][0]["deadline_time"]), ("2026-10-16", "12:00"))
+        self.assertEqual(archived_result["documentPromotion"]["checks"][0]["status"], "expired")
+        self.assertFalse(archived_result["discoveryQueue"])
+        self.assertFalse(archived_result["opportunities"])
 
     def test_real_notices(self):
         for name, deadline, clock in [("otto-per-mille.txt", "2026-10-23", "23:59"),
