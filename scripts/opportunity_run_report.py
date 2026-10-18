@@ -209,6 +209,22 @@ def _changes(old: dict[str, Any], new: dict[str, Any]) -> list[dict[str, str]]:
     return changes
 
 
+def _change_category(old: dict[str, Any], new: dict[str, Any], changes: list[dict[str, str]]) -> tuple[str, str]:
+    """Do not call a diff a ministerial proroga without an independently verified act."""
+    fields = {entry["field"] for entry in changes}
+    before = str(old.get("deadline_at") or "")
+    after = str(new.get("deadline_at") or "")
+    if "deadline_at" in fields and re.fullmatch(r"\d{4}-\d{2}-\d{2}", before) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", after):
+        if after > before:
+            return "deadline_moved_later", "Termine posticipato nei dati (atto di proroga da verificare)"
+        if after < before:
+            return "deadline_moved_earlier", "Termine anticipato nei dati (atto da verificare)"
+    for field in ("themes", "beneficiary_text", "summary", "municipality_eligibility"):
+        if field in fields and old.get(field) not in (None, "", [], {}) and new.get(field) in (None, "", [], {}):
+            return "metadata_loss", "Possibile perdita di informazioni: verificare la scheda"
+    return "metadata_update", "Aggiornamento della scheda, non nuovo bando"
+
+
 def _compact(item: dict[str, Any]) -> dict[str, Any]:
     return {
         "identity": _identity(item),
@@ -340,7 +356,9 @@ def build_report(
     for old, new in pairs:
         changes = _changes(old, new)
         if changes:
-            modified.append({**_compact(new), "changes": changes})
+            category, label = _change_category(old, new, changes)
+            modified.append({**_compact(new), "changes": changes,
+                             "changeCategory": category, "changeLabel": label})
     modified.sort(key=lambda item: (item["deadline"] or "9999-99-99", item["title"]))
 
     added = sorted(
@@ -598,7 +616,7 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         for item in items[:detail_limit]:
             detail = "—"
             if key == "modified":
-                detail = "<br>".join(
+                detail = "**" + _markdown_cell(item.get("changeLabel") or "Aggiornamento") + "**<br>" + "<br>".join(
                     f"**{change['label']}:** {_markdown_cell(change['before'])} → {_markdown_cell(change['after'])}"
                     for change in item["changes"]
                 )
@@ -622,7 +640,7 @@ def _html_table(title: str, items: list[dict[str, Any]], *, modified: bool = Fal
             link = f'<a href="{html.escape(str(item["url"]), quote=True)}" target="_blank" rel="noopener noreferrer">{link}</a>'
         detail = "—"
         if modified:
-            detail = "<ul>" + "".join(
+            detail = "<strong>" + html.escape(item.get("changeLabel") or "Aggiornamento") + "</strong><ul>" + "".join(
                 "<li><strong>" + html.escape(change["label"]) + ":</strong> "
                 + html.escape(_short(change["before"])) + " → " + html.escape(_short(change["after"])) + "</li>"
                 for change in item.get("changes") or []
