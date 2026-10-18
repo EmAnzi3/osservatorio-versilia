@@ -26,6 +26,7 @@ on:
       - "social-kit/config/editorial-cadence.json"
       - "social-kit/config/editorial-observances-2026-2027.json"
       - "social-kit/config/editorial-rotation.json"
+      - "social-kit/config/publication-history.json"
       - "social-kit/EDITORIAL_CALENDAR_2026_2027.md"
       - "social-kit/EDITORIAL_POLICY.md"
       - "social-kit/METHOD.md"

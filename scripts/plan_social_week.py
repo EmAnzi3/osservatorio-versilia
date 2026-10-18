@@ -19,6 +19,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "social-kit"
 DEFAULT_OUT = KIT / "dist" / "editorial-plan"
+HISTORY_PATH = KIT / "config" / "publication-history.json"
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -41,7 +42,50 @@ def fmt_date(value: date) -> str:
     return f"{value.day} {months[value.month - 1]} {value.year}"
 
 
-def ordinary_for_slot(start: date, slot_index: int, rotation: dict[str, Any], site: dict[str, Any]) -> dict[str, Any]:
+def publication_history(history: dict[str, Any] | None = None) -> dict[str, Any]:
+    history = load(HISTORY_PATH) if history is None else history
+    if history.get("version") != "social-publications-v1":
+        raise ValueError("Versione del registro pubblicazioni non riconosciuta")
+    ids: set[str] = set()
+    site = load(ROOT / "data" / "site-data.json")
+    for entry in history["publications"]:
+        if entry["id"] in ids or not entry.get("evidence", "").strip() or not entry.get("metrics"):
+            raise ValueError("Pubblicazione senza ID univoco, prova o indicatori")
+        ids.add(entry["id"])
+        if any(key not in site["metrics"] for key in entry["metrics"]):
+            raise ValueError(f"Indicatore sconosciuto nel registro: {entry['id']}")
+        confirmed = parse_date(entry["confirmed_on"])
+        published = parse_date(entry["published_on"]) if entry.get("published_on") else None
+        if published and (published.year != int(entry["year"]) or published > confirmed):
+            raise ValueError(f"Date non coerenti nel registro: {entry['id']}")
+        if int(entry["year"]) > confirmed.year:
+            raise ValueError(f"Anno futuro nel registro: {entry['id']}")
+    return history
+
+
+def used_metrics(day: date, history: dict[str, Any]) -> set[str]:
+    return {
+        key for entry in history["publications"]
+        if int(entry["year"]) == day.year
+        and parse_date(entry.get("published_on") or entry["confirmed_on"]) <= day
+        for key in entry["metrics"]
+    }
+
+
+def check_plan_history(plan: dict[str, Any]) -> None:
+    """Controlla anche piani salvati prima di un aggiornamento del registro."""
+    history = publication_history()
+    for item in plan["scheduled"]:
+        keys = [item["metric"]] if item["type"] == "ordinary" else [
+            key for field in ("preferred_indicators", "matching_metrics", "generator_ready_metrics")
+            for key in item.get(field, [])
+        ]
+        duplicates = set(keys) & used_metrics(parse_date(item["date"]), history)
+        if duplicates:
+            raise ValueError(f"Piano non aggiornato: indicatori già pubblicati nell'anno: {sorted(duplicates)}")
+
+
+def ordinary_for_slot(start: date, slot_index: int, rotation: dict[str, Any], site: dict[str, Any], history: dict[str, Any] | None = None) -> dict[str, Any]:
     rotation_start = monday_of(parse_date(rotation["start_week"]))
     week_index = (start - rotation_start).days // 7
     themes = rotation["themes"]
@@ -53,15 +97,18 @@ def ordinary_for_slot(start: date, slot_index: int, rotation: dict[str, Any], si
     if not theme:
         raise ValueError(f"Tema della rotazione inesistente: {theme_key}")
     featured = theme.get("featured") or []
-    metric_key = next((key for key in featured if key in site["metrics"]), None)
+    slot_date = start + timedelta(days=int(rotation["slots"][slot_index]["weekday"]))
+    used = used_metrics(slot_date, history or publication_history())
+    metric_key = next((key for key in featured if key in site["metrics"] and key not in used), None)
     if not metric_key:
-        raise ValueError(f"Nessun indicatore featured utilizzabile per {theme_key}")
+        raise ValueError(f"Nessun indicatore featured inedito per {theme_key} nel {slot_date.year}: serve una scelta editoriale, nessun doppione automatico")
     metric = site["metrics"][metric_key]
     return {
         "theme": theme_key,
         "theme_label": theme.get("label", theme_key),
         "metric": metric_key,
         "metric_label": metric.get("meta", {}).get("shortLabel") or metric.get("meta", {}).get("label") or metric_key,
+        "excluded_published_metrics": [key for key in featured if key in used],
     }
 
 
@@ -106,6 +153,7 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
     rotation = load(KIT / "config" / "editorial-rotation.json")
     site = load(ROOT / "data" / "site-data.json")
     ready = load(KIT / "config" / "social-ready.json").get("approved_metrics", {})
+    history = publication_history()
 
     start = monday_of(requested)
     end = start + timedelta(days=6)
@@ -120,8 +168,11 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
         publish_date = parse_date(raw["suggested_publish_date"])
         if start <= publish_date <= end:
             item = dict(raw)
+            used = used_metrics(publish_date, history)
+            item["excluded_published_metrics"] = [key for key in raw.get("preferred_indicators", []) if key in used]
+            item["preferred_indicators"] = [key for key in raw.get("preferred_indicators", []) if key not in used]
             item["source_url"] = event_source(raw, observances)
-            item["matching_metrics"] = matching_metrics(raw, site)
+            item["matching_metrics"] = matching_metrics(item, site)
             item["generator_ready_metrics"] = [key for key in item["matching_metrics"] if key in ready]
             events.append(item)
 
@@ -154,7 +205,7 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
     blackout_slots: list[dict[str, Any]] = []
 
     for slot_index, slot in enumerate(slots):
-        ordinary = ordinary_for_slot(start, slot_index, rotation, site)
+        ordinary = ordinary_for_slot(start, slot_index, rotation, site, history)
         slot_date = start + timedelta(days=int(slot["weekday"]))
         iso = slot_date.isoformat()
         status = {
@@ -195,6 +246,7 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
                 "metric": ordinary["metric"],
                 "metric_label": ordinary["metric_label"],
                 "generator_ready": ordinary["metric"] in ready,
+                "excluded_published_metrics": ordinary["excluded_published_metrics"],
             })
         rotation_status.append(status)
 
@@ -213,6 +265,7 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
             "matching_metrics": event["matching_metrics"],
             "generator_ready_metrics": event["generator_ready_metrics"],
             "source_url": event["source_url"],
+            "excluded_published_metrics": event["excluded_published_metrics"],
         })
 
     ordinary_themes = [item["theme"] for item in scheduled if item["type"] == "ordinary"]
@@ -231,6 +284,10 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
         "week": {"from": start.isoformat(), "to": end.isoformat()},
         "weekly_budget": weekly_budget,
         "planned_count": len(scheduled),
+        "publication_tracking": {
+            "path": "social-kit/config/publication-history.json",
+            "years": {str(year): history.get("coverage", {}).get(str(year), {"status": "partial", "note": "Anno non ancora ricostruito"}) for year in {start.year, end.year}},
+        },
         "ordinary_count": len(ordinary_themes),
         "special_count": len(special),
         "scheduled": scheduled,
@@ -277,9 +334,14 @@ def markdown(plan: dict[str, Any]) -> str:
         "## Uscite pianificate",
         "",
     ]
+    for year, coverage in plan.get("publication_tracking", {}).get("years", {}).items():
+        if coverage["status"] != "complete":
+            out.extend([f"**Registro pubblicazioni {year} parziale:** vengono esclusi i post confermati; l'assenza dal registro non certifica che un argomento sia inedito.", ""])
 
     for item in plan["scheduled"]:
         when = fmt_date(parse_date(item["date"]))
+        if item.get("excluded_published_metrics"):
+            out.extend([f"Già pubblicati nell'anno, esclusi dalla selezione: {', '.join(item['excluded_published_metrics'])}.", ""])
         if item["type"] == "ordinary":
             readiness = "generatore automatico disponibile" if item["generator_ready"] else "carosello da preparare/revisionare manualmente"
             out.extend([
@@ -342,6 +404,7 @@ def markdown(plan: dict[str, Any]) -> str:
         "- [ ] Verificare che il totale non superi due uscite settimanali.",
         "- [ ] Ricontrollare data, denominazione, eventuale tema annuale e fonte ufficiale delle ricorrenze.",
         "- [ ] Verificare che i numeri coincidano con il dataset corrente.",
+        "- [ ] Confermare nel registro ogni pubblicazione effettiva, con indicatori di tutte le card e prova; un kit generato non è un post pubblicato.",
         "- [ ] Preparare/rigenerare ogni carosello con il colore canonico del relativo tema.",
         "- [ ] Controllare che nessun testo esca dai box.",
         "- [ ] Preparare copy Facebook, Instagram, LinkedIn e X, ALT e link alla pagina più specifica.",
@@ -370,7 +433,34 @@ def main() -> int:
     parser.add_argument("--conditional-id", default=None, help="Promuove esplicitamente una ricorrenza conditional della settimana")
     parser.add_argument("--out-dir", default=str(DEFAULT_OUT), help="Directory per week.json e week.md")
     parser.add_argument("--github-output", default=None, help="Percorso GITHUB_OUTPUT opzionale")
+    parser.add_argument("--record-published", help="ID del post effettivamente pubblicato da registrare")
+    parser.add_argument("--published-metric", action="append", default=[], help="Indicatore pubblicato; ripetibile per tutte le card")
+    parser.add_argument("--publication-year", type=int, help="Anno della pubblicazione confermata")
+    parser.add_argument("--published-on", help="Data effettiva YYYY-MM-DD, omettere se sconosciuta")
+    parser.add_argument("--evidence", help="Permalink del post o conferma esplicita del proprietario")
+    parser.add_argument("--provenance", help="Provenienza del kit pubblicato: registra gli indicatori di tutte le card")
     args = parser.parse_args()
+
+    if args.record_published:
+        if not args.publication_year or not args.evidence or not args.evidence.strip():
+            parser.error("Registrazione: servono --publication-year e --evidence")
+        metrics = list(args.published_metric)
+        if args.provenance:
+            provenance = load(Path(args.provenance))
+            metrics.extend((provenance.get("slide_metrics") or {}).values())
+            if provenance.get("metric"):
+                metrics.append(provenance["metric"])
+        history = publication_history()
+        entry = {
+            "id": args.record_published, "year": args.publication_year,
+            "published_on": args.published_on, "confirmed_on": date.today().isoformat(),
+            "metrics": sorted(set(metrics)), "evidence": args.evidence.strip(),
+        }
+        history["publications"].append(entry)
+        publication_history(history)
+        HISTORY_PATH.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"Pubblicazione registrata: {entry['id']} · {', '.join(entry['metrics'])}")
+        return 0
 
     plan = make_plan(parse_date(args.date), args.conditional_id)
     out_dir = Path(args.out_dir)

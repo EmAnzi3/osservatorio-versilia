@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 import generate_social_kit as renderer
+from plan_social_week import check_plan_history
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -269,6 +270,7 @@ def main() -> int:
     args = parser.parse_args()
 
     plan = load(Path(args.plan))
+    check_plan_history(plan)
     site = load(ROOT / "data" / "site-data.json")
     questions = load(KIT / "config" / "question-bank.json")
     design = load(KIT / "config" / "design-system.json")

@@ -69,6 +69,38 @@ Non sono previsti PDF, storie o formati aggiuntivi nel pacchetto standard.
 
 ## Pianificazione
 
+### Registro annuale delle pubblicazioni
+
+`config/publication-history.json` conserva solo post effettivamente pubblicati: ID,
+anno, indicatori di tutte le card, prova (permalink o conferma del proprietario),
+data della conferma e data di pubblicazione se nota. Una data sconosciuta resta
+null: non si ricava da un vecchio calendario. Il registro dichiara per ciascun
+anno se la ricostruzione è parziale o completa; finché è parziale, il piano lo
+segnala e non certifica come inediti gli argomenti assenti.
+
+La generazione di un kit non aggiorna questo registro. Dopo la pubblicazione
+manuale si registra esplicitamente il post, includendo gli indicatori secondari:
+
+```bash
+python3 scripts/plan_social_week.py --record-published ID_POST \
+  --publication-year 2026 --published-on 2026-10-20 \
+  --provenance PERCORSO/provenienza.json --evidence URL_POST_PUBBLICATO
+```
+
+In alternativa a `--provenance`, `--published-metric` è ripetibile; omettere
+`--published-on` se la data è ignota. Conservare il registro nel repository
+tramite branch/PR come gli altri file editoriali. Non inserire segreti o dati
+personali. Prima dell'uscita successiva integrare le nuove conferme.
+
+Il planner esclude gli indicatori già pubblicati nel medesimo anno, sceglie il
+successivo indicatore featured del tema e rende visibili le esclusioni. Se sono
+esauriti, richiede una scelta editoriale e non ripiega sul doppione. Le ricorrenze
+usano soltanto candidati non ancora pubblicati; in assenza di candidati restano
+da trattare manualmente. Il generatore ricontrolla il registro prima di usare
+un piano salvato e prima di disegnare ogni carosello, anche per le card secondarie.
+Cambiare titolo o rigenerare le immagini non azzera l'uso annuale; l'anno nuovo
+riapre la disponibilità. Il registro non modifica dati o fonti dell'Osservatorio.
+
 Il calendario settimanale si genera con:
 
 ```bash
