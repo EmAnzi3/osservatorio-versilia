@@ -231,6 +231,8 @@ def verify_public_page(bundle, release, dist, output):
     failures=[];validate_a7(missing.__getitem__,failures);assert failures,'public validator accepted missing asset'
     from test_a7_education_editorial import verify_education_artifacts
     verify_education_artifacts(bundle, folder, public_release, output)
+    from test_a7_work_income_reading import verify_work_artifacts
+    verify_work_artifacts(bundle, folder, public_release)
     overrides={};blocked=set();delayed={}
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self,*args):pass
@@ -283,6 +285,10 @@ def verify_public_page(bundle, release, dist, output):
                         if q['id']=='infanzia-centrale':
                             from test_a7_education_editorial import verify_education_browser
                             verify_education_browser(page, bundle, folder, output, width)
+                            text=page.locator('#risposta').inner_text()
+                        elif q['id']=='lavoro-centrale':
+                            from test_a7_work_income_reading import verify_work_browser
+                            verify_work_browser(page, bundle, folder, output, width)
                             text=page.locator('#risposta').inner_text()
                         else:
                             assert q['interpretationLimit'] in text
@@ -414,6 +420,77 @@ def verify_public_page(bundle, release, dist, output):
                 assert page.locator('#risposta').is_hidden() and page.locator('#domanda').is_visible()
                 assert page.locator('[data-education-pdf]').count()==0
                 page.close();report['checks']+=['shared_dossier_url_preserves_consent','missing_or_corrupt_pdf_download_refused','pdf_retry_clears_error_after_503_and_integrity_failure','change_question_clears_dossier_and_pdf']
+                for mode in ['unavailable','corrupt']:
+                    path='/chiedi/'+relative+'work.json'
+                    if mode=='unavailable':blocked.add(path)
+                    else:overrides[path]='{}'
+                    page=browser.new_page();page.goto(origin+'chiedi/')
+                    page.wait_for_function("() => document.querySelector('#stato').textContent.includes('non verificabili')")
+                    assert page.locator('#mostra').is_disabled() and page.locator('#risposta').is_hidden()
+                    page.close();overrides.clear();blocked.clear()
+                    report['checks'].append(mode+'_editorial_model_fail_closed')
+                # Territory belongs to the curated work view only. An
+                # unknown code must never silently display Massarosa's figures.
+                page=browser.new_page();page.goto(origin+'chiedi/?lettura=lavoro&comune=unknown#attivita')
+                page.locator('#comune-lavoro').wait_for()
+                assert page.locator('#risposta .work-content figure, [data-work-pdf]').count()==0
+                page.select_option('#comune-lavoro','046030')
+                assert 'Stazzema' in page.locator('#risposta').inner_text()
+                assert 'comune=046030' in page.url and page.url.endswith('#attivita')
+                page.reload();page.locator('#lavoro-attivita').wait_for()
+                assert page.locator('[data-work-income-accept]').count()==2
+                assert page.locator('#comune-lavoro').input_value()=='046030'
+                # A slow PDF from the old selection cannot download, or publish
+                # an obsolete error, after the reader changes municipality.
+                page.locator('.edu-navigation a[data-chapter="redditi"]').click()
+                page.locator('#lavoro-redditi [data-work-income-accept]').click()
+                page.locator('.edu-navigation a[data-chapter="attivita"]').click()
+                page.select_option('#comune-lavoro','046005')
+                old_pdf=page.locator('[data-work-pdf]').element_handle()
+                path='/chiedi/'+relative+'work-046005.pdf'
+                event=threading.Event();delayed[path]=event;downloads=[]
+                page.on('download',lambda download:downloads.append(download))
+                page.locator('[data-work-pdf]').click()
+                page.select_option('#comune-lavoro','046030');event.set()
+                page.wait_for_function('(element)=>!element.dataset.loading',arg=old_pdf)
+                assert not downloads and page.locator('#comune-lavoro').input_value()=='046030'
+                assert page.locator('#stato').get_attribute('data-work-error') is None
+                delayed.clear();page.close()
+                report['checks']+=['seven_town_readings_and_pdf_selection','unknown_territory_no_silent_fallback','shared_work_url_requires_fiscal_confirmation','stale_pdf_cannot_cross_town_selection']
+                # A shared dossier URL restores only an explicit question and
+                # chapter. It never bypasses the original consent requirement.
+                page=browser.new_page();page.goto(origin+'chiedi/?lettura=lavoro#redditi')
+                page.locator('#lavoro-redditi').wait_for()
+                assert page.locator('#lavoro-redditi svg').is_hidden()
+                unconfirmed=[];page.on('download',lambda download:unconfirmed.append(download))
+                page.locator('[data-work-pdf]').click()
+                assert not unconfirmed and page.locator('#lavoro-redditi svg').is_hidden()
+                page.locator('#lavoro-redditi [data-work-income-accept]').click()
+                assert page.locator('.edu-panel:visible').count()==1
+                for mode in ['unavailable','corrupt']:
+                    path='/chiedi/'+relative+'work-046018.pdf'
+                    if mode=='unavailable':blocked.add(path)
+                    else:overrides[path]=b'%PDF-altered'
+                    downloads=[];capture_download=lambda download:downloads.append(download);page.on('download',capture_download)
+                    page.locator('[data-work-pdf]').click()
+                    page.wait_for_function("() => document.querySelector('#stato').textContent.includes('Rapporto PDF non disponibile')")
+                    page.wait_for_function("() => !document.querySelector('[data-work-pdf]').dataset.loading")
+                    assert not downloads and page.locator('#lavoro-redditi').is_visible()
+                    assert page.locator('#stato').get_attribute('data-work-error')=='true'
+                    assert page.locator('#stato').is_visible()
+                    page.remove_listener('download',capture_download)
+                    overrides.clear();blocked.clear()
+                    with page.expect_download() as recovered:page.locator('[data-work-pdf]').click()
+                    assert Path(recovered.value.path()).read_bytes()==(folder/'work-046018.pdf').read_bytes()
+                    page.wait_for_function("() => !document.querySelector('[data-work-pdf]').dataset.loading")
+                    assert page.locator('#stato').get_attribute('data-work-error') is None
+                    assert page.locator('#stato').text_content()==''
+                    assert page.locator('#stato').evaluate("el => getComputedStyle(el).clipPath")=="inset(50%)"
+                    assert page.locator('#lavoro-redditi').is_visible()
+                page.locator('.edu-change').click()
+                assert page.locator('#risposta').is_hidden() and page.locator('#domanda').is_visible()
+                assert page.locator('[data-work-pdf]').count()==0
+                page.close();report['checks']+=['shared_work_chapter_requires_fiscal_confirmation','missing_or_corrupt_pdf_download_refused','pdf_retry_clears_error_after_503_and_integrity_failure','change_question_clears_dossier_and_pdf']
                 page=browser.new_page(java_script_enabled=False);page.goto(origin+'chiedi/')
                 assert page.locator('noscript a[href="'+relative+'answers.md"]').is_visible() and page.locator('#mostra').is_disabled()
                 page.close();report['checks']+=['native_shell_search','twelve_lossless_public_exports','no_question_storage_or_external_request','no_javascript_text_fallback','same_original_reader_and_bundle','white_controls_and_cards','ov_editorial_banner','public_italian_reading_technical_fields_folded','lossless_technical_details_and_export','full_width_editorial_banner','charts_match_canonical_observations_and_zero_scale']
@@ -426,7 +503,7 @@ def verify_public_page(bundle, release, dist, output):
                 page=context.new_page();page.goto(origin+'chiedi/')
                 page.locator('#mostra:enabled').wait_for();page.wait_for_function('() => navigator.serviceWorker.controller !== null')
                 # Real worker + HTTP fixture: old cached bytes must not win while online.
-                for filename in ['bundle.json','release.mjs','reader.mjs','preview.mjs','public.mjs','education.mjs','education.json']:
+                for filename in ['bundle.json','release.mjs','reader.mjs','preview.mjs','public.mjs','education.mjs','education.json','work.mjs','work.json', 'education.pdf', *[f'work-{code}.pdf' for code in __import__('a7_public_release').WORK_PDF_FILES]]:
                     url=relative+filename
                     page.evaluate('async url=>(await fetch(url)).text()',url)
                     marker='a7-fresh-network-'+filename;overrides['/chiedi/'+url]=marker
@@ -440,7 +517,7 @@ def verify_public_page(bundle, release, dist, output):
                     }''',url)
                     assert actual==marker,'A7 worker served stale online asset: '+filename+' '+repr(actual[:120])
                     overrides.clear()
-                    assert page.evaluate('async url=>(await fetch(url)).text()',url)==(folder/filename).read_text()
+                    assert page.evaluate("async url=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(url)).arrayBuffer())),b=>b.toString(16).padStart(2,'0')).join('')",url)==hashlib.sha256((folder/filename).read_bytes()).hexdigest()
                 # The reader must reject mixed offline cache, never turn it into a result.
                 page.evaluate('''async relative=>{
                     const keys=await caches.keys();

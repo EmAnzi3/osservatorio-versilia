@@ -246,6 +246,14 @@
     "radarRefreshContext": "ov-radar-refresh",
     "effectiveCatalogChecks": [
       {
+        "label": "A7 work/income independent frozen-input composition",
+        "script": "scripts/test_a7_work_income_reading.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
         "label": "A7 static pilot integrity, answers and browser parity",
         "script": "scripts/test_a7_static_pilot.py",
         "args": [

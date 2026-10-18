@@ -14,8 +14,9 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from build_a7_dossier_preview import preview, validate_repository_commit
 from site_chrome import ensure_sitemap_entries, extract_native_shell
-from a7_public_release import FILES, PDF_FILES, manifest_text
+from a7_public_release import FILES, PDF_FILES, WORK_PDF_FILES, manifest_text
 from a7_education_editorial import build_education, write_report, territorial_evidence
+from a7_work_income_reading import build as build_work, write_reports
 
 ROOT = Path(__file__).resolve().parents[1]
 URL = 'https://osservatorioversilia.it/chiedi/'
@@ -31,7 +32,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         stage = Path(tmp)
         preview(stage, commit, catalog=dist / 'data/site-data.json')
         original = BeautifulSoup((stage / 'index.html').read_text(encoding='utf-8'), 'html.parser')
-        for name in ['public.css', 'public.mjs', 'education.mjs']:
+        for name in ['public.css', 'public.mjs', 'education.mjs', 'work.mjs']:
             shutil.copyfile(ROOT / 'experiments/a7-dossier-preview' / name, stage / name)
         bundle = json.loads((stage / 'bundle.json').read_text())
         territorial = territorial_evidence(bundle, dist / 'data/site-data.json')
@@ -43,9 +44,16 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         for code, filename in PDF_FILES.items():
             write_report(reading['townReadings'][code], css, stage / filename)
         release = json.loads((stage / 'release.mjs').read_text().removeprefix('export default ').strip().removesuffix(';'))
+        work = build_work(dist / 'data/site-data.json', commit, release['bundleSha256'])
+        validate_repository_commit(dict(bundle, cases={key:entry for key,entry in work['evidence'].items()}), commit)
+        (stage / 'work.json').write_text(json.dumps(work, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
+        write_reports(work, stage, WORK_PDF_FILES)
+        (stage / 'public.css').write_text((stage / 'public.css').read_text() + '\n' + (ROOT / 'experiments/a7-dossier-preview/work.css').read_text())
         release.update(educationSha256=hashlib.sha256((stage / 'education.json').read_bytes()).hexdigest(),
                        educationPdfSha256=hashlib.sha256((stage / 'education.pdf').read_bytes()).hexdigest(),
-                       educationPdfs={code:dict(file=filename,sha256=hashlib.sha256((stage / filename).read_bytes()).hexdigest()) for code,filename in PDF_FILES.items()})
+                       educationPdfs={code:dict(file=filename,sha256=hashlib.sha256((stage / filename).read_bytes()).hexdigest()) for code,filename in PDF_FILES.items()},
+                       workSha256=hashlib.sha256((stage / 'work.json').read_bytes()).hexdigest(),
+                       workPdfs={code:dict(file=filename,sha256=hashlib.sha256((stage / filename).read_bytes()).hexdigest()) for code,filename in WORK_PDF_FILES.items()})
         (stage / 'release.mjs').write_text('export default ' + json.dumps(release, ensure_ascii=False, sort_keys=True) + ';\n')
         assets = {name: (stage / name).read_bytes() for name in FILES}
         manifest = manifest_text(assets)
@@ -65,7 +73,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     hero.h1.string = 'Chiedi alla Versilia'
     hero.select_one('.eyebrow').string = 'CONOSCERE IL TERRITORIO'
     hero.select_one('h1 + p').string = 'Famiglie, scuola, lavoro: parti dalle tue domande e scopri che cosa raccontano i dati del territorio.'
-    hero.select_one('.notice').string = 'Offerta educativa nei sette Comuni della Versilia; gli altri primi percorsi riguardano Massarosa. Ogni lettura indica periodi e informazioni da approfondire.'
+    hero.select_one('.notice').string = 'Offerta educativa e lavoro nei sette Comuni della Versilia; gli altri primi percorsi riguardano Massarosa. Ogni lettura indica periodi e informazioni da approfondire.'
     for selector, text in {
         '#scrivi':'Da dove vuoi partire?',
         'label[for=domanda-testo]':'Scrivi la tua domanda',
@@ -79,10 +87,10 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         '#accetta':'Prosegui con questi limiti',
     }.items(): original.select_one(selector).string=text
     original.select_one('#domanda-testo')['placeholder']='Per esempio: come cambia il lavoro a Massarosa?'
-    original.select_one('#selezione + p').string='La domanda sull’offerta educativa permette di scegliere fra i sette Comuni. Gli altri primi percorsi riguardano Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
+    original.select_one('#selezione + p').string='Le domande sull’offerta educativa e sulle trasformazioni del lavoro permettono di scegliere fra i sette Comuni. Gli altri primi percorsi riguardano Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
     original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
     original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
-    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Offerta educativa: sette Comuni · Altri percorsi: pilota Massarosa';hero.append(local_note)
+    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Offerta educativa e lavoro: sette Comuni · Altri percorsi: pilota Massarosa';hero.append(local_note)
     grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
     original.main.insert(0,grid)
     grid.append(original.select_one('#scrivi').parent)
@@ -102,7 +110,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     # The seven-route secondary-page stylesheet has its own approved scope.
     styles = '\n'.join(line for line in shell.styles.splitlines() if 'secondary-pages-ui.css' not in line)
     title = 'Chiedi alla Versilia · Osservatorio Versilia'
-    description = 'Esplora lavoro e infanzia/scuola a Massarosa con domande guidate, evidenze verificabili, fonti e limiti espliciti.'
+    description = 'Esplora lavoro, redditi e offerta educativa nei sette Comuni della Versilia con letture a capitoli, grafici, rapporti PDF e fonti verificabili.'
     image = 'https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg'
     image_alt = 'Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia'
     metas = {'og:title': title, 'og:description': description, 'og:type': 'website', 'og:locale': 'it_IT', 'og:url': URL, 'og:site_name': 'Osservatorio Versilia', 'og:image': image, 'og:image:alt': image_alt}
