@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import date
 from pathlib import Path
+import hashlib
+import json
 
 import opportunity_daily_refresh_audit_fixed as fixed
 import opportunity_regione_toscana_guard as guard
@@ -12,6 +14,75 @@ import opportunity_regione_toscana_guard as guard
 ROOT = Path(__file__).resolve().parents[1]
 C4T_ID = "eu-c4t-groundwork-2026"
 CERV_ID = "eu-cerv-town-twinning-2026"
+PROLOCO_ID = "rt-proloco-identita-locali-partner-2026"
+
+
+def test_proloco_documented_partnership() -> None:
+    """Real frozen source, not required_terms synthesized from the entry."""
+    from pypdf import PdfReader
+    from opportunity_municipal_relevance import apply_to_payload
+    fixture = ROOT / "tests/fixtures/proloco-notices"
+    provenance = json.loads((fixture / "provenance.json").read_text())
+    entry = next(e for e in fixed._load_fixes()["verifiedEntries"] if e["coverage_id"] == PROLOCO_ID)
+    document = fixture / "avviso.pdf"
+    assert hashlib.sha256(document.read_bytes()).hexdigest() == "d350edaa454a9e24fa3db658721869f2d60f60a91a9842c8b55af5b13d2aed9f"
+    assert entry["document_evidence"] == provenance["document"]
+    assert provenance["decree"]["annexAExpectedSha256"] == entry["document_evidence"]["sha256"]
+    assert entry["supporting_documents"] == provenance["supporting_documents"]
+    for label, expected_pages, expected_hash in (
+        ("B", 8, "d87ab7615eeaec9db868456fc04bb84f1757c9a789350f9537cd92884524a2d2"),
+        ("C", 3, "6722746568df649ce2756703e629718883ead7e533a7a9277bbaf8e4d6b6c2b7"),
+    ):
+        supporting = fixture / ("allegato-" + label + ".pdf")
+        assert hashlib.sha256(supporting.read_bytes()).hexdigest() == expected_hash
+        assert len(PdfReader(supporting).pages) == expected_pages
+    reader = PdfReader(document)
+    assert len(reader.pages) == 13
+    page2 = " ".join(reader.pages[1].extract_text().split())
+    page5 = " ".join(reader.pages[4].extract_text().split())
+    assert "realizzazione condivisa delle attività progettuali" in page2
+    assert "associazioni pro-loco iscritte" in page2
+    assert "attività e dei rispettivi ruoli" in page5
+    source = (fixture / "source.html").read_text()
+    assert hashlib.sha256((fixture / "source.html").read_bytes()).hexdigest() == provenance["pageSha256"]
+    assert entry["allow_recent_evidence_fallback"] is False
+    assert not fixed.core.verify_entry(entry, date(2026, 10, 18), live=False)[0]
+    details = {entry["url"]: source}
+    assert fixed.core.verify_entry(entry, date(2026, 10, 18), detail_payloads=details, live=False)[0]
+    # A changed application term must fail the current-source reconfirmation.
+    changed = source.replace("03.11.2026 13:00", "04.11.2026 13:00")
+    assert not fixed.core.verify_entry(entry, date(2026, 10, 18), detail_payloads={entry["url"]: changed}, live=False)[0]
+    result = {"opportunities": [], "coverageHold": [], "reviewQueue": [{"url": entry["url"], "title": "Pro Loco"}]}
+    fixed._inject_fix_entries(result, date(2026, 10, 18), detail_payloads=details, live=False)
+    items = [x for x in result["opportunities"] if x["coverage_id"] == PROLOCO_ID]
+    assert len(items) == 1
+    item = items[0]
+    assert item["municipality_role"] == "partner" and item["partnership_required"]
+    assert item["applicant_eligibility"] == "not_direct_applicant"
+    assert item["deadline_at"] == "2026-11-03" and item["deadline_time"] == "13:00"
+    assert set(item["municipality_eligibility"]) == set(fixed.core.TOWNS)
+    assert all(x["status"] == "conditional" for x in item["municipality_eligibility"].values())
+    apply_to_payload(result)
+    assert result["municipalRelevance"]["partnershipTotal"] == 1
+    assert result["municipalRelevance"]["headlineTotal"] == 0
+    assert not item["municipal_headline"]
+    candidate = {"url": entry["url"], "title": "Sostegno pro-loco", "published_at": "2026-10-14", "age_days": 4}
+    guard.apply(result, date(2026, 10, 18), candidates=[candidate])
+    assert result["regionalCompleteness"]["status"] == "pass"
+    assert not any(x.get("gate_origin") == "regional_completeness" for x in result["coverageHold"])
+    # Repeated injection cannot duplicate the card; other holds stay effective.
+    result["coverageHold"].append({"coverage_id": "unrelated", "reason": "unresolved"})
+    fixed._inject_fix_entries(result, date(2026, 10, 18), detail_payloads=details, live=False)
+    assert len([x for x in result["opportunities"] if x.get("coverage_id") == PROLOCO_ID]) == 1
+    assert {"coverage_id": "unrelated", "reason": "unresolved"} in result["coverageHold"]
+    missing = {"opportunities": []}
+    fixed._inject_fix_entries(missing, date(2026, 10, 18), live=False)
+    assert not any(x.get("coverage_id") == PROLOCO_ID for x in missing["opportunities"])
+    assert any(x.get("coverage_id") == PROLOCO_ID for x in missing["coverageHold"])
+    expired = {"opportunities": []}
+    fixed._inject_fix_entries(expired, date(2026, 11, 4), live=False)
+    assert not any(x.get("coverage_id") == PROLOCO_ID for x in expired["opportunities"])
+    assert any(x.get("coverage_id") == PROLOCO_ID for x in expired["archive"])
 
 
 def test_reviewed_regional_seeds() -> None:
@@ -80,7 +151,7 @@ def test_concrete_versilia_scope_excludes_only_reviewed_calls() -> None:
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
-    assert {e["coverage_id"] for e in entries} == {C4T_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026", "rt-generatori-kiev-cooperazione-2026"}
+    assert {e["coverage_id"] for e in entries} == {C4T_ID, PROLOCO_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026", "rt-generatori-kiev-cooperazione-2026"}
     entry = entries[0]
     assert entry.get("coverage_id") == C4T_ID
     assert entry.get("deadline_at") == "2026-09-11"
@@ -297,6 +368,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 
 
 def main() -> int:
+    test_proloco_documented_partnership()
     test_concrete_versilia_scope_excludes_only_reviewed_calls()
     test_reviewed_regional_seeds()
     test_c4t_source_and_verified_seed()
@@ -306,7 +378,7 @@ def main() -> int:
     test_overlay_reaches_real_v044_run_and_recomputes_counts(current_evidence=True)
     test_cerv_regression_contract_is_already_active()
     test_mercati_rionali_cross_source_contract()
-    print("Audit gap fixes: C4T + CERV + Mercati rionali PASS")
+    print("Audit gap fixes: C4T + CERV + Mercati rionali + Pro Loco documented partnership PASS")
     return 0
 
 

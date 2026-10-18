@@ -40,6 +40,49 @@ essere partito prima del timeout e deve risultare terminato o zombie dopo la
 pulizia, con gli stessi limiti e assert precedenti. Il codice di terminazione
 del runtime non cambia.
 
+## Avviso Pro Loco — qualificazione documentale del 18 ottobre 2026
+
+Il dry-run del primo candidato trasporto `9977c7`, run `39106642616`, ha
+riconfermato le richieste regionali ma si è fermato sul caso
+`rt-completeness-07ac9db033e1e3`: quattro giorni di review oltre la grazia di
+tre giorni. L'esito rimane FAIL, con pubblicazione saltata. Non basta correggere
+il trasporto per dichiarare risolto un caso documentale.
+
+Recuperati e letti integralmente il decreto 22288 del 7 ottobre 2026 e gli
+Allegati A (13 pagine), B (8) e C (3). L'impronta SHA256 dell'Allegato A
+`d350edaa454a9e24fa3db658721869f2d60f60a91a9842c8b55af5b13d2aed9f`
+coincide con quella riportata nel decreto; anche le impronte B/C coincidono.
+Le copie ufficiali e la pagina di fonte sono congelate in
+`tests/fixtures/proloco-notices/`, con URL, hash e articoli in `provenance.json`.
+Il link della pagina al decreto apre una rotta SPA nella ricerca atti; questo
+non rende indisponibili gli allegati della banca dati.
+
+L'art. 2 riserva domanda e contributo alle Pro Loco iscritte per il 2026.
+Gli artt. 1.3 e 6.1.d prevedono realizzazione condivisa e accordi con attività,
+ruoli e territorio espliciti; il criterio 7.C1 contempla la compartecipazione
+economica comunale. L'Allegato C, sezione 5, identifica i soggetti coinvolti.
+È quindi documentato un percorso di partnership operativa condizionata,
+non una candidatura diretta comunale. Non è accertata l'esistenza di un
+accordo, di una Pro Loco proponente o di un progetto in uno dei sette Comuni.
+
+La nuova voce riusa `verifiedEntries` dell'overlay audit canonico esistente:
+sette Comuni condizionati, Pro Loco beneficiaria, accordo operativo necessario,
+finestra entro il 3 novembre 2026 ore 13:00. Attività e spese devono concludersi
+nel 2026; contributo fino all'80%, tetti 15.000/10.000 euro secondo graduatoria,
+almeno 20% a carico del beneficiario. L'Allegato B non ammette la rendicontazione
+di spese sostenute da altri soggetti: nessun contributo diretto al Comune.
+La pagina primaria viene riconfermata dal percorso ordinario, senza fallback
+recente. Nessuna nuova fonte di discovery, regola generale, esclusione,
+estensione della grazia o soglia modificata.
+
+La regressione nell'esistente `test_opportunity_audit_gap_fixes.py` controlla
+PDF e pagina reali congelati, hash e articoli, ruolo e sette condizioni comunali,
+separazione dal conteggio principale, riconciliazione safety net, deduplicazione,
+variazione del termine, fonte mancante ed archiviazione. Un hold estraneo resta
+intatto. Non usa soltanto fixture costruite dai termini della voce.
+Le copie congelate verificano la qualificazione; un nuovo dry-run sulla head
+aggiornata deve ancora riconfermare disponibilità online e pubblicabilità.
+
 ## Diagnosi del 6 ottobre 2026
 
 Main era al merge #346 `93647a10`. Il run Radar `37469514913` ha completato
