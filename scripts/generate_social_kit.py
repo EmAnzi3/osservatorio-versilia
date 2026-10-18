@@ -869,8 +869,122 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         png_path = cards_dir / f"{filename}.png"
         write(svg_path, svg)
         render_png(svg_path, png_path, design["format"]["width"], design["format"]["height"])
-        write(destinatk½ù¶‰žËkºwµçUÍÐ€ôì(€€€€€€€€‰ÍÑ…ÑÕÌˆè€‰‘É…™Ðˆ°(€€€€€€€€‰µ•Ñ¡½ˆè€‰™½ÕÈµÍ±¥‘”µ…É½ÕÍ•°ˆ°(€€€€€€€€‰‘•Í¥¹}ÍåÍÑ•´ˆè‘•Í¥¹l‰Ù•ÉÍ¥½¸‰t°(€€€€€€€€‰Á½ÍÑ}¥ˆèÁ½ÍÑl‰¥‰t°(€€€€€€€€‰‘…Ñ”ˆèÁ½ÍÑl‰‘…Ñ”‰t°(€€€€€€€€‰™½Éµ…Ðˆè€ˆÄÀàÁàÄÌÔÀˆ°(€€€€€€€€‰Á±…Ñ™½ÉµÌˆè‘•Í¥¹l‰™½Éµ…Ð‰ul‰Á±…Ñ™½ÉµÌ‰t°(€€€€€€€€‰½ÕÑÁÕÑÌˆèl‰Á¹œˆ°€‰ÍÙœ‰t°(€€€€€€€€‰…É‘Ìˆè…É‘Ì°(€€€ô(€€€ÝÉ¥Ñ”¡‘•ÍÑ¥¹…Ñ¥½¸€¼€‰µ…¹¥™•ÍÐ¹©Í½¸ˆ°©Í½¸¹‘ÕµÁÌ¡µ…¹¥™•ÍÐ°•¹ÍÕÉ•}…Í¥¤õ…±Í”°¥¹‘•¹ÐôÈ¤€¬€‰q¸ˆ¤(€€€É•ÑÕÉ¸µ…¹¥™•ÍÐ(()‘•˜…±±•Éä¡µ…¹¥™•ÍÑÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´øÍÑÈè(€€€Í•Ñ¥½¹Ì€ômt(€€€™½Èµ…¹¥™•ÍÐ¥¸µ…¹¥™•ÍÑÌè(€€€€€€€™¥ÕÉ•Ì€ô€ˆˆ¹©½¥¸ (€€€€€€€€€€€˜œñ™¥ÕÉ”øñ¥µœÍÉŒô‰í•ÍŒ¡µ…¹¥™•ÍÑl‰Á½ÍÑ}¥‰t¥ô½…É‘Ì½í•ÍŒ¡…É‘l‰™¥±•¹…µ”‰t¥ô¹Á¹œˆ…±Ðôˆˆøñ™¥…ÁÑ¥½¸ùí•ÍŒ¡…É‘l‰Ñ¥Ñ±”‰t¥ôð½™¥…ÁÑ¥½¸øð½™¥ÕÉ”øœ(€€€€€€€€€€€™½È…É¥¸µ…¹¥™•ÍÑl‰…É‘Ì‰t(€€€€€€€€¤(€€€€€€€Í•Ñ¥½¹Ì¹…ÁÁ•¹¡˜œñÍ•Ñ¥½¸øñ Èùí•ÍŒ¡µ…¹¥™•ÍÑl‰Á½ÍÑ}¥‰t¥ôð½ Èøñ‘¥Ø±…ÍÌô‰É¥ˆùí™¥ÕÉ•Íôð½‘¥Øøð½Í•Ñ¥½¸øœ¤(€€€É•ÑÕÉ¸€ (€€€€€€€€œð…‘½ÑåÁ”¡Ñµ°øñ¡Ñµ°±…¹œô‰¥Ðˆøñµ•Ñ„¡…ÉÍ•Ðô‰ÕÑ˜´àˆøñµ•Ñ„¹…µ”ô‰Ù¥•ÝÁ½ÉÐˆ½¹Ñ•¹Ðô‰Ý¥‘Ñ õ‘•Ù¥”µÝ¥‘Ñ ±¥¹¥Ñ¥…°µÍ…±”ôÄˆøœ(€€€€€€€€œñÑ¥Ñ±”ùM½¥…°-¥Ðƒ
-Ü‰½éé”ð½Ñ¥Ñ±”øñÍÑå±”ù‰½‘åíµ…É¥¸èÀí‰…­É½Õ¹èŒÄÀÉÐÔí½±½Èè™™˜í™½¹Ðµ™…µ¥±äéÉ¥…°±Í…¹ÌµÍ•É¥™ôœ(€€€€€€€€µ…¥¹íµ…àµÝ¥‘Ñ èÄÈàÁÁàíµ…É¥¸é…ÕÑ¼íÁ…‘‘¥¹œèÌÙÁáô¹É¥‘í‘¥ÍÁ±…äéÉ¥íÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌéÉ•Á•…Ð È±µ¥¹µ…à À°Å™È¤¤í…ÀèÈÑÁáôœ(€€€€€€€€™¥ÕÉ•íµ…É¥¸èÀí‰…­É½Õ¹è™™˜íÁ…‘‘¥¹œèÄÁÁàí‰½É‘•ÈµÉ…‘¥ÕÌèÄÙÁáõ¥µí‘¥ÍÁ±…äé‰±½¬íÝ¥‘Ñ èÄÀÀ”í¡•¥¡Ðé…ÕÑ½õ™¥…ÁÑ¥½¹í½±½ÈèŒÄÀÉÐÔíÁ…‘‘¥¹œèÄÁÁàí™½¹ÐµÝ•¥¡ÐèÜÀÁôœ(€€€€€€€€µ•‘¥„¡µ…àµÝ¥‘Ñ èÜØÁÁà¥ì¹É¥‘íÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÅ™Éõôð½ÍÑå±”øñµ…¥¸øñ Äù=ÍÍ•ÉÙ…Ñ½É¥¼Y•ÉÍ¥±¥„ƒ
-ÜM½¥…°-¥Ðð½ Äøœ(€€€€€€€€¬€ˆˆ¹©½¥¸¡Í•Ñ¥½¹Ì¤€¬€ˆð½µ…¥¸øð½¡Ñµ°øˆ(€€€€¤(()‘•˜µ…¥¸ ¤€´ø¥¹Ðè(€€€Á…ÉÍ•È€ô…ÉÁ…ÉÍ”¹ÉÕµ•¹ÑA…ÉÍ•È¡‘•ÍÉ¥ÁÑ¥½¸õ}}‘½}|¤(€€€Á…ÉÍ•È¹…‘‘}…ÉÕµ•¹Ð ˆ´µÁ½ÍÐµ¥ˆ°¡•±Àô‰•¹•É„Õ¹„Í½±„Ù½”‘•°…±•¹‘…É¥¼ˆ¤(€€€Á…ÉÍ•È¹…‘‘}…ÉÕµ•¹Ð ˆ´µ±¥ÍÐµÁ½ÍÑÌˆ°…Ñ¥½¸ô‰ÍÑ½É•}ÑÉÕ”ˆ°¡•±Àô‰±•¹„±”Ù½¤½¹™¥ÕÉ…Ñ”ˆ¤(€€€…ÉÌ€ôÁ…ÉÍ•È¹Á…ÉÍ•}…ÉÌ ¤(€€€‘•Í¥¸€ô±½…¡-%P€¼€‰½¹™¥œˆ€¼€‰‘•Í¥¸µÍåÍÑ•´¹©Í½¸ˆ¤(€€€Ñ¡•µ•Ì€ô±½…¡-%P€¼€‰½¹™¥œˆ€¼€‰Ñ¡•µ•Ì¹©Í½¸ˆ¤(€€€…±•¹‘…È€ô±½…¡-%P€¼€‰½¹™¥œˆ€¼€‰•‘¥Ñ½É¥…°µ…±•¹‘…È¹©Í½¸ˆ¤(€€€¥˜…ÉÌ¹±¥ÍÑ}Á½ÍÑÌè(€€€€€€€™½ÈÁ½ÍÐ¥¸…±•¹‘…Él‰Á½ÍÑÌ‰tè(€€€€€€€€€€€ÁÉ¥¹Ð¡˜‰íÁ½ÍÑl‘…Ñ”uõqÑíÁ½ÍÑl¥uõqÑíÁ½ÍÑlÑ¡•µ”uõqÑíÁ½ÍÑlµ•ÑÉ¥ŒuõqÑíÁ½ÍÑlÍÑ…ÑÕÌuôˆ¤(€€€€€€€É•ÑÕÉ¸€À(€€€Á½ÍÑÌ€ô…±•¹‘…Él‰Á½ÍÑÌ‰t(€€€¥˜…ÉÌ¹Á½ÍÑ}¥è(€€€€€€€Á½ÍÑÌ€ômÁ½ÍÐ™½ÈÁ½ÍÐ¥¸Á½ÍÑÌ¥˜Á½ÍÑl‰¥‰t€ôô…ÉÌ¹Á½ÍÑ}¥‘t(€€€€€€€¥˜¹½ÐÁ½ÍÑÌè(€€€€€€€€€€€É…¥Í”Y…±Õ•ÉÉ½È¡˜‰Y½”¹½¸ÑÉ½Ù…Ñ„èí…ÉÌ¹Á½ÍÑ}¥‘ôˆ¤(€€€¥˜%MP¹•á¥ÍÑÌ ¤è(€€€€€€€Í¡ÕÑ¥°¹ÉµÑÉ•”¡%MP¤(€€€%MP¹µ­‘¥È¡Á…É•¹ÑÌõQÉÕ”¤(€€€µ…¹¥™•ÍÑÌ€ôm•¹•É…Ñ•}Á½ÍÐ¡Á½ÍÐ°‘•Í¥¸°Ñ¡•µ•Ì°%MP€¼Á½ÍÑl‰¥‰t¤™½ÈÁ½ÍÐ¥¸Á½ÍÑÍt(€€€ÝÉ¥Ñ”¡%MP€¼€‰¥¹‘•à¹¡Ñµ°ˆ°…±±•Éä¡µ…¹¥™•ÍÑÌ¤¤(€€€Ý••­Ì€ô½Õ¹Ñ•È¡‘…Ñ•Ñ¥µ”¹™É½µ¥Í½™½Éµ…Ð¡Á½ÍÑl‰‘…Ñ”‰t¤¹¥Í½…±•¹‘…È ¥lèÉt™½ÈÁ½ÍÐ¥¸Á½ÍÑÌ¤(€€€É½½Ñ}µ…¹¥™•ÍÐ€ôì(€€€€€€€€‰ÍÑ…ÑÕÌˆè€‰‘É…™Ðˆ°(€€€€€€€€‰µ•Ñ¡½ˆè€‰ÑÝ¼µ…É½ÕÍ•±ÌµÁ•ÈµÝ••¬ˆ°(€€€€€€€€‰‘•Í¥¹}ÍåÍÑ•´ˆè‘•Í¥¹l‰Ù•ÉÍ¥½¸‰t°(€€€€€€€€‰Á½ÍÑÌˆè±•¸¡Á½ÍÑÌ¤°(€€€€€€€€‰Í±¥‘•Ìˆè±•¸¡Á½ÍÑÌ¤€¨€Ð°(€€€€€€€€‰Ý••­±å}½Õ¹ÑÌˆèí˜‰íå•…Éôµ]íÝ••¬èÀÉ‘ôˆè½Õ¹Ð™½È€¡å•…È°Ý••¬¤°½Õ¹Ð¥¸Í½ÉÑ•¡Ý••­Ì¹¥Ñ•µÌ ¤¥ô°(€€€€€€€€‰¥Ñ•µÌˆèµ…¹¥™•ÍÑÌ°(€€€ô(€€€ÝÉ¥Ñ”¡%MP€¼€‰µ…¹¥™•ÍÐ¹©Í½¸ˆ°©Í½¸¹‘ÕµÁÌ¡É½½Ñ}µ…¹¥™•ÍÐ°•¹ÍÕÉ•}…Í¥¤õ…±Í”°¥¹‘•¹ÐôÈ¤€¬€‰q¸ˆ¤(€€€ÁÉ¥¹Ð¡˜‰M½¥…°-¥Ðèí±•¸¡Á½ÍÑÌ¥ô…É½Í•±±¤ƒ
-Üí±•¸¡Á½ÍÑÌ¤€¨€ÑôÑ…Ù½±”€ÄÀàÃ\ÄÌÔÀƒ
-ÜÍ½±¼‰½éé”ˆ¤(€€€É•ÑÕÉ¸€À(()¥˜}}¹…µ•}|€ôô€‰}}µ…¥¹}|ˆè(€€€É…¥Í”MåÍÑ•µá¥Ð¡µ…¥¸ ¤¤(
+        write(destination / "alt" / f"{filename}.txt", alt + "\n")
+        cards.append({"slide": index, "filename": filename, "title": titles[index - 1], "alt": alt})
+    for platform, copy in copy_for_platforms(copy_post, model, comp).items():
+        write(destination / "testi" / f"{platform}.txt", copy + "\n")
+    provenance = {
+        "status": "draft",
+        "post_id": post["id"],
+        "date": post["date"],
+        "priority": post["priority"],
+        "design_system": design["version"],
+        "theme": post["theme"],
+        "palette": {"accent": theme["accent"], "soft": theme["soft"]},
+        "dataset": {
+            "path": model["dataset_path"],
+            "version": model["dataset_version"],
+            "status": model["dataset_status"],
+            "updated": model["dataset_updated"],
+        },
+        "metric": model["metric"],
+        "source": model["source"],
+        "source_url": model["source_url"],
+        "method": model["method"],
+        "current_year": model["year"],
+        "current_values": {row["town"]: row["value"] for row in model["rows"]},
+        "history": {str(year): value for year, value in zip(years, history)},
+        "history_by_town": {
+            row["town"]: {
+                str(year): value
+                for year, value in zip(history_years, row["series"][history_model["years"].index(history_years[0]):])
+            }
+            for row in history_model["rows"]
+        } if history_years else {},
+        "slide_metrics": {
+            "1": model["metric"],
+            "2": history_model["metric"] if history_years else model["metric"],
+            "3": context_model["metric"] if context_model else model["metric"],
+            "4": model["metric"],
+        },
+        "companion_values": {
+            context_model["metric"]: {row["town"]: row["value"] for row in context_model["rows"]}
+        } if context_model else {},
+        "comparison": comp,
+        "questions": post["questions"],
+        "context_note": post.get("context_note"),
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    }
+    write(destination / "provenienza.json", json.dumps(provenance, ensure_ascii=False, indent=2) + "\n")
+    manifest = {
+        "status": "draft",
+        "method": "four-slide-carousel",
+        "design_system": design["version"],
+        "post_id": post["id"],
+        "date": post["date"],
+        "format": "1080x1350",
+        "platforms": design["format"]["platforms"],
+        "outputs": ["png", "svg"],
+        "cards": cards,
+    }
+    write(destination / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    return manifest
+
+
+def gallery(manifests: list[dict[str, Any]]) -> str:
+    sections = []
+    for manifest in manifests:
+        figures = "".join(
+            f'<figure><img src="{esc(manifest["post_id"])}/cards/{esc(card["filename"])}.png" alt=""><figcaption>{esc(card["title"])}</figcaption></figure>'
+            for card in manifest["cards"]
+        )
+        sections.append(f'<section><h2>{esc(manifest["post_id"])}</h2><div class="grid">{figures}</div></section>')
+    return (
+        '<!doctype html><html lang="it"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>Social Kit Â· bozze</title><style>body{margin:0;background:#102F45;color:#fff;font-family:Arial,sans-serif}'
+        'main{max-width:1280px;margin:auto;padding:36px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}'
+        'figure{margin:0;background:#fff;padding:10px;border-radius:16px}img{display:block;width:100%;height:auto}figcaption{color:#102F45;padding:10px;font-weight:700}'
+        '@media(max-width:760px){.grid{grid-template-columns:1fr}}</style><main><h1>Osservatorio Versilia Â· Social Kit</h1>'
+        + "".join(sections) + "</main></html>"
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--post-id", help="Genera una sola voce del calendario")
+    parser.add_argument("--list-posts", action="store_true", help="Elenca le voci configurate")
+    args = parser.parse_args()
+    design = load(KIT / "config" / "design-system.json")
+    themes = load(KIT / "config" / "themes.json")
+    calendar = load(KIT / "config" / "editorial-calendar.json")
+    if args.list_posts:
+        for post in calendar["posts"]:
+            print(f"{post['date']}\t{post['id']}\t{post['theme']}\t{post['metric']}\t{post['status']}")
+        return 0
+    posts = calendar["posts"]
+    if args.post_id:
+        posts = [post for post in posts if post["id"] == args.post_id]
+        if not posts:
+            raise ValueError(f"Voce non trovata: {args.post_id}")
+    if DIST.exists():
+        shutil.rmtree(DIST)
+    DIST.mkdir(parents=True)
+    manifests = [generate_post(post, design, themes, DIST / post["id"]) for post in posts]
+    write(DIST / "index.html", gallery(manifests))
+    weeks = Counter(datetime.fromisoformat(post["date"]).isocalendar()[:2] for post in posts)
+    root_manifest = {
+        "status": "draft",
+        "method": "two-carousels-per-week",
+        "design_system": design["version"],
+        "posts": len(posts),
+        "slides": len(posts) * 4,
+        "weekly_counts": {f"{year}-W{week:02d}": count for (year, week), count in sorted(weeks.items())},
+        "items": manifests,
+    }
+    write(DIST / "manifest.json", json.dumps(root_manifest, ensure_ascii=False, indent=2) + "\n")
+    print(f"Social Kit: {len(posts)} caroselli Â· {len(posts) * 4} tavole 1080Ã—1350 Â· solo bozze")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
