@@ -74,7 +74,7 @@ def verified_deadline_extension(receipt: dict, original: dict) -> dict | None:
     A matching institutional amendment updates the existing card identity;
     it never creates a new funding opportunity or widens admissibility.
     """
-    if (not original.get("coverage_id", "").startswith("mim-document-")
+    if (not str(original.get("coverage_id") or "").startswith("mim-document-")
             or not receipt.get("document") or receipt.get("transport") != "direct_https"
             or not trusted(receipt.get("resolvedUrl", ""))
             or not re.fullmatch(r"[0-9a-f]{64}", receipt.get("sha256", ""))):
@@ -462,6 +462,15 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                             seen.add(identity)
                         else:
                             core._append_archive(result, amendment)
+                        archived = next((x for x in result.get("archive") or []
+                                         if x.get("coverage_id") == identity), None)
+                        if archived is not None:
+                            if amendment["deadline_at"] >= today.isoformat():
+                                result["archive"] = [x for x in result["archive"]
+                                                     if x.get("coverage_id") != identity]
+                            else:
+                                archived.update(deadline_at=amendment["deadline_at"],
+                                                deadline_time=amendment["deadline_time"])
                         check.update(status="published_candidate" if amendment["deadline_at"] >= today.isoformat() else "expired",
                                      coverage_id=identity, deadline=amendment["deadline_at"])
                         document_check.update(status="verified_extension" if amendment["deadline_at"] >= today.isoformat() else "expired",
