@@ -473,12 +473,16 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                             seen.add(identity)
                         else:
                             core._append_archive(result, amendment)
+                        # Archival rows can be legacy/minimal: _append_archive
+                        # deduplicates on coverage_id OR id. Match the same
+                        # stable identity when updating/removing an archive row.
+                        archive_key = lambda entry: str(entry.get("coverage_id") or entry.get("id") or "")
                         archived = next((x for x in result.get("archive") or []
-                                         if x.get("coverage_id") == identity), None)
+                                         if archive_key(x) == identity), None)
                         if archived is not None:
                             if amendment["deadline_at"] >= today.isoformat():
                                 result["archive"] = [x for x in result["archive"]
-                                                     if x.get("coverage_id") != identity]
+                                                     if archive_key(x) != identity]
                             else:
                                 archived.update(deadline_at=amendment["deadline_at"],
                                                 deadline_time=amendment["deadline_time"])
