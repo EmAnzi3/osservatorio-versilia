@@ -94,7 +94,7 @@ def verified_deadline_extension(receipt: dict, original: dict) -> dict | None:
         return None
     # Direct PDF text may split a digit or insert spaces near clock separators.
     # Never relax date/protocol identity; compare the parsed original minute.
-    origin = re.search(r"originariamente\s+fissat[oa]\s+alle\s+ore\s+([\d\s]{1,4})\s*[:.]\s*([\d\s]{2,4})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    origin = re.search(r"originariamente\s+fis\s*sat[oa]\s+alle\s+ore\s+([\d\s]{1,4})\s*[:.]\s*([\d\s]{2,4})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
     later = re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
     if not origin or not later:
         return None
@@ -478,7 +478,7 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                             "subject": bool(re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", note_text, re.I)),
                             "unchangedConditions": bool(re.search(r"Restano ferme tutte le ulteriori disposizioni", note_text, re.I)),
                             "protocol": bool(re.search(r"Avviso pubblico prot\.\s*n\.\s*\d{5,7}", note_text, re.I)),
-                            "oldWindow": bool(re.search(r"originariamente\s+fissat[oa]\s+alle\s+ore\s+[\d\s]{1,4}\s*[:.]\s*[\d\s]{2,4}\s+del", note_text, re.I)),
+                            "oldWindow": bool(re.search(r"originariamente\s+fis\s*sat[oa]\s+alle\s+ore\s+[\d\s]{1,4}\s*[:.]\s*[\d\s]{2,4}\s+del", note_text, re.I)),
                             "oldWindowExcerpt": note_text[max(0, note_text.lower().find("originariamente")):][:175] if "originariamente" in note_text.lower() else None,
                             "newWindow": bool(re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
                         }
