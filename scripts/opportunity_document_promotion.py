@@ -39,7 +39,7 @@ def notice_reference(url):
     """Protocol plus issue date, not a topic/title guess, links ministry copies."""
     name = unquote(urlsplit(url).path.rsplit("/", 1)[-1])
     original = re.search(r"\.0*(\d{5,7})\.(\d{2})-(\d{2})-(\d{4})", name)
-    copy = re.search(r"n\.?\s*0*(\d{5,7})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", name, re.I)
+    copy = re.search(r"n[. -]*0*(\d{5,7})[ -]+del[ -]+(\d{1,2})[ -]+(\w+)[ -]+(\d{4})", name, re.I)
     try:
         if original:
             protocol, day, month, year = map(int, original.groups())
@@ -65,6 +65,61 @@ def supporting_faq(receipt, item):
                 and re.search(r"\bFAQ\b.*QUESITO\s+N\.?\s*1\b.*RISPOSTA",raw,re.I)
                 and "IL DIRIGENTE" in raw
                 and not re.search(r"riapertura|proroga|nuova finestra",raw,re.I))
+
+
+
+def verified_deadline_extension(receipt: dict, original: dict) -> dict | None:
+    """Accept only a signed, directly acquired MIM note tied to a verified call.
+
+    A matching institutional amendment updates the existing card identity;
+    it never creates a new funding opportunity or widens admissibility.
+    """
+    if (not str(original.get("coverage_id") or "").startswith("mim-document-")
+            or not receipt.get("document") or receipt.get("transport") != "direct_https"
+            or not trusted(receipt.get("resolvedUrl", ""))
+            or not re.fullmatch(r"[0-9a-f]{64}", receipt.get("sha256", ""))):
+        return None
+    raw = re.sub(r"\s+", " ", receipt.get("text") or "").strip()
+    if not (re.match(r"Ministero dell[’']istruzione e del merito", raw, re.I)
+            and "IL DIRETTORE GENERALE" in raw
+            and re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", raw, re.I)
+            and re.search(r"Restano ferme tutte le ulteriori disposizioni", raw, re.I)):
+        return None
+    cited = re.search(r"Avviso pubblico prot\.\s*n\.\s*(\d{5,7})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    reference = notice_reference(original.get("url", ""))
+    if not cited or not reference or cited[3].lower() not in MONTHS:
+        return None
+    source_protocol = (int(cited[1]), date(int(cited[4]), MONTHS[cited[3].lower()], int(cited[2])).isoformat())
+    if source_protocol != reference:
+        return None
+    # Direct PDF text may split a digit or insert spaces near clock separators.
+    # Never relax date/protocol identity; compare the parsed original minute.
+    origin = re.search(r"originariamente\s+fis\s*sat[oa]\s+alle\s+ore\s+([\d\s]{1,4})\s*[:.]\s*([\d\s]{2,4})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    later = re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+(\d{1,2})[:.](\d{2})\s+del\s+(\d{1,2})\s+(\w+)\s+(\d{4})", raw, re.I)
+    if not origin or not later:
+        return None
+    def endpoint(groups):
+        hour, minute, day, month, year = groups
+        hour, minute = int(hour.replace(" ", "")), int(minute.replace(" ", ""))
+        if month.lower() not in MONTHS or not (0 <= hour < 24 and 0 <= minute < 60):
+            raise ValueError("Data/orario di proroga non validi")
+        return date(int(year), MONTHS[month.lower()], int(day)).isoformat(), f"{hour:02}:{minute:02}"
+    old_date, old_time = endpoint(origin.groups())
+    new_date, new_time = endpoint(later.groups())
+    if (old_date, old_time) >= (new_date, new_time):
+        raise ValueError("La nota non posticipa il termine")
+    if (original.get("deadline_at"), original.get("deadline_time")) != (old_date, old_time):
+        # A repeated note is idempotent only when its exact signed PDF is known.
+        existing = original.get("amendment_evidence") or {}
+        if (original.get("deadline_at"), original.get("deadline_time")) == (new_date, new_time) and existing.get("sha256") == receipt["sha256"]:
+            return dict(original)
+        return None
+    item = dict(original)
+    item.update(deadline_at=new_date, deadline_time=new_time,
+                amendment_evidence={k: v for k, v in receipt.items() if k != "text"})
+    item["description"] = re.sub(r"entro il\s+\d{4}-\d{2}-\d{2}\s+alle\s+\d{2}:\d{2}",
+                                 f"entro il {new_date} alle {new_time}", item.get("description") or "")
+    return item
 
 
 class _Redirect(urllib.request.HTTPRedirectHandler):
@@ -393,6 +448,75 @@ def apply_promotions(result: dict, today: date, *, previous: dict | None = None,
                 try:
                     receipt = load_document(document_url)
                     document_check.update(resolvedUrl=receipt.get("resolvedUrl"), sha256=receipt.get("sha256"))
+                    # Amendments have no Articles 1–3. Verify the original
+                    # protocol, old window, new window and direct signed PDF.
+                    amendment = None
+                    # The original notice may already be archived. Keep its
+                    # stable id and old deadline, so a signed note can close
+                    # an existing archival record without manufacturing a new
+                    # public call or treating an expired window as reopened.
+                    archival_candidates = []
+                    for archived in [*(result.get("archive") or []),
+                                     *((previous or {}).get("archive") or [])]:
+                        identity = str(archived.get("coverage_id") or archived.get("id") or "")
+                        if (identity.startswith("mim-document-") and
+                                archived.get("source_id") == "mim-enti-locali"):
+                            archival_candidates.append(dict(archived, coverage_id=identity))
+                    if "proroga" in str(lead.get("title") or "").casefold():
+                        # Internal evidence audit: fail closed, but explain
+                        # precisely why a real signed amendment did not match.
+                        note_text = re.sub(r"\s+", " ", receipt.get("text") or "").strip()
+                        check["amendmentProbe"] = {
+                            "archiveCandidates": [
+                                {"id": x.get("coverage_id"), "reference": notice_reference(x.get("url", "")),
+                                 "deadline": x.get("deadline_at"), "time": x.get("deadline_time")}
+                                for x in archival_candidates
+                            ],
+                            "direct": receipt.get("transport") == "direct_https",
+                            "header": bool(re.match(r"Ministero dell[’']istruzione e del merito", note_text, re.I)),
+                            "signature": "IL DIRETTORE GENERALE" in note_text,
+                            "subject": bool(re.search(r"Oggetto:\s*Proroga del termine di presentazione delle candidature", note_text, re.I)),
+                            "unchangedConditions": bool(re.search(r"Restano ferme tutte le ulteriori disposizioni", note_text, re.I)),
+                            "protocol": bool(re.search(r"Avviso pubblico prot\.\s*n\.\s*\d{5,7}", note_text, re.I)),
+                            "oldWindow": bool(re.search(r"originariamente\s+fis\s*sat[oa]\s+alle\s+ore\s+[\d\s]{1,4}\s*[:.]\s*[\d\s]{2,4}\s+del", note_text, re.I)),
+                            "oldWindowExcerpt": note_text[max(0, note_text.lower().find("originariamente")):][:175] if "originariamente" in note_text.lower() else None,
+                            "newWindow": bool(re.search(r"(?:è|e[’'])\s+prorogato alle ore\s+\d{1,2}[:.]\d{2}", note_text, re.I)),
+                        }
+                    for candidate in [*items, *old, *archival_candidates]:
+                        amendment = verified_deadline_extension(receipt, candidate)
+                        if amendment is not None:
+                            break
+                    if "amendmentProbe" in check:
+                        check["amendmentProbe"]["matched"] = amendment is not None
+                    if amendment is not None:
+                        identity = amendment["coverage_id"]
+                        current = next((x for x in items if x.get("coverage_id") == identity), None)
+                        if current is not None:
+                            current.update(amendment)
+                        elif amendment["deadline_at"] >= today.isoformat():
+                            items.append(amendment)
+                            seen.add(identity)
+                        else:
+                            core._append_archive(result, amendment)
+                        # Archival rows can be legacy/minimal: _append_archive
+                        # deduplicates on coverage_id OR id. Match the same
+                        # stable identity when updating/removing an archive row.
+                        archive_key = lambda entry: str(entry.get("coverage_id") or entry.get("id") or "")
+                        archived = next((x for x in result.get("archive") or []
+                                         if archive_key(x) == identity), None)
+                        if archived is not None:
+                            if amendment["deadline_at"] >= today.isoformat():
+                                result["archive"] = [x for x in result["archive"]
+                                                     if archive_key(x) != identity]
+                            else:
+                                archived.update(deadline_at=amendment["deadline_at"],
+                                                deadline_time=amendment["deadline_time"])
+                        check.update(status="published_candidate" if amendment["deadline_at"] >= today.isoformat() else "expired",
+                                     coverage_id=identity, deadline=amendment["deadline_at"])
+                        document_check.update(status="verified_extension" if amendment["deadline_at"] >= today.isoformat() else "expired",
+                                              coverage_id=identity, deadline=amendment["deadline_at"])
+                        promoted_urls.add(url)
+                        break
                     existing = next((x for x in items if x.get("coverage_id") == check.get("coverage_id")), None)
                     if existing and supporting_faq(receipt,existing):
                         document_check.update(status="verified_support")
