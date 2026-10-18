@@ -64,6 +64,10 @@ def assess(operation, observations, *, policy=None):
     spec = contract['operations'][operation]
     if len(valid) < spec['minimumObservations']:
         reasons.append('insufficient_observations')
+    if operation == 'observe' and len(observations) != 1:
+        reasons.append('exactly_one_observation_required')
+    if operation == 'observe' and any(o.get('unit') == 'category_code' for o in valid):
+        reasons.append('categorical_codes_are_not_numeric_observations')
     for field in spec['equalFields']:
         if len({str(o.get(field)) for o in valid}) > 1:
             reasons.append(f'incompatible:{field}')

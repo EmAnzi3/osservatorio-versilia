@@ -252,6 +252,30 @@
           "--catalog",
           "dist/data/site-data.json"
         ]
+      },
+      {
+        "label": "A7 general query discovery and evidence plans",
+        "script": "scripts/test_a7_query_workbench.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
+        "label": "A7 native point observations and availability",
+        "script": "scripts/test_a7_point_observations.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
+        "label": "A7 acceptance question feasibility on actual catalog",
+        "script": "scripts/audit_a7_question_feasibility.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
       }
     ]
   },

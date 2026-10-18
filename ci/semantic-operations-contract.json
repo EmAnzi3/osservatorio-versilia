@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "scope": "A6.2-A6.3 eligibility and A6.4 explicit numerical/locality-lookup adapters",
   "descriptorFields": [
     "metric",
@@ -183,6 +183,20 @@
         "reportedQualifier",
         "reportedNumber"
       ]
+    },
+    "observe": {
+      "formula": "one native observation with explicit municipality and reference period; no aggregation or comparison",
+      "equalFields": [
+        "metric",
+        "dimension",
+        "unit",
+        "population",
+        "definition",
+        "method",
+        "frequency",
+        "period"
+      ],
+      "minimumObservations": 1
     }
   },
   "rounding": "retain input precision; round only displayed result",

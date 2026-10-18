@@ -68,13 +68,13 @@ import semantic_query_regional_adapters as regional
 import semantic_query_tourism_adapters as tourism
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '56'
+VERSION = '57'
 NUMERICAL_SUPPORTED = ('compare', 'series', 'absolute_change', 'relative_change', 'rank', 'trend', 'correlation', 'percentage_points', 'weighted_ratio', 'benchmark_gap', 'anomaly')
 TEMPORAL = ('series', 'absolute_change', 'relative_change', 'trend', 'percentage_points')
 SNAPSHOT = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 
 
-SUPPORTED = (*NUMERICAL_SUPPORTED, 'lookup')
+SUPPORTED = (*NUMERICAL_SUPPORTED, 'lookup', 'observe')
 
 
 def digest(body):
@@ -179,7 +179,7 @@ def dimensions(key):
     return ['total']
 
 
-def operations(key, dimension, unit):
+def _existing_operations(key, dimension, unit):
     if key in turnout.KEYS:return turnout.operations(key,dimension)
     if key in energy.KEYS:return energy.operations(key,dimension)
     if key in pnrr.KEYS:return pnrr.operations(key,dimension)
@@ -253,6 +253,11 @@ def benchmark_scopes(key, dimension):
     return (atlas.scopes(key,dimension) if key in atlas.KEYS else outside.scopes(key,dimension) if key in outside.KEYS else omi.scopes(key,dimension) if key in omi.KEYS else energy.scopes(key,dimension) if key in energy.KEYS else pnrr.scopes(key,dimension) if key in pnrr.KEYS else turnout.scopes(key,dimension) if key in turnout.KEYS else third_sector.scopes(key,dimension) if key in third_sector.KEYS else slow_mobility.scopes(key,dimension) if key in slow_mobility.KEYS else road_network.scopes(key,dimension) if key in road_network.KEYS else seasonality.scopes(key,dimension) if key in seasonality.KEYS else hospital.scopes(key,dimension) if key in hospital.KEYS else real_income.scopes(key,dimension) if key in real_income.KEYS else erp.scopes(key,dimension) if key in erp.KEYS else tpl.scopes(key,dimension) if key in tpl.KEYS else taxes.scopes(key,dimension) if key in taxes.KEYS else vehicles.scopes(key,dimension) if key in vehicles.KEYS else road.scopes(key,dimension) if key in road.KEYS else connectivity.scopes(key,dimension) if key in connectivity.KEYS else facilities.scopes(key,dimension) if key in facilities.KEYS else social.scopes(key,dimension) if key in social.KEYS else invalsi.scopes(key,dimension) if key in invalsi.KEYS else library.scopes(key,dimension) if key in library.KEYS else regional.scopes(key,dimension) if key in regional.KEYS else tourism.scopes(key,dimension) if key in tourism.KEYS else rgs.scopes(key,dimension) if key in rgs.KEYS else mef.scopes(key,dimension) if key in mef.KEYS else profiles.scopes(key,dimension) if key in profiles.KEYS else [] if key in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(key,dimension) if key in coast.KEYS else fragility.scopes(key) if key in fragility.KEYS else [] if key in hazard.KEYS else [] if key in territory.KEYS else soil.scopes(key,dimension) if key in soil.KEYS else geography.scopes(key,dimension) if key in geography.KEYS else agriculture.scopes(key,dimension) if key in agriculture.KEYS else ['tuscany','italy'] if key in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(key,dimension) if key in demography.KEYS else census.benchmark_scopes(key,dimension) if key in census.KEYS else business.benchmark_scopes(key,dimension) if key in business.KEYS else ['versilia'] if key in ars.LEGACY_ONLY else ['tuscany','versilia'] if key in ars.KEYS or key=='elderlyHomeCare' else ['tuscany'] if key in territorial.RATIOS else ['tuscany','italy'] if key in CENSUS or key in ('income','ageDistribution') else [])
 
 
+def operations(key, dimension, unit):
+    existing = _existing_operations(key, dimension, unit)
+    return [*existing, 'observe'] if 'compare' in existing and key not in classification.KEYS else existing
+
+
 def mean(values):
     return math.fsum(values) / len(values)
 
@@ -295,7 +300,7 @@ def calculate(operation, observations, policy):
         return {'observations':[o for o in observations if o.get('value') is not None and not o.get('notApplicable') and not o.get('dataUnavailable')]}
     usable = [o for o in observations if finite(o.get('value')) and not o.get('notApplicable') and not o.get('dataUnavailable')]
     values = [o['value'] for o in usable]
-    if operation in ('compare', 'series'):
+    if operation in ('compare', 'series', 'observe'):
         return {'observations': usable}
     if operation == 'rank':
         ordered = sorted(usable, key=lambda o: (-o['value'], o['geography']))
@@ -607,6 +612,30 @@ class QueryEngine:
     def select(self, selector, operation):
         if not isinstance(selector,dict) or set(selector)-{'metric','dimension','towns','periods','localities'}:
             raise ValueError('invalid_selector_fields')
+        if operation == 'observe':
+            # One native observation, never a hidden peer comparison or aggregate.
+            towns = selector.get('towns')
+            if not isinstance(towns, list) or len(towns) != 1:
+                raise ValueError('observe_requires_one_explicit_municipality')
+            if 'periods' in selector and (not isinstance(selector['periods'], list) or len(selector['periods']) != 1):
+                raise ValueError('observe_requires_one_period')
+            key = selector.get('metric')
+            if key not in self._catalog['metrics']:
+                raise ValueError('unknown_metric')
+            dimension = selector.get('dimension', 'total')
+            if key in classification.KEYS:
+                classification.selection_guard(key, dimension, operation)
+            if key in water_quality.KEYS:
+                raise ValueError('observe_numeric_adapter_required_use_declared_lookup')
+            # Reuse all native selection/provenance/period guards; compare's
+            # minimum sample guard remains intact in query()/assess().
+            selected, warnings = self.select(selector, 'compare')
+            context = self.context(key, dimension)
+            if 'compare' not in _existing_operations(key, dimension, context['unit']):
+                raise ValueError('observe_numeric_adapter_required_use_declared_lookup')
+            if len(selected) != 1:
+                raise ValueError('observe_requires_one_native_observation')
+            return selected, warnings
         key = selector.get('metric')
         if key not in self._catalog['metrics']:
             raise ValueError('unknown_metric')
@@ -827,6 +856,7 @@ class QueryEngine:
                 selected,warnings = self.select(selector,operation)
                 observations.extend(selected);notes.extend(warnings)
             if operation == 'lookup':result['interpretationLevel'] = 'source_lookup'
+            if operation == 'observe':result['interpretationLevel'] = 'observation'
             if operation == 'compare' and selectors[0]['metric'] in classification.KEYS:
                 result['interpretationLevel'] = 'category_lookup'
             if operation == 'benchmark_gap':
