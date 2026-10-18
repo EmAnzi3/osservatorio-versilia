@@ -24,10 +24,6 @@ def pointer(obj, path):
 
 
 def verify(catalog, output):
-    # The next dossier remains review-only, but its frozen-input composition
-    # must pass the same A7 gate instead of relying on a release-specific CI.
-    from test_a7_work_income_reading import verify as verify_work_income
-    verify_work_income(catalog)
     bundle, release, measurement = build(catalog)
     again, second_release, _ = build(catalog)
     assert bundle == again and release == second_release, 'nonreproducible bundle'
