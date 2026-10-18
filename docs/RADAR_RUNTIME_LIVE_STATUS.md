@@ -1,5 +1,43 @@
 # Radar: budget di esecuzione e stato della pubblicazione
 
+## Trasporto regionale — correzione candidata del 18 ottobre 2026
+
+Il run [39093561987](https://github.com/EmAnzi3/osservatorio-versilia/actions/runs/39093561987/job/117575186565)
+si è fermato con `coverageHold=1` e `regionalCompleteness=fail`.
+Il journal mostra richieste Regione Toscana rifiutate dopo l'esaurimento del
+budget condiviso della fonte e un allegato con spazi nel percorso rifiutato
+dal client HTTP. Persistenza e pubblicazione sono state saltate.
+
+La correzione candidata mantiene 60 secondi per endpoint, 180 cumulativi per
+fonte/host e 1.200 per scansione. Non aumenta i limiti: riserva 60 secondi alle
+verifiche ufficiali e 30 al controllo di completezza di `www.regione.toscana.it`,
+oltre ai 30 già riservati alla continuità. Sul dominio regionale la discovery
+ordinaria può quindi spendere al massimo 60 secondi, la verifica ufficiale 120,
+il safety net regionale 150 e la continuità 180, sempre cumulativi e soggetti
+alla scadenza globale. La riserva regionale non riduce il budget degli altri host.
+
+Il safety net usa un tipo di richiesta distinto nel journal. Non cambia
+classificazione, finestre temporali o destinatari; se le riserve o la scansione
+scadono, la richiesta resta un errore e i gate possono ancora bloccare il run.
+La codifica degli URL PDF conserva `%2F`, `%20`, `+`, parametri e firme già
+codificati; tratta soltanto i caratteri non validi per il trasporto e rimuove il
+frammento, che non viene inviato al server. La deduplicazione degli allegati
+riconosce la stessa risorsa scritta con spazi o `%20`.
+
+Regressioni negli script esistenti `test_opportunity_discovery_resilience.py`
+e `test_opportunity_run_report.py`: richieste HTTP locali reali nelle diverse
+fasi, esaurimento per fonte/scansione, continuità, URL osservato nel run, Unicode,
+query firmate e deduplicazione. Queste prove verificano il codice; non attestano
+la disponibilità corrente delle fonti esterne né un nuovo snapshot pubblicato.
+Quick/Full locali e CI del candidato restano necessari prima del merge.
+
+Il test di terminazione del gruppo di processi legge il PID esposto da `/proc`
+dal figlio stesso: in un container con namespace PID annidato `Popen.pid` può
+identificare un altro processo nella vista procfs dell'host. Il figlio deve
+essere partito prima del timeout e deve risultare terminato o zombie dopo la
+pulizia, con gli stessi limiti e assert precedenti. Il codice di terminazione
+del runtime non cambia.
+
 ## Diagnosi del 6 ottobre 2026
 
 Main era al merge #346 `93647a10`. Il run Radar `37469514913` ha completato

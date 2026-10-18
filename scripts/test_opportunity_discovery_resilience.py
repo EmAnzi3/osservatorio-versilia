@@ -734,9 +734,16 @@ def _test_expired_worker_kills_descendants() -> None:
     original_popen = subprocess.Popen
     with tempfile.TemporaryDirectory() as tmp:
         pid_file = Path(tmp) / "descendant.pid"
-        code = ("import subprocess,time,pathlib; "
-                "p=subprocess.Popen(['" + sys.executable + "','-c','import time; time.sleep(30)']); "
-                "pathlib.Path(" + repr(str(pid_file)) + ").write_text(str(p.pid)); time.sleep(30)")
+        # /proc can be mounted in an outer PID namespace (Work containers).
+        # Have the actual descendant record its procfs identity, rather than
+        # reading an unrelated host process at its namespace-local Popen.pid.
+        child = ("import time,pathlib; "
+                 "status=pathlib.Path('/proc/self/status').read_text(); "
+                 "pid=next(line.split()[1] for line in status.splitlines() if line.startswith('Pid:')); "
+                 "pathlib.Path(" + repr(str(pid_file)) + ").write_text(pid); time.sleep(30)")
+        code = ("import subprocess,time; "
+                "p=subprocess.Popen([" + repr(sys.executable) + ",'-c'," + repr(child) + "]); "
+                "time.sleep(30)")
         def stalled_worker(command, **kwargs):
             return original_popen([sys.executable, "-c", code], **kwargs)
         budget = bounded.TransportBudget({}, endpoint_seconds=0.5, journal=Path(tmp) / "trace.jsonl")
@@ -886,7 +893,61 @@ def _test_route_diagnostics_preserve_failures_and_tls() -> None:
         smoke.subprocess.run = original_run
 
 
+def _test_verification_and_regional_budget_reserves() -> None:
+    import tempfile
+    import threading
+    from pathlib import Path
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    import opportunity_transport_budget as bounded
+    import opportunity_regione_toscana_guard as regional
+    import opportunity_discovery_resilient as discovery
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200); self.end_headers()
+            self.wfile.write(b"<html>official regional notice</html>")
+        def log_message(self, *args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    host = f"127.0.0.1:{server.server_port}"
+    url = "http://" + host
+    original = discovery.LIVE_BUDGET
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            budget = bounded.TransportBudget({}, endpoint_seconds=5, source_seconds=10,
+                scan_seconds=30, continuity_reserve_seconds=1,
+                verification_reserve_seconds=3, regional_reserve_seconds=2,
+                regional_hosts={host}, journal=Path(directory)/"journal.jsonl")
+            deadline = budget.deadline
+            budget.host_spent[host] = 4.1
+            assert budget.fetch(url+"/discovery")[0] is None
+            assert budget.fetch(url+"/verification", kind="official_http")[1]["status"] == "ok"
+            budget.host_spent[host] = 7.1
+            assert budget.fetch(url+"/verification-exhausted", kind="official_http")[0] is None
+            discovery.LIVE_BUDGET = budget
+            assert "official regional notice" in regional._default_fetch(url+"/regional")
+            budget.host_spent[host] = 9.1
+            try:
+                regional._default_fetch(url+"/regional-exhausted")
+            except discovery.DiscoveryFetchError as error:
+                assert error.diagnostics["budgetScope"] == "source"
+            else:
+                raise AssertionError("regional reserve exhaustion hidden")
+            assert budget.fetch(url+"/continuity", kind="continuity")[1]["status"] == "ok"
+            assert budget.source_seconds == 10 and budget.endpoint_seconds == 5
+            assert budget.deadline == deadline
+            budget.deadline = 0
+            assert budget.fetch(url+"/scan-exhausted", kind="regional_completeness")[0] is None
+            assert budget.scan_exhausted
+    finally:
+        discovery.LIVE_BUDGET = original
+        server.shutdown(); server.server_close()
+
+
 def main() -> int:
+    _test_verification_and_regional_budget_reserves()
     _test_route_diagnostics_preserve_failures_and_tls()
     _test_anci_toscana_short_cards_are_isolated()
     _test_annual_archive_follows_current_year()

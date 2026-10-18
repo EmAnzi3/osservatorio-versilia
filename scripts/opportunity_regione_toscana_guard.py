@@ -176,6 +176,15 @@ def _account_state(result: dict[str, Any], candidate: dict[str, Any]) -> str | N
 
 
 def _default_fetch(url: str) -> str:
+    import opportunity_discovery_resilient as discovery
+    if discovery.LIVE_BUDGET is not None:
+        payload, diagnostics = discovery.LIVE_BUDGET.fetch(
+            url, timeout=30, attempts=1, kind="regional_completeness")
+        discovery._record_trace(url, diagnostics)
+        if payload is None:
+            raise discovery.DiscoveryFetchError(
+                "; ".join(diagnostics.get("errors") or []), diagnostics)
+        return payload
     return radar.v025.v022.fetch_resilient(url, timeout=30, attempts=1)
 
 

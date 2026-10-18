@@ -71,6 +71,7 @@ def _test_coverage_failure_names_expired_evidence() -> None:
 
 
 def main() -> int:
+    _test_pdf_request_url_encoding()
     _test_coverage_failure_names_expired_evidence()
     _test_actionable_document_review()
     _test_discovery_noise()
@@ -532,6 +533,37 @@ def _test_discovery_noise():
         assert visited == [shared_url], "Un segnale valido con URL condiviso deve conservare la ricerca allegati"
     noise_only = {"referenceDate": reference, "discoveryNoise": [noisy, discarded[3]]}
     assert build_actions(noise_only)["discardedCount"] == 1
+
+
+def _test_pdf_request_url_encoding():
+    from types import SimpleNamespace
+    from unittest.mock import patch
+    import opportunity_pdf_evidence as pdf
+    raw = "https://www.regione.toscana.it/documents/10180/Slides di presentazione dell'Avviso.pdf/uuid"
+    expected = "https://www.regione.toscana.it/documents/10180/Slides%20di%20presentazione%20dell'Avviso.pdf/uuid"
+    assert pdf.request_url(raw) == expected
+    assert pdf.request_url(expected) == expected
+    signed = "https://example.test/a%2Fb/città.pdf?sig=a%2Fb%2Bc+d&name=À x#page=2"
+    normalized = "https://example.test/a%2Fb/citt%C3%A0.pdf?sig=a%2Fb%2Bc+d&name=%C3%80%20x"
+    assert pdf.request_url(signed) == normalized
+    assert pdf.request_url(normalized) == normalized
+    html = f'<a href="{raw}">Avviso PDF</a><a href="{expected}">Avviso PDF</a>'
+    assert pdf.pdf_links(html, "https://www.regione.toscana.it/") == [expected]
+    requests = []
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self, *args): pass
+        def read(self): return b"PDF test bytes"
+    def open_pdf(request, **kwargs):
+        requests.append(request.full_url)
+        assert request.full_url == expected
+        return Response()
+    def reader(stream):
+        assert stream.read() == b"PDF test bytes"
+        return SimpleNamespace(pages=[SimpleNamespace(extract_text=lambda: "Beneficiari: Comuni")])
+    with patch.object(pdf.urllib.request, "urlopen", open_pdf), patch("pypdf.PdfReader", reader):
+        assert pdf.fetch_pdf_text(raw) == "Beneficiari: Comuni"
+    assert requests == [expected]
 
 
 if __name__ == "__main__":
