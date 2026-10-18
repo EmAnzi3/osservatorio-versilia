@@ -504,6 +504,24 @@ def _test_discovery_noise():
         {"title": "DATA ESTRAZIONE NOMINATIVI DEI REVISORI CONTABILI",
          "url": "https://prefettura.interno.gov.it/it/prefetture/padova/comunicazioni/data-estrazione"},
     ]
+    pref = "https://prefettura.interno.gov.it/it/prefetture/pisa/notizie/"
+    for headline in (
+        "Il Prefetto incontra Sindaci e Rappresentanti Istituzioni Valle Anzasca",
+        "Il Prefetto Michele Campanaro saluta il Questore Raffaele Gargiulo",
+        "COV su cantieri stradali e viabilità alternativa",
+        "Cposp Agitazioni studentesche e controllo della movida",
+        "Operazioni brillamento ordigni residuati bellici rinvenuti nello Stretto",
+        "Sorteggio Revisore Dei Conti Comune di Cavallino Treporti",
+        "Finanza locale - Data estrazione organo di revisione contabile",
+        "Manifestazione di interesse per il servizio di interpretariato",
+    ):
+        assert classify_signal({"title": headline, "url": pref + "news"}, reference), headline
+    assert classify_signal({"title": "Bando 2027-2028 per l'assegnazione di contributi regionali ai Comuni lombardi",
+                            "url": "https://anci.lombardia.it/dettaglio-circolari/2026-bando"}, reference)
+    assert not classify_signal({"title": "Nuovo avviso per i Comuni: presentare le domande",
+                                "url": pref + "avviso"}, reference)
+    assert not classify_signal({"title": "Bando nazionale del MIM, prorogate le candidature",
+                                "url": "https://www.mim.gov.it/web/guest/-/bando"}, reference)
     assert all(classify_signal(x, reference) for x in known_noise)
     assert not classify_signal({
         "title": "#NoiSiamoLeScuole, riapertura delle candidature per nuovi progetti",
