@@ -287,6 +287,15 @@ IL DIRETTORE GENERALE
         split_result = promotion.verified_deadline_extension(split_note, original)
         self.assertEqual((split_result["deadline_at"], split_result["deadline_time"]),
                          ("2026-10-16", "12:00"))
+        # Exact split observed in the full 18 October production dry-run PDF:
+        # "originariamente fis sato alle ore 14:00 del 14 ottobre 2026".
+        real_extract_text = text.replace("originariamente fissato", "originariamente fis sato")
+        real_extract_note = {**note, "text": real_extract_text,
+                             "sha256": hashlib.sha256(real_extract_text.encode()).hexdigest()}
+        real_extract_update = promotion.verified_deadline_extension(real_extract_note, original)
+        self.assertIsNotNone(real_extract_update)
+        self.assertEqual((real_extract_update["deadline_at"],
+                          real_extract_update["deadline_time"]), ("2026-10-16", "12:00"))
         # A changed original date/time must still be rejected.
         wrong_clock = text.replace("14:00 del 14 ottobre", "13:00 del 14 ottobre")
         self.assertIsNone(promotion.verified_deadline_extension(
