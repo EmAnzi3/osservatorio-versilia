@@ -19,7 +19,8 @@ Il runtime deve provenire da questo candidato. L'audit verifica identità del
 catalogo, motore, workbench, builder e lettore; verifica hash e dimensioni di ogni
 artefatto e confronta ogni risposta trasportata con il motore nativo. Una release
 parziale resta parziale: le richieste mancanti non diventano materializzate.
-Senza `--runtime`, lo stato è `not_inspected`, mai una falsa attestazione.
+Senza `--runtime`, soltanto l'accesso statico è `not_inspected`, mai una falsa
+attestazione del trasporto. Le prove native passano comunque dal workbench.
 
 Il JSON contiene tutte le coppie A3 e tutte le coppie vista/operazione A6. Include
 contesto, benchmark, ammissione condizionata, delega del workbench, copertura
@@ -49,16 +50,82 @@ di una operazione nella dichiarazione non evita le precondizioni di una selezion
 Il collegamento delle nove dimensioni A3 alle viste A6 **non è interamente
 risolto**. Gli acquisiti possono risiedere in companion, route speciali, formule o
 altri snapshot. Non si deduce l'accesso dal nome della dimensione, né si dichiara
-una fonte assente perché il motore non la espone. Il detector accetta soltanto
-percorsi strutturali locali non ambigui e registra puntatori del catalogo
-realmente restituiti. Un puntatore è una prova limitata, non una nuova
-certificazione numerica o semantica. Restano da definire collegamenti verificabili
-per le evidenze composite e misurare i dettagli non raggiunti: questo è un debito
-esplicito dell'audit, non la chiusura dell'accessibilità universale.
+una fonte assente perché il motore non la espone. Il resolver conserva separati
+percorsi risolti, operandi mancanti e collegamenti semantici non ancora provati.
+Un puntatore è una prova limitata, non una nuova certificazione numerica o
+semantica. Il debito residuo resta esplicito: non si dichiara chiusa
+l'accessibilità universale.
 Il confronto normalizza soltanto l'indice della riga comunale: conserva gli
 indici di categoria e le chiavi degli anni. Un'altra categoria o un altro anno
 non sono una prova di accesso al percorso acquisito; regressioni negative
 impediscono di far coincidere questi puntatori.
+
+## Prove native e statiche separate — schema del report 2
+
+`acquisitionReference` deriva i requisiti dalla matrice strict. Le espressioni
+locali composte (`+`, `/`, `×`, `=`, `sum`) vengono lette per individuare gli
+operandi, **senza eseguirle**. Tutti gli operandi devono essere raggiunti prima
+di dichiarare `all_required_paths_witnessed`. Le wildcard sulle categorie sono
+espanse contro il payload canonico e conservano ogni indice concreto.
+Un solo numeratore non prova anche il denominatore; un valore uguale non collega
+due campi diversi. Espressioni o operandi non risolti restano espliciti.
+
+I companion riusano esclusivamente `data/enrichment-companion-contract.json`.
+Le relazioni di dettaglio rimangono relazioni verso il companion: non trasferiscono
+automaticamente la dimensione alla misura originaria. Il resolver legge le sette
+famiglie presenti nel contratto: rapporti tra metriche, companion normalizzati,
+variazioni tra estremi di una serie, rapporti tra parti, conteggi su popolazione
+media, campi target su un companion e numeratori nel catalogo sorgente canonico.
+Individua campi, parti e periodi dichiarati; nessuna formula viene ricalcolata.
+`metric_current` resta il riferimento nativo del companion, anche quando la sua
+descrizione temporale non è un semplice anno; non si inventa un token annuale.
+Gli estremi di una variazione provengono dal contratto, non dal titolo del target.
+Nuove famiglie non riconosciute restano `formula_bridge_not_proven`. Il fatto che
+A3 abbia riconciliato una formula non prova da solo che A6 ne esponga ogni campo.
+
+`workbenchAccess` osserva risposte realmente calcolate dal workbench:
+confronto nativo corrente sui sette Comuni (oppure letture puntuali se dichiarate),
+serie nativa del primo Comune ordinato per codice, rapporti ponderati dichiarati,
+benchmark dichiarati per Comune e richieste delle componenti con periodo esplicito
+del contratto companion. Si aggiungono tutti i casi indipendenti originali,
+incluse associazioni e variazioni. Se è fornito un runtime, anche ogni sua
+risposta viene rigiocata attraverso il workbench e aggiunta al ledger nativo:
+un riferimento statico interamente provato deve avere la corrispondente prova
+nativa. Non è una prova di ogni periodo, sottoinsieme o coppia possibile.
+I rifiuti rimangono nel ledger, ma non diventano prove di
+accesso calcolato; le osservazioni mancanti o non applicabili non sono numeri.
+
+`staticAccess` verifica gli stessi requisiti soltanto nelle risposte realmente
+materializzate. Può quindi differire dal workbench senza che manchi il dato.
+I ledger `nativeProbes` e `staticProbes` conservano richiesta, esito, motivi e
+digest portabile della risposta; ogni prova di percorso riferisce il suo ledger,
+ruolo, periodo e Comune. Per le componenti datate, anche il periodo restituito
+deve coincidere: un indice di array uguale non basta a provare lo stesso anno.
+
+Si riconoscono i puntatori di valore/componenti del catalogo anche quando A6 li
+restituisce come `published_benchmark`, vincolati al digest del catalogo effettivo.
+Un puntatore di definizione non prova l'accesso a un valore. Per storage separati
+servono hash dei file/parti e dei byte decodificati restituiti da A6, uguaglianza
+con l'intero payload dichiarato da A3 e percorso realmente esistente. Nome della
+route o prefisso del file, da soli, non costituiscono una prova. Il confronto
+conserva i tipi JSON (`true` è distinto da `1`); la cache di verifica è vincolata
+anche alla lista delle parti e ai loro digest. Il rapporto relativo dello storage
+elettorale riusa la sintassi del detector A3 per due campi nello stesso oggetto.
+I riferimenti compact dell'Atlante riusano il suo `compactSchema` validato da A3:
+si individuano assi, categorie e totali dichiarati, senza trasferire questa prova
+strutturale a tutte le viste o operazioni dell'adapter. Un asse non restituito
+come valore rimane un requisito senza prova, anche se il payload lo contiene.
+
+Stati di accesso: `all_required_paths_witnessed`, `some_required_paths_witnessed`,
+`no_path_witness_in_probe_scope`, `unresolved_acquisition_reference`,
+`not_acquired` e (solo statico) `not_inspected`. **Anche il primo stato certifica
+percorsi osservati, non l'intera dimensione A3 né una nuova capacità di calcolo.**
+
+`linkageSummary`, `linkage` e `accessEvidencePaths` restano per compatibilità la
+misura precedente dei soli riferimenti semplici nel trasporto statico. Non vanno
+confrontati come se fossero la nuova copertura nativa: usare i riepiloghi distinti
+`acquisitionReferenceSummary`, `workbenchAccessSummary`, `staticAccessSummary`.
+Nessun ampliamento del runtime, dei suoi default o dell'interfaccia pubblica.
 
 ## Incremento selettivo: ranking descrittivo
 

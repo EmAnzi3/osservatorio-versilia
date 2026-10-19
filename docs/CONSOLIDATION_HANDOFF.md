@@ -2,47 +2,51 @@
 
 ## Baseline verificata il 19 ottobre 2026
 
-- Main `fed2a7c73f3ba480a153eea4748e7b874b2e8c28`: #448 integrata e pubblicata. Deploy `39171231146` e live `39172500248` attestano quella baseline, non la #451.
-- #451 ancora OPEN/Ready/mergiabile; head `fd196e6681a75be3d4620d5155618a9f8568ebb4`, base uguale a main, tree `8d30ba9dff733f38e1cde7a97901a47a5e819574`. Quick→Full effettivo `39178021176` e A3 `39178021175` SUCCESS; build/deploy skipped. Attestazione locale completa nella PR e nel pacchetto `A7_PR451_fd196e6_evidenze.zip`. Nessuna ripetizione automatica dei gate su quel candidato.
-- #443 editoriale lavoro/redditi ancora OPEN/Ready, head `89127cac42bfc1a0877695fff60e0b9103e01e86`, con conflitti; resta separata e richiede revisione del proprietario. Radar e social fuori perimetro.
-- A6 DONE: 225/225 adapter, 3.727 casi indipendenti PASS, 35 letture e due riepiloghi; Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna riapertura o modifica di dati/adapter/golden.
-- Dossier #430 conservati: 17 ambiti, 45 sotto-dossier, 51 piani, sei specifiche e due dimostrazioni; non 51 dossier completi. Piloti pubblici ed esploratore generale restano distinti.
+- Main `fed2a7c73f3ba480a153eea4748e7b874b2e8c28`: #448 integrata e pubblicata. Deploy `39171231146` e live `39172500248` attestano quella baseline.
+- #451 OPEN/Ready, head `fd196e6681a75be3d4620d5155618a9f8568ebb4`, tree `8d30ba9dff733f38e1cde7a97901a47a5e819574`; Quick→Full `39178021176` e A3 `39178021175` PASS. Non integrata né pubblicata.
+- #453 OPEN/Ready, head `be9fa6c6276cd6044fa2f5cc837a878ee5a2f946`, tree `5bf7dbde9937bd8a95c0d63501dc439be6273eef`; Quick e Full locali ordinari PASS, CI Quick→Full effettivo `39293987481` e A3 `39293987677` PASS sullo stesso albero. P2 riprodotto, corretto e risolto dopo i gate; preservata identità di categorie e anni nei puntatori. Evidenze `A7_PR453_be9fa6c_evidenze.zip`, SHA256 `822e9ff03d727bea59a87e420d5aeba77b856a5d9bff75daf31930da0f6e1ff6`. Non integrata né pubblicata.
+- #443 editoriale lavoro/redditi OPEN/Ready, head `89127cac42bfc1a0877695fff60e0b9103e01e86`, con conflitti all'ultima verifica; separata. Radar e social fuori perimetro.
+- A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi, Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna modifica di dati/adapter/golden.
+- Dossier #430: 17 ambiti, 45 sotto-dossier, 51 piani, sei specifiche e due dimostrazioni; non 51 dossier completi. Piloti editoriali ed esploratore generale distinti.
 
 ## Incremento corrente — A7 IN_PROGRESS
 
-PR #453, branch `feature/a7-accessibility-audit`, derivato dalla head verificata #451;
-nessuna modifica alla #451. Dipende da quella PR, non ne implica il merge.
+Branch `feature/a7-evidence-linkage`, derivato dall'albero verificato #453.
+Le PR precedenti rimangono invariate. Nessun merge o deploy autorizzato.
 
-`audit_a7_accessibility.py` deriva acquisizione A3 strict e tutte le dichiarazioni
-vista/operazione A6, esegue le aspettative originali via workbench e, con
-`--runtime`, verifica artefatti effettivi e parità di ogni risposta con A6.
-Senza runtime dichiara `not_inspected`. Percorsi A3 locali e puntatori osservati
-forniscono prove limitate: **companion/route/formule e copertura completa delle
-nove dimensioni non sono ancora collegati**. `acquired_access_not_proven` non è
-fonte assente né prova di accesso completo. Metodo `docs/A7_ACCESSIBILITY_AUDIT.md`.
+L'audit schema 2 separa riferimenti acquisiti, prove native del workbench e prove
+nel trasporto effettivo. Il resolver riusa il contratto companion A3 esistente,
+legge gli operandi delle espressioni senza calcolarli, preserva categorie/anni e
+richiede hash/payload coerenti per storage separati. I puntatori `published_benchmark`
+sono riconosciuti tramite l'identità del catalogo; definizioni, valori uguali,
+rifiuti o nomi di route non diventano automaticamente prove di accesso.
 
-Incremento di trasporto: profilo `ranking` soltanto su richiesta esplicita del
-builder, sette Comuni/riferimento nativo, risposte `rank` originali. I tre profili
-predefiniti rimangono. Nessuna nuova UI, voce menu, modello, backend o acquisizione.
-Contratto del rollout atomico/ancora/errori definito nel metodo; publisher pubblico
-ancora non implementato. Nessuno step A7 dichiarato DONE.
+Le sette famiglie companion presenti sono lette dal contratto esistente, inclusi
+campi target/canonici, parti e popolazione media. Le componenti temporali vengono
+interrogate nei periodi del contratto; `metric_current` conserva il riferimento
+nativo, senza inventare anni. I riferimenti compact riusano lo schema Atlante A3.
+Sono accessi alle componenti, non formule nuove o trasferimenti automatici della
+dimensione al target. Il ledger conserva
+richieste, esiti, motivi e digest delle risposte originali; prove parziali e ponti
+semantici non risolti restano distinti. Ogni risposta statica è rigiocata anche dal
+workbench: la sua prova non può mancare dal ledger nativo. Identità JSON e cache
+delle parti hanno regressioni negative specifiche. Metodo `docs/A7_ACCESSIBILITY_AUDIT.md`.
 
-## Gate e prossima azione
+La precedente misura 150 puntatori / 596 acquisiti non provati riguardava i soli
+percorsi semplici nel runtime; resta legacy, non viene spacciata per copertura
+nativa o chiusura A3→A6→A7. Anche tutti gli operandi raggiunti provano percorsi,
+non l'intera dimensione. Nessuno step A7 dichiarato DONE.
 
-Il nuovo candidato richiede Quick locale ordinario → Full locale ordinario e
-CI Quick→Full/A3 sulla stessa head/albero. I verdi #451 non attestano le modifiche
-correnti. P2 #453 riprodotto: mutazione del piano durante un fetch può separare
-risposta e piano/digest. Correzione: snapshot privato prima del primo `await`,
-validato e usato per selezione, output e hash; regressione con fetch sospeso.
-Il Quick del primo candidato non attesta la correzione; il suo Full è stato
-interrotto per non certificare una head superata. Anche il controllo dei puntatori
-è corretto dopo un test negativo: normalizza solo la riga comunale, conservando
-indici di categoria e chiavi degli anni. I gate intermedi non attestano il nuovo
-albero. Test pertinenti e misura/audit
-effettivo da completare prima del nuovo push;
-registrare ricevute e limiti nella nuova PR. Nessun merge o deploy autorizzato.
+## Gate e seguito
 
-Seguono: collegamento semantico riproducibile degli acquisiti A3 non provati,
-periodi/selezioni oltre i profili nativi, ulteriori operazioni soltanto motivate
-dalla matrice; poi integrazione guidata, grafici, citazioni/export e dossier/PDF.
-Non allargare la navigazione pubblica fino a prodotto sufficientemente sviluppato.
+Per questo nuovo albero: Quick locale ordinario prima del push; Full locale
+ordinario, CI Quick→Full effettivo e A3 prima della prontezza al merge. Ricevute,
+misure e limiti del candidato sono registrati nella relativa PR dopo i gate;
+nessun verde delle PR precedenti si trasferisce alle modifiche correnti.
+
+Nessun ampliamento del runtime, UI, menu o navigazione. Ranking resta opzionale,
+default invariati. Pubblicazione atomica/ancora/errori definita nel metodo, ma
+publisher pubblico ancora da implementare e verificare prima del rollout.
+Seguono collegamenti semantici residui e dettagli oltre il perimetro delle prove,
+poi periodi/selezioni e operazioni motivati dalla matrice, integrazione guidata,
+grafici, citazioni/export e dossier/PDF. Non aumentare la raggiungibilità pubblica.

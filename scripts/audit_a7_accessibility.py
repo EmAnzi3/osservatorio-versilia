@@ -18,6 +18,7 @@ from build_territorial_dossier_evidence import portable_evidence
 from enrichment_audit_matrix import build_matrix, validate_matrix
 from semantic_question_suite import QUESTIONS, check_expected
 from semantic_query_engine import SUPPORTED
+from a7_evidence_linkage import AcquisitionReferences, WitnessIndex, lineage_requests, path_pattern
 
 
 def sha(body):
@@ -36,15 +37,6 @@ def read_artifact(folder, ref):
     return json.loads(raw)
 
 
-def path_pattern(pointer):
-    # Only the municipal row is representative. Category positions and numeric
-    # object keys (e.g. years) identify distinct evidence and must remain exact.
-    parts = pointer.strip('/').split('/')
-    row_index = (1 if parts[:1] == ['rows'] else
-                 3 if len(parts) > 3 and parts[0] == 'metrics' and parts[2] == 'rows' else None)
-    return '/'.join('*' if i == row_index and p.isdigit() else p for i, p in enumerate(parts))
-
-
 def structural_path(row):
     evidence = row['evidence']
     # Only unambiguous same-payload paths. Route, companion and formula evidence
@@ -60,6 +52,20 @@ def audit(catalog, registry, runtime=None):
     validate_matrix(acquisition, require_complete=True)
     declarations = {r['metric']: r['engine'] for r in wb.engine.coverage()}
     towns = sorted(wb.engine.codes)
+    resolver = AcquisitionReferences(wb.engine.catalog, wb.engine.root)
+    references = [resolver.resolve(row) for row in acquisition['rows']]
+    storage = {path: payload for payload, path in resolver.payloads.values() if path and payload is not None}
+    native_index = WitnessIndex(wb.engine.catalog_hash, wb.engine.catalog, wb.engine.root, storage)
+    static_index = WitnessIndex(wb.engine.catalog_hash, wb.engine.catalog, wb.engine.root, storage)
+    probes = {}
+    def probe(request):
+        key = sha(encode(request).encode())
+        if key in probes:
+            return
+        response = wb.run(dict(schemaVersion=1, steps=[dict(id='probe', request=request)]))['steps'][0]['response']
+        probes[key] = dict(request=request, origin='declaration_probe', status=response['status'], reasons=response.get('reasons', []),
+                           responseSha256=sha(encode(portable_evidence(response)).encode()))
+        native_index.add(response, key)
     cases = json.loads(QUESTIONS.read_text())['questions']
     operation_proofs = defaultdict(Counter)
     # These are the original independent A6 expectations, never a routing table.
@@ -69,6 +75,12 @@ def audit(catalog, registry, runtime=None):
         if errors:
             raise AssertionError((case['id'], errors))
         operation_proofs[case['query']['operation']][response['status']] += 1
+        key = sha(encode(case['query']).encode())
+        probes[key] = dict(request=case['query'], origin='original_independent_case', status=response['status'], reasons=response.get('reasons', []),
+                           responseSha256=sha(encode(portable_evidence(response)).encode()))
+        native_index.add(response, key)
+    for request in lineage_requests(declarations, towns, references):
+        probe(request)
 
     actual = {}
     root = None
@@ -94,11 +106,21 @@ def audit(catalog, registry, runtime=None):
                         raise ValueError('runtime_selection_mismatch')
                     for entry in shard['entries']:
                         # Actual contents, not a promise inferred from a profile name.
-                        response = portable_evidence(wb.engine.query(entry['request']))
+                        response = portable_evidence(wb.run(dict(schemaVersion=1,
+                            steps=[dict(id='probe',request=entry['request'])]))['steps'][0]['response'])
                         if entry['response'] != response:
                             raise ValueError('runtime_native_parity_mismatch')
+                        key = sha(encode(entry['request']).encode())
+                        response_hash = sha(encode(response).encode())
+                        if key in probes and probes[key]['responseSha256'] != response_hash:
+                            raise ValueError('non_reproducible_native_response')
+                        probes.setdefault(key,dict(request=entry['request'], origin='runtime_replay',status=response['status'],
+                            reasons=response.get('reasons',[]),responseSha256=response_hash))
+                        native_index.add(response,key)
                         actual[encode(entry['request'])] = dict(profile=profile, status=response['status'],
-                                                               reasons=response.get('reasons', []))
+                                                               reasons=response.get('reasons', []),
+                                                               responseSha256=response_hash)
+                        static_index.add(response, sha(encode(entry['request']).encode()))
                         for observation in response.get('observations', []):
                             for evidence in observation.get('evidence', []):
                                 if evidence.get('kind') == 'catalog_snapshot':
@@ -133,7 +155,7 @@ def audit(catalog, registry, runtime=None):
                               benchmarkScopes=declaration['benchmarkScopesByDimension'][dimension], operations=operations))
 
     rows = []
-    for row in acquisition['rows']:
+    for row, reference in zip(acquisition['rows'], references):
         result = dict(row)
         candidate = structural_path(row)
         prefix = f'metrics/{row["metricId"]}/' + candidate if candidate else None
@@ -142,18 +164,37 @@ def audit(catalog, registry, runtime=None):
             'not_acquired' if row['state'] != 'ACQUIRED' else
             'catalog_path_witness_only' if paths else 'acquired_access_not_proven'),
             a6MetricRef=row['metricId'])
+        result.update(acquisitionReference=reference,
+                      workbenchAccess=native_index.match(reference),
+                      staticAccess=static_index.match(reference, inspected=runtime is not None))
+        if (result['staticAccess']['status'] == 'all_required_paths_witnessed'
+                and result['workbenchAccess']['status'] != 'all_required_paths_witnessed'):
+            raise AssertionError('static_witness_missing_from_workbench_replay')
         rows.append(result)
-    return dict(schemaVersion=1, catalogSha256=wb.engine.catalog_hash,
+    return dict(schemaVersion=2, catalogSha256=wb.engine.catalog_hash,
+                implementationSha256={name: sha((Path(__file__).parent/name).read_bytes()) for name in
+                                      ('audit_a7_accessibility.py','a7_evidence_linkage.py','a7_query_workbench.py','semantic_query_engine.py')},
+                companionContractSha256=sha((wb.engine.root/'data/enrichment-companion-contract.json').read_bytes()),
                 registrySha256=sha(registry.read_bytes()),
                 runtimeReleaseSha256=sha((runtime/'release.json').read_bytes()) if runtime else None,
                 acquisitionSummary=acquisition['summary'], acquisition=rows, views=views,
                 operationSummary=dict(counts), independentExpectations={k: dict(v) for k, v in sorted(operation_proofs.items())},
                 linkageSummary=dict(Counter(r['linkage'] for r in rows)),
+                acquisitionReferenceSummary=dict(Counter(r['acquisitionReference']['status'] for r in rows)),
+                workbenchAccessSummary=dict(Counter(r['workbenchAccess']['status'] for r in rows)),
+                staticAccessSummary=dict(Counter(r['staticAccess']['status'] for r in rows)),
+                nativeProbes=probes,
+                staticProbes={sha(k.encode()): dict(request=json.loads(k), **v) for k, v in actual.items()},
+                nativeProbeSummary=dict(Counter(p['status'] for p in probes.values())),
                 limits=['Declarations are conditional, not permission for every selection.',
                         'A3 path witnesses do not prove full dimensional coverage; unlinked evidence remains explicitly unresolved.',
                         'Not admitted is an A6 boundary, not a claim that source data is absent.',
                         'Existing editorial public pilots are separate from the general explorer.',
-                        'No source acquisition, causal interpretation or automatic policy ranking.'])
+                        'No source acquisition, causal interpretation or automatic policy ranking.',
+                        'Native lineage probes are finite: declared current comparisons, first-town native history, weighted ratios and declared benchmarks, plus original independent cases.',
+                        'When supplied, every transported response is also replayed through the workbench and included in the native ledger.',
+                        'Path witnesses prove neither an entire A3 dimension nor semantic equivalence of companion formulas.',
+                        'Legacy linkageSummary concerns only simple catalog paths in static responses; use separate workbenchAccess/staticAccess for resolved compound requirements.'])
 
 
 def markdown(report):
@@ -172,6 +213,14 @@ def markdown(report):
               'Un puntatore raggiunto attesta quel percorso: non certifica tutta una dimensione A3.',
               '**`acquired_access_not_proven` è un debito di collegamento da risolvere, non dato assente o fonte indisponibile.**', '']
     lines += [f'- {k}: {v}' for k, v in report['linkageSummary'].items()]
+    for title, field in [('Riferimenti A3 risolti', 'acquisitionReferenceSummary'),
+                         ('Accesso osservato dal workbench', 'workbenchAccessSummary'),
+                         ('Accesso osservato dal trasporto', 'staticAccessSummary')]:
+        lines += ['', '## '+title, '', '| Stato | Coppie |', '| --- | ---: |']
+        lines += [f'| {k} | {v} |' for k, v in report[field].items()]
+    lines += ['', 'Le prove dei percorsi restano distinte dalla copertura semantica della dimensione.',
+              'Tutti gli operandi di un riferimento composto devono avere una prova; i riferimenti non risolti rimangono tali.',
+              'Il ledger nativeProbes conserva richieste, rifiuti e digest riproducibili delle risposte originali.']
     lines += ['', *['- '+x for x in report['limits']], '']
     return '\n'.join(lines)
 
@@ -187,7 +236,7 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir/'accessibility.json').write_text(encode(report)+'\n')
     (args.output_dir/'accessibility.md').write_text(markdown(report))
-    print(encode({k: v for k, v in report.items() if k not in ('acquisition', 'views')}))
+    print(encode({k: v for k, v in report.items() if k not in ('acquisition', 'views', 'nativeProbes', 'staticProbes')}))
 
 
 if __name__ == '__main__':
