@@ -17,7 +17,19 @@ from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
 
 
+def verify_empty_profile_maxima(catalog):
+    with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
+        release, measurement = build(catalog, folder, metrics=['territorialClassification'],
+                                     max_views=1, profiles=('ranking',))
+        detail = json.loads(gzip.decompress((Path(folder)/release['metrics'][0]['detail']['path']).read_bytes()))
+        assert not any(view['shards'] for view in detail['views'])
+        assert measurement['requests'] == 0
+        assert measurement['maxShardRawBytes'] == measurement['maxShardGzipBytes'] == 0
+        assert measurement['rawBytes'] > 0 and measurement['gzipBytes'] > 0
+
+
 def verify(catalog, output=None):
+    verify_empty_profile_maxima(catalog)
     workbench = QueryWorkbench(catalog)
     # Representative transport gate, not another canonical indicator inventory.
     # Pick a carrier for each distinct declared operation signature; all-catalog
@@ -48,6 +60,7 @@ def verify(catalog, output=None):
         assert first == second, 'nonreproducible release artifacts'
         assert 'seconds' not in json.loads((root/'one'/'measurement.json').read_text())
         checks = 0
+        shard_refs = []
         samples = []
         partial = None
         for metric in release['metrics']:
@@ -57,6 +70,7 @@ def verify(catalog, output=None):
             assert [v['dimension'] for v in detail['views']] == expected['dimensions'][:2]
             for view in detail['views']:
                 for profile, ref in view['shards'].items():
+                    shard_refs.append(ref)
                     packed = (root/'one'/ref['path']).read_bytes()
                     raw = gzip.decompress(packed)
                     assert digest(packed) == ref['sha256'] and len(packed) == ref['bytes']
@@ -72,6 +86,8 @@ def verify(catalog, output=None):
                     # Python transport parity above covers every generated request.
                     if view is detail['views'][0]:
                         samples.append(shard['entries'][0])
+        assert measurement['maxShardRawBytes'] == max((r['rawBytes'] for r in shard_refs), default=0)
+        assert measurement['maxShardGzipBytes'] == max((r['bytes'] for r in shard_refs), default=0)
         assert partial is not None, 'missing-data fixture no longer representative'
         request = dict(operation='observe', selectors=[dict(metric='population', dimension='total', towns=[sorted(workbench.engine.codes)[0]])])
         point_plan = dict(schemaVersion=1, steps=[dict(id='point', request=request)])

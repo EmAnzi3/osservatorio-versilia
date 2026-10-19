@@ -62,7 +62,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
     stats = dict(requests=0, views=0, rawBytes=0, gzipBytes=0, maxShardRawBytes=0,
                  maxShardGzipBytes=0, statuses=Counter(), profiles=Counter())
 
-    def store(value):
+    def store(value, *, shard=False):
         body = encode(value).encode('utf-8')
         packed = gzip.compress(body, mtime=0)
         if len(body) > 16 * 1024 * 1024 or len(packed) > 8 * 1024 * 1024:
@@ -71,8 +71,9 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
         (output_dir / (key+'.json.gz')).write_bytes(packed)
         stats['rawBytes'] += len(body)
         stats['gzipBytes'] += len(packed)
-        stats['maxShardRawBytes'] = max(stats['maxShardRawBytes'], len(body))
-        stats['maxShardGzipBytes'] = max(stats['maxShardGzipBytes'], len(packed))
+        if shard:
+            stats['maxShardRawBytes'] = max(stats['maxShardRawBytes'], len(body))
+            stats['maxShardGzipBytes'] = max(stats['maxShardGzipBytes'], len(packed))
         return dict(path=key+'.json.gz', sha256=key, bytes=len(packed),
                     rawSha256=digest(body), rawBytes=len(body))
 
@@ -107,7 +108,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                 stats['profiles'][profile] += 1
             views.append(dict(dimension=dimension, declaredOperations=operations,
                               shards={p: store(dict(schemaVersion=1, metric=metric, dimension=dimension,
-                                                   profile=p, entries=entries))
+                                                   profile=p, entries=entries), shard=True)
                                       for p, entries in groups.items() if entries}))
             stats['views'] += 1
         root['metrics'].append(dict(summary, detail=store(dict(schemaVersion=1, metric=metric,

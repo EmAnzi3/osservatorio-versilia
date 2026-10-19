@@ -80,7 +80,13 @@ L'output deve essere nuovo/vuoto, per evitare mescolanza di release. Senza filtr
 il builder percorre tutte le viste dichiarate. `--metric` e
 `--max-views-per-metric` permettono misure circoscritte, marcate `explicit_subset`.
 `measurement.json` contiene richieste, stati, byte, massimi e hash della release:
-è deterministico come tutti gli altri file generati. Il tempo di esecuzione
+`rawBytes` e `gzipBytes` sommano i pacchetti gzip di dettaglio e risposta;
+`releaseBytes` misura separatamente il manifest. `maxShardRawBytes` e
+`maxShardGzipBytes` riguardano esclusivamente i blocchi di risposta, non i
+dettagli. In una build di profilo senza shard restano zero, anche quando il
+dettaglio è presente. Il gate verifica sia il caso zero-shard sia i massimi
+ricavati da tutti i riferimenti agli shard della build rappresentativa.
+Il file è deterministico come tutti gli altri file generati. Il tempo di esecuzione
 è restituito soltanto come diagnostica al chiamante e nello stdout della CLI,
 fuori dagli artefatti della release. Non certifica autonomamente la correttezza
 numerica della fonte.

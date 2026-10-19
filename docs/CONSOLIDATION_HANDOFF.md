@@ -11,7 +11,7 @@
 
 ## Incremento corrente — A7 IN_PROGRESS
 
-Branch `feature/a7-evidence-linkage`, derivato dall'albero verificato #453.
+PR #454, branch `feature/a7-evidence-linkage`, derivato dall'albero verificato #453.
 Le PR precedenti rimangono invariate. Nessun merge o deploy autorizzato.
 
 L'audit schema 2 separa riferimenti acquisiti, prove native del workbench e prove
@@ -43,6 +43,12 @@ Per questo nuovo albero: Quick locale ordinario prima del push; Full locale
 ordinario, CI Quick→Full effettivo e A3 prima della prontezza al merge. Ricevute,
 misure e limiti del candidato sono registrati nella relativa PR dopo i gate;
 nessun verde delle PR precedenti si trasferisce alle modifiche correnti.
+P2 #454 riprodotto: una build ranking senza shard includeva il dettaglio nei
+massimi shard (2.896 byte grezzi / 642 gzip anziché zero). Il builder ora aggiorna
+quei massimi soltanto per blocchi di risposta; test zero-shard e confronto con i
+riferimenti effettivi degli shard. Totali gzip/detail e budget restano distinti.
+Il Full della prima head #454 è stato interrotto; Quick/A3 di quella head non
+attestano la correzione. Rigenerare runtime e prove con la nuova identità builder.
 
 Nessun ampliamento del runtime, UI, menu o navigazione. Ranking resta opzionale,
 default invariati. Pubblicazione atomica/ancora/errori definita nel metodo, ma
