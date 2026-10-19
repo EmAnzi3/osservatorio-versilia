@@ -100,6 +100,23 @@ def verify(catalog, output=None):
                           const runtime=await openRuntime(text,anchor,location.origin+'/one/',{fetcher});
                           if(fetches!==0)throw Error('eager_payload_fetch');
                           const point=await runtime.run(plan);const pointMs=performance.now()-begin;
+                          // Pause the first real artifact load, then reuse caller state.
+                          // The response, plan and digest must retain the original intent.
+                          let entered, release;
+                          const reached=new Promise(resolve=>{entered=resolve});
+                          const barrier=new Promise(resolve=>{release=resolve});
+                          let paused=false;
+                          const racingRuntime=await openRuntime(text,anchor,location.origin+'/one/',{fetcher:async(...args)=>{
+                            if(!paused){paused=true;entered();await barrier}
+                            return fetch(...args);
+                          }});
+                          const mutablePlan=structuredClone(plan);
+                          const pending=racingRuntime.run(mutablePlan);
+                          await reached;
+                          mutablePlan.steps[0].request={operation:'observe',selectors:[{metric:'caller_reused_state'}]};
+                          release();
+                          const raced=await pending;
+                          if(raced.plan.steps[0].request.selectors[0].metric!==plan.steps[0].request.selectors[0].metric)throw Error('caller_mutation_changed_inflight_plan');
                           const repeat=await runtime.run(plan);if(fetches!==2)throw Error('cache_or_selectivity');
                           point.steps[0].response.observations[0].value=-999;
                           const immutable=await runtime.run(plan);
@@ -125,12 +142,13 @@ def verify(catalog, output=None):
                           const corrupt=await openRuntime(text,anchor,location.origin+'/one/',{fetcher:async()=>new Response(new Uint8Array([1,2,3]))});
                           let shardCorrupt=false;try{await corrupt.run(plan)}catch{shardCorrupt=true}
                           if(!shardCorrupt)throw Error('corrupt_shard_accepted');
-                          return {repeat,immutable,parity,protectedPartial,acceptedPartial,unmaterialized,fetches,pointMs};
+                          return {repeat,immutable,raced,parity,protectedPartial,acceptedPartial,unmaterialized,fetches,pointMs};
                         }''', dict(module=(ROOT/'experiments/a7-query-runtime/reader.mjs').read_text(),
                                    text=release_text, anchor=digest(release_text.encode()), plan=point_plan,
                                    samples=samples, partial=partial))
                         assert result['repeat'] == dict(expected_point, resolution='resolved')
                         assert result['immutable'] == result['repeat']
+                        assert result['raced'] == dict(expected_point, resolution='resolved')
                         assert result['protectedPartial']['resolution'] == 'needs_confirmation'
                         assert 'steps' not in result['protectedPartial']
                         assert result['acceptedPartial']['steps'][0]['response'] == partial['response']

@@ -10,7 +10,7 @@
 
 ## Incremento corrente — A7 IN_PROGRESS
 
-Branch `feature/a7-accessibility-audit`, derivato dalla head verificata #451;
+PR #453, branch `feature/a7-accessibility-audit`, derivato dalla head verificata #451;
 nessuna modifica alla #451. Dipende da quella PR, non ne implica il merge.
 
 `audit_a7_accessibility.py` deriva acquisizione A3 strict e tutte le dichiarazioni
@@ -31,7 +31,15 @@ ancora non implementato. Nessuno step A7 dichiarato DONE.
 
 Il nuovo candidato richiede Quick locale ordinario → Full locale ordinario e
 CI Quick→Full/A3 sulla stessa head/albero. I verdi #451 non attestano le modifiche
-correnti. Test pertinenti e misura/audit effettivo da completare prima del push;
+correnti. P2 #453 riprodotto: mutazione del piano durante un fetch può separare
+risposta e piano/digest. Correzione: snapshot privato prima del primo `await`,
+validato e usato per selezione, output e hash; regressione con fetch sospeso.
+Il Quick del primo candidato non attesta la correzione; il suo Full è stato
+interrotto per non certificare una head superata. Anche il controllo dei puntatori
+è corretto dopo un test negativo: normalizza solo la riga comunale, conservando
+indici di categoria e chiavi degli anni. I gate intermedi non attestano il nuovo
+albero. Test pertinenti e misura/audit
+effettivo da completare prima del nuovo push;
 registrare ricevute e limiti nella nuova PR. Nessun merge o deploy autorizzato.
 
 Seguono: collegamento semantico riproducibile degli acquisiti A3 non provati,

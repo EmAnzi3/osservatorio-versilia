@@ -75,10 +75,15 @@ export async function openRuntime(releaseText, trustedReleaseSha256, baseURL, {f
     return value;
   }
   async function run(plan, {approvedPartial=false}={}) {
+    // Snapshot before any await. Caller state may be reused during a fetch;
+    // selection, returned plan and digest must refer to the same private JSON.
+    if (!plain(plan)) throw new Error('invalid_plan');
+    const planText = canonical(plan);
+    if (textEncoder.encode(planText).length > 100000 || typeof approvedPartial !== 'boolean') throw new Error('invalid_plan');
+    plan = JSON.parse(planText);
     // Validate the complete plan before any fetch; no implicit consent or query rewriting.
     if (!plain(plan) || Object.keys(plan).sort().join(',') !== 'schemaVersion,steps' || plan.schemaVersion !== 1 ||
-        !Array.isArray(plan.steps) || !plan.steps.length || plan.steps.length > 32 ||
-        textEncoder.encode(canonical(plan)).length > 100000 || typeof approvedPartial !== 'boolean') throw new Error('invalid_plan');
+        !Array.isArray(plan.steps) || !plan.steps.length || plan.steps.length > 32) throw new Error('invalid_plan');
     const ids = new Set();
     for (const step of plan.steps) {
       if (!plain(step) || Object.keys(step).sort().join(',') !== 'id,request' || typeof step.id !== 'string' ||
@@ -109,7 +114,7 @@ export async function openRuntime(releaseText, trustedReleaseSha256, baseURL, {f
       components.push({id:step.id,response:r});
     }
     const computed = components.filter(s => s.response.status === 'computed').length;
-    return copy({resolution:'resolved', schemaVersion:1, plan, planSha256:await sha(textEncoder.encode(canonical(plan))),
+    return copy({resolution:'resolved', schemaVersion:1, plan, planSha256:await sha(textEncoder.encode(planText)),
       workbenchSha256:root.workbenchSha256,catalogSha256:root.catalogSha256,
       status:computed===components.length?'computed_components':computed?'mixed_components':'refused_components',
       interpretationStatus:'not_assessed',steps:components});

@@ -37,8 +37,12 @@ def read_artifact(folder, ref):
 
 
 def path_pattern(pointer):
-    # A3 structural detectors use one representative row; A6 uses exact rows.
-    return '/'.join('*' if p.isdigit() else p for p in pointer.strip('/').split('/'))
+    # Only the municipal row is representative. Category positions and numeric
+    # object keys (e.g. years) identify distinct evidence and must remain exact.
+    parts = pointer.strip('/').split('/')
+    row_index = (1 if parts[:1] == ['rows'] else
+                 3 if len(parts) > 3 and parts[0] == 'metrics' and parts[2] == 'rows' else None)
+    return '/'.join('*' if i == row_index and p.isdigit() else p for i, p in enumerate(parts))
 
 
 def structural_path(row):

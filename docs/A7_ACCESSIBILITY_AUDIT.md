@@ -55,6 +55,10 @@ realmente restituiti. Un puntatore è una prova limitata, non una nuova
 certificazione numerica o semantica. Restano da definire collegamenti verificabili
 per le evidenze composite e misurare i dettagli non raggiunti: questo è un debito
 esplicito dell'audit, non la chiusura dell'accessibilità universale.
+Il confronto normalizza soltanto l'indice della riga comunale: conserva gli
+indici di categoria e le chiavi degli anni. Un'altra categoria o un altro anno
+non sono una prova di accesso al percorso acquisito; regressioni negative
+impediscono di far coincidere questi puntatori.
 
 ## Incremento selettivo: ranking descrittivo
 
@@ -74,6 +78,11 @@ Una build solo ranking consente di misurare il costo incrementale prima di
 aggiungerlo a una release. Nessuna nuova pagina o integrazione pubblica.
 Il gate di trasporto verifica tutti e quattro i profili nel campione derivato,
 con due build byte-identiche e parità browser desktop/mobile.
+Il lettore usa una copia privata validata del piano prima del primo `await`:
+un test sospende un fetch reale, sostituisce la richiesta del chiamante e verifica
+che selezione, risposta, piano restituito e digest conservino l'intento iniziale.
+Il rilievo P2 della revisione #453 è stato riprodotto sulla versione precedente;
+non si trasferiscono i suoi verdi alla correzione.
 
 ## Pubblicazione atomica e ancora d'integrità: contratto prima del rollout
 

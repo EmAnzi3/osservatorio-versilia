@@ -58,7 +58,10 @@ istanze/release. Limiti: manifest 2 MiB, singolo blocco 8 MiB compresso e 16 MiB
 non compresso; cache al massimo otto blocchi e 16 MiB di byte JSON non compressi.
 Questi sono limiti di trasporto, non una misura della memoria heap JavaScript.
 
-Il piano intero è validato prima dei fetch. Risposte restituite come copie;
+Il piano viene serializzato e copiato privatamente prima del primo `await`;
+la copia intera è validata prima dei fetch. Selezione, piano restituito e digest
+usano lo stesso snapshot anche se il chiamante riutilizza il suo oggetto durante
+un caricamento asincrono. Risposte restituite come copie;
 modificare una risposta ricevuta non altera la cache. La copertura parziale
 richiede conferma prima di restituire anche le osservazioni numeriche conservate
 in un rifiuto; la conferma non trasforma quel rifiuto in calcolo. Errori di rete,
