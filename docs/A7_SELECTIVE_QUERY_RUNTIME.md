@@ -108,3 +108,12 @@ Il trasporto selettivo evita la duplicazione del motore e mantiene Pages, ma ha
 un costo di preparazione e una copertura finita da misurare. Questa prova consente
 di decidere sul rollout con evidenze; non dichiara conclusa A7 e non cambia le
 interfacce approvate.
+
+## Incremento candidato: audit e ranking opzionale
+
+La matrice di accessibilità e il contratto del rollout sono descritti in
+`A7_ACCESSIBILITY_AUDIT.md`. Il builder conserva i tre profili predefiniti;
+`--profile ranking` abilita esplicitamente il solo ranking descrittivo nativo,
+senza periodi o sottoinsiemi impliciti. Il lettore risolve esclusivamente le
+richieste esatte materializzate. Il debito di collegamento completo A3→A6
+resta dichiarato, non chiuso dalla copertura del trasporto.

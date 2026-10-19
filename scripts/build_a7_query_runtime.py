@@ -12,14 +12,15 @@ from a7_query_workbench import QueryWorkbench, encode
 from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
-PROFILES = ('current', 'comparison', 'history')
+DEFAULT_PROFILES = ('current', 'comparison', 'history')
+PROFILES = (*DEFAULT_PROFILES, 'ranking')
 
 
 def digest(body):
     return hashlib.sha256(body).hexdigest()
 
 
-def recipes(metric, dimension, operations, towns):
+def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES):
     """An explicit finite envelope, generated from declarations, never question IDs.
 
     Native default reference only. Missing periods, partial consent, arbitrary
@@ -27,18 +28,23 @@ def recipes(metric, dimension, operations, towns):
     """
     selector = dict(metric=metric, dimension=dimension)
     point = 'lookup' if 'lookup' in operations else 'observe' if 'observe' in operations else None
-    if point:
+    if point and 'current' in profiles:
         for town in towns:
             yield 'current', dict(operation=point, selectors=[dict(selector, towns=[town])])
-    if 'compare' in operations:
+    if 'compare' in operations and 'comparison' in profiles:
         yield 'comparison', dict(operation='compare', selectors=[dict(selector, towns=towns)])
-    if 'series' in operations:
+    if 'series' in operations and 'history' in profiles:
         for town in towns:
             yield 'history', dict(operation='series', selectors=[dict(selector, towns=[town])])
+    if 'rank' in operations and 'ranking' in profiles:
+        yield 'ranking', dict(operation='rank', selectors=[dict(selector, towns=towns)])
 
 
-def build(catalog_path, output_dir, *, metrics=None, max_views=None):
+def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DEFAULT_PROFILES):
     started = time.perf_counter()
+    if not profiles or len(set(profiles)) != len(profiles) or not set(profiles) <= set(PROFILES):
+        raise ValueError('invalid_runtime_profiles')
+    profiles = tuple(p for p in PROFILES if p in profiles)
     output_dir = Path(output_dir)
     # A new release must not retain stale content from an earlier catalog.
     if output_dir.exists() and any(output_dir.iterdir()):
@@ -74,8 +80,9 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None):
                 catalogSha256=discovery['catalogSha256'], engineSha256=discovery['engineSha256'],
                 workbenchSha256=discovery['workbenchSha256'],
                 builderSha256=digest(Path(__file__).read_bytes()), readerSha256=digest(READER.read_bytes()),
-                envelope=dict(profiles=list(PROFILES), reference='native_default',
+                envelope=dict(profiles=list(profiles), reference='native_default',
                               comparison='all_seven_towns', history='one_town_native_series',
+                              ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
@@ -89,8 +96,8 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None):
         views = []
         for dimension in declaration.get('dimensions', [])[:max_views]:
             operations = declaration.get('operationsByDimension', {}).get(dimension, [])
-            groups = {p: [] for p in PROFILES}
-            for profile, request in recipes(metric, dimension, operations, towns):
+            groups = {p: [] for p in profiles}
+            for profile, request in recipes(metric, dimension, operations, towns, profiles):
                 # Reuse the approved catalog-location normalization: its SHA256
                 # remains the identity; source snapshot paths/pointers are untouched.
                 response = portable_evidence(workbench.engine.query(request))
@@ -124,8 +131,11 @@ def main():
     p.add_argument('--output-dir', type=Path, required=True)
     p.add_argument('--metric', action='append', help='Optional isolated measurement subset; omitted = entire effective catalog')
     p.add_argument('--max-views-per-metric', type=int, help='Explicit isolated measurement subset, never reported as full coverage')
+    p.add_argument('--profile', action='append', choices=PROFILES,
+                   help='Explicit transport profiles; omitted = original three, ranking is opt-in')
     args = p.parse_args()
-    _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric)
+    _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric,
+                           profiles=args.profile or DEFAULT_PROFILES)
     print(json.dumps(measurement, ensure_ascii=False, indent=2))
 
 

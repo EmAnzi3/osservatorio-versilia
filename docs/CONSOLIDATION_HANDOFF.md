@@ -1,28 +1,40 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Baseline integrata
+## Baseline verificata il 19 ottobre 2026
 
-- Main `fed2a7c73f3ba480a153eea4748e7b874b2e8c28` dopo #448; #450 Radar integrata; #447 social, #442, #444 e #445 integrate dal proprietario. Gli otto file della #450 sono preservati senza modifiche A7. #445 mergiata il 18 ottobre alle 09:20 UTC; gate locali Quick→Full e CI/A3/Radar PASS sulla sua head; deploy `39114927336` e live `39116176854` SUCCESS sul merge. Un deploy non attesta un nuovo refresh produttivo del Radar. #443 lavoro/redditi resta una PR separata aperta, head `89127ca`, con gate locali e CI PASS e revisione editoriale del proprietario ancora richiesta.
-- A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
-- Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
-- Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
+- Main `fed2a7c73f3ba480a153eea4748e7b874b2e8c28`: #448 integrata e pubblicata. Deploy `39171231146` e live `39172500248` attestano quella baseline, non la #451.
+- #451 ancora OPEN/Ready/mergiabile; head `fd196e6681a75be3d4620d5155618a9f8568ebb4`, base uguale a main, tree `8d30ba9dff733f38e1cde7a97901a47a5e819574`. Quick→Full effettivo `39178021176` e A3 `39178021175` SUCCESS; build/deploy skipped. Attestazione locale completa nella PR e nel pacchetto `A7_PR451_fd196e6_evidenze.zip`. Nessuna ripetizione automatica dei gate su quel candidato.
+- #443 editoriale lavoro/redditi ancora OPEN/Ready, head `89127cac42bfc1a0877695fff60e0b9103e01e86`, con conflitti; resta separata e richiede revisione del proprietario. Radar e social fuori perimetro.
+- A6 DONE: 225/225 adapter, 3.727 casi indipendenti PASS, 35 letture e due riepiloghi; Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna riapertura o modifica di dati/adapter/golden.
+- Dossier #430 conservati: 17 ambiti, 45 sotto-dossier, 51 piani, sei specifiche e due dimostrazioni; non 51 dossier completi. Piloti pubblici ed esploratore generale restano distinti.
 
-## A7 IN_PROGRESS — primi percorsi guidati
+## Incremento corrente — A7 IN_PROGRESS
 
-#432: builder A6 originale e lettore ES module. #433/#434: preview con due ambiti, sei domande parziali, 13 calcoli e tre rifiuti nel bundle; domanda scritta riconosciuta soltanto nel repertorio, alternative esplicite, consenso e JSON riproducibile. Fatti, periodi, universi, fonti, puntatori, rifiuti e hash conservati. Nessun classificatore libero o servizio.
+Branch `feature/a7-accessibility-audit`, derivato dalla head verificata #451;
+nessuna modifica alla #451. Dipende da quella PR, non ne implica il merge.
 
-Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`. Nessuno step o Definition of Done A7 dichiarato completato.
+`audit_a7_accessibility.py` deriva acquisizione A3 strict e tutte le dichiarazioni
+vista/operazione A6, esegue le aspettative originali via workbench e, con
+`--runtime`, verifica artefatti effettivi e parità di ogni risposta con A6.
+Senza runtime dichiara `not_inspected`. Percorsi A3 locali e puntatori osservati
+forniscono prove limitate: **companion/route/formule e copertura completa delle
+nove dimensioni non sono ancora collegati**. `acquired_access_not_proven` non è
+fonte assente né prova di accesso completo. Metodo `docs/A7_ACCESSIBILITY_AUDIT.md`.
 
-## A7 — metodo generale integrato e runtime selettivo candidato
-
-#448 mergiata dal proprietario il 18 ottobre 2026, commit `fed2a7c73f3ba480a153eea4748e7b874b2e8c28`, albero `ad8f632b6b0fe66c202b9f36dde6e9218c1aa2ff` identico al candidato verificato. Quick e Full locali ordinari PASS in sequenza; CI Quick→Full effettivo `39163394320` e A3 `39163394281` PASS sulla head `700fad3`. Dati, adapter, golden e risultati dei dossier conservati; classificazioni categoriali escluse dalla lettura numerica. `observe`, disponibilità e piani generali sono integrati; non certificano l'accesso a ogni campo A3 né l'ultimo anno di ogni fonte. Metodo e matrice: `docs/A7_POINT_OBSERVATIONS.md`, `docs/A7_QUESTION_FEASIBILITY.md`. Le trenta domande sono esempi di accettazione, non un routing chiuso.
-
-Branch `feature/a7-static-query-runtime`: prototipo isolato del trasporto statico, senza nuova pagina, servizio, modello o integrazione nel builder pubblico. Dichiarazioni derivate dal catalogo; risposte originali A6 in blocchi per vista/profilo, caricati su richiesta dal browser con catena di hash, budget e cache limitata. Profili iniziali: corrente per Comune, confronto dei sette e storico per Comune, soltanto dove dichiarati. Operazioni non materializzate restano distinte da rifiuti A6 e dati mancanti; nessuna aggregazione Versilia implicita, riscrittura di richieste o consenso automatico. Metodo: `docs/A7_SELECTIVE_QUERY_RUNTIME.md`.
-
-Review P2 accolta: i tempi restano nella diagnostica del chiamante/stdout, fuori dagli artefatti della release. Il gate rappresentativo confronta ora tutti i file generati delle due build, compreso `measurement.json`, e verifica parità delle risposte, browser desktop/mobile, integrità, isolamento, consenso e richieste fuori involucro. Misura completa isolata: 225 indicatori, 3.359 viste, 37.880 richieste; 100.804.953 byte gzip complessivi, manifest 101.722 byte, massimo blocco compresso 636.338 byte. È una misura di trasporto/accesso, non un audit numerico esaustivo. Gate mirato: 1.134 parità native su 58 carrier/93 viste, 155 selezioni browser a ciascuna larghezza desktop/mobile; build identiche da cataloghi collocati in directory diverse. Nessuno step A7 dichiarato DONE.
+Incremento di trasporto: profilo `ranking` soltanto su richiesta esplicita del
+builder, sette Comuni/riferimento nativo, risposte `rank` originali. I tre profili
+predefiniti rimangono. Nessuna nuova UI, voce menu, modello, backend o acquisizione.
+Contratto del rollout atomico/ancora/errori definito nel metodo; publisher pubblico
+ancora non implementato. Nessuno step A7 dichiarato DONE.
 
 ## Gate e prossima azione
 
-Quick e Full locali ordinari in sequenza sul candidato, poi CI Quick→Full effettivo e A3 sulla sua head. Non riusare i verdi della #448 come gate della nuova PR. Deploy #448 `39171231146` e live `39172500248` SUCCESS sul merge `fed2a7c7`, con commit verificato nei log; pubblicazione attestata. Nessun merge o deploy dell'assistente.
+Il nuovo candidato richiede Quick locale ordinario → Full locale ordinario e
+CI Quick→Full/A3 sulla stessa head/albero. I verdi #451 non attestano le modifiche
+correnti. Test pertinenti e misura/audit effettivo da completare prima del push;
+registrare ricevute e limiti nella nuova PR. Nessun merge o deploy autorizzato.
 
-Prima del rollout pubblico: completare audit A3→A6→A7 e copertura delle altre operazioni, confrontare dimensioni/costo della build e caricamento selettivo; integrare una release atomica e i selettori solo dopo queste prove. #443 resta separata e richiede riallineamento/revisione editoriale del proprietario. Radar, social e acquisizioni fuori perimetro.
+Seguono: collegamento semantico riproducibile degli acquisiti A3 non provati,
+periodi/selezioni oltre i profili nativi, ulteriori operazioni soltanto motivate
+dalla matrice; poi integrazione guidata, grafici, citazioni/export e dossier/PDF.
+Non allargare la navigazione pubblica fino a prodotto sufficientemente sviluppato.

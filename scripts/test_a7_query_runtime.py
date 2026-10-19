@@ -12,7 +12,7 @@ import threading
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import build, digest
+from build_a7_query_runtime import build, digest, recipes, PROFILES
 from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
 
@@ -32,11 +32,15 @@ def verify(catalog, output=None):
     chosen.update(('population', 'territorialClassification', 'economyActivityAtlas'))
     with tempfile.TemporaryDirectory(prefix='a7-runtime-') as folder:
         root = Path(folder)
-        release, measurement = build(catalog, root/'one', metrics=sorted(chosen), max_views=2)
+        release, measurement = build(catalog, root/'one', metrics=sorted(chosen), max_views=2, profiles=PROFILES)
         copied_catalog = root/'catalog-copy.json'
         copied_catalog.write_bytes(Path(catalog).read_bytes())
-        again, _ = build(copied_catalog, root/'two', metrics=sorted(chosen), max_views=2)
+        again, _ = build(copied_catalog, root/'two', metrics=sorted(chosen), max_views=2, profiles=PROFILES)
         assert release == again
+        # Ranking never widens the default envelope; exact selections only.
+        assert not any(p == 'ranking' for p, _ in recipes('x', 'total', ['rank'], ['046018']))
+        assert not list(recipes('x', 'category', ['compare'], ['046018'], ['ranking']))
+        assert measurement['profiles']['ranking'] > 0
         first = {p.relative_to(root/'one').as_posix(): digest(p.read_bytes())
                  for p in (root/'one').rglob('*') if p.is_file()}
         second = {p.relative_to(root/'two').as_posix(): digest(p.read_bytes())

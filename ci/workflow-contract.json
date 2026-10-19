@@ -284,6 +284,14 @@
           "--catalog",
           "dist/data/site-data.json"
         ]
+      },
+      {
+        "label": "A7 acquired data and declared accessibility audit",
+        "script": "scripts/test_a7_accessibility.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
       }
     ]
   },
