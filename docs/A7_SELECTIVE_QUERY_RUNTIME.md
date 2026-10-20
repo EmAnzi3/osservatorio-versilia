@@ -126,3 +126,11 @@ La matrice di accessibilità e il contratto del rollout sono descritti in
 senza periodi o sottoinsiemi impliciti. Il lettore risolve esclusivamente le
 richieste esatte materializzate. Il debito di collegamento completo A3→A6
 resta dichiarato, non chiuso dalla copertura del trasporto.
+
+## Pacchetto atomico candidato
+
+`A7_ATOMIC_RUNTIME_PACKAGE.md` descrive il verificatore dell'intero grafo e il
+confezionatore in staging con modulo ancorato e percorsi immutabili. È isolato
+dalla build pubblica, conserva i byte e il perimetro del runtime e non amplia le
+capacità dichiarate. L'integrazione nella pagina e nell'artifact Pages, i messaggi
+di errore della UI e la verifica live restano necessari prima del rollout.

@@ -234,3 +234,5 @@ scripts/test_a7_query_runtime.py
 scripts/audit_a7_accessibility.py
 scripts/test_a7_accessibility.py
 scripts/a7_evidence_linkage.py
+scripts/a7_runtime_package.py
+scripts/test_a7_runtime_package.py

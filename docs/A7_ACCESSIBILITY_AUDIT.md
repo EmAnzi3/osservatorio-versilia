@@ -175,8 +175,9 @@ non si trasferiscono i suoi verdi alla correzione.
    release live, separatamente dai verdi della PR. Il rollback ripristina
    l'intero artifact approvato, mai file isolati.
 
-Questo è il contratto del rollout futuro, **non un publisher implementato o una
-pubblicazione autorizzata**. Il lettore sperimentale verifica già ancora separata,
+Il confezionamento locale e il verificatore del grafo sono implementati in
+`A7_ATOMIC_RUNTIME_PACKAGE.md`; la build pubblica non li integra ancora. Questo
+resta il contratto del rollout futuro, **non una pubblicazione autorizzata**. Il lettore sperimentale verifica già ancora separata,
 hash, budget, consenso e copie/cache isolate. L'integrazione nel builder pubblico
-richiede ancora verificatore del grafo, legame pagina/lettore/ancora e prove
+richiede ancora legame pagina/lettore/ancora e prove
 browser di errori e recupero nella UI, prima di rendere Chiedi più raggiungibile.

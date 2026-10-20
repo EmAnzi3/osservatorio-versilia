@@ -15,6 +15,8 @@ from a7_query_workbench import QueryWorkbench, encode
 from build_a7_query_runtime import build, digest, recipes, PROFILES
 from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
+from test_a7_runtime_package import verify_package_boundaries, verify_packaged_browser
+from a7_runtime_package import package_runtime
 
 
 def verify_empty_profile_maxima(catalog):
@@ -26,6 +28,9 @@ def verify_empty_profile_maxima(catalog):
         assert measurement['requests'] == 0
         assert measurement['maxShardRawBytes'] == measurement['maxShardGzipBytes'] == 0
         assert measurement['rawBytes'] > 0 and measurement['gzipBytes'] > 0
+        with tempfile.TemporaryDirectory(prefix='a7-empty-package-') as packaged:
+            descriptor = package_runtime(folder, catalog, Path(packaged)/'bundle')
+            assert descriptor['requests'] == 0 and descriptor['views'] == 1
 
 
 def verify(catalog, output=None):
@@ -93,6 +98,8 @@ def verify(catalog, output=None):
         point_plan = dict(schemaVersion=1, steps=[dict(id='point', request=request)])
         expected_point = portable_evidence(workbench.run(point_plan))
         release_text = (root/'one'/'release.json').read_text()
+        package = verify_package_boundaries(catalog, root/'one', root)
+        assert package['unchangedInput'] == first, 'packaging_changed_runtime_input'
 
         class QuietHandler(http.server.SimpleHTTPRequestHandler):
             def log_message(self, *args):
@@ -170,7 +177,10 @@ def verify(catalog, output=None):
                         assert result['acceptedPartial']['steps'][0]['response'] == partial['response']
                         assert result['acceptedPartial']['steps'][0]['response']['status'] == 'not_computable'
                         assert result['unmaterialized']['resolution'] == 'not_materialized'
-                        results.append(dict(width=width, browserRequests=len(samples), pointMs=result['pointMs']))
+                        packaged_browser = verify_packaged_browser(page, f'http://127.0.0.1:{server.server_port}/',
+                                                                    package, point_plan, expected_point)
+                        results.append(dict(width=width, browserRequests=len(samples), pointMs=result['pointMs'],
+                                            packagedBrowser=packaged_browser))
                         page.close()
                 finally:
                     browser.close()
@@ -178,7 +188,8 @@ def verify(catalog, output=None):
             server.shutdown(); server.server_close()
     report = dict(status='PASS', catalogSha256=workbench.engine.catalog_hash,
                   metrics=len(chosen), transportParityRequests=checks, browser=results,
-                  measurement=measurement,
+                  measurement=measurement, packageBoundaryRejections=package['rejected'],
+                  packageReleaseSha256=package['descriptor']['releaseSha256'],
                   limits='Representative transport/browser gate; full-catalog sizing separate. Viewports are not physical mobile hardware or WAN measurements. Native A6 independent numerical suite remains authoritative.')
     if output:
         Path(output).write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
