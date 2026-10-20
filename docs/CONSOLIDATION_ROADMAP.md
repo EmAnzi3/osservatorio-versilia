@@ -232,9 +232,9 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — prova statica #432, preview isolata #433 e domanda scritta/download verificabile #434 integrati. Prima pagina pubblica #436 integrata e pubblicata. Riorganizzazione editoriale #437 integrata: sintesi, confronti sui sette Comuni, dossier interno e PDF del pilota Massarosa. Incremento candidato: lettura educativa specifica per i sette Comuni, usando gli acquisiti; nessun nuovo dato o chiusura A7.
+**Stato:** `IN_PROGRESS` — piloti editoriali integrati e pubblicati. Esploratore generale isolato verificato nella #457, ancora aperta. Incremento corrente: integrazione candidata nel builder/artifact Pages e nel verificatore pubblico esistente, senza maggiore visibilità nella navigazione. Stato dei candidati e gate nell’handoff; nessuna chiusura A7 o autorizzazione al deploy.
 
-Scopo: aggiungere linguaggio naturale solo sopra un layer semantico già governato.
+Scopo: fornire esplorazione e interrogazione generale dei dati attraverso il motore metodologico governato. L’interazione guidata è il primo modello operativo; un eventuale linguaggio naturale interpreta richieste senza produrre autonomamente numeri, calcoli o citazioni.
 
 Prima prova circoscritta: `docs/A7_STATIC_PILOT.md`, dossier Massarosa lavoro/infanzia-scuola, domande curate e risposte precalcolate dal motore A6 originale. La preview (`docs/A7_DOSSIER_PREVIEW.md`) riusa il lettore approvato per riconoscere le domande curate, chiarire le altre richieste ed esportare risposta e provenienza originali. La nuova integrazione candidata `/chiedi/`, descritta in `docs/A7_PUBLIC_GUIDED_PAGE.md`, applica shell e contratti pubblici agli stessi contenuti senza modificare i percorsi approvati. Accesso iniziale tramite URL e sitemap, nessuna nuova voce globale; pubblicazione solo dopo revisione e merge del proprietario. Interpretazione libera, ulteriori dossier e architettura definitiva rimangono distinti. Nessun punto A7 è dichiarato completato da questa prova.
 

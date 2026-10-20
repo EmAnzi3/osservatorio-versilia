@@ -12,6 +12,7 @@ python scripts/build_a7_query_runtime.py --catalog dist/data/site-data.json \
   --output-dir /tmp/a7-runtime
 python scripts/audit_a7_accessibility.py --catalog dist/data/site-data.json \
   --registry dist/data/source-registry.json --runtime /tmp/a7-runtime \
+  --site dist \
   --output-dir /tmp/a7-accessibility
 ```
 
@@ -22,9 +23,18 @@ parziale resta parziale: le richieste mancanti non diventano materializzate.
 Senza `--runtime`, soltanto l'accesso statico è `not_inspected`, mai una falsa
 attestazione del trasporto. Le prove native passano comunque dal workbench.
 
+Con `--site` viene verificato il grafo completo vincolato alla pagina. Le capacità
+dei controlli sono derivate dalle dichiarazioni e dai blocchi del medesimo grafo,
+riusando le ricette native. `artifactGeneralExplorer` e `interfaceSummary`
+distinguono capacità preparate, non materializzate e non ammesse. Senza `--site`
+rimangono `not_inspected`. `publicGeneralExplorer=publication_not_inspected`
+resta indipendente: un artifact locale non prova una pubblicazione. Il report 3
+estende la matrice 2 senza trasformare le prove di percorsi in nuova copertura
+semantica. Integrazione candidata: `A7_PUBLIC_EXPLORER_INTEGRATION.md`.
+
 Il JSON contiene tutte le coppie A3 e tutte le coppie vista/operazione A6. Include
 contesto, benchmark, ammissione condizionata, delega del workbench, copertura
-statica effettiva e assenza dell'esploratore generale nell'interfaccia pubblica.
+statica effettiva e capacità preparate dell’interfaccia quando viene fornito il sito generato.
 Le tre modalità predefinite non coprono periodi o selezioni arbitrari.
 Il Markdown riepiloga i conteggi derivati; il JSON permette di risalire alle righe.
 
@@ -45,7 +55,9 @@ di una operazione nella dichiarazione non evita le precondizioni di una selezion
 | A6 | not_admitted | Operazione non ammessa sulla vista, indipendentemente dall'esistenza dei numeri |
 | A7 statico | not_materialized | Capacità dichiarata fuori dai profili/selezioni realmente trasportati |
 | A7 statico | materialized | Tutte le richieste del profilo nativo verificato sono presenti; possono includere rifiuti |
-| A7 pubblico | not_presented | Esploratore generale non integrato; i piloti editoriali esistenti sono distinti |
+| A7 artifact UI | prepared_native_defaults | Controlli preparati sui profili nativi del sito generato verificato; non prova tutte le interazioni browser |
+| A7 artifact UI | not_inspected / not_materialized | Sito non ispezionato oppure capacità senza blocco consultabile nella UI |
+| A7 pubblicazione | publication_not_inspected | L’audit offline non attesta integrazione in main, deploy o disponibilità live |
 
 Il collegamento delle nove dimensioni A3 alle viste A6 **non è interamente
 risolto**. Gli acquisiti possono risiedere in companion, route speciali, formule o
@@ -60,7 +72,7 @@ indici di categoria e le chiavi degli anni. Un'altra categoria o un altro anno
 non sono una prova di accesso al percorso acquisito; regressioni negative
 impediscono di far coincidere questi puntatori.
 
-## Prove native e statiche separate — schema del report 2
+## Prove native e statiche separate — schema del report 3
 
 `acquisitionReference` deriva i requisiti dalla matrice strict. Le espressioni
 locali composte (`+`, `/`, `×`, `=`, `sum`) vengono lette per individuare gli

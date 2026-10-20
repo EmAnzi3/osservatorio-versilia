@@ -30,12 +30,13 @@ def presentation(catalog):
         for index, parameter in enumerate(metric.get('parameterDefinitions', [])):
             if isinstance(parameter, dict) and (parameter.get('label') or parameter.get('name')):
                 labels['parameter:'+str(index)] = parameter.get('label') or parameter['name']
-        metrics[key] = dict(description=metric['meta'].get('description', ''), views=labels)
+        metrics[key] = dict(description=metric['meta'].get('description', ''),
+                            unit=metric['meta'].get('unit'), unitLabel=metric['meta'].get('unitLabel'), views=labels)
     return dict(catalogSha256=hashlib.sha256(body).hexdigest(),
                 themes={k:v['label'] for k,v in data['themes'].items()}, metrics=metrics)
 
 
-def build(dist, runtime, output):
+def build(dist, runtime, output, *, public=False):
     dist, runtime, output = (Path(p).absolute() for p in (dist, runtime, output))
     require(not output.exists() and not output.is_symlink(), 'preview_output_already_exists')
     require(dist.resolve() not in output.resolve().parents and output.resolve() not in dist.resolve().parents,
@@ -48,10 +49,21 @@ def build(dist, runtime, output):
         # Preview must never install or replace a live site's service worker.
         page = stage/'chiedi/index.html'
         soup = BeautifulSoup(page.read_text(encoding='utf-8'), 'html.parser')
-        for script in soup.find_all('script', src=True):
+        # Re-embedding a canonical site for a subset preview must replace only
+        # the derived explorer, never duplicate controls or retain mixed graphs.
+        for panel in soup.select('#a7-explorer'):
+            panel.decompose()
+        for asset in soup.select('script[src], link[href]'):
+            if (asset.get('src') or asset.get('href') or '').startswith('explorer-preview/'):
+                asset.decompose()
+        old_graph = stage/'chiedi/explorer-preview'
+        if old_graph.exists():
+            shutil.rmtree(old_graph)
+        for script in ([] if public else soup.find_all('script', src=True)):
             if script['src'].split('?', 1)[0].endswith('/assets/pwa.js'):
                 script.decompose()
-        soup.head.append(soup.new_tag('meta', attrs={'name':'robots', 'content':'noindex,nofollow'}))
+        if not public:
+            soup.head.append(soup.new_tag('meta', attrs={'name':'robots', 'content':'noindex,nofollow'}))
         graph = Path(tmp)/'graph'
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
         metadata = 'export default '+encode(presentation(stage/'data/site-data.json'))+';\n'
@@ -61,7 +73,7 @@ def build(dist, runtime, output):
         entry = ("const status=document.getElementById('explorer-status');\n"
             "async function boot(){try{const [{startExplorer},{default:presentation},{openPackagedRuntime}]=await Promise.all(["
             "import('./explorer.mjs'),import('./presentation.mjs'),import('./package/"+descriptor['entrypoint']+"')]);"
-            "await startExplorer(openPackagedRuntime,presentation);}catch{status.textContent='Impossibile caricare e verificare questa anteprima. Riprova la stessa versione.';"
+            "await startExplorer(openPackagedRuntime,presentation);}catch{status.textContent='Impossibile caricare e verificare questa versione. Riprova la stessa versione.';"
             "document.getElementById('explorer-retry').hidden=false;document.getElementById('explorer-retry').onclick=()=>location.reload();}}\nboot();\n")
         (graph/'entry.mjs').write_text(entry, encoding='utf-8')
         hashes = {p.relative_to(graph).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
@@ -71,15 +83,27 @@ def build(dist, runtime, output):
         destination.parent.mkdir(parents=True)
         os.rename(graph, destination)
         panel = BeautifulSoup((ASSETS/'panel.html').read_text(encoding='utf-8'), 'html.parser')
+        if public:
+            hero = soup.select_one('.a7-hero')
+            hero.select_one('h1 + p').string = 'Dai dati alle domande sul territorio: scegli una misura e un confronto, oppure consulta le letture tematiche.'
+            hero.select_one('.notice').string = 'Ogni risultato riporta periodo, fonte e limiti. I confronti comunali non sono un aggregato della Versilia.'
+            hero.select_one('.a7-how').string = 'Esplorazione dei dati · Letture tematiche · Dossier'
+            soup.select_one('#scegli').string = 'Letture tematiche e dossier'
+            panel.select_one('.explorer-eyebrow').string = 'ESPLORAZIONE DEI DATI · IN SVILUPPO'
+            panel.select_one('.explorer-scope').string = 'Sono consultabili letture comunali, confronti fra i sette Comuni e serie dove disponibili. Il confronto non è un totale della Versilia. Altre operazioni del motore possono non essere ancora consultabili qui.'
+        panel.section['data-explorer-graph'] = relative
         soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
         soup.body.append(soup.new_tag('script', type='module', src=relative+'entry.mjs'))
-        page.write_text(str(soup), encoding='utf-8')
+
         receipt = dict(schemaVersion=1, kind='a7-guided-explorer-preview',
-                       publicIntegration=False, releaseSha256=descriptor['releaseSha256'],
+                       publicIntegration=public, releaseSha256=descriptor['releaseSha256'],
                        scope=descriptor['scope'], metrics=descriptor['metrics'], views=descriptor['views'],
                        graph=relative, files=hashes)
-        (stage/'explorer-preview.json').write_text(encode(receipt)+'\n', encoding='utf-8')
+        body = (encode(receipt)+'\n').encode()
+        (stage/'explorer-preview.json').write_bytes(body)
+        soup.select_one('#a7-explorer')['data-explorer-integrity'] = hashlib.sha256(body).hexdigest()
+        page.write_text(str(soup), encoding='utf-8')
         # One complete local site artifact, including its page-bound trust anchor.
         os.rename(stage, output)
     return receipt

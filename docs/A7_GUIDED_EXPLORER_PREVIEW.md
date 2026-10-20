@@ -71,9 +71,9 @@ risultati e consenso. «Riprova» apre una nuova istanza della stessa release;
 nessun servizio o aggiornamento automatico del riferimento. Le richieste restano
 locali e non sono memorizzate. I link delle fonti si aprono soltanto su azione.
 
-Questo dimostra una preview atomica locale. L’integrazione nel builder ordinario,
-nell’unico artifact Pages e nel controllo live resta un incremento successivo,
-dopo revisione visiva. Non è una pubblicazione né una dichiarazione di accesso
+Questo dimostra una preview atomica locale. L’integrazione candidata nel builder
+ordinario, nell’unico artifact Pages e nel verificatore live è descritta in
+`A7_PUBLIC_EXPLORER_INTEGRATION.md`; richiede gate e revisione propri. Non è una pubblicazione né una dichiarazione di accesso
 universale alle dimensioni A3.
 
 ## Gate e limiti

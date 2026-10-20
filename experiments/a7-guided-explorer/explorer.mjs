@@ -1,7 +1,7 @@
 // Presentation over the original anchored A6 transport. No numerical engine.
 const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fold=(title,content)=>{const n=node('details');n.append(node('summary',title),content);return n;};
-const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Scostamento dal riferimento',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_rate:'Rapporto da componenti',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
+const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Scostamento dal riferimento',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto da componenti',percentage_points:'Variazione in punti percentuali',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
 const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking'};
 const units={number:'unità',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
@@ -13,6 +13,7 @@ const canonical=x=>JSON.stringify(x); // used only to preserve the exact UI sele
 export async function startExplorer(openRuntime,presentation){
  const $=id=>document.getElementById('explorer-'+id);
  const fields=$('form').querySelector('fieldset');
+ const unitLabel=o=>units[o.unit]||(presentation.metrics[$('metric').value]?.unit===o.unit?presentation.metrics[$('metric').value]?.unitLabel:null)||o.unit;
  let runtime,root,detail,generation=0,pending=null,current=null,pageIndex=0;
  const status=text=>{$('status').textContent=text;};
  const revoke=()=>{generation++;pending=null;current=null;$('result').hidden=true;$('result').replaceChildren();$('consent').hidden=true;};
@@ -101,12 +102,12 @@ export async function startExplorer(openRuntime,presentation){
    if(chart){
      const graph=node('div');graph.setAttribute('role','img');graph.setAttribute('aria-label','Confronto visivo delle osservazioni riportate nella tabella. Scala da zero; valori mancanti non rappresentati.');
      const maximum=Math.max(...observations.map(o=>o.value))||1;
-     graph.append(node('p',`Scala da 0 a ${number(maximum)} ${units[base.unit]||base.unit}. Nessuna interpolazione fra periodi.`));
+     graph.append(node('p',`Scala da 0 a ${number(maximum)} ${unitLabel(base)}. Nessuna interpolazione fra periodi.`));
      for(const o of visible){const row=node('div');row.className='explorer-bar-row';const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',operation==='series'?String(o.period):townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
    }
    const wrap=node('div');wrap.className='explorer-table-wrap';const table=node('table');table.append(node('caption','Osservazioni originali · periodo e fonte per ogni riga'));
    const head=node('thead');const hr=node('tr');for(const h of ['Territorio','Periodo','Valore','Fonte e definizione'])hr.append(node('th',h));head.append(hr);table.append(head);
-   const body=node('tbody');for(const o of visible){const tr=node('tr');tr.append(node('td',townName(o.geography)+(o.localityName?' · '+o.localityName:'')),node('td',String(o.period??'Non dichiarato')));const cell=node('td',value(o));if(o.unit!=='category_code'&&o.value!==null&&o.value!==undefined&&!o.dataUnavailable&&!o.notApplicable)cell.append(node('span',' '+(units[o.unit]||o.unit)));tr.append(cell);
+   const body=node('tbody');for(const o of visible){const tr=node('tr');tr.append(node('td',townName(o.geography)+(o.localityName?' · '+o.localityName:'')),node('td',String(o.period??'Non dichiarato')));const cell=node('td',value(o));if(o.unit!=='category_code'&&o.value!==null&&o.value!==undefined&&!o.dataUnavailable&&!o.notApplicable)cell.append(node('span',' '+(unitLabel(o))));tr.append(cell);
      const source=node('td');const link=sourceURL(o.source);if(link){const a=node('a','Fonte');a.href=link;a.target='_blank';a.rel='noopener noreferrer';source.append(a);}else source.append(node('span',String(o.source||'Fonte non dichiarata')));
      const explanation=node('div');for(const [key,label] of [['definition','Definizione'],['population','Popolazione descritta'],['periodBasis','Riferimento temporale'],['method','Metodo'],['parameter','Parametro'],['referenceText','Riferimento pubblicato, senza valutazione di conformità']])if(o[key])explanation.append(node('p',label+': '+o[key]));source.append(fold('Definizione originale',explanation));tr.append(source);body.append(tr);}
    table.append(body);wrap.append(table);out.append(wrap);

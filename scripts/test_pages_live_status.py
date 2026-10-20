@@ -3,6 +3,7 @@
 import subprocess
 from types import SimpleNamespace
 from unittest.mock import patch
+from contextlib import nullcontext
 
 from pages_live_status import RADAR_WORKFLOW, check_routes, status_payloads
 
@@ -47,6 +48,19 @@ def main() -> int:
     with patch("pages_live_status.subprocess.run", side_effect=subprocess.TimeoutExpired("validator", 300)) as probe, patch("pages_live_status.time.sleep"):
         assert not check_routes("https://example.test/")
         assert probe.call_count == 3
+    from validate_public_site import fetch
+    url='https://example.test/chiedi/explorer-preview/'+('a'*64)+'/block.json.gz'
+    response=SimpleNamespace(status=200,headers={},read=lambda:b'unchanged application bytes')
+    with patch('validate_public_site.urlopen',return_value=nullcontext(response)):
+        assert fetch(url,binary=True)==b'unchanged application bytes'
+    response.headers={'Content-Encoding':'gzip'}
+    with patch('validate_public_site.urlopen',return_value=nullcontext(response)):
+        try:
+            fetch(url,binary=True)
+        except RuntimeError as error:
+            assert str(error)=='explorer_block_http_encoding_unverified'
+        else:
+            raise AssertionError('live_probe_attested_bytes_browser_would_decode')
     print("Publication/refresh/routes: independent statuses and skipped-deploy preservation PASS")
     return 0
 

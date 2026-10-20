@@ -108,3 +108,7 @@ annidato; verifica caricamento selettivo, parità con il workbench, rifiuto di
 manifest mancante/corrotto/troppo grande e dettagli/shard guasti, poi recupero
 sulla stessa release. Sono verifiche dell'API e del confezionamento, non di una
 nuova pagina pubblica né della disponibilità del CDN delle fonti.
+
+Integrazione candidata successiva: `A7_PUBLIC_EXPLORER_INTEGRATION.md`. Il comando
+di confezionamento isolato qui descritto conserva i propri limiti; nessun deploy
+è implicito nella presenza del pacchetto o dei controlli live.

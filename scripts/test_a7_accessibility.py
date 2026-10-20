@@ -102,14 +102,25 @@ def verify_linkage_guards():
 
 def verify(catalog):
     verify_linkage_guards()
-    report = audit(catalog, Path(catalog).parent/'source-registry.json')
+    from audit_a7_accessibility import artifact_capabilities
+    assert artifact_capabilities(None, '0'*64) == (set(), None)
+    try:
+        artifact_capabilities(Path(catalog).parent.parent, '0'*64)
+    except ValueError as error:
+        assert str(error) == 'interface_catalog_mismatch'
+    else:
+        raise AssertionError('interface_different_catalog_accepted')
+    report = audit(catalog, Path(catalog).parent/'source-registry.json', site=Path(catalog).parent.parent)
+    assert report['interfaceArtifact']['status'] == 'PASS'
+    assert report['interfaceSummary']['prepared_native_defaults'] > 0
+    assert all(o['artifactGeneralExplorer'] != 'prepared_native_defaults' for v in report['views'] for o in v['operations'] if o['operation'] not in ('observe','lookup','compare','series'))
     rows = report['acquisition']
     assert len(rows) == report['acquisitionSummary']['pairCount']
     assert len({(r['metricId'], r['dimension']) for r in rows}) == len(rows)
     assert len({v['metric'] for v in report['views']}) == report['acquisitionSummary']['publicMetricCount']
     for view in report['views']:
         assert {r['operation'] for r in view['operations']} == set(SUPPORTED)
-        assert all(r['publicGeneralExplorer'] == 'not_presented' for r in view['operations'])
+        assert all(r['publicGeneralExplorer'] == 'publication_not_inspected' for r in view['operations'])
         # No runtime supplied: no declaration masquerades as materialization.
         assert all(r['static'] in ('not_inspected', 'not_admitted') for r in view['operations'])
     assert all(not r['accessEvidencePaths'] for r in rows)

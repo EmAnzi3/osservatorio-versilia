@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Exercise the guided preview through native controls, not a second UI engine."""
 import functools
+import gzip
+from unittest.mock import patch
 import http.server
 import json
 import threading
@@ -12,9 +14,57 @@ from build_a7_explorer_preview import build
 
 def verify_explorer(catalog, runtime, output, samples):
     source_page = Path(catalog).resolve().parent.parent/'chiedi/index.html'
+    from a7_explorer_release import validate_explorer
+    canonical_dist = source_page.parent.parent
+    read = lambda path: (canonical_dist/path).read_bytes()
+    public = validate_explorer(read)
+    assert public['status'] == 'PASS'
+    descriptor = json.loads(read('explorer-preview.json'))
+    prefix = 'chiedi/'+descriptor['graph']
+    selected = ['explorer-preview.json', prefix+'entry.mjs',
+                prefix+'package/runtime/'+descriptor['releaseSha256']+'/release.json']
+    manifest = json.loads(read(selected[-1]))
+    runtime_prefix = selected[-1].rsplit('/',1)[0]+'/'
+    detail_path = runtime_prefix+manifest['metrics'][0]['detail']['path']
+    detail = json.loads(gzip.decompress(read(detail_path)))
+    shard = next(r for v in detail['views'] for r in v['shards'].values())
+    selected += [detail_path, runtime_prefix+shard['path']]
+    from materialize_a7_public_explorer import commit_site
+    with tempfile.TemporaryDirectory(prefix='a7-build-rollback-') as temporary:
+        root = Path(temporary);dist=root/'dist';site=root/'new';backup=root/'previous'
+        dist.mkdir();site.mkdir();(dist/'index.html').write_bytes(b'previous site')
+        (site/'index.html').write_bytes(b'complete new site')
+        import os
+        rename = os.rename
+        def interrupted(source, destination):
+            if source == site:
+                raise OSError('simulated_final_commit_failure')
+            return rename(source,destination)
+        with patch('materialize_a7_public_explorer.os.rename',side_effect=interrupted):
+            try:
+                commit_site(dist,site,backup)
+            except OSError:
+                pass
+            else:
+                raise AssertionError('interrupted_public_commit_accepted')
+        assert (dist/'index.html').read_bytes() == b'previous site'
+        assert not backup.exists() and (site/'index.html').read_bytes() == b'complete new site'
+    for target in selected:
+        def corrupt(path):
+            return b'corrupt' if path == target else read(path)
+        try:
+            validate_explorer(corrupt)
+        except (ValueError, KeyError, TypeError):
+            pass
+        else:
+            raise AssertionError('public_explorer_corruption_accepted:'+target)
     before = source_page.read_bytes()
     receipt = build(Path(catalog).resolve().parent.parent, runtime, output)
     assert not receipt['publicIntegration']
+    from bs4 import BeautifulSoup
+    embedded = BeautifulSoup((output/'chiedi/index.html').read_text(), 'html.parser')
+    assert len(embedded.select('#a7-explorer')) == 1, 'duplicate_explorer_controls'
+    assert {p.name for p in (output/'chiedi/explorer-preview').iterdir()} == {receipt['graph'].split('/')[1]}, 'mixed_explorer_graphs'
     assert 'assets/pwa.js' not in (output/'chiedi/index.html').read_text()
     assert source_page.read_bytes() == before, 'preview_changed_public_dist'
     try:
@@ -40,10 +90,39 @@ def verify_explorer(catalog, runtime, output, samples):
     threading.Thread(target=server.serve_forever, daemon=True).start()
     from playwright.sync_api import sync_playwright
     results = []
+    # The production worker must not substitute cached bytes on failed graph
+    # requests. Test a real controlled page and cache, with the network offline.
+    def verify_worker(browser):
+        context = browser.new_context(service_workers='allow')
+        page = context.new_page()
+        base = f'http://127.0.0.1:{server.server_port}/'
+        # output is an isolated preview, whose worker bytes are those from the
+        # canonical dist. Explicit registration is QA only, never preview code.
+        page.goto(base+'chiedi/')
+        page.evaluate('''async () => {
+          await navigator.serviceWorker.register('../service-worker.js',{scope:'../'});
+          await navigator.serviceWorker.ready;
+        }''')
+        page.wait_for_function('()=>Boolean(navigator.serviceWorker.controller)')
+        url = base+'chiedi/'+receipt['graph']+'entry.mjs'
+        page.evaluate('''async url => {
+          const response=await fetch(url,{cache:'no-store'});
+          if(!response.ok)throw Error('missing_worker_test_resource');
+          const names=(await caches.keys()).filter(k=>k.startsWith('ov-pwa-')&&k.endsWith('-runtime'));
+          names.push('ov-pwa-explorer-test-runtime');
+          for(const name of names){const cache=await caches.open(name);await cache.put(url,response.clone());}
+        }''',url)
+        context.set_offline(True)
+        failed = page.evaluate('''async url => {try {await fetch(url);return false;}catch{return true;}}''',url)
+        assert failed, 'worker_returned_cached_explorer_graph_offline'
+        context.set_offline(False)
+        assert page.evaluate('''async url => (await fetch(url)).ok''',url)
+        context.close()
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             try:
+                verify_worker(browser)
                 for width in (1440, 390):
                     context = browser.new_context(viewport=dict(width=width, height=1000), service_workers='block')
                     page = context.new_page()
@@ -141,4 +220,6 @@ def verify_explorer(catalog, runtime, output, samples):
                 browser.close()
     finally:
         server.shutdown();server.server_close()
-    return dict(status='PASS', scope=receipt['scope'], browser=results)
+    return dict(status='PASS', scope=receipt['scope'], browser=results,
+                publicBuildRollback=True, publicArtifactCorruptionRejections=len(selected),
+                productionWorkerOfflineFailClosed=True)

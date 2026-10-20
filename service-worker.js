@@ -87,6 +87,14 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // A7 exploration must fail closed, including when an older page is open.
+  // These immutable graph requests never consult CacheStorage or HTTP cache.
+  if (/\/chiedi\/explorer-preview\/[a-f0-9]{64}\//.test(url.pathname) ||
+      url.pathname.endsWith('/explorer-preview.json')) {
+    event.respondWith(fetch(new Request(request, { cache: 'no-store' })));
+    return;
+  }
+
   if (request.mode === 'navigate') {
     event.respondWith(navigationResponse(request));
     return;

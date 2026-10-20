@@ -45,7 +45,30 @@ def structural_path(row):
     return path_pattern(match[1].replace('.', '/')) if match else None
 
 
-def audit(catalog, registry, runtime=None):
+def artifact_capabilities(site, catalog_hash):
+    """Prepared UI scope is distinct from an actually published/live interface."""
+    if site is None:
+        return set(), None
+    from a7_explorer_release import validate_explorer
+    site = Path(site)
+    proof = validate_explorer(lambda path: (site/path).read_bytes(), full=True)
+    receipt = json.loads((site/'explorer-preview.json').read_text())
+    folder = site/'chiedi'/receipt['graph']/'package/runtime'/receipt['releaseSha256']
+    root = json.loads((folder/'release.json').read_text())
+    if root['catalogSha256'] != catalog_hash:
+        raise ValueError('interface_catalog_mismatch')
+    capabilities = set()
+    towns = sorted(t['code'] for t in root['towns'])
+    for summary in root['metrics']:
+        detail = read_artifact(folder, summary['detail'])
+        for view in detail['views']:
+            for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles']):
+                if profile in view['shards']:
+                    capabilities.add((summary['metric'],view['dimension'],request['operation']))
+    return capabilities, proof
+
+
+def audit(catalog, registry, runtime=None, *, site=None):
     catalog, registry = Path(catalog), Path(registry)
     wb = QueryWorkbench(catalog)
     acquisition = build_matrix(json.loads(catalog.read_text()), json.loads(registry.read_text()))
@@ -128,6 +151,7 @@ def audit(catalog, registry, runtime=None):
                                         if key.endswith('Pointer') and isinstance(pointer, str):
                                             witnesses[metric].add(path_pattern(pointer))
 
+    interface, interface_proof = artifact_capabilities(site, wb.engine.catalog_hash)
     views, counts = [], Counter()
     for metric, declaration in sorted(declarations.items()):
         for dimension in declaration.get('dimensions', []):
@@ -149,7 +173,11 @@ def audit(catalog, registry, runtime=None):
                                        workbench='delegates_to_A6', static=state,
                                        requestScope='native_default_profiles_only' if requests else 'requires_explicit_request',
                                        transportedResponses=dict(Counter(e['status'] for e in entries)),
-                                       publicGeneralExplorer='not_presented'))
+                                       publicGeneralExplorer='publication_not_inspected',
+                                       artifactGeneralExplorer=('not_inspected' if site is None else
+                                           'not_admitted' if not admitted else
+                                           'prepared_native_defaults' if (metric,dimension,operation) in interface else
+                                           'not_materialized')))
             views.append(dict(metric=metric, dimension=dimension,
                               context=declaration['contextsByDimension'][dimension],
                               benchmarkScopes=declaration['benchmarkScopesByDimension'][dimension], operations=operations))
@@ -171,12 +199,14 @@ def audit(catalog, registry, runtime=None):
                 and result['workbenchAccess']['status'] != 'all_required_paths_witnessed'):
             raise AssertionError('static_witness_missing_from_workbench_replay')
         rows.append(result)
-    return dict(schemaVersion=2, catalogSha256=wb.engine.catalog_hash,
+    return dict(schemaVersion=3, catalogSha256=wb.engine.catalog_hash,
                 implementationSha256={name: sha((Path(__file__).parent/name).read_bytes()) for name in
                                       ('audit_a7_accessibility.py','a7_evidence_linkage.py','a7_query_workbench.py','semantic_query_engine.py')},
                 companionContractSha256=sha((wb.engine.root/'data/enrichment-companion-contract.json').read_bytes()),
                 registrySha256=sha(registry.read_bytes()),
                 runtimeReleaseSha256=sha((runtime/'release.json').read_bytes()) if runtime else None,
+                interfaceArtifact=interface_proof,
+                interfaceSummary=dict(Counter(o['artifactGeneralExplorer'] for v in views for o in v['operations'])),
                 acquisitionSummary=acquisition['summary'], acquisition=rows, views=views,
                 operationSummary=dict(counts), independentExpectations={k: dict(v) for k, v in sorted(operation_proofs.items())},
                 linkageSummary=dict(Counter(r['linkage'] for r in rows)),
@@ -189,6 +219,7 @@ def audit(catalog, registry, runtime=None):
                 limits=['Declarations are conditional, not permission for every selection.',
                         'A3 path witnesses do not prove full dimensional coverage; unlinked evidence remains explicitly unresolved.',
                         'Not admitted is an A6 boundary, not a claim that source data is absent.',
+                        'Prepared interface controls do not attest publication or every browser combination; publication is not inspected by this offline audit.',
                         'Existing editorial public pilots are separate from the general explorer.',
                         'No source acquisition, causal interpretation or automatic policy ranking.',
                         'Native lineage probes are finite: declared current comparisons, first-town native history, weighted ratios and declared benchmarks, plus original independent cases.',
@@ -230,9 +261,10 @@ def main():
     p.add_argument('--catalog', type=Path, required=True)
     p.add_argument('--registry', type=Path, required=True)
     p.add_argument('--runtime', type=Path)
+    p.add_argument('--site', type=Path, help='Optional complete generated site; never implies live publication')
     p.add_argument('--output-dir', type=Path, required=True)
     args = p.parse_args()
-    report = audit(args.catalog, args.registry, args.runtime)
+    report = audit(args.catalog, args.registry, args.runtime, site=args.site)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir/'accessibility.json').write_text(encode(report)+'\n')
     (args.output_dir/'accessibility.md').write_text(markdown(report))
