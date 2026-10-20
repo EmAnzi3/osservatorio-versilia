@@ -17,6 +17,7 @@ from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
 from test_a7_runtime_package import verify_package_boundaries, verify_packaged_browser
 from a7_runtime_package import package_runtime
+from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
@@ -100,6 +101,7 @@ def verify(catalog, output=None):
         release_text = (root/'one'/'release.json').read_text()
         package = verify_package_boundaries(catalog, root/'one', root)
         assert package['unchangedInput'] == first, 'packaging_changed_runtime_input'
+        explorer = verify_explorer(catalog, root/'one', root/'explorer-preview', samples)
 
         class QuietHandler(http.server.SimpleHTTPRequestHandler):
             def log_message(self, *args):
@@ -190,6 +192,7 @@ def verify(catalog, output=None):
                   metrics=len(chosen), transportParityRequests=checks, browser=results,
                   measurement=measurement, packageBoundaryRejections=package['rejected'],
                   packageReleaseSha256=package['descriptor']['releaseSha256'],
+                  explorerPreview=explorer,
                   limits='Representative transport/browser gate; full-catalog sizing separate. Viewports are not physical mobile hardware or WAN measurements. Native A6 independent numerical suite remains authoritative.')
     if output:
         Path(output).write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')

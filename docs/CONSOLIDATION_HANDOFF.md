@@ -12,7 +12,13 @@
 
 ## Incremento corrente — A7 IN_PROGRESS
 
-Branch `feature/a7-atomic-release-package`, dalla head verificata #454.
+Branch `feature/a7-guided-explorer-preview`, dalla head verificata #455
+`626a26b1029bd137c375525574c967a26418e1d0`, tree
+`6ca863c2b503522b90ac20838c4c638278fbe074`.
+#455 OPEN/Ready: Quick e Full locali ordinari PASS, CI Quick→Full effettivo
+`39388207984` e A3 `39388208153` PASS sul medesimo albero; non integrata né
+pubblicata. Evidenze `A7_PR455_626a26b_evidenze.zip`, SHA256
+`e1e2aae888d48f8314cae66c32cbf600501c0082a223d61b804db0af85921ed4`.
 Le PR precedenti rimangono aperte e invariate; nessun merge o deploy autorizzato.
 
 La matrice schema 2 distingue riferimenti A3, prove native e risposte statiche:
@@ -35,6 +41,16 @@ restituisce dati sostitutivi; la nuova apertura ritenta la stessa release.
 Metodo `docs/A7_ATOMIC_RUNTIME_PACKAGE.md`. Nessuna integrazione nella build o UI
 pubblica; non è un deploy né il publisher completo del sito.
 
+Il nuovo builder produce una preview isolata di `/chiedi/`, con selettori generali
+derivati: tema, indicatore, vista filtrabile, operazione e Comune. Carica soltanto
+il dettaglio scelto e i blocchi richiesti. Capacità native non trasportate,
+rifiuti e copertura incompleta restano distinti; consenso esplicito, revoca anche
+per risposte tardive, periodi e fonti originali, categorie e località preservate.
+Pagina, presentazione e pacchetto ancorato sono nello stesso artifact locale
+finalizzato in staging. Nessuna modifica al builder pubblico, menu o dossier;
+nessuna nuova acquisizione o espansione del runtime. Metodo e limiti
+`docs/A7_GUIDED_EXPLORER_PREVIEW.md`.
+
 ## Gate e seguito
 
 Per questo nuovo albero: Quick locale ordinario prima del push; Full locale
@@ -43,8 +59,8 @@ trasporto esistente verifica anche pacchetti riproducibili, guasti/interruzioni 
 caricamento browser reale desktop/mobile dal modulo generato. Risultati, ricevute
 e limiti nella relativa PR dopo i gate; nessun verde trasferito dalla #454.
 
-Nessun ampliamento del runtime, UI, menu o navigazione; ranking resta opzionale.
-Seguono pagina guidata con ancora incorporata e pacchetto nello stesso artifact
-Pages, errori/recupero visibili e verifica live prima del rollout autorizzato.
+Preview guidata da verificare nel browser prima della prontezza della PR; ranking
+resta opzionale. Segue revisione visiva e integrazione nel builder/artifact Pages,
+poi verifica live prima del rollout autorizzato. Nessuna pubblicazione automatica.
 Periodi, selezioni e altre operazioni restano motivati dalla matrice; poi grafici,
 citazioni/export e dossier/PDF. Non aumentare la raggiungibilità pubblica.
