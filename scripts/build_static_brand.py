@@ -155,3 +155,5 @@ if __name__ == "__main__":
     # materialization overlays. Only derived dist/ is written by the A7 step.
     from build_a7_public_page import build as build_a7_public_page
     build_a7_public_page(DIST)
+    from materialize_a7_public_explorer import materialize as materialize_a7_public_explorer
+    materialize_a7_public_explorer(DIST)

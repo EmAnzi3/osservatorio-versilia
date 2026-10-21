@@ -1,0 +1,31 @@
+<section id="a7-explorer" class="a7-explorer" aria-labelledby="explorer-title">
+  <p class="explorer-eyebrow">ANTEPRIMA · ESPLORAZIONE DEI DATI</p>
+  <h2 id="explorer-title">Esplora una misura, scegli il tuo confronto</h2>
+  <p>Parti da un tema e scegli la vista che ti interessa. Ogni risultato conserva il periodo, le fonti e i limiti del dato originale.</p>
+  <p class="explorer-scope">Questa anteprima consente letture comunali, confronti fra i sette Comuni e serie dove disponibili. Il confronto non è un totale della Versilia. Altre operazioni del motore possono non essere ancora consultabili qui.</p>
+  <form id="explorer-form">
+    <fieldset disabled><legend>La tua selezione</legend>
+      <div class="explorer-fields">
+        <label>Tema<select id="explorer-theme" required></select></label>
+        <label>Indicatore<select id="explorer-metric" required></select></label>
+        <label class="explorer-wide">Cerca una vista<input id="explorer-filter" type="search" placeholder="Filtra le viste di questo indicatore" maxlength="160" autocomplete="off"></label>
+        <label class="explorer-wide">Vista<select id="explorer-view" required></select></label>
+        <label>Che cosa vuoi leggere?<select id="explorer-operation" required></select></label>
+        <label>Comune<select id="explorer-town" required></select></label>
+      </div>
+      <p id="explorer-reference">Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.</p>
+      <p id="explorer-description"></p>
+      <button id="explorer-run" type="submit" disabled>Mostra i dati</button>
+    </fieldset>
+  </form>
+  <p id="explorer-status" role="status" aria-live="polite">Caricamento dell’esploratore. Se i controlli restano disabilitati, ricarica la pagina.</p>
+  <button id="explorer-retry" type="button" hidden>Riprova il caricamento</button>
+  <section id="explorer-consent" hidden aria-labelledby="explorer-consent-title">
+    <h3 id="explorer-consent-title">La copertura è incompleta</h3>
+    <p>Puoi consultare le osservazioni conservate dal motore insieme ai dati esclusi. Questa scelta non completa il dato e non trasforma un calcolo rifiutato in un risultato valido.</p>
+    <button id="explorer-accept" type="button">Leggi con questi limiti</button>
+    <button id="explorer-cancel" type="button">Annulla</button>
+  </section>
+  <section id="explorer-result" hidden aria-labelledby="explorer-result-title"></section>
+  <noscript><p>Per usare i selettori serve JavaScript. Le letture editoriali seguenti e le pagine degli indicatori restano consultabili.</p></noscript>
+</section>

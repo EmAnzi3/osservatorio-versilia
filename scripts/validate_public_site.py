@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 from a7_public_release import validate_release
+from a7_explorer_release import validate_explorer
 
 TOWNS = ("camaiore", "forte-dei-marmi", "massarosa", "pietrasanta", "seravezza", "stazzema", "viareggio")
 STATIC_ROUTES = ("/stato-dati/", "/pnrr/", "/percorsi/", "/chiedi/")
@@ -24,11 +25,13 @@ PNRR_MARKERS = {
 REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", "assets/pnrr-deep-dive.css")
 
 
-def validate_a7(read, failures: list[str]) -> None:
+def validate_a7(read, failures: list[str], *, explorer=False) -> None:
     """Require the complete guided reader and hash-consistent frozen bundle."""
     try:
         validate_release(read)
-    except (OSError, URLError, TimeoutError, RuntimeError, UnicodeDecodeError, ValueError, KeyError, TypeError) as exc:
+        if explorer:
+            validate_explorer(read)
+    except (OSError, URLError, TimeoutError, RuntimeError, UnicodeDecodeError, ValueError, KeyError, TypeError, StopIteration, EOFError) as exc:
         failures.append(f'asset A7 non verificabili: {exc}')
 
 
@@ -61,15 +64,22 @@ def validate_dist(root: Path) -> list[str]:
     if (root / "pnrr" / "index.html").is_file():
         content = (root / "pnrr" / "index.html").read_text(encoding="utf-8")
         require("pnrr-deep-dive.css" in content, "stile PNRR assente", failures)
-    validate_a7(lambda path: (root / path).read_bytes(), failures)
+    validate_a7(lambda path: (root / path).read_bytes(), failures, explorer=True)
     return failures
 
 
 def fetch(url: str, binary: bool = False):
-    request = Request(url, headers={"User-Agent": "OsservatorioVersilia-PagesHealth/1.0"})
+    request = Request(url, headers={"User-Agent": "OsservatorioVersilia-PagesHealth/1.0", "Accept-Encoding": "identity"})
     with urlopen(request, timeout=25) as response:
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}")
+        # A .json.gz block is application data, not HTTP Content-Encoding.
+        # A browser transparently decodes the latter before the reader hashes it;
+        # urllib does not. Refuse ambiguous delivery rather than falsely attest
+        # compressed bytes that the browser would not receive unchanged.
+        if binary and '/chiedi/explorer-preview/' in url and url.endswith('.json.gz'):
+            if (response.headers.get('Content-Encoding') or '').strip().lower() not in ('', 'identity'):
+                raise RuntimeError('explorer_block_http_encoding_unverified')
         data = response.read()
         return data if binary else data.decode("utf-8", errors="strict")
 
@@ -88,7 +98,7 @@ def validate_live(base_url: str) -> list[str]:
                 require("pnrr-town-detail.js" in content, f"dettaglio PNRR live assente in {route}", failures)
         except (URLError, TimeoutError, RuntimeError, UnicodeDecodeError) as exc:
             failures.append(f"{route}: {exc}")
-    validate_a7(lambda path: fetch(base + '/' + path, binary=True), failures)
+    validate_a7(lambda path: fetch(base + '/' + path, binary=True), failures, explorer=True)
     return failures
 
 

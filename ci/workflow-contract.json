@@ -270,8 +270,24 @@
         ]
       },
       {
+        "label": "A7 selective static transport and browser trust boundary",
+        "script": "scripts/test_a7_query_runtime.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
         "label": "A7 acceptance question feasibility on actual catalog",
         "script": "scripts/audit_a7_question_feasibility.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
+        "label": "A7 acquired data and declared accessibility audit",
+        "script": "scripts/test_a7_accessibility.py",
         "args": [
           "--catalog",
           "dist/data/site-data.json"
@@ -283,7 +299,8 @@
     {
       "path": ".github/workflows/pages.yml",
       "category": "canonical",
-      "status": "active"
+      "status": "active",
+      "note": "Quick→Full invariati; Lighthouse installato dalla versione dichiarata nel gate canonico. Lo stesso artifact diagnostico conserva regressioni visive e report Lighthouse anche in caso di fallimento."
     },
     {
       "path": ".github/workflows/pages-live-status.yml",

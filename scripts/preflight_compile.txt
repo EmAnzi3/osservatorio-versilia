@@ -229,3 +229,14 @@ scripts/a7_query_workbench.py
 scripts/test_a7_query_workbench.py
 scripts/test_a7_point_observations.py
 scripts/audit_a7_question_feasibility.py
+scripts/build_a7_query_runtime.py
+scripts/test_a7_query_runtime.py
+scripts/build_a7_explorer_preview.py
+scripts/test_a7_explorer_preview.py
+scripts/audit_a7_accessibility.py
+scripts/test_a7_accessibility.py
+scripts/a7_evidence_linkage.py
+scripts/a7_runtime_package.py
+scripts/test_a7_runtime_package.py
+scripts/materialize_a7_public_explorer.py
+scripts/a7_explorer_release.py

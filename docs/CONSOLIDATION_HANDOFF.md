@@ -1,53 +1,78 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Baseline integrata
+## Baseline verificata il 21 ottobre 2026
 
-- Main `8e186186419f5434839e3397d0811817743cfc50` dopo #450 Radar; #447 social, #442, #444 e #445 integrate dal proprietario. Gli otto file della #450 sono preservati senza modifiche A7. #445 mergiata il 18 ottobre alle 09:20 UTC; gate locali Quick→Full e CI/A3/Radar PASS sulla sua head; deploy `39114927336` e live `39116176854` SUCCESS sul merge. Un deploy non attesta un nuovo refresh produttivo del Radar. #443 lavoro/redditi resta una PR separata aperta, head `89127ca`, con gate locali e CI PASS e revisione editoriale del proprietario ancora richiesta.
-- A6 DONE dopo #428: 225/225 adapter, 3.727 PASS (2.033 calcoli/1.694 rifiuti), 35 letture e due riepiloghi. Atlante 2025: 20.325 unità locali Registro Imprese. Nessuna riapertura di A6.
-- Programma #430 conservato: 17 ambiti, 45 sotto-dossier, 51 piani, 20 domande A6; sei specifiche e due dimostrazioni Massarosa, non 51 dossier completati. 295 richieste (201 calcoli/94 rifiuti).
-- Limiti, opportunità A3 non acquisite, 40 golden e Camaiore congelata preservati. Radar, acquisizioni e manutenzioni parallele fuori perimetro.
+- Main `9ec855ff263c9ace7fabf957a12889dc58155f71`: marker #458 integrato; #448 resta l’ultima integrazione A7 qui attestata come pubblicata. Nessuna pubblicazione dedotta dai verdi delle PR.
+- #459 OPEN, head `6902431be6692b78a6072367023235fbc309c618`, albero `8c774524bf3f0e92dc11fe52b2b8b906aef3eb66`. Include la sequenza A7 #451/#453/#454/#455/#457; stato ed evidenze storiche nelle rispettive PR. Non integrata in main né pubblicata.
+- Sull’albero #459: Quick locale ordinario PASS (log SHA256 `b2c2e5a2ae6812f407b1c2689ea0b35e44e31d530a89a3da7a30f6208159b95e`); Full locale ordinario senza skip PASS (`003e0a36e88a28055464cfff0020de46c5d73ff7df7ecb28e51623d0d3c23e5d`). Zero modifiche tracciate; tentativi falliti conservati separatamente, non contati come PASS.
+- CI Quick→Full effettivo `39563969537`: job `119101671369` e `119115744583` SUCCESS; A3 `39563969561`, job `119101671438` SUCCESS. Tutti i log attestano checkout `b8507751f6d10d7977db905416ab8c025b425c6c`, albero identico al candidato. Build/deploy SKIPPED. Home Lighthouse CI 100 con soglia 70 invariata.
+- A6 DONE: 225/225 adapter, 3.727 casi indipendenti (2.033 calcoli / 1.694 rifiuti), 35 letture e due riepiloghi, Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna modifica di dati, adapter o golden.
+- #443 editoriale e Radar restano filoni separati; il loro stato corrente va verificato prima di riprenderli. Dossier #430: 17 ambiti, 45 sotto-dossier, 51 piani, sei specifiche e due dimostrazioni; non 51 dossier completi.
 
-## A7 IN_PROGRESS — primi percorsi guidati
+## A7 IN_PROGRESS — metodo e capacità
 
-#432: builder A6 originale e lettore ES module. #433/#434: preview con due ambiti, sei domande parziali, 13 calcoli e tre rifiuti nel bundle; domanda scritta riconosciuta soltanto nel repertorio, alternative esplicite, consenso e JSON riproducibile. Fatti, periodi, universi, fonti, puntatori, rifiuti e hash conservati. Nessun classificatore libero o servizio.
+La matrice schema 3 deriva acquisizione, capacità native, trasporto e UI dai
+contratti, dal catalogo e dall’artifact verificato. La pubblicazione effettiva
+resta distinta. Ultima misura dei collegamenti: 746 riferimenti acquisiti
+risolti; percorsi richiesti interamente provati per 275 coppie nel workbench e
+187 nel trasporto, non intere dimensioni certificate. Le 88 coppie con prove
+native complete ma non statiche comprendono 49 benchmark e 39 dettagli
+territoriali. Le 442 coppie senza prova nativa nel perimetro non sono dichiarate
+dati assenti. Metodo: `docs/A7_ACCESSIBILITY_AUDIT.md`.
 
-Specifiche originarie: `docs/A7_STATIC_PILOT.md` e `docs/A7_DOSSIER_PREVIEW.md`. Nessuno step o Definition of Done A7 dichiarato completato.
+L’esploratore generale deriva tema, indicatore, vista, operazione e Comune dal
+catalogo, conserva risposte e rifiuti A6, periodi, fonti, consenso e revoca.
+Il runtime pubblico mantiene i tre profili originali sui riferimenti nativi:
+osservazione/lookup comunale, confronto dei sette Comuni e serie comunale dove
+ammesse. Nessun periodo arbitrario, aggregato generico, ranking aggiuntivo o
+associazione inferita. 225 indicatori / 3.359 viste; 37.880 richieste, 21.283
+computed / 16.597 rifiuti originali, 100.804.953 byte gzip. È una misura del
+trasporto, non un nuovo corpus numerico indipendente. Manifest
+`f554516cb141788b6612d7ed8229351771834d228e16189221b552e089282fe3`.
 
-## Incremento candidato — metodo generale di interrogazione
+Pagina e grafo sono validati in staging e finalizzati insieme nell’unico
+artifact Pages. Ancora e moduli vincolati alla release; fallimenti d’integrità,
+budget o disponibilità non producono numeri sostitutivi. Il verificatore live
+controlla la release e un campione nativo, distinguendo Content-Encoding HTTP
+dai gzip applicativi. Nessun aumento della navigazione, nuovo backend o modello.
+Metodo: `docs/A7_ATOMIC_RUNTIME_PACKAGE.md`, `docs/A7_GUIDED_EXPLORER_PREVIEW.md`
+e `docs/A7_PUBLIC_EXPLORER_INTEGRATION.md`.
 
-#442 educativa sette Comuni è integrata; #443 lavoro/redditi resta distinta. Il proprietario richiede capacità generali su tutti i dati, non altre risposte predefinite. Branch `feature/a7-general-query-method`: scoperta derivata dal catalogo effettivo e dalle dichiarazioni A6, piani di richieste strutturate e risposte originali integre. Nessun nuovo inventario, adapter, dato, UI, modello o servizio. Metodo in `docs/A7_GENERAL_QUERY_METHOD.md`; CLI `scripts/a7_query_workbench.py`. Giustapposizione diversa da relazione, aggregazione Versilia soltanto se autorizzata, componenti calcolate diverse da risposta amministrativa completa. A7 rimane IN_PROGRESS; nessuno step dichiarato DONE.
+## Incremento locale corrente — leggibilità mobile
 
-Prove: tutte le aspettative indipendenti A6 attraverso l'involucro, tutte le dichiarazioni degli indicatori, varianti territoriali generate, parità delle risposte e rifiuti, isolamento/riproducibilità e limiti dei piani. Esiti effettivi e hash nei log del candidato/PR, non verdi attribuiti anticipatamente. Il test entra nei check del catalogo effettivo del preflight. Passi successivi: disponibilità per vista/periodo, accessibilità A3→A6→A7, scelta di esecuzione compatibile Pages misurata, poi esplorazione pubblica e dossier basati sugli stessi piani. Interpretazione libera e schede amministrative ancora da implementare.
+Durante la verifica visiva conclusiva è stato riprodotto un difetto a 390 px:
+nel confronto popolazione sei valori su sette venivano spezzati su due righe,
+pur senza overflow della pagina. La tabella A7 mantiene ora una larghezza
+leggibile e scorre soltanto nel proprio contenitore; nomi e numeri non sono
+forzati a spezzarsi fra caratteri. La regione è raggiungibile da tastiera e una
+nota mobile spiega lo scorrimento. Dati, risposta completa, grafico e controlli
+restano originali; CSS limitato all’esploratore.
 
-Incremento generale candidato della #448 (ancora aperta): lettura numerica `observe`
-con Comune esplicito e un solo periodo, selezione/provenance native e rifiuti
-esistenti preservati. `compare` richiede ancora almeno due osservazioni; `lookup`
-GAIA distinto. Nessun adapter o dato modificato. Disponibilità corrente/storico
-dichiarato verificabile via CLI, senza promessa di ultimo anno o di accesso a
-ogni campo acquisito. Metodo `docs/A7_POINT_OBSERVATIONS.md`, matrice derivata
-`docs/A7_QUESTION_FEASIBILITY.md`: esempi di accettazione, non routing di risposte.
-Prima modalità pubblica prevista guidata, nessun modello/servizio scelto. Runtime
-Pages da misurare nel browser prima della decisione; dossier conservati.
+Il gate browser esistente controlla che ogni valore numerico visibile occupi
+una sola riga, oltre alla parità nativa già presente; verifica lo scorrimento da
+tastiera sul viewport mobile. Il caso reale riproduce il rosso prima della
+correzione e passa dopo, desktop/mobile, senza overflow della pagina. Non sono
+state cambiate soglie, adapter o golden. I verdi della baseline 6902431 non si
+trasferiscono a questa modifica: servono nuovi Quick/Full locali ordinari e
+CI Quick→Full/A3 sul candidato corretto prima della prontezza al merge.
 
-Review P2 della head precedente riprodotta e corretta: le quattro viste della
-classificazione territoriale non sono numeriche, quindi non dichiarano né
-ammettono `observe`. Confronto categoriale ed etichette originari conservati;
-regressione su tutte le viste e sette Comuni, disponibilità ed eleggibilità
-diretta. I 3.727 casi A6 restano integri; 3.337 parità numeriche puntuali e
-3.338 viste numeriche distinte. Verdi CI della head precedente e Full locali
-interrotti non attestano questo nuovo candidato: ripetere i gate senza scorciatoie.
+## Ambiente e prossima azione
 
-## Gate e prossima azione
+Chrome Headless Shell ufficiale 151.0.7922.34 (SHA256 eseguibile
+`e11fc9ce65c96313476f7ee9844b6fb6a9220fb048693cfe9eee00acf4170a9f`),
+Playwright nativo 1.62.0 e Lighthouse canonico 13.4.1. Il workflow installa la
+versione dichiarata nel gate e conserva i report Lighthouse nell’artifact
+diagnostico esistente. Cache Python separate per modalità.
 
-Rieseguire Quick e Full locali ordinari in sequenza sul medesimo albero candidato,
-poi CI Quick→Full effettivo e A3 sulla nuova head. I verdi della precedente head
-#448 non attestano questo incremento. Registrare ricevute e limiti nella PR;
-nessun merge o deploy dell'assistente. #443 resta separata, da riallineare dopo
-l'integrazione approvata della #448, con revisione editoriale del proprietario.
-Nessuno step A7 dichiarato DONE. Nuove acquisizioni, Radar e social fuori perimetro.
+Il browser locale non raggiunge Unpkg: soltanto Percorsi riproduce i due file
+originali Leaflet 1.9.4 verificati contro SRI. Le route restano sulle medesime
+pagine dopo Percorsi e ne disabilitano la cache; Lighthouse usa sessioni
+separate non intercettate. La riproduzione CDN non modifica DOM, dati, golden o soglie;
+disponibilità corrente CDN e telefono fisico non certificati. Worktree nuovi
+senza dist incompleti di build interrotte.
 
-Quick locale PASS il 18 ottobre sull'albero pre-#450 `6c8ec7f`, inclusa la
-sitemap; Full interrotto per riallineare la baseline dopo il merge parallelo.
-Non attestano l'albero aggiornato: nuova sequenza locale e CI sulla nuova head.
-Il precedente Quick con voce Opportunità mancante e i tentativi interrotti
-restano documentati senza convertirli in PASS.
+Preview e browser locali del nuovo incremento conclusi. Prossima azione: completare i gate,
+aggiornare la stessa #459 e le evidenze. Nessun merge o deploy autorizzato.
+A7 non è DONE; ulteriori operazioni, selezioni, export generale e dossier
+restano incrementi motivati dalla matrice. Il rollout pubblico richiede
+approvazione del proprietario e controllo del deploy effettivo.
