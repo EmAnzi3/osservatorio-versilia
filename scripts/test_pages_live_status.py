@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Exercise deployment/refresh/route combinations without network or status writes."""
 import subprocess
+import json
 from types import SimpleNamespace
 from unittest.mock import patch
 from contextlib import nullcontext
 
-from pages_live_status import RADAR_WORKFLOW, check_routes, status_payloads
+from pages_live_status import RADAR_WORKFLOW, check_routes, refresh_publication_jobs, status_payloads
 
 
 def main() -> int:
@@ -42,6 +43,46 @@ def main() -> int:
     assert set(statuses(False)) == {"ov-public-routes"}
     jobs.clear()
     assert set(statuses(True)) == {"ov-public-routes"}
+    # Real post-#459 regression: deploy succeeded, routes passed, but the
+    # reporter's API snapshot had conclusion=null. Unknown is not failure
+    # and run success is never a substitute for the publisher's own result.
+    for status, conclusion in (("completed", None), ("in_progress", None), ("in_progress", "success")):
+        jobs[:] = [{"name": "deploy", "status": status, "conclusion": conclusion}]
+        for routes in (True, False):
+            result = statuses(routes)
+            assert result["ov-pages-live"]["state"] == "pending"
+            assert result["ov-public-routes"]["state"] == ("success" if routes else "failure")
+    uncertain = [{"name": "deploy", "status": "completed", "conclusion": None}]
+    succeeded = [{"name": "deploy", "status": "completed", "conclusion": "success"}]
+    failed = [{"name": "deploy", "status": "completed", "conclusion": "failure"}]
+    with patch("pages_live_status.subprocess.check_output", return_value=json.dumps({"jobs": succeeded})) as api, patch("pages_live_status.time.sleep"):
+        resolved = refresh_publication_jobs("example/repo", 123, uncertain)
+        assert status_payloads(run, resolved, True)[1]["state"] == "success"
+        assert api.call_count == 1
+        assert api.call_args.args[0] == ["gh", "api", "repos/example/repo/actions/runs/123/jobs?per_page=100"]
+    with patch("pages_live_status.subprocess.check_output", return_value=json.dumps({"jobs": failed})), patch("pages_live_status.time.sleep"):
+        resolved = refresh_publication_jobs("example/repo", 123, uncertain)
+        assert status_payloads(run, resolved, True)[1]["state"] == "failure"
+    with patch("pages_live_status.subprocess.check_output", return_value=json.dumps({"jobs": []})) as api, patch("pages_live_status.time.sleep"):
+        unresolved = refresh_publication_jobs("example/repo", 123, uncertain)
+        assert status_payloads(run, unresolved, True)[1]["state"] == "pending"
+        assert api.call_count == 4  # five snapshots including the initial one
+    with patch("pages_live_status.subprocess.check_output", side_effect=subprocess.TimeoutExpired("gh", 30)) as api, patch("pages_live_status.time.sleep"):
+        unresolved = refresh_publication_jobs("example/repo", 123, uncertain)
+        assert status_payloads(run, unresolved, True)[1]["state"] == "pending"
+        assert api.call_count == 4
+    with patch("pages_live_status.subprocess.check_output") as api:
+        assert refresh_publication_jobs("example/repo", 123, succeeded) == succeeded
+        assert refresh_publication_jobs("example/repo", 123, failed) == failed
+        assert refresh_publication_jobs("example/repo", 123, []) == []
+        assert refresh_publication_jobs("example/repo", 123, [{"name": "deploy", "conclusion": "skipped"}]) == [{"name": "deploy", "conclusion": "skipped"}]
+        api.assert_not_called()
+    run["name"] = RADAR_WORKFLOW
+    jobs[:] = [{"name": "refresh", "conclusion": "success"},
+               {"name": "publish verified Radar", "status": "completed", "conclusion": None}]
+    assert statuses(True)["ov-radar-refresh"]["state"] == "pending"
+    jobs[0]["conclusion"] = "failure"
+    assert statuses(True)["ov-radar-refresh"]["state"] == "failure"
     with patch("pages_live_status.subprocess.run", side_effect=[SimpleNamespace(returncode=1), SimpleNamespace(returncode=0)]) as probe, patch("pages_live_status.time.sleep"):
         assert check_routes("https://example.test/")
         assert probe.call_count == 2

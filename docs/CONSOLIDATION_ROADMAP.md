@@ -232,7 +232,7 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — piloti editoriali integrati e pubblicati. Esploratore generale isolato verificato nella #457, ancora aperta. Incremento corrente: integrazione candidata nel builder/artifact Pages e nel verificatore pubblico esistente, senza maggiore visibilità nella navigazione. Stato dei candidati e gate nell’handoff; nessuna chiusura A7 o autorizzazione al deploy.
+**Stato:** `IN_PROGRESS` — esploratore generale integrato e pubblicato con la #459, senza maggiore visibilità nella navigazione; controllo live PASS dopo rilancio del solo reporter. Incremento tecnico corrente: distinguere un esito API di pubblicazione incompleto da successo/fallimento, con riletture limitate e stato pending. Stato, gate e limiti nell’handoff; nessuna chiusura di A7 o autorizzazione a nuovi merge/deploy.
 
 Scopo: fornire esplorazione e interrogazione generale dei dati attraverso il motore metodologico governato. L’interazione guidata è il primo modello operativo; un eventuale linguaggio naturale interpreta richieste senza produrre autonomamente numeri, calcoli o citazioni.
 
