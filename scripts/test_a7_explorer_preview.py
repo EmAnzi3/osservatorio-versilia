@@ -12,6 +12,17 @@ from pathlib import Path
 from build_a7_explorer_preview import build
 
 
+def assert_readable_values(page, numeric_rows):
+    """A value must remain one readable token, even inside a scrolling table."""
+    assert page.evaluate('''rows => rows.every(index => {
+      const cell=document.querySelectorAll('#explorer-result tbody tr')[index]?.cells[2];
+      const text=cell?.firstChild;
+      if(!text || text.nodeType!==Node.TEXT_NODE)return false;
+      const range=document.createRange();range.selectNodeContents(text);
+      return range.getClientRects().length===1;
+    })''', numeric_rows), 'explorer_numeric_value_split_across_lines'
+
+
 def verify_explorer(catalog, runtime, output, samples):
     source_page = Path(catalog).resolve().parent.parent/'chiedi/index.html'
     from a7_explorer_release import validate_explorer
@@ -159,6 +170,16 @@ def verify_explorer(catalog, runtime, output, samples):
                         evidence = json.loads(page.locator('[data-explorer-evidence]').text_content())
                         assert evidence['steps'][0]['response'] == entry['response'], 'ui_changed_native_response'
                         assert evidence['plan']['steps'][0]['request'] == entry['request'], 'ui_changed_selection'
+                        numeric_rows = [i for i,o in enumerate(entry['response']['observations'][:20])
+                                        if type(o.get('value')) in (int,float) and o.get('unit') != 'category_code'
+                                        and not o.get('dataUnavailable') and not o.get('notApplicable')]
+                        assert_readable_values(page, numeric_rows)
+                        if width == 390 and checked == 0:
+                            table = page.locator('.explorer-table-wrap')
+                            assert table.evaluate('(e)=>e.scrollWidth>e.clientWidth'), 'mobile_table_cannot_scroll'
+                            table.focus();page.keyboard.press('ArrowRight')
+                            page.wait_for_function("()=>document.querySelector('.explorer-table-wrap').scrollLeft>0")
+                            table.evaluate('(e)=>{e.scrollLeft=0}')
                         if any(o.get('unit') == 'category_code' for o in entry['response']['observations']):
                             categories += 1
                             assert page.locator('#explorer-result .explorer-bar-row').count() == 0
