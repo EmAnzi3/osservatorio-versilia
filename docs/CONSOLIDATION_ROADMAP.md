@@ -232,19 +232,56 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — esploratore generale integrato e pubblicato con la #459, senza maggiore visibilità nella navigazione; controllo live PASS dopo rilancio del solo reporter. La correzione del reporter #461 è integrata; pubblicazione e controllo live del merge vanno verificati separatamente. Incremento corrente: profilo opzionale di benchmark Toscana/Italia derivati dalle dichiarazioni delle singole viste A6, con misura e matrice aggiornate prima di ogni estensione pubblica. Stato, gate e limiti nell’handoff; nessuna chiusura di A7 o autorizzazione a nuovi merge/deploy.
+**Stato:** `IN_PROGRESS`. A6 è DONE. L’esploratore generale è pubblicato con la
+#459 e resta senza nuova promozione nella navigazione. Il trasporto opzionale
+Toscana/Italia della #462 è integrato; build/deploy e controllo live sono PASS.
+Il prodotto pubblico della #462 conserva i tre profili precedenti, senza
+benchmark nella UI. Stato effettivo, gate e prossima azione nell’handoff.
 
-Scopo: fornire esplorazione e interrogazione generale dei dati attraverso il motore metodologico governato. L’interazione guidata è il primo modello operativo; un eventuale linguaggio naturale interpreta richieste senza produrre autonomamente numeri, calcoli o citazioni.
+**Risultato di prodotto:** consentire a chi consulta il sito di cercare dati,
+scegliere confronti e analisi ammissibili, comprenderne fonti e limiti e riusare
+le evidenze in rapporti. Nessun repertorio chiuso di domande preconfezionate.
+L’interazione guidata è il primo modello operativo. L’eventuale linguaggio
+naturale interpreta richieste; non produce numeri, calcoli o citazioni autonomi
+e non è un requisito per chiudere la prima versione guidata.
 
-Prima prova circoscritta: `docs/A7_STATIC_PILOT.md`, dossier Massarosa lavoro/infanzia-scuola, domande curate e risposte precalcolate dal motore A6 originale. La preview (`docs/A7_DOSSIER_PREVIEW.md`) riusa il lettore approvato per riconoscere le domande curate, chiarire le altre richieste ed esportare risposta e provenienza originali. La nuova integrazione candidata `/chiedi/`, descritta in `docs/A7_PUBLIC_GUIDED_PAGE.md`, applica shell e contratti pubblici agli stessi contenuti senza modificare i percorsi approvati. Accesso iniziale tramite URL e sitemap, nessuna nuova voce globale; pubblicazione solo dopo revisione e merge del proprietario. Interpretazione libera, ulteriori dossier e architettura definitiva rimangono distinti. Nessun punto A7 è dichiarato completato da questa prova.
+### Requisiti trasversali
 
-- [ ] **A7.1** Tradurre la domanda utente in operazioni consentite dal motore semantico.
-- [ ] **A7.2** Vietare risposte che inventino metriche, periodi o relazioni assenti.
-- [ ] **A7.3** Restituire sempre evidenze, fonti, periodo e indicatori utilizzati.
-- [ ] **A7.4** Testare domande ambigue, confronti impropri e richieste causali.
-- [ ] **A7.5** Integrare UI solo dopo validazione metodologica del motore.
+Restano aperti fino alla verifica sull’intero perimetro di prodotto dichiarato:
 
-**Definition of done:** il linguaggio naturale facilita l'accesso ai dati ma non diventa una fonte autonoma di numeri o interpretazioni.
+- [ ] **A7.1** Tradurre la richiesta utente in operazioni consentite dal motore, inizialmente tramite selettori guidati derivati dai contratti.
+- [ ] **A7.2** Vietare risposte che inventino metriche, periodi o relazioni assenti; distinguere dato assente, non esposto, non trasportato e operazione vietata.
+- [ ] **A7.3** Restituire evidenze, fonti, periodi e indicatori utilizzati in forma comprensibile e riutilizzabile.
+- [ ] **A7.4** Verificare selezioni ambigue, confronti impropri, richieste causali, copertura incompleta e guasti di disponibilità/integrità.
+- [ ] **A7.5** Esporre progressivamente le capacità validate nel prodotto pubblico, con preview e browser verificati prima della revisione.
+
+### Sequenza operativa del prodotto
+
+| Passo | Risultato per il pubblico | Stato |
+| --- | --- | --- |
+| A7.5.1 — esploratore di base | Tema, indicatore e vista; lettura comunale, confronto dei sette Comuni e serie dove ammessi | DONE nel perimetro nativo pubblicato #459 |
+| A7.5.2 — riferimenti geografici | Selettore esplicito Toscana/Italia; valore comunale, riferimento e scostamento originali, periodi e fonti | IN_PROGRESS; trasporto #462 integrato, incremento UI da verificare |
+| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | NOT_STARTED nel prodotto pubblico; priorità derivate dalla matrice A3→A6→A7 |
+| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | NOT_STARTED nel prodotto generale |
+| A7.5.5 — riuso delle analisi | Esportazione generale delle evidenze e rapporti PDF; collegamento ai dossier consultabili nel sito | NOT_STARTED nel prodotto generale; i dossier editoriali restano un filone distinto |
+| A7.5.6 — consolidamento pubblico | Verifica di comprensibilità, accessibilità, prestazioni e copertura; maggiore visibilità solo dopo revisione | NOT_STARTED |
+
+A7.5.3 si sviluppa per incrementi scelti dalla matrice derivata, non per
+abilitazione indiscriminata del runtime. Un dato acquisito non implica che ogni
+operazione sia ammissibile. Nessuna somma generica Versilia, media semplice dei
+tassi presentata come aggregato o sostituzione di n.d. con zero.
+
+Il pilota con domande curate (`docs/A7_STATIC_PILOT.md`) e i dossier hanno
+verificato casi iniziali, senza limitare il sistema generale a quegli esempi.
+L’esploratore, il confezionamento atomico e la matrice sono documentati in
+`docs/A7_PUBLIC_EXPLORER_INTEGRATION.md`, `docs/A7_ATOMIC_RUNTIME_PACKAGE.md` e
+`docs/A7_ACCESSIBILITY_AUDIT.md`. Radar resta separato.
+
+**Definition of done della prima versione guidata:** il perimetro dichiarato
+è effettivamente raggiungibile dai controlli pubblici; ogni selezione produce
+un risultato originale verificabile oppure un motivo esplicito; fonti, periodi
+e copertura sono leggibili; riuso, guasti e regressioni sono verificati. Nessuna
+promessa di interrogabilità universale dei campi A3 o di linguaggio libero.
 
 ---
 

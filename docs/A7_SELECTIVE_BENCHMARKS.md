@@ -36,9 +36,9 @@ Periodi arbitrari, sottoinsiemi o consenso aggiunto non vengono riscritti.
 
 ## Trasporto distinto dall'interfaccia
 
-Questo incremento non abilita il benchmark nell'esploratore pubblico: manca
+La #462 non abilita il benchmark nell'esploratore pubblico: manca
 ancora un selettore esplicito del riferimento e una presentazione revisionata
-dello scostamento. Anche una preview alimentata con un pacchetto benchmark lo
+dello scostamento. Nella #462 anche una preview alimentata con un pacchetto benchmark lo
 mantiene disabilitato. La matrice distingue quindi `materialized` nel trasporto
 da `not_materialized` nell'interfaccia. Nessuna nuova pagina o promozione in menu.
 
@@ -47,6 +47,9 @@ verificato in staging, ancora indipendente incorporata nel modulo, un unico
 artifact Pages, nessun fallback numerico per file mancanti o incompatibili.
 Prima dell'ampliamento pubblico servono verifica della preview e dei controlli
 nel browser, nuovi gate e merge autorizzato del proprietario.
+
+Il successivo incremento UI, con scelta esplicita Toscana/Italia, è descritto in
+`docs/A7_BENCHMARK_INTERFACE.md`. Non cambia il perimetro numerico del profilo.
 
 ## Misura del profilo isolato
 

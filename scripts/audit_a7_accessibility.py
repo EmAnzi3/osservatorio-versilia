@@ -64,8 +64,9 @@ def artifact_capabilities(site, catalog_hash):
         for view in detail['views']:
             for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles'],
                                             benchmark_scopes=detail['declaration']['benchmarkScopesByDimension'][view['dimension']]):
-                if profile in view['shards'] and profile in ('current', 'comparison', 'history', 'ranking'):
-                    # Benchmark transport is optional; the UI has no scope selector yet.
+                if profile in view['shards'] and (profile in ('current', 'comparison', 'history', 'ranking')
+                        or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2):
+                    # Version 1 has no benchmark selector. Transport alone proves no UI access.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof
 
