@@ -232,7 +232,7 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 ## A7 — “Chiedi alla Versilia”
 
-**Stato:** `IN_PROGRESS` — esploratore generale integrato e pubblicato con la #459, senza maggiore visibilità nella navigazione; controllo live PASS dopo rilancio del solo reporter. Incremento tecnico corrente: distinguere un esito API di pubblicazione incompleto da successo/fallimento, con riletture limitate e stato pending. Stato, gate e limiti nell’handoff; nessuna chiusura di A7 o autorizzazione a nuovi merge/deploy.
+**Stato:** `IN_PROGRESS` — esploratore generale integrato e pubblicato con la #459, senza maggiore visibilità nella navigazione; controllo live PASS dopo rilancio del solo reporter. La correzione del reporter #461 è integrata; pubblicazione e controllo live del merge vanno verificati separatamente. Incremento corrente: profilo opzionale di benchmark Toscana/Italia derivati dalle dichiarazioni delle singole viste A6, con misura e matrice aggiornate prima di ogni estensione pubblica. Stato, gate e limiti nell’handoff; nessuna chiusura di A7 o autorizzazione a nuovi merge/deploy.
 
 Scopo: fornire esplorazione e interrogazione generale dei dati attraverso il motore metodologico governato. L’interazione guidata è il primo modello operativo; un eventuale linguaggio naturale interpreta richieste senza produrre autonomamente numeri, calcoli o citazioni.
 

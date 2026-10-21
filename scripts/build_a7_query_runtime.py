@@ -13,14 +13,14 @@ from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
 DEFAULT_PROFILES = ('current', 'comparison', 'history')
-PROFILES = (*DEFAULT_PROFILES, 'ranking')
+PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark')
 
 
 def digest(body):
     return hashlib.sha256(body).hexdigest()
 
 
-def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES):
+def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, benchmark_scopes=()):
     """An explicit finite envelope, generated from declarations, never question IDs.
 
     Native default reference only. Missing periods, partial consent, arbitrary
@@ -38,6 +38,14 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES):
             yield 'history', dict(operation='series', selectors=[dict(selector, towns=[town])])
     if 'rank' in operations and 'ranking' in profiles:
         yield 'ranking', dict(operation='rank', selectors=[dict(selector, towns=towns)])
+
+    if 'benchmark_gap' in operations and 'benchmark' in profiles:
+        # Geographic scope must be explicitly declared by A6 for this view.
+        # Versilia is excluded: this profile never constructs local aggregates.
+        for scope in sorted(set(benchmark_scopes) & {'tuscany', 'italy'}):
+            for town in towns:
+                yield 'benchmark', dict(operation='benchmark_gap', benchmark=scope,
+                                        selectors=[dict(selector, towns=[town])])
 
 
 def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DEFAULT_PROFILES):
@@ -84,6 +92,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                 envelope=dict(profiles=list(profiles), reference='native_default',
                               comparison='all_seven_towns', history='one_town_native_series',
                               ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
+                              **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
@@ -98,7 +107,8 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
         for dimension in declaration.get('dimensions', [])[:max_views]:
             operations = declaration.get('operationsByDimension', {}).get(dimension, [])
             groups = {p: [] for p in profiles}
-            for profile, request in recipes(metric, dimension, operations, towns, profiles):
+            for profile, request in recipes(metric, dimension, operations, towns, profiles,
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
                 # Reuse the approved catalog-location normalization: its SHA256
                 # remains the identity; source snapshot paths/pointers are untouched.
                 response = portable_evidence(workbench.engine.query(request))
@@ -133,7 +143,7 @@ def main():
     p.add_argument('--metric', action='append', help='Optional isolated measurement subset; omitted = entire effective catalog')
     p.add_argument('--max-views-per-metric', type=int, help='Explicit isolated measurement subset, never reported as full coverage')
     p.add_argument('--profile', action='append', choices=PROFILES,
-                   help='Explicit transport profiles; omitted = original three, ranking is opt-in')
+                   help='Explicit transport profiles; omitted = original three; ranking and benchmark are opt-in')
     args = p.parse_args()
     _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric,
                            profiles=args.profile or DEFAULT_PROFILES)
