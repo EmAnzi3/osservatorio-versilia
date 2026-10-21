@@ -21,17 +21,18 @@ from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
-    with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
-        release, measurement = build(catalog, folder, metrics=['territorialClassification'],
-                                     max_views=1, profiles=('ranking',))
-        detail = json.loads(gzip.decompress((Path(folder)/release['metrics'][0]['detail']['path']).read_bytes()))
-        assert not any(view['shards'] for view in detail['views'])
-        assert measurement['requests'] == 0
-        assert measurement['maxShardRawBytes'] == measurement['maxShardGzipBytes'] == 0
-        assert measurement['rawBytes'] > 0 and measurement['gzipBytes'] > 0
-        with tempfile.TemporaryDirectory(prefix='a7-empty-package-') as packaged:
-            descriptor = package_runtime(folder, catalog, Path(packaged)/'bundle')
-            assert descriptor['requests'] == 0 and descriptor['views'] == 1
+    for profile in ('ranking', 'benchmark'):
+        with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
+            release, measurement = build(catalog, folder, metrics=['territorialClassification'],
+                                         max_views=1, profiles=(profile,))
+            detail = json.loads(gzip.decompress((Path(folder)/release['metrics'][0]['detail']['path']).read_bytes()))
+            assert not any(view['shards'] for view in detail['views'])
+            assert measurement['requests'] == 0
+            assert measurement['maxShardRawBytes'] == measurement['maxShardGzipBytes'] == 0
+            assert measurement['rawBytes'] > 0 and measurement['gzipBytes'] > 0
+            with tempfile.TemporaryDirectory(prefix='a7-empty-package-') as packaged:
+                descriptor = package_runtime(folder, catalog, Path(packaged)/'bundle')
+                assert descriptor['requests'] == 0 and descriptor['views'] == 1
 
 
 def verify(catalog, output=None):
@@ -44,7 +45,8 @@ def verify(catalog, output=None):
     chosen = set()
     for row in workbench.engine.coverage():
         declaration = row['engine']
-        signature = tuple(sorted({tuple(ops) for ops in declaration.get('operationsByDimension', {}).values()}))
+        signature = tuple(sorted({(tuple(ops), tuple(declaration['benchmarkScopesByDimension'][dim]))
+                                  for dim, ops in declaration.get('operationsByDimension', {}).items()}))
         if signature not in signatures:
             signatures.add(signature); chosen.add(row['metric'])
     chosen.update(('population', 'territorialClassification', 'economyActivityAtlas'))
@@ -59,6 +61,15 @@ def verify(catalog, output=None):
         assert not any(p == 'ranking' for p, _ in recipes('x', 'total', ['rank'], ['046018']))
         assert not list(recipes('x', 'category', ['compare'], ['046018'], ['ranking']))
         assert measurement['profiles']['ranking'] > 0
+        assert measurement['profiles']['benchmark'] > 0
+        assert not list(recipes('x', 'total', ['benchmark_gap'], ['046018'], ['benchmark']))
+        assert not list(recipes('x', 'total', ['compare'], ['046018'], ['benchmark'],
+                                benchmark_scopes=['tuscany']))
+        requests = list(recipes('x', 'total', ['benchmark_gap'], ['046018'], ['benchmark'],
+                                benchmark_scopes=['versilia', 'tuscany', 'italy']))
+        assert [q['benchmark'] for _, q in requests] == ['italy', 'tuscany']
+        assert not any(p == 'benchmark' for p, _ in recipes('x', 'total', ['benchmark_gap'],
+                          ['046018'], benchmark_scopes=['tuscany', 'italy']))
         first = {p.relative_to(root/'one').as_posix(): digest(p.read_bytes())
                  for p in (root/'one').rglob('*') if p.is_file()}
         second = {p.relative_to(root/'two').as_posix(): digest(p.read_bytes())
@@ -84,6 +95,11 @@ def verify(catalog, output=None):
                     shard = json.loads(raw)
                     for entry in shard['entries']:
                         assert entry['response'] == portable_evidence(workbench.engine.query(entry['request'])), 'native response changed'
+                        if profile == 'benchmark':
+                            q = entry['request']
+                            assert q['benchmark'] in expected['benchmarkScopesByDimension'][view['dimension']]
+                            assert q['benchmark'] in ('tuscany', 'italy')
+                            assert len(q['selectors'][0]['towns']) == 1
                         checks += 1
                         response = entry['response']
                         if 'partial_coverage_requires_opt_in' in response.get('reasons', []):
@@ -91,7 +107,8 @@ def verify(catalog, output=None):
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
                     if view is detail['views'][0]:
-                        samples.append(shard['entries'][0])
+                        samples.extend(shard['entries'][::len(release['towns'])] if profile == 'benchmark'
+                                       else [shard['entries'][0]])
         assert measurement['maxShardRawBytes'] == max((r['rawBytes'] for r in shard_refs), default=0)
         assert measurement['maxShardGzipBytes'] == max((r['bytes'] for r in shard_refs), default=0)
         assert partial is not None, 'missing-data fixture no longer representative'
@@ -157,6 +174,17 @@ def verify(catalog, output=None):
                           const acceptedPartial=await runtime.run(partialPlan,{approvedPartial:true});
                           const outside=structuredClone(plan);outside.steps[0].request.selectors[0].periods=['9999'];
                           const unmaterialized=await runtime.run(outside);
+                          const benchmark=samples.find(e=>e.request.operation==='benchmark_gap');
+                          if(!benchmark)throw Error('missing_benchmark_probe');
+                          for(const change of ['scope','towns','period','consent']){
+                            const request=structuredClone(benchmark.request);
+                            if(change==='scope')request.benchmark='versilia';
+                            if(change==='towns')request.selectors[0].towns=[];
+                            if(change==='period')request.selectors[0].periods=['9999'];
+                            if(change==='consent')request.allowPartial=true;
+                            const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
+                            if(r.resolution!=='not_materialized')throw Error('benchmark_scope_rewritten');
+                          }
                           const beforeInvalid=fetches;
                           let invalid=false;try{await runtime.run({schemaVersion:1,steps:[plan.steps[0],plan.steps[0]]})}catch{invalid=true}
                           if(!invalid||fetches!==beforeInvalid)throw Error('invalid_plan_fetched');

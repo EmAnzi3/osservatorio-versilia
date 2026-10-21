@@ -152,6 +152,13 @@ def verify_explorer(catalog, runtime, output, samples):
                         page.select_option('#explorer-metric', selector['metric'])
                         page.wait_for_function("()=>document.querySelector('#explorer-view').options.length>0")
                         page.select_option('#explorer-view', selector['dimension'])
+                        if request['operation'] == 'benchmark_gap':
+                            # Transport availability is not a UI scope selector.
+                            # Check the actual option flag: Playwright is_disabled()
+                            # misreports disabled options inside an enabled fieldset.
+                            assert page.locator('#explorer-operation option[value="benchmark_gap"]').evaluate(
+                                '(o)=>o.disabled && o.textContent.includes("non ancora consultabile qui")')
+                            return
                         page.select_option('#explorer-operation', request['operation'])
                         if len(selector['towns']) == 1:
                             page.select_option('#explorer-town', selector['towns'][0])
@@ -160,6 +167,8 @@ def verify_explorer(catalog, runtime, output, samples):
                     partial = None; checked = 0; categories = 0
                     for entry in samples:
                         select(entry)
+                        if entry['request']['operation'] == 'benchmark_gap':
+                            continue
                         page.click('#explorer-run')
                         page.wait_for_function("()=>!document.querySelector('#explorer-consent').hidden || !document.querySelector('#explorer-result').hidden")
                         if page.is_visible('#explorer-consent'):

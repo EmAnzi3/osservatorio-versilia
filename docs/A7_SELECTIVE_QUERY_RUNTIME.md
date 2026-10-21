@@ -134,3 +134,10 @@ confezionatore in staging con modulo ancorato e percorsi immutabili. È isolato
 dalla build pubblica, conserva i byte e il perimetro del runtime e non amplia le
 capacità dichiarate. L'integrazione nella pagina e nell'artifact Pages, i messaggi
 di errore della UI e la verifica live restano necessari prima del rollout.
+
+## Incremento opzionale: benchmark dichiarati
+
+`--profile benchmark` aggiunge soltanto gli scostamenti comunali dai riferimenti
+Toscana/Italia dichiarati per la specifica vista A6. I tre profili predefiniti
+restano invariati; nessuna abilitazione pubblica implicita. Perimetro, misura e
+distinzione tra trasporto e UI: `A7_SELECTIVE_BENCHMARKS.md`.

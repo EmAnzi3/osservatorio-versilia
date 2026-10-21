@@ -193,3 +193,12 @@ resta il contratto del rollout futuro, **non una pubblicazione autorizzata**. Il
 hash, budget, consenso e copie/cache isolate. L'integrazione nel builder pubblico
 richiede ancora legame pagina/lettore/ancora e prove
 browser di errori e recupero nella UI, prima di rendere Chiedi più raggiungibile.
+
+## Benchmark opzionali e interfaccia
+
+Le ricette del profilo opzionale `benchmark` derivano operazione e riferimenti
+dalla dichiarazione della specifica vista; includono solo Toscana/Italia, un
+Comune alla volta al riferimento nativo. Il report valuta le richieste esatte
+materializzate, non il nome del profilo. L'interfaccia rimane distinta: il
+trasporto benchmark non implica un selettore pubblico del riferimento.
+Metodo e riproduzione: `A7_SELECTIVE_BENCHMARKS.md`.

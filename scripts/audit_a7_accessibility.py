@@ -62,8 +62,10 @@ def artifact_capabilities(site, catalog_hash):
     for summary in root['metrics']:
         detail = read_artifact(folder, summary['detail'])
         for view in detail['views']:
-            for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles']):
-                if profile in view['shards']:
+            for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles'],
+                                            benchmark_scopes=detail['declaration']['benchmarkScopesByDimension'][view['dimension']]):
+                if profile in view['shards'] and profile in ('current', 'comparison', 'history', 'ranking'):
+                    # Benchmark transport is optional; the UI has no scope selector yet.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof
 
@@ -158,7 +160,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
             allowed = declaration['operationsByDimension'][dimension]
             generated = defaultdict(list)
             # Include all supported profiles, but do not materialize extra ones.
-            for profile, request in recipes(metric, dimension, allowed, towns, PROFILES):
+            for profile, request in recipes(metric, dimension, allowed, towns, PROFILES,
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
                 generated[request['operation']].append(request)
             operations = []
             for operation in SUPPORTED:
@@ -171,7 +174,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 counts[state] += 1
                 operations.append(dict(operation=operation, engine='conditional' if admitted else 'not_admitted',
                                        workbench='delegates_to_A6', static=state,
-                                       requestScope='native_default_profiles_only' if requests else 'requires_explicit_request',
+                                       requestScope=('one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
+                                                     else 'native_default_profiles_only') if requests else 'requires_explicit_request',
                                        transportedResponses=dict(Counter(e['status'] for e in entries)),
                                        publicGeneralExplorer='publication_not_inspected',
                                        artifactGeneralExplorer=('not_inspected' if site is None else

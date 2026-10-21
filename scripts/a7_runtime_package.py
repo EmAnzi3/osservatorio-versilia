@@ -87,6 +87,7 @@ def verify_runtime(folder, catalog, *, include_reader=False):
     require(encode(root['envelope']) == encode(dict(profiles=profiles, reference='native_default',
             comparison='all_seven_towns', history='one_town_native_series',
             ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
+            **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
             partialConsent=False, arbitraryRequests=False)), 'incompatible_runtime_envelope')
     limit = root.get('maxViewsPerMetric')
     require(limit is None or type(limit) is int and limit > 0, 'invalid_view_limit')
@@ -143,7 +144,8 @@ def verify_runtime(folder, catalog, *, include_reader=False):
             require(set(view) == {'dimension','declaredOperations','shards'} and view['declaredOperations'] == operations,
                     'runtime_operations_mismatch')
             expected = {}
-            for profile, request in recipes(metric, dimension, operations, towns, profiles):
+            for profile, request in recipes(metric, dimension, operations, towns, profiles,
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
                 expected.setdefault(profile, []).append(request)
             require(isinstance(view['shards'], dict) and set(view['shards']) == set(expected), 'incomplete_runtime_graph')
             for profile, ref in view['shards'].items():
