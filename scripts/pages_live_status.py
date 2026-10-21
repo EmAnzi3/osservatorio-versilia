@@ -14,23 +14,58 @@ DEPLOY_JOBS = {"deploy", "publish verified Radar"}
 RADAR_WORKFLOW = "Radar Opportunità · refresh giornaliero"
 
 
+def publication_conclusion(jobs: list[dict]) -> str:
+    deploy = next((job for job in jobs if job.get("name") in DEPLOY_JOBS), None)
+    if deploy is None:
+        return "missing"
+    if deploy.get("status", "completed") != "completed" or deploy.get("conclusion") is None:
+        return "pending"
+    return deploy["conclusion"]
+
+
+def refresh_publication_jobs(repo: str, run_id: int, jobs: list[dict], attempts: int = 5) -> list[dict]:
+    """Re-read an incomplete API result; never infer deployment from run success."""
+    for attempt in range(1, attempts):
+        if publication_conclusion(jobs) != "pending":
+            break
+        print(f"Esito pubblicazione incompleto: rilettura API {attempt}/{attempts - 1}", flush=True)
+        time.sleep(5)
+        try:
+            response = subprocess.check_output(
+                ["gh", "api", f"repos/{repo}/actions/runs/{run_id}/jobs?per_page=100"],
+                text=True, timeout=30,
+            )
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            print("Rilettura API non riuscita; esito pubblicazione ancora incerto", flush=True)
+            continue
+        refreshed = json.loads(response)["jobs"]
+        if not isinstance(refreshed, list):
+            raise ValueError("Elenco job API non valido")
+        # An incomplete subsequent list must not turn an observed publisher
+        # into an apparently absent/skipped publication.
+        if publication_conclusion(refreshed) != "missing":
+            jobs = refreshed
+    return jobs
+
+
 def status_payloads(run: dict, jobs: list[dict], routes_ok: bool) -> list[dict]:
     """A skipped publication must not overwrite the last deployment's status."""
     url = run["html_url"]
 
-    def payload(context: str, ok: bool, description: str) -> dict:
-        return {"context": context, "state": "success" if ok else "failure",
+    def payload(context: str, ok: bool | None, description: str) -> dict:
+        return {"context": context, "state": "pending" if ok is None else "success" if ok else "failure",
                 "description": description[:140], "target_url": url}
 
     result = [payload("ov-public-routes", routes_ok,
                       "Route pubbliche verificate" if routes_ok else
                       "Route pubbliche non verificate dopo tentativi limitati; vedere log")]
-    deploy = next((job for job in jobs if job.get("name") in DEPLOY_JOBS), None)
-    conclusion = deploy.get("conclusion") if deploy else "missing"
+    conclusion = publication_conclusion(jobs)
     if conclusion == "success":
         result.append(payload("ov-pages-live", routes_ok,
                               "Pages pubblicato; route pubbliche verificate" if routes_ok else
                               "Deploy riuscito; una o più route pubbliche non verificate"))
+    elif conclusion == "pending":
+        result.append(payload("ov-pages-live", None, "Esito pubblicazione non ancora disponibile; vedere log"))
     elif conclusion not in {"skipped", "missing"}:
         result.append(payload("ov-pages-live", False, f"Tentativo di pubblicazione: {conclusion}"))
 
@@ -42,7 +77,13 @@ def status_payloads(run: dict, jobs: list[dict], routes_ok: bool) -> list[dict]:
             "Radar verificato; nessuna pubblicazione richiesta" if ok else
             f"Refresh Radar {run.get('conclusion')}; nuova pubblicazione non confermata"
         )
-        result.append(payload("ov-radar-refresh", ok, description))
+        if conclusion == "pending" and run.get("conclusion") == "success" and any(
+            job.get("name") == "refresh" and job.get("conclusion") == "success" for job in jobs
+        ) and all(job.get("conclusion") in {"success", "skipped"}
+                  for job in jobs if job.get("name") not in DEPLOY_JOBS):
+            result.append(payload("ov-radar-refresh", None, "Refresh verificato; esito pubblicazione non ancora disponibile"))
+        else:
+            result.append(payload("ov-radar-refresh", ok, description))
     return result
 
 
@@ -72,8 +113,10 @@ def main() -> int:
     jobs = json.loads(args.jobs.read_text(encoding="utf-8")).get("jobs", [])
     if run.get("head_branch") != "main" or run.get("status") != "completed":
         raise ValueError("Reporter richiede un run completato su main")
-    statuses = status_payloads(run, jobs, check_routes(args.base_url))
     repo = os.environ["GITHUB_REPOSITORY"]
+    if publication_conclusion(jobs) == "pending":
+        jobs = refresh_publication_jobs(repo, run["id"], jobs)
+    statuses = status_payloads(run, jobs, check_routes(args.base_url))
     sha = run["head_sha"]
     for status in statuses:
         subprocess.run(["gh", "api", "--method", "POST",
