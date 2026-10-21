@@ -9,11 +9,18 @@ import tempfile
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+from bs4.dammit import EntitySubstitution
+from bs4.formatter import HTMLFormatter
 from a7_query_workbench import encode
 from a7_runtime_package import package_runtime, require
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT/'experiments/a7-guided-explorer'
+
+
+class PreserveAttributeOrder(HTMLFormatter):
+    def attributes(self, tag):
+        return tag.attrs.items()
 
 
 def presentation(catalog):
@@ -103,7 +110,8 @@ def build(dist, runtime, output, *, public=False):
         body = (encode(receipt)+'\n').encode()
         (stage/'explorer-preview.json').write_bytes(body)
         soup.select_one('#a7-explorer')['data-explorer-integrity'] = hashlib.sha256(body).hexdigest()
-        page.write_text(str(soup), encoding='utf-8')
+        page.write_text(soup.decode(formatter=PreserveAttributeOrder(
+            entity_substitution=EntitySubstitution.substitute_xml)), encoding='utf-8')
         # One complete local site artifact, including its page-bound trust anchor.
         os.rename(stage, output)
     return receipt

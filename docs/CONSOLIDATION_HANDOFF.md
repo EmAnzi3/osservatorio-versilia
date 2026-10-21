@@ -78,3 +78,52 @@ live del deploy effettivo; benchmark, altre selezioni, export generale e dossier
 restano incrementi distinti motivati dalla matrice.
 
 Metodo dell’incremento: `docs/A7_PUBLIC_EXPLORER_INTEGRATION.md`.
+
+## Verifica del candidato #459 — 21 ottobre 2026
+
+#459 OPEN, head `6df750d691fe7171df650071350030c4647f8360`, albero
+`9838c04901e0abe1b9adf6160dcfa09c1f7a4314`: non pronta al merge.
+Quick locale ordinario PASS; Full locale ordinario FAIL nel contratto dei
+metadati Twitter di `/chiedi/`. La serializzazione preserva ora l’ordine
+originale degli attributi, senza modificare test, dati, adapter o golden.
+La precedente correzione locale non era stata inviata e il relativo Quick era
+interrotto: nessuna attestazione trasferita al checkout recuperato da GitHub.
+
+CI `39507089748`: Quick SUCCESS, Full `118940731561` FAIL per Lighthouse
+home performance 67 < 70, dopo 40 baseline visive e 582 controlli browser PASS.
+Checkout effettivo `557006f5478c672a9a1f162827450652f0975683`, stesso albero
+del candidato. Build/deploy SKIPPED; A3 `39507089946` PASS sullo stesso albero.
+Il fallimento prestazionale è distinto da quello dei metadati: la causa non è
+ancora accertata e la correzione HTML non ne dimostra la risoluzione.
+
+Prossima azione: riprodurre il budget Lighthouse con il browser ufficiale e
+confrontare gli artefatti home; Quick e Full locali ordinari, poi CI Quick→Full
+e A3 sul candidato corretto. Nessuna soglia ridotta, rerun remoto alla cieca,
+merge o pubblicazione autorizzati.
+
+Riproduzione locale nel nuovo ambiente: dipendenze canoniche ripristinate,
+Chrome for Testing ufficiale 151.0.7922.34 e Lighthouse canonico 13.4.1.
+Quick ordinario FAIL infrastrutturale durante `build_static_brand.py`:
+Chrome termina prima di aprire pagine con `process_singleton_posix.cc:297`,
+`socket() failed: Operation not permitted (1)`. Log SHA256
+`310f4f528898b04b76c5df295113dee9cdb9c9087012cf9ea2d0243209c48f7e`.
+Nessuna modifica tracciata dal gate, Full non avviato, nessun push. Il controllo
+mirato del serializzatore è PASS, non sostituisce Quick/Full. Sblocco successivo:
+Chrome Headless Shell ufficiale 151.0.7922.34, appena scaricato dalla fonte
+ufficiale, si avvia senza permessi aggiuntivi (SHA256 eseguibile
+`e11fc9ce65c96313476f7ee9844b6fb6a9220fb048693cfe9eee00acf4170a9f`).
+Usare il browser nativo Playwright e Lighthouse canonico 13.4.1; nuovi gate
+ordinari sul candidato corretto, senza trasferire verdi precedenti.
+Il browser non raggiunge Unpkg: solo Percorsi riproduce i due originali Leaflet
+1.9.4 verificati contro SRI, come nella procedura già attestata. Le route
+installate restano sulle stesse pagine dopo Percorsi e ne disabilitano la cache;
+Lighthouse usa sessioni distinte non intercettate. Nessuna modifica a DOM,
+dati, golden o soglie; la disponibilità corrente del CDN resta non certificata.
+Il workflow Pages installa ora la versione Lighthouse dichiarata dal gate,
+anziché un globale diverso poi ignorato dal launcher. L’artifact diagnostico
+esistente include anche i report Lighthouse completi: il precedente rosso
+conservava soltanto le regressioni visive. Quick→Full, soglie, trigger e deploy
+restano invariati; contratto workflow aggiornato nella stessa modifica.
+Ripetere i gate in un worktree nuovo senza `dist/` residui di build interrotte:
+un controllo PNRR iniziale ispeziona `dist/` se presente e ha rilevato il vecchio
+output incompleto. Nessuna regressione PNRR o modifica del test è dedotta.

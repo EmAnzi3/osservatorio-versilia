@@ -299,7 +299,8 @@
     {
       "path": ".github/workflows/pages.yml",
       "category": "canonical",
-      "status": "active"
+      "status": "active",
+      "note": "Quick→Full invariati; Lighthouse installato dalla versione dichiarata nel gate canonico. Lo stesso artifact diagnostico conserva regressioni visive e report Lighthouse anche in caso di fallimento."
     },
     {
       "path": ".github/workflows/pages-live-status.yml",

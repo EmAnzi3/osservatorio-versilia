@@ -114,7 +114,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
-          npm install --global lighthouse@12.8.2
+          lighthouse_version=$(python -c 'import runpy; print(runpy.run_path("scripts/test_lighthouse_budget.py")["LIGHTHOUSE_VERSION"])')
+          npm install --global "lighthouse@$lighthouse_version"
 
       - name: Prepare coherent dist for full-only checks
         shell: bash
@@ -131,7 +132,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: visual-regression-${{ github.run_id }}
-          path: reports/visual-regression/
+          path: |
+            reports/visual-regression/
+            reports/lighthouse/
           if-no-files-found: ignore
           retention-days: 14
 
