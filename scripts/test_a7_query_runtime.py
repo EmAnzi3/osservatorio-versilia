@@ -21,7 +21,7 @@ from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
-    for profile in ('ranking', 'benchmark'):
+    for profile in ('ranking', 'benchmark', 'aggregation'):
         with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
             release, measurement = build(catalog, folder, metrics=['territorialClassification'],
                                          max_views=1, profiles=(profile,))
@@ -70,6 +70,11 @@ def verify(catalog, output=None):
         assert [q['benchmark'] for _, q in requests] == ['italy', 'tuscany']
         assert not any(p == 'benchmark' for p, _ in recipes('x', 'total', ['benchmark_gap'],
                           ['046018'], benchmark_scopes=['tuscany', 'italy']))
+        assert not list(recipes('x', 'total', ['weighted_ratio'], ['046018']))
+        assert not list(recipes('x', 'total', ['compare'], ['046018'], ['aggregation']))
+        assert list(recipes('x', 'total', ['weighted_ratio'], ['046018'], ['aggregation'])) == [
+            ('aggregation', dict(operation='weighted_ratio', selectors=[dict(metric='x', dimension='total', towns=['046018'])]))]
+        assert measurement['profiles']['aggregation'] > 0
         first = {p.relative_to(root/'one').as_posix(): digest(p.read_bytes())
                  for p in (root/'one').rglob('*') if p.is_file()}
         second = {p.relative_to(root/'two').as_posix(): digest(p.read_bytes())
@@ -100,13 +105,19 @@ def verify(catalog, output=None):
                             assert q['benchmark'] in expected['benchmarkScopesByDimension'][view['dimension']]
                             assert q['benchmark'] in ('tuscany', 'italy')
                             assert len(q['selectors'][0]['towns']) == 1
+                        if profile == 'aggregation':
+                            assert entry['request'] == dict(operation='weighted_ratio', selectors=[dict(
+                                metric=metric['metric'], dimension=view['dimension'], towns=sorted(workbench.engine.codes))])
+                            if entry['response']['status'] == 'computed':
+                                assert sorted(entry['response']['result']['geographies']) == sorted(workbench.engine.codes)
+                                assert entry['response']['coverage']['requested'] == entry['response']['coverage']['usable'] == len(workbench.engine.codes)
                         checks += 1
                         response = entry['response']
                         if 'partial_coverage_requires_opt_in' in response.get('reasons', []):
                             partial = entry
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
-                    if view is detail['views'][0]:
+                    if view is detail['views'][0] or profile == 'aggregation':
                         selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
                                     else [shard['entries'][0]])
                         if profile == 'benchmark':
@@ -193,6 +204,17 @@ def verify(catalog, output=None):
                             if(change==='consent')request.allowPartial=true;
                             const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
                             if(r.resolution!=='not_materialized')throw Error('benchmark_scope_rewritten');
+                          }
+                          const aggregate=samples.find(e=>e.request.operation==='weighted_ratio');
+                          if(!aggregate)throw Error('missing_aggregation_probe');
+                          for(const change of ['subset','scope','period','consent']){
+                            const request=structuredClone(aggregate.request);
+                            if(change==='subset')request.selectors[0].towns=request.selectors[0].towns.slice(1);
+                            if(change==='scope')request.selectors[0].towns=['versilia'];
+                            if(change==='period')request.selectors[0].periods=['9999'];
+                            if(change==='consent')request.allowPartial=true;
+                            const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
+                            if(r.resolution!=='not_materialized')throw Error('aggregation_scope_rewritten');
                           }
                           const beforeInvalid=fetches;
                           let invalid=false;try{await runtime.run({schemaVersion:1,steps:[plan.steps[0],plan.steps[0]]})}catch{invalid=true}

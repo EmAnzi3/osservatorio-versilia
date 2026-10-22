@@ -7,8 +7,10 @@ ordinaria, senza aumentare la raggiungibilità nella navigazione.
 `build_static_brand.py`, dopo il ripristino delle sorgenti canoniche e la pagina
 editoriale A7, invoca `materialize_a7_public_explorer.py`. Il runtime viene prodotto
 dal workbench originale su tutte le metriche e viste native. Il candidato
-A7.5.2 include esplicitamente i tre profili predefiniti più `benchmark`, con il
-selettore Toscana/Italia descritto in `A7_BENCHMARK_INTERFACE.md`. I default del
+A7.5.3 include esplicitamente i tre profili predefiniti più `benchmark` e
+`aggregation`: il selettore Toscana/Italia è descritto in
+`A7_BENCHMARK_INTERFACE.md`, il rapporto nativo sui sette Comuni in
+`A7_NATIVE_AGGREGATES.md`. I default del
 generatore restano invariati. Nessuna acquisizione, inventario manuale o operazione nuova. Ranking resta
 opzionale nella preview precedente, non viene introdotto implicitamente qui.
 

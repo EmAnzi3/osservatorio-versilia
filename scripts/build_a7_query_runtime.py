@@ -13,7 +13,7 @@ from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
 DEFAULT_PROFILES = ('current', 'comparison', 'history')
-PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark')
+PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation')
 
 
 def digest(body):
@@ -24,7 +24,8 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
     """An explicit finite envelope, generated from declarations, never question IDs.
 
     Native default reference only. Missing periods, partial consent, arbitrary
-    subsets, aggregates and associations are NOT silently reconstructed.
+    subsets and associations are NOT silently reconstructed. Aggregation is
+    opt-in, one original weighted_ratio request over all seven municipalities.
     """
     selector = dict(metric=metric, dimension=dimension)
     point = 'lookup' if 'lookup' in operations else 'observe' if 'observe' in operations else None
@@ -38,6 +39,10 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
             yield 'history', dict(operation='series', selectors=[dict(selector, towns=[town])])
     if 'rank' in operations and 'ranking' in profiles:
         yield 'ranking', dict(operation='rank', selectors=[dict(selector, towns=towns)])
+
+    if 'weighted_ratio' in operations and 'aggregation' in profiles:
+        # No partial opt-in, generic sum, inferred weights or geographic token.
+        yield 'aggregation', dict(operation='weighted_ratio', selectors=[dict(selector, towns=towns)])
 
     if 'benchmark_gap' in operations and 'benchmark' in profiles:
         # Geographic scope must be explicitly declared by A6 for this view.
@@ -93,6 +98,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                               comparison='all_seven_towns', history='one_town_native_series',
                               ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
                               **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
+                              **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
@@ -143,7 +149,7 @@ def main():
     p.add_argument('--metric', action='append', help='Optional isolated measurement subset; omitted = entire effective catalog')
     p.add_argument('--max-views-per-metric', type=int, help='Explicit isolated measurement subset, never reported as full coverage')
     p.add_argument('--profile', action='append', choices=PROFILES,
-                   help='Explicit transport profiles; omitted = original three; ranking and benchmark are opt-in')
+                   help='Explicit transport profiles; omitted = original three; ranking, benchmark and aggregation are opt-in')
     args = p.parse_args()
     _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric,
                            profiles=args.profile or DEFAULT_PROFILES)

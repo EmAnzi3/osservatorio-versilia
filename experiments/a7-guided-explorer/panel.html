@@ -2,7 +2,7 @@
   <p class="explorer-eyebrow">ANTEPRIMA · ESPLORAZIONE DEI DATI</p>
   <h2 id="explorer-title">Esplora una misura, scegli il tuo confronto</h2>
   <p>Parti da un tema e scegli la vista che ti interessa. Ogni risultato conserva il periodo, le fonti e i limiti del dato originale.</p>
-  <p class="explorer-scope">Questa anteprima consente letture comunali, confronti fra i sette Comuni e serie e confronti con Toscana/Italia dove disponibili. Il confronto non è un totale della Versilia. Altre operazioni del motore possono non essere ancora consultabili qui.</p>
+  <p class="explorer-scope">Questa anteprima consente letture comunali, confronti, serie, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.</p>
   <form id="explorer-form">
     <fieldset disabled><legend>La tua selezione</legend>
       <div class="explorer-fields">
@@ -12,7 +12,7 @@
         <label class="explorer-wide">Vista<select id="explorer-view" required></select></label>
         <label>Che cosa vuoi leggere?<select id="explorer-operation" required></select></label>
         <label id="explorer-benchmark-field" class="explorer-wide" hidden>Riferimento del confronto<select id="explorer-benchmark" disabled></select></label>
-        <label>Comune<select id="explorer-town" required></select></label>
+        <label id="explorer-town-field">Comune<select id="explorer-town" required></select></label>
       </div>
       <p id="explorer-reference">Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.</p>
       <p id="explorer-description"></p>

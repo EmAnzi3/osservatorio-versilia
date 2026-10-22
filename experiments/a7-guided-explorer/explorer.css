@@ -31,9 +31,10 @@
 .a7-explorer .explorer-unit{font-weight:400;color:#345b73}
 @media(max-width:600px){.a7-explorer .explorer-fields{grid-template-columns:minmax(0,1fr)}.a7-explorer .explorer-wide{grid-column:auto}.a7-explorer th,.a7-explorer td{padding:.45rem;font-size:.85rem}.a7-explorer .explorer-scroll-hint{display:block}.a7-explorer caption{text-align:left}.a7-explorer .explorer-bar-row{grid-template-columns:minmax(5rem,1fr) minmax(0,1fr) minmax(2.5rem,auto)}}
 
-.a7-explorer .explorer-benchmark{margin:1rem 0;padding:1rem;border:1px solid #cbd5dc;border-radius:8px;background:#fff}
-.a7-explorer .explorer-benchmark h4{margin:0 0 1rem;font-size:1.15rem}
+.a7-explorer .explorer-benchmark,.a7-explorer .explorer-aggregation{margin:1rem 0;padding:1rem;border:1px solid #cbd5dc;border-radius:8px;background:#fff}
+.a7-explorer .explorer-benchmark h4,.a7-explorer .explorer-aggregation h4{margin:0 0 1rem;font-size:1.15rem}
 .a7-explorer .explorer-benchmark-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:0}
 .a7-explorer .explorer-benchmark-values dt{font-weight:600}
 .a7-explorer .explorer-benchmark-values dd{margin:.4rem 0 0;font-size:1.2rem;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.a7-explorer .explorer-aggregation .explorer-benchmark-values{grid-template-columns:1fr}
 @media(max-width:600px){.a7-explorer .explorer-benchmark-values{grid-template-columns:1fr}.a7-explorer .explorer-benchmark-values div+div{border-top:1px solid #dce3e9;padding-top:.7rem}}

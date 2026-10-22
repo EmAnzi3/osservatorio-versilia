@@ -141,3 +141,9 @@ di errore della UI e la verifica live restano necessari prima del rollout.
 Toscana/Italia dichiarati per la specifica vista A6. I tre profili predefiniti
 restano invariati; nessuna abilitazione pubblica implicita. Perimetro, misura e
 distinzione tra trasporto e UI: `A7_SELECTIVE_BENCHMARKS.md`.
+
+## Incremento opzionale: rapporti aggregati nativi
+
+`--profile aggregation` materializza soltanto `weighted_ratio` dove dichiarato,
+sui sette Comuni e riferimenti temporali nativi, senza consenso parziale aggiunto
+alla richiesta. Metodo, limiti e presentazione: `A7_NATIVE_AGGREGATES.md`.
