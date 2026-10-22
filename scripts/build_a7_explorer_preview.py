@@ -97,13 +97,13 @@ def build(dist, runtime, output, *, public=False):
             hero.select_one('.a7-how').string = 'Esplorazione dei dati · Letture tematiche · Dossier'
             soup.select_one('#scegli').string = 'Letture tematiche e dossier'
             panel.select_one('.explorer-eyebrow').string = 'ESPLORAZIONE DEI DATI · IN SVILUPPO'
-            panel.select_one('.explorer-scope').string = 'Sono consultabili letture comunali, confronti, serie, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.'
+            panel.select_one('.explorer-scope').string = 'Sono consultabili letture comunali, confronti, serie, variazioni fra estremi, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.'
         panel.section['data-explorer-graph'] = relative
         soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
         soup.body.append(soup.new_tag('script', type='module', src=relative+'entry.mjs'))
 
-        receipt = dict(schemaVersion=1, interfaceVersion=3, kind='a7-guided-explorer-preview',
+        receipt = dict(schemaVersion=1, interfaceVersion=4, kind='a7-guided-explorer-preview',
                        publicIntegration=public, releaseSha256=descriptor['releaseSha256'],
                        scope=descriptor['scope'], metrics=descriptor['metrics'], views=descriptor['views'],
                        graph=relative, files=hashes)

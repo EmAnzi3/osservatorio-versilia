@@ -121,6 +121,13 @@ def verify_package_boundaries(catalog, runtime, root):
         reject('native-producer-'+field+('-missing' if missing else ''), tainted,
                'runtime_response_producer_mismatch')
 
+    # Even a self-consistent graph cannot invent temporal endpoints.
+    towns = sorted(t['code'] for t in release['towns'])
+    tainted_periods = root/'tainted-change-periods'
+    with patch('build_a7_query_runtime.change_periods', return_value={t:['9998','9999'] for t in towns}):
+        build(catalog, tainted_periods, metrics=['population'], max_views=1, profiles=('changes',))
+    reject('invented-change-periods', tainted_periods, 'runtime_change_periods_mismatch')
+
     # Tampering the outer descriptor does not bless an altered embedding anchor.
     tampered = root/'tampered-package'
     shutil.copytree(destination, tampered)

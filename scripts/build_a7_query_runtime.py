@@ -13,19 +13,41 @@ from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
 DEFAULT_PROFILES = ('current', 'comparison', 'history')
-PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation')
+PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes')
 
 
 def digest(body):
     return hashlib.sha256(body).hexdigest()
 
 
-def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, benchmark_scopes=()):
+CHANGE_OPERATIONS = ('absolute_change', 'relative_change', 'percentage_points')
+
+
+def change_periods(workbench, metric, dimension, operations, towns):
+    """Finite first/last requested native series periods, without skipping missing values.
+
+    Series order and period tokens come only from A6 observations. A refused or
+    incomplete series still goes through A6 change eligibility; no inference of
+    continuity, usable endpoints, or dates from labels/catalog field names.
+    """
+    if not set(operations) & set(CHANGE_OPERATIONS):
+        return {}
+    result = {}
+    for town in towns:
+        response = workbench.engine.query(dict(operation='series', selectors=[dict(
+            metric=metric, dimension=dimension, towns=[town])]))
+        periods = list(dict.fromkeys(o['period'] for o in response['observations']))
+        result[town] = [periods[0], periods[-1]] if len(periods) >= 2 else None
+    return result
+
+
+def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, benchmark_scopes=(), change_periods_by_town=None):
     """An explicit finite envelope, generated from declarations, never question IDs.
 
-    Native default reference only. Missing periods, partial consent, arbitrary
-    subsets and associations are NOT silently reconstructed. Aggregation is
-    opt-in, one original weighted_ratio request over all seven municipalities.
+    Default references remain native. Changes explicitly select the first/last
+    native series periods, when available. Missing endpoints, partial consent,
+    arbitrary subsets and associations are never silently reconstructed.
+    Aggregation is one original weighted_ratio over all seven municipalities.
     """
     selector = dict(metric=metric, dimension=dimension)
     point = 'lookup' if 'lookup' in operations else 'observe' if 'observe' in operations else None
@@ -43,6 +65,15 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
     if 'weighted_ratio' in operations and 'aggregation' in profiles:
         # No partial opt-in, generic sum, inferred weights or geographic token.
         yield 'aggregation', dict(operation='weighted_ratio', selectors=[dict(selector, towns=towns)])
+
+    if 'changes' in profiles:
+        for operation in CHANGE_OPERATIONS:
+            if operation not in operations:
+                continue
+            for town in towns:
+                periods = (change_periods_by_town or {}).get(town)
+                yield 'changes', dict(operation=operation, selectors=[dict(selector, towns=[town],
+                                      **({'periods': periods} if periods is not None else {}))])
 
     if 'benchmark_gap' in operations and 'benchmark' in profiles:
         # Geographic scope must be explicitly declared by A6 for this view.
@@ -99,6 +130,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                               ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
                               **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
                               **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
+                              **({'changes': 'one_town_first_last_native_series_periods'} if 'changes' in profiles else {}),
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
@@ -112,9 +144,11 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
         views = []
         for dimension in declaration.get('dimensions', [])[:max_views]:
             operations = declaration.get('operationsByDimension', {}).get(dimension, [])
+            endpoints = change_periods(workbench, metric, dimension, operations, towns) if 'changes' in profiles else {}
             groups = {p: [] for p in profiles}
             for profile, request in recipes(metric, dimension, operations, towns, profiles,
-                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension],
+                                            change_periods_by_town=endpoints):
                 # Reuse the approved catalog-location normalization: its SHA256
                 # remains the identity; source snapshot paths/pointers are untouched.
                 response = portable_evidence(workbench.engine.query(request))
@@ -123,6 +157,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                 stats['statuses'][response['status']] += 1
                 stats['profiles'][profile] += 1
             views.append(dict(dimension=dimension, declaredOperations=operations,
+                              **({'changePeriodsByTown': endpoints} if 'changes' in profiles else {}),
                               shards={p: store(dict(schemaVersion=1, metric=metric, dimension=dimension,
                                                    profile=p, entries=entries), shard=True)
                                       for p, entries in groups.items() if entries}))
@@ -149,7 +184,7 @@ def main():
     p.add_argument('--metric', action='append', help='Optional isolated measurement subset; omitted = entire effective catalog')
     p.add_argument('--max-views-per-metric', type=int, help='Explicit isolated measurement subset, never reported as full coverage')
     p.add_argument('--profile', action='append', choices=PROFILES,
-                   help='Explicit transport profiles; omitted = original three; ranking, benchmark and aggregation are opt-in')
+                   help='Explicit transport profiles; omitted = original three; ranking, benchmark, aggregation and changes are opt-in')
     args = p.parse_args()
     _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric,
                            profiles=args.profile or DEFAULT_PROFILES)

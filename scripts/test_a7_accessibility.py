@@ -113,7 +113,7 @@ def verify(catalog):
     report = audit(catalog, Path(catalog).parent/'source-registry.json', site=Path(catalog).parent.parent)
     assert report['interfaceArtifact']['status'] == 'PASS'
     assert report['interfaceSummary']['prepared_native_defaults'] > 0
-    assert all(o['artifactGeneralExplorer'] != 'prepared_native_defaults' for v in report['views'] for o in v['operations'] if o['operation'] not in ('observe','lookup','compare','series','benchmark_gap','weighted_ratio'))
+    assert all(o['artifactGeneralExplorer'] != 'prepared_native_defaults' for v in report['views'] for o in v['operations'] if o['operation'] not in ('observe','lookup','compare','series','benchmark_gap','weighted_ratio','absolute_change','relative_change','percentage_points'))
     import json
     descriptor = json.loads((Path(catalog).parent.parent/'explorer-preview.json').read_text())
     benchmark_views = [o for v in report['views'] for o in v['operations']
@@ -123,6 +123,11 @@ def verify(catalog):
                          if o['operation'] == 'weighted_ratio' and o['artifactGeneralExplorer'] == 'prepared_native_defaults']
     assert bool(aggregation_views) == (descriptor.get('interfaceVersion', 1) >= 3), 'aggregation_ui_scope_not_attested'
     assert all(o['requestScope'] == 'all_seven_towns_native_weighted_ratio' for o in aggregation_views)
+    change_views = [o for v in report['views'] for o in v['operations']
+                    if o['operation'] in ('absolute_change','relative_change','percentage_points') and o['artifactGeneralExplorer'] == 'prepared_native_defaults']
+    assert bool(change_views) == (descriptor.get('interfaceVersion', 1) >= 4), 'change_ui_scope_not_attested'
+    assert all(o['requestScope'] == 'one_town_first_last_native_series_periods' for o in change_views)
+
     rows = report['acquisition']
     assert len(rows) == report['acquisitionSummary']['pairCount']
     assert len({(r['metricId'], r['dimension']) for r in rows}) == len(rows)

@@ -147,3 +147,10 @@ distinzione tra trasporto e UI: `A7_SELECTIVE_BENCHMARKS.md`.
 `--profile aggregation` materializza soltanto `weighted_ratio` dove dichiarato,
 sui sette Comuni e riferimenti temporali nativi, senza consenso parziale aggiunto
 alla richiesta. Metodo, limiti e presentazione: `A7_NATIVE_AGGREGATES.md`.
+
+## Incremento opzionale: variazioni temporali
+
+`--profile changes` deriva le tre operazioni di variazione dichiarate e una
+coppia di estremi della serie nativa per Comune, senza saltare valori mancanti.
+La coppia viene mostrata prima del calcolo e validata dal motore originale.
+Perimetro, rifiuti e integrità: `A7_TEMPORAL_CHANGES.md`.

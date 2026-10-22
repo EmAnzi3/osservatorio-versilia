@@ -234,8 +234,10 @@ Nota A6.4 — v11 dopo #346 pubblicata: sette carrier di pendolarismo per lavoro
 
 **Stato:** `IN_PROGRESS`. A6 è DONE. L’esploratore generale è pubblicato con la
 #459 e resta senza nuova promozione nella navigazione. Il selettore Toscana/Italia
-è integrato e pubblicato con la #463, con controllo live PASS. Il prossimo incremento è il rapporto aggregato nativo dei sette
-Comuni dove A6 lo ammette. Stato effettivo e gate nell’handoff.
+è integrato e pubblicato con la #463; i rapporti aggregati nativi dei sette
+Comuni sono integrati e pubblicati con la #464, entrambi con controllo live PASS.
+Il prossimo incremento riguarda le variazioni fra estremi delle serie native
+dove A6 le ammette. Stato effettivo e gate nell’handoff.
 
 **Risultato di prodotto:** consentire a chi consulta il sito di cercare dati,
 scegliere confronti e analisi ammissibili, comprenderne fonti e limiti e riusare
@@ -260,7 +262,7 @@ Restano aperti fino alla verifica sull’intero perimetro di prodotto dichiarato
 | --- | --- | --- |
 | A7.5.1 — esploratore di base | Tema, indicatore e vista; lettura comunale, confronto dei sette Comuni e serie dove ammessi | DONE nel perimetro nativo pubblicato #459 |
 | A7.5.2 — riferimenti geografici | Selettore esplicito Toscana/Italia; valore comunale, riferimento e scostamento originali, periodi e fonti | DONE nel perimetro nativo pubblicato #463; controllo live PASS |
-| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporto aggregato nativo su sette Comuni, altre capacità ancora aperte |
+| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati nativi pubblicati #464, variazioni fra estremi in sviluppo, altre capacità aperte |
 | A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | NOT_STARTED nel prodotto generale |
 | A7.5.5 — riuso delle analisi | Esportazione generale delle evidenze e rapporti PDF; collegamento ai dossier consultabili nel sito | NOT_STARTED nel prodotto generale; i dossier editoriali restano un filone distinto |
 | A7.5.6 — consolidamento pubblico | Verifica di comprensibilità, accessibilità, prestazioni e copertura; maggiore visibilità solo dopo revisione | NOT_STARTED |
