@@ -107,8 +107,17 @@ def verify(catalog, output=None):
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
                     if view is detail['views'][0]:
-                        samples.extend(shard['entries'][::len(release['towns'])] if profile == 'benchmark'
-                                       else [shard['entries'][0]])
+                        selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
+                                    else [shard['entries'][0]])
+                        if profile == 'benchmark':
+                            # The first town can be complete while another is not.
+                            # Exercise each native status/reason path, without a town whitelist.
+                            paths = {(e['response']['status'], tuple(e['response']['reasons'])) for e in selected}
+                            for entry in shard['entries']:
+                                path = (entry['response']['status'], tuple(entry['response']['reasons']))
+                                if path not in paths:
+                                    paths.add(path); selected.append(entry)
+                        samples.extend(selected)
         assert measurement['maxShardRawBytes'] == max((r['rawBytes'] for r in shard_refs), default=0)
         assert measurement['maxShardGzipBytes'] == max((r['bytes'] for r in shard_refs), default=0)
         assert partial is not None, 'missing-data fixture no longer representative'

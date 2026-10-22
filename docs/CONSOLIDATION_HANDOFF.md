@@ -34,43 +34,62 @@ d’integrità/budget/disponibilità senza fallback numerici. Metodo:
 `docs/A7_ATOMIC_RUNTIME_PACKAGE.md`, `docs/A7_GUIDED_EXPLORER_PREVIEW.md`,
 `docs/A7_PUBLIC_EXPLORER_INTEGRATION.md`.
 
-## Incremento corrente — benchmark selettivi
+## Baseline #462 e incremento corrente — benchmark nella UI
 
-#461 MERGED dal proprietario: main `bed825e02c36b566a94e8601e9d87da7c7c6e1cf`,
-albero `4814c459c3d5e9c36eb8134e26d2b72d8b96176e`, identico al candidato
-attestato. Quick/Full locali ordinari, CI Quick→Full `39625526616` e A3
-`39625526648` PASS. Evidenze `OV_PR461_3b47317_evidenze.zip`, SHA256
-`97acf600e92ad0faef97b16ff6c0cae4401a7ae1054c0a494adf94ab61993887`.
-Il workflow post-merge `39637327110` era ancora in corso all'avvio del nuovo
-incremento: verificare build/deploy e reporter effettivi; i verdi PR non provano
-la pubblicazione. Nessun merge/deploy dell'assistente.
+#462 MERGED dal proprietario: main `c348ce5541c7bf21e771a5baa309d417bf0017fa`,
+albero `a26f7ba228c5330047ffdc62f5d0717994a9809b`, identico al candidato
+attestato `76cebc7c289633ce8b20fa0e784bcd55ca40f3e1`.
+Quick locale ordinario PASS (`80d68ccb3e7c290f4a8c35feaf4ef6aed4d56038009256fcda748883510051ed`),
+Full locale ordinario senza skip PASS (`87f36da65c8d1207eac0f68c1b239c1f905771f58fc05f876e9849d472be6662`).
+CI Quick→Full effettivo `39645881405`, job `119381203290` / `119411459504`
+SUCCESS; A3 `39645881435`, job `119381200112` SUCCESS. Checkout CI
+`1069f3abd2bd8553579f3e6defd9ba402be0333a`, stesso albero. Evidenze finali
+`A7_PR462_76cebc7_evidenze.zip`, SHA256
+`b652503adf7fa43bbf1c4e07321630a2643da392a62d7dcffdfa0912c0e2c9b6`.
+Lighthouse CI passa con l’eccezione preesistente Wikimedia esplicita nel log:
+best-practices grezzi 100/77/77/100, nessuna modifica a soglie o eccezioni.
+Pubblicazione #462 verificata: Pages `39660779681`, build `119432880221` e
+deploy `119446930204` SUCCESS. Reporter `39664875469`, job `119447145831`
+SUCCESS, checkout del merge; integrità live PASS e `ov-public-routes` /
+`ov-pages-live` SUCCESS. Descrittore live identico a quello dell’albero attestato:
+grafo `32079418788605d147f0d79003201933d6ad8ab566b952330f034241eb255a54`,
+manifest `fcbe6d7deca22cc78a1f7b58f76d4ca0bec6088b8534436ed1677acd62543317`.
+Il prodotto pubblico conserva i tre profili precedenti: nessun benchmark UI
+abilitato dalla sola #462. Nessun merge o deploy dell’assistente.
+#461 era già pubblicata: Pages `39637327110` e reporter `39641519892` SUCCESS,
+validazione live PASS sul merge `bed825e02c36b566a94e8601e9d87da7c7c6e1cf`.
 
-Il nuovo profilo opzionale `benchmark` deriva le richieste dalle dichiarazioni
-A6 della singola vista: soltanto Toscana/Italia ammessi, un Comune alla volta,
-periodo nativo. Nessun benchmark Versilia, periodo arbitrario o consenso
-aggiunto. Misura isolata completa: 112 indicatori / 353 viste con riferimenti,
-3.871 richieste (3.421 computed / 450 rifiuti originali); 2.462.131 byte gzip di
-dettagli e risposte, più manifest. Non sono nuove prove numeriche indipendenti.
-Metodo e riproduzione: `docs/A7_SELECTIVE_BENCHMARKS.md`.
+Il profilo opzionale della #462 copre 112 indicatori / 353 viste, 3.871 richieste
+Toscana/Italia (3.421 computed / 450 rifiuti originali). I 49 percorsi benchmark
+acquisiti con prova nativa completa risultano raggiungibili anche nel trasporto
+isolato; non sono intere dimensioni certificate o nuove prove numeriche indipendenti.
+Metodo: `docs/A7_SELECTIVE_BENCHMARKS.md`. I conteggi della matrice iniziale sopra
+si riferiscono ai tre profili pubblici precedenti: i diversi perimetri di probe
+non vanno confrontati come una regressione.
 
-I tre profili predefiniti e l'interfaccia pubblica restano invariati. Anche nella
-preview il benchmark rimane disabilitato: selettore del riferimento e resa dello
-scostamento richiedono un incremento UI revisionato. La matrice distingue accesso
-statico e interfaccia; il pacchetto conserva integrità e pubblicazione atomica.
-Gate sul nuovo candidato da attestare nella PR; non trasferire quelli della #461.
+Branch `feature/a7-benchmark-ui`: A7.5.2, selettore esplicito del riferimento,
+valore comunale, valore Toscana/Italia e scostamento già prodotti da A6. Nessuna
+aritmetica nel browser, nessun benchmark Versilia, periodo arbitrario o consenso
+aggiunto alla richiesta. Per le percentuali, scostamento in punti percentuali.
+Risultati e consenso revocati anche cambiando riferimento; rifiuti originali
+conservati. Riferimenti disponibili derivati dalla dichiarazione della vista.
+La build pubblica candidata include esplicitamente i tre profili più benchmark;
+i default del generatore restano invariati, ranking non aggiunto.
+Metodo e limiti: `docs/A7_BENCHMARK_INTERFACE.md`.
+
+La roadmap A7 distingue requisiti trasversali e passi di prodotto A7.5.1–A7.5.6.
+Altre dimensioni/operazioni, incroci guidati, export e rapporti sono successivi,
+non funzionalità dichiarate completate. Dossier e Radar restano separati.
 
 ## Ambiente e prossima azione
 
-Chrome Headless Shell ufficiale 151.0.7922.34 (SHA256
-`e11fc9ce65c96313476f7ee9844b6fb6a9220fb048693cfe9eee00acf4170a9f`),
-Playwright 1.62.0, Lighthouse canonico 13.4.1, cache Python separate per modalità.
-Solo Percorsi riproduce i due originali Leaflet 1.9.4 verificati SRI, perché il
-browser locale non raggiunge Unpkg. Le route persistono sulla medesima pagina e
-ne disabilitano lì la cache; Lighthouse separato non intercettato. La fixture CDN
-non modifica DOM, dati, golden o soglie; CDN/WAN/telefono fisico non certificati.
+Chrome Headless Shell ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse
+canonico 13.4.1; cache Python separate per modalità. Solo Percorsi riproduce
+i due originali Leaflet 1.9.4 verificati SRI per il limite locale Unpkg, senza
+modifica a DOM/dati/golden/soglie. Lighthouse non intercettato. CDN/WAN e telefono
+fisico non certificati.
 
-Completare misura/matrice e gate locali Quick/Full ordinari, poi CI Quick→Full
-e A3 sullo stesso candidato per il profilo benchmark opzionale. Nessun merge o
-deploy senza approvazione del proprietario. Il successivo incremento UI dovrà
-consentire scelta esplicita del riferimento e mostrare scostamento, periodi,
-metodo e rifiuti originali. Export generale e dossier restano distinti; A7 non è DONE.
+Completare preview e browser desktop/mobile, misura combinata e matrice, poi
+Quick/Full locali ordinari e CI Quick→Full/A3 sul medesimo nuovo candidato.
+PR Draft finché preview/browser non verificati. Gate ed evidenze finali nella PR:
+nessun verde della #462 viene trasferito. Nessun merge/deploy dell’assistente.

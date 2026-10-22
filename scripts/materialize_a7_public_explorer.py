@@ -3,7 +3,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from build_a7_query_runtime import build as build_runtime
+from build_a7_query_runtime import build as build_runtime, DEFAULT_PROFILES
 from build_a7_explorer_preview import build as build_site
 
 
@@ -22,7 +22,8 @@ def materialize(dist):
     # Nothing is installed until the entire native runtime and embedding pass.
     with tempfile.TemporaryDirectory(prefix='.a7-public-', dir=dist.parent) as temporary:
         temporary = Path(temporary)
-        build_runtime(dist/'data/site-data.json', temporary/'runtime')
+        build_runtime(dist/'data/site-data.json', temporary/'runtime',
+                      profiles=(*DEFAULT_PROFILES, 'benchmark'))
         receipt = build_site(dist, temporary/'runtime', temporary/'site', public=True)
         from a7_explorer_release import validate_explorer
         validate_explorer(lambda path: (temporary/'site'/path).read_bytes(), full=True)

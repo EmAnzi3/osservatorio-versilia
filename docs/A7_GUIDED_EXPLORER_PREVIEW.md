@@ -26,12 +26,16 @@ Il ranking è consultabile soltanto se il pacchetto include il profilo opzionale
 posizioni e pari merito provengono dal risultato A6, senza ordinamento numerico
 ricostruito dal browser. Nessun cambiamento dei tre profili predefiniti.
 
+Il confronto Toscana/Italia richiede un riferimento esplicito fra quelli
+dichiarati nella vista. Sintesi e scostamento originali sono descritti in
+`A7_BENCHMARK_INTERFACE.md`; nessuna aritmetica nel browser.
+
 Un’operazione dichiarata ma senza shard è disabilitata e descritta come non
 ancora consultabile nel trasporto. Questo non significa dato assente o divieto
 metodologico. Un rifiuto originale resta un rifiuto. La copertura incompleta
 richiede consenso prima di mostrare anche osservazioni conservate in un rifiuto;
 accettare non aggiunge `allowPartial` alla richiesta né promuove il risultato.
-Una modifica di tema, indicatore, filtro, vista, operazione o Comune revoca
+Una modifica di tema, indicatore, filtro, vista, operazione, riferimento o Comune revoca
 risultati e consenso. Risposte tardive di selezioni precedenti vengono ignorate.
 
 La tabella conserva periodi, valori, categorie, località GAIA, unità e link fonte;

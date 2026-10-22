@@ -152,33 +152,62 @@ def verify_explorer(catalog, runtime, output, samples):
                         page.select_option('#explorer-metric', selector['metric'])
                         page.wait_for_function("()=>document.querySelector('#explorer-view').options.length>0")
                         page.select_option('#explorer-view', selector['dimension'])
-                        if request['operation'] == 'benchmark_gap':
-                            # Transport availability is not a UI scope selector.
-                            # Check the actual option flag: Playwright is_disabled()
-                            # misreports disabled options inside an enabled fieldset.
-                            assert page.locator('#explorer-operation option[value="benchmark_gap"]').evaluate(
-                                '(o)=>o.disabled && o.textContent.includes("non ancora consultabile qui")')
-                            return
                         page.select_option('#explorer-operation', request['operation'])
+                        if request['operation'] == 'benchmark_gap':
+                            assert page.is_visible('#explorer-benchmark')
+                            assert page.is_disabled('#explorer-run'), 'benchmark_reference_was_implicit'
+                            page.select_option('#explorer-benchmark', request['benchmark'])
+                        else:
+                            assert not page.is_visible('#explorer-benchmark')
                         if len(selector['towns']) == 1:
                             page.select_option('#explorer-town', selector['towns'][0])
                         assert not page.is_visible('#explorer-result')
 
-                    partial = None; checked = 0; categories = 0
+                    partial = None; checked = 0; categories = 0; benchmarks = 0; benchmark_refusals = 0
                     for entry in samples:
                         select(entry)
-                        if entry['request']['operation'] == 'benchmark_gap':
-                            continue
                         page.click('#explorer-run')
                         page.wait_for_function("()=>!document.querySelector('#explorer-consent').hidden || !document.querySelector('#explorer-result').hidden")
                         if page.is_visible('#explorer-consent'):
                             assert not page.is_visible('#explorer-result')
                             partial = entry
+                            if entry['request']['operation'] == 'benchmark_gap':
+                                page.select_option('#explorer-benchmark', '')
+                                assert not page.is_visible('#explorer-consent'), 'reference_retained_partial_consent'
+                                page.select_option('#explorer-benchmark', entry['request']['benchmark'])
+                                page.click('#explorer-run')
+                                page.wait_for_selector('#explorer-consent:not([hidden])')
                             page.click('#explorer-accept')
                         page.wait_for_selector('#explorer-result:not([hidden])')
                         evidence = json.loads(page.locator('[data-explorer-evidence]').text_content())
                         assert evidence['steps'][0]['response'] == entry['response'], 'ui_changed_native_response'
                         assert evidence['plan']['steps'][0]['request'] == entry['request'], 'ui_changed_selection'
+                        if entry['request']['operation'] == 'benchmark_gap':
+                            r = entry['response']; native = r.get('result')
+                            if r['status'] == 'computed':
+                                benchmarks += 1
+                                shown = page.locator('.explorer-benchmark')
+                                assert shown.count() == 1, ('missing_benchmark_summary', entry['request'])
+                                for key,field in [('municipal','municipalValue'),('reference','benchmarkValue'),('gap','value')]:
+                                    # Compare visible numbers with native fields, not a recreated gap.
+                                    # Parse the native JSON just as the product does. Playwright's
+                                    # Python scalar bridge turns float 0.0 into JS -0.
+                                    expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}", json.dumps(native[field]))
+                                    assert expected in shown.locator('[data-benchmark-value="'+key+'"]').text_content(), ('benchmark_value', key, entry['request'])
+                                assert page.evaluate('x=>String(x)',native['period']) in shown.text_content(), ('benchmark_period', native, entry['request'])
+                                for field in ('numeratorPeriod', 'denominatorPeriod'):
+                                    if field in native:
+                                        assert page.evaluate('x=>String(x)',native[field]) in shown.text_content(), ('benchmark_component_period', field, entry['request'])
+                                if native['unit'] == 'percentage_points':
+                                    assert 'punti percentuali' in shown.locator('[data-benchmark-value="gap"]').text_content()
+                                    municipal = next(o for o in r['observations'] if o['geography'] == native['geography'])
+                                    if municipal['unit'] == 'percent':
+                                        assert '%' in shown.locator('[data-benchmark-value="municipal"]').text_content()
+                            else:
+                                benchmark_refusals += 1
+                                assert page.locator('.explorer-benchmark').count() == 0, 'refusal_promoted_to_gap'
+                            allowed = set(page.locator('#explorer-benchmark option').evaluate_all('(els)=>els.map(e=>e.value)'))
+                            assert allowed <= {'', 'tuscany', 'italy'} and entry['request']['benchmark'] in allowed
                         numeric_rows = [i for i,o in enumerate(entry['response']['observations'][:20])
                                         if type(o.get('value')) in (int,float) and o.get('unit') != 'category_code'
                                         and not o.get('dataUnavailable') and not o.get('notApplicable')]
@@ -195,8 +224,14 @@ def verify_explorer(catalog, runtime, output, samples):
                             for o in entry['response']['observations'][:20]:
                                 assert o['categoryLabel'] in page.locator('#explorer-result tbody').text_content()
                         assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1"), 'preview_overflow'
+                        if entry['request']['operation'] == 'benchmark_gap':
+                            # Changing the reference, even to the empty choice, revokes evidence/consent.
+                            page.select_option('#explorer-benchmark', '')
+                            assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                            assert page.is_disabled('#explorer-run')
+                            page.select_option('#explorer-benchmark', entry['request']['benchmark'])
                         checked += 1
-                    assert checked and categories and partial
+                    assert checked and categories and partial and benchmarks and benchmark_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     # Filter revokes previous selection/results; no fabricated fallback view.
@@ -239,11 +274,26 @@ def verify_explorer(catalog, runtime, output, samples):
                     context.unroute('**/*.json.gz')
                     page.wait_for_load_state('networkidle')
                     assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                    # A late benchmark response cannot survive a reference change.
+                    benchmark = next(e for e in samples if e['request']['operation'] == 'benchmark_gap'
+                                     and e['response']['status'] == 'computed')
+                    page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
+                    select(benchmark)
+                    held = []
+                    context.route('**/*.json.gz', lambda route, request: held.append(route))
+                    page.click('#explorer-run');page.wait_for_timeout(100)
+                    assert held
+                    page.select_option('#explorer-benchmark', '')
+                    for route in held: route.continue_()
+                    context.unroute('**/*.json.gz')
+                    page.wait_for_load_state('networkidle')
+                    assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                    assert page.is_disabled('#explorer-run')
                     assert not outside, outside
                     assert not errors, errors
                     assert page.evaluate("!localStorage.length && !sessionStorage.length")
                     assert page.locator('#explorer-form select').evaluate_all("els=>els.every(e=>getComputedStyle(e).backgroundColor==='rgb(255, 255, 255)')")
-                    results.append(dict(width=width, nativeSelections=checked, categorySelections=categories,
+                    results.append(dict(width=width, nativeSelections=checked, categorySelections=categories, benchmarkSelections=benchmarks, benchmarkRefusals=benchmark_refusals,
                                         faultsAndSameReleaseRecoveries=len(fault_checks), staleSelectionRevoked=True))
                     context.close()
             finally:
