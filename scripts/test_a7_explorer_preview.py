@@ -167,10 +167,13 @@ def verify_explorer(catalog, runtime, output, samples):
                             assert page.is_visible('#explorer-town-field')
                         if len(selector['towns']) == 1:
                             page.select_option('#explorer-town', selector['towns'][0])
+                        if request['operation'] in ('absolute_change','relative_change','percentage_points'):
+                            for period in selector.get('periods', []):
+                                assert str(period) in page.locator('#explorer-reference').text_content(), 'change_period_not_shown_before_execution'
                         assert not page.is_visible('#explorer-result')
 
                     partial = None; checked = 0; categories = 0; benchmarks = 0; benchmark_refusals = 0
-                    aggregations = 0; aggregation_refusals = 0
+                    aggregations = 0; aggregation_refusals = 0; changes = {}; change_refusals = 0
                     for entry in samples:
                         select(entry)
                         page.click('#explorer-run')
@@ -196,6 +199,29 @@ def verify_explorer(catalog, runtime, output, samples):
                         evidence = json.loads(page.locator('[data-explorer-evidence]').text_content())
                         assert evidence['steps'][0]['response'] == entry['response'], 'ui_changed_native_response'
                         assert evidence['plan']['steps'][0]['request'] == entry['request'], 'ui_changed_selection'
+                        op = entry['request']['operation']
+                        if op in ('absolute_change','relative_change','percentage_points'):
+                            native = entry['response']['result']; shown = page.locator('.explorer-change')
+                            if entry['response']['status'] == 'computed':
+                                changes[op] = changes.get(op, 0) + 1
+                                assert shown.count() == 1
+                                amounts = [entry['response']['observations'][0]['value'], entry['response']['observations'][1]['value'], native['value']]
+                                # Playwright's Python value bridge serializes float 0.0 as -0;
+                                # use integer zero for the presentation oracle, preserving native payloads.
+                                for key, amount in zip(('start','end','change'), amounts):
+                                    expected = page.evaluate("x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)",0 if amount == 0 else amount)
+                                    assert expected in shown.locator('[data-change-value="'+key+'"]').text_content(), ('change_value_mismatch',entry['request'],key,amount,expected,shown.locator('[data-change-value="'+key+'"]').text_content())
+                                for field in ('startPeriod','endPeriod'):
+                                    assert str(native[field]) in shown.text_content()
+                                assert 'non un tasso annuo' in shown.text_content()
+                                if native['unit'] in ('percentage_points','percentagePoints'):
+                                    assert 'punti percentuali' in shown.locator('[data-change-value="change"]').text_content()
+                                if native['unit'] == 'percent_change':
+                                    assert '%' in shown.locator('[data-change-value="change"]').text_content()
+                            else:
+                                change_refusals += 1
+                                assert shown.count() == 0, 'refusal_promoted_to_change'
+
                         if entry['request']['operation'] == 'benchmark_gap':
                             r = entry['response']; native = r.get('result')
                             if r['status'] == 'computed':
@@ -272,6 +298,7 @@ def verify_explorer(catalog, runtime, output, samples):
                         checked += 1
                     assert checked and categories and partial and benchmarks and benchmark_refusals
                     assert aggregations and aggregation_refusals
+                    assert set(changes) == {'absolute_change','relative_change','percentage_points'} and change_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     # Filter revokes previous selection/results; no fabricated fallback view.
@@ -342,12 +369,24 @@ def verify_explorer(catalog, runtime, output, samples):
                     context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
                     assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     assert page.is_visible('#explorer-town-field')
+                    temporal = next(e for e in samples if e['request']['operation']=='absolute_change' and e['request']['selectors'][0].get('periods'))
+                    page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
+                    select(temporal);held=[]
+                    context.route('**/*.json.gz', lambda route, request: held.append(route))
+                    page.click('#explorer-run');page.wait_for_timeout(100)
+                    assert held
+                    other = next(t['code'] for t in root['towns'] if t['code'] != temporal['request']['selectors'][0]['towns'][0])
+                    page.select_option('#explorer-town', other)
+                    for route in held: route.continue_()
+                    context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
+                    assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     assert not outside, outside
                     assert not errors, errors
                     assert page.evaluate("!localStorage.length && !sessionStorage.length")
                     assert page.locator('#explorer-form select').evaluate_all("els=>els.every(e=>getComputedStyle(e).backgroundColor==='rgb(255, 255, 255)')")
                     results.append(dict(width=width, nativeSelections=checked, categorySelections=categories, benchmarkSelections=benchmarks, benchmarkRefusals=benchmark_refusals,
                                         aggregationSelections=aggregations, aggregationRefusals=aggregation_refusals,
+                                        changeSelections=changes, changeRefusals=change_refusals,
                                         faultsAndSameReleaseRecoveries=len(fault_checks), staleSelectionRevoked=True))
                     context.close()
             finally:

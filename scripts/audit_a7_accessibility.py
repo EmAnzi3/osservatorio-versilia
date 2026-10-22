@@ -13,7 +13,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import PROFILES, READER, recipes
+from build_a7_query_runtime import change_periods, CHANGE_OPERATIONS, PROFILES, READER, recipes
 from build_territorial_dossier_evidence import portable_evidence
 from enrichment_audit_matrix import build_matrix, validate_matrix
 from semantic_question_suite import QUESTIONS, check_expected
@@ -63,10 +63,12 @@ def artifact_capabilities(site, catalog_hash):
         detail = read_artifact(folder, summary['detail'])
         for view in detail['views']:
             for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles'],
-                                            benchmark_scopes=detail['declaration']['benchmarkScopesByDimension'][view['dimension']]):
+                                            benchmark_scopes=detail['declaration']['benchmarkScopesByDimension'][view['dimension']],
+                                            change_periods_by_town=view.get('changePeriodsByTown')):
                 if profile in view['shards'] and (profile in ('current', 'comparison', 'history', 'ranking')
                         or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2
-                        or profile == 'aggregation' and receipt.get('interfaceVersion', 1) >= 3):
+                        or profile == 'aggregation' and receipt.get('interfaceVersion', 1) >= 3
+                        or profile == 'changes' and receipt.get('interfaceVersion', 1) >= 4):
                     # Older interfaces cannot present these profiles. Transport alone proves no UI access.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof
@@ -163,7 +165,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
             generated = defaultdict(list)
             # Include all supported profiles, but do not materialize extra ones.
             for profile, request in recipes(metric, dimension, allowed, towns, PROFILES,
-                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension],
+                                            change_periods_by_town=change_periods(wb, metric, dimension, allowed, towns)):
                 generated[request['operation']].append(request)
             operations = []
             for operation in SUPPORTED:
@@ -178,6 +181,7 @@ def audit(catalog, registry, runtime=None, *, site=None):
                                        workbench='delegates_to_A6', static=state,
                                        requestScope=('all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
                                                      else 'one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
+                                                     else 'one_town_first_last_native_series_periods' if operation in CHANGE_OPERATIONS
                                                      else 'native_default_profiles_only') if requests else 'requires_explicit_request',
                                        transportedResponses=dict(Counter(e['status'] for e in entries)),
                                        publicGeneralExplorer='publication_not_inspected',

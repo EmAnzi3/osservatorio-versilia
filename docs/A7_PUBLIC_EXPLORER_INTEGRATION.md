@@ -58,3 +58,8 @@ sottoinsieme, somma generica Versilia o media semplice dei tassi. Capacità non
 trasportate, dati assenti e rifiuti metodologici rimangono distinti. Traduzione dei
 metodi originali, export generale, altre operazioni e dossier restano incrementi
 successivi; nessuna chiusura anticipata di A7.
+
+Il candidato successivo aggiunge variazioni fra estremi della serie nativa:
+periodi prima dell’esecuzione, valori iniziale/finale e differenza originale,
+con distinzione fra percentuale relativa e punti percentuali. Ricevuta UI v4;
+nessun calcolo browser o periodo arbitrario. `A7_TEMPORAL_CHANGES.md`.

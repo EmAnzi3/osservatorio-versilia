@@ -12,7 +12,7 @@ from collections import Counter
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import PROFILES, READER, digest, recipes
+from build_a7_query_runtime import change_periods, PROFILES, READER, digest, recipes
 
 ROOT_LIMIT = 2 * 1024 * 1024
 PACKED_LIMIT = 8 * 1024 * 1024
@@ -89,6 +89,7 @@ def verify_runtime(folder, catalog, *, include_reader=False):
             ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
             **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
             **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
+            **({'changes': 'one_town_first_last_native_series_periods'} if 'changes' in profiles else {}),
             partialConsent=False, arbitraryRequests=False)), 'incompatible_runtime_envelope')
     limit = root.get('maxViewsPerMetric')
     require(limit is None or type(limit) is int and limit > 0, 'invalid_view_limit')
@@ -142,11 +143,15 @@ def verify_runtime(folder, catalog, *, include_reader=False):
         for view in detail['views']:
             dimension = view['dimension']
             operations = declaration['operationsByDimension'][dimension]
-            require(set(view) == {'dimension','declaredOperations','shards'} and view['declaredOperations'] == operations,
+            endpoints = change_periods(wb, metric, dimension, operations, towns) if 'changes' in profiles else {}
+            require(set(view) == ({'dimension','declaredOperations','shards'} | ({'changePeriodsByTown'} if 'changes' in profiles else set())) and view['declaredOperations'] == operations,
                     'runtime_operations_mismatch')
+            if 'changes' in profiles:
+                require(encode(view['changePeriodsByTown']) == encode(endpoints), 'runtime_change_periods_mismatch')
             expected = {}
             for profile, request in recipes(metric, dimension, operations, towns, profiles,
-                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension]):
+                                            benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension],
+                                            change_periods_by_town=endpoints):
                 expected.setdefault(profile, []).append(request)
             require(isinstance(view['shards'], dict) and set(view['shards']) == set(expected), 'incomplete_runtime_graph')
             for profile, ref in view['shards'].items():

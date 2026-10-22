@@ -1,71 +1,56 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Baseline verificata il 22 ottobre 2026 — #463
+## Baseline verificata il 22 ottobre 2026 — #464
 
-A6 DONE: 225/225 adapter, 3.727 casi indipendenti (2.033 calcoli / 1.694 rifiuti),
-35 letture e due riepiloghi, Atlante 20.325 unità locali native, 40 golden e
-Camaiore congelata. Nessuna regressione dimostrata: non riaprire A6.
-La matrice schema 3 deriva acquisizione, capacità native, trasporto e UI dai
-contratti, dal catalogo e dall’artifact verificato: `A7_ACCESSIBILITY_AUDIT.md`.
-Le prove di accesso a percorsi non certificano intere dimensioni.
-L’esploratore resta senza nuova promozione nella navigazione; confezionamento
-atomico e ancora indipendente: `A7_ATOMIC_RUNTIME_PACKAGE.md`.
+A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi,
+Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna
+regressione dimostrata: non riaprire A6. A7 IN_PROGRESS. Matrice derivata da
+contratti/catalogo e prove effettive: `A7_ACCESSIBILITY_AUDIT.md`. Le prove di
+percorsi non certificano dimensioni intere. Nessuna promozione in navigazione.
 
-#463 MERGED dal proprietario il 22 ottobre 2026 alle 06:10:49 UTC:
-main `699da628cd93fa864e4d5bda7ece675fab76a4de`, albero
-`432b9c117dd028a4868c6abf8552f0c7eaf1f615`, identico al candidato attestato
-remoto `af22d7beb1db090e70303d6c8df7aef8c56484ca`.
-Quick locale ordinario PASS (SHA256
-`497ba115765ab2229a736c95ca2112443deb3b526fc2db08c1e5104a0503cec8`),
-Full locale ordinario senza skip PASS (SHA256
-`452ae76782ec7c770bd1d983d8389991b48bd70ba97fb886a4e3234053e93742`).
-CI Quick→Full effettivo `39675496733`, job `119484150667` / `119511077841`
-SUCCESS; A3 `39675496750`, job `119484149846` SUCCESS. I tre checkout CI
-`da2aeae677b6ff7036f0ba011082154f7df3b109` hanno lo stesso albero.
-40 golden e 582 controlli browser PASS. Lighthouse locale supera le soglie;
-CI usa l’eccezione Wikimedia preesistente esplicita, senza nuove deroghe.
-Evidenze recuperate e SHA256 verificato:
-`A7_PR463_af22d7b_evidenze.zip`,
-`4583ef9e51aa76137870daee6848254dad5fd005496c03595ff142473301854f`.
+#464 MERGED dal proprietario: main `ab9bba0f3fd27ed00ecb1b654f05ee9e93047fa0`,
+albero `db28245edb2f0e3e4fdfa60ab19ea319bc537f92`, identico al candidato
+remoto `d054d02c1d05169bcf09ec4f82715ae7dfeeb8b5`. Quick locale ordinario
+exit 0 con cattura log parziale, esplicitamente documentata; Full ordinario
+senza skip PASS con Quick ripetuto e log completo. CI Quick→Full effettivo
+`39740805211`, job `119697288976` / `119721207314` SUCCESS; A3 `39740805119`,
+job `119697287767` SUCCESS. Checkout dei tre job `be4d7cea39db494dabee91f9c5d23fcdd0a93898`,
+albero identico. Attestazione completa nella PR, archivio
+`A7_NATIVE_AGGREGATES_7681b13_evidenze.zip`, SHA256
+`13238adbb9d70f2dd334a705e999b3d7ae3690f7b63d4d61e4a46210cd95ea7c`.
 
-Pubblicazione del merge verificata: Pages `39732351995`, build `119670040985`
-e deploy `119676960542` SUCCESS. Reporter `39734566308`, job `119677133488`
-SUCCESS: checkout `699da628cd93fa864e4d5bda7ece675fab76a4de`, integrità live
-PASS e `ov-public-routes` / `ov-pages-live` SUCCESS. Pubblicazione e controlli
-sono distinti dai gate della PR. Nessun merge o deploy dell’assistente. #443 verificata ancora aperta con conflitti, filone
-editoriale separato; nessuna modifica alle altre PR o a Radar.
+Pubblicazione verificata separatamente: Pages push `39755137239`, build
+`119745120310` e deploy `119753351885` SUCCESS. Reporter `39757746846`, job
+`119753959233` SUCCESS, checkout del merge `ab9bba0f`; integrità Chiedi con
+asset/hash PASS, `ov-public-routes` / `ov-pages-live` SUCCESS. I Quick/Full
+skipped del push di pubblicazione non sono nuovi gate della PR.
+Nessun merge o deploy dell’assistente. Dossier editoriali (#443) e Radar
+restano filoni separati; nessuna modifica alle altre PR.
 
-La #463 integra il selettore esplicito Toscana/Italia, valore comunale,
-riferimento e scostamento originali A6. Metodo: `A7_BENCHMARK_INTERFACE.md`.
-Il profilo benchmark copre 112 indicatori / 353 viste, 3.871 richieste
-(3.421 computed / 450 rifiuti). I default del generatore restano i tre profili
-originari; la build pubblica sceglie esplicitamente benchmark.
+#464 espone rapporti aggregati nativi su sette Comuni solo con `weighted_ratio`:
+242 viste / 94 indicatori, 210 computed / 32 rifiuti. Totale runtime pubblico
+41.993 richieste, 24.914 computed / 17.079 rifiuti, 104.234.277 byte gzip.
+Misure di trasporto, non nuove prove numeriche indipendenti. Benchmark
+Toscana/Italia #463 e capacità precedenti conservati. Metodo:
+`A7_NATIVE_AGGREGATES.md`; atomicità: `A7_ATOMIC_RUNTIME_PACKAGE.md`.
 
-## Incremento corrente — rapporti aggregati nativi
+## Incremento corrente — variazioni temporali native
 
-Branch `feature/a7-native-operations`: A7.5.3 in corso, un solo nuovo profilo
-opzionale `aggregation`, derivato dalle viste con `weighted_ratio`. Rapporto nativo
-sugli esatti sette Comuni, senza periodi arbitrari, sottoinsiemi o `allowPartial`.
-La ricognizione sul catalogo congelato trova 242 viste / 94 indicatori, 210
-risultati e 32 rifiuti: misura del perimetro, non nuove prove numeriche indipendenti.
-La misura combinata riprodotta è 41.993 richieste: 24.914 computed / 17.079
-rifiuti, 104.234.277 byte gzip, +1.172.148 rispetto alla #463; nessun caricamento
-integrale iniziale. La UI candidata mostra risultato e componenti originali con periodi; copertura
-incompleta non produce un valore dell’intera Versilia. Nessuna somma generica,
-media semplice dei tassi o sostituzione di n.d. con zero. Dettagli:
-`A7_NATIVE_AGGREGATES.md`. Matrice derivata dalla ricevuta dell’interfaccia v3.
+Branch `feature/a7-native-changes`, base #464. A7.5.3 in corso: profilo opzionale
+`changes` per le sole variazioni assolute, relative e in punti percentuali
+ammesse dalle dichiarazioni. Una coppia primo/ultimo periodo della serie nativa
+per Comune, mostrata prima del calcolo; nessun salto degli estremi mancanti,
+periodo arbitrario, annualizzazione o modifica A6. Comparabilità e rifiuti
+restano nel motore originale. Metodo: `A7_TEMPORAL_CHANGES.md`.
 
-## Ambiente e prossima azione
+Completare misura combinata e matrice, preview/browser desktop/mobile,
+Quick e Full locali ordinari e CI Quick→Full/A3 sul medesimo nuovo candidato.
+PR Draft finché preview/browser non verificati. Gate ed evidenze finali nella PR;
+nessun verde #464 trasferito. Nessun merge/deploy dell’assistente.
 
 Chrome Headless Shell ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse
-canonico 13.4.1; cache Python separate per modalità. Solo Percorsi riproduce
-i due originali Leaflet 1.9.4 verificati SRI per il limite locale Unpkg, senza
-modifica a DOM/dati/golden/soglie. Lighthouse non intercettato. CDN/WAN e telefono
-fisico non certificati.
-
-Completare preview e browser desktop/mobile, misura combinata e matrice, poi
-Quick/Full locali ordinari e CI Quick→Full/A3 sul medesimo nuovo candidato.
-PR Draft finché preview/browser non verificati. Gate ed evidenze finali nella PR:
-nessun verde della #463 viene trasferito. Nessun merge/deploy dell’assistente.
-Altre dimensioni/operazioni, incroci guidati, export e rapporti restano aperti;
-A7 non è conclusa. Dossier editoriali e Radar restano separati.
+13.4.1; cache Python separate. Solo Percorsi riproduce i due originali Leaflet
+1.9.4 verificati SRI per il limite Unpkg, senza modifiche DOM/dati/golden/soglie;
+Lighthouse non intercettato. CDN/WAN e telefono fisico non certificati.
+Altre operazioni/dimensioni, incroci, export e rapporti restano aperti: A7 non
+conclusa. Nessuna nuova acquisizione, backend o modello esterno.

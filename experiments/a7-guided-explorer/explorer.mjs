@@ -2,8 +2,9 @@
 const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fold=(title,content)=>{const n=node('details');n.append(node('summary',title),content);return n;};
 const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
-const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation'};
-const units={sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
+const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes'};
+const changes=['absolute_change','relative_change','percentage_points'];
+const units={percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
 const concise=x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x);
 const value=o=>o.notApplicable?'Non applicabile':o.dataUnavailable||o.value===null||o.value===undefined?'n.d.':o.unit==='category_code'?o.categoryLabel||'Categoria senza etichetta':typeof o.value==='number'?number(o.value):String(o.value);
@@ -49,6 +50,10 @@ export async function startExplorer(openRuntime,presentation){
    $('town-field').hidden=aggregate;
    $('town').setAttribute('aria-describedby','explorer-reference');
    $('reference').textContent=aggregate?'Ambito: tutti i sette Comuni della Versilia. Il rapporto usa componenti e periodi verificati dal motore, non la media dei tassi comunali. Una copertura incompleta non produce un valore dell’intera Versilia.':$('operation').value==='benchmark_gap'?'Scegli esplicitamente Toscana o Italia fra i riferimenti ammessi per questa vista. Il periodo nativo e le fonti sono riportati nel risultato.':all?'Il confronto comprende sette osservazioni comunali, non un aggregato della Versilia. Il periodo effettivo è riportato per ogni dato.':'Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.';
+   if(changes.includes($('operation').value)){
+     const periods=view()?.changePeriodsByTown?.[$('town').value];
+     $('reference').textContent=periods?'Variazione fra il primo e l’ultimo periodo della serie nativa: '+String(periods[0])+' → '+String(periods[1])+'. Non è una variazione annua. Il motore verifica comparabilità e copertura; nessun estremo mancante viene sostituito.':'Questa vista non espone due estremi della serie nativa. Il motore conserva il motivo del rifiuto; nessun periodo viene inventato.';
+   }
    $('run').disabled=!view()?.shards[profiles[$('operation').value]]||($('operation').value==='benchmark_gap'&&!benchmarkScopes().includes($('benchmark').value));
  }
  function filterViews(){
@@ -76,7 +81,8 @@ export async function startExplorer(openRuntime,presentation){
  }
  function request(){
    const operation=$('operation').value;
-   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,towns:['compare','rank','weighted_ratio'].includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
+   const periods=changes.includes(operation)?view()?.changePeriodsByTown?.[$('town').value]:null;
+   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,...(periods?{periods:[...periods]}:{}),towns:['compare','rank','weighted_ratio'].includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
  }
  function show(result){
    current=result;pageIndex=0;render();
@@ -132,12 +138,33 @@ export async function startExplorer(openRuntime,presentation){
    components.append(list,node('p','Definizioni, unità e periodi delle componenti seguono il metodo originale riportato nelle osservazioni.'));
    summary.append(fold('Componenti del calcolo',components));out.append(summary);
  }
+ function renderChange(response,out,selector,operation){
+   const r=response.result;const observations=response.observations||[];
+   const [start,end]=observations;
+   if(!r||observations.length!==2||response.coverage?.requested!==2||response.coverage?.usable!==2||
+      ![r.value,start?.value,end?.value].every(x=>typeof x==='number'&&Number.isFinite(x))||
+      observations.some(o=>o.dataUnavailable||o.notApplicable||o.geography!==selector.towns[0])||
+      r.startPeriod!==start.period||r.endPeriod!==end.period||r.startPeriod===r.endPeriod||
+      (selector.periods&&canonical(selector.periods)!==canonical([r.startPeriod,r.endPeriod])))throw Error('incompatible_change_result');
+   const summary=node('section');summary.className='explorer-change';summary.setAttribute('aria-label','Variazione temporale');
+   summary.append(node('h4',townName(selector.towns[0])+' · '+String(r.startPeriod)+' → '+String(r.endPeriod)));
+   const cards=node('dl');cards.className='explorer-benchmark-values';
+   for(const [key,label,amount,unit] of [['start','Valore iniziale · '+String(r.startPeriod),start.value,unitLabel(start)],['end','Valore finale · '+String(r.endPeriod),end.value,unitLabel(end)],['change',operations[operation],r.value,unitLabel(r)]]){
+     const card=node('div');const shown=node('dd',(key==='change'&&amount>0?'+':'')+concise(amount)+' '+unit);shown.dataset.changeValue=key;card.append(node('dt',label),shown);cards.append(card);
+   }
+   summary.append(cards,node('p','Sintesi arrotondata per la lettura; valori e periodi originali nella tabella. La variazione riguarda questi due periodi, non un tasso annuo né l’effetto di un intervento. Il segno non indica automaticamente miglioramento o peggioramento.'));
+   summary.append(node('p',operation==='relative_change'?'Variazione percentuale rispetto al valore iniziale. È distinta dalla differenza in punti percentuali.':r.unit==='percentage_points'||r.unit==='percentagePoints'?'Differenza espressa in punti percentuali, distinta dalla variazione percentuale relativa.':'Differenza fra valore finale e iniziale, nell’unità della misura.'));
+   if(response.formula)summary.append(fold('Formula originale del motore',node('p',response.formula)));
+   out.append(summary);
+ }
  function render(){
    const response=current.steps[0].response;const selector=current.plan.steps[0].request.selectors[0];const operation=current.plan.steps[0].request.operation;
    const out=$('result');out.replaceChildren();out.hidden=false;
    const heading=node('h3',root.metrics.find(m=>m.metric===selector.metric).label);heading.id='explorer-result-title';out.append(heading);
    out.append(node('p',viewLabel(selector.dimension)+' · '+(operations[operation]||operation)));
    if(response.status!=='computed')out.append(node('p','Calcolo non disponibile per questa selezione. Le eventuali osservazioni seguenti sono conservate nel rifiuto originale: non costituiscono un risultato calcolato.'));
+   if(changes.includes(operation)&&response.status==='computed')renderChange(response,out,selector,operation);
+   if(changes.includes(operation)&&response.status!=='computed')out.append(node('p','Nessuna variazione è calcolata per questi riferimenti. Le osservazioni conservate non autorizzano una differenza sostitutiva.'));
    if(operation==='benchmark_gap'&&response.status==='computed')renderBenchmark(response,out);
    if(operation==='weighted_ratio'&&response.status==='computed')renderAggregation(response,out);
    if(operation==='weighted_ratio'&&response.status!=='computed')out.append(node('p','Nessun rapporto aggregato dell’intera Versilia è disponibile per questa selezione. Le eventuali osservazioni comunali non lo sostituiscono.'));
@@ -158,7 +185,7 @@ export async function startExplorer(openRuntime,presentation){
      const graph=node('div');graph.setAttribute('role','img');graph.setAttribute('aria-label','Confronto visivo delle osservazioni riportate nella tabella. Scala da zero; valori mancanti non rappresentati.');
      const maximum=Math.max(...observations.map(o=>o.value))||1;
      graph.append(node('p',`Scala da 0 a ${number(maximum)} ${unitLabel(base)}. Nessuna interpolazione fra periodi.`));
-     for(const o of visible){const row=node('div');row.className='explorer-bar-row';const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',operation==='series'?String(o.period):townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
+     for(const o of visible){const row=node('div');row.className='explorer-bar-row';const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',(operation==='series'||changes.includes(operation))?String(o.period):townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
    }
    const wrap=node('div');wrap.className='explorer-table-wrap';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Osservazioni originali · tabella scorribile');wrap.setAttribute('aria-describedby','explorer-table-hint');const table=node('table');table.append(node('caption','Osservazioni originali · periodo e fonte per ogni riga'));
    const head=node('thead');const hr=node('tr');for(const h of ['Territorio','Periodo','Valore','Fonte e definizione'])hr.append(node('th',h));head.append(hr);table.append(head);
@@ -177,7 +204,7 @@ export async function startExplorer(openRuntime,presentation){
  $('view').addEventListener('change',setOperation);
  $('operation').addEventListener('change',()=>{revoke();setBenchmark();setTown();});
  $('benchmark').addEventListener('change',()=>{revoke();setTown();status('Riferimento modificato. Mostra i dati per verificare la nuova selezione.');});
- $('town').addEventListener('change',revoke);
+ $('town').addEventListener('change',()=>{revoke();setTown();});
  $('form').addEventListener('submit',event=>{event.preventDefault();if(!$('run').disabled)safe(()=>execute({schemaVersion:1,steps:[{id:'selection',request:request()}]}))();});
  $('accept').addEventListener('click',()=>{if(pending){const plan=pending;safe(()=>execute(plan,true))();}});
  $('cancel').addEventListener('click',()=>{revoke();status('Consultazione annullata. Puoi cambiare selezione.');});

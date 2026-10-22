@@ -12,7 +12,7 @@ import threading
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import build, digest, recipes, PROFILES
+from build_a7_query_runtime import change_periods, CHANGE_OPERATIONS, build, digest, recipes, PROFILES
 from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
 from test_a7_runtime_package import verify_package_boundaries, verify_packaged_browser
@@ -21,7 +21,7 @@ from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
-    for profile in ('ranking', 'benchmark', 'aggregation'):
+    for profile in ('ranking', 'benchmark', 'aggregation', 'changes'):
         with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
             release, measurement = build(catalog, folder, metrics=['territorialClassification'],
                                          max_views=1, profiles=(profile,))
@@ -75,6 +75,21 @@ def verify(catalog, output=None):
         assert list(recipes('x', 'total', ['weighted_ratio'], ['046018'], ['aggregation'])) == [
             ('aggregation', dict(operation='weighted_ratio', selectors=[dict(metric='x', dimension='total', towns=['046018'])]))]
         assert measurement['profiles']['aggregation'] > 0
+        assert measurement['profiles']['changes'] > 0
+        assert not any(p == 'changes' for p, _ in recipes('x', 'total', CHANGE_OPERATIONS, ['046018']))
+        assert not list(recipes('x', 'total', ['compare'], ['046018'], ['changes']))
+        from types import SimpleNamespace
+        # Missing endpoints must remain endpoints; never search for a usable value.
+        calls = []
+        def history(request):
+            calls.append(request)
+            return dict(observations=[dict(period='2010', value=None), dict(period='2015', value=5), dict(period='2020', value=None)])
+        periods = change_periods(SimpleNamespace(engine=SimpleNamespace(query=history)), 'x', 'total', CHANGE_OPERATIONS, ['046018'])
+        assert periods == {'046018': ['2010', '2020']}
+        assert calls == [dict(operation='series', selectors=[dict(metric='x', dimension='total', towns=['046018'])])]
+        for _, request in recipes('x', 'total', CHANGE_OPERATIONS, ['046018'], ['changes'], change_periods_by_town=periods):
+            assert request['selectors'][0]['periods'] == ['2010', '2020']
+            assert 'allowPartial' not in request
         first = {p.relative_to(root/'one').as_posix(): digest(p.read_bytes())
                  for p in (root/'one').rglob('*') if p.is_file()}
         second = {p.relative_to(root/'two').as_posix(): digest(p.read_bytes())
@@ -105,6 +120,12 @@ def verify(catalog, output=None):
                             assert q['benchmark'] in expected['benchmarkScopesByDimension'][view['dimension']]
                             assert q['benchmark'] in ('tuscany', 'italy')
                             assert len(q['selectors'][0]['towns']) == 1
+                        if profile == 'changes':
+                            selector = entry['request']['selectors'][0]
+                            assert len(selector['towns']) == 1
+                            expected_periods = change_periods(workbench, metric['metric'], view['dimension'], view['declaredOperations'], selector['towns'])
+                            assert selector.get('periods') == expected_periods[selector['towns'][0]]
+                            assert 'allowPartial' not in entry['request']
                         if profile == 'aggregation':
                             assert entry['request'] == dict(operation='weighted_ratio', selectors=[dict(
                                 metric=metric['metric'], dimension=view['dimension'], towns=sorted(workbench.engine.codes))])
@@ -117,15 +138,17 @@ def verify(catalog, output=None):
                             partial = entry
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
-                    if view is detail['views'][0] or profile == 'aggregation':
+                    if view is detail['views'][0] or profile in ('aggregation', 'changes'):
                         selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
                                     else [shard['entries'][0]])
-                        if profile == 'benchmark':
+                        if profile in ('benchmark', 'changes'):
+                            if profile == 'changes':
+                                selected = []
                             # The first town can be complete while another is not.
                             # Exercise each native status/reason path, without a town whitelist.
-                            paths = {(e['response']['status'], tuple(e['response']['reasons'])) for e in selected}
+                            paths = {(e['request']['operation'], e['response']['status'], tuple(e['response']['reasons'])) for e in selected}
                             for entry in shard['entries']:
-                                path = (entry['response']['status'], tuple(entry['response']['reasons']))
+                                path = (entry['request']['operation'], entry['response']['status'], tuple(entry['response']['reasons']))
                                 if path not in paths:
                                     paths.add(path); selected.append(entry)
                         samples.extend(selected)
@@ -215,6 +238,18 @@ def verify(catalog, output=None):
                             if(change==='consent')request.allowPartial=true;
                             const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
                             if(r.resolution!=='not_materialized')throw Error('aggregation_scope_rewritten');
+                          }
+                          const temporal=samples.find(e=>e.request.selectors[0].periods?.length===2&&['absolute_change','relative_change','percentage_points'].includes(e.request.operation));
+                          if(!temporal)throw Error('missing_change_probe');
+                          for(const change of ['period','reverse','omit','towns','consent']){
+                            const request=structuredClone(temporal.request);const s=request.selectors[0];
+                            if(change==='period')s.periods=['9998','9999'];
+                            if(change==='reverse')s.periods.reverse();
+                            if(change==='omit')delete s.periods;
+                            if(change==='towns')s.towns=[];
+                            if(change==='consent')request.allowPartial=true;
+                            const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
+                            if(r.resolution!=='not_materialized')throw Error('change_scope_rewritten');
                           }
                           const beforeInvalid=fetches;
                           let invalid=false;try{await runtime.run({schemaVersion:1,steps:[plan.steps[0],plan.steps[0]]})}catch{invalid=true}
