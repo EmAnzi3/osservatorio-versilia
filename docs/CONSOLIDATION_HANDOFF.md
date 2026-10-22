@@ -1,24 +1,19 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Manutenzione Radar — 22 ottobre 2026
+## Main corrente — #468 integrata dal proprietario
 
-Branch `fix/radar-build-time-budget`, base main `cb05e95d` (#466 mergiata).
-Separato da A7: i refresh `39740928489` e `39773437559` falliscono per timeout
-di 20 minuti della build pubblica dopo scan/validazione/confronto riusciti.
-Candidato: build 60 minuti; job 105 = scan 30 + build 60 + margine 15; stesso
-budget nel rehearsal shadow. Contratto e gate esistenti allineati, controlli
-invariati. Nessun refresh produttivo riuscito ancora attestato.
-Test mirati automazione/shadow PASS. Browser locale recuperato dall'archivio
-Chrome Headless Shell già disponibile: ZIP CRC integro, versione 151.0.7922.34,
-avvio Playwright e lettura pagina PASS. Installato soltanto nell'ambiente locale.
-Ripetere Quick da dist assente e Full ordinario sul candidato committato;
-CI Quick→Full/A3 propri richiesti prima della prontezza al merge. I precedenti
-Quick falliti per browser mancante/dist residua non sono PASS.
-Nessun push/PR senza Quick locale PASS. Nessun merge/deploy autorizzato.
-Residui distinti: coda/rumore documentale, BELLA Lì!/GRANFEST, ANCI/MIM/GSE.
-Nessun merge, deploy o nuova acquisizione eseguito.
+Main `4085e198f1a9a0c3b812d4f2c7004f60cfcc25f3`, albero
+`8111ed42bd125a0b272507baaeedd3415541c57c`: merge #468 dopo #466.
+Il budget Radar (build 60 minuti, job 105; stesso contratto nel rehearsal shadow)
+resta quello approvato nella PR #468, con i suoi gate attestati separatamente.
+Nessun refresh produttivo riuscito è attestato qui. Residui Radar: coda/rumore
+documentale, BELLA Lì!/GRANFEST, ANCI/MIM/GSE; filone separato da A7.
+Il riallineamento A7 conserva integralmente workflow, contratto e test #468;
+risolve il solo conflitto nell’handoff, mantenendo la baseline A7 #466 qui sotto.
+Quick/Full locali e CI Quick→Full/A3 vanno attestati sul nuovo albero integrato:
+i verdi del candidato precedente non sostituiscono questi gate.
 
-## Baseline verificata il 22 ottobre 2026 — #464
+## Baseline verificata il 22 ottobre 2026 — #466
 
 A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi,
 Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna
@@ -26,45 +21,46 @@ regressione dimostrata: non riaprire A6. A7 IN_PROGRESS. Matrice derivata da
 contratti/catalogo e prove effettive: `A7_ACCESSIBILITY_AUDIT.md`. Le prove di
 percorsi non certificano dimensioni intere. Nessuna promozione in navigazione.
 
-#464 MERGED dal proprietario: main `ab9bba0f3fd27ed00ecb1b654f05ee9e93047fa0`,
-albero `db28245edb2f0e3e4fdfa60ab19ea319bc537f92`, identico al candidato
-remoto `d054d02c1d05169bcf09ec4f82715ae7dfeeb8b5`. Quick locale ordinario
-exit 0 con cattura log parziale, esplicitamente documentata; Full ordinario
-senza skip PASS con Quick ripetuto e log completo. CI Quick→Full effettivo
-`39740805211`, job `119697288976` / `119721207314` SUCCESS; A3 `39740805119`,
-job `119697287767` SUCCESS. Checkout dei tre job `be4d7cea39db494dabee91f9c5d23fcdd0a93898`,
-albero identico. Attestazione completa nella PR, archivio
-`A7_NATIVE_AGGREGATES_7681b13_evidenze.zip`, SHA256
-`13238adbb9d70f2dd334a705e999b3d7ae3690f7b63d4d61e4a46210cd95ea7c`.
+#466 MERGED dal proprietario: main `cb05e95d7d637ea01c3c3cfd6eab51594335d028`,
+albero `3f4b8111055f697816e99993f1feecbea1e95132`, identico al candidato
+remoto `fa1d3223b506ef6cc1c314bbf7f9f542696946ed`. Quick e Full locali
+ordinari senza skip PASS. CI Quick→Full effettivo `39767472109`, job
+`119786384909` / `119813990113` SUCCESS; A3 `39767472142`, job `119786384886`
+SUCCESS. Checkout effettivo dei tre job `b14acb2e63e0744110d500d6d3c089f092f62547`,
+albero identico. 40 baseline / 582 controlli browser PASS. Attestazione nella PR;
+archivio `A7_TEMPORAL_CHANGES_97c8d7d_evidenze.zip`, SHA256
+`c2516d983de0e0a93104bf4cd35e495a5939d24e5dc96b5c3cb6f714677c7752`.
 
-Pubblicazione verificata separatamente: Pages push `39755137239`, build
-`119745120310` e deploy `119753351885` SUCCESS. Reporter `39757746846`, job
-`119753959233` SUCCESS, checkout del merge `ab9bba0f`; integrità Chiedi con
+Pubblicazione verificata separatamente: Pages push `39818801445`, build
+`119964229390` e deploy `119977667709` SUCCESS. Reporter `39822722032`, job
+`119977913249` SUCCESS: checkout del merge `cb05e95d`, integrità Chiedi con
 asset/hash PASS, `ov-public-routes` / `ov-pages-live` SUCCESS. I Quick/Full
-skipped del push di pubblicazione non sono nuovi gate della PR.
-Nessun merge o deploy dell’assistente. Dossier editoriali (#443) e Radar
-restano filoni separati; nessuna modifica alle altre PR.
+skipped del push non sono nuovi gate della PR. Nessun merge/deploy dell’assistente.
+Radar ha un timeout nel refresh separato; non è un fallimento del deploy A7.
+Dossier editoriali (#443) e Radar restano separati; nessuna modifica alle altre PR.
 
-#464 espone rapporti aggregati nativi su sette Comuni solo con `weighted_ratio`:
-242 viste / 94 indicatori, 210 computed / 32 rifiuti. Totale runtime pubblico
-41.993 richieste, 24.914 computed / 17.079 rifiuti, 104.234.277 byte gzip.
-Misure di trasporto, non nuove prove numeriche indipendenti. Benchmark
-Toscana/Italia #463 e capacità precedenti conservati. Metodo:
-`A7_NATIVE_AGGREGATES.md`; atomicità: `A7_ATOMIC_RUNTIME_PACKAGE.md`.
+#466 espone variazioni native fra estremi per Comune dove dichiarate:
+3.780 richieste, 1.836 computed / 1.944 rifiuti. Totale runtime pubblico
+45.773 richieste, 26.750 computed / 19.023 rifiuti, 105.527.018 byte gzip.
+Misure di trasporto, non nuove prove numeriche indipendenti. Benchmark e rapporti
+precedenti conservati. Metodo: `A7_TEMPORAL_CHANGES.md`; atomicità:
+`A7_ATOMIC_RUNTIME_PACKAGE.md`. Matrice: 9.411 capacità preparate; 4.577 dichiarate
+non materializzate, di cui 3.336 `rank`, 202 `trend`, 515 `correlation`,
+515 `anomaly`, 9 `benchmark_gap`. Nessuna promessa di interrogabilità universale.
 
-## Incremento corrente — variazioni temporali native
+## Incremento corrente — ordine numerico descrittivo
 
-Branch `feature/a7-native-changes`, base #464. A7.5.3 in corso: profilo opzionale
-`changes` per le sole variazioni assolute, relative e in punti percentuali
-ammesse dalle dichiarazioni. Una coppia primo/ultimo periodo della serie nativa
-per Comune, mostrata prima del calcolo; nessun salto degli estremi mancanti,
-periodo arbitrario, annualizzazione o modifica A6. Comparabilità e rifiuti
-restano nel motore originale. Metodo: `A7_TEMPORAL_CHANGES.md`.
+Branch `feature/a7-descriptive-order`, base main #468 (baseline prodotto A7 #466). A7.5.3 in corso: attivazione
+pubblica esplicita del profilo opzionale `ranking` già esistente, soltanto sulle
+viste che dichiarano `rank`, sui sette Comuni al riferimento nativo. Posizioni e
+pari merito originali, valori/unità/periodi/fonti; nessun ricalcolo o giudizio
+amministrativo. Rifiuti senza posizioni sostitutive. Metodo:
+`A7_DESCRIPTIVE_ORDER.md`. Ricevuta UI v5; default invariati.
 
 Completare misura combinata e matrice, preview/browser desktop/mobile,
 Quick e Full locali ordinari e CI Quick→Full/A3 sul medesimo nuovo candidato.
 PR Draft finché preview/browser non verificati. Gate ed evidenze finali nella PR;
-nessun verde #464 trasferito. Nessun merge/deploy dell’assistente.
+nessun verde #466 trasferito. Nessun merge/deploy dell’assistente.
 
 Chrome Headless Shell ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse
 13.4.1; cache Python separate. Solo Percorsi riproduce i due originali Leaflet

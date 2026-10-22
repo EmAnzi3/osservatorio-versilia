@@ -15,7 +15,7 @@ from build_a7_explorer_preview import build
 def assert_readable_values(page, numeric_rows):
     """A value must remain one readable token, even inside a scrolling table."""
     assert page.evaluate('''rows => rows.every(index => {
-      const cell=document.querySelectorAll('#explorer-result tbody tr')[index]?.cells[2];
+      const cell=document.querySelectorAll('#explorer-result tbody tr')[index]?.querySelector('[data-observation-value]');
       const text=cell?.firstChild;
       if(!text || text.nodeType!==Node.TEXT_NODE)return false;
       const range=document.createRange();range.selectNodeContents(text);
@@ -159,10 +159,12 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-benchmark', request['benchmark'])
                         else:
                             assert not page.is_visible('#explorer-benchmark')
-                        if request['operation'] == 'weighted_ratio':
+                        if request['operation'] in ('weighted_ratio','rank'):
                             assert not page.is_visible('#explorer-town-field')
                             assert page.is_disabled('#explorer-town')
                             assert 'tutti i sette Comuni' in page.locator('#explorer-reference').text_content()
+                            if request['operation'] == 'rank':
+                                assert 'dal valore maggiore al minore' in page.locator('#explorer-reference').text_content()
                         else:
                             assert page.is_visible('#explorer-town-field')
                         if len(selector['towns']) == 1:
@@ -174,6 +176,7 @@ def verify_explorer(catalog, runtime, output, samples):
 
                     partial = None; checked = 0; categories = 0; benchmarks = 0; benchmark_refusals = 0
                     aggregations = 0; aggregation_refusals = 0; changes = {}; change_refusals = 0
+                    rankings = 0; ranking_refusals = 0; ranking_ties = 0
                     for entry in samples:
                         select(entry)
                         page.click('#explorer-run')
@@ -200,6 +203,32 @@ def verify_explorer(catalog, runtime, output, samples):
                         assert evidence['steps'][0]['response'] == entry['response'], 'ui_changed_native_response'
                         assert evidence['plan']['steps'][0]['request'] == entry['request'], 'ui_changed_selection'
                         op = entry['request']['operation']
+                        if op == 'rank':
+                            response = entry['response']; native = response.get('result')
+                            if response['status'] == 'computed':
+                                rankings += 1
+                                assert page.locator('.explorer-ranking').count() == 1
+                                rows = page.locator('#explorer-result tbody tr')
+                                assert rows.count() == len(native['ranking'])
+                                for index, item in enumerate(native['ranking']):
+                                    row = rows.nth(index)
+                                    assert row.get_attribute('data-ranking-geography') == item['geography']
+                                    assert row.locator('[data-native-rank]').text_content() == str(item['rank'])
+                                    expected = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(item['value']))
+                                    assert row.locator('[data-observation-value]').text_content().startswith(expected)
+                                    observation = next(o for o in response['observations'] if o['geography']==item['geography'])
+                                    assert row.locator('td').nth(2).text_content() == str(observation['period'])
+                                import re
+                                assert not re.search(r'\b(count|meters|hectares|currency2|cubicMetres|eurliter|eurm2month|per10k|celsius)\b',
+                                    ' '.join(rows.locator('[data-observation-value]').all_text_contents())), 'technical_unit_token_in_public_values'
+                                chart = page.locator('.explorer-bar-row[data-ranking-geography]')
+                                if chart.count():
+                                    assert chart.evaluate_all("els=>els.map(e=>e.dataset.rankingGeography)") == [r['geography'] for r in native['ranking']]
+                                ranking_ties += len({r['rank'] for r in native['ranking']}) < len(native['ranking'])
+                            else:
+                                ranking_refusals += 1
+                                assert not page.locator('.explorer-ranking, [data-native-rank], .explorer-bar-row').count(), 'refusal_promoted_to_order'
+                                assert 'Nessuna posizione numerica viene assegnata' in page.locator('#explorer-result').text_content()
                         if op in ('absolute_change','relative_change','percentage_points'):
                             native = entry['response']['result']; shown = page.locator('.explorer-change')
                             if entry['response']['status'] == 'computed':
@@ -269,7 +298,10 @@ def verify_explorer(catalog, runtime, output, samples):
                                 aggregation_refusals += 1
                                 assert shown.count() == 0, 'refusal_promoted_to_full_area_result'
                                 assert 'Le eventuali osservazioni comunali non lo sostituiscono' in page.locator('#explorer-result').text_content()
-                        numeric_rows = [i for i,o in enumerate(entry['response']['observations'][:20])
+                        ordered = entry['response']['observations']
+                        if op == 'rank' and entry['response']['status'] == 'computed':
+                            ordered = [next(o for o in ordered if o['geography']==r['geography']) for r in entry['response']['result']['ranking']]
+                        numeric_rows = [i for i,o in enumerate(ordered[:20])
                                         if type(o.get('value')) in (int,float) and o.get('unit') != 'category_code'
                                         and not o.get('dataUnavailable') and not o.get('notApplicable')]
                         assert_readable_values(page, numeric_rows)
@@ -298,6 +330,7 @@ def verify_explorer(catalog, runtime, output, samples):
                         checked += 1
                     assert checked and categories and partial and benchmarks and benchmark_refusals
                     assert aggregations and aggregation_refusals
+                    assert rankings and ranking_refusals and ranking_ties, 'ranking_edge_cases_not_exercised'
                     assert set(changes) == {'absolute_change','relative_change','percentage_points'} and change_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
@@ -369,6 +402,16 @@ def verify_explorer(catalog, runtime, output, samples):
                     context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
                     assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     assert page.is_visible('#explorer-town-field')
+                    ranking = next(e for e in samples if e['request']['operation']=='rank' and e['response']['status']=='computed')
+                    page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
+                    select(ranking);held=[]
+                    context.route('**/*.json.gz', lambda route, request: held.append(route))
+                    page.click('#explorer-run');page.wait_for_timeout(100)
+                    assert held
+                    page.select_option('#explorer-operation','compare')
+                    for route in held: route.continue_()
+                    context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
+                    assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     temporal = next(e for e in samples if e['request']['operation']=='absolute_change' and e['request']['selectors'][0].get('periods'))
                     page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
                     select(temporal);held=[]
@@ -387,6 +430,7 @@ def verify_explorer(catalog, runtime, output, samples):
                     results.append(dict(width=width, nativeSelections=checked, categorySelections=categories, benchmarkSelections=benchmarks, benchmarkRefusals=benchmark_refusals,
                                         aggregationSelections=aggregations, aggregationRefusals=aggregation_refusals,
                                         changeSelections=changes, changeRefusals=change_refusals,
+                                        rankingSelections=rankings, rankingRefusals=ranking_refusals, rankingTies=ranking_ties,
                                         faultsAndSameReleaseRecoveries=len(fault_checks), staleSelectionRevoked=True))
                     context.close()
             finally:

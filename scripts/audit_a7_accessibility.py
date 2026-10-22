@@ -179,7 +179,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 counts[state] += 1
                 operations.append(dict(operation=operation, engine='conditional' if admitted else 'not_admitted',
                                        workbench='delegates_to_A6', static=state,
-                                       requestScope=('all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
+                                       requestScope=('all_seven_towns_native_descriptive_order' if operation == 'rank'
+                                                     else 'all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
                                                      else 'one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
                                                      else 'one_town_first_last_native_series_periods' if operation in CHANGE_OPERATIONS
                                                      else 'native_default_profiles_only') if requests else 'requires_explicit_request',
