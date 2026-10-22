@@ -1,5 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Manutenzione Radar — 22 ottobre 2026
+
+Branch `fix/radar-build-time-budget`, base main `cb05e95d` (#466 mergiata).
+Separato da A7: i refresh `39740928489` e `39773437559` falliscono per timeout
+di 20 minuti della build pubblica dopo scan/validazione/confronto riusciti.
+Candidato: build 60 minuti; job 105 = scan 30 + build 60 + margine 15; stesso
+budget nel rehearsal shadow. Contratto e gate esistenti allineati, controlli
+invariati. Nessun refresh produttivo riuscito ancora attestato.
+Test mirati automazione/shadow PASS. Browser locale recuperato dall'archivio
+Chrome Headless Shell già disponibile: ZIP CRC integro, versione 151.0.7922.34,
+avvio Playwright e lettura pagina PASS. Installato soltanto nell'ambiente locale.
+Ripetere Quick da dist assente e Full ordinario sul candidato committato;
+CI Quick→Full/A3 propri richiesti prima della prontezza al merge. I precedenti
+Quick falliti per browser mancante/dist residua non sono PASS.
+Nessun push/PR senza Quick locale PASS. Nessun merge/deploy autorizzato.
+Residui distinti: coda/rumore documentale, BELLA Lì!/GRANFEST, ANCI/MIM/GSE.
+Nessun merge, deploy o nuova acquisizione eseguito.
+
 ## Baseline verificata il 22 ottobre 2026 — #464
 
 A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi,

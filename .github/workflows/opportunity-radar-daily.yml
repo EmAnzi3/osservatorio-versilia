@@ -38,8 +38,9 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    # Reserve separate finite budgets for scan and complete build/browser gates.
-    timeout-minutes: 60
+    # Scan 30 + complete build/browser 60 + setup/report/evidence margin 15.
+    # The A7 package exceeded the former 20-minute build budget (#465/#467).
+    timeout-minutes: 105
     outputs:
       content_changed: ${{ steps.run_report.outputs.content_changed }}
       reference_date: ${{ steps.run_report.outputs.reference_date }}
@@ -183,7 +184,7 @@ jobs:
 
       - name: Build and validate the public Radar before committing
         id: validate_build
-        timeout-minutes: 20
+        timeout-minutes: 60
         if: ${{ steps.live_scan.outcome == 'success' && steps.validate_snapshot.outcome == 'success' }}
         continue-on-error: true
         shell: bash
