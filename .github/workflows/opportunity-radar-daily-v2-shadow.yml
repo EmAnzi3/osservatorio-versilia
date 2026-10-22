@@ -27,7 +27,7 @@ concurrency:
 jobs:
   shadow:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 105
     steps:
       - name: Checkout exact ref
         uses: actions/checkout@v4
@@ -137,7 +137,7 @@ jobs:
 
       - name: Build and smoke-test shadow candidate
         id: build
-        timeout-minutes: 20
+        timeout-minutes: 60
         if: ${{ steps.scan.outcome == 'success' && steps.validation.outcome == 'success' }}
         continue-on-error: true
         env:

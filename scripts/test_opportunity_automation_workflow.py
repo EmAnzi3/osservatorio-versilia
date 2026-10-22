@@ -2,9 +2,27 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
+import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def check_execution_budget(path: str, scan_id: str, build_id: str) -> None:
+    contract = json.loads((ROOT / "ci/workflow-contract.json").read_text(encoding="utf-8"))
+    entry = next(item for item in contract["workflows"] if item["path"] == path)
+    budget = entry["executionBudgetMinutes"]
+    assert all(type(value) is int and value > 0 for value in budget.values())
+    assert budget["job"] >= budget["scan"] + budget["build"] + budget["overhead"], (
+        "Il job deve lasciare tempo a setup, report ed evidenze anche dopo scan/build completi"
+    )
+    source = (ROOT / path).read_text(encoding="utf-8")
+    job_timeout = re.search(r"^    timeout-minutes: (\d+)$", source, re.MULTILINE)
+    assert job_timeout and int(job_timeout.group(1)) == budget["job"]
+    for stage, step_id in (("scan", scan_id), ("build", build_id)):
+        timeout = re.search(rf"id: {re.escape(step_id)}\n        timeout-minutes: (\d+)", source)
+        assert timeout and int(timeout.group(1)) == budget[stage], (path, stage)
 
 
 def main() -> int:
@@ -59,10 +77,8 @@ def main() -> int:
     assert "Radar Opportunità · refresh giornaliero" in live_status
     assert "publish verified Radar" in live_status
 
-    assert "timeout-minutes: 60" in daily
     assert "github.event.pull_request.number || 'production'" in daily
-    assert "id: live_scan\n        timeout-minutes: 30" in daily
-    assert "id: validate_build\n        timeout-minutes: 20" in daily
+    check_execution_budget(".github/workflows/opportunity-radar-daily.yml", "live_scan", "validate_build")
     from test_pages_live_status import main as test_statuses
     test_statuses()
 

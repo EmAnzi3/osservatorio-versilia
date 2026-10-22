@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from opportunity_run_report import incomplete_run_stages
+from test_opportunity_automation_workflow import check_execution_budget
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,9 +65,7 @@ def main() -> int:
     assert workflow.index("Compare shadow candidate with production state") < workflow.index("Upload complete shadow evidence")
     assert workflow.index("Upload complete shadow evidence") < workflow.index("Enforce complete shadow run")
 
-    assert "timeout-minutes: 60" in workflow
-    assert "id: scan\n        timeout-minutes: 30" in workflow
-    assert "id: build\n        timeout-minutes: 20" in workflow
+    check_execution_budget(".github/workflows/opportunity-radar-daily-v2-shadow.yml", "scan", "build")
     comparison = workflow.split("      - name: Compare shadow candidate with production state", 1)[1].split("      - name: Build and smoke-test shadow candidate", 1)[0]
     assert "steps.validation.outcome == 'success'" in comparison
     assert "steps.build.outcome" not in comparison
