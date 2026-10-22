@@ -1,9 +1,9 @@
 // Presentation over the original anchored A6 transport. No numerical engine.
 const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fold=(title,content)=>{const n=node('details');n.append(node('summary',title),content);return n;};
-const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto da componenti',percentage_points:'Variazione in punti percentuali',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
-const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark'};
-const units={number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
+const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
+const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation'};
+const units={sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
 const concise=x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x);
 const value=o=>o.notApplicable?'Non applicabile':o.dataUnavailable||o.value===null||o.value===undefined?'n.d.':o.unit==='category_code'?o.categoryLabel||'Categoria senza etichetta':typeof o.value==='number'?number(o.value):String(o.value);
@@ -44,9 +44,11 @@ export async function startExplorer(openRuntime,presentation){
    $('benchmark').replaceChildren(option('','Scegli il riferimento'),...(enabled?benchmarkScopes().map(s=>option(s,townName(s))):[]));
  }
  function setTown(){
-   const all=['compare','rank'].includes($('operation').value);$('town').disabled=all;
+   const aggregate=$('operation').value==='weighted_ratio';
+   const all=['compare','rank','weighted_ratio'].includes($('operation').value);$('town').disabled=all;
+   $('town-field').hidden=aggregate;
    $('town').setAttribute('aria-describedby','explorer-reference');
-   $('reference').textContent=$('operation').value==='benchmark_gap'?'Scegli esplicitamente Toscana o Italia fra i riferimenti ammessi per questa vista. Il periodo nativo e le fonti sono riportati nel risultato.':all?'Il confronto comprende sette osservazioni comunali, non un aggregato della Versilia. Il periodo effettivo è riportato per ogni dato.':'Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.';
+   $('reference').textContent=aggregate?'Ambito: tutti i sette Comuni della Versilia. Il rapporto usa componenti e periodi verificati dal motore, non la media dei tassi comunali. Una copertura incompleta non produce un valore dell’intera Versilia.':$('operation').value==='benchmark_gap'?'Scegli esplicitamente Toscana o Italia fra i riferimenti ammessi per questa vista. Il periodo nativo e le fonti sono riportati nel risultato.':all?'Il confronto comprende sette osservazioni comunali, non un aggregato della Versilia. Il periodo effettivo è riportato per ogni dato.':'Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.';
    $('run').disabled=!view()?.shards[profiles[$('operation').value]]||($('operation').value==='benchmark_gap'&&!benchmarkScopes().includes($('benchmark').value));
  }
  function filterViews(){
@@ -58,7 +60,7 @@ export async function startExplorer(openRuntime,presentation){
  }
  async function metricChanged(){
    revoke();const ticket=generation;const selected=$('metric').value;
-   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();$('run').disabled=true;$('filter').value='';
+   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('filter').value='';
    $('description').textContent=presentation.metrics[selected]?.description||'';
    status('Caricamento delle viste di questo indicatore…');
    const loaded=await active(runtime.discover(selected),ticket);
@@ -69,12 +71,12 @@ export async function startExplorer(openRuntime,presentation){
  async function themeChanged(){
    revoke();const members=root.metrics.filter(m=>m.theme===$('theme').value);
    $('metric').replaceChildren(option('','Scegli un indicatore'),...members.map(m=>option(m.metric,m.label)));
-   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();$('run').disabled=true;$('description').textContent='';
+   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('description').textContent='';
    status('Scegli un indicatore del tema selezionato.');
  }
  function request(){
    const operation=$('operation').value;
-   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,towns:['compare','rank'].includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
+   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,towns:['compare','rank','weighted_ratio'].includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
  }
  function show(result){
    current=result;pageIndex=0;render();
@@ -107,6 +109,29 @@ export async function startExplorer(openRuntime,presentation){
    if(r.unit==='percentage_points')summary.append(node('p','La differenza fra le due percentuali è espressa in punti percentuali, non come variazione percentuale.'));
    out.append(summary);
  }
+ function renderAggregation(response,out){
+   const r=response.result;const codes=root.towns.map(t=>t.code).sort();
+   // A full-area label requires the native result to include the exact scope.
+   // Never calculate sums, weights or a ratio in the browser.
+   if(!r||!Array.isArray(r.geographies)||canonical([...r.geographies].sort())!==canonical(codes)||
+      response.coverage?.requested!==codes.length||response.coverage?.usable!==codes.length||
+      ![r.value,r.numerator,r.denominator,r.scale].every(x=>typeof x==='number'&&Number.isFinite(x))||
+      r.denominator<=0||r.scale<=0)throw Error('incompatible_full_area_result');
+   const summary=node('section');summary.className='explorer-aggregation';summary.setAttribute('aria-label','Rapporto aggregato della Versilia');
+   summary.append(node('h4','Versilia · sette Comuni'));
+   const values=node('dl');values.className='explorer-benchmark-values';
+   const card=node('div');const amount=node('dd',concise(r.value)+' '+unitLabel(r));amount.dataset.aggregationValue='true';
+   card.append(node('dt','Rapporto aggregato'),amount);values.append(card);summary.append(values);
+   summary.append(node('p','Rapporto delle somme dei numeratori e dei denominatori, con la scala prevista dalla misura. Non è la media dei tassi comunali né una somma generica.'),node('p','Sintesi arrotondata per la lettura; valore originale nelle componenti del calcolo.'),node('p','Periodo del risultato: '+String(r.period??'Non dichiarato')+'.'));
+   for(const [key,label] of [['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore']])if(r[key]!==undefined)summary.append(node('p',label+': '+String(r[key])));
+   summary.append(node('p','Perimetro: '+codes.map(townName).join(', ')+'. Le osservazioni comunali seguenti restano distinte dal rapporto aggregato.'));
+   const components=node('div');const list=node('ul');
+   for(const [key,label] of [['value','Valore aggregato originale'],['numerator','Numeratore aggregato'],['denominator','Denominatore aggregato'],['scale','Scala']]){
+     const item=node('li',label+': '+number(r[key])+(key==='value'?' '+unitLabel(r):''));item.dataset.aggregationComponent=key;list.append(item);
+   }
+   components.append(list,node('p','Definizioni, unità e periodi delle componenti seguono il metodo originale riportato nelle osservazioni.'));
+   summary.append(fold('Componenti del calcolo',components));out.append(summary);
+ }
  function render(){
    const response=current.steps[0].response;const selector=current.plan.steps[0].request.selectors[0];const operation=current.plan.steps[0].request.operation;
    const out=$('result');out.replaceChildren();out.hidden=false;
@@ -114,6 +139,8 @@ export async function startExplorer(openRuntime,presentation){
    out.append(node('p',viewLabel(selector.dimension)+' · '+(operations[operation]||operation)));
    if(response.status!=='computed')out.append(node('p','Calcolo non disponibile per questa selezione. Le eventuali osservazioni seguenti sono conservate nel rifiuto originale: non costituiscono un risultato calcolato.'));
    if(operation==='benchmark_gap'&&response.status==='computed')renderBenchmark(response,out);
+   if(operation==='weighted_ratio'&&response.status==='computed')renderAggregation(response,out);
+   if(operation==='weighted_ratio'&&response.status!=='computed')out.append(node('p','Nessun rapporto aggregato dell’intera Versilia è disponibile per questa selezione. Le eventuali osservazioni comunali non lo sostituiscono.'));
    if(response.coverage)out.append(node('p',`Copertura: ${response.coverage.usable} osservazioni utilizzabili su ${response.coverage.requested} richieste. I dati mancanti restano distinti da zero.`));
    if(operation==='rank'&&response.status==='computed'&&Array.isArray(response.result?.ranking)){
      const ranks=node('ol');ranks.setAttribute('aria-label','Ordine numerico restituito dal motore');
@@ -137,7 +164,7 @@ export async function startExplorer(openRuntime,presentation){
    const head=node('thead');const hr=node('tr');for(const h of ['Territorio','Periodo','Valore','Fonte e definizione'])hr.append(node('th',h));head.append(hr);table.append(head);
    const body=node('tbody');for(const o of visible){const tr=node('tr');tr.append(node('td',townName(o.geography)+(o.localityName?' · '+o.localityName:'')),node('td',String(o.period??'Non dichiarato')));const cell=node('td',value(o));if(o.unit!=='category_code'&&o.value!==null&&o.value!==undefined&&!o.dataUnavailable&&!o.notApplicable)cell.append(node('span',' '+(unitLabel(o))));tr.append(cell);
      const source=node('td');const link=sourceURL(o.source);if(link){const a=node('a','Fonte');a.href=link;a.target='_blank';a.rel='noopener noreferrer';source.append(a);}else source.append(node('span',String(o.source||'Fonte non dichiarata')));
-     const explanation=node('div');for(const [key,label] of [['definition','Definizione'],['population','Popolazione descritta'],['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore'],['periodBasis','Riferimento temporale'],['method','Metodo'],['parameter','Parametro'],['referenceText','Riferimento pubblicato, senza valutazione di conformità']])if(o[key])explanation.append(node('p',label+': '+o[key]));source.append(fold('Definizione originale',explanation));tr.append(source);body.append(tr);}
+     const explanation=node('div');for(const [key,label] of [['definition','Definizione'],['population','Popolazione descritta'],['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore'],['periodBasis','Riferimento temporale'],['method','Metodo'],['parameter','Parametro'],['referenceText','Riferimento pubblicato, senza valutazione di conformità']])if(o[key])explanation.append(node('p',label+': '+o[key]));if(operation==='weighted_ratio')for(const [key,label] of [['numerator','Numeratore'],['denominator','Denominatore'],['scale','Scala']])if(typeof o[key]==='number'&&Number.isFinite(o[key]))explanation.append(node('p',label+': '+number(o[key])));source.append(fold('Definizione originale',explanation));tr.append(source);body.append(tr);}
    table.append(body);wrap.append(table);const hint=node('p','Scorri la tabella in orizzontale per leggere tutte le colonne.');hint.id='explorer-table-hint';hint.className='explorer-scroll-hint';out.append(hint,wrap);
    if(!observations.length)out.append(node('p','Nessuna osservazione utilizzabile restituita. Non è stato inserito alcuno zero sostitutivo.'));
    if(observations.length>20){const nav=node('nav');nav.setAttribute('aria-label','Pagine delle osservazioni');const prev=node('button','Precedenti');prev.type='button';prev.disabled=pageIndex===0;prev.onclick=()=>{pageIndex--;render();};const next=node('button','Successive');next.type='button';next.disabled=(pageIndex+1)*20>=observations.length;next.onclick=()=>{pageIndex++;render();};nav.append(prev,node('span',`Pagina ${pageIndex+1} di ${Math.ceil(observations.length/20)} `),next);out.append(nav);}
@@ -145,7 +172,7 @@ export async function startExplorer(openRuntime,presentation){
    const provenance=node('pre',JSON.stringify(current,null,2));provenance.dataset.explorerEvidence='true';out.append(fold('Evidenza completa per la verifica',provenance));
  }
  $('theme').addEventListener('change',safe(themeChanged));
- $('metric').addEventListener('change',safe(async()=>{if(!$('metric').value){revoke();detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();$('run').disabled=true;return;}await metricChanged();}));
+ $('metric').addEventListener('change',safe(async()=>{if(!$('metric').value){revoke();detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;return;}await metricChanged();}));
  $('filter').addEventListener('input',()=>{if(detail)filterViews();});
  $('view').addEventListener('change',setOperation);
  $('operation').addEventListener('change',()=>{revoke();setBenchmark();setTown();});
@@ -160,7 +187,7 @@ export async function startExplorer(openRuntime,presentation){
    if(root.catalogSha256!==presentation.catalogSha256)throw Error('presentation_catalog_mismatch');
    $('theme').replaceChildren(option('','Scegli un tema'),...[...new Set(root.metrics.map(m=>m.theme))].map(key=>option(key,presentation.themes[key]||key)));
    $('metric').replaceChildren();$('view').replaceChildren();$('operation').replaceChildren();$('town').replaceChildren(...[...root.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t=>option(t.code,t.name)));
-   detail=null;setBenchmark();$('run').disabled=true;fields.disabled=false;
+   detail=null;setBenchmark();setTown();$('run').disabled=true;fields.disabled=false;
    status(root.scope==='all_metrics'?'Scegli un tema per esplorare il catalogo. Le capacità consultabili dipendono dalla vista.':'Anteprima su un sottoinsieme esplicito del catalogo. Non rappresenta tutte le capacità disponibili.');
  }
  $('retry').onclick=safe(initialize);

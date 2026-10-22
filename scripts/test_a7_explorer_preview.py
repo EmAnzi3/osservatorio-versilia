@@ -159,11 +159,18 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-benchmark', request['benchmark'])
                         else:
                             assert not page.is_visible('#explorer-benchmark')
+                        if request['operation'] == 'weighted_ratio':
+                            assert not page.is_visible('#explorer-town-field')
+                            assert page.is_disabled('#explorer-town')
+                            assert 'tutti i sette Comuni' in page.locator('#explorer-reference').text_content()
+                        else:
+                            assert page.is_visible('#explorer-town-field')
                         if len(selector['towns']) == 1:
                             page.select_option('#explorer-town', selector['towns'][0])
                         assert not page.is_visible('#explorer-result')
 
                     partial = None; checked = 0; categories = 0; benchmarks = 0; benchmark_refusals = 0
+                    aggregations = 0; aggregation_refusals = 0
                     for entry in samples:
                         select(entry)
                         page.click('#explorer-run')
@@ -175,6 +182,13 @@ def verify_explorer(catalog, runtime, output, samples):
                                 page.select_option('#explorer-benchmark', '')
                                 assert not page.is_visible('#explorer-consent'), 'reference_retained_partial_consent'
                                 page.select_option('#explorer-benchmark', entry['request']['benchmark'])
+                                page.click('#explorer-run')
+                                page.wait_for_selector('#explorer-consent:not([hidden])')
+                            if entry['request']['operation'] == 'weighted_ratio':
+                                page.select_option('#explorer-operation', 'observe')
+                                assert not page.is_visible('#explorer-consent') and not page.is_visible('#explorer-result')
+                                assert page.is_visible('#explorer-town-field')
+                                page.select_option('#explorer-operation', 'weighted_ratio')
                                 page.click('#explorer-run')
                                 page.wait_for_selector('#explorer-consent:not([hidden])')
                             page.click('#explorer-accept')
@@ -208,6 +222,27 @@ def verify_explorer(catalog, runtime, output, samples):
                                 assert page.locator('.explorer-benchmark').count() == 0, 'refusal_promoted_to_gap'
                             allowed = set(page.locator('#explorer-benchmark option').evaluate_all('(els)=>els.map(e=>e.value)'))
                             assert allowed <= {'', 'tuscany', 'italy'} and entry['request']['benchmark'] in allowed
+                        if entry['request']['operation'] == 'weighted_ratio':
+                            response = entry['response']; native = response.get('result')
+                            shown = page.locator('.explorer-aggregation')
+                            if response['status'] == 'computed':
+                                aggregations += 1
+                                assert shown.count() == 1, 'missing_full_area_result'
+                                expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native['value']))
+                                assert expected in shown.locator('[data-aggregation-value]').text_content(), 'aggregation_summary_value'
+                                assert sorted(native['geographies']) == sorted(t['code'] for t in root['towns'])
+                                assert response['coverage']['requested'] == response['coverage']['usable'] == len(root['towns'])
+                                for field in ('value','numerator','denominator','scale'):
+                                    expected = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(native[field]))
+                                    assert expected in shown.locator('[data-aggregation-component="'+field+'"]').text_content(), ('aggregation_component',field,entry['request'])
+                                for field in ('period','numeratorPeriod','denominatorPeriod'):
+                                    if field in native:
+                                        assert str(native[field]) in shown.text_content(), ('aggregation_period',field,entry['request'])
+                                assert 'Non è la media dei tassi comunali' in shown.text_content()
+                            else:
+                                aggregation_refusals += 1
+                                assert shown.count() == 0, 'refusal_promoted_to_full_area_result'
+                                assert 'Le eventuali osservazioni comunali non lo sostituiscono' in page.locator('#explorer-result').text_content()
                         numeric_rows = [i for i,o in enumerate(entry['response']['observations'][:20])
                                         if type(o.get('value')) in (int,float) and o.get('unit') != 'category_code'
                                         and not o.get('dataUnavailable') and not o.get('notApplicable')]
@@ -230,8 +265,13 @@ def verify_explorer(catalog, runtime, output, samples):
                             assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                             assert page.is_disabled('#explorer-run')
                             page.select_option('#explorer-benchmark', entry['request']['benchmark'])
+                        if entry['request']['operation'] == 'weighted_ratio':
+                            page.select_option('#explorer-operation','observe')
+                            assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                            assert page.is_visible('#explorer-town-field')
                         checked += 1
                     assert checked and categories and partial and benchmarks and benchmark_refusals
+                    assert aggregations and aggregation_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     # Filter revokes previous selection/results; no fabricated fallback view.
@@ -289,11 +329,25 @@ def verify_explorer(catalog, runtime, output, samples):
                     page.wait_for_load_state('networkidle')
                     assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     assert page.is_disabled('#explorer-run')
+                    # A full-area response arriving after a new operation is revoked.
+                    aggregate = next(e for e in samples if e['request']['operation'] == 'weighted_ratio'
+                                     and e['response']['status'] == 'computed')
+                    page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
+                    select(aggregate);held=[]
+                    context.route('**/*.json.gz', lambda route, request: held.append(route))
+                    page.click('#explorer-run');page.wait_for_timeout(100)
+                    assert held
+                    page.select_option('#explorer-operation','observe')
+                    for route in held: route.continue_()
+                    context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
+                    assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                    assert page.is_visible('#explorer-town-field')
                     assert not outside, outside
                     assert not errors, errors
                     assert page.evaluate("!localStorage.length && !sessionStorage.length")
                     assert page.locator('#explorer-form select').evaluate_all("els=>els.every(e=>getComputedStyle(e).backgroundColor==='rgb(255, 255, 255)')")
                     results.append(dict(width=width, nativeSelections=checked, categorySelections=categories, benchmarkSelections=benchmarks, benchmarkRefusals=benchmark_refusals,
+                                        aggregationSelections=aggregations, aggregationRefusals=aggregation_refusals,
                                         faultsAndSameReleaseRecoveries=len(fault_checks), staleSelectionRevoked=True))
                     context.close()
             finally:

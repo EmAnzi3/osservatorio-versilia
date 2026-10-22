@@ -88,6 +88,7 @@ def verify_runtime(folder, catalog, *, include_reader=False):
             comparison='all_seven_towns', history='one_town_native_series',
             ranking='all_seven_towns_descriptive_only' if 'ranking' in profiles else None,
             **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
+            **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
             partialConsent=False, arbitraryRequests=False)), 'incompatible_runtime_envelope')
     limit = root.get('maxViewsPerMetric')
     require(limit is None or type(limit) is int and limit > 0, 'invalid_view_limit')

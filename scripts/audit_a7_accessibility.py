@@ -65,8 +65,9 @@ def artifact_capabilities(site, catalog_hash):
             for profile, request in recipes(summary['metric'], view['dimension'], view['declaredOperations'], towns, root['envelope']['profiles'],
                                             benchmark_scopes=detail['declaration']['benchmarkScopesByDimension'][view['dimension']]):
                 if profile in view['shards'] and (profile in ('current', 'comparison', 'history', 'ranking')
-                        or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2):
-                    # Version 1 has no benchmark selector. Transport alone proves no UI access.
+                        or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2
+                        or profile == 'aggregation' and receipt.get('interfaceVersion', 1) >= 3):
+                    # Older interfaces cannot present these profiles. Transport alone proves no UI access.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof
 
@@ -175,7 +176,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 counts[state] += 1
                 operations.append(dict(operation=operation, engine='conditional' if admitted else 'not_admitted',
                                        workbench='delegates_to_A6', static=state,
-                                       requestScope=('one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
+                                       requestScope=('all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
+                                                     else 'one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
                                                      else 'native_default_profiles_only') if requests else 'requires_explicit_request',
                                        transportedResponses=dict(Counter(e['status'] for e in entries)),
                                        publicGeneralExplorer='publication_not_inspected',
