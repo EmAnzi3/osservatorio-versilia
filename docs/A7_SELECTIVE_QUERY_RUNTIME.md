@@ -154,3 +154,9 @@ alla richiesta. Metodo, limiti e presentazione: `A7_NATIVE_AGGREGATES.md`.
 coppia di estremi della serie nativa per Comune, senza saltare valori mancanti.
 La coppia viene mostrata prima del calcolo e validata dal motore originale.
 Perimetro, rifiuti e integrità: `A7_TEMPORAL_CHANGES.md`.
+
+## Integrazione selettiva: ordine numerico descrittivo
+
+La build pubblica candidata sceglie esplicitamente `ranking`, conservando i tre
+default. La presentazione usa esclusivamente ordine e posizioni A6, senza
+ricalcolo browser o giudizio amministrativo: `A7_DESCRIPTIVE_ORDER.md`.

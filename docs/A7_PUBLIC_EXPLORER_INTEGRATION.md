@@ -7,12 +7,12 @@ ordinaria, senza aumentare la raggiungibilità nella navigazione.
 `build_static_brand.py`, dopo il ripristino delle sorgenti canoniche e la pagina
 editoriale A7, invoca `materialize_a7_public_explorer.py`. Il runtime viene prodotto
 dal workbench originale su tutte le metriche e viste native. Il candidato
-A7.5.3 include esplicitamente i tre profili predefiniti più `benchmark` e
-`aggregation`: il selettore Toscana/Italia è descritto in
+A7.5.3 include esplicitamente i tre profili predefiniti più `ranking`, `benchmark`,
+`aggregation` e `changes`: il selettore Toscana/Italia è descritto in
 `A7_BENCHMARK_INTERFACE.md`, il rapporto nativo sui sette Comuni in
 `A7_NATIVE_AGGREGATES.md`. I default del
-generatore restano invariati. Nessuna acquisizione, inventario manuale o operazione nuova. Ranking resta
-opzionale nella preview precedente, non viene introdotto implicitamente qui.
+generatore restano invariati. Nessuna acquisizione, inventario manuale o operazione nuova. L’ordine numerico descrittivo è una scelta esplicita della build pubblica,
+con posizioni e pari merito originali: `A7_DESCRIPTIVE_ORDER.md`.
 
 Il confezionatore verifica tutti gli artefatti e i produttori prima di costruire
 una nuova copia completa del sito in staging. Il verificatore ricontrolla tutti
@@ -63,3 +63,7 @@ Il candidato successivo aggiunge variazioni fra estremi della serie nativa:
 periodi prima dell’esecuzione, valori iniziale/finale e differenza originale,
 con distinzione fra percentuale relativa e punti percentuali. Ricevuta UI v4;
 nessun calcolo browser o periodo arbitrario. `A7_TEMPORAL_CHANGES.md`.
+
+Il candidato successivo espone l’ordine numerico descrittivo dei sette Comuni:
+righe e grafico seguono le posizioni originali, con periodi e unità; rifiuti
+senza posizioni sostitutive. Ricevuta UI v5; `A7_DESCRIPTIVE_ORDER.md`.

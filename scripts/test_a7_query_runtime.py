@@ -138,7 +138,7 @@ def verify(catalog, output=None):
                             partial = entry
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
-                    if view is detail['views'][0] or profile in ('aggregation', 'changes'):
+                    if view is detail['views'][0] or profile in ('ranking', 'aggregation', 'changes'):
                         selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
                                     else [shard['entries'][0]])
                         if profile in ('benchmark', 'changes'):

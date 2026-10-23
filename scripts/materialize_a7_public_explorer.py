@@ -23,7 +23,7 @@ def materialize(dist):
     with tempfile.TemporaryDirectory(prefix='.a7-public-', dir=dist.parent) as temporary:
         temporary = Path(temporary)
         build_runtime(dist/'data/site-data.json', temporary/'runtime',
-                      profiles=(*DEFAULT_PROFILES, 'benchmark', 'aggregation', 'changes'))
+                      profiles=(*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes'))
         receipt = build_site(dist, temporary/'runtime', temporary/'site', public=True)
         from a7_explorer_release import validate_explorer
         validate_explorer(lambda path: (temporary/'site'/path).read_bytes(), full=True)
