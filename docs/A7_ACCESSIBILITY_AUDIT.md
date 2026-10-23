@@ -202,3 +202,13 @@ Comune alla volta al riferimento nativo. Il report valuta le richieste esatte
 materializzate, non il nome del profilo. L'interfaccia rimane distinta: il
 trasporto benchmark non implica un selettore pubblico del riferimento.
 Metodo e riproduzione: `A7_SELECTIVE_BENCHMARKS.md`.
+
+## Trend: dichiarazione e selezioni effettivamente provate
+
+Per ogni vista che dichiara `trend`, l’audit esegue sette richieste distinte sul
+workbench originale: un Comune per richiesta, serie nativa completa, nessun
+periodo o consenso aggiunto. `nativeScopeProbe` conserva scope, prove nel ledger,
+esiti e motivi; `trendProbeSummary` riepiloga le richieste, non le viste o prove
+numeriche indipendenti. Calcolabilità nativa, trasporto presente e controlli UI
+restano separati. Il profilo opzionale `trends` non è scelto dalla build pubblica.
+Metodo: `A7_NATIVE_TREND_TRANSPORT.md`.

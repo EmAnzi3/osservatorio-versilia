@@ -98,7 +98,7 @@ export async function openRuntime(releaseText, trustedReleaseSha256, baseURL, {f
       if (!plain(selector) || !summaries.has(selector.metric)) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
       const data = await detail(selector.metric);
       const view = data.views.find(v => v.dimension === selector.dimension);
-      const profile = ({observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes'})[request.operation];
+      const profile = ({observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends'})[request.operation];
       const ref = view?.shards[profile];
       if (!ref) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
       const shard = await load(ref);

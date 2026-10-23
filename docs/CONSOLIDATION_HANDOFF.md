@@ -1,70 +1,61 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Main corrente — #468 integrata dal proprietario
+## Main verificata il 23 ottobre 2026 — #469 integrata dal proprietario
 
-Main `4085e198f1a9a0c3b812d4f2c7004f60cfcc25f3`, albero
-`8111ed42bd125a0b272507baaeedd3415541c57c`: merge #468 dopo #466.
-Il budget Radar (build 60 minuti, job 105; stesso contratto nel rehearsal shadow)
-resta quello approvato nella PR #468, con i suoi gate attestati separatamente.
-Nessun refresh produttivo riuscito è attestato qui. Residui Radar: coda/rumore
-documentale, BELLA Lì!/GRANFEST, ANCI/MIM/GSE; filone separato da A7.
-Il riallineamento A7 conserva integralmente workflow, contratto e test #468;
-risolve il solo conflitto nell’handoff, mantenendo la baseline A7 #466 qui sotto.
-Quick/Full locali e CI Quick→Full/A3 vanno attestati sul nuovo albero integrato:
-i verdi del candidato precedente non sostituiscono questi gate.
-
-## Baseline verificata il 22 ottobre 2026 — #466
+Main `3708ecd61830feaafffdd6448ce05b26d7b5c6a7`, albero
+`2afcc231435d857cc2e5a9a755209de06f60b6a9`, identico al candidato #469
+`b91bbe77f0a03eaea195f902231a378d3e471b13`. Merge del proprietario verificato.
+Attestazione #469: Quick/Full locali ordinari PASS, CI Quick→Full effettivo
+`39859863476`, A3 `39859863417` SUCCESS, checkout effettivo `308507b7`,
+medesimo albero. Archivio `A7_DESCRIPTIVE_ORDER_76b3b18_evidenze.zip`, SHA256
+`5d44826e6c1080776fd0310d1278cabf2a483838a186dd49a025a133f9bd66b4`.
+Pubblicazione verificata separatamente: Pages push `39890806377`, build
+`120209849257` e deploy `120214902757` SUCCESS. Reporter `39892422975`, job
+`120215040598` SUCCESS: checkout effettivo del merge `3708ecd6`, integrità
+Chiedi con asset/hash PASS, `ov-public-routes` e `ov-pages-live` SUCCESS.
+Quick/Full skipped nel push non sono nuovi gate PR. Nessun merge/deploy
+dell’assistente.
 
 A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi,
 Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna
-regressione dimostrata: non riaprire A6. A7 IN_PROGRESS. Matrice derivata da
-contratti/catalogo e prove effettive: `A7_ACCESSIBILITY_AUDIT.md`. Le prove di
-percorsi non certificano dimensioni intere. Nessuna promozione in navigazione.
+regressione dimostrata. A7 IN_PROGRESS, nessuna promozione in navigazione.
+#469 espone l’ordine numerico dei sette Comuni con posizioni e pari merito A6.
+Runtime pubblico candidato: 49.109 richieste, 27.698 computed / 21.411 rifiuti,
+124.872.856 byte gzip; misura di trasporto, non nuovi casi indipendenti.
+Matrice #469: 12.747 capacità preparate e 1.241 dichiarate non materializzate:
+202 trend, 515 correlation, 515 anomaly, 9 benchmark_gap. Dichiarazioni
+condizionali, non 1.241 risultati calcolabili. Acquisiti A3 746; percorsi
+275 completi / 29 parziali / 442 senza prova nel perimetro, non dati assenti.
 
-#466 MERGED dal proprietario: main `cb05e95d7d637ea01c3c3cfd6eab51594335d028`,
-albero `3f4b8111055f697816e99993f1feecbea1e95132`, identico al candidato
-remoto `fa1d3223b506ef6cc1c314bbf7f9f542696946ed`. Quick e Full locali
-ordinari senza skip PASS. CI Quick→Full effettivo `39767472109`, job
-`119786384909` / `119813990113` SUCCESS; A3 `39767472142`, job `119786384886`
-SUCCESS. Checkout effettivo dei tre job `b14acb2e63e0744110d500d6d3c089f092f62547`,
-albero identico. 40 baseline / 582 controlli browser PASS. Attestazione nella PR;
-archivio `A7_TEMPORAL_CHANGES_97c8d7d_evidenze.zip`, SHA256
-`c2516d983de0e0a93104bf4cd35e495a5939d24e5dc96b5c3cb6f714677c7752`.
+## Incremento corrente — trend nativo opzionale e prove di selezione
 
-Pubblicazione verificata separatamente: Pages push `39818801445`, build
-`119964229390` e deploy `119977667709` SUCCESS. Reporter `39822722032`, job
-`119977913249` SUCCESS: checkout del merge `cb05e95d`, integrità Chiedi con
-asset/hash PASS, `ov-public-routes` / `ov-pages-live` SUCCESS. I Quick/Full
-skipped del push non sono nuovi gate della PR. Nessun merge/deploy dell’assistente.
-Radar ha un timeout nel refresh separato; non è un fallimento del deploy A7.
-Dossier editoriali (#443) e Radar restano separati; nessuna modifica alle altre PR.
+Branch `feature/a7-native-trend-transport`, base main #469. Passo A7.5.3.
+La matrice esegue una richiesta trend per vista dichiarata e Comune: serie
+nativa completa, nessun periodo, filtro dei mancanti o consenso aggiunto.
+Prove puntuali nel ledger con esiti e motivi, dichiarazioni ancora condizionali.
+Profilo opzionale `trends`: 202 viste / 1.414 richieste, 724 computed e 690
+rifiuti originali; pacchetto dedicato 2.476.698 byte gzip (inclusi dettagli),
+non costo incrementale della build combinata. Nessun nuovo calcolo browser,
+previsione o ordinamento delle pendenze. Metodo `A7_NATIVE_TREND_TRANSPORT.md`.
 
-#466 espone variazioni native fra estremi per Comune dove dichiarate:
-3.780 richieste, 1.836 computed / 1.944 rifiuti. Totale runtime pubblico
-45.773 richieste, 26.750 computed / 19.023 rifiuti, 105.527.018 byte gzip.
-Misure di trasporto, non nuove prove numeriche indipendenti. Benchmark e rapporti
-precedenti conservati. Metodo: `A7_TEMPORAL_CHANGES.md`; atomicità:
-`A7_ATOMIC_RUNTIME_PACKAGE.md`. Matrice: 9.411 capacità preparate; 4.577 dichiarate
-non materializzate, di cui 3.336 `rank`, 202 `trend`, 515 `correlation`,
-515 `anomaly`, 9 `benchmark_gap`. Nessuna promessa di interrogabilità universale.
+I tre default e i profili della build pubblica restano invariati. La UI non
+presenta trend; controlli e browser pubblici continuano a verificare i profili
+precedenti. Prima della futura integrazione: resa di periodi/unità/n/limiti,
+costo combinato e preview/browser. Altre operazioni e dimensioni, associazioni,
+riuso/CSV/PDF e dossier restano aperti. Nessuna interrogabilità universale.
 
-## Incremento corrente — ordine numerico descrittivo
+Gate del nuovo candidato: parità del trasporto, pacchetto atomico, matrice,
+Quick/Full locali ordinari e CI Quick→Full effettivo/A3 sul medesimo albero;
+attestazioni finali nella PR. Non trasferire i verdi #469 al nuovo candidato.
+Ambiente: Chrome ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse 13.4.1;
+cache Python separate. Le sonde HTTP ottengono gli originali Leaflet, ma il
+browser restituisce ERR_EMPTY_RESPONSE da Unpkg e non inizializza Percorsi.
+Solo quelle pagine riproducono i due originali Leaflet 1.9.4 verificati contro
+SRI; nessuna modifica DOM/dati/golden/soglie, altre pagine con cache HTTP reale,
+Lighthouse non intercettato. Prova del prodotto congelato, non disponibilità
+CDN/WAN o telefono fisico. Diagnosi e riproduttori nelle evidenze.
 
-Branch `feature/a7-descriptive-order`, base main #468 (baseline prodotto A7 #466). A7.5.3 in corso: attivazione
-pubblica esplicita del profilo opzionale `ranking` già esistente, soltanto sulle
-viste che dichiarano `rank`, sui sette Comuni al riferimento nativo. Posizioni e
-pari merito originali, valori/unità/periodi/fonti; nessun ricalcolo o giudizio
-amministrativo. Rifiuti senza posizioni sostitutive. Metodo:
-`A7_DESCRIPTIVE_ORDER.md`. Ricevuta UI v5; default invariati.
-
-Completare misura combinata e matrice, preview/browser desktop/mobile,
-Quick e Full locali ordinari e CI Quick→Full/A3 sul medesimo nuovo candidato.
-PR Draft finché preview/browser non verificati. Gate ed evidenze finali nella PR;
-nessun verde #466 trasferito. Nessun merge/deploy dell’assistente.
-
-Chrome Headless Shell ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse
-13.4.1; cache Python separate. Solo Percorsi riproduce i due originali Leaflet
-1.9.4 verificati SRI per il limite Unpkg, senza modifiche DOM/dati/golden/soglie;
-Lighthouse non intercettato. CDN/WAN e telefono fisico non certificati.
-Altre operazioni/dimensioni, incroci, export e rapporti restano aperti: A7 non
-conclusa. Nessuna nuova acquisizione, backend o modello esterno.
+Radar #468 conserva budget build 60/job 105 e i propri gate separati;
+nessun refresh riuscito attestato da A7. Dossier editoriali e Radar separati.
+Nessuna nuova acquisizione, adapter, modello esterno, backend o infrastruttura.
+Nessun merge o deploy autorizzato all’assistente.

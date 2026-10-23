@@ -146,6 +146,28 @@ def verify(catalog):
     assert all(r['staticAccess']['status'] == 'not_inspected' for r in rows)
     assert sum(report['workbenchAccessSummary'].values()) == len(rows)
     assert report['nativeProbes'] and not report['staticProbes']
+    # Every conditional trend view gets its own exact native-series scope proof.
+    # A computed default in one town never certifies another town or a window.
+    from semantic_query_engine import QueryEngine
+    towns = sorted(QueryEngine(catalog).codes)
+    trend_counts = Counter()
+    for view in report['views']:
+        for operation in view['operations']:
+            scope = operation.get('nativeScopeProbe')
+            if operation['operation'] != 'trend' or operation['engine'] == 'not_admitted':
+                assert scope is None
+                continue
+            assert scope['scope'] == operation['requestScope'] == 'one_town_full_native_series_ols_no_forecast'
+            proofs = [report['nativeProbes'][key] for key in scope['proofs']]
+            assert [p['request'] for p in proofs] == [dict(operation='trend', selectors=[dict(
+                metric=view['metric'], dimension=view['dimension'], towns=[town])]) for town in towns]
+            statuses = Counter(p['status'] for p in proofs)
+            assert dict(statuses) == scope['statuses']
+            assert scope['reasons'] == dict(Counter(reason for p in proofs for reason in p['reasons']))
+            trend_counts.update(statuses)
+    assert dict(trend_counts) == report['trendProbeSummary']
+    assert trend_counts['computed'] and trend_counts['not_computable']
+
     for row in rows:
         if row['workbenchAccess']['status'] == 'all_required_paths_witnessed':
             assert row['state'] == 'ACQUIRED' and row['acquisitionReference']['status'] == 'resolved_paths'

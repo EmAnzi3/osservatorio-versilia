@@ -90,11 +90,12 @@ def audit(catalog, registry, runtime=None, *, site=None):
     def probe(request):
         key = sha(encode(request).encode())
         if key in probes:
-            return
+            return key
         response = wb.run(dict(schemaVersion=1, steps=[dict(id='probe', request=request)]))['steps'][0]['response']
         probes[key] = dict(request=request, origin='declaration_probe', status=response['status'], reasons=response.get('reasons', []),
                            responseSha256=sha(encode(portable_evidence(response)).encode()))
         native_index.add(response, key)
+        return key
     cases = json.loads(QUESTIONS.read_text())['questions']
     operation_proofs = defaultdict(Counter)
     # These are the original independent A6 expectations, never a routing table.
@@ -168,6 +169,7 @@ def audit(catalog, registry, runtime=None, *, site=None):
                                             benchmark_scopes=declaration['benchmarkScopesByDimension'][dimension],
                                             change_periods_by_town=change_periods(wb, metric, dimension, allowed, towns)):
                 generated[request['operation']].append(request)
+            trend_keys = [probe(q) for q in generated['trend']]
             operations = []
             for operation in SUPPORTED:
                 admitted = operation in allowed
@@ -179,7 +181,14 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 counts[state] += 1
                 operations.append(dict(operation=operation, engine='conditional' if admitted else 'not_admitted',
                                        workbench='delegates_to_A6', static=state,
-                                       requestScope=('all_seven_towns_native_descriptive_order' if operation == 'rank'
+                                       **({'nativeScopeProbe': dict(
+                                           scope='one_town_full_native_series_ols_no_forecast',
+                                           proofs=trend_keys,
+                                           statuses=dict(Counter(probes[k]['status'] for k in trend_keys)),
+                                           reasons=dict(Counter(reason for k in trend_keys for reason in probes[k]['reasons'])))}
+                                          if operation == 'trend' and admitted else {}),
+                                       requestScope=('one_town_full_native_series_ols_no_forecast' if operation == 'trend'
+                                                     else 'all_seven_towns_native_descriptive_order' if operation == 'rank'
                                                      else 'all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
                                                      else 'one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
                                                      else 'one_town_first_last_native_series_periods' if operation in CHANGE_OPERATIONS
@@ -227,6 +236,8 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 staticAccessSummary=dict(Counter(r['staticAccess']['status'] for r in rows)),
                 nativeProbes=probes,
                 staticProbes={sha(k.encode()): dict(request=json.loads(k), **v) for k, v in actual.items()},
+                trendProbeSummary=dict(Counter(probes[k]['status'] for v in views for o in v['operations']
+                    for k in o.get('nativeScopeProbe', {}).get('proofs', []))),
                 nativeProbeSummary=dict(Counter(p['status'] for p in probes.values())),
                 limits=['Declarations are conditional, not permission for every selection.',
                         'A3 path witnesses do not prove full dimensional coverage; unlinked evidence remains explicitly unresolved.',
@@ -234,6 +245,7 @@ def audit(catalog, registry, runtime=None, *, site=None):
                         'Prepared interface controls do not attest publication or every browser combination; publication is not inspected by this offline audit.',
                         'Existing editorial public pilots are separate from the general explorer.',
                         'No source acquisition, causal interpretation or automatic policy ranking.',
+                        'Trend scope probes cover one request per declared view and town, full native series, no partial opt-in or forecast; refusals are preserved. Other scopes and pairings remain unproven.',
                         'Native lineage probes are finite: declared current comparisons, first-town native history, weighted ratios and declared benchmarks, plus original independent cases.',
                         'When supplied, every transported response is also replayed through the workbench and included in the native ledger.',
                         'Path witnesses prove neither an entire A3 dimension nor semantic equivalence of companion formulas.',
@@ -251,6 +263,11 @@ def markdown(report):
     lines += ['', '## Prove indipendenti originali attraverso il workbench', '',
               '| Operazione | computed | not_computable |', '| --- | ---: | ---: |']
     lines += [f'| {k} | {v.get("computed", 0)} | {v.get("not_computable", 0)} |' for k, v in report['independentExpectations'].items()]
+    lines += ['', '## Trend: perimetro nativo verificato', '',
+              'Una richiesta per vista dichiarata e Comune, serie nativa completa; nessun consenso implicito o previsione.',
+              'Le dichiarazioni restano condizionali. Gli esiti sono prove di accesso al motore, non di trasporto o interfaccia.',
+              '', '| Esito | Richieste |', '| --- | ---: |']
+    lines += [f'| {k} | {v} |' for k, v in report['trendProbeSummary'].items()]
     lines += ['', '## Collegamento delle evidenze', '',
               'Il report JSON conserva tutte le coppie A3 e tutte le viste/operazioni A6, con contesti e benchmark.',
               'Un puntatore raggiunto attesta quel percorso: non certifica tutta una dimensione A3.',

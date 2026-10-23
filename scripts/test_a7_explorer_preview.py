@@ -152,6 +152,8 @@ def verify_explorer(catalog, runtime, output, samples):
                         page.select_option('#explorer-metric', selector['metric'])
                         page.wait_for_function("()=>document.querySelector('#explorer-view').options.length>0")
                         page.select_option('#explorer-view', selector['dimension'])
+                        trend_option = page.locator('#explorer-operation option[value=trend]')
+                        assert not trend_option.count() or trend_option.evaluate('(option) => option.disabled'), 'transport_implicitly_enabled_trend_ui'
                         page.select_option('#explorer-operation', request['operation'])
                         if request['operation'] == 'benchmark_gap':
                             assert page.is_visible('#explorer-benchmark')
