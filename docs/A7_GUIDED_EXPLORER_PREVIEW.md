@@ -19,7 +19,7 @@ I metadati di presentazione derivano dal medesimo catalogo, con SHA riconciliato
 non autorizzano operazioni né contengono copie di osservazioni numeriche.
 
 Il filtro cerca soltanto fra le viste dichiarate dell’indicatore selezionato.
-Il confronto usa esattamente i sette Comuni; lettura e serie usano un Comune.
+Il confronto usa esattamente i sette Comuni; lettura, serie e tendenza usano un Comune.
 Non sono selezionabili anni arbitrari o sottoinsiemi non materializzati. Il
 riferimento omesso resta quello nativo, con periodo esposto per ogni osservazione.
 Il ranking è consultabile soltanto se il pacchetto include il profilo opzionale:
@@ -96,3 +96,7 @@ degli input e verifica attuale dell’intero pacchetto. Nessuna nuova certificaz
 numerica o del CDN è implicita. Browser desktop a 390 px diverso da telefono reale;
 localhost diverso da rete mobile. Dossier, Radar, associazioni, ulteriori
 aggregazioni, export generale e linguaggio naturale restano distinti.
+
+La tendenza della serie nativa è presentata soltanto con il relativo profilo:
+pendenza originale, periodi, unità per anno, n e metodo esplicito. Nessuna retta
+o previsione viene calcolata nel browser. `A7_NATIVE_TREND_INTERFACE.md`.

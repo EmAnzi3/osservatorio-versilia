@@ -1,61 +1,65 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Main verificata il 23 ottobre 2026 — #469 integrata dal proprietario
+## Main verificata il 23 ottobre 2026 — #471 integrata dal proprietario
 
-Main `3708ecd61830feaafffdd6448ce05b26d7b5c6a7`, albero
-`2afcc231435d857cc2e5a9a755209de06f60b6a9`, identico al candidato #469
-`b91bbe77f0a03eaea195f902231a378d3e471b13`. Merge del proprietario verificato.
-Attestazione #469: Quick/Full locali ordinari PASS, CI Quick→Full effettivo
-`39859863476`, A3 `39859863417` SUCCESS, checkout effettivo `308507b7`,
-medesimo albero. Archivio `A7_DESCRIPTIVE_ORDER_76b3b18_evidenze.zip`, SHA256
-`5d44826e6c1080776fd0310d1278cabf2a483838a186dd49a025a133f9bd66b4`.
-Pubblicazione verificata separatamente: Pages push `39890806377`, build
-`120209849257` e deploy `120214902757` SUCCESS. Reporter `39892422975`, job
-`120215040598` SUCCESS: checkout effettivo del merge `3708ecd6`, integrità
-Chiedi con asset/hash PASS, `ov-public-routes` e `ov-pages-live` SUCCESS.
-Quick/Full skipped nel push non sono nuovi gate PR. Nessun merge/deploy
-dell’assistente.
+Main `68841738d7214fabc3c492388e20d76de1f5f367`, albero
+`3872e9b20357205e26f96e1eba836e927d6efd94`, identico al candidato #471
+`345595d0847d78f7f91bd898333308eaa4aff39e`. Merge del proprietario verificato.
+Attestazione #471: Quick e Full locali ordinari PASS, CI Quick→Full effettivo
+`39936848082`, A3 `39936848062` SUCCESS; checkout effettivo CI `2b675810`,
+medesimo albero. Archivio `A7_NATIVE_TRENDS_evidenze.zip`, SHA256
+`40f5e56ff66b06f1538699f50ef1a94a118c94df1825a0356d33c7b48cc130d9`.
+Il primo Full Redditi FAIL resta distinto dal PASS ordinario finale, con replay
+mirato PASS e causa transitoria non dimostrata; nessun test o soglia indeboliti.
+Pubblicazione #471 verificata separatamente: Pages push `39965448010`, build
+`120453993990` e deploy `120473931978` SUCCESS. Reporter `39971234946`, job
+`120474152173` SUCCESS: checkout effettivo del merge `68841738` verificato
+anche nel build; integrità Chiedi asset/hash, `ov-public-routes` e
+`ov-pages-live` PASS. I Quick/Full skipped del push non sono nuovi gate.
+Nessun merge/deploy dell’assistente.
 
 A6 DONE: 225/225 adapter, 3.727 casi indipendenti, 35 letture e due riepiloghi,
-Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. Nessuna
-regressione dimostrata. A7 IN_PROGRESS, nessuna promozione in navigazione.
-#469 espone l’ordine numerico dei sette Comuni con posizioni e pari merito A6.
-Runtime pubblico candidato: 49.109 richieste, 27.698 computed / 21.411 rifiuti,
-124.872.856 byte gzip; misura di trasporto, non nuovi casi indipendenti.
-Matrice #469: 12.747 capacità preparate e 1.241 dichiarate non materializzate:
-202 trend, 515 correlation, 515 anomaly, 9 benchmark_gap. Dichiarazioni
-condizionali, non 1.241 risultati calcolabili. Acquisiti A3 746; percorsi
-275 completi / 29 parziali / 442 senza prova nel perimetro, non dati assenti.
+Atlante 20.325 unità locali native, 40 golden e Camaiore congelata. A7
+IN_PROGRESS, nessuna promozione in navigazione. #471 aggiunge il trasporto
+opzionale trend e prove native, senza controlli pubblici impliciti: 202 viste,
+1.414 richieste, 724 computed / 690 rifiuti; misura di accesso/trasporto, non
+nuove prove numeriche indipendenti. Pendenze positive/negative diverse da merito.
 
-## Incremento corrente — trend nativo opzionale e prove di selezione
+## Incremento corrente — tendenza della serie nell’esploratore
 
-Branch `feature/a7-native-trend-transport`, base main #469. Passo A7.5.3.
-La matrice esegue una richiesta trend per vista dichiarata e Comune: serie
-nativa completa, nessun periodo, filtro dei mancanti o consenso aggiunto.
-Prove puntuali nel ledger con esiti e motivi, dichiarazioni ancora condizionali.
-Profilo opzionale `trends`: 202 viste / 1.414 richieste, 724 computed e 690
-rifiuti originali; pacchetto dedicato 2.476.698 byte gzip (inclusi dettagli),
-non costo incrementale della build combinata. Nessun nuovo calcolo browser,
-previsione o ordinamento delle pendenze. Metodo `A7_NATIVE_TREND_TRANSPORT.md`.
+Branch `feature/a7-guided-native-trends`, base main #471. Passo A7.5.3.
+La build candidata sceglie esplicitamente `trends`, con i tre default invariati.
+Un Comune, intera serie nativa, nessun periodo/metodo/allowPartial aggiunto.
+Sintesi originale A6: pendenza e unità per anno, periodi osservati, n; dettaglio
+con precisione originale, asse temporale completo e metodo OLS spiegato.
+Nessuna previsione, nuova regressione browser o graduatoria delle pendenze.
+Rifiuti e consenso conservati, spiegazioni italiane dei motivi note senza
+alterare i codici originali. Metodo `A7_NATIVE_TREND_INTERFACE.md`.
 
-I tre default e i profili della build pubblica restano invariati. La UI non
-presenta trend; controlli e browser pubblici continuano a verificare i profili
-precedenti. Prima della futura integrazione: resa di periodi/unità/n/limiti,
-costo combinato e preview/browser. Altre operazioni e dimensioni, associazioni,
-riuso/CSV/PDF e dossier restano aperti. Nessuna interrogabilità universale.
+Ricevuta UI v6 e matrice derivata distinguono trasporto e controlli preparati;
+nessuna pubblicazione implicita. Le altre capacità restano condizionali, non
+tutti risultati calcolabili. Misura combinata: 50.523 richieste, 28.422 computed / 22.101 rifiuti,
+127.146.205 byte gzip (+2.273.349); shard precedenti invariati. Preview
+desktop/mobile verificata; matrice e produttori da riconciliare sul candidato
+definitivo. Nessuna prova numerica indipendente aggiuntiva o caricamento
+integrale iniziale. Non trasferire i verdi #471.
+Il gate fisarmoniche attende ora il tema comunale richiesto: `networkidle`
+poteva precedere l'idratazione e contare Demografia al posto di Sicurezza,
+oppure perdere un locator durante il render. Nessuna soglia o pagina cambiata;
+replay e fallimento iniziale restano distinti dai gate ordinari finali.
+Gate: parità del trasporto e pacchetto atomico, browser desktop/mobile, guasti e
+recupero; Quick/Full locali ordinari, CI Quick→Full effettivo e A3 sul medesimo
+albero. PR Draft fino a preview/browser verificati, attestazioni finali nella PR.
 
-Gate del nuovo candidato: parità del trasporto, pacchetto atomico, matrice,
-Quick/Full locali ordinari e CI Quick→Full effettivo/A3 sul medesimo albero;
-attestazioni finali nella PR. Non trasferire i verdi #469 al nuovo candidato.
 Ambiente: Chrome ufficiale 151.0.7922.34, Playwright 1.62.0, Lighthouse 13.4.1;
-cache Python separate. Le sonde HTTP ottengono gli originali Leaflet, ma il
-browser restituisce ERR_EMPTY_RESPONSE da Unpkg e non inizializza Percorsi.
-Solo quelle pagine riproducono i due originali Leaflet 1.9.4 verificati contro
-SRI; nessuna modifica DOM/dati/golden/soglie, altre pagine con cache HTTP reale,
-Lighthouse non intercettato. Prova del prodotto congelato, non disponibilità
-CDN/WAN o telefono fisico. Diagnosi e riproduttori nelle evidenze.
+cache Python separate. Chromium Unpkg ERR_EMPTY_RESPONSE: solo Percorsi può
+riprodurre i due originali Leaflet 1.9.4 verificati contro SRI, con handler
+rimossi lasciando Percorsi; altre pagine con HTTP/cache reali, Lighthouse non
+intercettato. Nessuna modifica DOM/dati/golden/soglie. Prova del prodotto
+congelato, non disponibilità CDN/WAN o telefono fisico.
 
-Radar #468 conserva budget build 60/job 105 e i propri gate separati;
-nessun refresh riuscito attestato da A7. Dossier editoriali e Radar separati.
-Nessuna nuova acquisizione, adapter, modello esterno, backend o infrastruttura.
+Altre operazioni e dimensioni, incroci guidati, riuso/CSV/PDF restano aperti;
+nessuna interrogabilità universale. Dossier editoriali e Radar separati.
+Radar #468 conserva i propri budget e gate; nessun refresh attestato da A7.
+Nessuna acquisizione, adapter, backend, modello esterno o infrastruttura nuovi.
 Nessun merge o deploy autorizzato all’assistente.

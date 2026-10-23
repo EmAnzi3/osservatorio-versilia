@@ -59,3 +59,10 @@ La futura integrazione pubblica richiede una presentazione comprensibile di
 periodi effettivi, unità della pendenza, n, metodo e limiti, preview/browser e
 misura del costo combinato. Non è autorizzata da questo profilo tecnico.
 Pubblicazione della #469 e gate del nuovo candidato sono verifiche separate.
+
+## Integrazione guidata candidata dopo #471
+
+`A7_NATIVE_TREND_INTERFACE.md` descrive il successivo incremento, che sceglie
+esplicitamente il profilo nella build pubblica candidata e ne verifica la
+presentazione. Il comportamento tecnico isolato qui documentato conserva i
+tre default e i propri limiti; non implica una pubblicazione già avvenuta.
