@@ -98,6 +98,15 @@ def main() -> None:
         for town in town_pages:
             for theme in ("mobilita", "sicurezza"):
                 page.goto(base + f"comuni/{town}/?tema={theme}", wait_until="networkidle")
+                # The prerendered town starts on Demografia; networkidle does
+                # not guarantee that the requested theme has hydrated yet.
+                # Count and measure only the requested theme, before retaining
+                # positional locators that its render would invalidate.
+                page.wait_for_selector(
+                    f'main[data-theme="{theme}"] #town-topic[data-theme="{theme}"] '
+                    '.metric-group-heading.ux-section-toggle',
+                    state="attached",
+                )
                 count = check_headings(page, f"comuni/{town}?tema={theme}")
                 if count:
                     tested_pages += 1

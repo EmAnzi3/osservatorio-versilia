@@ -68,7 +68,8 @@ def artifact_capabilities(site, catalog_hash):
                 if profile in view['shards'] and (profile in ('current', 'comparison', 'history', 'ranking')
                         or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2
                         or profile == 'aggregation' and receipt.get('interfaceVersion', 1) >= 3
-                        or profile == 'changes' and receipt.get('interfaceVersion', 1) >= 4):
+                        or profile == 'changes' and receipt.get('interfaceVersion', 1) >= 4
+                        or profile == 'trends' and receipt.get('interfaceVersion', 1) >= 6):
                     # Older interfaces cannot present these profiles. Transport alone proves no UI access.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof

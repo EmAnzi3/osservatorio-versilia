@@ -1,9 +1,12 @@
 // Presentation over the original anchored A6 transport. No numerical engine.
 const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fold=(title,content)=>{const n=node('details');n.append(node('summary',title),content);return n;};
-const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Andamento',correlation:'Associazione',anomaly:'Anomalia'};
-const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes'};
+const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Tendenza della serie',correlation:'Associazione',anomaly:'Anomalia'};
+const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends'};
 const changes=['absolute_change','relative_change','percentage_points'];
+// Display translations only: these labels never authorize a calculation or
+// replace the original reasons preserved in the evidence.
+const trendReasons={census_historical_dimension_not_available:'Per questa vista il motore non espone la serie storica necessaria. Questo non significa che il dato sia assente dalla fonte.',insufficient_observations:'La serie restituisce un numero di osservazioni insufficiente per stimare la tendenza.',distinct_finance_massarosa_osl_temporal_perimeter_not_attested:'La continuità del perimetro fra gestione ordinaria e OSL non è attestata per questa selezione.'};
 const units={count:'unità',meters:'m',hectares:'ha',cubicMetres:'m³',currency2:'€',eurliter:'€/l',eurm2:'€/m²',eurm2month:'€/m²/mese',per10k:'per 10.000',km2:'km²',celsius:'°C',index:'indice',percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
 const concise=x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x);
@@ -56,6 +59,7 @@ export async function startExplorer(openRuntime,presentation){
      $('reference').textContent=periods?'Variazione fra il primo e l’ultimo periodo della serie nativa: '+String(periods[0])+' → '+String(periods[1])+'. Non è una variazione annua. Il motore verifica comparabilità e copertura; nessun estremo mancante viene sostituito.':'Questa vista non espone due estremi della serie nativa. Il motore conserva il motivo del rifiuto; nessun periodo viene inventato.';
    }
    if(ranking)$('reference').textContent='Ambito: tutti i sette Comuni, dal valore maggiore al minore al riferimento nativo della vista. Pari merito conservati. La posizione numerica non indica criticità, merito amministrativo o effetto di un intervento. Nessun dato mancante viene trasformato in zero.';
+   if($('operation').value==='trend')$('reference').textContent='Tendenza dell’intera serie nativa di un Comune. Il motore verifica periodi, copertura e comparabilità; non scegliamo finestre o scartiamo dati mancanti. Nessuna previsione: periodi effettivi, pendenza e numero di osservazioni compaiono nel risultato, quando ammesso.';
    $('run').disabled=!view()?.shards[profiles[$('operation').value]]||($('operation').value==='benchmark_gap'&&!benchmarkScopes().includes($('benchmark').value));
  }
  function filterViews(){
@@ -159,6 +163,34 @@ export async function startExplorer(openRuntime,presentation){
    if(response.formula)summary.append(fold('Formula originale del motore',node('p',response.formula)));
    out.append(summary);
  }
+ function renderTrend(response,out,selector){
+   const r=response.result,observations=response.observations||[];
+   // Present the native OLS result verbatim: never fit a line, recalculate a
+   // slope, close gaps or extrapolate from the observations in the browser.
+   if(!r||r.method!=='OLS slope'||r.forecast!==false||!Number.isFinite(r.slope)||
+      !Number.isInteger(r.n)||r.n<2||r.n!==observations.length||
+      response.coverage?.requested!==r.n||response.coverage?.usable!==r.n||
+      !Array.isArray(r.timeAxis)||r.timeAxis.length!==r.n||!r.timeAxis.every(Number.isFinite)||
+      typeof r.unit!=='string'||!r.unit.endsWith('/year')||
+      observations.some(o=>o.geography!==selector.towns[0]||!Number.isFinite(o.value)||o.dataUnavailable||o.notApplicable))throw Error('incompatible_trend_result');
+   const baseUnit=r.unit.slice(0,-5);
+   const slopeUnit=(baseUnit==='percentage_points'?'punti percentuali':unitLabel({unit:baseUnit})||'unità della misura')+' per anno';
+   const summary=node('section');summary.className='explorer-trend';summary.setAttribute('aria-label','Tendenza della serie nativa');
+   summary.append(node('h4',townName(selector.towns[0])+' · tendenza della serie'));
+   const cards=node('dl');cards.className='explorer-benchmark-values';
+   for(const [key,label,text] of [['slope','Pendenza stimata',(r.slope>0?'+':'')+concise(r.slope)+' '+slopeUnit],['periods','Periodi osservati',String(observations[0].period)+' → '+String(observations.at(-1).period)],['n','Osservazioni utilizzate',String(r.n)]]){
+     const card=node('div'),shown=node('dd',text);shown.dataset.trendValue=key;card.append(node('dt',label),shown);cards.append(card);
+   }
+   summary.append(cards,node('p','Stima OLS sull’intera serie nativa, usando gli anni effettivi. La pendenza non descrive una variazione identica in ogni anno e non è una previsione.'),node('p','Il segno non indica automaticamente miglioramento o peggioramento, né l’effetto di un intervento.'));
+   const method=node('div');
+   method.append(node('p','La retta dei minimi quadrati (OLS) sintetizza la tendenza della serie. Non è un test di significatività. Nessun confronto o ordinamento fra pendenze comunali.'),node('p','La sintesi è arrotondata per la lettura. La precisione originale e l’asse temporale completo sono conservati qui; osservazioni, fonti e definizioni sono nella tabella.'));
+   if(baseUnit==='percentage_points')method.append(node('p','Per una misura percentuale, la pendenza è in punti percentuali per anno, non in percentuale relativa.'));
+   const original=node('p','Pendenza originale: '+new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(r.slope)+' '+slopeUnit);original.dataset.trendOriginal='true';
+   const axis=node('p','Asse temporale effettivo: '+r.timeAxis.map(String).join(', '));axis.dataset.trendAxis='true';
+   method.append(original,axis,node('p','Metodo originale: '+r.method+'. Gli intervalli fra gli anni restano quelli originali; nessuna osservazione è aggiunta per colmare lacune.'));
+   if(response.formula)method.append(node('p','Formula originale: '+response.formula));
+   summary.append(fold('Metodo e periodi utilizzati',method));out.append(summary);
+ }
  function rankingRows(response,selector,out){
    const r=response.result,observations=response.observations||[];
    const codes=root.towns.map(t=>t.code).sort();
@@ -188,6 +220,11 @@ export async function startExplorer(openRuntime,presentation){
    if(response.status!=='computed')out.append(node('p','Calcolo non disponibile per questa selezione. Le eventuali osservazioni seguenti sono conservate nel rifiuto originale: non costituiscono un risultato calcolato.'));
    if(changes.includes(operation)&&response.status==='computed')renderChange(response,out,selector,operation);
    if(changes.includes(operation)&&response.status!=='computed')out.append(node('p','Nessuna variazione è calcolata per questi riferimenti. Le osservazioni conservate non autorizzano una differenza sostitutiva.'));
+   if(operation==='trend'&&response.status==='computed')renderTrend(response,out,selector);
+   if(operation==='trend'&&response.status!=='computed'){
+     out.append(node('p','Nessuna tendenza stimata per questa selezione. Le osservazioni conservate nel rifiuto non autorizzano una pendenza sostitutiva o una previsione.'));
+     for(const reason of response.reasons||[])if(trendReasons[reason])out.append(node('p',trendReasons[reason]));
+   }
    if(operation==='benchmark_gap'&&response.status==='computed')renderBenchmark(response,out);
    if(operation==='weighted_ratio'&&response.status==='computed')renderAggregation(response,out);
    if(operation==='weighted_ratio'&&response.status!=='computed')out.append(node('p','Nessun rapporto aggregato dell’intera Versilia è disponibile per questa selezione. Le eventuali osservazioni comunali non lo sostituiscono.'));
@@ -207,7 +244,7 @@ export async function startExplorer(openRuntime,presentation){
      const graph=node('div');graph.setAttribute('role','img');graph.setAttribute('aria-label','Confronto visivo delle osservazioni riportate nella tabella. Scala da zero; valori mancanti non rappresentati.');
      const maximum=Math.max(...observations.map(o=>o.value))||1;
      graph.append(node('p',`Scala da 0 a ${number(maximum)} ${unitLabel(base)}. Nessuna interpolazione fra periodi.`));
-     for(const o of visible){const row=node('div');row.className='explorer-bar-row';if(ranked)row.dataset.rankingGeography=o.geography;const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',(operation==='series'||changes.includes(operation))?String(o.period):(ranked?String(o.nativeRank)+'. ':'')+townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
+     for(const o of visible){const row=node('div');row.className='explorer-bar-row';if(ranked)row.dataset.rankingGeography=o.geography;const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',(['series','trend'].includes(operation)||changes.includes(operation))?String(o.period):(ranked?String(o.nativeRank)+'. ':'')+townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
    }
    const wrap=node('div');wrap.className='explorer-table-wrap';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Osservazioni originali · tabella scorribile');wrap.setAttribute('aria-describedby','explorer-table-hint');const table=node('table');table.append(node('caption','Osservazioni originali · periodo e fonte per ogni riga'));
    const head=node('thead');const hr=node('tr');for(const h of [...(ranked?['Posizione numerica']:[]),'Territorio','Periodo','Valore','Fonte e definizione']){const th=node('th',h);th.scope='col';hr.append(th);}head.append(hr);table.append(head);

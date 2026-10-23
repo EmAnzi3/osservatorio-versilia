@@ -174,7 +174,7 @@ def verify(catalog, output=None):
         release_text = (root/'one'/'release.json').read_text()
         package = verify_package_boundaries(catalog, root/'one', root)
         assert package['unchangedInput'] == first, 'packaging_changed_runtime_input'
-        explorer = verify_explorer(catalog, root/'one', root/'explorer-preview', [e for e in samples if e['request']['operation'] != 'trend'])
+        explorer = verify_explorer(catalog, root/'one', root/'explorer-preview', samples)
 
         class QuietHandler(http.server.SimpleHTTPRequestHandler):
             def log_message(self, *args):

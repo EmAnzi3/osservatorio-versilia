@@ -145,6 +145,7 @@ def verify_explorer(catalog, runtime, output, samples):
                     assert not any(url.endswith('.json.gz') for url in fetched), 'eager_explorer_shards'
                     root = json.loads((Path(runtime)/'release.json').read_text())
                     summaries = {m['metric']:m for m in root['metrics']}
+                    details = {m['metric']:json.loads(gzip.decompress((Path(runtime)/m['detail']['path']).read_bytes())) for m in root['metrics']}
 
                     def select(entry):
                         request = entry['request']; selector = request['selectors'][0]
@@ -153,7 +154,9 @@ def verify_explorer(catalog, runtime, output, samples):
                         page.wait_for_function("()=>document.querySelector('#explorer-view').options.length>0")
                         page.select_option('#explorer-view', selector['dimension'])
                         trend_option = page.locator('#explorer-operation option[value=trend]')
-                        assert not trend_option.count() or trend_option.evaluate('(option) => option.disabled'), 'transport_implicitly_enabled_trend_ui'
+                        selected_view = next(v for v in details[selector['metric']]['views'] if v['dimension'] == selector['dimension'])
+                        if trend_option.count():
+                            assert trend_option.evaluate('(option) => !option.disabled') == ('trends' in selected_view['shards']), 'trend_ui_scope_mismatch'
                         page.select_option('#explorer-operation', request['operation'])
                         if request['operation'] == 'benchmark_gap':
                             assert page.is_visible('#explorer-benchmark')
@@ -174,11 +177,15 @@ def verify_explorer(catalog, runtime, output, samples):
                         if request['operation'] in ('absolute_change','relative_change','percentage_points'):
                             for period in selector.get('periods', []):
                                 assert str(period) in page.locator('#explorer-reference').text_content(), 'change_period_not_shown_before_execution'
+                        if request['operation'] == 'trend':
+                            assert 'intera serie nativa' in page.locator('#explorer-reference').text_content()
+                            assert 'Nessuna previsione' in page.locator('#explorer-reference').text_content()
                         assert not page.is_visible('#explorer-result')
 
                     partial = None; checked = 0; categories = 0; benchmarks = 0; benchmark_refusals = 0
                     aggregations = 0; aggregation_refusals = 0; changes = {}; change_refusals = 0
                     rankings = 0; ranking_refusals = 0; ranking_ties = 0
+                    trends = 0; trend_refusals = 0; trend_signs = set(); trend_units = set(); trend_pages = 0
                     for entry in samples:
                         select(entry)
                         page.click('#explorer-run')
@@ -198,6 +205,12 @@ def verify_explorer(catalog, runtime, output, samples):
                                 assert page.is_visible('#explorer-town-field')
                                 page.select_option('#explorer-operation', 'weighted_ratio')
                                 page.click('#explorer-run')
+                                page.wait_for_selector('#explorer-consent:not([hidden])')
+                            if entry['request']['operation'] == 'trend':
+                                town = entry['request']['selectors'][0]['towns'][0]
+                                page.select_option('#explorer-town',next(t['code'] for t in root['towns'] if t['code'] != town))
+                                assert not page.is_visible('#explorer-consent') and not page.is_visible('#explorer-result'), 'trend_consent_survived_selection'
+                                page.select_option('#explorer-town',town);page.click('#explorer-run')
                                 page.wait_for_selector('#explorer-consent:not([hidden])')
                             page.click('#explorer-accept')
                         page.wait_for_selector('#explorer-result:not([hidden])')
@@ -231,6 +244,40 @@ def verify_explorer(catalog, runtime, output, samples):
                                 ranking_refusals += 1
                                 assert not page.locator('.explorer-ranking, [data-native-rank], .explorer-bar-row').count(), 'refusal_promoted_to_order'
                                 assert 'Nessuna posizione numerica viene assegnata' in page.locator('#explorer-result').text_content()
+                        if op == 'trend':
+                            response = entry['response']; native = response.get('result'); shown = page.locator('.explorer-trend')
+                            if response['status'] == 'computed':
+                                trends += 1; trend_signs.add(native['slope'] > 0); trend_units.add(native['unit'])
+                                assert shown.count() == 1
+                                expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native['slope']))
+                                assert expected in shown.locator('[data-trend-value=slope]').text_content()
+                                original = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(JSON.parse(text))",json.dumps(native['slope']))
+                                assert original in shown.locator('[data-trend-original]').text_content(), 'trend_original_precision_lost'
+                                method = shown.locator('details');method.locator('summary').click()
+                                assert shown.locator('[data-trend-original]').is_visible()
+                                assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'), 'expanded_trend_method_overflow'
+                                method.locator('summary').click()
+                                assert 'per anno' in shown.locator('[data-trend-value=slope]').text_content()
+                                assert '/year' not in shown.text_content(), 'technical_trend_unit'
+                                assert shown.locator('[data-trend-value=n]').text_content() == str(native['n'])
+                                for observation in (response['observations'][0], response['observations'][-1]):
+                                    assert str(observation['period']) in shown.locator('[data-trend-value=periods]').text_content()
+                                assert ', '.join(map(str,native['timeAxis'])) in shown.locator('[data-trend-axis]').text_content()
+                                assert 'non è una previsione' in shown.text_content() and 'non indica automaticamente' in shown.text_content()
+                                if native['unit'] == 'percentage_points/year':
+                                    assert 'punti percentuali per anno' in shown.locator('[data-trend-value=slope]').text_content()
+                                    assert 'non in percentuale relativa' in shown.text_content()
+                                chart = page.locator('.explorer-bar-row')
+                                if chart.count():
+                                    assert chart.locator(':scope > span:first-child').all_text_contents() == [str(o['period']) for o in response['observations'][:20]]
+                                if len(response['observations']) > 20:
+                                    page.get_by_role('button',name='Successive',exact=True).click()
+                                    assert str(response['observations'][20]['period']) == page.locator('#explorer-result tbody tr').first.locator('td').nth(1).text_content()
+                                    page.get_by_role('button',name='Precedenti',exact=True).click();trend_pages += 1
+                            else:
+                                trend_refusals += 1
+                                assert shown.count() == 0 and not page.locator('.explorer-bar-row').count(), 'refusal_promoted_to_trend'
+                                assert 'Nessuna tendenza stimata' in page.locator('#explorer-result').text_content()
                         if op in ('absolute_change','relative_change','percentage_points'):
                             native = entry['response']['result']; shown = page.locator('.explorer-change')
                             if entry['response']['status'] == 'computed':
@@ -333,6 +380,7 @@ def verify_explorer(catalog, runtime, output, samples):
                     assert checked and categories and partial and benchmarks and benchmark_refusals
                     assert aggregations and aggregation_refusals
                     assert rankings and ranking_refusals and ranking_ties, 'ranking_edge_cases_not_exercised'
+                    assert trends and trend_refusals and len(trend_signs) == 2 and trend_pages, 'trend_edge_cases_not_exercised'
                     assert set(changes) == {'absolute_change','relative_change','percentage_points'} and change_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
@@ -376,6 +424,17 @@ def verify_explorer(catalog, runtime, output, samples):
                     context.unroute('**/*.json.gz')
                     page.wait_for_load_state('networkidle')
                     assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
+                    trend = next(e for e in samples if e['request']['operation']=='trend' and e['response']['status']=='computed')
+                    page.reload();page.wait_for_function("()=>document.querySelector('#explorer-theme').options.length>1")
+                    select(trend);held=[]
+                    context.route('**/*.json.gz', lambda route, request: held.append(route))
+                    page.click('#explorer-run');page.wait_for_timeout(100)
+                    assert held
+                    other = next(t['code'] for t in root['towns'] if t['code'] != trend['request']['selectors'][0]['towns'][0])
+                    page.select_option('#explorer-town', other)
+                    for route in held: route.continue_()
+                    context.unroute('**/*.json.gz');page.wait_for_load_state('networkidle')
+                    assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent'), 'stale_trend_restored'
                     # A late benchmark response cannot survive a reference change.
                     benchmark = next(e for e in samples if e['request']['operation'] == 'benchmark_gap'
                                      and e['response']['status'] == 'computed')
@@ -433,6 +492,7 @@ def verify_explorer(catalog, runtime, output, samples):
                                         aggregationSelections=aggregations, aggregationRefusals=aggregation_refusals,
                                         changeSelections=changes, changeRefusals=change_refusals,
                                         rankingSelections=rankings, rankingRefusals=ranking_refusals, rankingTies=ranking_ties,
+                                        trendSelections=trends, trendRefusals=trend_refusals, trendUnits=sorted(trend_units), trendPaginationChecks=trend_pages,
                                         faultsAndSameReleaseRecoveries=len(fault_checks), staleSelectionRevoked=True))
                     context.close()
             finally:

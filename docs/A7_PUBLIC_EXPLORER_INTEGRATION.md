@@ -8,7 +8,7 @@ ordinaria, senza aumentare la raggiungibilità nella navigazione.
 editoriale A7, invoca `materialize_a7_public_explorer.py`. Il runtime viene prodotto
 dal workbench originale su tutte le metriche e viste native. Il candidato
 A7.5.3 include esplicitamente i tre profili predefiniti più `ranking`, `benchmark`,
-`aggregation` e `changes`: il selettore Toscana/Italia è descritto in
+`aggregation`, `changes` e `trends`: il selettore Toscana/Italia è descritto in
 `A7_BENCHMARK_INTERFACE.md`, il rapporto nativo sui sette Comuni in
 `A7_NATIVE_AGGREGATES.md`. I default del
 generatore restano invariati. Nessuna acquisizione, inventario manuale o operazione nuova. L’ordine numerico descrittivo è una scelta esplicita della build pubblica,
@@ -67,3 +67,8 @@ nessun calcolo browser o periodo arbitrario. `A7_TEMPORAL_CHANGES.md`.
 Il candidato successivo espone l’ordine numerico descrittivo dei sette Comuni:
 righe e grafico seguono le posizioni originali, con periodi e unità; rifiuti
 senza posizioni sostitutive. Ricevuta UI v5; `A7_DESCRIPTIVE_ORDER.md`.
+
+Il candidato successivo presenta la tendenza della serie nativa: pendenza OLS
+originale, periodi, unità per anno, n e limiti; nessun calcolo nel browser,
+previsione o graduatoria delle pendenze. Ricevuta UI v6;
+`A7_NATIVE_TREND_INTERFACE.md`.
