@@ -75,6 +75,21 @@ def artifact_capabilities(site, catalog_hash):
     return capabilities, proof
 
 
+def replay_associations(wb, runtime, root):
+    """Verify the graph and replay only its explicit binary selections in A6."""
+    if 'associationPlan' not in root:
+        return
+    from a7_runtime_package import verify_runtime
+    verify_runtime(runtime, wb.engine.path, include_reader=(Path(runtime)/'reader.mjs').exists())
+    index = root['associationPlan']
+    for step, entry in zip(index['plan']['steps'], index['entries']):
+        shard = read_artifact(runtime, entry['artifact'])
+        response = portable_evidence(wb.engine.query(step['request']))
+        if shard['response'] != response:
+            raise ValueError('runtime_native_parity_mismatch')
+        yield step, response
+
+
 def audit(catalog, registry, runtime=None, *, site=None):
     catalog, registry = Path(catalog), Path(registry)
     wb = QueryWorkbench(catalog)
@@ -114,6 +129,7 @@ def audit(catalog, registry, runtime=None, *, site=None):
         probe(request)
 
     actual = {}
+    association_selections = []
     root = None
     witnesses = defaultdict(set)
     if runtime:
@@ -158,6 +174,32 @@ def audit(catalog, registry, runtime=None, *, site=None):
                                     for key, pointer in evidence.items():
                                         if key.endswith('Pointer') and isinstance(pointer, str):
                                             witnesses[metric].add(path_pattern(pointer))
+
+        if 'associationPlan' in root:
+            # A pair-specific transport proof never promotes all correlations of
+            # either view, nor claims an interface control that does not exist.
+            for step, response in replay_associations(wb, runtime, root):
+                request = step['request']
+                key = sha(encode(request).encode())
+                response_hash = sha(encode(response).encode())
+                if key in probes and probes[key]['responseSha256'] != response_hash:
+                    raise ValueError('non_reproducible_native_response')
+                probes.setdefault(key, dict(request=request, origin='explicit_association_plan',
+                    status=response['status'], reasons=response.get('reasons', []), responseSha256=response_hash))
+                native_index.add(response, key)
+                static_index.add(response, key)
+                actual[encode(request)] = dict(profile='association', status=response['status'],
+                    reasons=response.get('reasons', []), responseSha256=response_hash)
+                association_selections.append(dict(id=step['id'], request=request, requestSha256=key,
+                    static='materialized_exact_request', nativeStatus=response['status'],
+                    reasons=response.get('reasons', []), artifactGeneralExplorer='not_presented',
+                    publicGeneralExplorer='publication_not_inspected'))
+                for observation in response.get('observations', []):
+                    for evidence in observation.get('evidence', []):
+                        if evidence.get('kind') == 'catalog_snapshot':
+                            for field, pointer in evidence.items():
+                                if field.endswith('Pointer') and isinstance(pointer, str):
+                                    witnesses[observation['metric']].add(path_pattern(pointer))
 
     interface, interface_proof = artifact_capabilities(site, wb.engine.catalog_hash)
     views, counts = [], Counter()
@@ -236,6 +278,9 @@ def audit(catalog, registry, runtime=None, *, site=None):
                 workbenchAccessSummary=dict(Counter(r['workbenchAccess']['status'] for r in rows)),
                 staticAccessSummary=dict(Counter(r['staticAccess']['status'] for r in rows)),
                 nativeProbes=probes,
+                associationSelections=association_selections,
+                associationScope=('not_inspected' if runtime is None else
+                                  'explicit_plan_only' if root.get('associationPlan') else 'not_materialized'),
                 staticProbes={sha(k.encode()): dict(request=json.loads(k), **v) for k, v in actual.items()},
                 trendProbeSummary=dict(Counter(probes[k]['status'] for v in views for o in v['operations']
                     for k in o.get('nativeScopeProbe', {}).get('proofs', []))),
@@ -261,6 +306,13 @@ def markdown(report):
     lines += [f'| {k.removeprefix("state_")} | {v} |' for k, v in report['acquisitionSummary'].items() if k.startswith('state_')]
     lines += ['', '## Operazioni per vista', '', '| Stato trasporto | Coppie vista/operazione |', '| --- | ---: |']
     lines += [f'| {k} | {v} |' for k, v in report['operationSummary'].items()]
+    lines += ['', '## Associazioni: selezioni esplicite', '',
+              f'Perimetro trasporto: `{report.get("associationScope", "not_inspected")}`.',
+              'Sono componenti del solo piano ispezionato, non tutte le coppie ammesse dal motore.',
+              'Nessun controllo pubblico di associazione è attestato da questo trasporto.',
+              '', '| Esito nativo | Componenti pianificate |', '| --- | ---: |']
+    lines += [f'| {k} | {v} |' for k, v in Counter(
+        row['nativeStatus'] for row in report.get('associationSelections', [])).items()]
     lines += ['', '## Prove indipendenti originali attraverso il workbench', '',
               '| Operazione | computed | not_computable |', '| --- | ---: | ---: |']
     lines += [f'| {k} | {v.get("computed", 0)} | {v.get("not_computable", 0)} |' for k, v in report['independentExpectations'].items()]

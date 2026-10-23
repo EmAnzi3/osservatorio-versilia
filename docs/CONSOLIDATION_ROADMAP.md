@@ -240,8 +240,9 @@ Le variazioni fra estremi delle serie native sono integrate e pubblicate con
 la #466, con controllo live PASS. L’ordine numerico descrittivo è integrato
 con la #469; pubblicazione verificata separatamente nell’handoff. Il
 trasporto opzionale dei trend nativi è integrato con la #471. L’incremento
-corrente prepara la selezione guidata e la presentazione della tendenza nativa,
-con periodi, unità, n e limiti espliciti. Stato effettivo e gate nell’handoff.
+corrente prepara il trasporto limitato di piani espliciti di associazione A6.
+La tendenza guidata è pubblicata con la #473; incroci pubblici ancora assenti.
+Stato effettivo e gate nell’handoff.
 
 **Risultato di prodotto:** consentire a chi consulta il sito di cercare dati,
 scegliere confronti e analisi ammissibili, comprenderne fonti e limiti e riusare
@@ -266,8 +267,8 @@ Restano aperti fino alla verifica sull’intero perimetro di prodotto dichiarato
 | --- | --- | --- |
 | A7.5.1 — esploratore di base | Tema, indicatore e vista; lettura comunale, confronto dei sette Comuni e serie dove ammessi | DONE nel perimetro nativo pubblicato #459 |
 | A7.5.2 — riferimenti geografici | Selettore esplicito Toscana/Italia; valore comunale, riferimento e scostamento originali, periodi e fonti | DONE nel perimetro nativo pubblicato #463; controllo live PASS |
-| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati #464 e variazioni native #466 pubblicati; ordine numerico #469 integrato; trasporto trend #471 integrato e presentazione guidata candidata; altre capacità aperte |
-| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | NOT_STARTED nel prodotto generale |
+| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati #464 e variazioni native #466 pubblicati; ordine numerico #469 integrato; trasporto trend #471 e presentazione guidata #473 pubblicati; altre capacità aperte |
+| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | IN_PROGRESS: trasporto candidato di piani espliciti, nessun controllo pubblico ancora abilitato |
 | A7.5.5 — riuso delle analisi | Esportazione generale delle evidenze e rapporti PDF; collegamento ai dossier consultabili nel sito | NOT_STARTED nel prodotto generale; i dossier editoriali restano un filone distinto |
 | A7.5.6 — consolidamento pubblico | Verifica di comprensibilità, accessibilità, prestazioni e copertura; maggiore visibilità solo dopo revisione | NOT_STARTED |
 

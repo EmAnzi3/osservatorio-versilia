@@ -12,7 +12,7 @@ from collections import Counter
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import change_periods, PROFILES, READER, digest, recipes
+from build_a7_query_runtime import change_periods, PROFILES, READER, digest, recipes, validate_association_plan
 
 ROOT_LIMIT = 2 * 1024 * 1024
 PACKED_LIMIT = 8 * 1024 * 1024
@@ -62,8 +62,9 @@ def verify_runtime(folder, catalog, *, include_reader=False):
     root = decode(release_bytes)
     schema(root)
     require(root.get('kind') == 'a7-selective-query-runtime', 'incompatible_runtime_kind')
-    require(set(root) == {'schemaVersion','kind','catalogSha256','engineSha256','workbenchSha256',
-            'builderSha256','readerSha256','envelope','scope','maxViewsPerMetric','towns','metrics'},
+    require(set(root) == ({'schemaVersion','kind','catalogSha256','engineSha256','workbenchSha256',
+            'builderSha256','readerSha256','envelope','scope','maxViewsPerMetric','towns','metrics'}
+            | ({'associationPlan'} if 'associationPlan' in root else set())),
             'incompatible_runtime_fields')
     wb = QueryWorkbench(catalog)
     # A6's native early refusal exposes its complete producer/version header
@@ -130,6 +131,15 @@ def verify_runtime(folder, catalog, *, include_reader=False):
             stats['maxShardGzipBytes'] = max(stats['maxShardGzipBytes'], len(packed))
         return value
 
+    def response_identity(request, response):
+        require(isinstance(response, dict) and encode(response.get('query')) == encode(request)
+                and response.get('catalogSha256') == root['catalogSha256']
+                and response.get('engineSha256') == root['engineSha256']
+                and response.get('status') in ('computed','not_computable'), 'runtime_response_identity_mismatch')
+        require(all(response.get(key) == value for key,value in producers.items()),
+                'runtime_response_producer_mismatch')
+        schema(response)
+
     for summary in root['metrics']:
         metric = summary['metric']
         require(encode({k:v for k,v in summary.items() if k != 'detail'}) == encode(summaries[metric]), 'runtime_summary_mismatch')
@@ -165,18 +175,35 @@ def verify_runtime(folder, catalog, *, include_reader=False):
                         'runtime_request_scope_mismatch')
                 for entry in entries:
                     response = entry.get('response')
-                    require(set(entry) == {'request','response'} and isinstance(response, dict)
-                            and encode(response.get('query')) == encode(entry['request'])
-                            and response.get('catalogSha256') == root['catalogSha256']
-                            and response.get('engineSha256') == root['engineSha256']
-                            and response.get('status') in ('computed','not_computable'), 'runtime_response_identity_mismatch')
-                    require(all(response.get(key) == value for key,value in producers.items()),
-                            'runtime_response_producer_mismatch')
-                    schema(response)
+                    require(set(entry) == {'request','response'}, 'runtime_response_identity_mismatch')
+                    response_identity(entry['request'], response)
                     stats['requests'] += 1
                     stats['profiles'][profile] += 1
                     stats['statuses'][response['status']] += 1
             stats['views'] += 1
+    if 'associationPlan' in root:
+        index = root['associationPlan']
+        schema(index)
+        require(set(index) == {'schemaVersion','scope','consent','plan','planSha256','entries'}
+                and index['scope'] == 'explicit_plan'
+                and index['consent'] == 'original_request_and_browser_confirmation', 'invalid_association_plan')
+        text = validate_association_plan(index['plan'])
+        require(index['planSha256'] == digest(text.encode())
+                and isinstance(index['entries'], list)
+                and len(index['entries']) == len(index['plan']['steps']), 'invalid_association_plan')
+        for step, entry in zip(index['plan']['steps'], index['entries']):
+            require(isinstance(entry, dict) and set(entry) == {'id','requestSha256','artifact'}
+                    and entry['id'] == step['id']
+                    and entry['requestSha256'] == digest(encode(step['request']).encode()),
+                    'association_request_scope_mismatch')
+            shard = artifact(entry['artifact'], shard=True)
+            require(set(shard) == {'schemaVersion','kind','request','response'}
+                    and shard['kind'] == 'a7-native-association'
+                    and encode(shard['request']) == encode(step['request']), 'artifact_selection_mismatch')
+            response_identity(shard['request'], shard['response'])
+            stats['requests'] += 1
+            stats['profiles']['association'] += 1
+            stats['statuses'][shard['response']['status']] += 1
     measurement_bytes = read_file(folder/'measurement.json', ROOT_LIMIT)
     measurement = decode(measurement_bytes)
     expected_measurement = dict(stats, schemaVersion=1, catalogSha256=root['catalogSha256'],

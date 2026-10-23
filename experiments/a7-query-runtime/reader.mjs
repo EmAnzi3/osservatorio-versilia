@@ -15,6 +15,22 @@ const ROOT_LIMIT = 2 * 1024 * 1024;
 const PACKED_LIMIT = 8 * 1024 * 1024;
 const RAW_LIMIT = 16 * 1024 * 1024;
 
+function snapshotPlan(input) {
+  if (!plain(input)) throw new Error('invalid_plan');
+  const text = canonical(input);
+  if (textEncoder.encode(text).length > 100000) throw new Error('invalid_plan');
+  const plan = JSON.parse(text);
+  if (Object.keys(plan).sort().join(',') !== 'schemaVersion,steps' || plan.schemaVersion !== 1 ||
+      !Array.isArray(plan.steps) || !plan.steps.length || plan.steps.length > 32) throw new Error('invalid_plan');
+  const ids = new Set();
+  for (const step of plan.steps) {
+    if (!plain(step) || Object.keys(step).sort().join(',') !== 'id,request' || typeof step.id !== 'string' ||
+        !/^[A-Za-z0-9_-]{1,80}$/u.test(step.id) || ids.has(step.id) || !plain(step.request)) throw new Error('invalid_step');
+    ids.add(step.id);
+  }
+  return {plan, text};
+}
+
 async function boundedBytes(stream, limit) {
   if (!stream) throw new Error('missing_body');
   const reader = stream.getReader(); const chunks = []; let length = 0;
@@ -45,6 +61,24 @@ export async function openRuntime(releaseText, trustedReleaseSha256, baseURL, {f
   if (!['http:', 'https:'].includes(base.protocol) || base.origin !== globalThis.location?.origin || !base.pathname.endsWith('/')) throw new Error('same_origin_directory_required');
   const summaries = new Map(root.metrics.map(m => [m.metric,m]));
   if (summaries.size !== root.metrics.length) throw new Error('duplicate_metric');
+  const associations = new Map();
+  if (root.associationPlan !== undefined) {
+    const index = root.associationPlan;
+    if (!plain(index) || Object.keys(index).sort().join(',') !== 'consent,entries,plan,planSha256,schemaVersion,scope' ||
+        index.schemaVersion !== 1 || index.scope !== 'explicit_plan' ||
+        index.consent !== 'original_request_and_browser_confirmation' || !Array.isArray(index.entries)) throw new Error('invalid_association_plan');
+    const snapshot = snapshotPlan(index.plan);
+    if (await sha(textEncoder.encode(snapshot.text)) !== index.planSha256 ||
+        snapshot.plan.steps.length !== index.entries.length) throw new Error('invalid_association_plan');
+    for (let i = 0; i < index.entries.length; i++) {
+      const entry = index.entries[i], step = snapshot.plan.steps[i];
+      if (!plain(entry) || Object.keys(entry).sort().join(',') !== 'artifact,id,requestSha256' ||
+          entry.id !== step.id || step.request.operation !== 'correlation' ||
+          await sha(textEncoder.encode(canonical(step.request))) !== entry.requestSha256) throw new Error('invalid_association_plan');
+      if (associations.has(entry.requestSha256) && canonical(associations.get(entry.requestSha256)) !== canonical(entry.artifact)) throw new Error('ambiguous_association_request');
+      associations.set(entry.requestSha256, entry.artifact);
+    }
+  }
   // Bounded cache: loaded responses from a different release can never leak into this instance.
   const cache = new Map();
   let cacheBytes = 0;
@@ -77,39 +111,44 @@ export async function openRuntime(releaseText, trustedReleaseSha256, baseURL, {f
   async function run(plan, {approvedPartial=false}={}) {
     // Snapshot before any await. Caller state may be reused during a fetch;
     // selection, returned plan and digest must refer to the same private JSON.
-    if (!plain(plan)) throw new Error('invalid_plan');
-    const planText = canonical(plan);
-    if (textEncoder.encode(planText).length > 100000 || typeof approvedPartial !== 'boolean') throw new Error('invalid_plan');
-    plan = JSON.parse(planText);
+    const snapshot = snapshotPlan(plan), planText = snapshot.text;
+    if (typeof approvedPartial !== 'boolean') throw new Error('invalid_plan');
+    plan = snapshot.plan;
     // Validate the complete plan before any fetch; no implicit consent or query rewriting.
-    if (!plain(plan) || Object.keys(plan).sort().join(',') !== 'schemaVersion,steps' || plan.schemaVersion !== 1 ||
-        !Array.isArray(plan.steps) || !plan.steps.length || plan.steps.length > 32) throw new Error('invalid_plan');
-    const ids = new Set();
     for (const step of plan.steps) {
-      if (!plain(step) || Object.keys(step).sort().join(',') !== 'id,request' || typeof step.id !== 'string' ||
-          !/^[A-Za-z0-9_-]{1,80}$/u.test(step.id) || ids.has(step.id) || !plain(step.request)) throw new Error('invalid_step');
-      ids.add(step.id);
       if (step.request.allowPartial === true && !approvedPartial) return {resolution:'needs_confirmation',reason:'partial_coverage_requires_explicit_consent'};
     }
     const components = [];
     for (const step of plan.steps) {
       const request = step.request;
-      const selector = request.selectors?.length === 1 && request.selectors[0];
-      if (!plain(selector) || !summaries.has(selector.metric)) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
-      const data = await detail(selector.metric);
-      const view = data.views.find(v => v.dimension === selector.dimension);
-      const profile = ({observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends'})[request.operation];
-      const ref = view?.shards[profile];
-      if (!ref) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
-      const shard = await load(ref);
-      if (shard.metric !== selector.metric || shard.dimension !== selector.dimension || shard.profile !== profile) throw new Error('artifact_selection_mismatch');
-      const match = shard.entries.find(e => canonical(e.request) === canonical(request));
-      if (!match) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
-      const r = match.response;
+      let r;
+      if (request.operation === 'correlation') {
+        const key = await sha(textEncoder.encode(canonical(request)));
+        const ref = associations.get(key);
+        if (!ref) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
+        const shard = await load(ref);
+        if (shard.kind !== 'a7-native-association' || canonical(shard.request) !== canonical(request) ||
+            !plain(shard.response) || canonical(shard.response.query) !== canonical(request)) throw new Error('artifact_selection_mismatch');
+        r = shard.response;
+      } else {
+        const selector = request.selectors?.length === 1 && request.selectors[0];
+        if (!plain(selector) || !summaries.has(selector.metric)) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
+        const data = await detail(selector.metric);
+        const view = data.views.find(v => v.dimension === selector.dimension);
+        const profile = ({observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends'})[request.operation];
+        const ref = view?.shards[profile];
+        if (!ref) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
+        const shard = await load(ref);
+        if (shard.metric !== selector.metric || shard.dimension !== selector.dimension || shard.profile !== profile) throw new Error('artifact_selection_mismatch');
+        const match = shard.entries.find(e => canonical(e.request) === canonical(request));
+        if (!match) return {resolution:'not_materialized',reason:'request_outside_static_envelope',stepId:step.id};
+        r = match.response;
+      }
       // Consent also protects numeric observations retained in an A6 refusal.
       const c = r.coverage;
       const partial = r.reasons?.includes('partial_coverage_requires_opt_in') ||
-        (c?.usable > 0 && c.usable < c.requested && r.observations?.some(o => Number.isFinite(o.value)));
+        ((c?.usable > 0 && c.usable < c.requested || r.pairCoverage?.paired < r.pairCoverage?.requested) &&
+         r.observations?.some(o => Number.isFinite(o.value)));
       if (partial && !approvedPartial) return {resolution:'needs_confirmation',reason:'partial_coverage_requires_explicit_consent',stepId:step.id};
       components.push({id:step.id,response:r});
     }
