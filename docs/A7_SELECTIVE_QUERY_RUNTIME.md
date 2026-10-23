@@ -160,3 +160,10 @@ Perimetro, rifiuti e integrità: `A7_TEMPORAL_CHANGES.md`.
 La build pubblica candidata sceglie esplicitamente `ranking`, conservando i tre
 default. La presentazione usa esclusivamente ordine e posizioni A6, senza
 ricalcolo browser o giudizio amministrativo: `A7_DESCRIPTIVE_ORDER.md`.
+
+## Profilo opzionale: trend della serie nativa
+
+`--profile trends` materializza `trend` per Comune soltanto dove dichiarato,
+sull’intera serie nativa selezionata da A6. Nessuna finestra arbitraria, previsione
+o consenso implicito. Default e scelta della build pubblica restano invariati.
+`A7_NATIVE_TREND_TRANSPORT.md` distingue prove native, trasporto e futura UI.

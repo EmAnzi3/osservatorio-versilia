@@ -21,7 +21,7 @@ from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
-    for profile in ('ranking', 'benchmark', 'aggregation', 'changes'):
+    for profile in ('ranking', 'benchmark', 'aggregation', 'changes', 'trends'):
         with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
             release, measurement = build(catalog, folder, metrics=['territorialClassification'],
                                          max_views=1, profiles=(profile,))
@@ -76,6 +76,11 @@ def verify(catalog, output=None):
             ('aggregation', dict(operation='weighted_ratio', selectors=[dict(metric='x', dimension='total', towns=['046018'])]))]
         assert measurement['profiles']['aggregation'] > 0
         assert measurement['profiles']['changes'] > 0
+        assert measurement['profiles']['trends'] > 0
+        assert not list(recipes('x', 'total', ['trend'], ['046018']))
+        assert not list(recipes('x', 'total', ['series'], ['046018'], ['trends']))
+        assert list(recipes('x', 'total', ['trend'], ['046018'], ['trends'])) == [
+            ('trends', dict(operation='trend', selectors=[dict(metric='x', dimension='total', towns=['046018'])]))]
         assert not any(p == 'changes' for p, _ in recipes('x', 'total', CHANGE_OPERATIONS, ['046018']))
         assert not list(recipes('x', 'total', ['compare'], ['046018'], ['changes']))
         from types import SimpleNamespace
@@ -126,6 +131,14 @@ def verify(catalog, output=None):
                             expected_periods = change_periods(workbench, metric['metric'], view['dimension'], view['declaredOperations'], selector['towns'])
                             assert selector.get('periods') == expected_periods[selector['towns'][0]]
                             assert 'allowPartial' not in entry['request']
+                        if profile == 'trends':
+                            assert entry['request'] == dict(operation='trend', selectors=[dict(
+                                metric=metric['metric'], dimension=view['dimension'],
+                                towns=entry['request']['selectors'][0]['towns'])])
+                            assert len(entry['request']['selectors'][0]['towns']) == 1
+                            if entry['response']['status'] == 'computed':
+                                assert entry['response']['result']['forecast'] is False
+                                assert entry['response']['result']['method'] == 'OLS slope'
                         if profile == 'aggregation':
                             assert entry['request'] == dict(operation='weighted_ratio', selectors=[dict(
                                 metric=metric['metric'], dimension=view['dimension'], towns=sorted(workbench.engine.codes))])
@@ -138,11 +151,11 @@ def verify(catalog, output=None):
                             partial = entry
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
-                    if view is detail['views'][0] or profile in ('ranking', 'aggregation', 'changes'):
+                    if view is detail['views'][0] or profile in ('ranking', 'aggregation', 'changes', 'trends'):
                         selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
                                     else [shard['entries'][0]])
-                        if profile in ('benchmark', 'changes'):
-                            if profile == 'changes':
+                        if profile in ('benchmark', 'changes', 'trends'):
+                            if profile in ('changes', 'trends'):
                                 selected = []
                             # The first town can be complete while another is not.
                             # Exercise each native status/reason path, without a town whitelist.
@@ -161,7 +174,7 @@ def verify(catalog, output=None):
         release_text = (root/'one'/'release.json').read_text()
         package = verify_package_boundaries(catalog, root/'one', root)
         assert package['unchangedInput'] == first, 'packaging_changed_runtime_input'
-        explorer = verify_explorer(catalog, root/'one', root/'explorer-preview', samples)
+        explorer = verify_explorer(catalog, root/'one', root/'explorer-preview', [e for e in samples if e['request']['operation'] != 'trend'])
 
         class QuietHandler(http.server.SimpleHTTPRequestHandler):
             def log_message(self, *args):
@@ -250,6 +263,17 @@ def verify(catalog, output=None):
                             if(change==='consent')request.allowPartial=true;
                             const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
                             if(r.resolution!=='not_materialized')throw Error('change_scope_rewritten');
+                          }
+                          const trend=samples.find(e=>e.request.operation==='trend');
+                          if(!trend)throw Error('missing_trend_probe');
+                          for(const change of ['period','towns','consent','method']){
+                            const request=structuredClone(trend.request);
+                            if(change==='period')request.selectors[0].periods=['9999'];
+                            if(change==='towns')request.selectors[0].towns=[];
+                            if(change==='consent')request.allowPartial=true;
+                            if(change==='method')request.method='OLS';
+                            const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
+                            if(r.resolution!=='not_materialized')throw Error('trend_scope_rewritten');
                           }
                           const beforeInvalid=fetches;
                           let invalid=false;try{await runtime.run({schemaVersion:1,steps:[plan.steps[0],plan.steps[0]]})}catch{invalid=true}

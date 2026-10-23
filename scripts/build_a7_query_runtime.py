@@ -13,7 +13,7 @@ from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
 DEFAULT_PROFILES = ('current', 'comparison', 'history')
-PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes')
+PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes', 'trends')
 
 
 def digest(body):
@@ -59,6 +59,9 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
     if 'series' in operations and 'history' in profiles:
         for town in towns:
             yield 'history', dict(operation='series', selectors=[dict(selector, towns=[town])])
+    if 'trend' in operations and 'trends' in profiles:
+        for town in towns:
+            yield 'trends', dict(operation='trend', selectors=[dict(selector, towns=[town])])
     if 'rank' in operations and 'ranking' in profiles:
         yield 'ranking', dict(operation='rank', selectors=[dict(selector, towns=towns)])
 
@@ -131,6 +134,7 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                               **({'benchmark': 'declared_tuscany_italy_one_town'} if 'benchmark' in profiles else {}),
                               **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
                               **({'changes': 'one_town_first_last_native_series_periods'} if 'changes' in profiles else {}),
+                              **({'trends': 'one_town_full_native_series_ols_no_forecast'} if 'trends' in profiles else {}),
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
