@@ -239,8 +239,9 @@ Comuni sono integrati e pubblicati con la #464, entrambi con controllo live PASS
 Le variazioni fra estremi delle serie native sono integrate e pubblicate con
 la #466, con controllo live PASS. L’ordine numerico descrittivo è integrato
 con la #469; pubblicazione verificata separatamente nell’handoff. Il
-trasporto opzionale dei trend nativi è integrato con la #471. L’incremento
-corrente prepara il trasporto limitato di piani espliciti di associazione A6.
+trasporto opzionale dei trend nativi è integrato con la #471. Il trasporto
+di piani espliciti di associazione A6 è integrato con la #474. L’incremento
+corrente prepara la scelta guidata e il grafico delle coppie in anteprima isolata.
 La tendenza guidata è pubblicata con la #473; incroci pubblici ancora assenti.
 Stato effettivo e gate nell’handoff.
 
@@ -268,7 +269,7 @@ Restano aperti fino alla verifica sull’intero perimetro di prodotto dichiarato
 | A7.5.1 — esploratore di base | Tema, indicatore e vista; lettura comunale, confronto dei sette Comuni e serie dove ammessi | DONE nel perimetro nativo pubblicato #459 |
 | A7.5.2 — riferimenti geografici | Selettore esplicito Toscana/Italia; valore comunale, riferimento e scostamento originali, periodi e fonti | DONE nel perimetro nativo pubblicato #463; controllo live PASS |
 | A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati #464 e variazioni native #466 pubblicati; ordine numerico #469 integrato; trasporto trend #471 e presentazione guidata #473 pubblicati; altre capacità aperte |
-| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | IN_PROGRESS: trasporto candidato di piani espliciti, nessun controllo pubblico ancora abilitato |
+| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | IN_PROGRESS: trasporto #474 integrato; anteprima opt-in con due variabili, metodo, coppie native e limiti; nessun rollout pubblico degli incroci |
 | A7.5.5 — riuso delle analisi | Esportazione generale delle evidenze e rapporti PDF; collegamento ai dossier consultabili nel sito | NOT_STARTED nel prodotto generale; i dossier editoriali restano un filone distinto |
 | A7.5.6 — consolidamento pubblico | Verifica di comprensibilità, accessibilità, prestazioni e copertura; maggiore visibilità solo dopo revisione | NOT_STARTED |
 
@@ -282,6 +283,10 @@ verificato casi iniziali, senza limitare il sistema generale a quegli esempi.
 L’esploratore, il confezionamento atomico e la matrice sono documentati in
 `docs/A7_PUBLIC_EXPLORER_INTEGRATION.md`, `docs/A7_ATOMIC_RUNTIME_PACKAGE.md` e
 `docs/A7_ACCESSIBILITY_AUDIT.md`. Radar resta separato.
+
+L’anteprima generica degli incroci su un piano esplicito è descritta in
+`docs/A7_GUIDED_ASSOCIATION_PREVIEW.md`: non modifica i default pubblici,
+non autorizza tutte le coppie e non amplia automaticamente il trasporto.
 
 **Definition of done della prima versione guidata:** il perimetro dichiarato
 è effettivamente raggiungibile dai controlli pubblici; ogni selezione produce

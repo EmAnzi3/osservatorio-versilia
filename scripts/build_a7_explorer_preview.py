@@ -43,8 +43,17 @@ def presentation(catalog):
                 themes={k:v['label'] for k,v in data['themes'].items()}, metrics=metrics)
 
 
-def build(dist, runtime, output, *, public=False):
+def build(dist, runtime, output, *, public=False, associations=False):
     dist, runtime, output = (Path(p).absolute() for p in (dist, runtime, output))
+    require(not (public and associations), 'association_interface_preview_only')
+    if associations:
+        index = json.loads((runtime/'release.json').read_text()).get('associationPlan')
+        require(isinstance(index, dict), 'explicit_association_plan_required')
+        require(all(isinstance(s['request'].get('selectors'), list)
+                    and len(s['request']['selectors']) == 2
+                    and all(isinstance(selector, dict) and isinstance(selector.get('metric'), str)
+                            for selector in s['request']['selectors']) for s in index['plan']['steps']),
+                'association_controls_require_two_selectors')
     require(not output.exists() and not output.is_symlink(), 'preview_output_already_exists')
     require(dist.resolve() not in output.resolve().parents and output.resolve() not in dist.resolve().parents,
             'overlapping_preview_directories')
@@ -77,10 +86,15 @@ def build(dist, runtime, output, *, public=False):
         (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
         for name in ['explorer.mjs', 'explorer.css']:
             shutil.copyfile(ASSETS/name, graph/name)
+        if associations:
+            for name in ['associations.mjs', 'associations.css']:
+                shutil.copyfile(ASSETS/name, graph/name)
         entry = ("const status=document.getElementById('explorer-status');\n"
             "async function boot(){try{const [{startExplorer},{default:presentation},{openPackagedRuntime}]=await Promise.all(["
             "import('./explorer.mjs'),import('./presentation.mjs'),import('./package/"+descriptor['entrypoint']+"')]);"
-            "await startExplorer(openPackagedRuntime,presentation);}catch{status.textContent='Impossibile caricare e verificare questa versione. Riprova la stessa versione.';"
+            "await startExplorer(openPackagedRuntime,presentation);"+
+            ("const {startAssociations}=await import('./associations.mjs');await startAssociations(openPackagedRuntime,presentation);" if associations else '')+
+            "}catch{status.textContent='Impossibile caricare e verificare questa versione. Riprova la stessa versione.';"
             "document.getElementById('explorer-retry').hidden=false;document.getElementById('explorer-retry').onclick=()=>location.reload();}}\nboot();\n")
         (graph/'entry.mjs').write_text(entry, encoding='utf-8')
         hashes = {p.relative_to(graph).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
@@ -90,6 +104,10 @@ def build(dist, runtime, output, *, public=False):
         destination.parent.mkdir(parents=True)
         os.rename(graph, destination)
         panel = BeautifulSoup((ASSETS/'panel.html').read_text(encoding='utf-8'), 'html.parser')
+        if associations:
+            panel.select_one('#explorer-title').string = 'Esplora i dati, scegli la tua analisi'
+            panel.select_one('#explorer-title + p').string = 'Consulta una misura oppure esplora una relazione preparata fra due variabili, con periodi, fonti e limiti originali.'
+            panel.select_one('.explorer-scope').string = 'Anteprima: le misure singole conservano le capacità del loro runtime. Gli incroci mostrano soltanto le selezioni del piano esplicito preparato, non tutte le coppie del catalogo. Il motore può rifiutare una richiesta; nessuna correlazione dimostra causalità.'
         if public:
             hero = soup.select_one('.a7-hero')
             hero.select_one('h1 + p').string = 'Dai dati alle domande sul territorio: scegli una misura e un confronto, oppure consulta le letture tematiche.'
@@ -101,12 +119,16 @@ def build(dist, runtime, output, *, public=False):
         panel.section['data-explorer-graph'] = relative
         soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
+        if associations:
+            soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'associations.css'))
         soup.body.append(soup.new_tag('script', type='module', src=relative+'entry.mjs'))
 
-        receipt = dict(schemaVersion=1, interfaceVersion=6, kind='a7-guided-explorer-preview',
+        receipt = dict(schemaVersion=1, interfaceVersion=7 if associations else 6, kind='a7-guided-explorer-preview',
                        publicIntegration=public, releaseSha256=descriptor['releaseSha256'],
                        scope=descriptor['scope'], metrics=descriptor['metrics'], views=descriptor['views'],
                        graph=relative, files=hashes)
+        if associations:
+            receipt['associationInterface'] = 'explicit_plan_preview_only'
         body = (encode(receipt)+'\n').encode()
         (stage/'explorer-preview.json').write_bytes(body)
         soup.select_one('#a7-explorer')['data-explorer-integrity'] = hashlib.sha256(body).hexdigest()
@@ -122,6 +144,7 @@ if __name__ == '__main__':
     parser.add_argument('--dist', type=Path, required=True)
     parser.add_argument('--runtime', type=Path, required=True)
     parser.add_argument('--output-dir', type=Path, required=True)
+    parser.add_argument('--associations', action='store_true', help='Opt-in isolated guided preview over an explicit native association plan; never public integration')
     args = parser.parse_args()
-    receipt = build(args.dist, args.runtime, args.output_dir)
+    receipt = build(args.dist, args.runtime, args.output_dir, associations=args.associations)
     print(json.dumps({k:v for k,v in receipt.items() if k != 'files'}, indent=2))

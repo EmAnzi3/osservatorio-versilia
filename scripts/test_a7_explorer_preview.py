@@ -12,6 +12,132 @@ from pathlib import Path
 from build_a7_explorer_preview import build
 
 
+def verify_association_interface(catalog, runtime, expected, output, *, dist=None):
+    """Same page and original requests; no fixture pair list in the UI."""
+    import hashlib
+    from playwright.sync_api import sync_playwright
+    from a7_query_workbench import encode
+    from a7_query_workbench import QueryWorkbench
+    from build_a7_query_runtime import build as build_runtime
+    from build_territorial_dossier_evidence import portable_evidence
+    from semantic_question_suite import QUESTIONS, check_expected
+    import copy
+    output = Path(output)
+    dist = Path(dist) if dist is not None else Path(catalog).resolve().parent.parent
+    # Separate UI cases must not widen the original bounded-cache transport fixture.
+    plan=copy.deepcopy(expected['plan'])
+    hostile=copy.deepcopy(plan['steps'][0]['request'])
+    hostile['purpose']='Verifica testuale <img src=x onerror="window.injected=true">'
+    reverse=copy.deepcopy(plan['steps'][0]['request']);reverse['selectors'].reverse()
+    plan['steps'] += [dict(id='textual-purpose',request=hostile),dict(id='reversed-pair',request=reverse)]
+    temporal=next(c for c in json.loads(QUESTIONS.read_text())['questions'] if c['id']=='business_cumulative_correlation_refused')
+    workbench=QueryWorkbench(catalog)
+    assert not check_expected(workbench.engine.query(temporal['query']),temporal['expected'])
+    plan['steps'].append(dict(id='period-axis-refusal',request=copy.deepcopy(temporal['query'])))
+    metrics=sorted({s['metric'] for step in plan['steps'] for s in step['request']['selectors']
+                    if s['metric'] in workbench.engine.catalog['metrics']})
+    runtime=output/'ui-runtime'
+    build_runtime(catalog,runtime,metrics=metrics,
+                  max_views=1,profiles=('current',),association_plan=plan)
+    expected=portable_evidence(workbench.run(plan))
+    try:
+        build(dist, runtime, output/'forbidden', public=True, associations=True)
+    except ValueError as error:
+        assert str(error) == 'association_interface_preview_only'
+    else:
+        raise AssertionError('association_preview_published_implicitly')
+    assert not (output/'forbidden').exists()
+    default = build(dist, runtime, output/'default')
+    assert default['interfaceVersion'] == 6 and not any('associations.' in p for p in default['files'])
+    receipt = build(dist, runtime, output/'guided', associations=True)
+    assert receipt['interfaceVersion'] == 7 and receipt['associationInterface'] == 'explicit_plan_preview_only'
+    assert any(p.endswith('associations.mjs') for p in receipt['files'])
+    root = json.loads((Path(runtime)/'release.json').read_text())
+    entries = root['associationPlan']['entries']
+    requests = expected['plan']['steps']
+    by_id = {s['id']:s['response'] for s in expected['steps']}
+    def choose(page, index):
+        step=requests[index];request=step['request']
+        for name,value in [('left',encode(request['selectors'][0])),('right',encode(request['selectors'][1])),
+                           ('axis',request.get('axis','')),('method',request.get('method','')),('scope',step['id'])]:
+            page.select_option('#association-'+name,value=value)
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *args): pass
+    server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(output)))
+    threading.Thread(target=server.serve_forever,daemon=True).start()
+    results=[]
+    try:
+        with sync_playwright() as p:
+            browser=p.chromium.launch(headless=True)
+            try:
+                for width in (1440,390,320):
+                    page=browser.new_page(viewport=dict(width=width,height=900))
+                    fetched=[];page.on('request',lambda r:fetched.append(r.url) if r.url.endswith('.json.gz') else None)
+                    page.goto(f'http://127.0.0.1:{server.server_port}/guided/chiedi/')
+                    page.wait_for_selector('#association-run:enabled')
+                    assert not fetched,'association_eager_response_fetch'
+                    page.click('#association-mode-measure')
+                    assert page.locator('#explorer-form').is_visible() and page.locator('#association-explorer').is_hidden()
+                    assert page.locator('#explorer-form').count()==1
+                    page.click('#association-mode-pair')
+                    assert page.locator('#explorer-form').is_hidden() and page.locator('#association-explorer').is_visible()
+                    for index,step in enumerate(requests):
+                        choose(page,index);before=len(fetched);page.click('#association-run')
+                        page.wait_for_selector('#association-result:not([hidden]), #association-consent:not([hidden])')
+                        if page.locator('#association-consent').is_visible():
+                            assert page.locator('#association-result').is_hidden()
+                            assert page.locator('[data-association-value]').count()==0
+                            page.click('#association-accept')
+                        page.wait_for_selector('#association-result:not([hidden])')
+                        original=json.loads(page.locator('[data-association-evidence]').text_content())
+                        response=by_id[step['id']]
+                        assert original['steps'][0]['response']==response
+                        assert original['plan']['steps']==[step]
+                        if response['status']=='computed':
+                            assert float(page.locator('[data-association-value="coefficient"]').text_content().replace(',','.'))==response['result']['coefficient'],'association_coefficient_precision_changed'
+                            assert page.locator('[data-association-value="coefficient"]').evaluate('cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length===1}'),'association_coefficient_split'
+                            assert page.locator('#association-result svg').evaluate('svg=>Array.from(svg.querySelectorAll("text")).every(t=>{const b=t.getBBox(),v=svg.viewBox.baseVal;return b.x>=0&&b.y>=0&&b.x+b.width<=v.width&&b.y+b.height<=v.height})'),'association_chart_label_clipped'
+                            assert page.locator('#association-result svg circle').count()==response['result']['n']
+                            assert page.locator('#association-result tbody tr').count()==min(20,response['result']['n'])
+                            if response['result']['n']>20:
+                                page.click('#association-next')
+                                assert page.locator('#association-result tbody tr').first.get_attribute('data-pair-key')==response['result']['pairs'][20]['key']
+                                page.click('#association-previous')
+                        else:
+                            assert not page.locator('#association-result svg').count()
+                            assert not page.locator('[data-association-value="coefficient"]').count()
+                        assert not page.locator('#association-explorer img').count(),'association_untrusted_html'
+                        if index==7:assert len(fetched)==before,'association_cached_selection_refetched'
+                    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),'association_page_overflow'
+                    # A missing block fails closed and retry keeps the same anchored release.
+                    page.reload();page.wait_for_selector('#association-run:enabled')
+                    missing=entries[0]['artifact']['path']
+                    page.route('**/'+missing,lambda route:route.fulfill(status=404,body='missing'))
+                    choose(page,0);page.click('#association-run');page.wait_for_selector('#association-retry:not([hidden])')
+                    assert page.locator('#association-result').is_hidden()
+                    page.unroute('**/'+missing);page.click('#association-retry');page.wait_for_selector('#association-run:enabled')
+                    choose(page,0);page.click('#association-run');page.wait_for_selector('[data-association-evidence]',state='attached')
+                    assert json.loads(page.locator('[data-association-evidence]').text_content())['steps'][0]['response']==by_id[requests[0]['id']]
+                    # Changing controls revokes a pending request before it can render.
+                    page.reload();page.wait_for_selector('#association-run:enabled');held=[]
+                    page.route('**/'+missing,lambda route:held.append(route))
+                    choose(page,0)
+                    with page.expect_request(lambda r:r.url.endswith(missing)):page.click('#association-run')
+                    page.select_option('#association-method',value='pearson')
+                    assert held
+                    held[0].continue_();page.unroute('**/'+missing)
+                    assert page.locator('#association-result').is_hidden()
+                    page.click('#association-run');page.wait_for_selector('[data-association-evidence]',state='attached')
+                    actual=json.loads(page.locator('[data-association-evidence]').text_content())
+                    assert actual['steps'][0]['response']==by_id[requests[1]['id']]
+                    results.append(dict(width=width,status='PASS',requests=len(requests),initialResponseFetches=0))
+                    page.screenshot(path=str(output/f'association-{width}.png'),full_page=True)
+                    page.close()
+            finally:browser.close()
+    finally:server.shutdown();server.server_close()
+    return dict(status='PASS',browser=results,scope='explicit-plan isolated preview; no public association UI or general pair coverage claim')
+
+
 def assert_readable_values(page, numeric_rows):
     """A value must remain one readable token, even inside a scrolling table."""
     assert page.evaluate('''rows => rows.every(index => {

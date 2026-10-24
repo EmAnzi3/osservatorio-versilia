@@ -1,0 +1,14 @@
+.a7-explorer .association-explorer{border-top:2px solid #cbd5dc;margin-top:2rem;padding-top:1rem;background:#fff}
+#a7-explorer #association-measure{padding:0;border:0;border-radius:0;margin:0;box-shadow:none;background:none}
+#a7-explorer #association-explorer{padding:1rem 0 0;border:0;border-top:1px solid #cbd5dc;border-radius:0;margin:1.5rem 0 0;box-shadow:none;background:#fff}
+#a7-explorer #association-result,#a7-explorer #association-consent{padding:1rem 0 0;border:0;border-top:1px solid #cbd5dc;border-radius:0;margin:1rem 0 0;box-shadow:none;background:#fff;scroll-margin-top:7rem}
+.a7-explorer #association-modes{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.a7-explorer #association-modes button[aria-pressed="false"]{background:#fff;color:#104b70}
+.a7-explorer .association-explorer figure{margin:1.5rem 0}
+.a7-explorer .association-explorer svg{display:block;width:100%;height:auto;max-width:55rem;background:#fff;color:#163449}
+.a7-explorer .association-explorer svg text{fill:#163449;font-family:system-ui,sans-serif}
+#a7-explorer #association-explorer svg text{font-size:13px}
+#a7-explorer [data-association-value="coefficient"]{font-size:clamp(.875rem,4.2vw,1.2rem);white-space:nowrap;overflow-wrap:normal;word-break:normal;font-variant-numeric:tabular-nums}
+.a7-explorer .association-explorer figcaption{line-height:1.6;font-size:.94rem;overflow-wrap:anywhere}
+.a7-explorer #association-consent,.a7-explorer #association-result{border-top:1px solid #cbd5dc;margin-top:1rem;padding-top:1rem}
+.a7-explorer .association-explorer td>p:first-child{white-space:nowrap;font-variant-numeric:tabular-nums}
