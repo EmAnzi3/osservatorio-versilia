@@ -1,6 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
-## Main verificata il 24 ottobre 2026 — #474 integrata e pubblicata
+## Main verificata il 24 ottobre 2026 — #476 integrata e pubblicata
+
+Merge del proprietario `d5c8fc2870869a23b3fe0640428e682931503655`, albero
+`4c1c060d5328b5b17ebf1164bd56f7ce12582473`, identico alla head #476
+`cb5af9084f9435f695d96be4bf308c571f552d52`. Nessun merge/deploy dell’assistente.
+Pubblicazione: Pages push `40092635164` (#4238) SUCCESS, reporter live
+`40094663950` SUCCESS. Questa verifica legge soltanto gli esiti pubblici dei run:
+log, job Quick→Full della PR e A3 non sono stati riletti in questa sessione e
+non vengono attestati qui. L’anteprima degli incroci resta opt-in e isolata.
+
+Prossimo incremento A7.5.4: misura e revisione del perimetro preparato degli
+incroci prima di qualunque rollout pubblico. La misura richiede la build
+pubblica completa (`public_dist_required`) e quindi Chromium: va eseguita con
+Quick/Full locali ordinari, non stimata. Restano invariati i divieti
+`public=True, associations=True`, whitelist di domande e coppie scelte dal
+coefficiente.
+
+## Main precedente — #474 integrata e pubblicata
 
 Merge del proprietario `c5386a38f4a5c490b0e10e0bfa1ca50d20c77a1c`, albero
 `7a2afdac9b425cf6b52686325a3a226ae1510a1b`, identico alla head #474
@@ -31,7 +48,7 @@ Ultima misura approvata dei profili pubblici: 50.523 richieste,
 28.422 computed / 22.101 rifiuti, 127.146.205 byte gzip. Misura di trasporto,
 non nuovi casi numerici indipendenti. Nessuna promozione in navigazione.
 
-## Incremento corrente — anteprima degli incroci guidati
+## Incremento integrato con la #476 — anteprima degli incroci guidati
 
 Branch `feature/a7-guided-pair-selection`, base main #474. A7.5.4 resta aperta.
 `build_a7_explorer_preview.py --associations` aggiunge nella stessa pagina due
