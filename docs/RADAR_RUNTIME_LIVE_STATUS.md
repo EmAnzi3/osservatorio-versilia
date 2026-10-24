@@ -1,5 +1,42 @@
 # Radar: budget di esecuzione e stato della pubblicazione
 
+## Stabilizzazione del 24 ottobre 2026
+
+Storico main (runs #204–#254): dopo la #468 i run sono verdi, ma la durata
+cresce (34–49 minuti contro 25–31 di inizio mese) e cinque giornate su
+quattordici sono state bloccate: tre per candidati di discovery non risolti
+(12, 15 e 17 ottobre) e due per il budget build/browser (22 ottobre, già
+corretto dalla #468).
+
+Lo snapshot del 24 ottobre conteneva `regionalUnresolved=1`: «Contributi agli
+enti locali per lo sviluppo di progettualità sui dati: il bando 2026»
+(DD 22706/2026, BURT 21.10.2026), età 3 giorni con grazia 3. Senza
+qualificazione il run del 25 ottobre avrebbe prodotto `regionalCompleteness=fail`.
+È un bando a sportello con candidatura diretta dei Comuni toscani: la voce
+`rt-smartoscana-dati-enti-locali-2026` riusa `verifiedEntries` dell'overlay
+esistente, con stato condizionato per i sette Comuni, contributo forfettario
+fino a 56.000 euro, obblighi open data e termine ordinario documentato.
+Impronte di Allegato A e Allegato O calcolate sul contenuto ufficiale e
+coincidenti con quelle dichiarate nel decreto; estratto della pagina congelato
+in `tests/fixtures/rt-dati-enti-locali-notices/`. Limite: i PDF non sono
+congelati nel repository (l'ambiente dell'assistente non raggiunge il dominio
+`www301`), il proprietario può aggiungerli. Nessuna grazia o soglia modificata.
+
+Le schede esponevano 37 ruoli comunali come slug inglesi degli overlay audit
+(es. «Direct local authority applicant singly or jointly») anche nel campo
+«Chi presenta domanda». Il renderer ora mappa le famiglie di ruolo su etichette
+italiane senza modificare il dato; un ruolo non classificabile rinvia alla
+fonte ufficiale invece di mostrare lo slug. Regressione in
+`test_opportunity_content_sanitization.py` sui ruoli osservati.
+
+I due job del workflow giornaliero usano `ubuntu-24.04`: l'etichetta generica
+migra a Ubuntu 26 dal 19 ottobre 2026 e l'installazione Playwright con
+dipendenze di sistema non è stata provata su quell'immagine.
+
+Restano aperti: la durata crescente del gate build/browser, che ricostruisce
+l'intero sito a ogni refresh, e i testi descrittivi in inglese di dieci schede
+UE (summary/beneficiari), che richiedono revisione editoriale.
+
 ## Trasporto regionale — correzione candidata del 18 ottobre 2026
 
 Il run [39093561987](https://github.com/EmAnzi3/osservatorio-versilia/actions/runs/39093561987/job/117575186565)

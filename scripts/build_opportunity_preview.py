@@ -45,6 +45,57 @@ ACCESS_LABELS = {
     "specific_requirement": "Con requisito specifico",
 }
 
+# Gli overlay di audit/matrice registrano il ruolo comunale come slug descrittivo
+# libero (spesso in inglese, es. "direct_local_authority_applicant_singly_or_jointly").
+# Il dato resta invariato: qui si sceglie soltanto un'etichetta pubblica italiana.
+# Ordine significativo: la prima famiglia che corrisponde vince.
+ROLE_FAMILIES: tuple[tuple[tuple[str, ...], str, str], ...] = (
+    (("scope review",), "Ruolo da verificare nella fonte ufficiale", "Vedi requisiti nella fonte ufficiale"),
+    (("borrower",), "Ente mutuatario", "Comune o ente locale richiedente il finanziamento"),
+    (("procurer", "buyer group"), "Acquirente pubblico in gruppo d’acquisto", "Gruppo di acquirenti pubblici"),
+    (("civil protection", "disaster response"), "Autorità di protezione civile partecipante", "Consorzio di progetto con autorità di protezione civile"),
+    (("representative", "delegate"), "Rappresentante dell’ente", "Rappresentante designato dall’ente"),
+    (("member", "network", "community", "coalition"), "Adesione a rete o comunità", "Comune o ente locale aderente"),
+    (("advisory", "technical support", "technical assistance", "support request", "expert", "capacity building", "hotline"),
+     "Richiesta di assistenza tecnica", "Comune o ente pubblico richiedente"),
+    (("asset transfer",), "Richiesta di trasferimento di beni", "Comune richiedente"),
+    (("investor", "matchmaking"), "Promotore di progetto in cerca di finanziamento", "Comune o ente pubblico promotore"),
+    (("demo", "asset owner", "site proponent"), "Partner con sito o bene dimostrativo", "Consorzio o capofila del progetto"),
+    (("partner",), "Partecipazione come partner", "Consorzio o capofila del progetto"),
+    (("applicant", "promoter", "requester", "direct", "lead"), "Candidatura diretta", "Comune o ente pubblico"),
+)
+ROLE_FALLBACK = ("Ruolo indicato nella fonte ufficiale", "Vedi requisiti nella fonte ufficiale")
+
+
+def _role_words(role: str) -> str:
+    return " " + re.sub(r"[^a-z0-9]+", " ", role.lower()).strip() + " "
+
+
+def role_presentation(role: str) -> tuple[str, str]:
+    """Etichetta italiana del ruolo e soggetto proponente di riserva."""
+    if role in ROLE_LABELS:
+        return ROLE_LABELS[role], ""
+    words = _role_words(role)
+    for needles, label, applicant in ROLE_FAMILIES:
+        if any(f" {needle} " in words for needle in needles):
+            if label == "Candidatura diretta" and " jointly " in words:
+                label, applicant = "Candidatura diretta, singola o associata", "Comune singolo o in forma associata"
+            if words.startswith(" conditional ") and not label.startswith("Ruolo"):
+                label += " (a condizioni)"
+            return label, applicant
+    return ROLE_FALLBACK
+
+
+def applicant_presentation(item: dict[str, Any], role: str) -> str:
+    """Non espone lo slug del ruolo riscritto come testo libero inglese."""
+    applicant = re.sub(r"\s+", " ", str(item.get("applicant_type") or "")).strip()
+    if applicant and _role_words(applicant) != _role_words(role) and applicant not in {"local_authority"}:
+        return display_value(applicant)
+    if applicant == "local_authority":
+        return "Comune o ente locale"
+    fallback = role_presentation(role)[1]
+    return fallback or display_value(applicant)
+
 
 def esc(value: Any) -> str:
     return html.escape(str(value or ""), quote=True)
@@ -133,7 +184,7 @@ def card_markup(item: dict[str, Any]) -> str:
     meta = presentation(item)
     access = str(item.get("access_mode") or ("specific_requirement" if item.get("eligibility") == "conditional" else "direct"))
     role = str(item.get("municipality_role") or "unknown")
-    role_label = ROLE_LABELS.get(role, display_value(role.replace("_", " "), "Non specificato"))
+    role_label = "Non specificato" if role == "unknown" else role_presentation(role)[0]
     towns = eligible_town_slugs(item)
     requirements = display_value(item.get("project_requirements"), "")
     source_url = str(item.get("url") or (item.get("eligibility_evidence") or {}).get("source_url") or "#")
@@ -141,7 +192,7 @@ def card_markup(item: dict[str, Any]) -> str:
                       for label,url in verified_document_links(item)]
     documents = ('<details class="op-condition"><summary>Documenti ufficiali</summary><ul>'
                  + ''.join(evidence_links) + '</ul></details>') if evidence_links else ''
-    applicant = display_value(item.get("applicant_type"))
+    applicant = applicant_presentation(item, role)
     scope = display_value(item.get("geographic_scope"))
     final_beneficiaries = display_value(item.get("final_beneficiaries"))
     description = display_value(meta["description"], "")
