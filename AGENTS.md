@@ -22,11 +22,7 @@ Per qualunque attività che rientra nel programma di consolidamento del prodotto
    python scripts/preflight.py --quick
    ```
 
-4. Prima di considerare una PR pronta al merge esegui localmente:
-
-   ```bash
-   python scripts/preflight.py --full
-   ```
+4. Il `full` è verificato dalla CI: una PR è pronta al merge quando il flusso canonico ha eseguito `quick` e poi `full` con esito verde sullo stesso commit della head. Non serve ripeterlo localmente prima del push. Eseguilo in locale (`python scripts/preflight.py --full`) quando riproduci un fallimento full-only della CI o quando la modifica tocca regressioni browser, rendering o interazioni.
 
 5. GitHub Actions è un verificatore, non un debugger. Se una CI fallisce: leggi il log completo, riproduci localmente la causa, correggi la causa radice, riesegui il preflight pertinente e solo allora fai un nuovo push.
 6. Non fare merge e non pubblicare senza approvazione esplicita del proprietario del repository.
@@ -45,7 +41,7 @@ Per qualunque attività che rientra nel programma di consolidamento del prodotto
 ## Preflight
 
 - `--quick`: contratto architetturale e sorgente, catalogo/dati, sintassi, build, materializzazione delle pagine speciali e coerenza strutturale. Non esegue la regressione browser completa, ma la build prerender richiede Chromium.
-- `--full`: esegue `quick` e aggiunge regressioni statiche estese e browser.
+- `--full`: esegue `quick` e aggiunge regressioni statiche estese e browser. Gate obbligatorio in CI; in locale per riprodurre fallimenti o per modifiche UI.
 - `--full --skip-quick`: riservato alla CI quando il job `quick` è già verde e il job `full` prepara un `dist/` coerente per i controlli full-only.
 
 Non introdurre nuovi test o workflow release-specifici se lo stesso contratto può essere espresso nel preflight generale o in un gate con `paths` strettamente pertinenti. Non duplicare inventari di indicatori o route che possono essere derivati dalle fonti canoniche.
