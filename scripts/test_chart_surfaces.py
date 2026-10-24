@@ -150,7 +150,7 @@ def verify_stylesheet_is_global() -> None:
     pages = [path for path in DIST.rglob("*.html") if path.name != "offline.html"]
     require(pages, "Build priva di pagine HTML")
     missing = [
-        path.relative_to(DIST).as_posix()
+        str(path.relative_to(DIST))
         for path in pages
         if "assets/chart-surfaces.css" not in path.read_text(encoding="utf-8")
     ]

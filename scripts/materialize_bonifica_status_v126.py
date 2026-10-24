@@ -67,7 +67,7 @@ def meta(key, label, short_label, description, unit, note):
         'context': 'Stato lavori di manutenzione 2026',
         'searchTerms': ['bonifica', 'manutenzione', 'pab', 'stato lavori', 'in corso', 'completati'],
         'sourceMeta': {
-            'snapshot': STATUS.relative_to(ROOT).as_posix(),
+            'snapshot': str(STATUS.relative_to(ROOT)),
             'note': note,
         },
     }
@@ -86,7 +86,7 @@ def make_metric(site, key, label, short_label, description, unit, values, total,
             'formula': formula,
             'caveat': caveat,
             'coverage': '7/7',
-            'snapshot': STATUS.relative_to(ROOT).as_posix(),
+            'snapshot': str(STATUS.relative_to(ROOT)),
         },
     }
 

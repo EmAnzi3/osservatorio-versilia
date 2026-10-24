@@ -37,7 +37,7 @@ def materialize(site, snapshot):
     for row in rows:
         code = row['code']; value = row.get('value')
         if isinstance(value,bool) or not isinstance(value,(int,float)) or code not in records or not math.isclose(value,records[code],abs_tol=1e-9,rel_tol=0) or not math.isclose(value,expected[code],abs_tol=1e-9,rel_tol=0): raise RuntimeError('IFC public/source mismatch')
-    candidate = {'year':'2019','tuscany':benchmark['tuscany'],'italy':benchmark['italy'],'source':snapshot['publisher'],'url':LANDING,'sourceSnapshot':SNAPSHOT.relative_to(ROOT).as_posix(),'note':scope['note']}
+    candidate = {'year':'2019','tuscany':benchmark['tuscany'],'italy':benchmark['italy'],'source':snapshot['publisher'],'url':LANDING,'sourceSnapshot':str(SNAPSHOT.relative_to(ROOT)),'note':scope['note']}
     existing = metric['meta'].get('benchmark')
     if existing and existing != candidate: raise RuntimeError('IFC existing benchmark conflict')
     metric['meta']['benchmark'] = candidate

@@ -119,7 +119,7 @@ def main():
     benchmark={'year':'2024','unit':'percent',**{scope:real_growth(v['2016'],v['2024'],factor) for scope,v in raw.items()}}
     payload={'schemaVersion':1,'profileId':'mef-istat-real-income-annual','publisher':'MEF — Dipartimento Finanze / Istat NIC',
         'sourceUrl':'https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php','sources':sources,'records':records,'raw':raw,
-        'nic':{'sha256':hashlib.sha256(nic_bytes).hexdigest(),'years':[2016,2024],'priceFactor':factor,'sourceSnapshot':NIC.relative_to(ROOT).as_posix()},
+        'nic':{'sha256':hashlib.sha256(nic_bytes).hexdigest(),'years':[2016,2024],'priceFactor':factor,'sourceSnapshot':str(NIC.relative_to(ROOT))},
         'municipalReconciliation':proof,'benchmarks':{METRIC:benchmark},
         'scope':{'note':'Variazione reale 2016–2024 del reddito imponibile medio per dichiarante. Per Toscana e Italia: somma degli importi / somma delle frequenze su tutte le righe dei rispettivi archivi comunali MEF, poi stesso NIC nazionale del pubblico. Italia include la riga esplicita Mancante/errata (Non indicato nel 2016); nessuna cella mancante riempita. Non è una media dei redditi medi comunali. Le medie comunali sono arrotondate al centesimo, come nel contratto pubblico; gli aggregati regionali/nazionali mantengono i rapporti esatti.'},
         'qualityGate':{'status':'PASS','errors':[],'publicReconciliation':'7/7 PASS'}}

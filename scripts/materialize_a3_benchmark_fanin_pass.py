@@ -313,7 +313,7 @@ def main() -> None:
             if italy is not None:
                 finite(italy, f"{metric_id}/italy")
 
-            snapshot_ref = snapshot_path.relative_to(ROOT).as_posix().replace("\\", "/")
+            snapshot_ref = str(snapshot_path.relative_to(ROOT)).replace("\\", "/")
             existing = meta.get("benchmark")
             if isinstance(existing, dict) and any(
                 isinstance(existing.get(scope), (int, float)) and not isinstance(existing.get(scope), bool)

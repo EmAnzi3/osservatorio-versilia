@@ -390,7 +390,7 @@ def main() -> None:
         "metric_count": len(data["metrics"]),
         "added": list(METRICS),
         "coverage": coverage,
-        "snapshot": OUT_PATH.relative_to(ROOT).as_posix(),
+        "snapshot": str(OUT_PATH.relative_to(ROOT)),
     }, ensure_ascii=False, indent=2))
 
 

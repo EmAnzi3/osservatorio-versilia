@@ -110,7 +110,7 @@ def main() -> None:
         "fcde_failures": fcde_failures,
         "excluded_m17_gaps": report["excluded_candidates_evidence"]["mission_17_failures"],
         "excluded_pdi_gaps": pdi_failures,
-        "output": output.relative_to(ROOT).as_posix(),
+        "output": str(output.relative_to(ROOT)),
     }, ensure_ascii=False, indent=2))
 
     if hard_failures:

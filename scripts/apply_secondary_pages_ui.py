@@ -75,12 +75,12 @@ def validate_scope() -> None:
             if path.resolve() not in approved:
                 raise SystemExit(
                     "Secondary-page UI fuori scope: "
-                    + path.relative_to(DIST).as_posix()
+                    + str(path.relative_to(DIST))
                 )
             if text.count(TOKEN) != 1:
                 raise SystemExit(
                     "Secondary-page UI duplicata: "
-                    + path.relative_to(DIST).as_posix()
+                    + str(path.relative_to(DIST))
                 )
     atlas_found: set[Path] = set()
     for path in DIST.rglob("*.html"):
@@ -90,7 +90,7 @@ def validate_scope() -> None:
             if path.resolve() != ATLAS_PAGE.resolve():
                 raise SystemExit(
                     "Adapter Atlante fuori scope: "
-                    + path.relative_to(DIST).as_posix()
+                    + str(path.relative_to(DIST))
                 )
             if text.count(ATLAS_TOKEN) != 1:
                 raise SystemExit("Adapter Atlante duplicato")
@@ -99,7 +99,7 @@ def validate_scope() -> None:
 
     missing = approved - found
     if missing:
-        names = ", ".join(path.relative_to(DIST).as_posix() for path in sorted(missing))
+        names = ", ".join(str(path.relative_to(DIST)) for path in sorted(missing))
         raise SystemExit(f"Secondary-page UI mancante: {names}")
 
 

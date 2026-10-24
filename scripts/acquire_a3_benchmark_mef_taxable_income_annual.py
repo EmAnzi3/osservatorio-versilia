@@ -12,7 +12,7 @@ from acquire_a3_benchmark_mef_istat_real_income_annual import verify_records
 
 ROOT = Path(__file__).resolve().parents[1]
 PANEL = ROOT / "data/source-snapshots/a3-mef-real-income-benchmark-2024.json"
-REFERENCE = PANEL.relative_to(ROOT).as_posix()
+REFERENCE = str(PANEL.relative_to(ROOT))
 
 
 def certified_panel():

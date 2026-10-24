@@ -72,7 +72,7 @@ def main():
     parser.add_argument('--site-data', type=Path, default=ROOT/'data/site-data.json')
     parser.add_argument('--snapshot', type=Path, default=ROOT/SNAPSHOT)
     args = parser.parse_args()
-    snapshot_path = args.snapshot.resolve().relative_to(ROOT).as_posix()
+    snapshot_path = str(args.snapshot.resolve().relative_to(ROOT))
     data = apply(json.loads(args.site_data.read_text()), json.loads(args.snapshot.read_text()), snapshot_path)
     args.site_data.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n')
 

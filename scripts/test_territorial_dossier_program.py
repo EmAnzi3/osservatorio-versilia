@@ -67,7 +67,7 @@ def main():
         pilots_path=ROOT/'docs/dossiers/PILOTS.md'
         outputs[pilots_path]=render_pilots(report,pilots_path.read_text())
         for path,content in outputs.items():
-            assert path.read_text()==content,'stale editorial output: '+path.relative_to(ROOT).as_posix()
+            assert path.read_text()==content,'stale editorial output: '+str(path.relative_to(ROOT))
         assert json.loads((ROOT/'reports/territorial-dossiers/summary.json').read_text())==summary(report),'stale dossier summary'
         relocated=copy.deepcopy(report)
         catalog_paths={e['response']['catalogPath'] for e in report['evidence'].values()}
