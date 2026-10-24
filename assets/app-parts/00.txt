@@ -272,7 +272,7 @@
           <a href="mailto:info@osservatorioversilia.it">Contatti</a>
         </nav>
         <div class="footer-note">
-          <span>7 comuni · ${Object.keys(data.themes).length} temi</span><span>v. dati ${html(data.version)}</span><span>aggiornato ${html(data.updated)}</span>
+          <span>7 comuni · ${Object.keys(data.themes).length} temi</span><span>v. dati ${html(data.version)}</span><span>catalogo dati aggiornato al ${html(data.updated)}</span>
         </div>
       </footer>`;
   }

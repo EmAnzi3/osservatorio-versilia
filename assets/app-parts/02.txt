@@ -97,7 +97,7 @@
                 <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
                 <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
               </div>
-              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori ${html(theme.label)}</span><span>Aggiornato ${html(data.updated)}</span></div>
+              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori ${html(theme.label)}</span><span>Catalogo al ${html(data.updated)}</span></div>
             </div>
           </section>
           <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
