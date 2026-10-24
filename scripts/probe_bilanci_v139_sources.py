@@ -328,7 +328,7 @@ def main() -> None:
         "fcde_failures": fcde_failures,
         "art195_query_error": siope_error,
         "art195_nonzero_use_towns_2025": nonzero_art195,
-        "output": str(output.relative_to(ROOT)),
+        "output": output.relative_to(ROOT).as_posix(),
     }, ensure_ascii=False, indent=2))
 
     if hard_failures:

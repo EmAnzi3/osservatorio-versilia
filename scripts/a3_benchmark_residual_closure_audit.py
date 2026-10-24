@@ -21,7 +21,7 @@ def diagnose(metric, profile, metric_id, evidence):
         snapshot = json.loads(path.read_text())
         blocked = (snapshot.get('blocked') or {}).get(metric_id)
         if isinstance(blocked, str):
-            return 'DOCUMENTED_SOURCE_OR_DEFINITION_BLOCKER', blocked, str(path.relative_to(ROOT))
+            return 'DOCUMENTED_SOURCE_OR_DEFINITION_BLOCKER', blocked, path.relative_to(ROOT).as_posix()
     reference = metric.get('sourceUrl') or ''
     if profile == 'openbdap-annual':
         snapshot = evidence['profiles'][profile]['evidenceSnapshot']

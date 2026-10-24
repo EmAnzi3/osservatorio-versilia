@@ -288,7 +288,7 @@ def apply_history(site: dict) -> None:
     snapshot = json.loads(SNAPSHOT_PATH.read_text(encoding="utf-8"))
     require(snapshot.get("schemaVersion") == 1, "unsupported schema")
     frozen = snapshot.get("referenceSnapshot", {})
-    require(frozen.get("path") == str(CURRENT_PATH.relative_to(ROOT)) and frozen.get("year") == 2024
+    require(frozen.get("path") == CURRENT_PATH.relative_to(ROOT).as_posix() and frozen.get("year") == 2024
             and frozen.get("sha256") == hashlib.sha256(CURRENT_PATH.read_bytes()).hexdigest(),
             "current reference snapshot changed")
     reference = json.loads(CURRENT_PATH.read_text(encoding="utf-8"))

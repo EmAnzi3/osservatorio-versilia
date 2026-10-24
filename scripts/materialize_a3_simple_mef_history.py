@@ -103,7 +103,7 @@ def _series(values):
             'values': [value for _, value in observed],
             'source': 'Dipartimento delle Finanze — MEF',
             'sourceUrl': PRIOR_URL,
-            'sourceSnapshot': str(SNAPSHOT.relative_to(ROOT)),
+            'sourceSnapshot': SNAPSHOT.relative_to(ROOT).as_posix(),
             'note': 'Anni di imposta 2023–2024; celle MEF soppresse non generano osservazioni.'}
 
 
@@ -129,7 +129,7 @@ def apply_history(site: dict, snapshot: dict | None = None) -> None:
             or src.get('archiveSha256') != '2d8fafc10c728fcc132ee9f0f0a123d77b889093419f427163bc629bdb70b060'
             or src.get('archiveBytes') != 1065416
             or src.get('member') != 'Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2023.csv'
-            or src.get('currentSnapshot') != str(CURRENT.relative_to(ROOT))
+            or src.get('currentSnapshot') != CURRENT.relative_to(ROOT).as_posix()
             or src.get('currentSnapshotSha256') != hashlib.sha256(CURRENT.read_bytes()).hexdigest()
             or digest != frozen.get('nativeComponentsSha256')
             or digest != '8bb26d4bf7becebfe3593ec7bf1400171c9fbc151fe3090b5f8929684f03d413'):

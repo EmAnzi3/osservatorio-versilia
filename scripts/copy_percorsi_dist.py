@@ -67,7 +67,7 @@ def main() -> None:
         TARGET / "data" / "master_summary.json",
         TARGET / "data" / "site_stats.json",
     )
-    missing = [str(path.relative_to(DIST)) for path in required if not path.exists() or path.stat().st_size == 0]
+    missing = [path.relative_to(DIST).as_posix() for path in required if not path.exists() or path.stat().st_size == 0]
     if missing:
         raise RuntimeError(f"Build Percorsi incompleta: {', '.join(missing)}")
 

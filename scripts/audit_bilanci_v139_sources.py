@@ -440,7 +440,7 @@ def main() -> None:
         "siope_entrata": siope["entrata"]["coverage"],
         "siope_spesa": siope["spesa"]["coverage"],
         "art195_nonzero_use_towns": art195["nonzero_use_towns"],
-        "output": str(output.relative_to(ROOT)),
+        "output": output.relative_to(ROOT).as_posix(),
     }, ensure_ascii=False, indent=2))
 
     if hard_failures:

@@ -51,7 +51,7 @@ def materialize_statistical_coastline(site):
    close(row['value'],src['lengthKm'],'Municipal coastline')
  metric['meta']['benchmark']={'year':'2021','tuscany':float(b['tuscany']),'italy':float(b['italy']),
   'source':snap['publisher'],'url':snap['sourceUrl'],
-  'sourceSnapshot':str(snapshot_path.relative_to(ROOT)),
+  'sourceSnapshot':snapshot_path.relative_to(ROOT).as_posix(),
   'note':'Somma della linea litoranea statistica ufficiale Istat; 4 Comuni costieri riconciliati e 3 non applicabili. Non equivale alla costa ISPRA.'}
  print('A3 benchmark linea litoranea: Toscana/Italia da DBF completo; 4 costieri + 3 n.a. PASS.')
 

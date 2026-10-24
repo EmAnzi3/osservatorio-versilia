@@ -78,7 +78,7 @@ def verify(path: Path, source: str, indicator: int | None, root: Path = ROOT) ->
                           member=names[0], memberSha256=sha(payload), memberBytes=len(payload),
                           matchesPublishedSnapshot=(sha(payload) == snapshot['sourceFile']['sha256']
                                                     and len(payload) == snapshot['sourceFile']['bytes']))
-        result['snapshotPath'] = str(snapshot_path.relative_to(root))
+        result['snapshotPath'] = snapshot_path.relative_to(root).as_posix()
         result['verdict'] = 'published_snapshot_revalidated' if result['matchesPublishedSnapshot'] else 'different_candidate_requires_validation'
     return result
 

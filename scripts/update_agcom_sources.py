@@ -107,15 +107,15 @@ def update_monitor_state() -> int:
 
 def main() -> int:
     changes: dict[str, int] = {}
-    changes[str(DATA.relative_to(ROOT))] = update_json_file(DATA)
-    changes[str(REGISTRY.relative_to(ROOT))] = update_registry()
-    changes[str(MONITOR.relative_to(ROOT))] = update_monitor_state()
+    changes[DATA.relative_to(ROOT).as_posix()] = update_json_file(DATA)
+    changes[REGISTRY.relative_to(ROOT).as_posix()] = update_registry()
+    changes[MONITOR.relative_to(ROOT).as_posix()] = update_monitor_state()
 
     if SNAPSHOTS.exists():
         for path in sorted(SNAPSHOTS.glob("*.json")):
             count = update_json_file(path)
             if count:
-                changes[str(path.relative_to(ROOT))] = count
+                changes[path.relative_to(ROOT).as_posix()] = count
 
     changed = {path: count for path, count in changes.items() if count}
     print(json.dumps({
