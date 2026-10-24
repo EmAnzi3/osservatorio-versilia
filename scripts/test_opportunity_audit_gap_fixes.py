@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 C4T_ID = "eu-c4t-groundwork-2026"
 CERV_ID = "eu-cerv-town-twinning-2026"
 PROLOCO_ID = "rt-proloco-identita-locali-partner-2026"
+SMARTOSCANA_DATI_ID = "rt-smartoscana-dati-enti-locali-2026"
 
 
 def test_proloco_documented_partnership() -> None:
@@ -85,6 +86,66 @@ def test_proloco_documented_partnership() -> None:
     assert any(x.get("coverage_id") == PROLOCO_ID for x in expired["archive"])
 
 
+def test_smartoscana_data_call_resolves_regional_review() -> None:
+    """Bando a sportello per Comuni: la qualificazione chiude il candidato regionale.
+
+    Evidenza: estratto congelato della pagina ufficiale e impronte di Allegato A
+    e Allegato O coincidenti con quelle dichiarate nel decreto 22706/2026.
+    """
+    from opportunity_municipal_relevance import apply_to_payload
+    fixture = ROOT / "tests/fixtures/rt-dati-enti-locali-notices"
+    provenance = json.loads((fixture / "provenance.json").read_text(encoding="utf-8"))
+    entry = next(e for e in fixed._load_fixes()["verifiedEntries"] if e["coverage_id"] == SMARTOSCANA_DATI_ID)
+    source_path = fixture / "source-extract.html"
+    assert hashlib.sha256(source_path.read_bytes()).hexdigest() == provenance["pageExtractSha256"]
+    assert entry["url"] == provenance["pageUrl"]
+    assert entry["document_evidence"]["sha256"] == provenance["decree"]["annexAExpectedSha256"]
+    assert {d["sha256"] for d in entry["supporting_documents"]} >= {provenance["decree"]["annexOExpectedSha256"]}
+    assert entry["document_evidence"] == {k: provenance["document"][k] for k in ("url", "sha256", "pages")}
+    assert entry["supporting_documents"] == provenance["supporting_documents"]
+    source = source_path.read_text(encoding="utf-8")
+    folded = fixed.core.radar.v025.fold(fixed.core.radar.base.visible(source))
+    for phrase in ("i Comuni toscani", "in forma singola in qualità di beneficiario unico",
+                   "ore 9.00 del 22 ottobre", "duecentosettantesimo giorno solare", "€ 367.643,80"):
+        assert fixed.core.radar.v025.fold(phrase) in folded, phrase
+    assert entry["allow_recent_evidence_fallback"] is False
+    today = date(2026, 10, 25)
+    assert not fixed.core.verify_entry(entry, today, live=False)[0]
+    details = {entry["url"]: source}
+    assert fixed.core.verify_entry(entry, today, detail_payloads=details, live=False)[0]
+    # Un cambio della dotazione pubblicata deve far fallire la riconferma.
+    changed = source.replace("367.643,80", "400.000,00")
+    assert not fixed.core.verify_entry(entry, today, detail_payloads={entry["url"]: changed}, live=False)[0]
+
+    result = {"opportunities": [], "coverageHold": [], "reviewQueue": [{"url": entry["url"], "title": "SmarToscana dati"}]}
+    fixed._inject_fix_entries(result, today, detail_payloads=details, live=False)
+    items = [x for x in result["opportunities"] if x["coverage_id"] == SMARTOSCANA_DATI_ID]
+    assert len(items) == 1
+    item = items[0]
+    assert item["municipality_role"] == "direct_applicant"
+    assert item["lifecycle_stage"] == "rolling_open"
+    assert set(item["municipality_eligibility"]) == set(fixed.core.TOWNS)
+    assert all(x["status"] == "conditional" for x in item["municipality_eligibility"].values())
+    apply_to_payload(result)
+    assert item["municipal_headline"]
+
+    # Lo stesso candidato che oggi produrrebbe un hold (eta 4 > grazia 3) risulta pubblico.
+    candidate = {"url": entry["url"], "title": "Contributi agli enti locali per lo sviluppo di progettualità sui dati: il bando 2026",
+                 "published_at": "2026-10-21", "age_days": 4}
+    guard.apply(result, today, candidates=[candidate])
+    assert result["regionalCompleteness"]["status"] == "pass"
+    assert result["regionalCompleteness"]["overdue"] == []
+    assert not any(x.get("gate_origin") == "regional_completeness" for x in result["coverageHold"])
+    unresolved = {"opportunities": [], "coverageHold": []}
+    guard.apply(unresolved, today, candidates=[candidate])
+    assert unresolved["regionalCompleteness"]["status"] == "fail", "senza qualificazione il gate deve restare bloccante"
+
+    # Lo sportello resta aperto fino al termine ordinario documentato, poi la scheda esce.
+    still_open = {"opportunities": []}
+    fixed._inject_fix_entries(still_open, date(2027, 7, 1), detail_payloads=details, live=False)
+    assert any(x.get("coverage_id") == SMARTOSCANA_DATI_ID for x in still_open["opportunities"])
+
+
 def test_reviewed_regional_seeds() -> None:
     entries = {e["coverage_id"]: e for e in fixed._load_fixes()["verifiedEntries"]}
     for key in ("rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026"):
@@ -151,7 +212,7 @@ def test_concrete_versilia_scope_excludes_only_reviewed_calls() -> None:
 def test_c4t_source_and_verified_seed() -> None:
     fixes = fixed._load_fixes()
     entries = fixes.get("verifiedEntries") or []
-    assert {e["coverage_id"] for e in entries} == {C4T_ID, PROLOCO_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026", "rt-generatori-kiev-cooperazione-2026"}
+    assert {e["coverage_id"] for e in entries} == {C4T_ID, PROLOCO_ID, "rt-artea-immobile-sede-2026", "rt-risorse-genetiche-agrarie-aca16b-2026", "rt-spreco-alimentare-ets-partner-2026", "mlps-assistenti-sociali-manifestazione-2026", "rt-generatori-kiev-cooperazione-2026", SMARTOSCANA_DATI_ID}
     entry = entries[0]
     assert entry.get("coverage_id") == C4T_ID
     assert entry.get("deadline_at") == "2026-09-11"
@@ -369,6 +430,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 
 def main() -> int:
     test_proloco_documented_partnership()
+    test_smartoscana_data_call_resolves_regional_review()
     test_concrete_versilia_scope_excludes_only_reviewed_calls()
     test_reviewed_regional_seeds()
     test_c4t_source_and_verified_seed()
@@ -378,7 +440,7 @@ def main() -> int:
     test_overlay_reaches_real_v044_run_and_recomputes_counts(current_evidence=True)
     test_cerv_regression_contract_is_already_active()
     test_mercati_rionali_cross_source_contract()
-    print("Audit gap fixes: C4T + CERV + Mercati rionali + Pro Loco documented partnership PASS")
+    print("Audit gap fixes: C4T + CERV + Mercati rionali + Pro Loco documented partnership + SmarToscana dati PASS")
     return 0
 
 

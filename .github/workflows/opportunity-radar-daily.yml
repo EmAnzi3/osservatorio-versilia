@@ -37,7 +37,11 @@ concurrency:
 
 jobs:
   refresh:
-    runs-on: ubuntu-latest
+    # Immagine fissata: l'etichetta generica migra a Ubuntu 26 dal 19 ottobre
+    # 2026 e `playwright install --with-deps` dipende dai pacchetti di sistema
+    # della release. Il Radar pubblica ogni giorno: un cambio d'immagine va
+    # provato su PR, non scoperto da un run schedulato.
+    runs-on: ubuntu-24.04
     # Scan 30 + complete build/browser 60 + setup/report/evidence margin 15.
     # The A7 package exceeded the former 20-minute build budget (#465/#467).
     timeout-minutes: 105
@@ -387,7 +391,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout notification helper
         uses: actions/checkout@v4

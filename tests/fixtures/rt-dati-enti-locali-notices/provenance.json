@@ -1,0 +1,39 @@
+{
+  "verifiedAt": "2026-10-24",
+  "pageUrl": "https://www.regione.toscana.it/it/-/contributi-agli-enti-locali-per-lo-sviluppo-di-progettualit%C3%A0-sui-dati-il-bando-2026",
+  "pageExtractSha256": "37447b10f2b7aef8b918fee7692fcd4d6980acd8488f868e2f184a260f4c0b4b",
+  "pageExtractMethod": "Estratto testuale di #main-content dalla risposta HTTP della pagina ufficiale (il documento completo contiene token dinamici e cambia hash a ogni richiesta).",
+  "document": {
+    "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534741&nomeFile=Decreto+n.22706+del+09-10-2026-+Allegato+A+",
+    "sha256": "9835b0f5e784e3c7a50e47fcbc685b43ad40a0069a3cfbeaebabd58fb6ae7ca9",
+    "pages": 34,
+    "bytes": 926992
+  },
+  "decree": {
+    "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534740&nomeFile=Decreto+n.22706+del+09-10-2026",
+    "sha256": "93e020a33769ac097d8d460a13d5ab3ef1c85cbc2f8730b49815769a2bc2144e",
+    "pages": 8,
+    "bytes": 1104428,
+    "annexAExpectedSha256": "9835b0f5e784e3c7a50e47fcbc685b43ad40a0069a3cfbeaebabd58fb6ae7ca9",
+    "annexOExpectedSha256": "e10bf51e84fbb8e2a63d63b1664acd71534f6809cc5645fe0c1f94ed8b4251eb"
+  },
+  "supporting_documents": [
+    {
+      "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534740&nomeFile=Decreto+n.22706+del+09-10-2026",
+      "sha256": "93e020a33769ac097d8d460a13d5ab3ef1c85cbc2f8730b49815769a2bc2144e",
+      "pages": 8
+    },
+    {
+      "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534749&nomeFile=Decreto+n.22706+del+09-10-2026-+Allegato+O+",
+      "sha256": "e10bf51e84fbb8e2a63d63b1664acd71534f6809cc5645fe0c1f94ed8b4251eb",
+      "pages": 2
+    }
+  ],
+  "basis": {
+    "applicant": "Pagina ufficiale e Allegato A art. 3 c. 1-3: Comuni toscani, domanda in forma singola come beneficiario unico",
+    "amount": "Allegato A art. 4 c. 5-7: somma forfettaria fino a 56.000 euro, 100% FESR; eccedenza con impegno al cofinanziamento (Allegato P)",
+    "obligations": "Allegato A artt. 5 e 10: piattaforme 3d-data/smart-region, almeno cinque dataset su dati.toscana.it; art. 8 c. 19 soglia 20/15 punti",
+    "window": "Pagina ufficiale + Allegato A art. 7: dalle 9:00 del 22.10.2026, sportello fino a esaurimento; termine ordinario 270° giorno dal BURT 21.10.2026 (18.07.2027, domenica -> 19.07.2027 ore 12:00)"
+  },
+  "integrityLimit": "Gli hash dei PDF sono stati calcolati sul contenuto scaricato il 24.10.2026 e coincidono con le impronte A e O dichiarate nel decreto; i PDF non sono congelati nel repository perché l'ambiente dell'assistente non raggiunge www301.regione.toscana.it. Il proprietario può aggiungerli (avviso.pdf, decreto.pdf, allegato-O.pdf) per allineare la prova allo standard Pro Loco."
+}

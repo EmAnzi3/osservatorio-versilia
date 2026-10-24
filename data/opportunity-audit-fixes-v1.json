@@ -694,6 +694,95 @@
           "pages": 3
         }
       ]
+    },
+    {
+      "coverage_id": "rt-smartoscana-dati-enti-locali-2026",
+      "source_id": "regione-toscana",
+      "source_label": "Regione Toscana",
+      "publisher": "Regione Toscana",
+      "title": "Toscana · Progetti sui dati e open data degli enti locali 2026",
+      "url": "https://www.regione.toscana.it/it/-/contributi-agli-enti-locali-per-lo-sviluppo-di-progettualit%C3%A0-sui-dati-il-bando-2026",
+      "required_terms": [
+        "22706",
+        "367.643,80",
+        "Comuni toscani",
+        "forma singola",
+        "sportello",
+        "sft.sviluppo.toscana.it"
+      ],
+      "evidence_verified_at": "2026-10-24",
+      "allow_recent_evidence_fallback": false,
+      "published_at": "2026-10-21",
+      "first_seen_at": "2026-10-24",
+      "lifecycle_stage": "rolling_open",
+      "opens_at": "2026-10-22",
+      "deadline_at": "2027-07-19",
+      "deadline_time": "12:00",
+      "eligibility": "conditional",
+      "applicant_type": "Comune in forma singola, come beneficiario unico",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "final_beneficiaries": "Enti locali e utenti degli open data pubblicati",
+      "geographic_scope": "Toscana",
+      "project_requirements": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo.",
+      "category": "digitale",
+      "description": "Contributo forfettario fino a 56.000 euro per progetti comunali di elaborazione dati e rilascio di open data sulle piattaforme regionali; bando a sportello fino a esaurimento delle risorse.",
+      "condition_label": "Progetto sui dati e rilascio di open data",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Domanda in forma singola del Comune come beneficiario unico (Allegato A, art. 3), esclusivamente online sul sistema di Sviluppo Toscana https://sft.sviluppo.toscana.it/ con CNS/CIE/SPID e firma digitale del legale rappresentante. Contributo forfettario fino a 56.000 euro per domanda, finanziato al 100% dal PR FESR (art. 4); la quota delle attività oltre tale importo richiede la dichiarazione di impegno al cofinanziamento (Allegato P). Progetto di 12 mesi sui dati con uso delle piattaforme regionali 3d-data o smart-region e rilascio di almeno cinque dataset open data su dati.toscana.it (art. 5); CUP obbligatorio e soglia minima di 20 punti, di cui 15 sulla validità tecnica (art. 8). Un Comune già finanziato con l’avviso 2024 (DD 3056/2024) può proporre solo tipologie di attività diverse. Sportello aperto dalle 9:00 del 22 ottobre 2026 fino a esaurimento della dotazione di 367.643,80 euro, con chiusura alle 17:00 del secondo giorno successivo; termine ordinario alle 12:00 del 270° giorno solare dalla pubblicazione sul BURT del 21 ottobre 2026, posticipato al primo giorno feriale se festivo o prefestivo."
+        }
+      },
+      "document_evidence": {
+        "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534741&nomeFile=Decreto+n.22706+del+09-10-2026-+Allegato+A+",
+        "sha256": "9835b0f5e784e3c7a50e47fcbc685b43ad40a0069a3cfbeaebabd58fb6ae7ca9",
+        "pages": 34
+      },
+      "presentation": {
+        "category": "digitale",
+        "description": "Progetti comunali sui dati con rilascio di open data: contributo forfettario fino a 56.000 euro, domanda singola a sportello su Sviluppo Toscana.",
+        "condition_label": "Progetto sui dati e rilascio di open data",
+        "source_label": "Regione Toscana",
+        "source_mark": "TOSC",
+        "source_class": "rt"
+      },
+      "supporting_documents": [
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534740&nomeFile=Decreto+n.22706+del+09-10-2026",
+          "sha256": "93e020a33769ac097d8d460a13d5ab3ef1c85cbc2f8730b49815769a2bc2144e",
+          "pages": 8
+        },
+        {
+          "url": "https://www301.regione.toscana.it/bancadati/atti/Contenuto.xml?id=5534749&nomeFile=Decreto+n.22706+del+09-10-2026-+Allegato+O+",
+          "sha256": "e10bf51e84fbb8e2a63d63b1664acd71534f6809cc5645fe0c1f94ed8b4251eb",
+          "pages": 2
+        }
+      ]
     }
   ],
   "reviewAssessments": [
