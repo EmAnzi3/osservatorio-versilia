@@ -385,7 +385,7 @@ class QueryEngine:
         self._catalog = json.loads(body)
         self.catalog_hash = digest(body)
         try:
-            self.catalog_path = self.path.resolve().relative_to(self.root.resolve()).as_posix()
+            self.catalog_path = str(self.path.resolve().relative_to(self.root.resolve()))
         except ValueError:
             self.catalog_path = str(self.path.resolve())
         self.files = {}

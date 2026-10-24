@@ -44,7 +44,8 @@ def regressions():
     assert all(len(o['provenance'][0]['sha256'])==64 for o in report['observations'])
     assert report['observations'][0]['source'].endswith('POSAS_2019_it_046_Lucca.zip')
     assert report['observations'][0]['provenance'][0]['valuePointer']=='/metrics/population/rows/0/series/values/0'
-    assert report['catalogPath']=='data/site-data.json'
+    # Il motore è vincolato per hash (A6/A7): il separatore nativo di Windows non è un difetto.
+    assert report['catalogPath'].replace('\\','/')=='data/site-data.json'
     other=engine.catalog;other['metrics']['population']['rows'][0]['value']=1
     assert engine.catalog['metrics']['population']['rows'][0]['value']!=1
     report['observations'][0]['provenance'][1]['status']['posas_2026']='mutated'
