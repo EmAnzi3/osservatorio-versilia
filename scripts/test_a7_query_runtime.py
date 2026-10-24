@@ -120,6 +120,8 @@ def verify_association_transport(catalog):
         else: raise AssertionError('missing_association_exposed_partial_package')
         assert not (root/'missing-association-package').exists()
         block.write_bytes(saved)
+        from test_a7_explorer_preview import verify_association_interface
+        interface = verify_association_interface(catalog, root/'one', expected, root/'interface')
         class Quiet(http.server.SimpleHTTPRequestHandler):
             def log_message(self, *args): pass
         server = http.server.ThreadingHTTPServer(('127.0.0.1',0), functools.partial(Quiet,directory=str(root)))
@@ -148,7 +150,7 @@ def verify_association_transport(catalog):
                         page.close()
                 finally: browser.close()
         finally: server.shutdown(); server.server_close()
-    return dict(status='PASS',requests=len(requests),browser=browser_results,
+    return dict(status='PASS',requests=len(requests),browser=browser_results,interface=interface,
                 scope='explicit plan only; native parity and original independent Spearman anchor, no Cartesian coverage claim')
 
 
