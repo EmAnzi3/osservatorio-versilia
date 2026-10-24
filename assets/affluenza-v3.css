@@ -83,9 +83,9 @@
 }
 
 /* ui-affluenza-style-v1 — hero allineato all'Atlante delle attività economiche */
-.turnout-page .turnout-hero{position:relative;width:100vw;margin:0 0 0 calc(50% - 50vw);min-height:340px;display:flex;align-items:center;color:#fff;overflow:hidden;
+.turnout-page .turnout-hero{position:relative;width:auto;margin:0;min-height:340px;display:flex;align-items:center;color:#fff;overflow:hidden;
   background:linear-gradient(90deg,rgba(6,31,49,.95) 0%,rgba(6,31,49,.84) 38%,rgba(6,31,49,.5) 69%,rgba(6,31,49,.2) 100%),url("../images/versilia-viareggio-apuane.jpg") center 46%/cover no-repeat}
-.turnout-page .turnout-hero::before{content:"";position:absolute;top:0;left:max(24px,calc((100vw - 1240px)/2));width:72px;height:4px;background:#ffdb4d}
+.turnout-page .turnout-hero::before{content:"";position:absolute;top:0;left:max(24px,calc((100% - 1240px)/2));width:72px;height:4px;background:#ffdb4d}
 .turnout-page .turnout-hero-inner{position:relative;z-index:1;width:min(1240px,100% - 48px);margin-inline:auto;padding:46px 0 42px;display:grid;grid-template-columns:80px minmax(0,1fr);gap:28px;align-items:center}
 .turnout-page .turnout-hero-symbol{width:68px;height:68px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.38);border-radius:20px 20px 20px 7px;background:rgba(255,255,255,.14);color:#ffdb4d;backdrop-filter:blur(8px)}
 .turnout-page .turnout-hero-symbol svg{width:32px;height:32px}
