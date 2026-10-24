@@ -4178,3 +4178,18 @@ body[data-page="town"] main.a5-town-pilot #town-topic .financial-profile-history
     padding:17px !important;
   }
 }
+
+/* ui-shell-consistency-v1: voce attiva e indicazione di scorrimento del menu mobile */
+.site-header nav a{position:relative}
+.site-header nav a[aria-current="page"]{color:var(--ink,#102f45)}
+.site-header nav a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--blue,#145b78)}
+@media (max-width:700px){
+  /* Su schermi stretti le voci scorrono in orizzontale: la sfumatura a destra
+     segnala che esistono altre voci (es. Segnala) oltre il bordo visibile. */
+  .site-header nav.nav-has-more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+  .site-header nav{padding-block:6px}
+  .site-header nav a[aria-current="page"]::after{bottom:-3px}
+}
+/* ui-shell-consistency-v1: il titolo della pagina è nell'hero; la scheda tema guida la lettura */
+main.a5-editorial-pilot .topic-hero-copy h2{margin:4px 0 0;color:var(--ds-ink,#102f45);font-size:24px;line-height:1.15;letter-spacing:-.03em;font-weight:720;text-wrap:balance}
+@media (max-width:700px){main.a5-editorial-pilot .topic-hero-copy h2{font-size:19px}}

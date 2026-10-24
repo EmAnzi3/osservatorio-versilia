@@ -17,8 +17,8 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260926-a5-fuel-monthly-history"
-HISTORY_ASSET_VERSION = "20260926-a5-fuel-monthly-history"
+UX_ASSET_VERSION = "20261025-ui-shell-consistency"
+HISTORY_ASSET_VERSION = "20261025-ui-shell-consistency"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"

@@ -87,12 +87,12 @@
       ? brainDrainMarkup(data)
       : (themeKey === 'sicurezza' ? crimeMarkup(data) : '');
     return `<main class="inner-page a5-editorial-pilot" data-theme="${themeKey}">
-          <section class="compare-showcase-hero" aria-label="Osservatorio Versilia">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
             <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}')"></div>
             <div class="compare-showcase-hero-copy page-width">
-              <span class="overline">Conoscere per costruire insieme</span>
-              <h1>La Versilia,<br><em>una comunità di dati.</em></h1>
-              <p>Dati pubblici per capire, confrontare e immaginare il futuro dei nostri territori.</p>
+              <span class="overline">Confronto territoriale · ${html(theme.number)}</span>
+              <h1 id="compare-page-title">${html(theme.label)}</h1>
+              <p>${html(theme.description)}</p>
               <div class="compare-showcase-actions">
                 <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
                 <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
@@ -104,8 +104,8 @@
           ${compareContextNav(data, themeKey)}
           <section class="topic-hero page-width" data-theme="${themeKey}">
             <div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
-            <div class="topic-hero-copy"><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div>
-            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || `Confronta gli indicatori di ${theme.label} nei sette Comuni della Versilia.`)}</p></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>${html(theme.question || `Come si confrontano i sette Comuni su ${theme.label}?`)}</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
           </section>
           <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
             ${a5MetricSidebarMarkup(data, themeKey, metricKey, { definitionId:'compare-definition', definitionClass:'topic-side-definition' })}

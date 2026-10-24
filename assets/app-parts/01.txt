@@ -1,7 +1,45 @@
+ // Voce di menu della sezione corrente: calcolata a runtime dal percorso,
+  // così le shell copiate fra route non ereditano uno stato attivo errato.
+  const NAV_SECTIONS = [
+    ['#temi', /\/confronta\//],
+    ['#comuni', /\/comuni\//],
+    ['opportunita/', /\/opportunita\//],
+    ['progetto/', /\/progetto\//],
+    ['stato-dati/', /\/stato-dati\//],
+    ['segnala/', /\/segnala\//]
+  ];
+
+  function markCurrentNav(scope) {
+    const nav = (scope || document).querySelector('nav[aria-label="Navigazione principale"]');
+    if (!nav) return;
+    const path = location.pathname;
+    nav.querySelectorAll('a').forEach(link => {
+      const href = link.getAttribute('href') || '';
+      const section = NAV_SECTIONS.find(([suffix]) => href.endsWith(suffix));
+      if (section && section[1].test(path)) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    // Menu mobile a scorrimento: la sfumatura compare solo se ci sono voci
+    // oltre il bordo; la voce corrente viene portata in vista.
+    const syncOverflow = () => {
+      const overflow = nav.scrollWidth > nav.clientWidth + 1;
+      const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 2;
+      nav.classList.toggle('nav-has-more', overflow && !atEnd);
+    };
+    const current = nav.querySelector('a[aria-current="page"]');
+    if (current && nav.scrollWidth > nav.clientWidth + 1) {
+      nav.scrollLeft = Math.max(0, current.offsetLeft - nav.offsetLeft - 8);
+    }
+    nav.addEventListener('scroll', syncOverflow, { passive: true });
+    window.addEventListener('resize', syncOverflow, { passive: true });
+    syncOverflow();
+  }
+
  function mountShell(data) {
     const headerMount = document.getElementById('site-header-mount');
     if (!headerMount) throw new Error('Mount header canonico assente');
     headerMount.innerHTML = headerMarkup(data);
+    markCurrentNav(headerMount);
     const footerMount = document.getElementById('site-footer-mount');
     if (footerMount) footerMount.innerHTML = footerMarkup(data);
     installSearch(data);

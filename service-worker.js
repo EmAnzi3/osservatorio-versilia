@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260926-a5-fuel-monthly-history';
+const VERSION = 'ov-pwa-20261025-ui-shell-consistency';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
