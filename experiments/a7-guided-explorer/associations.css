@@ -5,7 +5,8 @@
 .a7-explorer #association-modes{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
 .a7-explorer #association-modes button[aria-pressed="false"]{background:#fff;color:#104b70}
 .a7-explorer .association-explorer figure{margin:1.5rem 0}
-.a7-explorer .association-explorer svg{display:block;width:100%;height:auto;max-width:55rem;background:#fff;color:#163449}
+.a7-explorer .association-plot{max-width:100%;overflow-x:auto}
+.a7-explorer .association-explorer svg{display:block;width:100%;min-width:300px;height:auto;max-width:55rem;background:#fff;color:#163449}
 .a7-explorer .association-explorer svg text{fill:#163449;font-family:system-ui,sans-serif}
 #a7-explorer #association-explorer svg text{font-size:13px}
 #a7-explorer [data-association-value="coefficient"]{font-size:clamp(.875rem,4.2vw,1.2rem);white-space:nowrap;overflow-wrap:normal;word-break:normal;font-variant-numeric:tabular-nums}

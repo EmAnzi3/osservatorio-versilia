@@ -83,7 +83,7 @@ Pearson/Spearman, ordine invertito delle variabili, testo ostile trattato come
 testo, rifiuti per scopo/periodi/metrica, rifiuto temporale indipendente già A6,
 coppie incomplete, conferma, cache, blocco mancante, ripresa e fetch superato da
 una nuova selezione. Nessun ampliamento dei budget: gli otto casi originali
-del lettore restano separati dagli undici casi della UI. Sono prove di accesso
+del lettore restano separati dagli tredici casi della UI. Sono prove di accesso
 e presentazione, non nuovi casi numerici indipendenti.
 Le attese usano selettori nativi compatibili con la CSP canonica, senza
 `unsafe-eval`. Coefficiente su una riga ed etichette del grafico non tagliate
@@ -93,3 +93,16 @@ sezione evita il padding annidato delle sezioni editoriali esistenti.
 La prova preliminare su fixture del componente non certifica la shell pubblica.
 Preview reale, browser, Quick e Full locali ordinari, CI Quick→Full effettivo e
 A3 restano obbligatori sul nuovo candidato. Nessun verde #474 trasferito.
+
+Le richieste preparate senza asse o metodo restano selezionabili e mostrano il
+rifiuto originale A6, anche quando l’opzione omessa è la prima o l’unica del
+gruppo. La validazione HTML non aggiunge campi e non impedisce di consultare
+un rifiuto. Punti, assi e relative etichette condividono gli stessi estremi
+di proiezione; il gate verifica la posizione degli estremi numerici nativi
+rispetto alle quattro etichette di scala, anche su 320 px.
+
+Su colonne strette il grafico mantiene caratteri di almeno 12 px effettivi e
+uno scorrimento orizzontale confinato al grafico, con regione nominata e
+accesso da tastiera. Il gate controlla la dimensione dopo la scala SVG e
+lo scorrimento tramite freccia destra, oltre all’assenza di overflow della
+pagina. La tabella resta l’alternativa completa con i valori originali.

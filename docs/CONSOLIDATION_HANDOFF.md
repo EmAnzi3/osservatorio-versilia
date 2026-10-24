@@ -52,8 +52,11 @@ richiede un’altra richiesta esatta e la sua materializzazione originale A6.
 Il gate di trasporto esistente verifica anche la UI sulla shell canonica,
 1440/390/320 px, parità nativa, selettori invertiti, rifiuto temporale A6,
 testo ostile, consenso, cache, guasti/ripresa e selezione superata. Gli otto
-casi originali del lettore conservano il proprio budget; undici casi UI in
-runtime separato. La prova preliminare del componente non certifica la pagina
+casi originali del lettore conservano il proprio budget; tredici casi UI in
+runtime separato, comprese omissioni di asse/metodo in gruppi sparsi e
+allineamento delle coppie agli estremi etichettati delle scale; grafico
+leggibile su colonne strette con scorrimento da tastiera e caratteri effettivi
+controllati dopo la scala SVG. La prova preliminare del componente non certifica la pagina
 completa. Preview reale, Quick/Full locali ordinari e CI Quick→Full/A3 richiesti
 sul nuovo candidato; nessun verde della #474 trasferito. Evidenze nella PR.
 

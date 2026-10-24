@@ -34,6 +34,13 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
     workbench=QueryWorkbench(catalog)
     assert not check_expected(workbench.engine.query(temporal['query']),temporal['expected'])
     plan['steps'].append(dict(id='period-axis-refusal',request=copy.deepcopy(temporal['query'])))
+    for field,reason in [('axis','explicit_analysis_axis_required'),('method','explicit_correlation_method_required')]:
+        omitted=copy.deepcopy(plan['steps'][0]['request']);omitted.pop(field,None)
+        # A sparse selector group puts the omitted value first: HTML required must not veto its native refusal.
+        omitted['selectors'][0]['towns']=sorted(workbench.engine.codes)
+        refusal=workbench.engine.query(omitted)
+        assert refusal['status']=='not_computable' and reason in refusal['reasons']
+        plan['steps'].append(dict(id='omitted-'+field,request=omitted))
     metrics=sorted({s['metric'] for step in plan['steps'] for s in step['request']['selectors']
                     if s['metric'] in workbench.engine.catalog['metrics']})
     runtime=output/'ui-runtime'
@@ -82,7 +89,9 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
                     page.click('#association-mode-pair')
                     assert page.locator('#explorer-form').is_hidden() and page.locator('#association-explorer').is_visible()
                     for index,step in enumerate(requests):
-                        choose(page,index);before=len(fetched);page.click('#association-run')
+                        choose(page,index);before=len(fetched)
+                        assert page.locator('#association-explorer form').evaluate('f=>f.checkValidity()'),'association_prepared_refusal_blocked_by_html_validation'
+                        page.click('#association-run')
                         page.wait_for_selector('#association-result:not([hidden]), #association-consent:not([hidden])')
                         if page.locator('#association-consent').is_visible():
                             assert page.locator('#association-result').is_hidden()
@@ -97,6 +106,22 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
                             assert float(page.locator('[data-association-value="coefficient"]').text_content().replace(',','.'))==response['result']['coefficient'],'association_coefficient_precision_changed'
                             assert page.locator('[data-association-value="coefficient"]').evaluate('cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length===1}'),'association_coefficient_split'
                             assert page.locator('#association-result svg').evaluate('svg=>Array.from(svg.querySelectorAll("text")).every(t=>{const b=t.getBBox(),v=svg.viewBox.baseVal;return b.x>=0&&b.y>=0&&b.x+b.width<=v.width&&b.y+b.height<=v.height})'),'association_chart_label_clipped'
+                            # Native extrema must sit exactly at the corresponding labeled scale endpoints.
+                            geometry=page.locator('#association-result svg').evaluate('svg=>({points:Array.from(svg.querySelectorAll("circle"),c=>({key:c.dataset.pairKey,x:c.cx.baseVal.value,y:c.cy.baseVal.value})),ends:Object.fromEntries(Array.from(svg.querySelectorAll("[data-axis-endpoint]"),t=>[t.dataset.axisEndpoint,{x:t.x.baseVal.getItem(0).value,y:t.y.baseVal.getItem(0).value}]))})')
+                            positions={p['key']:p for p in geometry['points']}
+                            for endpoint,axis,coord,extreme in [('x-min','x','x',min),('x-max','x','x',max),('y-min','y','y',min),('y-max','y','y',max)]:
+                                pair=extreme(response['result']['pairs'],key=lambda p:p[axis]['value'])
+                                assert endpoint in geometry['ends'],'association_axis_endpoint_unidentified'
+                                assert abs(positions[pair['key']][coord]-geometry['ends'][endpoint][coord])<.00001,'association_native_extreme_misaligned_with_scale'
+                            assert page.locator('#association-result svg').evaluate('svg=>Array.from(svg.querySelectorAll("text")).every(t=>parseFloat(getComputedStyle(t).fontSize)*svg.getBoundingClientRect().width/svg.viewBox.baseVal.width>=12)'),'association_rendered_chart_text_too_small'
+                            plot=page.locator('#association-result .association-plot')
+                            assert plot.get_attribute('tabindex')=='0'
+                            if plot.evaluate('p=>p.scrollWidth>p.clientWidth'):
+                                plot.focus();page.keyboard.press('ArrowRight')
+                                for _ in range(10):
+                                    if plot.evaluate('p=>p.scrollLeft>0'):break
+                                    page.wait_for_timeout(50)
+                                assert plot.evaluate('p=>p.scrollLeft>0'),'association_chart_not_keyboard_scrollable'
                             assert page.locator('#association-result svg circle').count()==response['result']['n']
                             assert page.locator('#association-result tbody tr').count()==min(20,response['result']['n'])
                             if response['result']['n']>20:

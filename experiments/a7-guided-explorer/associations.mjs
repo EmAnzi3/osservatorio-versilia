@@ -9,7 +9,7 @@ const fold=(title,content)=>{const n=el('details');n.append(el('summary',title),
 const option=(value,text)=>{const n=el('option',text);n.value=value;return n;};
 const axes={municipalities:'Fra Comuni',periods:'Fra periodi'};
 const methods={spearman:'Spearman · associazione dei ranghi',pearson:'Pearson · associazione lineare'};
-const reasons={explicit_pair_selection_purpose_required:'Manca il motivo esplicito della scelta delle due variabili.',cross_section_requires_one_period:'Il confronto fra Comuni richiede un solo periodo per ciascuna variabile.',partial_coverage_requires_opt_in:'La copertura incompleta richiede una scelta esplicita.',insufficient_observations:'Le osservazioni utilizzabili non sono sufficienti per questa analisi.',numerically_constant_variable:'Una variabile è costante nelle coppie utilizzabili.',business_cumulative_temporal_correlation_not_supported:'Le variazioni economiche hanno intervalli con una baseline condivisa: il motore non ammette una correlazione temporale per questa selezione.'};
+const reasons={explicit_analysis_axis_required:'Manca l’asse esplicito dell’analisi: il motore non lo sceglie al posto dell’autore del piano.',explicit_correlation_method_required:'Manca il metodo esplicito: il motore non aggiunge un metodo alla richiesta.',explicit_pair_selection_purpose_required:'Manca il motivo esplicito della scelta delle due variabili.',cross_section_requires_one_period:'Il confronto fra Comuni richiede un solo periodo per ciascuna variabile.',partial_coverage_requires_opt_in:'La copertura incompleta richiede una scelta esplicita.',insufficient_observations:'Le osservazioni utilizzabili non sono sufficienti per questa analisi.',numerically_constant_variable:'Una variabile è costante nelle coppie utilizzabili.',business_cumulative_temporal_correlation_not_supported:'Le variazioni economiche hanno intervalli con una baseline condivisa: il motore non ammette una correlazione temporale per questa selezione.'};
 
 export async function startAssociations(openRuntime,presentation){
  const previous=document.getElementById('association-explorer');if(previous)previous.remove();
@@ -22,7 +22,7 @@ export async function startAssociations(openRuntime,presentation){
  fields.append(el('legend','La relazione che vuoi esplorare'),grid);form.append(fields);
  const controls={};
  for(const [name,label] of [['left','Prima variabile'],['right','Seconda variabile'],['axis','Asse del confronto'],['method','Metodo'],['scope','Motivo e copertura della richiesta']]){
-   const wrap=el('label',label),select=el('select');select.id='association-'+name;select.required=true;
+   const wrap=el('label',label),select=el('select');select.id='association-'+name;select.required=!['axis','method'].includes(name);
    if(name==='scope')wrap.className='explorer-wide';wrap.append(select);grid.append(wrap);controls[name]=select;
  }
  const reference=el('div');reference.id='association-reference';fields.append(reference);
@@ -73,8 +73,8 @@ export async function startAssociations(openRuntime,presentation){
    for(const name of order.slice(order.indexOf(from)+1)){
      const rows=candidates(name);
      if(name==='right')fill(name,rows,s=>key(s.request.selectors[1]),s=>selectorLabel(s.request.selectors[1]));
-     if(name==='axis')fill(name,rows,s=>String(s.request.axis??''),s=>axes[s.request.axis]||'Asse non riconosciuto');
-     if(name==='method')fill(name,rows,s=>String(s.request.method??''),s=>methods[s.request.method]||'Metodo non riconosciuto');
+     if(name==='axis')fill(name,rows,s=>String(s.request.axis??''),s=>axes[s.request.axis]||(s.request.axis?'Asse non riconosciuto':'Asse non dichiarato'));
+     if(name==='method')fill(name,rows,s=>String(s.request.method??''),s=>methods[s.request.method]||(s.request.method?'Metodo non riconosciuto':'Metodo non dichiarato'));
      if(name==='scope')fill(name,rows,s=>s.id,s=>(s.request.purpose?.slice(0,100)||'Motivo non dichiarato')+(s.request.allowPartial===true?' · copertura incompleta richiesta esplicitamente':' · nessun consenso implicito'));
    }
    const step=selected();run.disabled=!step;reference.replaceChildren();
@@ -99,17 +99,19 @@ export async function startAssociations(openRuntime,presentation){
    const width=Math.max(300,Math.min(640,panel.clientWidth));
    const figure=el('figure'),svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',`0 0 ${width} 360`);svg.setAttribute('role','img');svg.setAttribute('aria-label','Coppie originali A6: prima variabile sull’asse orizzontale, seconda sull’asse verticale. Tutti i valori e le fonti sono nella tabella.');
    const shape=(name,attrs)=>{const n=document.createElementNS(svg.namespaceURI,name);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));svg.append(n);return n;};
-   shape('path',{d:`M100 25 V305 H${width-25}`,fill:'none',stroke:'#617b8b'});
-   for(const [x,y,text] of [[100,330,tick(xmin)],[width-25,330,tick(xmax)],[95,305,tick(ymin)],[95,30,tick(ymax)]]){
-     const n=shape('text',{x,y,'text-anchor':x===95?'end':x===width-25?'end':'start','font-size':13});n.textContent=text;
+   const bounds={left:110,right:width-45,top:45,bottom:290};
+   shape('path',{d:`M${bounds.left} ${bounds.top} V${bounds.bottom} H${bounds.right}`,fill:'none',stroke:'#617b8b'});
+   for(const [endpoint,x,y,text] of [['x-min',bounds.left,330,tick(xmin)],['x-max',bounds.right,330,tick(xmax)],['y-min',bounds.left-10,bounds.bottom,tick(ymin)],['y-max',bounds.left-10,bounds.top,tick(ymax)]]){
+     const n=shape('text',{x,y,'data-axis-endpoint':endpoint,'text-anchor':endpoint==='x-min'?'start':'end','font-size':13});n.textContent=text;
    }
    pairs.forEach((p,i)=>{
-     const x=110+(p.x.value-xmin)/(xmax-xmin)*(width-155),y=290-(p.y.value-ymin)/(ymax-ymin)*245;
+     const x=bounds.left+(p.x.value-xmin)/(xmax-xmin)*(bounds.right-bounds.left),y=bounds.bottom-(p.y.value-ymin)/(ymax-ymin)*(bounds.bottom-bounds.top);
      const c=shape('circle',{cx:x,cy:y,r:8,fill:'#216b91','data-pair-key':p.key});
      const title=document.createElementNS(svg.namespaceURI,'title');title.textContent=(result.axis==='municipalities'?town(p.key):p.key)+': '+number(p.x.value)+' / '+number(p.y.value);c.append(title);
      if(pairs.length<=20){const t=shape('text',{x:x+11,y:y-10,'font-size':14});t.textContent=String(i+1);}
    });
-   figure.append(svg,el('figcaption','Asse orizzontale: '+metric(pairs[0].x.metric)+' ('+unit(pairs[0].x)+'), da '+number(xmin)+' a '+number(xmax)+'. Asse verticale: '+metric(pairs[0].y.metric)+' ('+unit(pairs[0].y)+'), da '+number(ymin)+' a '+number(ymax)+'. Le etichette della scala sono arrotondate; gli estremi qui riportati e le coppie nella tabella conservano i valori originali. Le scale non partono necessariamente da zero. Gli eventuali numeri identificano i punti, non posizioni in classifica. I punti sovrapposti restano distinti nella tabella.'));return figure;
+   const plot=el('div');plot.className='association-plot';plot.tabIndex=0;plot.setAttribute('role','region');plot.setAttribute('aria-label','Grafico delle coppie originali, scorribile in orizzontale sugli schermi stretti');plot.append(svg);
+   figure.append(plot,el('figcaption','Su schermi stretti puoi scorrere il grafico in orizzontale. Asse orizzontale: '+metric(pairs[0].x.metric)+' ('+unit(pairs[0].x)+'), da '+number(xmin)+' a '+number(xmax)+'. Asse verticale: '+metric(pairs[0].y.metric)+' ('+unit(pairs[0].y)+'), da '+number(ymin)+' a '+number(ymax)+'. Le etichette della scala sono arrotondate; gli estremi qui riportati e le coppie nella tabella conservano i valori originali. Le scale non partono necessariamente da zero. Gli eventuali numeri identificano i punti, non posizioni in classifica. I punti sovrapposti restano distinti nella tabella.'));return figure;
  }
  function show(answer){
    const response=answer.steps[0].response;out.hidden=false;out.append(el('h4',response.status==='computed'?'La relazione osservata':'Il motore non ammette questo calcolo'));
