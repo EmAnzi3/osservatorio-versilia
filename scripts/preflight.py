@@ -27,6 +27,16 @@ import urllib.request
 from pathlib import Path
 from typing import Iterable, Sequence
 
+# I sorgenti e gli asset sono UTF-8. Su Windows la codifica predefinita è
+# cp1252: senza la modalità UTF-8 di Python ogni read_text()/open() senza
+# encoding esplicito fallisce o decodifica male. La variabile è ereditata da
+# tutti gli script figli; su Linux/macOS (CI inclusa) il comportamento non cambia.
+if os.environ.get("PYTHONUTF8") != "1":
+    os.environ["PYTHONUTF8"] = "1"
+    if not sys.flags.utf8_mode and __name__ == "__main__":
+        # Su Windows os.execv restituisce subito il prompt: si attende il figlio.
+        raise SystemExit(subprocess.run([sys.executable, *sys.argv]).returncode)
+
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 PYTHON = sys.executable

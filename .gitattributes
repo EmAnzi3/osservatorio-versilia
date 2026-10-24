@@ -1,0 +1,5 @@
+# Checkout byte per byte su ogni sistema operativo.
+# Fixture, snapshot e asset sono verificati con SHA256 e alcuni contengono
+# volutamente CRLF: la conversione automatica di Git per Windows (autocrlf)
+# altererebbe gli hash e il ripristino byte per byte della build.
+* -text
