@@ -19,6 +19,31 @@ def encode(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
 
 
+def validate_plan(plan):
+    """Validate the bounded envelope without executing a component."""
+    if not isinstance(plan, dict) or set(plan) != {'schemaVersion', 'steps'}:
+        raise ValueError('invalid_plan_fields')
+    if type(plan['schemaVersion']) is not int or plan['schemaVersion'] != 1:
+        raise ValueError('unsupported_plan_schema')
+    steps = plan['steps']
+    if not isinstance(steps, list) or not 1 <= len(steps) <= MAX_STEPS:
+        raise ValueError('plan_step_budget')
+    serialized = encode(plan)
+    if len(serialized.encode()) > MAX_PLAN_BYTES:
+        raise ValueError('plan_byte_budget')
+    ids = set()
+    for step in steps:
+        if not isinstance(step, dict) or set(step) != {'id', 'request'}:
+            raise ValueError('invalid_step_fields')
+        sid = step['id']
+        if not isinstance(sid, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', sid) or sid in ids:
+            raise ValueError('invalid_or_duplicate_step_id')
+        ids.add(sid)
+        if not isinstance(step['request'], dict):
+            raise ValueError('structured_request_required')
+    return serialized
+
+
 class QueryWorkbench:
     """A6 alone decides eligibility. Discovery is a declaration, never a permit."""
 
@@ -56,29 +81,10 @@ class QueryWorkbench:
         An aggregate is an explicit A6 request, not a sum of step outputs.
         Correlation is one A6 request with two selectors and its own guards.
         """
-        if not isinstance(plan, dict) or set(plan) != {'schemaVersion', 'steps'}:
-            raise ValueError('invalid_plan_fields')
-        if type(plan['schemaVersion']) is not int or plan['schemaVersion'] != 1:
-            raise ValueError('unsupported_plan_schema')
-        steps = plan['steps']
-        if not isinstance(steps, list) or not 1 <= len(steps) <= MAX_STEPS:
-            raise ValueError('plan_step_budget')
-        serialized = encode(plan)
-        if len(serialized.encode()) > MAX_PLAN_BYTES:
-            raise ValueError('plan_byte_budget')
-        ids = set()
-        for step in steps:
-            if not isinstance(step, dict) or set(step) != {'id', 'request'}:
-                raise ValueError('invalid_step_fields')
-            sid = step['id']
-            if not isinstance(sid, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', sid) or sid in ids:
-                raise ValueError('invalid_or_duplicate_step_id')
-            ids.add(sid)
-            if not isinstance(step['request'], dict):
-                raise ValueError('structured_request_required')
+        serialized = validate_plan(plan)
         # Validate the entire envelope before executing the first component.
         output = []
-        for step in steps:
+        for step in plan['steps']:
             response = self.engine.query(copy.deepcopy(step['request']))
             output.append(dict(id=step['id'], response=response))
         computed = sum(s['response']['status'] == 'computed' for s in output)

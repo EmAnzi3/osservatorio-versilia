@@ -8,7 +8,7 @@ import time
 from collections import Counter
 from pathlib import Path
 
-from a7_query_workbench import QueryWorkbench, encode
+from a7_query_workbench import QueryWorkbench, encode, validate_plan
 from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
@@ -87,8 +87,34 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
                                         selectors=[dict(selector, towns=[town])])
 
 
-def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DEFAULT_PROFILES):
+def validate_association_plan(plan):
+    """Explicit, bounded requests, not a Cartesian product or permission list."""
+    text = validate_plan(plan)
+    if any(step['request'].get('operation') != 'correlation' for step in plan['steps']):
+        raise ValueError('association_plan_requires_correlation_requests')
+    # A6 selection tokens are strings (partial opt-in is boolean). Numeric
+    # request fields have no supported role here and Python/JS encode e.g.
+    # 1.0 differently. Reject them before build, never rewrite the native query
+    # or emit a release that its browser cannot identify canonically.
+    def numeric(value):
+        if type(value) in (int, float):
+            return True
+        if isinstance(value, dict):
+            return any(numeric(v) for v in value.values())
+        if isinstance(value, list):
+            return any(numeric(v) for v in value)
+        return False
+    if any(numeric(step['request']) for step in plan['steps']):
+        raise ValueError('numeric_association_selection_not_supported')
+    return text
+
+
+def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DEFAULT_PROFILES,
+          association_plan=None):
     started = time.perf_counter()
+    # Snapshot and validate before creating output or executing any request.
+    if association_plan is not None:
+        association_plan = json.loads(validate_association_plan(association_plan))
     if not profiles or len(set(profiles)) != len(profiles) or not set(profiles) <= set(PROFILES):
         raise ValueError('invalid_runtime_profiles')
     profiles = tuple(p for p in PROFILES if p in profiles)
@@ -168,6 +194,24 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
             stats['views'] += 1
         root['metrics'].append(dict(summary, detail=store(dict(schemaVersion=1, metric=metric,
                                                               declaration=declaration, views=views))))
+    if association_plan is not None:
+        # The original workbench executes each exact request, including refusals.
+        # Selection purpose, periods, method and partial opt-in are never supplied
+        # by the builder. Default profiles/public materialization stay unchanged.
+        result = workbench.run(association_plan)
+        entries = []
+        for step, output in zip(association_plan['steps'], result['steps']):
+            response = portable_evidence(output['response'])
+            artifact = store(dict(schemaVersion=1, kind='a7-native-association',
+                                  request=step['request'], response=response), shard=True)
+            entries.append(dict(id=step['id'], requestSha256=digest(encode(step['request']).encode()),
+                                artifact=artifact))
+            stats['requests'] += 1
+            stats['statuses'][response['status']] += 1
+            stats['profiles']['association'] += 1
+        root['associationPlan'] = dict(schemaVersion=1, scope='explicit_plan',
+            consent='original_request_and_browser_confirmation',
+            plan=association_plan, planSha256=result['planSha256'], entries=entries)
     body = encode(root).encode('utf-8')
     if len(body) > 2 * 1024 * 1024:
         raise ValueError('runtime_release_byte_budget')
@@ -189,9 +233,13 @@ def main():
     p.add_argument('--max-views-per-metric', type=int, help='Explicit isolated measurement subset, never reported as full coverage')
     p.add_argument('--profile', action='append', choices=PROFILES,
                    help='Explicit transport profiles; omitted = original three; ranking, benchmark, aggregation and changes are opt-in')
+    p.add_argument('--association-plan', type=Path,
+                   help='Optional explicit A6 correlation plan, at most 32 steps/100000 bytes; no automatic pair search')
     args = p.parse_args()
     _, measurement = build(args.catalog, args.output_dir, metrics=args.metric, max_views=args.max_views_per_metric,
-                           profiles=args.profile or DEFAULT_PROFILES)
+                           profiles=args.profile or DEFAULT_PROFILES,
+                           association_plan=(json.loads(args.association_plan.read_text())
+                                             if args.association_plan else None))
     print(json.dumps(measurement, ensure_ascii=False, indent=2))
 
 

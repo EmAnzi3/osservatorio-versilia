@@ -35,8 +35,155 @@ def verify_empty_profile_maxima(catalog):
                 assert descriptor['requests'] == 0 and descriptor['views'] == 1
 
 
+def verify_association_transport(catalog):
+    """Exact selected pairs, original A6 refusals and the same atomic boundary."""
+    from unittest.mock import patch
+    from audit_a7_accessibility import replay_associations, read_artifact
+    from a7_runtime_package import verify_runtime, verify_package
+    from semantic_question_suite import QUESTIONS, check_expected
+    wb = QueryWorkbench(catalog)
+    case = next(c for c in json.loads(QUESTIONS.read_text())['questions'] if c['id'] == 'aligned_association')
+    good = copy.deepcopy(case['query'])
+    assert not check_expected(wb.engine.query(good), case['expected'])
+    pearson = dict(copy.deepcopy(good), method='pearson')
+    missing_purpose = copy.deepcopy(good); missing_purpose.pop('purpose')
+    different_periods = copy.deepcopy(good)
+    for selector in different_periods['selectors']: selector.pop('periods')
+    unaligned = copy.deepcopy(good)
+    unaligned['selectors'][0]['towns'] = sorted(wb.engine.codes)
+    unaligned['selectors'][1]['towns'] = sorted(wb.engine.codes)[:-1]
+    opted = dict(copy.deepcopy(good), allowPartial=True)
+    unknown = copy.deepcopy(good); unknown['selectors'][0]['metric'] = 'not_a_metric'
+    requests = [good, pearson, missing_purpose, different_periods, unaligned, opted, unknown, good]
+    plan = dict(schemaVersion=1, steps=[dict(id=f'p{i}', request=r) for i, r in enumerate(requests)])
+    expected = portable_evidence(wb.run(plan))
+    assert expected['steps'][4]['response']['pairCoverage']['paired'] < expected['steps'][4]['response']['pairCoverage']['requested']
+    assert expected['steps'][4]['response']['status'] == 'not_computable'
+    assert expected['steps'][4]['response']['coverage']['usable'] == expected['steps'][4]['response']['coverage']['requested']
+    assert expected['steps'][2]['response']['status'] == expected['steps'][3]['response']['status'] == 'not_computable'
+    with tempfile.TemporaryDirectory(prefix='a7-associations-') as temporary:
+        root = Path(temporary)
+        options = dict(metrics=['population','income'], max_views=1, profiles=('current',))
+        baseline, _ = build(catalog, root/'baseline', **options)
+        release, measurement = build(catalog, root/'one', association_plan=plan, **options)
+        copied = root/'catalog.json'; copied.write_bytes(Path(catalog).read_bytes())
+        replay, _ = build(copied, root/'two', association_plan=plan, **options)
+        assert release == replay
+        assert {p.name:digest(p.read_bytes()) for p in (root/'one').iterdir()} == {p.name:digest(p.read_bytes()) for p in (root/'two').iterdir()}, 'association_build_not_reproducible'
+        assert 'associationPlan' not in baseline
+        assert baseline['metrics'] == release['metrics'], 'association_plan_changed_existing_profiles'
+        assert measurement['profiles']['association'] == len(requests)
+        for summary in baseline['metrics']:
+            detail_ref = summary['detail']
+            assert (root/'baseline'/detail_ref['path']).read_bytes() == (root/'one'/detail_ref['path']).read_bytes()
+            detail = json.loads(gzip.decompress((root/'baseline'/detail_ref['path']).read_bytes()))
+            for view in detail['views']:
+                for ref in view['shards'].values():
+                    assert (root/'baseline'/ref['path']).read_bytes() == (root/'one'/ref['path']).read_bytes()
+        for step, entry in zip(expected['steps'], release['associationPlan']['entries']):
+            shard = json.loads(gzip.decompress((root/'one'/entry['artifact']['path']).read_bytes()))
+            assert shard['response'] == step['response']
+        verify_runtime(root/'one', catalog)
+        replayed = list(replay_associations(wb, root/'one', release))
+        assert [step for step, _ in replayed] == plan['steps']
+        assert [response for _, response in replayed] == [s['response'] for s in expected['steps']]
+        def false_number(folder, ref):
+            shard = read_artifact(folder, ref)
+            if shard.get('kind') == 'a7-native-association' and shard['response'].get('result'):
+                shard['response']['result']['coefficient'] += 0.01
+            return shard
+        with patch('audit_a7_accessibility.read_artifact', side_effect=false_number):
+            try: list(replay_associations(wb, root/'one', release))
+            except ValueError as error: assert str(error) == 'runtime_native_parity_mismatch'
+            else: raise AssertionError('association_audit_accepted_changed_native_number')
+        package = package_runtime(root/'one', catalog, root/'package')
+        assert verify_package(root/'package', catalog) == package
+        assert list(replay_associations(wb, root/'package/runtime'/package['releaseSha256'], release)) == replayed
+        for name, bad in [('wrong-operation',dict(schemaVersion=1,steps=[dict(id='x',request={'operation':'compare'})])),
+                          ('numeric-token',dict(schemaVersion=1,steps=[dict(id='x',request=dict(good,method=1.0))])),
+                          ('too-many',dict(schemaVersion=1,steps=[dict(id=str(i),request=good) for i in range(33)]))]:
+            try: build(catalog, root/name, association_plan=bad, **options)
+            except ValueError: pass
+            else: raise AssertionError('invalid_association_plan_accepted')
+            assert not (root/name).exists(), 'invalid_plan_created_output'
+        original = release['associationPlan']['entries'][0]['artifact']
+        broken = copy.deepcopy(release); broken['associationPlan']['entries'][0]['requestSha256'] = '0'*64
+        (root/'one/release.json').write_text(encode(broken))
+        try: package_runtime(root/'one', catalog, root/'rejected-package')
+        except ValueError as error: assert str(error) == 'association_request_scope_mismatch'
+        else: raise AssertionError('unbound_association_accepted')
+        assert not (root/'rejected-package').exists()
+        (root/'one/release.json').write_text(encode(release))
+        block = root/'one'/original['path']; saved = block.read_bytes(); block.unlink()
+        try: package_runtime(root/'one', catalog, root/'missing-association-package')
+        except ValueError as error: assert str(error) == 'missing_or_unsafe_artifact'
+        else: raise AssertionError('missing_association_exposed_partial_package')
+        assert not (root/'missing-association-package').exists()
+        block.write_bytes(saved)
+        class Quiet(http.server.SimpleHTTPRequestHandler):
+            def log_message(self, *args): pass
+        server = http.server.ThreadingHTTPServer(('127.0.0.1',0), functools.partial(Quiet,directory=str(root)))
+        threading.Thread(target=server.serve_forever,daemon=True).start()
+        from playwright.sync_api import sync_playwright
+        browser_results = []
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                try:
+                    for width in (1440,390):
+                        page = browser.new_page(viewport=dict(width=width,height=844))
+                        page.goto(f'http://127.0.0.1:{server.server_port}/one/release.json')
+                        result = page.evaluate(ASSOCIATION_BROWSER, dict(
+                            module=Path(__file__).resolve().parents[1].joinpath('experiments/a7-query-runtime/reader.mjs').read_text(),
+                            text=encode(release),anchor=digest(encode(release).encode()),plan=plan,
+                            missing=original['path']))
+                        assert result['all'] == dict(expected,resolution='resolved')
+                        assert result['subsetAccepted']['steps'][0]['response'] == expected['steps'][4]['response']
+                        assert result['subsetProtected']['resolution'] == result['optedProtected']['resolution'] == 'needs_confirmation'
+                        assert all(r['resolution'] == 'not_materialized' for r in result['unmaterialized'])
+                        assert result['initialFetches'] == 0 and result['repeatFetches'] == 0
+                        assert result['failure'] == 'artifact_fetch_failed'
+                        assert result['raced'] == dict(portable_evidence(wb.run(dict(schemaVersion=1,steps=[plan['steps'][0]]))),resolution='resolved')
+                        browser_results.append(dict(width=width,status='PASS',initialFetches=0,requests=len(requests)))
+                        page.close()
+                finally: browser.close()
+        finally: server.shutdown(); server.server_close()
+    return dict(status='PASS',requests=len(requests),browser=browser_results,
+                scope='explicit plan only; native parity and original independent Spearman anchor, no Cartesian coverage claim')
+
+
+ASSOCIATION_BROWSER = r"""async ({module,text,anchor,plan,missing}) => {
+  const {openRuntime} = await import(URL.createObjectURL(new Blob([module],{type:'text/javascript'})));
+  let fetches=0;
+  const fetcher=async (...args)=>{fetches++;return fetch(...args)};
+  const runtime=await openRuntime(text,anchor,location.origin+'/one/',{fetcher});
+  const initialFetches=fetches;
+  const first=await runtime.run(plan,{approvedPartial:true});
+  const coefficient=first.steps[0].response.result.coefficient;
+  first.steps[0].response.result.coefficient=-999;
+  const before=fetches;const all=await runtime.run(plan,{approvedPartial:true});const repeatFetches=fetches-before;
+  if(all.steps[0].response.result.coefficient!==coefficient)throw Error('association_cache_mutated');
+  const one=i=>({schemaVersion:1,steps:[plan.steps[i]]});
+  const subsetProtected=await runtime.run(one(4));
+  const subsetAccepted=await runtime.run(one(4),{approvedPartial:true});
+  const optedProtected=await runtime.run(one(5));
+  const unmaterialized=[];
+  for(const change of [r=>r.purpose+=' changed',r=>r.method='kendall',r=>r.selectors[0].periods=['9999']]){
+    const changed=structuredClone(one(0));change(changed.steps[0].request);unmaterialized.push(await runtime.run(changed));
+  }
+  const broken=await openRuntime(text,anchor,location.origin+'/one/',{fetcher:async url=>url.endsWith(missing)?new Response('',{status:404}):fetch(url)});
+  let failure=null;try{await broken.run(one(0))}catch(error){failure=error.message}
+  let enter,release;const reached=new Promise(r=>enter=r), barrier=new Promise(r=>release=r);
+  const racing=await openRuntime(text,anchor,location.origin+'/one/',{fetcher:async(...args)=>{enter();await barrier;return fetch(...args)}});
+  const mutable=structuredClone(one(0));const pending=racing.run(mutable);await reached;
+  mutable.steps[0].request.method='changed';release();const raced=await pending;
+  return {all,initialFetches,repeatFetches,subsetProtected,subsetAccepted,optedProtected,unmaterialized,failure,raced};
+}"""
+
+
 def verify(catalog, output=None):
     verify_empty_profile_maxima(catalog)
+    associations = verify_association_transport(catalog)
     workbench = QueryWorkbench(catalog)
     # Representative transport gate, not another canonical indicator inventory.
     # Pick a carrier for each distinct declared operation signature; all-catalog
@@ -306,7 +453,7 @@ def verify(catalog, output=None):
                     browser.close()
         finally:
             server.shutdown(); server.server_close()
-    report = dict(status='PASS', catalogSha256=workbench.engine.catalog_hash,
+    report = dict(status='PASS', associations=associations, catalogSha256=workbench.engine.catalog_hash,
                   metrics=len(chosen), transportParityRequests=checks, browser=results,
                   measurement=measurement, packageBoundaryRejections=package['rejected'],
                   packageReleaseSha256=package['descriptor']['releaseSha256'],
