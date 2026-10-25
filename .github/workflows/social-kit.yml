@@ -24,6 +24,7 @@ on:
       - "social-kit/config/design-system.json"
       - "social-kit/config/themes.json"
       - "social-kit/config/question-bank.json"
+      - "social-kit/config/editorial-calendar.json"
       - "social-kit/config/editorial-cadence.json"
       - "social-kit/config/editorial-observances-2026-2027.json"
       - "social-kit/config/editorial-rotation.json"
@@ -44,6 +45,7 @@ on:
       - "social-kit/config/design-system.json"
       - "social-kit/config/themes.json"
       - "social-kit/config/question-bank.json"
+      - "social-kit/config/editorial-calendar.json"
       - "social-kit/config/editorial-cadence.json"
       - "social-kit/config/editorial-observances-2026-2027.json"
       - "social-kit/config/editorial-rotation.json"
@@ -180,7 +182,27 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           cp /tmp/social-week.md /tmp/social-issue.md
-          sed -i 's/^- Produzione: .*/- Produzione: inclusa nel pacchetto Social Kit settimanale./' /tmp/social-issue.md
+          python - <<'PYISSUE'
+          import json
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'scripts')
+          from plan_social_week import markdown
+          plan = json.load(open('/tmp/social-week.json'))
+          package = json.load(open('social-kit/dist/manifest.json'))
+          ready = {item['date'] for item in package['items']}
+          manual = {item['date']: item['reason'] for item in package['manual_required']}
+          text = markdown(plan)
+          lines = text.splitlines()
+          current = None
+          for index, line in enumerate(lines):
+              if line.startswith('### '):
+                  from plan_social_week import fmt_date, parse_date
+                  current = next((item['date'] for item in plan['scheduled'] if fmt_date(parse_date(item['date'])) in line), None)
+              if line.startswith('- Produzione:'):
+                  lines[index] = '- Produzione: ' + ('4 PNG + testi inclusi nel pacchetto.' if current in ready else 'NON GENERATA — ' + manual.get(current, 'verificare il pacchetto.'))
+          Path('/tmp/social-issue.md').write_text('\n'.join(lines) + '\n')
+          PYISSUE
           cat >> /tmp/social-issue.md <<EOF
 
           ## Materiale della settimana

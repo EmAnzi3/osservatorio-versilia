@@ -55,8 +55,8 @@ def fmt_value(value: float, unit: str, signed: bool = False) -> str:
         return f"{prefix}{fmt_it(value, 0)} €"
     if unit == "celsius":
         return f"{prefix}{fmt_it(value, 1)} °C"
-    if unit == "percentage_points":
-        return f"{prefix}{fmt_it(value, 1)} punti"
+    if unit in {"percentage_points", "percentagePoints"}:
+        return f"{prefix}{fmt_it(value, 2 if 0 < abs(value) < 0.05 else 1)} punti"
     if unit == "per1000":
         return f"{prefix}{fmt_it(value, 1)} ogni 1.000"
     if unit == "per10k":
@@ -76,7 +76,7 @@ def compact_value(value: float, unit: str) -> str:
         return f"{fmt_it(value, 1)} °C"
     if unit in {"per1000", "per10k", "minutes"}:
         return fmt_it(value, 1)
-    return fmt_it(value, 0 if float(value).is_integer() else 1)
+    return fmt_it(value, 1) if unit in {"percentagePoints", "percentage_points"} else fmt_it(value, 0 if float(value).is_integer() else 1)
 
 
 def sentence(text: str) -> str:
@@ -372,14 +372,14 @@ def comparison(model: dict[str, Any], post: dict[str, Any]) -> dict[str, Any] | 
             base = float(row["series"][index])
             current = float(row["value"])
             delta = current - base
-            display = delta if model["unit"] == "percent" else (delta / base * 100 if base else 0.0)
+            display = delta if model["unit"] in {"percent", "percentagePoints", "percentage_points"} else (delta / base * 100 if base else 0.0)
             rows.append({"town": row["town"], "base": base, "current": current, "delta": delta, "display": display})
         base_values = [row["base"] for row in rows]
         current_values = [row["current"] for row in rows]
         base_total = aggregate(base_values, model["aggregate_mode"])
         current_total = aggregate(current_values, model["aggregate_mode"])
         delta = current_total - base_total
-        display_unit = "percentage_points" if model["unit"] == "percent" else "percent"
+        display_unit = "percentage_points" if model["unit"] in {"percent", "percentagePoints", "percentage_points"} else "percent"
         display = delta if display_unit == "percentage_points" else (delta / base_total * 100 if base_total else 0.0)
         return {
             "type": "base_year",
@@ -515,7 +515,7 @@ def history_slide(parts: list[str], box: dict[str, float], model: dict[str, Any]
         f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="84" rx="22" fill="{theme["soft"]}" stroke="{theme["line"]}" stroke-width="2"/>',
         f'<text x="{x + 64}" y="{hero_y + 34}" class="hero-label" fill="{theme["accent"]}">EVOLUZIONE DEI SINGOLI COMUNI</text>',
         f'<text x="{x + w - 64}" y="{hero_y + 57}" style="font-size:30px;font-weight:790" text-anchor="end">{years[0]}–{years[-1]}</text>',
-        f'<text x="{x + 36}" y="{y + 151}" class="section" fill="{theme["accent"]}">EVOLUZIONE COMUNE PER COMUNE · SERIE ANNUALE</text>',
+        f'<text x="{x + 36}" y="{y + 151}" class="section" fill="{theme["accent"]}">EVOLUZIONE COMUNE PER COMUNE · ANNI DISPONIBILI</text>',
     ])
 
     label_x = x + 36
@@ -562,7 +562,7 @@ def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any],
     hero_y = y + 28
     parts.extend([
         f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="104" rx="22" fill="{theme["soft"]}" stroke="{theme["line"]}" stroke-width="2"/>',
-        f'<text x="{x + 64}" y="{hero_y + 32}" class="hero-label" fill="{theme["accent"]}">VERSILIA NEL COMPLESSO</text>',
+        f'<text x="{x + 64}" y="{hero_y + 32}" class="hero-label" fill="{theme["accent"]}">{"MEDIA DEI SETTE COMUNI" if model.get("aggregate_mode") == "mean" else "VERSILIA NEL COMPLESSO"}</text>',
         fitted_text(comp["label"], x + 62, hero_y + 76, 560, 35, "label", 22, 18, 1, "aggregate-change-label"),
         f'<text x="{x + w - 62}" y="{hero_y + 78}" style="font-size:33px;font-weight:790" text-anchor="end">{esc(fmt_value(comp["display"], comp["display_unit"], True))}</text>',
         f'<text x="{x + 36}" y="{y + 174}" class="section" fill="{theme["accent"]}">{esc(comp["section"])}</text>',
@@ -693,7 +693,7 @@ def default_titles(model: dict[str, Any], post: dict[str, Any]) -> tuple[list[st
     if comparison_spec.get("type") == "base_year":
         comparison_subtitle = (
             f"Differenza in punti rispetto al {comparison_spec['year']}"
-            if model["unit"] == "percent"
+            if model["unit"] in {"percent", "percentagePoints", "percentage_points"}
             else f"Differenza percentuale rispetto al {comparison_spec['year']}"
         )
     elif comparison_spec.get("type") == "period_mean":
@@ -731,7 +731,7 @@ def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[s
     aggregate_label = "complessivi" if model["aggregate_mode"] == "sum" else "in media tra i sette Comuni"
     fact = f"{model['short_label']}: {fmt_value(current, model['unit'])} {aggregate_label} nel {model['year']}."
     comparison_line = (
-        f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}."
+        f"Nel confronto {comp['label']}, la variazione {'della media dei sette Comuni' if model['aggregate_mode'] == 'mean' else 'complessiva'} è {fmt_value(comp['display'], comp['display_unit'], True)}."
         if comp else ""
     )
     story_lines = post.get("story_lines") or []
@@ -780,6 +780,8 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
     duplicates = {post[key] for key in ("metric", "history_metric", "context_metric") if post.get(key)} & used
     if duplicates:
         raise ValueError(f"Indicatori già pubblicati nell'anno, anche nelle card secondarie: {sorted(duplicates)}")
+    if post.get("components"):
+        return generate_component_post(post, design, themes, destination)
     model = build_model(post)
     if model["dataset_status"] == "draft" and post.get("status") != "draft":
         raise ValueError(f"Dataset draft usato in un contenuto non draft: {post['id']}")
@@ -928,6 +930,112 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         "cards": cards,
     }
     write(destination / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    return manifest
+
+
+def generate_component_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str, Any], destination: Path) -> dict[str, Any]:
+    """Tre colture censuarie: conserva null e copertura, mai lo pseudo-totale delle colture."""
+    data = load(ROOT / "data" / "site-data.json")
+    metric = data["metrics"][post["metric"]]
+    if post["metric"] != "cropProfile" or post["components"] != ["OLIVOOILTR", "OLIVTTR", "VINEY"]:
+        raise ValueError("Profilo delle colture non riconosciuto")
+    theme = themes["themes"][post["theme"]]
+    model = site_model(post)
+    # Fonte completa resta nella provenienza; nella card una denominazione leggibile.
+    model["source"] = "Istat · 7° Censimento agricoltura"
+    cards = []
+    component_values = {}
+    summaries = []
+    for index, key in enumerate(post["components"], start=1):
+        rows = []
+        for row in sorted(metric["rows"], key=lambda row: row["town"].casefold()):
+            part = next(part for part in row["parts"] if part["key"] == key)
+            rows.append({"town": row["town"], "value": part["value"]})
+        label = part["label"]
+        available = [row["value"] for row in rows if row["value"] is not None]
+        total = sum(available)
+        coverage = f"{len(available)}/7"
+        component_values[key] = {row["town"]: row["value"] for row in rows}
+        summaries.append(f"{label}: {fmt_it(total, 2)} ettari, dati disponibili per {len(available)} comuni su 7")
+
+        def draw(parts, box, rows=rows, total=total, coverage=coverage):
+            x, y, w = box["x"], box["y"], box["width"]
+            parts.extend([
+                f'<rect x="{x+32}" y="{y+28}" width="{w-64}" height="128" rx="24" fill="{theme["accent"]}"/>',
+                f'<text x="{x+64}" y="{y+65}" class="hero-label white">SOMMA DEI DATI DISPONIBILI · {coverage} COMUNI</text>',
+                fitted_text(f"{fmt_it(total, 2)} ettari", x+64, y+132, 640, 68, "white", 54, 42, 1, "component-total", "#FFFFFF"),
+                f'<text x="{x+36}" y="{y+195}" class="section">SUPERFICIE COLTIVATA · ETTARI · 2020</text>',
+            ])
+            maximum = max(available or [1])
+            for ri, row in enumerate(rows):
+                cy = y + 225 + ri * 55
+                value = row["value"]
+                parts.append(f'<text x="{x+36}" y="{cy+22}" class="label">{esc(row["town"])}</text>')
+                if value is not None:
+                    width = 380 * value / maximum if maximum else 0
+                    parts.extend([
+                        f'<rect x="{x+300}" y="{cy}" width="380" height="24" rx="12" fill="#FFFFFF" stroke="{theme["line"]}"/>',
+                        f'<rect x="{x+300}" y="{cy}" width="{width:.2f}" height="24" rx="12" fill="{theme["accent"]}"/>',
+                    ])
+                text = "n.d." if value is None else fmt_it(value, 2)
+                parts.append(f'<text data-role="component-value" data-town="{esc(row["town"])}" x="{x+w-36}" y="{cy+22}" class="number" text-anchor="end">{text}</text>')
+            parts.append(fitted_text("n.d. = dato non disponibile, non zero. Superfici, non produzione raccolta.", x+36, y+654, w-72, 26, "small", 17, 15, 1, "coverage-note"))
+
+        title = {"OLIVOOILTR":"Gli olivi da olio", "OLIVTTR":"Le olive da tavola", "VINEY":"Le viti"}[key]
+        subtitle = "Superficie nei sette Comuni · annata agraria 2019/2020"
+        stem = f"{index:02d}-{key.lower()}"
+        svg = make_page(index, title, subtitle, model, post, design, theme, draw)
+        validate_slide_geometry(svg, post["id"], index)
+        write(destination / "cards" / f"{stem}.svg", svg)
+        render_png(destination / "cards" / f"{stem}.svg", destination / "cards" / f"{stem}.png", 1080, 1350)
+        alt = f"{label}, superfici in ettari, annata agraria 2019/2020. " + "; ".join(f"{row['town']}: " + ("dato non disponibile" if row['value'] is None else fmt_it(row['value'],2)+" ettari") for row in rows) + f". Somma disponibile: {fmt_it(total,2)} ettari, copertura {coverage}. Le assenze non indicano zero."
+        write(destination / "alt" / f"{stem}.txt", alt+"\n")
+        cards.append({"slide":index,"filename":stem,"title":title,"alt":alt})
+    stem = "04-partecipa"
+    question_svg = make_page(4, "Oliveti, vigneti e territorio", "Una fotografia del 2020. La tua esperienza aggiunge il presente.", model, post, design, theme, lambda parts, box: questions_slide(parts, design, post, theme))
+    # La domanda riguarda il territorio, senza introdurre un generico riferimento ai servizi.
+    question_svg = question_svg.replace("GUARDANDO AI SERVIZI", "LE ESPERIENZE LOCALI")
+    validate_slide_geometry(question_svg, post["id"], 4)
+    write(destination / "cards" / f"{stem}.svg", question_svg)
+    render_png(destination / "cards" / f"{stem}.svg", destination / "cards" / f"{stem}.png", 1080, 1350)
+    alt = " ".join(post["questions"]) + " Commenta indicando il Comune e segui Osservatorio Versilia. Dati Istat, annata agraria 2019/2020."
+    write(destination / "alt" / f"{stem}.txt", alt+"\n")
+    cards.append({"slide":4,"filename":stem,"title":"Oliveti, vigneti e territorio","alt":alt})
+    link = model["link"]
+    shared = "\n\n".join([
+        "🌿 Olivi e viti: quanta superficie occupano nei sette Comuni della Versilia?",
+        f"📌 {summaries[0]}.",
+        f"📈 {summaries[1]}. {summaries[2]}.",
+        "🧭 Il Censimento fotografa le superfici coltivate nell’annata agraria 2019/2020: non misura la quantità di olio, olive o uva prodotta, né descrive la situazione attuale. Non è una serie storica.",
+        "🔎 Per le olive da tavola mancano Forte dei Marmi, Stazzema e Viareggio; per la vite manca Forte dei Marmi. «n.d.» non significa zero: le somme parziali non sono totali dell’intera Versilia.",
+        "💬 " + " ".join(post["questions"]),
+        "👥 Nei commenti indica il Comune e segui la pagina per il prossimo dato.",
+        "🔎 Dati, metodo e fonti: " + link,
+        "📚 Fonte: " + metric["meta"]["source"] + ".",
+    ]) + "\n\n#OsservatorioVersilia #Versilia #Agricoltura #Olivi #Viti " + MUNICIPALITY_HASHTAGS
+    for platform in ["master", "facebook", "instagram", "linkedin"]:
+        write(destination / "testi" / f"{platform}.txt", shared+"\n")
+    xtext = f"Olivi e viti in Versilia: superfici coltivate nel Censimento 2020. Dati mancanti indicati come n.d., mai come zero. {link} #Versilia"
+    if len(xtext)>280:
+        raise ValueError("Copy X troppo lungo")
+    write(destination / "testi/x.txt", xtext+"\n")
+    provenance = {
+        "status":"draft", "post_id":post["id"], "date":post["date"], "priority":post["priority"],
+        "design_system":design["version"], "theme":post["theme"],
+        "palette":{"accent":theme["accent"],"soft":theme["soft"]},
+        "dataset":{"path":"data/site-data.json","version":data["version"],"status":"published","updated":data.get("updated")},
+        "metric":post["metric"], "source":metric["meta"]["source"], "source_url":metric["sourceUrl"],
+        "method":metric["method"], "current_year":int(metric["meta"]["year"]),
+        "current_values":{row["town"]:row["value"] for row in metric["rows"]},
+        "components":post["components"], "component_values":component_values,
+        "slide_metrics":{str(i):post["metric"] for i in range(1,5)},
+        "history":{},"history_by_town":{},"comparison":None,"questions":post["questions"],
+    }
+    write(destination / "provenienza.json", json.dumps(provenance,ensure_ascii=False,indent=2)+"\n")
+    manifest = {"status":"draft","method":"four-slide-carousel","design_system":design["version"],
+                "post_id":post["id"],"date":post["date"],"format":"1080x1350",
+                "platforms":design["format"]["platforms"],"outputs":["png","svg"],"cards":cards}
+    write(destination / "manifest.json",json.dumps(manifest,ensure_ascii=False,indent=2)+"\n")
     return manifest
 
 

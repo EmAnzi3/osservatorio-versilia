@@ -41,5 +41,30 @@
       "data_question": "La raccolta differenziata dichiarata coincide con la tua esperienza?",
       "context_question": "Quale dato sul servizio rifiuti dovrebbe essere più accessibile?"
     }
+  ],
+  "overrides": [
+    {
+      "date": "2026-10-27",
+      "metric": "cropProfile",
+      "components": [
+        "OLIVOOILTR",
+        "OLIVTTR",
+        "VINEY"
+      ],
+      "reason": "Scelta esplicita del proprietario il 25 ottobre 2026, issue #472: olive da olio, olive da tavola e viti. Tre confronti censuari; nessuno storico disponibile.",
+      "questions": [
+        "Quale ruolo hanno oliveti e vigneti nel paesaggio del tuo Comune?",
+        "Quali esperienze agricole locali vorresti far conoscere?"
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "metric": "employmentGenderGap",
+      "reason": "Sostituzione del contenuto Residenti già pubblicato, su mandato del proprietario del 25 ottobre 2026, issue #472.",
+      "questions": [
+        "Quali ostacoli incontri nel conciliare lavoro e vita familiare?",
+        "Quali servizi locali aiuterebbero a partecipare al lavoro?"
+      ]
+    }
   ]
 }

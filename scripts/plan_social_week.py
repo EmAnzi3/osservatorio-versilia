@@ -268,6 +268,32 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
             "excluded_published_metrics": event["excluded_published_metrics"],
         })
 
+    # Le scelte datate del proprietario prevalgono sulla rotazione, non sulle ricorrenze.
+    overrides = load(KIT / "config" / "editorial-calendar.json").get("overrides", [])
+    seen_dates: set[str] = set()
+    for override in overrides:
+        iso = override["date"]
+        parse_date(iso)
+        if iso in seen_dates:
+            raise ValueError(f"Scelta editoriale duplicata: {iso}")
+        seen_dates.add(iso)
+        if not start.isoformat() <= iso <= end.isoformat():
+            continue
+        item = next((item for item in scheduled if item["date"] == iso and item["type"] == "ordinary"), None)
+        if item is None:
+            raise ValueError(f"Scelta editoriale senza slot ordinario: {iso}")
+        key = override["metric"]
+        if key not in site["metrics"] or not override.get("reason"):
+            raise ValueError(f"Scelta editoriale non valida: {iso}")
+        if key in used_metrics(parse_date(iso), history):
+            raise ValueError(f"Scelta editoriale già pubblicata: {key}")
+        meta = site["metrics"][key]["meta"]
+        item.update(metric=key, theme=meta["theme"], metric_label=meta["label"],
+                    title=meta["label"], generator_ready=True, editorial_reason=override["reason"])
+        for field in ("components", "questions"):
+            if field in override:
+                item[field] = override[field]
+
     ordinary_themes = [item["theme"] for item in scheduled if item["type"] == "ordinary"]
     if len(set(ordinary_themes)) != len(ordinary_themes):
         raise ValueError("Gli slot ordinari rimasti nella settimana devono usare temi diversi")

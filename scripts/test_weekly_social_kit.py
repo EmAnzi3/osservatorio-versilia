@@ -82,6 +82,11 @@ def main() -> int:
             pass
         else:
             raise AssertionError("Il gate deve rifiutare righe sovrapposte ai valori")
+    # Una differenza fra tassi si confronta in punti, non come variazione relativa.
+    points_model = {"years":[2021, 2023], "year":2023, "unit":"percentagePoints",
+                    "aggregate_mode":"mean", "rows":[{"town":"Test", "value":16., "series":[18.,16.]}]}
+    points = renderer.comparison(points_model, {"comparison":{"type":"base_year", "year":2021}})
+    assert points["rows"][0]["display"] == -2 and points["display_unit"] == "percentage_points"
     plan = load(DIST / "week.json")
     manifest = load(DIST / "manifest.json")
     design = load(KIT / "config" / "design-system.json")
@@ -126,6 +131,17 @@ def main() -> int:
         provenance = load(provenance_path)
         if not provenance.get("source_url") or len(provenance.get("current_values", {})) != 7:
             errors.append(f"Fonte o copertura 7/7 mancante: {item['post_id']}")
+        if provenance.get("components"):
+            import copy
+            import test_social_data_fidelity as fidelity
+            metric = load(ROOT / "data/site-data.json")["metrics"][provenance["metric"]]
+            for mutation in ("null-to-zero", "wrong-value"):
+                altered = copy.deepcopy(provenance)
+                key, town = ("OLIVTTR", "Viareggio") if mutation == "null-to-zero" else ("OLIVOOILTR", "Massarosa")
+                altered["component_values"][key][town] = 0
+                rejected = []
+                fidelity.check_components(rejected, item["post_id"], post_dir, altered, item, metric)
+                assert rejected, f"Il gate deve rifiutare {mutation}"
         theme = provenance.get("theme")
         if theme not in themes["themes"]:
             errors.append(f"Tema non canonico: {item['post_id']}")
