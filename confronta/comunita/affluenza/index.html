@@ -16,17 +16,30 @@
   <link rel="manifest" href="../../../site.webmanifest">
   <link rel="stylesheet" href="../../../assets/original.css">
   <link rel="stylesheet" href="../../../assets/static.css">
-  <link rel="stylesheet" href="../../../assets/affluenza-v3.css">
+  <link rel="stylesheet" href="../../../assets/affluenza-v3.css?v=20261025-ui">
 </head>
 <body class="antialiased" data-page="special" data-theme="comunita" data-town="">
   <div id="site-header-mount"></div>
   <div id="app">
     <main class="inner-page indicator-page turnout-page" data-theme="comunita">
       <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="../../../">Home</a><span>›</span><a href="../">Comunità e welfare</a><span>›</span><strong>Affluenza al voto</strong></nav>
-      <section class="indicator-hero page-width" aria-labelledby="turnout-title">
-        <div><span class="overline">Comunità e welfare · Partecipazione civica</span><h1 id="turnout-title">Affluenza al voto</h1><p>Archivio della partecipazione alle consultazioni elettorali nei sette Comuni della Versilia. Politiche, Europee, Regionali Toscana e Referendum sono confrontati solo a parità di consultazione; le Comunali restano storie locali separate.</p></div>
-        <div class="indicator-hero-actions"><a class="button-link" href="../">Torna a Comunità e welfare <span aria-hidden="true">→</span></a><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Fonte: Ministero dell’Interno ↗</a></div>
+      <section class="turnout-hero" aria-labelledby="turnout-title">
+        <div class="turnout-hero-inner">
+          <div class="turnout-hero-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M6 21V11h12v10"/><path d="M9 11V4h6v7"/><path d="m10.5 7.5 1 1 2-2"/></svg></div>
+          <div class="turnout-hero-copy">
+            <span class="overline">Comunità e welfare · Partecipazione civica</span>
+            <h1 id="turnout-title">Affluenza al voto</h1>
+            <p>Archivio della partecipazione alle consultazioni elettorali nei sette Comuni della Versilia. Politiche, Europee, Regionali Toscana e Referendum sono confrontati solo a parità di consultazione; le Comunali restano storie locali separate.</p>
+            <ul class="turnout-hero-meta" aria-label="In sintesi">
+              <li><strong>7 Comuni</strong> + aggregato Versilia</li>
+              <li>Politiche · Europee · Regionali · Referendum</li>
+              <li>Comunali come serie locali</li>
+              <li>Fonte: Ministero dell’Interno</li>
+            </ul>
+          </div>
+        </div>
       </section>
+      <div class="turnout-hero-actions page-width"><a class="button-link" href="../">Torna a Comunità e welfare <span aria-hidden="true">→</span></a><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Fonte: Ministero dell’Interno ↗</a></div>
       <div id="turnout-app"><section class="indicator-current page-width"><div class="app-loading" role="status">Caricamento dell’archivio affluenza…</div></section></div>
       <div id="turnout-method-root"></div>
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>
@@ -42,7 +55,7 @@
   </div>
   <div id="site-footer-mount"></div>
   <noscript><div class="app-error">Il sito richiede JavaScript per esplorare l’archivio dell’affluenza.</div></noscript>
-  <script src="../../../assets/affluenza-hotfix.js?v=20260909-hotfix1" defer></script>
-  <script src="../../../assets/affluenza-v3.js?v=20260909-hotfix1" defer></script>
+  <script src="../../../assets/affluenza-hotfix.js?v=20261025-ui" defer></script>
+  <script src="../../../assets/affluenza-v3.js?v=20261025-ui" defer></script>
 </body>
 </html>

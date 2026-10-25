@@ -45,6 +45,7 @@
   function currentSection(){
     const e = currentEvent();
     return `<section class="indicator-current page-width" aria-labelledby="turnout-current-title"><div class="section-heading"><div><span class="overline">Confronto territoriale</span><h2 id="turnout-current-title">Affluenza alla consultazione selezionata</h2></div><p>Ogni confronto usa la stessa consultazione, data, turno e universo elettorale per tutti i sette Comuni.</p></div>
+      <div class="data-actions turnout-data-actions"><button type="button" data-turnout-download>Scarica CSV</button><button type="button" data-turnout-print>Stampa / PDF</button></div>
       <div class="topic-dashboard turnout-dashboard"><aside class="topic-controls">${familyControls()}<div class="indicator-definition"><h2>${esc(data.families[state.family].label)}</h2><p>${esc(data.families[state.family].note)}</p><dl><div><dt>Data / quesito</dt><dd>${esc(eventTitle(e))}</dd></div><div><dt>Affluenza Versilia</dt><dd>${pct(e.versilia.turnout)}</dd></div></dl><small class="aggregate-note">Il dato Versilia considera insieme elettori e votanti dei sette Comuni, evitando una semplice media delle percentuali.</small></div></aside>
       <div class="topic-bars"><div class="turnout-event-question"><strong>${esc(eventTitle(e))}</strong>${esc(eventQuestion(e))}</div>${comparisonMarkup(e)}${sexMarkup(e)}</div></div></section>`;
   }
@@ -187,7 +188,28 @@
     methodSection();
   }
 
+  // CSV della consultazione selezionata: valori originali dell'archivio,
+  // non i valori arrotondati mostrati nel grafico.
+  function downloadEventCSV(){
+    const e = currentEvent();
+    const family = data.families[state.family];
+    const lines = [['Consultazione','Data / quesito','Territorio','Elettori','Votanti','Affluenza %','Fonte']];
+    const label = family.label;
+    const title = eventTitle(e);
+    [...e.municipalities].sort((a,b)=>a.name.localeCompare(b.name,'it')).forEach(r => lines.push([label,title,r.name,r.electors ?? '',r.voters ?? '',r.turnout ?? '','Ministero dell’Interno · Eligendo']));
+    lines.push([label,title,'Versilia (7 Comuni)',e.versilia?.electors ?? '',e.versilia?.voters ?? '',e.versilia?.turnout ?? '','Elaborazione Osservatorio Versilia su dati Eligendo']);
+    const csv = '\ufeff' + lines.map(line => line.map(cell => `"${String(cell ?? '').replaceAll('"','""')}"`).join(';')).join('\r\n');
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `osservatorio-versilia-affluenza-${String(e.id).replace(/[^a-z0-9-]+/gi,'-')}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
   function bind(){
+    root.querySelector('[data-turnout-download]')?.addEventListener('click',downloadEventCSV);
+    root.querySelector('[data-turnout-print]')?.addEventListener('click',()=>window.print());
     root.querySelectorAll('[data-family]').forEach(button => button.addEventListener('click',()=>{state.family=button.dataset.family;state.event=latestEvent(state.family).id;render();}));
     root.querySelector('#turnout-event-select')?.addEventListener('change',event=>{state.event=event.target.value;render();});
     root.querySelectorAll('[data-trend-town]').forEach(button=>button.addEventListener('click',()=>{state.town=button.dataset.trendTown;render();}));
