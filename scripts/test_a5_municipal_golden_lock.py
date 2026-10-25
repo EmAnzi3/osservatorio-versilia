@@ -463,7 +463,7 @@ def main():
         browser.close()
 
     summary={
-        "baseline_commit":"6a064ba25992d292a76709ac15d49537c258ac66",
+        "baseline_commit":"9ed90c8d74a9261f1bc9db87520a5b307805e56c",
         "checked_surfaces":checked,
         "towns":list(TOWNS),
         "metrics":list(METRICS),

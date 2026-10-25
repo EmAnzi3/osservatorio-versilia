@@ -50,7 +50,7 @@ jobs:
       - name: Checkout approved pre-fix municipal baseline
         uses: actions/checkout@v4
         with:
-          ref: 6a064ba25992d292a76709ac15d49537c258ac66
+          ref: 9ed90c8d74a9261f1bc9db87520a5b307805e56c
           path: baseline
 
       - name: Build baseline preview
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout approved Camaiore full golden baseline
         uses: actions/checkout@v4
         with:
-          ref: 5aaf159870912eb49bffbd044963549bfb920150
+          ref: 9ed90c8d74a9261f1bc9db87520a5b307805e56c
           path: camaiore-baseline
 
       - name: Build Camaiore golden baseline preview

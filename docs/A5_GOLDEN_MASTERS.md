@@ -77,7 +77,12 @@ Dal **28 settembre 2026** Camaiore è approvata come scheda comunale A5 completa
 
 Checkpoint approvato:
 
-`5aaf159870912eb49bffbd044963549bfb920150`
+`9ed90c8d74a9261f1bc9db87520a5b307805e56c`
+
+Aggiornato il 25 ottobre 2026 con approvazione esplicita del proprietario
+(#481/#482): titoli principali in grassetto, voce di menu corrente, data del
+catalogo esplicita e nome dell'indicatore anche nella card Demografia.
+Checkpoint precedente: `5aaf159870912eb49bffbd044963549bfb920150`.
 
 Perimetro congelato:
 
@@ -131,3 +136,17 @@ Il gate A5.4 è chiuso:
 6. il commit di chiusura A5.4 è `7eadda666118f2450290a3b1c6edb93f061b7c7b`.
 
 A5.5 è completato sul checkpoint UI `bc9e5086aa796637828e1a5ae6e9952873024ef7`: rollout tematico e comunale, golden lock, cohort e ordinamento alfabetico sono verificati. La PR #280 resta Draft fino all’approvazione esplicita del proprietario; A5 diventa formalmente `DONE` solo dopo il merge.
+
+## Baseline registrate il 25 ottobre 2026
+
+Dopo l'approvazione dell'anteprima prima/dopo e il merge di #481 e #482, tutte
+le baseline A5 puntano a `9ed90c8d74a9261f1bc9db87520a5b307805e56c`:
+
+- golden lock tematico (`ci/a5-thematic-golden-lock.json`): prima `3de730a0`;
+- golden lock municipale e checkpoint di change scope: prima `6a064ba2`;
+- Camaiore completa: prima `5aaf1598`.
+
+Cambiamenti approvati: hero delle pagine di confronto con il titolo del tema e
+un solo `h1`, scheda tema come guida alla lettura, titoli in grassetto, voce di
+menu corrente, data del catalogo esplicita, etichetta dell'indicatore nella
+card Demografia.

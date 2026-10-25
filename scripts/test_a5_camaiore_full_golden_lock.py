@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 from test_a5_camaiore_rollout import EXPECTED, VIEWPORTS, choose, discover, go, stable, state
 from a3_publication_gap_audit import _finite, _valid_series
 
-APPROVED_COMMIT = "5aaf159870912eb49bffbd044963549bfb920150"
+APPROVED_COMMIT = "9ed90c8d74a9261f1bc9db87520a5b307805e56c"
 EXPECTED_TOWN_ORDER = (
     "Camaiore",
     "Forte dei Marmi",
