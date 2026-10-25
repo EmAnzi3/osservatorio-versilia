@@ -120,7 +120,43 @@ def assert_search(page: Page, route: str) -> None:
     overlay.wait_for(state="hidden")
 
 
+CURRENT_SECTION = {
+    "stato-dati/": "Stato dati",
+    "pnrr/": None,
+    "opportunita/": "Opportunità",
+    "percorsi/": None,
+    "percorsi/metodo.html": None,
+    "confronta/meteo-clima/": "Temi",
+}
+
+
+def assert_current_section(page: Page, route: str) -> None:
+    """La voce della sezione corrente è l'unica differenza ammessa fra gli header."""
+    current = page.evaluate(
+        """() => [...document.querySelectorAll('.site-header nav[aria-label="Navigazione principale"] a[aria-current="page"]')]
+              .map(a => a.textContent.trim())"""
+    )
+    expected = CURRENT_SECTION.get(route)
+    require(
+        current == ([expected] if expected else []),
+        f"Voce di menu corrente errata in {route}: {current}, attesa {expected}",
+    )
+
+
 def header_capture(page: Page) -> bytes:
+    # Il raster deve restare identico fra le pagine: si neutralizza soltanto lo
+    # stato della sezione corrente (sottolineatura e scorrimento del menu mobile),
+    # verificato a parte da assert_current_section.
+    page.evaluate(
+        """() => {
+          const nav = document.querySelector('.site-header nav[aria-label="Navigazione principale"]');
+          if (!nav) return;
+          nav.querySelectorAll('a[aria-current]').forEach(a => a.removeAttribute('aria-current'));
+          nav.scrollLeft = 0;
+          nav.dispatchEvent(new Event('scroll'));
+        }"""
+    )
+    page.wait_for_timeout(50)
     return page.locator(".site-header").screenshot(animations="disabled")
 
 
@@ -129,6 +165,7 @@ def verify_viewport(base: str, width: int, height: int) -> None:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
         open_page(page, base, REFERENCE)
+        assert_current_section(page, REFERENCE)
         reference_geometry = geometry(page)
         reference_style = style_fingerprint(page)
         reference_image = header_capture(page)
@@ -136,6 +173,7 @@ def verify_viewport(base: str, width: int, height: int) -> None:
 
         for route in SPECIAL_ROUTES:
             open_page(page, base, route)
+            assert_current_section(page, route)
             assert_geometry(reference_geometry, geometry(page), route)
             actual_style = style_fingerprint(page)
             require(
