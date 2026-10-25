@@ -34,7 +34,7 @@ jobs:
       - name: Checkout immutable approved thematic baseline
         uses: actions/checkout@v4
         with:
-          ref: 3de730a006fcef67e91226c3191884e84b3cae3a
+          ref: 9ed90c8d74a9261f1bc9db87520a5b307805e56c
           path: baseline
 
       - name: Build baseline preview

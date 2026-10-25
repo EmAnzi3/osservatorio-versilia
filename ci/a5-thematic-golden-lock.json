@@ -1,5 +1,5 @@
 {
-  "baseline": "3de730a006fcef67e91226c3191884e84b3cae3a",
+  "baseline": "9ed90c8d74a9261f1bc9db87520a5b307805e56c",
   "purpose": "Congelare tutte le pagine tematiche A5 approvate senza consentire regressioni durante il rollout delle schede comunali",
   "seed_theme": "demografia",
   "viewports": [

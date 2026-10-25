@@ -1,5 +1,5 @@
 {
-  "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
+  "checkpoint": "9ed90c8d74a9261f1bc9db87520a5b307805e56c",
   "purpose": "A5.5 closure: port the clean batch proven by complete debug sweeps, preserve approved A5 golden surfaces, and align browser/visual contracts with the final shared municipal and thematic shell",
   "allowed_paths": [
     "assets/fidelity.css",
