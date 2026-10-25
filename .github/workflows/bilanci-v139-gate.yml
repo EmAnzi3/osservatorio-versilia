@@ -102,7 +102,9 @@ jobs:
 
   canonical-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Il Quick canonico supera ormai i 20 minuti (build completa + gate A7):
+    # il budget precedente annullava il job senza un errore reale.
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
