@@ -38,7 +38,7 @@ def main() -> int:
     assert len(data["metrics"]) >= 213, len(data["metrics"])
 
     homepage = (directory / "index.html").read_text(encoding="utf-8")
-    assert f"Aggiornato {data['updated']}" in homepage, data["updated"]
+    assert f"Catalogo al {data['updated']}" in homepage, data["updated"]
 
     for key, label, short_label, first_year in legacy.METRICS:
         metric = data["metrics"][key]
