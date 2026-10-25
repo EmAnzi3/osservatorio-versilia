@@ -297,6 +297,14 @@ def approved_classification_toolbar(base_page, cur_page, before: dict, after: di
                 raise AssertionError('Classification action icon absent: ' + selector)
     base_page.evaluate("""({reference,comparison}) => {
       if (window.__approvedClassificationRestore) throw new Error('Classification projection nested');
+      // Baseline registrata dopo l'approvazione del 2026-10-04: contiene già la
+      // toolbar approvata, quindi non c'è nulla da proiettare.
+      const alreadyApproved = comparison
+        ? !!document.querySelector('#compare-bars .ux-view-toolbar > .data-actions')
+          && !document.querySelector('.compare-panel-heading > .data-actions')
+        : !document.querySelector('#town-topic > .town-data-actions.a5-town-fallback-actions')
+          && !!document.querySelector('#town-topic > .history-panel.a5-shared-chart .a5-special-renderer-toolbar');
+      if (alreadyApproved) { window.__approvedClassificationRestore=()=>{}; return; }
       if (comparison) {
         const host=document.querySelector('#compare-bars');
         const children=[...host.childNodes];
