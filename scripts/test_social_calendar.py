@@ -59,6 +59,12 @@ def main() -> int:
     rotation = load(KIT / "config" / "editorial-rotation.json")
     site = load(ROOT / "data" / "site-data.json")
     history = PLANNER.publication_history()
+    revised = run_plan("2026-10-26")
+    assert [(item["date"], item["metric"]) for item in revised["scheduled"]] == [
+        ("2026-10-27", "cropProfile"), ("2026-10-30", "employmentGenderGap")]
+    assert revised["scheduled"][0]["components"] == ["OLIVOOILTR", "OLIVTTR", "VINEY"]
+    assert "population" in PLANNER.used_metrics(date(2026, 10, 30), history)
+    assert all("editorial_reason" not in item for item in run_plan("2026-11-02")["scheduled"])
     october = run_plan("2026-10-19")
     assert ordinary_items(october)[0]["metric"] != "recycling"
     assert "recycling" in ordinary_items(october)[0]["excluded_published_metrics"]

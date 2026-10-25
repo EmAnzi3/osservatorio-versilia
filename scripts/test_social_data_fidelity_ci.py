@@ -17,7 +17,7 @@ _base_fmt_value = gate.fmt_value
 
 
 def rendered_value(value: float, unit: str, signed: bool = False) -> str:
-    if not signed and unit in {"per1000", "per10k", "minutes"}:
+    if not signed and unit in {"per1000", "per10k", "minutes", "percentagePoints"}:
         return gate.fmt_it(value, 1)
     return _base_fmt_value(value, unit, signed)
 

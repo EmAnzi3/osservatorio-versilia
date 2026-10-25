@@ -61,8 +61,8 @@ def fmt_value(value: float, unit: str, signed: bool = False) -> str:
         return f"{prefix}{fmt_it(value, 0)} €"
     if unit == "celsius":
         return f"{prefix}{fmt_it(value, 1)} °C"
-    if unit == "percentage_points":
-        return f"{prefix}{fmt_it(value, 1)} punti"
+    if unit in {"percentage_points", "percentagePoints"}:
+        return f"{prefix}{fmt_it(value, 2 if 0 < abs(value) < 0.05 else 1)} punti"
     if unit == "per1000":
         return f"{prefix}{fmt_it(value, 1)} ogni 1.000"
     if unit == "per10k":
@@ -172,7 +172,7 @@ def check_comparison(
             return checks
         base_year = int(match.group(1))
         display_unit = comparison.get("display_unit")
-        expected_display_unit = "percentage_points" if unit == "percent" else "percent"
+        expected_display_unit = "percentage_points" if unit in {"percent", "percentagePoints", "percentage_points"} else "percent"
         check_equal(errors, f"{post_id}: unita confronto", display_unit, expected_display_unit)
         for row in rows:
             town = row["town"]
@@ -183,7 +183,7 @@ def check_comparison(
             base = series[base_year]
             current = current_values[town]
             delta = current - base
-            display = delta if unit == "percent" else (delta / base * 100.0 if base else 0.0)
+            display = delta if unit in {"percent", "percentagePoints", "percentage_points"} else (delta / base * 100.0 if base else 0.0)
             check_numeric(errors, f"{post_id}: {town} base", row.get("base"), base)
             check_numeric(errors, f"{post_id}: {town} corrente confronto", row.get("current"), current)
             check_numeric(errors, f"{post_id}: {town} delta", row.get("delta"), delta)
@@ -216,6 +216,41 @@ def check_comparison(
 
     errors.append(f"{post_id}: formula di confronto non autorizzata: {comp_type!r}")
     return checks
+
+
+def check_components(errors, post_id, post_dir, provenance, item, metric):
+    """Confronta ogni cella e il suo rendering, inclusi i null, con la fonte canonica."""
+    expected_keys = ["OLIVOOILTR", "OLIVTTR", "VINEY"]
+    check_equal(errors, f"{post_id}: colture", provenance.get("components"), expected_keys)
+    check_equal(errors, f"{post_id}: confronto temporale assente", provenance.get("comparison"), None)
+    check_equal(errors, f"{post_id}: storico assente", provenance.get("history"), {})
+    numeric = rendered = 0
+    for i, key in enumerate(expected_keys):
+        expected = {row["town"]: next(part["value"] for part in row["parts"] if part["key"] == key) for row in metric["rows"]}
+        actual = (provenance.get("component_values") or {}).get(key, {})
+        check_equal(errors, f"{post_id}: comuni {key}", set(actual), set(expected))
+        card = item["cards"][i]
+        root = ET.parse(post_dir / "cards" / f"{card['filename']}.svg").getroot()
+        nodes = [n for n in root.iter() if n.attrib.get("data-role") == "component-value"]
+        texts = {n.attrib["data-town"]: "".join(n.itertext()) for n in nodes}
+        check_equal(errors, f"{post_id}: ordine e unicità comuni {key}", [n.attrib["data-town"] for n in nodes], sorted(expected, key=str.casefold))
+        for town, value in expected.items():
+            if value is None:
+                check_equal(errors, f"{post_id}: dato assente {key} {town}", actual.get(town), None)
+            else:
+                check_numeric(errors, f"{post_id}: {key} {town}", actual.get(town), value)
+            check_equal(errors, f"{post_id}: valore renderizzato {key} {town}", texts.get(town), "n.d." if value is None else fmt_it(value, 2))
+            numeric += 1
+            rendered += 1
+        total = sum(value for value in expected.values() if value is not None)
+        total_node = next(n for n in root.iter() if n.attrib.get("data-role") == "component-total")
+        check_equal(errors, f"{post_id}: somma {key}", "".join(total_node.itertext()), fmt_it(total, 2)+" ettari")
+        rendered += 1
+        text = visible_text(post_dir / "cards" / f"{card['filename']}.svg")
+        coverage = f"{sum(v is not None for v in expected.values())}/7"
+        if coverage + " COMUNI" not in text or "n.d. = dato non disponibile, non zero" not in text:
+            errors.append(f"{post_id}: copertura e limite assenti per {key}")
+    return numeric, rendered
 
 
 def main() -> int:
@@ -318,6 +353,16 @@ def main() -> int:
             series_for,
             unit,
         )
+
+        if provenance.get("components"):
+            if metric_key != "cropProfile" or dataset_path != "data/site-data.json":
+                errors.append(f"{post_id}: componenti non autorizzate")
+                continue
+            count, shown = check_components(errors, post_id, post_dir, provenance, item, metric)
+            numeric_checks += count
+            rendered_checks += shown
+            post_reports.append({"post_id":post_id,"metric":metric_key,"dataset":dataset_path,"towns":len(current_values),"status":"checked"})
+            continue
 
         cards = item.get("cards") or []
         if not cards:

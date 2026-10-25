@@ -123,3 +123,16 @@ Il sistema impedisce molti errori strutturali, non sostituisce la responsabilit�
 - opportunità della pubblicazione nel contesto del momento;
 - pertinenza reale delle eventuali ricorrenze speciali;
 - rispetto del budget massimo di due uscite.
+
+## Scelte editoriali datate
+
+`config/editorial-calendar.json` può dichiarare `overrides` per sostituire uno
+slot ordinario in una data precisa: indicatore canonico, motivazione e domande.
+La scelta non modifica la rotazione futura, non aggiunge uscite e non supera
+ricorrenze o blackout. Resta soggetta al registro delle pubblicazioni.
+
+Per il 27 ottobre 2026 il proprietario ha richiesto tre confronti delle superfici
+censuarie: olivi da olio, olive da tavola e vite. È una deroga esplicita alla
+struttura temporale delle card 2 e 3: il catalogo non offre uno storico.
+Ogni card mostra anno, ettari, sette comuni e copertura della singola coltura.
+I null restano «n.d.»; la somma parziale non è presentata come totale Versilia.

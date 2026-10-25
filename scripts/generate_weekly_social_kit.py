@@ -127,7 +127,7 @@ def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[s
         base = temporal["comparison"]["year"]
         comparison_subtitle = (
             f"Differenza in punti rispetto al {base}"
-            if meta.get("unit") == "percent"
+            if meta.get("unit") in {"percent", "percentagePoints", "percentage_points"}
             else f"Differenza percentuale rispetto al {base}"
         )
         titles = [short, f"Dal {base} al {year}", f"Variazione: {short}", "Cosa vedi nel tuo Comune?"]
@@ -135,6 +135,9 @@ def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[s
     else:
         titles = [short, "Che cosa misura il dato", "Come leggere il confronto", "Cosa vedi nel tuo Comune?"]
         subtitles = [f"{meta['description']} · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
+    if meta.get("key") == "employmentGenderGap":
+        subtitles[0] = "Tasso maschile meno femminile · 15–64 anni · punti percentuali · " + str(year)
+        subtitles[1] = "Differenza tra tassi di occupazione · punti percentuali"
     return titles, subtitles
 
 
@@ -181,6 +184,16 @@ def post_from_item(
             "reason": f"Tema della metrica {metric_key} ({metric_theme}) non coerente con il piano ({item.get('theme')}).",
         }
 
+    if item.get("components"):
+        if metric_key != "cropProfile" or item["components"] != ["OLIVOOILTR", "OLIVTTR", "VINEY"]:
+            raise ValueError("Selezione colture non riconosciuta")
+        return {
+            "id": safe_id(f"{item['date']}-ordinario-{item['theme']}-{metric_key}"),
+            "date": item["date"], "status": "draft", "priority": "ordinary",
+            "theme": item["theme"], "dataset": "site", "metric": metric_key,
+            "components": item["components"], "questions": item["questions"],
+        }, None
+
     temporal = temporal_spec(metric)
     titles, subtitles = titles_for(metric, temporal)
     kind = "ricorrenza" if item["type"] == "observance" else "ordinario"
@@ -193,7 +206,7 @@ def post_from_item(
         "theme": item["theme"],
         "dataset": "site",
         "metric": metric_key,
-        "questions": questions_for(item["theme"], metric_key, questions),
+        "questions": item.get("questions") or questions_for(item["theme"], metric_key, questions),
         "titles": titles,
         "subtitles": subtitles,
     }

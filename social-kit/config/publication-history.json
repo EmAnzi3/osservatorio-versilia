@@ -36,6 +36,16 @@
         "currentExpenditureCommittedPerResident"
       ],
       "evidence": "Conferma esplicita del proprietario il 18 ottobre 2026: il contenuto sulla spesa corrente per abitante proposto per il 23 ottobre era già stato pubblicato. Data esatta e permalink da recuperare."
+    },
+    {
+      "id": "2026-residenti-confermata",
+      "year": 2026,
+      "published_on": null,
+      "confirmed_on": "2026-10-25",
+      "metrics": [
+        "population"
+      ],
+      "evidence": "Conferma esplicita del proprietario il 25 ottobre 2026 nella revisione della issue #472: il contenuto Residenti proposto per il 30 ottobre è già stato pubblicato. Data effettiva e permalink non comunicati."
     }
   ]
 }
