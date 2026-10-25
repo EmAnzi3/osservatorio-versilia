@@ -4193,3 +4193,7 @@ body[data-page="town"] main.a5-town-pilot #town-topic .financial-profile-history
 /* ui-shell-consistency-v1: il titolo della pagina è nell'hero; la scheda tema guida la lettura */
 main.a5-editorial-pilot .topic-hero-copy h2{margin:4px 0 0;color:var(--ds-ink,#102f45);font-size:24px;line-height:1.15;letter-spacing:-.03em;font-weight:720;text-wrap:balance}
 @media (max-width:700px){main.a5-editorial-pilot .topic-hero-copy h2{font-size:19px}}
+/* ui-shell-consistency-v2: titolo principale in grassetto su ogni pagina, come in home */
+h1{font-weight:760!important}
+/* Home a 320 px: la colonna del pannello esploratore non deve superare la larghezza disponibile */
+@media (max-width:700px){.explorer-panel{grid-template-columns:minmax(0,1fr)}.explorer-panel>*{min-width:0}.explorer-panel .featured-switch{flex-wrap:wrap}}
