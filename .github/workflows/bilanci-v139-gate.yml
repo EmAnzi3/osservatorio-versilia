@@ -102,9 +102,10 @@ jobs:
 
   canonical-contract:
     runs-on: ubuntu-latest
-    # Il Quick canonico supera ormai i 20 minuti (build completa + gate A7):
-    # il budget precedente annullava il job senza un errore reale.
-    timeout-minutes: 45
+    # Il Quick canonico supera ormai i 20 minuti (build completa + gate A7;
+    # 42 minuti osservati su runner standard): il budget precedente annullava
+    # il job senza un errore reale.
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -132,7 +133,8 @@ jobs:
     needs: [source-audit, canonical-contract]
     if: ${{ needs.source-audit.result == 'success' && needs.canonical-contract.result == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # La build completa da sola richiede circa 30 minuti; seguono i test browser Bilanci.
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
