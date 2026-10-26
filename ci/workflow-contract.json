@@ -294,6 +294,14 @@
         ]
       },
       {
+        "label": "A7 Italian readings for every published warning and refusal code",
+        "script": "scripts/test_a7_plain_language.py",
+        "args": [
+          "--dist",
+          "dist"
+        ]
+      },
+      {
         "label": "A7 acquired data and declared accessibility audit",
         "script": "scripts/test_a7_accessibility.py",
         "args": [
