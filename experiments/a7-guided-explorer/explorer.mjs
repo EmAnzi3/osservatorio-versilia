@@ -58,7 +58,7 @@ export async function startExplorer(openRuntime,presentation){
    const ranking=$('operation').value==='rank';
    const outliers=$('operation').value==='anomaly';
    const all=allTowns.includes($('operation').value);$('town').disabled=all;
-   $('town-field').hidden=aggregate||ranking||outliers;
+   $('town-field').hidden=all;
    $('town').setAttribute('aria-describedby','explorer-reference');
    $('reference').textContent=aggregate?'Il valore dell’intera Versilia, calcolato sommando le componenti dei sette Comuni (non è la media dei valori comunali). Se manca un Comune il valore non viene calcolato.':$('operation').value==='benchmark_gap'?'Scegli se confrontare il Comune con la Toscana o con l’Italia. Anno e fonte compaiono nel risultato.':all?'I sette Comuni a confronto, ciascuno con il proprio anno di riferimento.':'Si mostra l’anno più recente disponibile, indicato nel risultato.';
    if(changes.includes($('operation').value)){

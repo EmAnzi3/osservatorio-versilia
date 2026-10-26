@@ -315,7 +315,7 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-benchmark', request['benchmark'])
                         else:
                             assert not page.is_visible('#explorer-benchmark')
-                        if request['operation'] in ('weighted_ratio','rank','anomaly'):
+                        if request['operation'] in ('weighted_ratio','rank','anomaly','compare'):
                             assert not page.is_visible('#explorer-town-field')
                             assert page.is_disabled('#explorer-town')
                             assert 'sette' in page.locator('#explorer-reference').text_content()
