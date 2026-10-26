@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## A7.5.4 — perimetro degli incroci misurato e rivisto (26 ottobre 2026)
+
+Branch `feature/a7-association-perimeter`, base main #488. Delle 202
+associazioni fra le domande verificate A6, 6 sono calcolate e 196 rifiutate
+(175 per coppia non rivista congiuntamente). Il costo non è il vincolo: 32
+componenti aggiungono +0,10% di gzip al runtime pubblico completo. Decisione del
+proprietario: perimetro = le 6 associazioni calcolabili, con motivi in italiano
+come nuove richieste esatte dai risultati invariati. Piano
+`ci/a7-association-perimeter.json`, gate `test_a7_association_perimeter.py` nei
+controlli sul catalogo effettivo, metodo `A7_ASSOCIATION_PERIMETER.md`.
+Nessun rollout: il divieto `public=True, associations=True` resta invariato.
+Prossimo passo, da approvare: rollout pubblico del solo piano rivisto.
+
 ## Main verificata il 24 ottobre 2026 — #476 integrata e pubblicata
 
 Merge del proprietario `d5c8fc2870869a23b3fe0640428e682931503655`, albero

@@ -286,6 +286,14 @@
         ]
       },
       {
+        "label": "A7 prepared association perimeter review and cost",
+        "script": "scripts/test_a7_association_perimeter.py",
+        "args": [
+          "--catalog",
+          "dist/data/site-data.json"
+        ]
+      },
+      {
         "label": "A7 acquired data and declared accessibility audit",
         "script": "scripts/test_a7_accessibility.py",
         "args": [

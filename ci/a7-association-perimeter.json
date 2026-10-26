@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "steps": [
+    {
+      "id": "aligned_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: la popolazione è uno stock, il reddito imponibile medio un flusso fiscale; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "business_resident_workplace_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "localEmployees"
+          },
+          {
+            "metric": "femaleEmploymentRate"
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva di due universi distinti, addetti sul luogo di lavoro e occupazione femminile dei residenti; nessun abbinamento individuale né effetto causale"
+      }
+    },
+    {
+      "id": "demography_aligned_events",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "naturalDemographicDynamics",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "totalResidentialMobility",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva fra i sette Comuni dei due saldi demografici del 2024, naturale e migratorio; nessuna conclusione causale"
+      }
+    },
+    {
+      "id": "school_fulltime_canteen",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "primaryFullTimeShare",
+            "periods": [
+              "2024/25"
+            ]
+          },
+          {
+            "metric": "schoolBuildingFacilities",
+            "periods": [
+              "2024/25"
+            ]
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva fra i sette Comuni del tempo pieno nella primaria e delle mense scolastiche nell’anno 2024/25; nessuna conclusione causale"
+      }
+    },
+    {
+      "id": "commuting_gross_pair",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "inboundCommutersRate"
+          },
+          {
+            "metric": "outboundCommutersRate"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva fra i sette Comuni dei pendolari in entrata e in uscita, con le componenti condivise dichiarate; nessuna inferenza causale"
+      }
+    },
+    {
+      "id": "commuting_retention_balance",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "selfContainment"
+          },
+          {
+            "metric": "commuterBalance"
+          }
+        ],
+        "axis": "municipalities",
+        "method": "spearman",
+        "purpose": "Lettura descrittiva fra i sette Comuni dell’autocontenimento del lavoro e del saldo pendolare, con le componenti condivise dichiarate; nessuna inferenza causale"
+      }
+    }
+  ]
+}
