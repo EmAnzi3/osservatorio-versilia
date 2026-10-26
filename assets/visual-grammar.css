@@ -791,39 +791,3 @@
   background: var(--ink);
   opacity: .88;
 }
-
-
-/* Salute v1.40: confronto comunale senza sovrapposizioni */
-.town-topic[data-theme="salute"] .versilia-position > div {
-  grid-template-columns: 1fr;
-  align-items: start;
-  gap: 5px;
-}
-
-.town-topic[data-theme="salute"] .versilia-position > div span {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.town-topic[data-theme="salute"] .versilia-position > div b {
-  max-width: 100%;
-  text-align: left;
-  line-height: 1.12;
-}
-
-.town-topic[data-theme="salute"] .health-tuscany-reference {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid currentColor;
-}
-
-.town-topic[data-theme="salute"] .health-demographic-table th,
-.town-topic[data-theme="salute"] .health-demographic-table td {
-  vertical-align: top;
-}
-
-.town-topic[data-theme="salute"] .health-demographic-table td small {
-  display: block;
-  margin-top: 3px;
-  opacity: .68;
-}

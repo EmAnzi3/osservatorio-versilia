@@ -62,32 +62,9 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
   function indicatorComparisonTable(data, metricKey, financialChoice='part-0') {
     const metric = data.metrics[metricKey];
     const rows = [...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
-    if (isTerritoryProfileType(metric)) { const view=arguments[4] || {choice:financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice,scale:metric.meta.compositeType==='protectedAreasProfile'?'percent':'value'}; return `<div class="indicator-composite-table territory-indicator-comparison"><div class="compare-chart-toolbar">${compositeCompareControls(metric,view.choice,view.scale)}</div><div class="comparison-bars" data-metric-key="${html(metricKey)}" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${metric.meta.compositeType==='invalsiProfile'?invalsiCompareDetailMarkup(metric,view.choice):''}</div>`; }
     if (metric.meta.compositeType === 'financialProfile') return `<div class="indicator-composite-table financial-indicator-comparison"><div class="compare-chart-toolbar"><div><span class="overline">Confronto dei Comuni</span></div>${compositeCompareControls(metric,financialChoice,'value')}</div><div class="comparison-bars" data-composite-choice="${html(financialChoice)}">${compositeCompareBarRows(data,metricKey,financialChoice,'value')}</div></div>`;
-    if (metric.meta.compositeType === 'hydroRisk') {
-      const view = arguments[3] || compositeCompareDefaults(metric);
-      return `<div class="indicator-composite-table hydro-risk-indicator-comparison"><div class="compare-chart-toolbar"><div><span class="overline">Confronto dei Comuni</span></div>${compositeCompareControls(metric,view.choice,view.scale)}</div>${metric.meta.scenarioNote ? `<p class="composite-compare-note"><strong>Come leggere gli scenari:</strong> ${html(metric.meta.scenarioNote)}</p>` : ''}<div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div></div>`;
-    }
     if (metric.meta.compositeType) return `<div class="indicator-composite-table">${compositeCompareMarkup(data, metricKey)}</div>`;
     return `<div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th scope="col">Comune</th><th scope="col">Valore · ${html(metric.meta.year)}</th><th scope="col">Apri il territorio</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${html(row.town)}</th><td>${html(formatValue(row.value, metric.meta.unit))}</td><td><a href="${route(`comuni/${row.slug}/?tema=${metric.meta.theme}&indicatore=${metricKey}`)}">Scheda comunale <span aria-hidden="true">→</span></a></td></tr>`).join('')}</tbody></table></div>`;
-  }
-
-
-  function territoryProfileHistoryChart(metric,choice,territory='__versilia') {
-    const part0=metric.rows?.[0]?.parts?.find(part=>part.key===choice) || metric.rows?.[0]?.parts?.[0] || {};
-    const unit=part0.unit || metric.meta.unit;
-    const options=metric.meta.compositeType==='invalsiProfile'?[{key:'__toscana',label:metric.aggregate?.label||'Toscana',source:metric.aggregate},{key:'__italia',label:metric.nationalBenchmark?.label||'Italia',source:metric.nationalBenchmark},...(metric.rows||[]).map(row=>({key:String(row.code||row.slug||row.town),label:row.town,source:row}))]:[{key:'__versilia',label:'Versilia',source:metric.aggregate},...(metric.rows||[]).map(row=>({key:String(row.code||row.slug||row.town),label:row.town,source:row}))];
-    const selected=options.find(item=>item.key===String(territory)) || options[0];
-    const series=selected.source?.seriesByView?.[choice];
-    if (!series?.years?.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile per questa lettura</strong></div>';
-    const label=part0.label || metric.meta.label;
-    return `<div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town>${options.map(item=>`<option value="${html(item.key)}" ${item.key===selected.key?'selected':''}>${html(item.label)}</option>`).join('')}</select></label></div>${seriesChart(series,unit,`${metric.meta.label} · ${label} · ${selected.label}`)}</div>`;
-  }
-
-  function territoryProfileIndicatorAsideMarkup(metric,choice,scale='value') {
-    if(metric.meta.compositeType==='invalsiProfile'){const t=invalsiPart(metric.aggregate,choice),i=invalsiPart(metric.nationalBenchmark,choice),u=t.unit||i.unit||metric.meta.unit;return `<span>Toscana · ${html(t.label||metric.meta.label)}</span><strong>${html(formatValue(t.value,u))}</strong><p>Italia: ${html(formatValue(i.value,i.unit||u))}. Stessa prova e annualità.</p>`;}
-    const selected=compositeCompareAggregate(metric,choice,scale);
-    return `<span>${html(selected.label)}</span><strong>${html(formatValue(selected.value,selected.unit))}</strong><p>${html(selected.note || metric.aggregate?.note || '')}</p>`;
   }
 
   function financialProfileHistoryTable(metric,choice='part-0') {
@@ -107,7 +84,6 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
 
   function indicatorHistoryTable(metric,financialChoice='part-0') {
     if (metric.meta.compositeType === 'financialProfile') return financialProfileHistoryTable(metric,financialChoice);
-    if (isTerritoryProfileType(metric)) { const choice=financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice; return territoryProfileHistoryChart(metric,choice); }
     const seriesFor = row => metric.meta.key === 'income' && row.longSeries?.years?.length ? row.longSeries : row.series;
     const historicalRows = metric.rows.filter(row => seriesFor(row)?.years?.length && seriesFor(row)?.values?.length);
     if (!historicalRows.length) {
@@ -122,28 +98,19 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
   }
 
   function renderIndicator(data, registry, monitorState) {
-    if (!data.metrics[pageMetric]) return renderNotFound();
-    const economicContext = economicScopeData(data, pageMetric);
-    data = economicContext.data;
-    const metric = economicContext.metric;
-    const economicScope = economicContext.scope;
+    const metric = data.metrics[pageMetric];
+    if (!metric) return renderNotFound();
     const theme = data.themes[metric.meta.theme];
     if (!theme) return renderNotFound();
     const policy = resolveSourcePolicy(pageMetric, metric, registry);
     const metricMonitorState = monitorState?.metrics?.[pageMetric];
     const financialProfile = metric.meta.compositeType === 'financialProfile';
-    const hydroRisk = metric.meta.compositeType === 'hydroRisk';
-    const territoryProfile = isTerritoryProfileType(metric);
     const initialFinancialChoice = 'part-0';
     const initialFinancialReading = financialProfile ? financialProfileReading(metric,initialFinancialChoice) : null;
-    const initialHydroView = hydroRisk ? compositeCompareDefaults(metric) : null;
-    const initialHydroAggregate = hydroRisk ? compositeCompareAggregate(metric,initialHydroView.choice,initialHydroView.scale) : null;
-    const initialTerritoryView = territoryProfile ? compositeCompareDefaults(metric) : null;
-    const initialTerritoryChoice = initialTerritoryView?.choice || null;
     const checkedAt = metricMonitorState?.checkedAt
       ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(metricMonitorState.checkedAt))
       : 'Controllo non ancora registrato';
-    const historyCount = territoryProfile ? metric.rows.filter(row => Object.values(row.seriesByView || {}).some(series=>series?.years?.length)).length : metric.rows.filter(row => row.series?.years?.length).length;
+    const historyCount = metric.rows.filter(row => row.series?.years?.length).length;
     const license = policy.licenseUrl
       ? `<a href="${html(policy.licenseUrl)}" target="_blank" rel="noreferrer">${html(policy.licenseName)} ↗</a>`
       : html(policy.licenseName || 'Condizioni indicate dalla fonte');
@@ -154,10 +121,9 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
         <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Copertura</dt><dd>${html(metric.method?.coverage || '7/7')}</dd></div><div><dt>Serie storica</dt><dd>${historyCount ? `${historyCount}/7 comuni` : 'Non disponibile'}</dd></div></dl>
         <div class="indicator-hero-actions"><a class="button-link" href="${route(`confronta/${theme.key}/?indicatore=${pageMetric}`)}">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
       <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : 'Il dato nei sette comuni')}</h2></div><p data-financial-indicator-description>${html(financialProfile ? `${initialFinancialReading.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.` : 'Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.')}</p></div>
-        ${isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : ''}
-        <div class="indicator-current-layout"><div data-financial-indicator-comparison>${indicatorComparisonTable(data, pageMetric, territoryProfile ? initialTerritoryChoice : initialFinancialChoice, initialHydroView, initialTerritoryView)}</div><aside data-financial-indicator-aggregate>${financialProfile ? financialProfileIndicatorAsideMarkup(metric,initialFinancialChoice) : territoryProfile ? territoryProfileIndicatorAsideMarkup(metric,initialTerritoryChoice,initialTerritoryView?.scale || 'value') : hydroRisk ? `<span>${html(initialHydroAggregate.label)}</span><strong>${html(formatValue(initialHydroAggregate.value,initialHydroAggregate.unit))}</strong><p>${html(initialHydroAggregate.note || metric.aggregate.note || '')}</p>` : `<span>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).label : metric.aggregate.label)}</span><strong>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).formatted : formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.meta.compositeType === 'distribution' ? (metric.aggregate.summaryNote || metric.aggregate.note) : metric.aggregate.note)}</p>`}</aside></div></section>
-      <section class="indicator-benchmark page-width">${(financialProfile || territoryProfile || hydroRisk || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
-      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history>${indicatorHistoryTable(metric,territoryProfile ? initialTerritoryChoice : initialFinancialChoice)}</div></section>
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison>${indicatorComparisonTable(data, pageMetric, initialFinancialChoice)}</div><aside data-financial-indicator-aggregate>${financialProfile ? financialProfileIndicatorAsideMarkup(metric,initialFinancialChoice) : `<span>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).label : metric.aggregate.label)}</span><strong>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).formatted : formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.meta.compositeType === 'distribution' ? (metric.aggregate.summaryNote || metric.aggregate.note) : metric.aggregate.note)}</p>`}</aside></div></section>
+      <section class="indicator-benchmark page-width">${financialProfile ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history>${indicatorHistoryTable(metric,initialFinancialChoice)}</div></section>
       <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
         <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>${html(policy.publisher || metric.meta.source)}</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Frequenza</dt><dd>${html(policy.frequencyLabel || 'Secondo la fonte')}</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>${html(policy.expectedRelease || 'Secondo il calendario della fonte')}</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>${html(checkedAt)}</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd>${license}</dd></div></dl>
           <div><h3>Acquisizione</h3><p>${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p><div data-financial-indicator-method>${financialProfile ? financialProfileMethodDisclosure(metric,initialFinancialChoice) : methodDisclosure(metric)}</div></div></div>
@@ -165,39 +131,9 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${[...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => `<a href="${route(`comuni/${row.slug}/?tema=${theme.key}&indicatore=${pageMetric}`)}"><span>${html(row.town)}</span><b>→</b></a>`).join('')}</div></section>
     </main>`;
 
-    document.querySelectorAll('.indicator-current select[data-economic-scope]').forEach(select => select.addEventListener('change', () => {
-      setEconomicScopeParam(select.value);
-      renderIndicator(data, registry, monitorState);
-    }));
-    syncEconomicScopeLinks(data, pageMetric, economicScope);
     document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     document.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, pageMetric));
     document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
-    if (territoryProfile) {
-      const currentSection=document.querySelector('.indicator-current');
-      let territoryView={...initialTerritoryView};
-      const renderTerritory=()=>{
-        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
-        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
-        const historyHost=document.querySelector('[data-financial-indicator-history]');
-        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,territoryView.choice,initialHydroView,territoryView);
-        if(aggregateHost) aggregateHost.innerHTML=territoryProfileIndicatorAsideMarkup(metric,territoryView.choice,territoryView.scale);
-        if(historyHost) historyHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice);
-      };
-      currentSection?.addEventListener('change',event=>{
-        const select=event.target.closest('select[data-composite-component]');
-        if(select&&currentSection.contains(select)){ territoryView={...territoryView,choice:select.value}; renderTerritory(); }
-      });
-      currentSection?.addEventListener('click',event=>{
-        const button=event.target.closest('button[data-composite-scale]');
-        if(button&&currentSection.contains(button)){ territoryView={...territoryView,scale:button.dataset.compositeScale}; renderTerritory(); }
-      });
-      const territoryHistoryHost=document.querySelector('[data-financial-indicator-history]');
-      territoryHistoryHost?.addEventListener('change',event=>{
-        const select=event.target.closest('select[data-territory-history-town]');
-        if(select&&territoryHistoryHost.contains(select)) territoryHistoryHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice,select.value);
-      });
-    }
     if (financialProfile) {
       const currentSection=document.querySelector('.indicator-current');
       const applyFinancialChoice=choice=>{
@@ -224,25 +160,6 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
       currentSection?.addEventListener('change',event=>{
         const select=event.target.closest('select[data-composite-component]');
         if(select&&currentSection.contains(select)) applyFinancialChoice(select.value);
-      });
-    }
-    if (hydroRisk) {
-      const currentSection=document.querySelector('.indicator-current');
-      let hydroView={...initialHydroView};
-      const renderHydro=()=>{
-        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
-        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
-        const aggregate=compositeCompareAggregate(metric,hydroView.choice,hydroView.scale);
-        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,initialFinancialChoice,hydroView);
-        if(aggregateHost) aggregateHost.innerHTML=`<span>${html(aggregate.label)}</span><strong>${html(formatValue(aggregate.value,aggregate.unit))}</strong><p>${html(aggregate.note || metric.aggregate.note || '')}</p>`;
-      };
-      currentSection?.addEventListener('change',event=>{
-        const select=event.target.closest('select[data-composite-component]');
-        if(select&&currentSection.contains(select)){ hydroView={...hydroView,choice:select.value}; renderHydro(); }
-      });
-      currentSection?.addEventListener('click',event=>{
-        const button=event.target.closest('button[data-composite-scale]');
-        if(button&&currentSection.contains(button)){ hydroView={...hydroView,scale:button.dataset.compositeScale}; renderHydro(); }
       });
     }
   }
