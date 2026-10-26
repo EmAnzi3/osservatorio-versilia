@@ -222,6 +222,125 @@
     });
   }
 
+
+  /* OV ECONOMIA PRODOTTA SCOPE v1.34.0 */
+  const ECONOMIC_SCOPE_PARAM = 'perimetro';
+  const ECONOMIC_SCOPE_KEYS = ['total', 'industry', 'services'];
+
+  function economicScopeFromLocation() {
+    const raw = new URLSearchParams(location.search).get(ECONOMIC_SCOPE_PARAM) || 'total';
+    return ECONOMIC_SCOPE_KEYS.includes(raw) ? raw : 'total';
+  }
+
+  function isEconomicScopeMetric(metric) {
+    return Boolean(metric?.meta?.economicScopeSelector && metric?.rows?.some(row => row.economicScopes));
+  }
+
+  function scopedEconomicMetric(metric, requestedScope = economicScopeFromLocation()) {
+    if (!isEconomicScopeMetric(metric)) return { metric, scope: 'total' };
+    const scope = ECONOMIC_SCOPE_KEYS.includes(requestedScope) ? requestedScope : 'total';
+    const rows = metric.rows.map(row => {
+      const variant = row.economicScopes?.[scope] || row.economicScopes?.total;
+      if (!variant) return { ...row };
+      return {
+        ...row,
+        value: variant.value,
+        formatted: variant.formatted || formatValue(variant.value, metric.meta.unit),
+        series: variant.series || null,
+        benchmarkValue: variant.value,
+      };
+    });
+    const aggregateVariant = metric.aggregate?.economicScopes?.[scope] || metric.aggregate?.economicScopes?.total;
+    const aggregate = metric.aggregate ? {
+      ...metric.aggregate,
+      ...(aggregateVariant ? {
+        value: aggregateVariant.value,
+        formatted: aggregateVariant.formatted,
+        series: aggregateVariant.series || null,
+        label: `Versilia · ${aggregateVariant.label || scope}`,
+      } : {}),
+    } : metric.aggregate;
+    return {
+      scope,
+      metric: {
+        ...metric,
+        meta: { ...metric.meta, activeEconomicScope: scope },
+        rows,
+        aggregate,
+      },
+    };
+  }
+
+  function clearEconomicScopeParam() {
+    const url = new URL(location.href);
+    if (!url.searchParams.has(ECONOMIC_SCOPE_PARAM)) return;
+    url.searchParams.delete(ECONOMIC_SCOPE_PARAM);
+    history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  }
+
+  function economicScopeData(data, metricKey, requestedScope = economicScopeFromLocation()) {
+    const original = data.metrics?.[metricKey];
+    if (!isEconomicScopeMetric(original)) {
+      clearEconomicScopeParam();
+      return { data, metric: original, scope: 'total' };
+    }
+    const scoped = scopedEconomicMetric(original, requestedScope);
+    return {
+      scope: scoped.scope,
+      metric: scoped.metric,
+      data: { ...data, metrics: { ...data.metrics, [metricKey]: scoped.metric } },
+    };
+  }
+
+  function setEconomicScopeParam(scope) {
+    const next = ECONOMIC_SCOPE_KEYS.includes(scope) ? scope : 'total';
+    const url = new URL(location.href);
+    if (next === 'total') url.searchParams.delete(ECONOMIC_SCOPE_PARAM);
+    else url.searchParams.set(ECONOMIC_SCOPE_PARAM, next);
+    history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    return next;
+  }
+
+  function economicScopeControlMarkup(scope) {
+    return `<div class="compare-chart-toolbar economic-scope-control">
+      <div><span class="overline">Perimetro Frame SBS</span><small>Stesso indicatore, dettaglio per macrosettore</small></div>
+      <label class="compare-choice-select economic-scope-select"><span>Perimetro</span>
+        <select data-economic-scope aria-label="Perimetro Frame SBS">
+        ${[
+          ['total', 'Totale'],
+          ['industry', 'Industria'],
+          ['services', 'Servizi']
+        ].map(([key, label]) => `<option value="${key}" ${key === scope ? 'selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </label>
+    </div>`;
+  }
+
+  function syncEconomicScopeLinks(data, metricKey, scope) {
+    const metric = data.metrics?.[metricKey];
+    const active = isEconomicScopeMetric(metric) && scope !== 'total';
+    document.querySelectorAll('#app a[href]').forEach(link => {
+      const raw = link.getAttribute('href');
+      if (!raw || raw.startsWith('#') || raw.startsWith('mailto:')) return;
+      try {
+        const url = new URL(link.href, location.href);
+        if (url.origin !== location.origin) return;
+        const targetKey = url.searchParams.get('indicatore');
+        const targetMetric = targetKey ? data.metrics?.[targetKey] : null;
+        const isIndicatorDetail = link.matches('.data-actions a[href*="/indicatori/"], .indicator-hero-actions a[href*="/confronta/"]');
+        const shouldCarry = active && (
+          (targetMetric && isEconomicScopeMetric(targetMetric)) ||
+          (isIndicatorDetail && isEconomicScopeMetric(metric))
+        );
+        if (shouldCarry) url.searchParams.set(ECONOMIC_SCOPE_PARAM, scope);
+        else url.searchParams.delete(ECONOMIC_SCOPE_PARAM);
+        link.href = `${url.pathname}${url.search}${url.hash}`;
+      } catch (_) {
+        // Collegamento non interpretabile: non viene modificato.
+      }
+    });
+  }
+
   function installSearch(data) {
     const trigger = document.querySelector('.global-search-trigger');
     const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];

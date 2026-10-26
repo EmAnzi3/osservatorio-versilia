@@ -83,7 +83,10 @@
       case 'per1000': return `${formatNumber(number, 1)} ogni 1.000`;
       case 'per10k': return `${formatNumber(number, 1)} ogni 10.000`;
       case 'index': return formatNumber(number, 1);
+      case 'invalsi_score': return formatNumber(number, 1);
       case 'minutes': return `${formatNumber(number, 1)} min`;
+      case 'decile': return `${formatNumber(number, 0)}/10`;
+      case 'ventile': return `${formatNumber(number, 0)}/20`;
       case 'years': return `${formatNumber(number, 1)} anni`;
       case 'kg': return `${formatNumber(number, 0)} kg`;
       case 'hectares': return `${formatNumber(number, 2)} ha`;
@@ -109,13 +112,17 @@
       const values = row.series?.values || [];
       const map = new Map();
       years.forEach((year, yearIndex) => {
-        const value = Number(values[yearIndex]);
-        if (Number.isFinite(value)) map.set(String(year), value);
+        const rawValue=values[yearIndex];
+        if(rawValue===null||rawValue===undefined||rawValue==='') return;
+        const value=Number(rawValue);
+        if(Number.isFinite(value)) map.set(String(year),value);
       });
       const realMap = new Map();
       (row.realSeries?.years || []).forEach((year, yearIndex) => {
-        const value = Number(row.realSeries?.values?.[yearIndex]);
-        if (Number.isFinite(value)) realMap.set(String(year), value);
+        const rawValue=row.realSeries?.values?.[yearIndex];
+        if(rawValue===null||rawValue===undefined||rawValue==='') return;
+        const value=Number(rawValue);
+        if(Number.isFinite(value)) realMap.set(String(year),value);
       });
       return {
         town: row.town,
@@ -125,13 +132,12 @@
         realMap
       };
     });
-    if (rows.some(row => row.map.size < 2)) return null;
-    let years = [...rows[0].map.keys()].filter(year => rows.every(row => row.map.has(year)));
-    years = years.sort((a, b) => Number(a) - Number(b));
-    if (years.length < 2) return null;
-    return {
-      years,
-      rows: rows.map(row => ({
+    const latest=[...new Set(rows.flatMap(r=>[...r.map.keys()]))].sort((a,b)=>Number(a)-Number(b)).at(-1);
+    const selected=metric.meta?.allowPartialHistory?rows.filter(r=>r.map.size>=2&&(!latest||r.map.has(latest))):rows;
+    if(!selected.length||(!metric.meta?.allowPartialHistory&&selected.some(r=>r.map.size<2))) return null;
+    let years=[...selected[0].map.keys()].filter(y=>selected.every(r=>r.map.has(y))).sort((a,b)=>Number(a)-Number(b));
+    if(years.length<2) return null;
+    return {years,rows:selected.map(row=>({
         ...row,
         values: years.map(year => row.map.get(year)),
         realSeries: row.realMap.size
@@ -264,10 +270,11 @@
       const chartWidth = width - left - right, chartHeight = height - top - bottom;
       const allValues = series.rows.flatMap(row => row.values);
       const rawMin = Math.min(...allValues), rawMax = Math.max(...allValues);
+      const ordinalScale = metric.meta?.ordinalScale;
       const padding = (rawMax - rawMin || Math.max(Math.abs(rawMax) * .1, 1)) * .08;
-      let min = rawMin - padding, max = rawMax + padding;
-      if (rawMin >= 0 && min < 0) min = 0;
-      if (rawMax <= 0 && max > 0) max = 0;
+      let min = ordinalScale ? Number(ordinalScale.min) : rawMin - padding, max = ordinalScale ? Number(ordinalScale.max) : rawMax + padding;
+      if (!ordinalScale && rawMin >= 0 && min < 0) min = 0;
+      if (!ordinalScale && rawMax <= 0 && max > 0) max = 0;
       const range = max - min || 1;
       const x = index => left + index * chartWidth / Math.max(1, series.years.length - 1);
       const y = value => top + (max - value) / range * chartHeight;
@@ -349,7 +356,11 @@
     const values = rows.map(row => finiteValue(row.value)).filter(value => value !== null);
     const focusedFuel = metric.meta.unit === 'eurliter' && values.length > 0;
     let min, max;
-    if (focusedFuel) {
+    const ordinalScale = metric.meta?.ordinalScale;
+    if (ordinalScale) {
+      min = Number(ordinalScale.min);
+      max = Number(ordinalScale.max);
+    } else if (focusedFuel) {
       const rawMin = Math.min(...values), rawMax = Math.max(...values);
       const spread = rawMax - rawMin;
       const padding = Math.max(0.005, spread * 0.25);
@@ -462,6 +473,8 @@
     wireHistorySelection,
     viewShellMarkup,
     wireViewShell,
+    wireHistoryTooltips,
+    formatValue,
     escapeHtml
   };
 })();
