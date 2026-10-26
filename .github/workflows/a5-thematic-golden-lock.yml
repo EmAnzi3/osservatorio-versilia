@@ -11,7 +11,9 @@ jobs:
   thematic-golden-lock:
     if: github.event_name == 'workflow_dispatch' || github.head_ref == 'feat/a5-controlled-iteration' || github.head_ref == 'fix/a3-enrichment-publication-gap' || github.head_ref == 'feat/a3-integration-approved-ui'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Due build complete (~13 min ciascuna) più il confronto di tutte le pagine
+    # tematiche: con 45 minuti il job veniva annullato durante il confronto.
+    timeout-minutes: 120
     steps:
       - name: Checkout current PR head
         uses: actions/checkout@v4
