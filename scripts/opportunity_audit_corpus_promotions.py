@@ -30,6 +30,7 @@ MUNICIPALITIES = [
     "Viareggio",
 ]
 PROMOTION_VERSION = "audit-corpus-v1-20260908"
+ITALIAN_TEXTS_PATH = DATA_DIR / "opportunity-audit-italian-texts.json"
 
 _FORCE_INCLUDE_IDS = {
     "eu-beactive-sport-awards-2026",
@@ -285,6 +286,32 @@ def _municipality_map(title: str, reason: str) -> dict[str, dict[str, str]]:
     return mapped
 
 
+def _source_text_digest(summary: str, reason: str) -> str:
+    return hashlib.sha256((summary + "\n" + reason).encode("utf-8")).hexdigest()
+
+
+def _italian_texts() -> dict[str, dict[str, str]]:
+    try:
+        payload = json.loads(ITALIAN_TEXTS_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    entries = payload.get("entries") if isinstance(payload, dict) else None
+    return entries if isinstance(entries, dict) else {}
+
+
+def italian_presentation(coverage_id: str, summary: str, reason: str) -> dict[str, str] | None:
+    """Testo pubblico italiano per una voce dell'audit, solo se l'evidenza è invariata.
+
+    I rapporti di audit sono evidenze congelate e restano nella lingua delle fonti.
+    La traduzione è vincolata all'impronta del testo originale: se l'audit cambia,
+    la scheda torna al testo originale invece di mostrare una traduzione superata.
+    """
+    entry = _italian_texts().get(coverage_id)
+    if not entry or entry.get("sourceSha256") != _source_text_digest(summary, reason):
+        return None
+    return entry
+
+
 def _candidate_to_item(
     item: dict[str, Any],
     today: date,
@@ -317,6 +344,12 @@ def _candidate_to_item(
     reason = _eligibility_reason(item)
     category = _category(title)
     summary = _summary(item)
+    description = summary[:320]
+    italian = italian_presentation(coverage_id, summary, reason)
+    if italian:
+        summary = italian["summary"]
+        reason = italian["reason"]
+        description = italian["description"]
     role = str(item.get("municipalityRole") or "municipal_role_verified_by_audit")
     first_seen = str(item.get("auditDate") or today.isoformat())[:10]
     digest = hashlib.sha1(coverage_id.encode("utf-8")).hexdigest()[:14]
@@ -361,7 +394,7 @@ def _candidate_to_item(
             "source_mark": "UE" if ".eu" in urlsplit(url).netloc or "europa.eu" in url else publisher[:12],
             "source_class": "eu" if ".eu" in urlsplit(url).netloc or "europa.eu" in url else "istituzionale",
             "category": category,
-            "description": summary[:320],
+            "description": description,
             "condition_label": "Partnership / consorzio" if relevance_class == relevance.PARTNER else "Verificare i requisiti specifici",
         },
         "access_mode": "specific_requirement" if relevance_class not in {relevance.SUPPORT_FINANCE, relevance.ROUTED} else "support_route",
@@ -428,9 +461,17 @@ def apply_audit_corpus_promotions(
     existing_titles = {_normalized_title(x.get("title")) for x in opportunities}
 
     added: list[dict[str, Any]] = []
+    by_coverage = {str(x.get("coverage_id") or ""): x for x in opportunities if x.get("source_id") == "audit-corpus-v1"}
     for item in promotions:
         coverage_id = str(item.get("coverage_id") or "")
         title_key = _normalized_title(item.get("title"))
+        current = by_coverage.get(coverage_id)
+        if current is not None:
+            # Una scheda già presente (es. ripristinata per continuità) riceve il
+            # testo pubblico corrente, compresa l'eventuale traduzione italiana.
+            for key in ("summary", "beneficiary_text", "eligibility_reason", "project_requirements", "municipality_eligibility"):
+                current[key] = item[key]
+            current.setdefault("presentation", {})["description"] = item["presentation"]["description"]
         if coverage_id in existing_ids or title_key in existing_titles:
             continue
         opportunities.append(item)

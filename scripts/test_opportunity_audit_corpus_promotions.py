@@ -27,7 +27,46 @@ def _print_diagnostics(items: list[dict]) -> None:
     print("AUDIT REPLAY DIAGNOSTIC END")
 
 
+def _italian_texts_contract() -> None:
+    """Le traduzioni restano vincolate all'evidenza originale e sostituiscono i testi pubblici."""
+    import re
+    import opportunity_audit_corpus_promotions as base
+    payload = json.loads((ROOT / "data" / "opportunity-audit-italian-texts.json").read_text(encoding="utf-8"))
+    entries = payload["entries"]
+    assert entries, "Nessuna traduzione registrata"
+    original = base.italian_presentation
+    base.italian_presentation = lambda *args, **kwargs: None
+    try:
+        english = {x["coverage_id"]: x for x in base.discover_promotions(date(2026, 10, 26))}
+    finally:
+        base.italian_presentation = original
+    published = {x["coverage_id"]: x for x in base.discover_promotions(date(2026, 10, 26))}
+    english_words = re.compile(r"\b(the|and|which|through|authorities|applicant|eligible|requests)\b", re.I)
+    for coverage_id, entry in entries.items():
+        assert coverage_id in english, f"Traduzione per una voce non più pubblicata: {coverage_id}"
+        source = english[coverage_id]
+        digest = base._source_text_digest(source["summary"], source["eligibility_reason"])
+        assert entry["sourceSha256"] == digest, f"Testo audit cambiato, traduzione da rivedere: {coverage_id}"
+        item = published[coverage_id]
+        assert item["summary"] == entry["summary"] and item["eligibility_reason"] == entry["reason"]
+        assert item["beneficiary_text"] == item["project_requirements"] == entry["reason"]
+        assert item["presentation"]["description"] == entry["description"]
+        assert all(v["reason"] == entry["reason"] for v in item["municipality_eligibility"].values()
+                   if v["status"] == "conditional")
+        for text in (entry["summary"], entry["reason"], entry["description"]):
+            assert not english_words.search(text), (coverage_id, text)
+    # Un cambio del testo originale disattiva la traduzione invece di mostrarla superata.
+    cid = next(iter(entries))
+    assert base.italian_presentation(cid, english[cid]["summary"] + " (aggiornato)", english[cid]["eligibility_reason"]) is None
+    # Una scheda già presente (continuità) riceve il testo corrente.
+    stale = copy.deepcopy(english[cid])
+    result = {"opportunities": [stale]}
+    base.apply_audit_corpus_promotions(result, date(2026, 10, 26))
+    assert stale["summary"] == entries[cid]["summary"], "Scheda ripristinata rimasta in inglese"
+
+
 def main() -> int:
+    _italian_texts_contract()
     baseline = json.loads((ROOT / "data" / "opportunity-daily-public.json").read_text(encoding="utf-8"))
     before_ids = {str(x.get("coverage_id") or x.get("id") or "") for x in baseline.get("opportunities") or []}
     before = relevance.summarize(list(baseline.get("opportunities") or []))
