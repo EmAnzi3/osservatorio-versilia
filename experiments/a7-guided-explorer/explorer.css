@@ -39,6 +39,22 @@
 .a7-explorer .explorer-benchmark-values dd{margin:.4rem 0 0;font-size:1.2rem;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .a7-explorer .explorer-aggregation .explorer-benchmark-values{grid-template-columns:1fr}
 @media(max-width:600px){.a7-explorer .explorer-benchmark-values{grid-template-columns:1fr}.a7-explorer .explorer-benchmark-values div+div{border-top:1px solid #dce3e9;padding-top:.7rem}}
-.a7-explorer .explorer-outlier-list{margin:1rem 0;padding-left:1.2rem}
-.a7-explorer .explorer-outlier-list li{margin:.25rem 0;overflow-wrap:anywhere}
-.a7-explorer .explorer-outlier-list li[data-outlier-class=above_fence],.a7-explorer .explorer-outlier-list li[data-outlier-class=below_fence]{font-weight:600}
+.a7-explorer .explorer-outliers .explorer-outliers-kicker{margin:0 0 .25rem;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:#4b6475}
+.a7-explorer .explorer-outliers h4{font-size:1.35rem;line-height:1.25;margin:0 0 1.25rem}
+.a7-explorer .explorer-strip{padding:2.4rem .9rem 1.2rem;margin:0 0 .75rem}
+.a7-explorer .explorer-strip-track{position:relative;height:6px;border-radius:3px;background:#dfe6eb}
+.a7-explorer .explorer-strip-band{position:absolute;top:-14px;height:34px;border-radius:6px;background:#d6e7f1;box-shadow:inset 0 0 0 1px #9ec3d9}
+.a7-explorer .explorer-strip-median{position:absolute;top:-18px;width:2px;height:42px;margin-left:-1px;background:#1f4e6b}
+.a7-explorer .explorer-strip-dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#2f6f94;box-shadow:0 0 0 2px #fff;opacity:.92}
+.a7-explorer .explorer-strip-dot.is-out{width:20px;height:20px;margin:-10px 0 0 -10px;background:#c2410c;opacity:1;box-shadow:0 0 0 3px #fff,0 0 0 5px #c2410c}
+.a7-explorer .explorer-strip-tag{position:absolute;bottom:22px;max-width:100%;overflow-wrap:anywhere;font-weight:700;font-size:.9rem;color:#7c2d12}
+.a7-explorer .explorer-strip-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:0 0 .75rem}
+.a7-explorer .explorer-strip-legend dt{font-size:.8rem;color:#4b6475}
+.a7-explorer .explorer-strip-legend dd{margin:.15rem 0 0;font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.a7-explorer .explorer-strip-legend .is-median dd{color:#1f4e6b}
+.a7-explorer .explorer-strip-key{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-size:.85rem;color:#4b6475;margin:0 0 .75rem}
+.a7-explorer .explorer-strip-key span::before{content:"";display:inline-block;vertical-align:-2px;margin-right:.4rem}
+.a7-explorer .explorer-strip-key-band::before{width:18px;height:12px;border-radius:3px;background:#d6e7f1;box-shadow:inset 0 0 0 1px #9ec3d9}
+.a7-explorer .explorer-strip-key-in::before{width:12px;height:12px;border-radius:50%;background:#2f6f94}
+.a7-explorer .explorer-strip-key-out::before{width:12px;height:12px;border-radius:50%;background:#c2410c;box-shadow:0 0 0 2px #fff,0 0 0 3px #c2410c}
+@media(max-width:600px){.a7-explorer .explorer-strip-legend{grid-template-columns:minmax(0,1fr)}.a7-explorer .explorer-strip-legend{gap:.5rem}.a7-explorer .explorer-strip-legend dd{font-size:1rem}.a7-explorer .explorer-strip{padding-top:2.8rem}.a7-explorer .explorer-outliers h4{font-size:1.15rem}}

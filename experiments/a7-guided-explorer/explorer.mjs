@@ -202,29 +202,57 @@ export async function startExplorer(openRuntime,presentation){
    const codes=root.towns.map(t=>t.code).sort();
    // Present the native Tukey screen verbatim: never compute quartiles, fences
    // or classifications in the browser, never drop a town or change the rule.
+   // Positions on the strip are display geometry only, never a new statistic.
    if(!r||r.rule!=='tukey_1_5_iqr'||canonical([...selector.towns].sort())!==canonical(codes)||
       !Number.isInteger(r.n)||r.n!==response.coverage?.usable||!Array.isArray(r.observations)||r.observations.length!==r.n||
       ![r.q1,r.q3,r.median,r.iqr,r.lowerFence,r.upperFence].every(Number.isFinite)||!(r.lowerFence<=r.upperFence)||
       r.observations.some(o=>!codes.includes(o.geography)||!Number.isFinite(o.value)||!outlierClasses[o.classification])||
       new Set(r.observations.map(o=>o.geography)).size!==r.n)throw Error('incompatible_outlier_result');
-   const unit=unitLabel({unit:r.unit});
-   const summary=node('section');summary.className='explorer-outliers';summary.setAttribute('aria-label','Valori fuori scala fra i sette Comuni');
-   summary.append(node('h4','Valori fuori scala fra i sette Comuni'));
+   const raw=unitLabel({unit:r.unit}),unit=raw&&raw!=='indice'?' '+raw:'';
+   const fmt=x=>concise(x)+unit;
    const above=r.observations.filter(o=>o.classification==='above_fence'),below=r.observations.filter(o=>o.classification==='below_fence');
-   const verdict=node('p',above.length||below.length?[above.length?'Molto sopra gli altri Comuni: '+above.map(o=>townName(o.geography)).join(', ')+'.':'',below.length?'Molto sotto gli altri Comuni: '+below.map(o=>townName(o.geography)).join(', ')+'.':''].filter(Boolean).join(' '):'Nessun Comune è fuori scala per questa misura: tutti i valori sono entro le soglie.');
+   const names=list=>list.map(o=>townName(o.geography)).join(' e ');
+   const summary=node('section');summary.className='explorer-outliers';summary.setAttribute('aria-label','Valori fuori scala fra i sette Comuni');
+   const period=observations[0]?.period;
+   summary.append(node('p','Valori fuori scala fra i sette Comuni'+(period!==undefined?' · '+String(period):'')));
+   summary.lastChild.className='explorer-outliers-kicker';
+   const verdict=node('h4',above.length||below.length?[above.length?names(above)+(above.length>1?' sono':' è')+' molto sopra gli altri Comuni':'',below.length?names(below)+(below.length>1?' sono':' è')+' molto sotto gli altri Comuni':''].filter(Boolean).join('; ')+'.':'Nessun Comune è fuori scala: tutti i valori sono nella fascia attesa.');
    verdict.dataset.outlierVerdict=above.length||below.length?'flagged':'none';summary.append(verdict);
-   const cards=node('dl');cards.className='explorer-benchmark-values';
-   for(const [key,label,amount] of [['lower','Soglia inferiore',r.lowerFence],['median','Valore mediano',r.median],['upper','Soglia superiore',r.upperFence]]){
-     const card=node('div'),shown=node('dd',concise(amount)+(unit?' '+unit:''));shown.dataset.outlierValue=key;card.append(node('dt',label),shown);cards.append(card);
+   // Strip: shaded expected band between the native fences, median tick, one dot per town.
+   const values=r.observations.map(o=>o.value);
+   let lo=Math.min(r.lowerFence,...values),hi=Math.max(r.upperFence,...values);
+   const pad=(hi-lo)*.06||Math.abs(hi)*.1||1;lo-=pad;hi+=pad;
+   const at=x=>((x-lo)/(hi-lo)*100).toFixed(3)+'%';
+   const strip=node('div');strip.className='explorer-strip';strip.setAttribute('role','img');
+   strip.setAttribute('aria-label','Posizione dei sette Comuni rispetto alla fascia attesa, da '+fmt(r.lowerFence)+' a '+fmt(r.upperFence)+'. '+verdict.textContent+' I valori sono nella tabella.');
+   const track=node('div');track.className='explorer-strip-track';
+   const band=node('span');band.className='explorer-strip-band';band.style.left=at(r.lowerFence);band.style.width=((r.upperFence-r.lowerFence)/(hi-lo)*100).toFixed(3)+'%';
+   const median=node('span');median.className='explorer-strip-median';median.style.left=at(r.median);
+   track.append(band,median);
+   for(const o of [...r.observations].sort((a,b)=>(a.classification!=='within_fences')-(b.classification!=='within_fences'))){
+     const flagged=o.classification!=='within_fences';
+     const dot=node('span');dot.className='explorer-strip-dot'+(flagged?' is-out':'');dot.style.left=at(o.value);
+     dot.dataset.outlierGeography=o.geography;dot.dataset.outlierClass=o.classification;
+     dot.title=townName(o.geography)+': '+fmt(o.value)+' · '+outlierClasses[o.classification];
+     track.append(dot);
+     if(flagged){const tag=node('span',townName(o.geography)+' · '+fmt(o.value));tag.className='explorer-strip-tag';const left=(o.value-lo)/(hi-lo);if(left>.6)tag.style.right='0';else if(left<.4)tag.style.left='0';else{tag.style.left=at(o.value);tag.style.transform='translateX(-50%)';}track.append(tag);}
    }
-   summary.append(cards);
-   const list=node('ul');list.className='explorer-outlier-list';
-   for(const o of r.observations){const item=node('li',townName(o.geography)+': '+concise(o.value)+(unit?' '+unit:'')+' · '+outlierClasses[o.classification]);item.dataset.outlierGeography=o.geography;item.dataset.outlierClass=o.classification;list.append(item);}
-   summary.append(list,node('p','Un valore è fuori scala quando supera la soglia superiore o scende sotto quella inferiore. Le soglie si ricavano dai sette valori: primo e terzo quartile, allargati di 1,5 volte la loro distanza (regola di Tukey).'),node('p','Con sette Comuni è una lettura descrittiva: non indica un errore nel dato, una qualità dell’amministrazione o una priorità. Un altro gruppo di Comuni darebbe soglie diverse.'));
-   const method=node('div');const ul=node('ul');
-   for(const [key,label] of [['q1','Primo quartile'],['q3','Terzo quartile'],['iqr','Scarto interquartile'],['median','Mediana'],['lowerFence','Soglia inferiore'],['upperFence','Soglia superiore']]){const item=node('li',label+': '+number(r[key])+(unit?' '+unit:''));item.dataset.outlierOriginal=key;ul.append(item);}
-   method.append(ul,node('p','Regola originale: '+r.rule+'. Quartili: '+String(r.quantileMethod||'non dichiarato')+'. Osservazioni utilizzate: '+String(r.n)+'.'),node('p','Sintesi arrotondata per la lettura; i valori qui sopra conservano la precisione originale.'));
-   summary.append(fold('Metodo e valori originali',method));out.append(summary);
+   strip.append(track);summary.append(strip);
+   const legend=node('dl');legend.className='explorer-strip-legend';
+   for(const [key,label,amount,cls] of [['lower','Soglia inferiore',r.lowerFence,'band'],['median','Valore mediano',r.median,'median'],['upper','Soglia superiore',r.upperFence,'band']]){
+     const item=node('div');item.className='is-'+cls;const shown=node('dd',fmt(amount));shown.dataset.outlierValue=key;item.append(node('dt',label),shown);legend.append(item);
+   }
+   summary.append(legend);
+   const key=node('p');key.className='explorer-strip-key';
+   const swatch=(cls,text)=>{const s=node('span',text);s.className='explorer-strip-key-'+cls;return s;};
+   key.append(swatch('band','Fascia attesa'),swatch('in','Comune nella fascia'),swatch('out','Comune fuori scala'));
+   summary.append(key);
+   const how=node('div');
+   how.append(node('p','Un valore è fuori scala quando esce dalla fascia attesa. La fascia si ricava dai sette valori: dal primo al terzo quartile, allargati di 1,5 volte la loro distanza (regola di Tukey).'),node('p','Con sette Comuni è una lettura descrittiva: non indica un errore nel dato, una qualità dell’amministrazione o una priorità. Un altro gruppo di Comuni darebbe soglie diverse.'));
+   const ul=node('ul');
+   for(const [field,label] of [['q1','Primo quartile'],['q3','Terzo quartile'],['iqr','Scarto interquartile'],['median','Mediana'],['lowerFence','Soglia inferiore'],['upperFence','Soglia superiore']]){const item=node('li',label+': '+number(r[field])+unit);item.dataset.outlierOriginal=field;ul.append(item);}
+   how.append(ul,node('p','Regola originale: '+r.rule+'. Quartili: '+String(r.quantileMethod||'non dichiarato')+'. Osservazioni utilizzate: '+String(r.n)+'. Valori esatti di ogni Comune nella tabella.'));
+   summary.append(fold('Come si legge e valori originali',how));out.append(summary);
  }
  function rankingRows(response,selector,out){
    const r=response.result,observations=response.observations||[];
@@ -279,7 +307,7 @@ export async function startExplorer(openRuntime,presentation){
    // Never turn a category code into a number or use retained refusal values as a chart.
    const visible=observations.slice(pageIndex*20,(pageIndex+1)*20);
    const base=observations[0];
-   const chart=response.status==='computed'&&operation!=='lookup'&&base&&observations.length>1&&observations.every(o=>typeof o.value==='number'&&Number.isFinite(o.value)&&o.value>=0&&!o.dataUnavailable&&!o.notApplicable&&o.unit!=='category_code'&&['unit','dimension','population','definition','method'].every(k=>o[k]===base[k]))&&(observations.every(o=>o.period===base.period)||observations.every(o=>o.geography===base.geography));
+   const chart=response.status==='computed'&&!['lookup','anomaly'].includes(operation)&&base&&observations.length>1&&observations.every(o=>typeof o.value==='number'&&Number.isFinite(o.value)&&o.value>=0&&!o.dataUnavailable&&!o.notApplicable&&o.unit!=='category_code'&&['unit','dimension','population','definition','method'].every(k=>o[k]===base[k]))&&(observations.every(o=>o.period===base.period)||observations.every(o=>o.geography===base.geography));
    if(chart){
      const graph=node('div');graph.setAttribute('role','img');graph.setAttribute('aria-label','Confronto visivo delle osservazioni riportate nella tabella. Scala da zero; valori mancanti non rappresentati.');
      const maximum=Math.max(...observations.map(o=>o.value))||1;
