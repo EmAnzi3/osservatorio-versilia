@@ -1,4 +1,4 @@
-.a7-explorer{--ink:#14324a;--muted:#4b6475;--line:#d5e0e8;--tint:#eef4f8;--accent:#0f5f8c;--accent-strong:#0b4a6e;margin:1.5rem 0 3rem;padding:clamp(1.1rem,3vw,2.2rem);color:var(--ink);background:linear-gradient(160deg,#e3eef5 0%,#eef4f6 45%,#f6f1e6 100%);border:0;border-radius:20px;box-shadow:0 1px 0 rgba(20,50,74,.06);scroll-margin-top:7rem}
+section.a7-explorer.a7-explorer{--ink:#14324a;--muted:#4b6475;--line:#d5e0e8;--tint:#eef4f8;--accent:#0f5f8c;--accent-strong:#0b4a6e;margin:1.5rem 0 3rem;padding:clamp(1.1rem,3vw,2.2rem);color:var(--ink);background:linear-gradient(160deg,#e3eef5 0%,#eef4f6 45%,#f6f1e6 100%);border:0;border-radius:20px;box-shadow:0 1px 0 rgba(20,50,74,.06);scroll-margin-top:7rem}
 .a7-explorer *{box-sizing:border-box;min-width:0}
 .a7-explorer [hidden]{display:none!important}
 .a7-explorer h2{font-size:clamp(1.65rem,4vw,2.3rem);line-height:1.15;margin:.5rem 0 .7rem}
