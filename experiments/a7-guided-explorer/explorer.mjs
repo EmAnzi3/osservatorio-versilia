@@ -40,7 +40,8 @@ export async function startExplorer(openRuntime,presentation){
  function setOperation(){
    revoke();const v=view();$('operation').replaceChildren();
    // Only readings materialized in this release are offered; others are not listed.
-   for(const operation of v?.declaredOperations||[]){const available=Boolean(v.shards[profiles[operation]])&&(operation!=='benchmark_gap'||benchmarkScopes().length>0)&&(operation!=='anomaly'||Boolean(root.outlierSelection));if(available)$('operation').append(option(operation,operations[operation]||operation));}
+   const order=['observe','lookup','compare','rank','benchmark_gap','series','trend','absolute_change','relative_change','percentage_points','anomaly','weighted_ratio'];
+   for(const operation of [...(v?.declaredOperations||[])].sort((a,b)=>(order.indexOf(a)+1||99)-(order.indexOf(b)+1||99))){const available=Boolean(v.shards[profiles[operation]])&&(operation!=='benchmark_gap'||benchmarkScopes().length>0)&&(operation!=='anomaly'||Boolean(root.outlierSelection));if(available)$('operation').append(option(operation,operations[operation]||operation));}
    const available=Array.from($('operation').options).find(o=>!o.disabled);
    if(available)$('operation').value=available.value;
    else{$('operation').value='';status('Per questa vista non ci sono ancora letture consultabili qui. Non significa che il dato sia assente.');}
