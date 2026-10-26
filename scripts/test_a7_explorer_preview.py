@@ -315,12 +315,14 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-benchmark', request['benchmark'])
                         else:
                             assert not page.is_visible('#explorer-benchmark')
-                        if request['operation'] in ('weighted_ratio','rank'):
+                        if request['operation'] in ('weighted_ratio','rank','anomaly'):
                             assert not page.is_visible('#explorer-town-field')
                             assert page.is_disabled('#explorer-town')
                             assert 'tutti i sette Comuni' in page.locator('#explorer-reference').text_content()
                             if request['operation'] == 'rank':
                                 assert 'dal valore maggiore al minore' in page.locator('#explorer-reference').text_content()
+                            if request['operation'] == 'anomaly':
+                                assert 'regola di Tukey' in page.locator('#explorer-reference').text_content()
                         else:
                             assert page.is_visible('#explorer-town-field')
                         if len(selector['towns']) == 1:
