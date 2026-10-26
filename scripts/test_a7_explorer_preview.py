@@ -303,7 +303,12 @@ def verify_explorer(catalog, runtime, output, samples):
                         page.select_option('#explorer-theme', summaries[selector['metric']]['theme'])
                         page.select_option('#explorer-metric', selector['metric'])
                         page.wait_for_function("()=>document.querySelector('#explorer-view').options.length>0")
-                        page.select_option('#explorer-view', selector['dimension'])
+                        views_count = page.locator('#explorer-view option').count()
+                        assert page.is_visible('#explorer-view-field') == (views_count > 1), 'single_detail_choice_shown'
+                        assert page.is_visible('#explorer-filter-field') == (views_count > 8), 'detail_search_shown_needlessly'
+                        if views_count > 1:
+                            page.select_option('#explorer-view', selector['dimension'])
+                        assert page.input_value('#explorer-view') == selector['dimension']
                         trend_option = page.locator('#explorer-operation option[value=trend]')
                         selected_view = next(v for v in details[selector['metric']]['views'] if v['dimension'] == selector['dimension'])
                         if trend_option.count():
@@ -563,10 +568,12 @@ def verify_explorer(catalog, runtime, output, samples):
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')
                     # Filter revokes previous selection/results; no fabricated fallback view.
-                    page.fill('#explorer-filter', 'NO_MATCH_VIEW_abcdef')
+                    # The search is hidden for short lists, but its logic must still revoke cleanly.
+                    type_filter = "v=>{const f=document.querySelector('#explorer-filter');f.value=v;f.dispatchEvent(new Event('input'))}"
+                    page.evaluate(type_filter, 'NO_MATCH_VIEW_abcdef')
                     assert page.locator('#explorer-view option').count() == 0
                     assert page.is_disabled('#explorer-run')
-                    page.fill('#explorer-filter', '')
+                    page.evaluate(type_filter, '')
                     # Network and integrity failures remove all results. Fresh opening retries
                     # the same embedded release, never another data source or cached answer.
                     point = next(e for e in samples if e['request']['operation'] == 'observe'

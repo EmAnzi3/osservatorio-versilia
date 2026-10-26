@@ -84,13 +84,16 @@ export async function startExplorer(openRuntime,presentation){
    status('Caricamento delle viste di questo indicatore…');
    const loaded=await active(runtime.discover(selected),ticket);
    if(ticket!==generation)return;
-   detail=loaded;filterViews();
+   detail=loaded;
+   // Show detail controls only when they help: one view needs no choice, few views need no search.
+   $('view-field').hidden=detail.views.length<2;$('filter-field').hidden=detail.views.length<=8;
+   filterViews();
    if(!$('run').disabled)status('Scegli vista e operazione, poi mostra i dati.');
  }
  async function themeChanged(){
    revoke();const members=root.metrics.filter(m=>m.theme===$('theme').value);
    $('metric').replaceChildren(option('','Scegli un indicatore'),...members.map(m=>option(m.metric,m.label)));
-   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('description').textContent='';
+   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('description').textContent='';$('view-field').hidden=false;$('filter-field').hidden=true;
    status('Scegli un indicatore del tema selezionato.');
  }
  function request(){
