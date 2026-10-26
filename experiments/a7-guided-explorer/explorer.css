@@ -15,7 +15,7 @@ section.a7-explorer.a7-explorer{--ink:#14324a;--muted:#4b6475;--line:#d5e0e8;--t
 .a7-explorer .explorer-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem 1.2rem}
 .a7-explorer label{display:flex;flex-direction:column;gap:.4rem;font-weight:600;font-size:.95rem}
 .a7-explorer .explorer-wide{grid-column:1/-1}
-.a7-explorer select,.a7-explorer input{width:100%;max-width:100%;background:#f7fafc!important;color:var(--ink);border:1px solid #c3d1db;border-radius:10px;padding:.75rem .85rem;font:inherit;font-weight:400;transition:border-color .15s,box-shadow .15s}
+.a7-explorer select,.a7-explorer input{width:100%;max-width:100%;background:#fff!important;color:var(--ink);border:1px solid #c3d1db;border-radius:10px;padding:.75rem .85rem;font:inherit;font-weight:400;transition:border-color .15s,box-shadow .15s}
 .a7-explorer select:hover,.a7-explorer input:hover{border-color:#8fb1c6}
 .a7-explorer select:focus,.a7-explorer input:focus{background:#fff!important;border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,95,140,.15);outline:none}
 .a7-explorer .explorer-notes{margin:1.1rem 0 .4rem;padding:.75rem 1rem;background:var(--tint);border-radius:10px;font-size:.92rem;color:var(--muted)}
