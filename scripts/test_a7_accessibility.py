@@ -113,7 +113,7 @@ def verify(catalog):
     report = audit(catalog, Path(catalog).parent/'source-registry.json', site=Path(catalog).parent.parent)
     assert report['interfaceArtifact']['status'] == 'PASS'
     assert report['interfaceSummary']['prepared_native_defaults'] > 0
-    assert all(o['artifactGeneralExplorer'] != 'prepared_native_defaults' for v in report['views'] for o in v['operations'] if o['operation'] not in ('observe','lookup','compare','series','rank','benchmark_gap','weighted_ratio','absolute_change','relative_change','percentage_points','trend'))
+    assert all(o['artifactGeneralExplorer'] != 'prepared_native_defaults' for v in report['views'] for o in v['operations'] if o['operation'] not in ('observe','lookup','compare','series','rank','benchmark_gap','weighted_ratio','absolute_change','relative_change','percentage_points','trend','anomaly'))
     import json
     descriptor = json.loads((Path(catalog).parent.parent/'explorer-preview.json').read_text())
     benchmark_views = [o for v in report['views'] for o in v['operations']
@@ -135,6 +135,12 @@ def verify(catalog):
                    if o['operation'] == 'trend' and o['artifactGeneralExplorer'] == 'prepared_native_defaults']
     assert bool(trend_views) == (descriptor.get('interfaceVersion', 1) >= 6), 'trend_ui_scope_not_attested'
     assert all(o['requestScope'] == 'one_town_full_native_series_ols_no_forecast' for o in trend_views)
+    outlier_views = [o for v in report['views'] for o in v['operations']
+                     if o['operation'] == 'anomaly' and o['artifactGeneralExplorer'] == 'prepared_native_defaults']
+    assert bool(outlier_views) == (descriptor.get('interfaceVersion', 1) >= 8), 'outlier_ui_scope_not_attested'
+    assert all(o['requestScope'] == 'all_seven_towns_tukey_1_5_iqr_declared_purpose' for o in outlier_views)
+    assert not any(o['operation'] == 'correlation' and o['artifactGeneralExplorer'] == 'prepared_native_defaults'
+                   for v in report['views'] for o in v['operations']), 'associations_published_implicitly'
 
     rows = report['acquisition']
     assert len(rows) == report['acquisitionSummary']['pairCount']

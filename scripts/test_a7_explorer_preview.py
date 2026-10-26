@@ -55,9 +55,9 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
         raise AssertionError('association_preview_published_implicitly')
     assert not (output/'forbidden').exists()
     default = build(dist, runtime, output/'default')
-    assert default['interfaceVersion'] == 6 and not any('associations.' in p for p in default['files'])
+    assert default['interfaceVersion'] == 8 and not any('associations.' in p for p in default['files'])
     receipt = build(dist, runtime, output/'guided', associations=True)
-    assert receipt['interfaceVersion'] == 7 and receipt['associationInterface'] == 'explicit_plan_preview_only'
+    assert receipt['interfaceVersion'] == 9 and receipt['associationInterface'] == 'explicit_plan_preview_only'
     assert any(p.endswith('associations.mjs') for p in receipt['files'])
     root = json.loads((Path(runtime)/'release.json').read_text())
     entries = root['associationPlan']['entries']
@@ -315,12 +315,14 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-benchmark', request['benchmark'])
                         else:
                             assert not page.is_visible('#explorer-benchmark')
-                        if request['operation'] in ('weighted_ratio','rank'):
+                        if request['operation'] in ('weighted_ratio','rank','anomaly'):
                             assert not page.is_visible('#explorer-town-field')
                             assert page.is_disabled('#explorer-town')
                             assert 'tutti i sette Comuni' in page.locator('#explorer-reference').text_content()
                             if request['operation'] == 'rank':
                                 assert 'dal valore maggiore al minore' in page.locator('#explorer-reference').text_content()
+                            if request['operation'] == 'anomaly':
+                                assert 'regola di Tukey' in page.locator('#explorer-reference').text_content()
                         else:
                             assert page.is_visible('#explorer-town-field')
                         if len(selector['towns']) == 1:
@@ -337,6 +339,7 @@ def verify_explorer(catalog, runtime, output, samples):
                     aggregations = 0; aggregation_refusals = 0; changes = {}; change_refusals = 0
                     rankings = 0; ranking_refusals = 0; ranking_ties = 0
                     trends = 0; trend_refusals = 0; trend_signs = set(); trend_units = set(); trend_pages = 0
+                    outliers = 0; outlier_verdicts = set()
                     for entry in samples:
                         select(entry)
                         page.click('#explorer-run')
@@ -429,6 +432,29 @@ def verify_explorer(catalog, runtime, output, samples):
                                 trend_refusals += 1
                                 assert shown.count() == 0 and not page.locator('.explorer-bar-row').count(), 'refusal_promoted_to_trend'
                                 assert 'Nessuna tendenza stimata' in page.locator('#explorer-result').text_content()
+                        if op == 'anomaly':
+                            response = entry['response']; native = response.get('result'); shown = page.locator('.explorer-outliers')
+                            assert not page.is_visible('#explorer-town-field'), 'outlier_town_selector_visible'
+                            if response['status'] == 'computed':
+                                outliers += 1
+                                assert shown.count() == 1
+                                flagged = [o['geography'] for o in native['observations'] if o['classification'] != 'within_fences']
+                                verdict = shown.locator('[data-outlier-verdict]').get_attribute('data-outlier-verdict')
+                                assert verdict == ('flagged' if flagged else 'none'); outlier_verdicts.add(verdict)
+                                listed = shown.locator('[data-outlier-geography]')
+                                assert listed.count() == native['n']
+                                for o in native['observations']:
+                                    assert shown.locator(f'[data-outlier-geography="{o["geography"]}"]').get_attribute('data-outlier-class') == o['classification']
+                                for key, field in (('lower','lowerFence'),('median','median'),('upper','upperFence')):
+                                    expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native[field]))
+                                    assert expected in shown.locator(f'[data-outlier-value={key}]').text_content()
+                                original = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(native['upperFence']))
+                                assert original in shown.locator('[data-outlier-original=upperFence]').text_content(), 'outlier_original_precision_lost'
+                                text = shown.text_content()
+                                assert 'non indica un errore' in text and 'Tukey' in text and 'anomal' not in text.lower(), 'outlier_wording'
+                            else:
+                                assert shown.count() == 0, 'refusal_promoted_to_outliers'
+                                assert 'Nessun valore fuori scala' in page.locator('#explorer-result').text_content()
                         if op in ('absolute_change','relative_change','percentage_points'):
                             native = entry['response']['result']; shown = page.locator('.explorer-change')
                             if entry['response']['status'] == 'computed':
@@ -532,6 +558,7 @@ def verify_explorer(catalog, runtime, output, samples):
                     assert aggregations and aggregation_refusals
                     assert rankings and ranking_refusals and ranking_ties, 'ranking_edge_cases_not_exercised'
                     assert trends and trend_refusals and len(trend_signs) == 2 and trend_pages, 'trend_edge_cases_not_exercised'
+                    assert outliers and outlier_verdicts == {'flagged', 'none'}, 'outlier_cases_not_exercised'
                     assert set(changes) == {'absolute_change','relative_change','percentage_points'} and change_refusals
                     select(partial);page.click('#explorer-run');page.wait_for_selector('#explorer-consent:not([hidden])')
                     page.click('#explorer-cancel');assert not page.is_visible('#explorer-result') and not page.is_visible('#explorer-consent')

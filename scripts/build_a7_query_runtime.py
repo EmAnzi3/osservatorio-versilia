@@ -13,7 +13,13 @@ from build_territorial_dossier_evidence import portable_evidence
 
 READER = Path(__file__).resolve().parents[1] / 'experiments/a7-query-runtime/reader.mjs'
 DEFAULT_PROFILES = ('current', 'comparison', 'history')
-PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes', 'trends')
+PROFILES = (*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes', 'trends', 'outliers')
+# Declared editorial purpose of the outlier profile: one fixed A6 request per
+# view over the seven municipalities, never a user-written or per-view purpose.
+OUTLIER_RULE = 'tukey_1_5_iqr'
+OUTLIER_REFERENCE = 'selected_municipalities'
+OUTLIER_PURPOSE = ('Lettura descrittiva dei sette Comuni: valori molto lontani dagli altri secondo la regola di Tukey '
+                   '(1,5 volte lo scarto interquartile); non indica errori, qualità o priorità')
 
 
 def digest(body):
@@ -41,6 +47,11 @@ def change_periods(workbench, metric, dimension, operations, towns):
     return result
 
 
+def outlier_selection():
+    """The exact declared request fields, published so the UI never retypes them."""
+    return dict(rule=OUTLIER_RULE, reference=OUTLIER_REFERENCE, purpose=OUTLIER_PURPOSE)
+
+
 def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, benchmark_scopes=(), change_periods_by_town=None):
     """An explicit finite envelope, generated from declarations, never question IDs.
 
@@ -64,6 +75,10 @@ def recipes(metric, dimension, operations, towns, profiles=DEFAULT_PROFILES, *, 
             yield 'trends', dict(operation='trend', selectors=[dict(selector, towns=[town])])
     if 'rank' in operations and 'ranking' in profiles:
         yield 'ranking', dict(operation='rank', selectors=[dict(selector, towns=towns)])
+    if 'anomaly' in operations and 'outliers' in profiles:
+        # One original Tukey screen over all seven towns. No subsets, other rules,
+        # partial opt-in or reference distributions are reconstructed.
+        yield 'outliers', dict(operation='anomaly', selectors=[dict(selector, towns=towns)], **outlier_selection())
 
     if 'weighted_ratio' in operations and 'aggregation' in profiles:
         # No partial opt-in, generic sum, inferred weights or geographic token.
@@ -161,10 +176,12 @@ def build(catalog_path, output_dir, *, metrics=None, max_views=None, profiles=DE
                               **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
                               **({'changes': 'one_town_first_last_native_series_periods'} if 'changes' in profiles else {}),
                               **({'trends': 'one_town_full_native_series_ols_no_forecast'} if 'trends' in profiles else {}),
+                              **({'outliers': 'all_seven_towns_tukey_1_5_iqr_declared_purpose'} if 'outliers' in profiles else {}),
                               partialConsent=False, arbitraryRequests=False),
                 scope='all_metrics' if metrics is None and max_views is None else 'explicit_subset',
                 maxViewsPerMetric=max_views,
-                towns=discovery['towns'], metrics=[])
+                towns=discovery['towns'], metrics=[],
+                **({'outlierSelection': outlier_selection()} if 'outliers' in profiles else {}))
     for summary in discovery['metrics']:
         metric = summary['metric']
         if metric not in chosen:

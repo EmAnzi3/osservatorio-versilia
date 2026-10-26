@@ -2,7 +2,9 @@
   <p class="explorer-eyebrow">ANTEPRIMA · ESPLORAZIONE DEI DATI</p>
   <h2 id="explorer-title">Esplora una misura, scegli il tuo confronto</h2>
   <p>Parti da un tema e scegli la vista che ti interessa. Ogni risultato conserva il periodo, le fonti e i limiti del dato originale.</p>
-  <p class="explorer-scope">Questa anteprima consente letture comunali, confronti, ordini numerici, serie, tendenze native, variazioni fra estremi, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un ordine numerico non valuta la qualità amministrativa. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.</p>
+  <details class="explorer-scope-fold"><summary>Che cosa puoi chiedere</summary>
+    <p class="explorer-scope">Questa anteprima consente letture comunali, confronti, ordini numerici, serie, tendenze native, variazioni fra estremi, valori fuori scala, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un ordine numerico o un valore fuori scala non valutano la qualità amministrativa. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.</p>
+  </details>
   <form id="explorer-form">
     <fieldset disabled><legend>La tua selezione</legend>
       <div class="explorer-fields">
@@ -14,8 +16,8 @@
         <label id="explorer-benchmark-field" class="explorer-wide" hidden>Riferimento del confronto<select id="explorer-benchmark" disabled></select></label>
         <label id="explorer-town-field">Comune<select id="explorer-town" required></select></label>
       </div>
-      <p id="explorer-reference">Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.</p>
-      <p id="explorer-description"></p>
+      <div class="explorer-notes"><p id="explorer-reference">Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.</p>
+      <p id="explorer-description"></p></div>
       <button id="explorer-run" type="submit" disabled>Mostra i dati</button>
     </fieldset>
   </form>
