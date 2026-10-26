@@ -268,8 +268,8 @@ Restano aperti fino alla verifica sull’intero perimetro di prodotto dichiarato
 | --- | --- | --- |
 | A7.5.1 — esploratore di base | Tema, indicatore e vista; lettura comunale, confronto dei sette Comuni e serie dove ammessi | DONE nel perimetro nativo pubblicato #459 |
 | A7.5.2 — riferimenti geografici | Selettore esplicito Toscana/Italia; valore comunale, riferimento e scostamento originali, periodi e fonti | DONE nel perimetro nativo pubblicato #463; controllo live PASS |
-| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati #464 e variazioni native #466 pubblicati; ordine numerico #469 integrato; trasporto trend #471 e presentazione guidata #473 pubblicati; altre capacità aperte |
-| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | IN_PROGRESS: trasporto #474 integrato; anteprima opt-in con due variabili, metodo, coppie native e limiti; nessun rollout pubblico degli incroci |
+| A7.5.3 — altre dimensioni e operazioni | Raggiungere dettagli già acquisiti e operazioni ammesse: ordinamenti descrittivi, variazioni, rapporti e aggregati coerenti | IN_PROGRESS; rapporti aggregati #464 e variazioni native #466 pubblicati; ordine numerico #469 integrato; trasporto trend #471 e presentazione guidata #473 pubblicati; valori fuori scala (Tukey) in revisione, `A7_OUTLIER_VALUES.md`. Restano escluse per scelta 9 viste con riferimento «Versilia» (nessun aggregato locale costruito) |
+| A7.5.4 — incroci guidati | Relazioni ammesse fra indicatori, grafici e limiti; nessuna equivalenza correlazione–causalità | DEFERRED: escluso dalla prima versione guidata per decisione del proprietario (26/10/2026). Trasporto #474, anteprima opt-in e perimetro rivisto #489 restano disponibili; solo 6 coppie su 202 sono calcolabili e un ampliamento richiede una nuova revisione congiunta A6 |
 | A7.5.5 — riuso delle analisi | Esportazione generale delle evidenze e rapporti PDF; collegamento ai dossier consultabili nel sito | NOT_STARTED nel prodotto generale; i dossier editoriali restano un filone distinto |
 | A7.5.6 — consolidamento pubblico | Verifica di comprensibilità, accessibilità, prestazioni e copertura; maggiore visibilità solo dopo revisione | NOT_STARTED |
 
@@ -287,6 +287,12 @@ L’esploratore, il confezionamento atomico e la matrice sono documentati in
 L’anteprima generica degli incroci su un piano esplicito è descritta in
 `docs/A7_GUIDED_ASSOCIATION_PREVIEW.md`: non modifica i default pubblici,
 non autorizza tutte le coppie e non amplia automaticamente il trasporto.
+
+**Perimetro della prima versione guidata (decisione del proprietario, 26/10/2026):**
+domande su una misura (A7.5.1–A7.5.3), riuso delle analisi (A7.5.5) e
+consolidamento pubblico (A7.5.6). Gli incroci (A7.5.4) sono rinviati a uno
+sviluppo successivo e non bloccano la chiusura della prima versione. Il lancio
+pubblico (voce di navigazione) avviene soltanto a perimetro completo.
 
 **Definition of done della prima versione guidata:** il perimetro dichiarato
 è effettivamente raggiungibile dai controlli pubblici; ogni selezione produce

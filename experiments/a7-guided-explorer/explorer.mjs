@@ -1,12 +1,15 @@
 // Presentation over the original anchored A6 transport. No numerical engine.
 const node=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
 const fold=(title,content)=>{const n=node('details');n.append(node('summary',title),content);return n;};
-const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Tendenza della serie',correlation:'Associazione',anomaly:'Anomalia'};
-const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends'};
+const operations={observe:'Un dato comunale',lookup:'Analisi per località',compare:'Confronto fra i sette Comuni',series:'Serie di un Comune',rank:'Ordine numerico dei sette Comuni',benchmark_gap:'Confronto con Toscana o Italia',absolute_change:'Variazione assoluta',relative_change:'Variazione percentuale',weighted_ratio:'Rapporto aggregato della Versilia',percentage_points:'Variazione in punti percentuali',trend:'Tendenza della serie',correlation:'Associazione',anomaly:'Valori fuori scala fra i sette Comuni'};
+const profiles={observe:'current',lookup:'current',compare:'comparison',series:'history',rank:'ranking',benchmark_gap:'benchmark',weighted_ratio:'aggregation',absolute_change:'changes',relative_change:'changes',percentage_points:'changes',trend:'trends',anomaly:'outliers'};
+const allTowns=['compare','rank','weighted_ratio','anomaly'];
 const changes=['absolute_change','relative_change','percentage_points'];
 // Display translations only: these labels never authorize a calculation or
 // replace the original reasons preserved in the evidence.
 const trendReasons={census_historical_dimension_not_available:'Per questa vista il motore non espone la serie storica necessaria. Questo non significa che il dato sia assente dalla fonte.',insufficient_observations:'La serie restituisce un numero di osservazioni insufficiente per stimare la tendenza.',distinct_finance_massarosa_osl_temporal_perimeter_not_attested:'La continuità del perimetro fra gestione ordinaria e OSL non è attestata per questa selezione.'};
+const outlierReasons={anomaly_zero_interquartile_range:'Almeno metà dei Comuni ha valori molto vicini o uguali: lo scarto interquartile è zero e la regola non può distinguere valori fuori scala.',anomaly_requires_four_usable_observations:'Servono almeno quattro valori disponibili per applicare la regola.'};
+const outlierClasses={above_fence:'Sopra la soglia superiore',below_fence:'Sotto la soglia inferiore',within_fences:'Entro le soglie'};
 const units={count:'unità',meters:'m',hectares:'ha',cubicMetres:'m³',currency2:'€',eurliter:'€/l',eurm2:'€/m²',eurm2month:'€/m²/mese',per10k:'per 10.000',km2:'km²',celsius:'°C',index:'indice',percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
 const concise=x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x);
@@ -35,7 +38,7 @@ export async function startExplorer(openRuntime,presentation){
  function view(){return detail?.views.find(v=>v.dimension===$('view').value);}
  function setOperation(){
    revoke();const v=view();$('operation').replaceChildren();
-   for(const operation of v?.declaredOperations||[]){const available=Boolean(v.shards[profiles[operation]])&&(operation!=='benchmark_gap'||benchmarkScopes().length>0);$('operation').append(option(operation,(operations[operation]||operation)+(available?'':' · non ancora consultabile qui'),!available));}
+   for(const operation of v?.declaredOperations||[]){const available=Boolean(v.shards[profiles[operation]])&&(operation!=='benchmark_gap'||benchmarkScopes().length>0)&&(operation!=='anomaly'||Boolean(root.outlierSelection));$('operation').append(option(operation,(operations[operation]||operation)+(available?'':' · non ancora consultabile qui'),!available));}
    const available=Array.from($('operation').options).find(o=>!o.disabled);
    if(available)$('operation').value=available.value;
    else{$('operation').value='';status('Questa vista è dichiarata dal motore ma non è materializzata in questa versione. Non significa che il dato sia assente.');}
@@ -50,8 +53,9 @@ export async function startExplorer(openRuntime,presentation){
  function setTown(){
    const aggregate=$('operation').value==='weighted_ratio';
    const ranking=$('operation').value==='rank';
-   const all=['compare','rank','weighted_ratio'].includes($('operation').value);$('town').disabled=all;
-   $('town-field').hidden=aggregate||ranking;
+   const outliers=$('operation').value==='anomaly';
+   const all=allTowns.includes($('operation').value);$('town').disabled=all;
+   $('town-field').hidden=aggregate||ranking||outliers;
    $('town').setAttribute('aria-describedby','explorer-reference');
    $('reference').textContent=aggregate?'Ambito: tutti i sette Comuni della Versilia. Il rapporto usa componenti e periodi verificati dal motore, non la media dei tassi comunali. Una copertura incompleta non produce un valore dell’intera Versilia.':$('operation').value==='benchmark_gap'?'Scegli esplicitamente Toscana o Italia fra i riferimenti ammessi per questa vista. Il periodo nativo e le fonti sono riportati nel risultato.':all?'Il confronto comprende sette osservazioni comunali, non un aggregato della Versilia. Il periodo effettivo è riportato per ogni dato.':'Riferimento predefinito della vista: il periodo effettivo compare nel risultato. Nessun anno arbitrario viene sostituito con un altro.';
    if(changes.includes($('operation').value)){
@@ -59,6 +63,7 @@ export async function startExplorer(openRuntime,presentation){
      $('reference').textContent=periods?'Variazione fra il primo e l’ultimo periodo della serie nativa: '+String(periods[0])+' → '+String(periods[1])+'. Non è una variazione annua. Il motore verifica comparabilità e copertura; nessun estremo mancante viene sostituito.':'Questa vista non espone due estremi della serie nativa. Il motore conserva il motivo del rifiuto; nessun periodo viene inventato.';
    }
    if(ranking)$('reference').textContent='Ambito: tutti i sette Comuni, dal valore maggiore al minore al riferimento nativo della vista. Pari merito conservati. La posizione numerica non indica criticità, merito amministrativo o effetto di un intervento. Nessun dato mancante viene trasformato in zero.';
+   if(outliers)$('reference').textContent='Ambito: tutti i sette Comuni al riferimento nativo della vista. Le soglie si ricavano dai sette valori (regola di Tukey). Un valore fuori scala non indica un errore, una qualità o una priorità: è una lettura descrittiva.';
    if($('operation').value==='trend')$('reference').textContent='Tendenza dell’intera serie nativa di un Comune. Il motore verifica periodi, copertura e comparabilità; non scegliamo finestre o scartiamo dati mancanti. Nessuna previsione: periodi effettivi, pendenza e numero di osservazioni compaiono nel risultato, quando ammesso.';
    $('run').disabled=!view()?.shards[profiles[$('operation').value]]||($('operation').value==='benchmark_gap'&&!benchmarkScopes().includes($('benchmark').value));
  }
@@ -88,7 +93,8 @@ export async function startExplorer(openRuntime,presentation){
  function request(){
    const operation=$('operation').value;
    const periods=changes.includes(operation)?view()?.changePeriodsByTown?.[$('town').value]:null;
-   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,...(periods?{periods:[...periods]}:{}),towns:['compare','rank','weighted_ratio'].includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
+   const screen=operation==='anomaly'?root.outlierSelection:null;
+   return {operation,...(operation==='benchmark_gap'?{benchmark:$('benchmark').value}:{}),...(screen?{rule:screen.rule,reference:screen.reference,purpose:screen.purpose}:{}),selectors:[{metric:$('metric').value,dimension:$('view').value,...(periods?{periods:[...periods]}:{}),towns:allTowns.includes(operation)?root.towns.map(t=>t.code).sort():[$('town').value]}]};
  }
  function show(result){
    current=result;pageIndex=0;render();
@@ -191,6 +197,35 @@ export async function startExplorer(openRuntime,presentation){
    if(response.formula)method.append(node('p','Formula originale: '+response.formula));
    summary.append(fold('Metodo e periodi utilizzati',method));out.append(summary);
  }
+ function renderOutliers(response,out,selector){
+   const r=response.result,observations=response.observations||[];
+   const codes=root.towns.map(t=>t.code).sort();
+   // Present the native Tukey screen verbatim: never compute quartiles, fences
+   // or classifications in the browser, never drop a town or change the rule.
+   if(!r||r.rule!=='tukey_1_5_iqr'||canonical([...selector.towns].sort())!==canonical(codes)||
+      !Number.isInteger(r.n)||r.n!==response.coverage?.usable||!Array.isArray(r.observations)||r.observations.length!==r.n||
+      ![r.q1,r.q3,r.median,r.iqr,r.lowerFence,r.upperFence].every(Number.isFinite)||!(r.lowerFence<=r.upperFence)||
+      r.observations.some(o=>!codes.includes(o.geography)||!Number.isFinite(o.value)||!outlierClasses[o.classification])||
+      new Set(r.observations.map(o=>o.geography)).size!==r.n)throw Error('incompatible_outlier_result');
+   const unit=unitLabel({unit:r.unit});
+   const summary=node('section');summary.className='explorer-outliers';summary.setAttribute('aria-label','Valori fuori scala fra i sette Comuni');
+   summary.append(node('h4','Valori fuori scala fra i sette Comuni'));
+   const above=r.observations.filter(o=>o.classification==='above_fence'),below=r.observations.filter(o=>o.classification==='below_fence');
+   const verdict=node('p',above.length||below.length?[above.length?'Molto sopra gli altri Comuni: '+above.map(o=>townName(o.geography)).join(', ')+'.':'',below.length?'Molto sotto gli altri Comuni: '+below.map(o=>townName(o.geography)).join(', ')+'.':''].filter(Boolean).join(' '):'Nessun Comune è fuori scala per questa misura: tutti i valori sono entro le soglie.');
+   verdict.dataset.outlierVerdict=above.length||below.length?'flagged':'none';summary.append(verdict);
+   const cards=node('dl');cards.className='explorer-benchmark-values';
+   for(const [key,label,amount] of [['lower','Soglia inferiore',r.lowerFence],['median','Valore mediano',r.median],['upper','Soglia superiore',r.upperFence]]){
+     const card=node('div'),shown=node('dd',concise(amount)+(unit?' '+unit:''));shown.dataset.outlierValue=key;card.append(node('dt',label),shown);cards.append(card);
+   }
+   summary.append(cards);
+   const list=node('ul');list.className='explorer-outlier-list';
+   for(const o of r.observations){const item=node('li',townName(o.geography)+': '+concise(o.value)+(unit?' '+unit:'')+' · '+outlierClasses[o.classification]);item.dataset.outlierGeography=o.geography;item.dataset.outlierClass=o.classification;list.append(item);}
+   summary.append(list,node('p','Un valore è fuori scala quando supera la soglia superiore o scende sotto quella inferiore. Le soglie si ricavano dai sette valori: primo e terzo quartile, allargati di 1,5 volte la loro distanza (regola di Tukey).'),node('p','Con sette Comuni è una lettura descrittiva: non indica un errore nel dato, una qualità dell’amministrazione o una priorità. Un altro gruppo di Comuni darebbe soglie diverse.'));
+   const method=node('div');const ul=node('ul');
+   for(const [key,label] of [['q1','Primo quartile'],['q3','Terzo quartile'],['iqr','Scarto interquartile'],['median','Mediana'],['lowerFence','Soglia inferiore'],['upperFence','Soglia superiore']]){const item=node('li',label+': '+number(r[key])+(unit?' '+unit:''));item.dataset.outlierOriginal=key;ul.append(item);}
+   method.append(ul,node('p','Regola originale: '+r.rule+'. Quartili: '+String(r.quantileMethod||'non dichiarato')+'. Osservazioni utilizzate: '+String(r.n)+'.'),node('p','Sintesi arrotondata per la lettura; i valori qui sopra conservano la precisione originale.'));
+   summary.append(fold('Metodo e valori originali',method));out.append(summary);
+ }
  function rankingRows(response,selector,out){
    const r=response.result,observations=response.observations||[];
    const codes=root.towns.map(t=>t.code).sort();
@@ -224,6 +259,11 @@ export async function startExplorer(openRuntime,presentation){
    if(operation==='trend'&&response.status!=='computed'){
      out.append(node('p','Nessuna tendenza stimata per questa selezione. Le osservazioni conservate nel rifiuto non autorizzano una pendenza sostitutiva o una previsione.'));
      for(const reason of response.reasons||[])if(trendReasons[reason])out.append(node('p',trendReasons[reason]));
+   }
+   if(operation==='anomaly'&&response.status==='computed')renderOutliers(response,out,selector);
+   if(operation==='anomaly'&&response.status!=='computed'){
+     out.append(node('p','Nessun valore fuori scala è stimato per questa selezione. Le osservazioni conservate nel rifiuto non autorizzano soglie sostitutive.'));
+     for(const reason of response.reasons||[])if(outlierReasons[reason])out.append(node('p',outlierReasons[reason]));
    }
    if(operation==='benchmark_gap'&&response.status==='computed')renderBenchmark(response,out);
    if(operation==='weighted_ratio'&&response.status==='computed')renderAggregation(response,out);

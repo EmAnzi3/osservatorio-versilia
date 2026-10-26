@@ -69,7 +69,8 @@ def artifact_capabilities(site, catalog_hash):
                         or profile == 'benchmark' and receipt.get('interfaceVersion', 1) >= 2
                         or profile == 'aggregation' and receipt.get('interfaceVersion', 1) >= 3
                         or profile == 'changes' and receipt.get('interfaceVersion', 1) >= 4
-                        or profile == 'trends' and receipt.get('interfaceVersion', 1) >= 6):
+                        or profile == 'trends' and receipt.get('interfaceVersion', 1) >= 6
+                        or profile == 'outliers' and receipt.get('interfaceVersion', 1) >= 8):
                     # Older interfaces cannot present these profiles. Transport alone proves no UI access.
                     capabilities.add((summary['metric'],view['dimension'],request['operation']))
     return capabilities, proof
@@ -235,6 +236,7 @@ def audit(catalog, registry, runtime=None, *, site=None):
                                                      else 'all_seven_towns_native_weighted_ratio' if operation == 'weighted_ratio'
                                                      else 'one_town_declared_tuscany_italy_native_default' if operation == 'benchmark_gap'
                                                      else 'one_town_first_last_native_series_periods' if operation in CHANGE_OPERATIONS
+                                                     else 'all_seven_towns_tukey_1_5_iqr_declared_purpose' if operation == 'anomaly'
                                                      else 'native_default_profiles_only') if requests else 'requires_explicit_request',
                                        transportedResponses=dict(Counter(e['status'] for e in entries)),
                                        publicGeneralExplorer='publication_not_inspected',

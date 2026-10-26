@@ -12,7 +12,7 @@ from collections import Counter
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import change_periods, PROFILES, READER, digest, recipes, validate_association_plan
+from build_a7_query_runtime import change_periods, outlier_selection, PROFILES, READER, digest, recipes, validate_association_plan
 
 ROOT_LIMIT = 2 * 1024 * 1024
 PACKED_LIMIT = 8 * 1024 * 1024
@@ -64,7 +64,8 @@ def verify_runtime(folder, catalog, *, include_reader=False):
     require(root.get('kind') == 'a7-selective-query-runtime', 'incompatible_runtime_kind')
     require(set(root) == ({'schemaVersion','kind','catalogSha256','engineSha256','workbenchSha256',
             'builderSha256','readerSha256','envelope','scope','maxViewsPerMetric','towns','metrics'}
-            | ({'associationPlan'} if 'associationPlan' in root else set())),
+            | ({'associationPlan'} if 'associationPlan' in root else set())
+            | ({'outlierSelection'} if 'outlierSelection' in root else set())),
             'incompatible_runtime_fields')
     wb = QueryWorkbench(catalog)
     # A6's native early refusal exposes its complete producer/version header
@@ -92,7 +93,10 @@ def verify_runtime(folder, catalog, *, include_reader=False):
             **({'aggregation': 'all_seven_towns_native_weighted_ratio'} if 'aggregation' in profiles else {}),
             **({'changes': 'one_town_first_last_native_series_periods'} if 'changes' in profiles else {}),
             **({'trends': 'one_town_full_native_series_ols_no_forecast'} if 'trends' in profiles else {}),
+            **({'outliers': 'all_seven_towns_tukey_1_5_iqr_declared_purpose'} if 'outliers' in profiles else {}),
             partialConsent=False, arbitraryRequests=False)), 'incompatible_runtime_envelope')
+    require(encode(root.get('outlierSelection')) == encode(outlier_selection() if 'outliers' in profiles else None),
+            'runtime_outlier_selection_mismatch')
     limit = root.get('maxViewsPerMetric')
     require(limit is None or type(limit) is int and limit > 0, 'invalid_view_limit')
     require(root.get('scope') in ('all_metrics', 'explicit_subset'), 'invalid_runtime_scope')

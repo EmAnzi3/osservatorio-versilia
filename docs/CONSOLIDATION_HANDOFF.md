@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## A7 — perimetro della prima versione e valori fuori scala (26 ottobre 2026)
+
+Decisione del proprietario: la prima versione guidata di «Chiedi» comprende le
+domande su una misura, il riuso delle analisi (CSV/PDF) e il consolidamento; gli
+incroci (A7.5.4) sono rinviati. Il lancio in navigazione avviene solo a
+perimetro completo. Branch `feature/a7-outlier-values`, base main #489: espone
+l’operazione A6 `anomaly` come «Valori fuori scala fra i sette Comuni»
+(profilo `outliers`, regola di Tukey, interfaccia v8). 515 viste ammesse, 503
+calcolate. Metodo `A7_OUTLIER_VALUES.md`. Con questo incremento tutte le
+operazioni su una misura ammesse da A6 sono presentate, salvo 9 viste con
+riferimento «Versilia», escluse per scelta. Restano A7.5.5 riuso e A7.5.6
+consolidamento.
+
 ## A7.5.4 — perimetro degli incroci misurato e rivisto (26 ottobre 2026)
 
 Branch `feature/a7-association-perimeter`, base main #488. Delle 202

@@ -12,7 +12,7 @@ import threading
 from pathlib import Path
 
 from a7_query_workbench import QueryWorkbench, encode
-from build_a7_query_runtime import change_periods, CHANGE_OPERATIONS, build, digest, recipes, PROFILES
+from build_a7_query_runtime import change_periods, CHANGE_OPERATIONS, build, digest, outlier_selection, recipes, PROFILES
 from build_territorial_dossier_evidence import portable_evidence
 from semantic_query_engine import ROOT
 from test_a7_runtime_package import verify_package_boundaries, verify_packaged_browser
@@ -21,7 +21,7 @@ from test_a7_explorer_preview import verify_explorer
 
 
 def verify_empty_profile_maxima(catalog):
-    for profile in ('ranking', 'benchmark', 'aggregation', 'changes', 'trends'):
+    for profile in ('ranking', 'benchmark', 'aggregation', 'changes', 'trends', 'outliers'):
         with tempfile.TemporaryDirectory(prefix='a7-empty-profile-') as folder:
             release, measurement = build(catalog, folder, metrics=['territorialClassification'],
                                          max_views=1, profiles=(profile,))
@@ -230,6 +230,14 @@ def verify(catalog, output=None):
         assert not list(recipes('x', 'total', ['series'], ['046018'], ['trends']))
         assert list(recipes('x', 'total', ['trend'], ['046018'], ['trends'])) == [
             ('trends', dict(operation='trend', selectors=[dict(metric='x', dimension='total', towns=['046018'])]))]
+        assert measurement['profiles']['outliers'] > 0
+        assert release['outlierSelection'] == outlier_selection()
+        assert not list(recipes('x', 'total', ['anomaly'], ['046018']))
+        assert not list(recipes('x', 'total', ['compare'], ['046018'], ['outliers']))
+        assert list(recipes('x', 'total', ['anomaly'], ['046005', '046018'], ['outliers'])) == [
+            ('outliers', dict(operation='anomaly', selectors=[dict(metric='x', dimension='total', towns=['046005', '046018'])],
+                              **outlier_selection()))]
+        assert outlier_selection()['rule'] == 'tukey_1_5_iqr' and outlier_selection()['reference'] == 'selected_municipalities'
         assert not any(p == 'changes' for p, _ in recipes('x', 'total', CHANGE_OPERATIONS, ['046018']))
         assert not list(recipes('x', 'total', ['compare'], ['046018'], ['changes']))
         from types import SimpleNamespace
@@ -288,6 +296,13 @@ def verify(catalog, output=None):
                             if entry['response']['status'] == 'computed':
                                 assert entry['response']['result']['forecast'] is False
                                 assert entry['response']['result']['method'] == 'OLS slope'
+                        if profile == 'outliers':
+                            assert entry['request'] == dict(operation='anomaly', selectors=[dict(
+                                metric=metric['metric'], dimension=view['dimension'], towns=sorted(workbench.engine.codes))],
+                                **outlier_selection())
+                            if entry['response']['status'] == 'computed':
+                                assert entry['response']['result']['rule'] == 'tukey_1_5_iqr'
+                                assert 'anomaly_is_not_data_error_or_policy_priority' in entry['response']['warnings']
                         if profile == 'aggregation':
                             assert entry['request'] == dict(operation='weighted_ratio', selectors=[dict(
                                 metric=metric['metric'], dimension=view['dimension'], towns=sorted(workbench.engine.codes))])
@@ -300,7 +315,7 @@ def verify(catalog, output=None):
                             partial = entry
                     # A browser probe for every carrier/profile on its first view;
                     # Python transport parity above covers every generated request.
-                    if view is detail['views'][0] or profile in ('ranking', 'aggregation', 'changes', 'trends'):
+                    if view is detail['views'][0] or profile in ('ranking', 'aggregation', 'changes', 'trends', 'outliers'):
                         selected = (shard['entries'][::len(release['towns'])] if profile == 'benchmark'
                                     else [shard['entries'][0]])
                         if profile in ('benchmark', 'changes', 'trends'):
@@ -423,6 +438,18 @@ def verify(catalog, output=None):
                             if(change==='method')request.method='OLS';
                             const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
                             if(r.resolution!=='not_materialized')throw Error('trend_scope_rewritten');
+                          }
+                          const outlier=samples.find(e=>e.request.operation==='anomaly');
+                          if(!outlier)throw Error('missing_outlier_probe');
+                          for(const change of ['rule','reference','purpose','towns','consent']){
+                            const request=structuredClone(outlier.request);
+                            if(change==='rule')request.rule='zscore';
+                            if(change==='reference')request.reference='tuscany';
+                            if(change==='purpose')request.purpose='Altro scopo';
+                            if(change==='towns')request.selectors[0].towns=request.selectors[0].towns.slice(1);
+                            if(change==='consent')request.allowPartial=true;
+                            const r=await runtime.run({schemaVersion:1,steps:[{id:'outside',request}]},{approvedPartial:true});
+                            if(r.resolution!=='not_materialized')throw Error('outlier_scope_rewritten');
                           }
                           const beforeInvalid=fetches;
                           let invalid=false;try{await runtime.run({schemaVersion:1,steps:[plan.steps[0],plan.steps[0]]})}catch{invalid=true}
