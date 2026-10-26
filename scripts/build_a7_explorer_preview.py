@@ -84,7 +84,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
         metadata = 'export default '+encode(presentation(stage/'data/site-data.json'))+';\n'
         (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
-        for name in ['explorer.mjs', 'explorer.css']:
+        for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs']:
             shutil.copyfile(ASSETS/name, graph/name)
         if associations:
             for name in ['associations.mjs', 'associations.css']:

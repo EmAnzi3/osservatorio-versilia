@@ -318,9 +318,9 @@ def verify_explorer(catalog, runtime, output, samples):
                         if request['operation'] in ('weighted_ratio','rank','anomaly'):
                             assert not page.is_visible('#explorer-town-field')
                             assert page.is_disabled('#explorer-town')
-                            assert 'tutti i sette Comuni' in page.locator('#explorer-reference').text_content()
+                            assert 'sette' in page.locator('#explorer-reference').text_content()
                             if request['operation'] == 'rank':
-                                assert 'dal valore maggiore al minore' in page.locator('#explorer-reference').text_content()
+                                assert 'dal valore più alto al più basso' in page.locator('#explorer-reference').text_content()
                             if request['operation'] == 'anomaly':
                                 assert 'regola di Tukey' in page.locator('#explorer-reference').text_content()
                         else:
