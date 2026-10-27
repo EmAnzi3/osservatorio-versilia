@@ -70,10 +70,18 @@ def facts(case_id, response, catalog):
     def display(value, unit):
         decimals = 1 if unit in ('percent', 'studentsPerClass') else 0 if value is not None and float(value).is_integer() else 2
         return number(value, decimals)
+    from a7_public_labels import dimension_label, period_label
+    when = lambda p: period_label(p) or p
     rows = []
     for i, o in enumerate(response['observations']):
         label = catalog['metrics'][o['metric']]['meta']['label']
-        text = f"{label} — {towns.get(o['geography'], o['geography'])}, {o['period']}: {display(o['value'], o['unit'])} {unit_names.get(o['unit'], o['unit'])}."
+        if o.get('dimension') not in (None, 'total'):
+            try:
+                label += ' (' + dimension_label(o['dimension']).lower() + ')'
+            except KeyError:
+                pass
+        unit = unit_names.get(o['unit'], o['unit'])
+        text = f"{label} — {towns.get(o['geography'], o['geography'])}, {when(o['period'])}: {display(o['value'], o['unit'])}{' ' + unit if unit else ''}."
         rows.append(dict(kind='observation', caseId=case_id, responsePointer=f'/observations/{i}/value',
                          text=text, value=o['value'], unit=o['unit'], geography=o['geography'],
                          period=o['period'], dimension=o['dimension'], population=o['population'],
@@ -84,10 +92,11 @@ def facts(case_id, response, catalog):
         unit = result['unit']
         periods = result.get('period') or f"{result.get('startPeriod')}–{result.get('endPeriod')}"
         operation = response['query']['operation']
-        description = {'weighted_ratio': 'Rapporto fra somme, non media delle percentuali comunali',
-                       'absolute_change': 'Variazione assoluta nominale' if 'nominal_economic_values_not_real_growth' in response['warnings'] else 'Variazione assoluta'}.get(operation, operation)
+        description = {'weighted_ratio': 'Valore della Versilia nel suo insieme (non è la media dei Comuni)',
+                       'absolute_change': 'Variazione in valori nominali' if 'nominal_economic_values_not_real_growth' in response['warnings'] else 'Variazione'}.get(operation, operation)
+        shown_unit = unit_names.get(unit, unit)
         rows.append(dict(kind='result', caseId=case_id, responsePointer='/result/value',
-                         text=f"{description}, {periods}: {display(result['value'], unit)} {unit_names.get(unit, unit)}.",
+                         text=f"{description}, {when(periods)}: {display(result['value'], unit)}{' ' + shown_unit if shown_unit else ''}.",
                          value=result['value'], unit=unit, period=periods,
                          geographies=list(dict.fromkeys(o['geography'] for o in response['observations'])),
                          evidence=[e for o in response['observations'] for e in o['evidence']],

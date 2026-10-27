@@ -73,8 +73,8 @@ export function presentEducation(out,answer,source,preservedExport=[]){
  dossier.addEventListener('click',event=>{event.preventDefault();history.replaceState(null,'',dossier.href);show('nidi',true);});
  out.append(nav,body);
  const boundary=make('details',null,'edu-boundary');boundary.append(make('summary','Fonti, perimetro e limiti della risposta'),make('p',model.answerBoundaryPublic,'a7-answer-boundary'),make('p',q.interpretationLimit));out.append(boundary);
- const verification=make('details');verification.dataset.a7Technical='true';verification.append(make('summary','Dati del pilota originale di Massarosa'),make('pre',JSON.stringify(answer,null,2)));out.append(verification);
+ const verification=make('details');verification.dataset.a7Technical='true';const raw=make('pre',JSON.stringify(answer,null,2));raw.hidden=true;raw.style.display='none';verification.append(make('summary','Scarica e verifica i dati'),raw);out.append(verification);
  for(const element of preservedExport)verification.append(element);
- const territorialVerification=make('details');territorialVerification.dataset.educationTechnical='true';territorialVerification.append(make('summary','Verifica dei confronti sui sette Comuni'),make('p','Richieste e risposte del medesimo motore, conservate integralmente.'),make('pre',JSON.stringify(model.territorialCases,null,2)));out.append(territorialVerification);
+ const territorialVerification=make('details');territorialVerification.dataset.educationTechnical='true';territorialVerification.append(make('summary','Verifica dei confronti sui sette Comuni'),make('p','Richieste e risposte del medesimo motore, conservate integralmente.'),(()=>{const raw=make('pre',JSON.stringify(model.territorialCases,null,2));raw.hidden=true;raw.style.display='none';return raw;})());territorialVerification.hidden=true;out.append(territorialVerification);
  show(location.search.includes('lettura=educazione')?location.hash.slice(1):'sintesi');
 }

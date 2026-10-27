@@ -233,7 +233,7 @@ function presentPublic(out,answer){
   const numeric=observations.filter(f=>typeof f.value==='number'&&Number.isFinite(f.value));
   const plot=comparable&&numeric.length>0&&numeric.every(f=>f.value>=0);
   const maximum=plot?(base.unit==='percent'&&numeric.every(f=>f.value<=100)&&!base.definition.includes('cumulative')?100:Math.max(...numeric.map(f=>f.value))||1):1;
-  if(plot){section.dataset.a7Chart='bars';section.append(node('p',`Confronto visivo · ${base.unit==='percent'?'scala percentuale':base.unit==='millionCurrency'?'milioni di euro':base.unit==='currency'?'euro':base.unit==='studentsPerClass'?'alunni per classe':'persone'} · da 0 a ${new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(maximum)}. ${observations.every(f=>f.period===base.period)?'Periodo: '+base.period:'Anni osservati: '+observations.map(f=>f.period).join(' e ')+'. Importi nominali; non è un andamento annuale.'}`,'meta'));}
+  if(plot){section.dataset.a7Chart='bars';const scale={percent:'scala percentuale',millionCurrency:'milioni di euro',currency:'euro',currency2:'euro',eurm2:'euro al m²',eurm2month:'euro al m² al mese',per1000:'ogni 1.000 residenti',per100:'ogni 100 residenti',eurPerResident:'euro per residente',kg:'kg',studentsPerClass:'alunni per classe',people:'persone',count:'numero',number:'numero'}[base.unit]||'valori';section.append(node('p',`Confronto visivo · ${scale} · da 0 a ${new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(maximum)}.${observations.every(f=>f.period===base.period)?'':' Importi nominali; non è un andamento annuale.'}`,'meta'));}
   const ul=node('ul',undefined,'facts');
   for(const f of c.facts){
    const li=node('li');
@@ -250,9 +250,8 @@ function presentPublic(out,answer){
      if(f.geography==='046018')bar.classList.add('a7-bar-focus');track.append(bar);li.append(track);
     }else li.append(node('p','Dato non disponibile: nessuna barra e nessun valore zero attribuito.','meta'));
    }
-   if(f.period!==undefined)li.append(node('p','Periodo: '+f.period,'meta'));
-   if(f.population!==undefined&&populations[f.population])li.append(node('p',populations[f.population],'a7-scope'));
-   li.append(source(f.source));ul.append(li);
+   if(f.population!==undefined&&populations[f.population]&&f===c.facts.find(x=>x.population===f.population))li.append(node('p',populations[f.population],'a7-scope'));
+   if(f===c.facts.find(x=>x.source===f.source))li.append(source(f.source));ul.append(li);
   }
   section.append(ul);
   if(c.response.warnings.length)section.append(fold('Come leggere questo dato',list([...new Set(c.response.warnings.map(w=>warnings[w]||'Sono presenti ulteriori limiti metodologici, conservati nei dettagli di verifica.'))])));
