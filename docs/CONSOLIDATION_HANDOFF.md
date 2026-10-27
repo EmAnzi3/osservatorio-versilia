@@ -1,5 +1,20 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier come relazione — prototipo «Abitare in Versilia» (27 ottobre 2026)
+
+Il proprietario ha respinto i dossier come elenco di evidenze (#494, in pausa):
+un dossier deve dare valore al dato, in forma di relazione divulgativa
+(riferimenti Openpolis, ONS, Dove vanno i nostri soldi), senza rimandi a
+GitHub né JSON scaricabili. Scelte: tema «Casa e affitti», punto di vista
+«Versilia + scegli il tuo Comune», tono divulgativo. Branch
+`feature/dossier-report-casa`: `scripts/build_dossier_reports.py` genera
+`dist/dossier/casa/` (sintesi, sei capitoli con domanda, grafici, «Perché
+conta», versione per Comune, «Cosa non sappiamo», fonti e note), un PDF della
+versione Versilia e un CSV per Excel. Ogni cifra viene da una risposta calcolata
+dal motore A6; le frasi sono modelli fissi senza cause. Pagina `noindex` e fuori
+dalla navigazione fino all’approvazione. Gate `test_dossier_reports.py`. Prossimo
+passo: revisione del proprietario, poi estensione agli altri temi.
+
 ## A7 — perimetro della prima versione e valori fuori scala (26 ottobre 2026)
 
 Decisione del proprietario: la prima versione guidata di «Chiedi» comprende le

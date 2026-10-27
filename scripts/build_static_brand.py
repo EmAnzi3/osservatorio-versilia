@@ -157,3 +157,5 @@ if __name__ == "__main__":
     build_a7_public_page(DIST)
     from materialize_a7_public_explorer import materialize as materialize_a7_public_explorer
     materialize_a7_public_explorer(DIST)
+    from build_dossier_reports import build as build_dossier_reports
+    build_dossier_reports(DIST)

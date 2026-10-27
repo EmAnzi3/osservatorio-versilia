@@ -302,6 +302,14 @@
         ]
       },
       {
+        "label": "Dossier in forma di relazione: cifre dal motore, versioni per Comune, nessun JSON o GitHub",
+        "script": "scripts/test_dossier_reports.py",
+        "args": [
+          "--dist",
+          "dist"
+        ]
+      },
+      {
         "label": "A7 acquired data and declared accessibility audit",
         "script": "scripts/test_a7_accessibility.py",
         "args": [
