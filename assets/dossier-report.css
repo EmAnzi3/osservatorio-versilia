@@ -118,7 +118,9 @@
   .dr-chart,.dr-example,.dr-why{padding:16px 14px}
   .dr-bars{grid-template-columns:minmax(5.5rem,7rem) minmax(0,1fr) auto;column-gap:8px}
   .dr-name,.dr-val{font-size:13px}
-  .dr-picker label{flex-basis:100%}
+  .dr-picker{position:static}
+  .dr-picker label{flex-basis:100%;font-size:14px}
+  .dr-summary{padding-top:8px}
   .dr-picker select{min-width:0;flex:1}
   .dr-example th:first-child{white-space:normal}
   .dr-example table{font-size:14px}
