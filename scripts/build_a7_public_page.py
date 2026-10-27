@@ -65,7 +65,7 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
     hero.h1.string = 'Chiedi alla Versilia'
     hero.select_one('.eyebrow').string = 'CONOSCERE IL TERRITORIO'
     hero.select_one('h1 + p').string = 'Famiglie, scuola, lavoro: parti dalle tue domande e scopri che cosa raccontano i dati del territorio.'
-    hero.select_one('.notice').string = 'Offerta educativa nei sette Comuni della Versilia; gli altri primi percorsi riguardano Massarosa. Ogni lettura indica periodi e informazioni da approfondire.'
+    hero.select_one('.notice').string = 'Sette temi, dal lavoro alla casa, dagli anziani al turismo. Ogni lettura indica periodi, fonti e informazioni da approfondire.'
     for selector, text in {
         '#scrivi':'Da dove vuoi partire?',
         'label[for=domanda-testo]':'Scrivi la tua domanda',
@@ -79,10 +79,10 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
         '#accetta':'Prosegui con questi limiti',
     }.items(): original.select_one(selector).string=text
     original.select_one('#domanda-testo')['placeholder']='Per esempio: come cambia il lavoro a Massarosa?'
-    original.select_one('#selezione + p').string='La domanda sull’offerta educativa permette di scegliere fra i sette Comuni. Gli altri primi percorsi riguardano Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
+    original.select_one('#selezione + p').string='Scegli un tema e una domanda: molti confronti mettono Massarosa accanto a Viareggio o ai sette Comuni. Puoi esplorarli anche senza scrivere una domanda.'
     original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
     original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
-    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Offerta educativa: sette Comuni · Altri percorsi: pilota Massarosa';hero.append(local_note)
+    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Lavoro · Scuola · Casa · Anziani · Redditi · Turismo · Spostamenti';hero.append(local_note)
     grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
     original.main.insert(0,grid)
     grid.append(original.select_one('#scrivi').parent)

@@ -13,6 +13,7 @@ from build_territorial_dossier_evidence import portable_evidence
 from territorial_dossier_editorial import number
 
 SCOPE = ROOT / 'experiments/a7-static-pilot/scope.json'
+DOSSIER_DOCS = {'lavoro': 'MASSAROSA_LAVORO.md', 'infanzia': 'MASSAROSA_INFANZIA_SCUOLA.md'}
 PROGRAM = ROOT / 'ci/territorial-dossier-program.json'
 CASES = ROOT / 'ci/semantic-verified-questions.json'
 READER = ROOT / 'experiments/a7-static-pilot/reader.mjs'
@@ -57,9 +58,15 @@ def facts(case_id, response, catalog):
     if response['status'] != 'computed':
         return []
     towns = {t['code']: t['name'] for t in catalog['towns']}
-    unit_names = {'percent': '%', 'millionCurrency': 'milioni €', 'currency': '€',
+    unit_names = {'percent': '%', 'millionCurrency': 'milioni €', 'currency': '€', 'currency2': '€',
                   'studentsPerClass': 'alunni/classe', 'students': 'alunni',
-                  'localUnits': 'unità locali', 'people': 'persone/addetti secondo definizione'}
+                  'localUnits': 'unità locali', 'people': 'persone/addetti secondo definizione',
+                  'eurm2': '€/m²', 'eurm2month': '€/m² al mese', 'per1000': 'ogni 1.000 residenti',
+                  'per100': 'ogni 100 residenti', 'per100k': 'ogni 100.000 residenti', 'number': '',
+                  'count': '', 'decimal': '', 'index': '', 'nights': 'notti', 'minutes': 'minuti',
+                  'hours': 'ore', 'years': 'anni', 'eurPerResident': '€ per residente', 'kg': 'kg',
+                  'percentage_points': 'punti percentuali', 'percentagePoints': 'punti percentuali',
+                  'kilometres': 'km', 'km': 'km', 'squareKm': 'km²', 'hectares': 'ettari'}
     def display(value, unit):
         decimals = 1 if unit in ('percent', 'studentsPerClass') else 0 if value is not None and float(value).is_integer() else 2
         return number(value, decimals)
@@ -91,9 +98,9 @@ def facts(case_id, response, catalog):
 def build(catalog_path):
     start = time.perf_counter()
     scope = json.loads(SCOPE.read_text())
-    if scope['schemaVersion'] != 1 or not scope['dossierRefs'] or not set(scope['dossierRefs']) <= {'lavoro', 'infanzia'}:
-        raise ValueError('unsupported_pilot_scope')
     program = json.loads(PROGRAM.read_text())
+    if scope['schemaVersion'] != 1 or not scope['dossierRefs'] or not set(scope['dossierRefs']) <= {d['id'] for d in program['dossiers']}:
+        raise ValueError('unsupported_pilot_scope')
     canonical_cases = {c['id']: c for c in json.loads(CASES.read_text())['questions']}
     dossiers = {d['id']: d for d in program['dossiers']}
     if len(set(scope['dossierRefs'])) != len(scope['dossierRefs']):
@@ -114,12 +121,24 @@ def build(catalog_path):
                               missingData=plan['missingData'], requiredCaseRefs=plan['requiredCaseRefs'],
                               contextCaseRefs=plan['contextCaseRefs'],
                               interpretationLimit=d['interpretationLimit'],
-                              dossierPath='docs/dossiers/' + ('MASSAROSA_LAVORO.md' if did == 'lavoro' else 'MASSAROSA_INFANZIA_SCUOLA.md')))
+                              dossierPath='docs/dossiers/' + DOSSIER_DOCS.get(did, 'QUESTIONS.md')))
     ids = list(dict.fromkeys(c for q in plans for c in q['requiredCaseRefs'] + q['contextCaseRefs']))
     if set(ids) & set(scope['refusalCaseRefs']) or len(set(scope['refusalCaseRefs'])) != len(scope['refusalCaseRefs']):
         raise ValueError('duplicate_refusal_case')
     engine = QueryEngine(catalog_path, layer='effective')
     verifier = MethodologicalVerifier(catalog_path, ROOT)
+    primary = [cid for cid in ids if cid not in canonical_cases]
+    if primary:
+        # Primary views of metrics without reviewed cases come from the dossier
+        # programme evidence, already reconciled with the published rows.
+        from build_territorial_dossier_evidence import build as dossier_evidence
+        programme = dossier_evidence(catalog_path)
+        for cid in primary:
+            entry = programme['evidence'].get(cid)
+            if not cid.startswith('dossier_primary_') or not entry or entry['verification'] != 'PASS':
+                raise ValueError('unknown_or_unverified_case:' + cid)
+            canonical_cases[cid] = dict(id=cid, query=entry['query'], expected=dict(status='computed'),
+                                        reference=entry['reference'])
     responses = {}
     for cid in ids + scope['refusalCaseRefs']:
         case = canonical_cases[cid]

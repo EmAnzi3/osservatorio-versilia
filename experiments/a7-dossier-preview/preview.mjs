@@ -1,7 +1,7 @@
 import {loadPilot} from './reader.mjs';
 import release from './release.mjs';
 const $ = id => document.getElementById(id);
-const labels = {lavoro:'Lavoro e trasformazioni economiche',infanzia:'Infanzia e scuola'};
+const labels = {lavoro:'Lavoro e trasformazioni economiche',infanzia:'Infanzia e scuola',abitazione:'Casa, affitti e case popolari',anziani:'Anziani e assistenza',redditi:'Redditi e potere d’acquisto',turismo:'Turismo e servizi',mobilita:'Spostamenti e trasporti'};
 const node = (tag, text, className) => {const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;};
 const list = items => {const ul=node('ul');for(const text of items)ul.append(node('li',text));return ul;};
 const detail = (title, value) => {const d=node('details');d.append(node('summary',title),node('pre',JSON.stringify(value,null,2)));return d;};

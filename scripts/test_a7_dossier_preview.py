@@ -12,6 +12,17 @@ from pathlib import Path
 from build_a7_dossier_preview import preview, validate_repository_commit, ROOT
 
 
+
+def _public_boundaries():
+    """Plain-language boundaries shown publicly, read from the shipped module."""
+    import re as _re
+    text = (Path(__file__).resolve().parents[1]/'experiments/a7-dossier-preview/public.mjs').read_text(encoding='utf-8')
+    block = text[text.index('const boundaries={'):text.index('\n};', text.index('const boundaries={'))]
+    return {k: v.replace("\\'", "'") for k, v in _re.findall(r"'([a-z]+-[a-z0-9]+)':'((?:[^'\\]|\\.)*)'", block)}
+
+
+PUBLIC_BOUNDARIES = _public_boundaries()
+
 def verify_preview(bundle, release, output):
     from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
@@ -293,9 +304,10 @@ def verify_public_page(bundle, release, dist, output):
                             for bar in bars:
                                 assert any(f['value']==bar['value'] and f['geography']==bar['geography'] and f['period']==bar['period'] for f in canonical)
                                 assert abs(bar['width']-100*bar['value']/bar['maximum'])<0.001
-                            assert q['answerBoundary'] in text
+                            boundary=PUBLIC_BOUNDARIES.get(q['id'],q['answerBoundary'])
+                            assert boundary in text
                             assert page.locator('#risposta .a7-answer-boundary').is_visible()
-                            assert page.locator('#risposta .a7-answer-boundary').inner_text()==q['answerBoundary']
+                            assert page.locator('#risposta .a7-answer-boundary').inner_text()==boundary
                             for cid in q['requiredCaseRefs']+q['contextCaseRefs']:
                                 facts=bundle['cases'][cid]['facts']
                                 component=page.locator('#risposta .component').nth((q['requiredCaseRefs']+q['contextCaseRefs']).index(cid))
@@ -320,7 +332,7 @@ def verify_public_page(bundle, release, dist, output):
                         assert json.loads(technical.locator('pre').text_content())==data['answer']
                         for token in ['resident population','SHA256','cacheKey','/observations/','frame_and_asia_universes_differ']:
                             assert token not in text, 'technical field leaked into public reading: '+token
-                        assert technical.locator('pre').is_visible()
+                        assert not technical.locator('pre').is_visible(), 'raw_json_shown_to_public'
                         technical.locator('summary').click()
                         assert data['answer']['components']==[dict(caseId=cid,**bundle['cases'][cid]) for cid in q['requiredCaseRefs']+q['contextCaseRefs']]
                         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'public page overflow'
