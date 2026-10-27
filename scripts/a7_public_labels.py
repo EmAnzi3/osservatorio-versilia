@@ -184,7 +184,7 @@ def part_label(key, value, taxonomy):
 
 def dimension_label(dimension, taxonomy=None):
     if dimension in SINGLE:
-        return SINGLE[dimension]
+        return SINGLE[dimension][:1].upper() + SINGLE[dimension][1:]
     labels = []
     for token in dimension.split('|'):
         if token in ('active', 'artisan'):
