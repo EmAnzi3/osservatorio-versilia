@@ -8,25 +8,28 @@ const allTowns=['compare','rank','weighted_ratio','anomaly'];
 const changes=['absolute_change','relative_change','percentage_points'];
 // Display translations only: these labels never authorize a calculation or
 // replace the original reasons preserved in the evidence.
-const trendReasons={census_historical_dimension_not_available:'Per questa vista il motore non espone la serie storica necessaria. Questo non significa che il dato sia assente dalla fonte.',insufficient_observations:'La serie restituisce un numero di osservazioni insufficiente per stimare la tendenza.',distinct_finance_massarosa_osl_temporal_perimeter_not_attested:'La continuità del perimetro fra gestione ordinaria e OSL non è attestata per questa selezione.'};
+const trendReasons={census_historical_dimension_not_available:'Per questo dettaglio la serie storica non è disponibile. Non significa che il dato manchi nella fonte.',insufficient_observations:'Ci sono troppo pochi anni disponibili per calcolare una tendenza.',distinct_finance_massarosa_osl_temporal_perimeter_not_attested:'Per Massarosa la continuità fra bilancio ordinario e gestione del dissesto non è garantita.'};
 const outlierReasons={anomaly_zero_interquartile_range:'Almeno metà dei Comuni ha valori molto vicini o uguali: lo scarto interquartile è zero e la regola non può distinguere valori fuori scala.',anomaly_requires_four_usable_observations:'Servono almeno quattro valori disponibili per applicare la regola.'};
 const outlierClasses={above_fence:'Sopra la soglia superiore',below_fence:'Sotto la soglia inferiore',within_fences:'Entro le soglie'};
 const units={count:'unità',meters:'m',hectares:'ha',cubicMetres:'m³',currency2:'€',eurliter:'€/l',eurm2:'€/m²',eurm2month:'€/m²/mese',per10k:'per 10.000',km2:'km²',celsius:'°C',index:'indice',percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
-const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(x);
-const concise=x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x);
+// Public display: at most two decimals. Exact values stay in the downloadable evidence.
+const number=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);
+const concise=number;
 const value=o=>o.notApplicable?'Non applicabile':o.dataUnavailable||o.value===null||o.value===undefined?'n.d.':o.unit==='category_code'?o.categoryLabel||'Categoria senza etichetta':typeof o.value==='number'?number(o.value):String(o.value);
 const sourceURL=x=>{try{const u=new URL(x);return ['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}};
 const option=(value,label,disabled=false)=>{const o=node('option',label);o.value=value;o.disabled=disabled;return o;};
-const canonical=x=>JSON.stringify(x); // used only to preserve the exact UI selection snapshot
+const canonical=x=>JSON.stringify(x);
+let periodNames={};const periodLabel=p=>p===null||p===undefined?'Non dichiarato':periodNames[String(p)]||String(p); // used only to preserve the exact UI selection snapshot
 
 export async function startExplorer(openRuntime,presentation){
+ periodNames=presentation.periods||{};
  const $=id=>document.getElementById('explorer-'+id);
  const fields=$('form').querySelector('fieldset');
  const unitLabel=o=>units[o.unit]??((presentation.metrics[$('metric').value]?.unit===o.unit?presentation.metrics[$('metric').value]?.unitLabel:null)||o.unit);
  let runtime,root,detail,generation=0,pending=null,current=null,pageIndex=0;
  const status=text=>{$('status').textContent=text;};
  const revoke=()=>{generation++;pending=null;current=null;$('result').hidden=true;$('result').replaceChildren();$('consent').hidden=true;};
- const fail=()=>{revoke();runtime=null;fields.disabled=true;$('retry').hidden=false;status('Non possiamo verificare i dati di questa selezione. Nessun risultato viene mostrato. Riprova per caricare la stessa versione.');};
+ const fail=()=>{revoke();runtime=null;fields.disabled=true;$('retry').hidden=false;status('Non riusciamo a caricare i dati in questo momento. Riprova fra poco.');};
  const safe=fn=>async(...args)=>{try{await fn(...args);}catch{fail();}};
  const active=async(promise,ticket)=>{try{return await promise;}catch(error){if(ticket===generation)throw error;return null;}};
  const townName=code=>({tuscany:'Toscana',italy:'Italia'})[code]||root.towns.find(t=>t.code===code)?.name||code;
@@ -63,11 +66,11 @@ export async function startExplorer(openRuntime,presentation){
    $('reference').textContent=aggregate?'Il valore dell’intera Versilia, calcolato sommando le componenti dei sette Comuni (non è la media dei valori comunali). Se manca un Comune il valore non viene calcolato.':$('operation').value==='benchmark_gap'?'Scegli se confrontare il Comune con la Toscana o con l’Italia. Anno e fonte compaiono nel risultato.':all?'I sette Comuni a confronto, ciascuno con il proprio anno di riferimento.':'Si mostra l’anno più recente disponibile, indicato nel risultato.';
    if(changes.includes($('operation').value)){
      const periods=view()?.changePeriodsByTown?.[$('town').value];
-     $('reference').textContent=periods?'Variazione fra il primo e l’ultimo periodo della serie nativa: '+String(periods[0])+' → '+String(periods[1])+'. Non è una variazione annua. Il motore verifica comparabilità e copertura; nessun estremo mancante viene sostituito.':'Questa vista non espone due estremi della serie nativa. Il motore conserva il motivo del rifiuto; nessun periodo viene inventato.';
+     $('reference').textContent=periods?'Variazione fra il primo e l’ultimo anno disponibile: '+periodLabel(periods[0])+' → '+periodLabel(periods[1])+'. Non è una variazione annua.':'Per questo dettaglio non ci sono due anni confrontabili.';
    }
    if(ranking)$('reference').textContent='I sette Comuni in ordine, dal valore più alto al più basso, nell’anno più recente disponibile. A parità di valore la posizione è la stessa. L’ordine non è un giudizio sull’amministrazione.';
    if(outliers)$('reference').textContent='Mostra se qualche Comune ha un valore molto lontano dagli altri sei, nell’anno più recente disponibile. Le soglie si ricavano dai sette valori (regola di Tukey). Non indica un errore né un giudizio.';
-   if($('operation').value==='trend')$('reference').textContent='La tendenza sull’intera serie nativa disponibile per il Comune, senza scegliere anni di comodo. Nessuna previsione: anni, pendenza e numero di valori compaiono nel risultato.';
+   if($('operation').value==='trend')$('reference').textContent='La tendenza sull’intera serie nativa disponibile per il Comune, senza scegliere anni di comodo. Nessuna previsione.';
    $('run').disabled=!view()?.shards[profiles[$('operation').value]]||($('operation').value==='benchmark_gap'&&!benchmarkScopes().includes($('benchmark').value));
  }
  function filterViews(){
@@ -84,13 +87,16 @@ export async function startExplorer(openRuntime,presentation){
    status('Caricamento delle viste di questo indicatore…');
    const loaded=await active(runtime.discover(selected),ticket);
    if(ticket!==generation)return;
-   detail=loaded;filterViews();
+   detail=loaded;
+   // Show detail controls only when they help: one view needs no choice, few views need no search.
+   $('view-field').hidden=detail.views.length<2;$('filter-field').hidden=detail.views.length<=8;
+   filterViews();
    if(!$('run').disabled)status('Scegli vista e operazione, poi mostra i dati.');
  }
  async function themeChanged(){
    revoke();const members=root.metrics.filter(m=>m.theme===$('theme').value);
    $('metric').replaceChildren(option('','Scegli un indicatore'),...members.map(m=>option(m.metric,m.label)));
-   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('description').textContent='';
+   detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;$('description').textContent='';$('view-field').hidden=false;$('filter-field').hidden=true;
    status('Scegli un indicatore del tema selezionato.');
  }
  function request(){
@@ -101,14 +107,14 @@ export async function startExplorer(openRuntime,presentation){
  }
  function show(result){
    current=result;pageIndex=0;render();
-   status(result.steps[0].response.status==='computed'?'Dati caricati dalla versione verificata.':'Il motore non ammette il calcolo richiesto. Il motivo e le eventuali osservazioni conservate sono riportati sotto.');
+   status(result.steps[0].response.status==='computed'?'Dati caricati dalla versione verificata.':'Per questa scelta il calcolo non è disponibile: il motivo è spiegato sotto.');
  }
  async function execute(plan,approvedPartial=false){
    revoke();const ticket=generation;const frozen=canonical(plan);status('Verifica e caricamento dei dati selezionati…');
    const result=await active(runtime.run(JSON.parse(frozen),{approvedPartial}),ticket);
    if(ticket!==generation)return;
    if(result.resolution==='needs_confirmation'){pending=JSON.parse(frozen);$('consent').hidden=false;status('Serve la tua scelta sulla copertura incompleta. Nessun valore è ancora mostrato.');return;}
-   if(result.resolution!=='resolved'){status('Questa richiesta non è materializzata nel trasporto corrente. Non è una dichiarazione di assenza del dato.');return;}
+   if(result.resolution!=='resolved'){status('Questa lettura non è ancora disponibile qui. Non significa che il dato manchi.');return;}
    show(result);
  }
  function renderBenchmark(response,out){
@@ -125,7 +131,7 @@ export async function startExplorer(openRuntime,presentation){
      const card=node('div');const shown=node('dd',(key==='gap'&&amount>0?'+':'')+concise(amount)+' '+unit);
      shown.dataset.benchmarkValue=key;card.append(node('dt',label),shown);cards.append(card);
    }
-   summary.append(cards,node('p','Sintesi arrotondata per la lettura; valori originali nella tabella sottostante.'),node('p','Periodo del risultato: '+String(r.period??'Non dichiarato')+'. Scostamento = valore comunale meno riferimento. Un valore positivo o negativo non è un giudizio sulla qualità amministrativa.'));
+   summary.append(cards,node('p','Valori arrotondati; il dettaglio è nella tabella.'),node('p','Periodo del risultato: '+periodLabel(r.period)+'. Scostamento = valore comunale meno riferimento. Un valore positivo o negativo non è un giudizio sulla qualità amministrativa.'));
    for(const [key,label] of [['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore']])if(r[key]!==undefined)summary.append(node('p',label+': '+String(r[key])));
    if(r.unit==='percentage_points')summary.append(node('p','La differenza fra le due percentuali è espressa in punti percentuali, non come variazione percentuale.'));
    out.append(summary);
@@ -143,15 +149,10 @@ export async function startExplorer(openRuntime,presentation){
    const values=node('dl');values.className='explorer-benchmark-values';
    const card=node('div');const amount=node('dd',concise(r.value)+' '+unitLabel(r));amount.dataset.aggregationValue='true';
    card.append(node('dt','Rapporto aggregato'),amount);values.append(card);summary.append(values);
-   summary.append(node('p','Rapporto delle somme dei numeratori e dei denominatori, con la scala prevista dalla misura. Non è la media dei tassi comunali né una somma generica.'),node('p','Sintesi arrotondata per la lettura; valore originale nelle componenti del calcolo.'),node('p','Periodo del risultato: '+String(r.period??'Non dichiarato')+'.'));
+   summary.append(node('p','Rapporto delle somme dei numeratori e dei denominatori, con la scala prevista dalla misura. Non è la media dei tassi comunali né una somma generica.'),node('p','Periodo del risultato: '+periodLabel(r.period)+'.'));
    for(const [key,label] of [['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore']])if(r[key]!==undefined)summary.append(node('p',label+': '+String(r[key])));
-   summary.append(node('p','Perimetro: '+codes.map(townName).join(', ')+'. Le osservazioni comunali seguenti restano distinte dal rapporto aggregato.'));
-   const components=node('div');const list=node('ul');
-   for(const [key,label] of [['value','Valore aggregato originale'],['numerator','Numeratore aggregato'],['denominator','Denominatore aggregato'],['scale','Scala']]){
-     const item=node('li',label+': '+number(r[key])+(key==='value'?' '+unitLabel(r):''));item.dataset.aggregationComponent=key;list.append(item);
-   }
-   components.append(list,node('p','Definizioni, unità e periodi delle componenti seguono il metodo originale riportato nelle osservazioni.'));
-   summary.append(fold('Componenti del calcolo',components));out.append(summary);
+   summary.append(node('p','Perimetro: '+codes.map(townName).join(', ')+'.'));
+   out.append(summary);
  }
  function renderChange(response,out,selector,operation){
    const r=response.result;const observations=response.observations||[];
@@ -162,14 +163,13 @@ export async function startExplorer(openRuntime,presentation){
       r.startPeriod!==start.period||r.endPeriod!==end.period||r.startPeriod===r.endPeriod||
       (selector.periods&&canonical(selector.periods)!==canonical([r.startPeriod,r.endPeriod])))throw Error('incompatible_change_result');
    const summary=node('section');summary.className='explorer-change';summary.setAttribute('aria-label','Variazione temporale');
-   summary.append(node('h4',townName(selector.towns[0])+' · '+String(r.startPeriod)+' → '+String(r.endPeriod)));
+   summary.append(node('h4',townName(selector.towns[0])+' · '+periodLabel(r.startPeriod)+' → '+periodLabel(r.endPeriod)));
    const cards=node('dl');cards.className='explorer-benchmark-values';
-   for(const [key,label,amount,unit] of [['start','Valore iniziale · '+String(r.startPeriod),start.value,unitLabel(start)],['end','Valore finale · '+String(r.endPeriod),end.value,unitLabel(end)],['change',operations[operation],r.value,unitLabel(r)]]){
+   for(const [key,label,amount,unit] of [['start','Valore iniziale · '+periodLabel(r.startPeriod),start.value,unitLabel(start)],['end','Valore finale · '+periodLabel(r.endPeriod),end.value,unitLabel(end)],['change',operations[operation],r.value,unitLabel(r)]]){
      const card=node('div');const shown=node('dd',(key==='change'&&amount>0?'+':'')+concise(amount)+' '+unit);shown.dataset.changeValue=key;card.append(node('dt',label),shown);cards.append(card);
    }
-   summary.append(cards,node('p','Sintesi arrotondata per la lettura; valori e periodi originali nella tabella. La variazione riguarda questi due periodi, non un tasso annuo né l’effetto di un intervento. Il segno non indica automaticamente miglioramento o peggioramento.'));
+   summary.append(cards,node('p','La variazione riguarda questi due anni, non un tasso annuo né l’effetto di un intervento. Il segno non indica automaticamente miglioramento o peggioramento.'));
    summary.append(node('p',operation==='relative_change'?'Variazione percentuale rispetto al valore iniziale. È distinta dalla differenza in punti percentuali.':r.unit==='percentage_points'||r.unit==='percentagePoints'?'Differenza espressa in punti percentuali, distinta dalla variazione percentuale relativa.':'Differenza fra valore finale e iniziale, nell’unità della misura.'));
-   if(response.formula)summary.append(fold('Formula originale del motore',node('p',response.formula)));
    out.append(summary);
  }
  function renderTrend(response,out,selector){
@@ -187,18 +187,16 @@ export async function startExplorer(openRuntime,presentation){
    const summary=node('section');summary.className='explorer-trend';summary.setAttribute('aria-label','Tendenza della serie nativa');
    summary.append(node('h4',townName(selector.towns[0])+' · tendenza della serie'));
    const cards=node('dl');cards.className='explorer-benchmark-values';
-   for(const [key,label,text] of [['slope','Pendenza stimata',(r.slope>0?'+':'')+concise(r.slope)+' '+slopeUnit],['periods','Periodi osservati',String(observations[0].period)+' → '+String(observations.at(-1).period)],['n','Osservazioni utilizzate',String(r.n)]]){
+   for(const [key,label,text] of [['slope','Pendenza stimata',(r.slope>0?'+':'')+concise(r.slope)+' '+slopeUnit],['periods','Periodi osservati',periodLabel(observations[0].period)+' → '+periodLabel(observations.at(-1).period)],['n','Osservazioni utilizzate',String(r.n)]]){
      const card=node('div'),shown=node('dd',text);shown.dataset.trendValue=key;card.append(node('dt',label),shown);cards.append(card);
    }
-   summary.append(cards,node('p','Stima OLS sull’intera serie nativa, usando gli anni effettivi. La pendenza non descrive una variazione identica in ogni anno e non è una previsione.'),node('p','Il segno non indica automaticamente miglioramento o peggioramento, né l’effetto di un intervento.'));
+   summary.append(cards,node('p','Variazione media per anno sull’intera serie disponibile: non è una previsione.'),node('p','Il segno non indica automaticamente miglioramento o peggioramento, né l’effetto di un intervento.'));
    const method=node('div');
-   method.append(node('p','La retta dei minimi quadrati (OLS) sintetizza la tendenza della serie. Non è un test di significatività. Nessun confronto o ordinamento fra pendenze comunali.'),node('p','La sintesi è arrotondata per la lettura. La precisione originale e l’asse temporale completo sono conservati qui; osservazioni, fonti e definizioni sono nella tabella.'));
+   method.append(node('p','La tendenza è la retta che meglio approssima i valori nel tempo (minimi quadrati). Indica la direzione media, non una previsione.'),node('p','I valori sono arrotondati per la lettura; anni e valori sono nella tabella.'));
    if(baseUnit==='percentage_points')method.append(node('p','Per una misura percentuale, la pendenza è in punti percentuali per anno, non in percentuale relativa.'));
-   const original=node('p','Pendenza originale: '+new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(r.slope)+' '+slopeUnit);original.dataset.trendOriginal='true';
-   const axis=node('p','Asse temporale effettivo: '+r.timeAxis.map(String).join(', '));axis.dataset.trendAxis='true';
-   method.append(original,axis,node('p','Metodo originale: '+r.method+'. Gli intervalli fra gli anni restano quelli originali; nessuna osservazione è aggiunta per colmare lacune.'));
-   if(response.formula)method.append(node('p','Formula originale: '+response.formula));
-   summary.append(fold('Metodo e periodi utilizzati',method));out.append(summary);
+   const axis=node('p','Anni considerati: '+r.timeAxis.map(String).join(', '));axis.dataset.trendAxis='true';
+   method.append(axis);
+   summary.append(fold('Come si legge',method));out.append(summary);
  }
  function renderOutliers(response,out,selector){
    const r=response.result,observations=response.observations||[];
@@ -217,7 +215,7 @@ export async function startExplorer(openRuntime,presentation){
    const names=list=>list.map(o=>townName(o.geography)).join(' e ');
    const summary=node('section');summary.className='explorer-outliers';summary.setAttribute('aria-label','Valori fuori scala fra i sette Comuni');
    const period=observations[0]?.period;
-   summary.append(node('p','Valori fuori scala fra i sette Comuni'+(period!==undefined?' · '+String(period):'')));
+   summary.append(node('p','Valori fuori scala fra i sette Comuni'+(period!==undefined?' · '+periodLabel(period):'')));
    summary.lastChild.className='explorer-outliers-kicker';
    const verdict=node('h4',above.length||below.length?[above.length?names(above)+(above.length>1?' sono':' è')+' molto sopra gli altri Comuni':'',below.length?names(below)+(below.length>1?' sono':' è')+' molto sotto gli altri Comuni':''].filter(Boolean).join('; ')+'.':'Nessun Comune è fuori scala: tutti i valori sono nella fascia attesa.');
    verdict.dataset.outlierVerdict=above.length||below.length?'flagged':'none';summary.append(verdict);
@@ -254,8 +252,8 @@ export async function startExplorer(openRuntime,presentation){
    how.append(node('p','Un valore è fuori scala quando esce dalla fascia attesa. La fascia si ricava dai sette valori: dal primo al terzo quartile, allargati di 1,5 volte la loro distanza (regola di Tukey).'),node('p','Con sette Comuni è una lettura descrittiva: non indica un errore nel dato, una qualità dell’amministrazione o una priorità. Un altro gruppo di Comuni darebbe soglie diverse.'));
    const ul=node('ul');
    for(const [field,label] of [['q1','Primo quartile'],['q3','Terzo quartile'],['iqr','Scarto interquartile'],['median','Mediana'],['lowerFence','Soglia inferiore'],['upperFence','Soglia superiore']]){const item=node('li',label+': '+number(r[field])+unit);item.dataset.outlierOriginal=field;ul.append(item);}
-   how.append(ul,node('p','Regola originale: '+r.rule+'. Quartili: '+String(r.quantileMethod||'non dichiarato')+'. Osservazioni utilizzate: '+String(r.n)+'. Valori esatti di ogni Comune nella tabella.'));
-   summary.append(fold('Come si legge e valori originali',how));out.append(summary);
+   how.append(ul,node('p','Valori di ogni Comune nella tabella.'));
+   summary.append(fold('Come si legge',how));out.append(summary);
  }
  function rankingRows(response,selector,out){
    const r=response.result,observations=response.observations||[];
@@ -274,7 +272,7 @@ export async function startExplorer(openRuntime,presentation){
      return {...observation,nativeRank:row.rank};
    });
    const summary=node('section');summary.className='explorer-ranking';summary.setAttribute('aria-label','Ordine numerico descrittivo');
-   summary.append(node('h4','Dal valore maggiore al minore'),node('p','Posizioni descrittive, senza valutazioni amministrative. Pari merito conservati sulla precisione originale: per esempio 1, 1, 3.'),fold('Come leggere le posizioni',node('p','A valori uguali corrisponde la stessa posizione; la posizione seguente può saltare un numero. Questo ordine non indica una criticità o l’effetto di un intervento. Periodo, fonte e definizione sono riportati per ogni Comune.')));
+   summary.append(node('h4','Dal valore maggiore al minore'),node('p','A valori uguali corrisponde la stessa posizione (per esempio 1, 1, 3). L’ordine non è un giudizio sull’amministrazione.'),fold('Come leggere le posizioni',node('p','A valori uguali corrisponde la stessa posizione; la posizione seguente può saltare un numero. Questo ordine non indica una criticità o l’effetto di un intervento. Periodo, fonte e definizione sono riportati per ogni Comune.')));
    out.append(summary);
    return [...ordered,...observations.filter(o=>!r.ranking.some(row=>row.geography===o.geography))];
  }
@@ -283,26 +281,26 @@ export async function startExplorer(openRuntime,presentation){
    const out=$('result');out.replaceChildren();out.hidden=false;
    const heading=node('h3',root.metrics.find(m=>m.metric===selector.metric).label);heading.id='explorer-result-title';out.append(heading);
    out.append(node('p',viewLabel(selector.dimension)+' · '+(operations[operation]||operation)));
-   if(response.status!=='computed')out.append(node('p','Calcolo non disponibile per questa selezione. Le eventuali osservazioni seguenti sono conservate nel rifiuto originale: non costituiscono un risultato calcolato.'));
+   if(response.status!=='computed')out.append(node('p','Per questa scelta il calcolo non è disponibile. I valori sotto sono solo informativi.'));
    if(changes.includes(operation)&&response.status==='computed')renderChange(response,out,selector,operation);
-   if(changes.includes(operation)&&response.status!=='computed')out.append(node('p','Nessuna variazione è calcolata per questi riferimenti. Le osservazioni conservate non autorizzano una differenza sostitutiva.'));
+   if(changes.includes(operation)&&response.status!=='computed')out.append(node('p','Nessuna variazione calcolabile per questi anni.'));
    if(operation==='trend'&&response.status==='computed')renderTrend(response,out,selector);
    if(operation==='trend'&&response.status!=='computed'){
-     out.append(node('p','Nessuna tendenza stimata per questa selezione. Le osservazioni conservate nel rifiuto non autorizzano una pendenza sostitutiva o una previsione.'));
+     out.append(node('p','Nessuna tendenza stimata per questa scelta.'));
      for(const reason of response.reasons||[])if(trendReasons[reason])out.append(node('p',trendReasons[reason]));
    }
    if(operation==='anomaly'&&response.status==='computed')renderOutliers(response,out,selector);
    if(operation==='anomaly'&&response.status!=='computed'){
-     out.append(node('p','Nessun valore fuori scala è stimato per questa selezione. Le osservazioni conservate nel rifiuto non autorizzano soglie sostitutive.'));
+     out.append(node('p','Nessun valore fuori scala calcolabile per questa scelta.'));
      for(const reason of response.reasons||[])if(outlierReasons[reason])out.append(node('p',outlierReasons[reason]));
    }
    if(operation==='benchmark_gap'&&response.status==='computed')renderBenchmark(response,out);
    if(operation==='weighted_ratio'&&response.status==='computed')renderAggregation(response,out);
-   if(operation==='weighted_ratio'&&response.status!=='computed')out.append(node('p','Nessun rapporto aggregato dell’intera Versilia è disponibile per questa selezione. Le eventuali osservazioni comunali non lo sostituiscono.'));
+   if(operation==='weighted_ratio'&&response.status!=='computed')out.append(node('p','Il valore dell’intera Versilia non è disponibile per questa scelta. Le eventuali osservazioni comunali non lo sostituiscono.'));
    if(response.coverage&&response.coverage.usable<response.coverage.requested)out.append(node('p',`Dati disponibili per ${response.coverage.usable} su ${response.coverage.requested}. I dati mancanti restano tali: non vengono trattati come zero.`));
    const ranked=operation==='rank'&&response.status==='computed';
    const observations=ranked?rankingRows(response,selector,out):response.observations||[];
-   if(operation==='rank'&&!ranked)out.append(node('p','Nessuna posizione numerica viene assegnata. Le osservazioni conservate nel rifiuto non costituiscono un ordinamento valido.'));
+   if(operation==='rank'&&!ranked)out.append(node('p','Nessuna posizione numerica viene assegnata: i dati non permettono un ordine valido.'));
    if(response.warnings?.length||response.reasons?.length){
      // Italian readings for the public; original codes remain in the complete evidence.
      const limits=node('div');let untranslated=0;
@@ -320,30 +318,31 @@ export async function startExplorer(openRuntime,presentation){
    if(chart){
      const graph=node('div');graph.setAttribute('role','img');graph.setAttribute('aria-label','Confronto visivo delle osservazioni riportate nella tabella. Scala da zero; valori mancanti non rappresentati.');
      const maximum=Math.max(...observations.map(o=>o.value))||1;
-     graph.append(node('p',`Scala da 0 a ${number(maximum)} ${unitLabel(base)}. Nessuna interpolazione fra periodi.`));
-     for(const o of visible){const row=node('div');row.className='explorer-bar-row';if(ranked)row.dataset.rankingGeography=o.geography;const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',(['series','trend'].includes(operation)||changes.includes(operation))?String(o.period):(ranked?String(o.nativeRank)+'. ':'')+townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
+     graph.append(node('p',`Scala da 0 a ${number(maximum)} ${unitLabel(base)}.`));
+     for(const o of visible){const row=node('div');row.className='explorer-bar-row';if(ranked)row.dataset.rankingGeography=o.geography;const track=node('span');track.className='explorer-bar-track';const bar=node('span');bar.className='explorer-bar';bar.style.display='block';bar.style.width=(o.value/maximum*100)+'%';track.append(bar);row.append(node('span',(['series','trend'].includes(operation)||changes.includes(operation))?periodLabel(o.period):(ranked?String(o.nativeRank)+'. ':'')+townName(o.geography)),track,node('span',value(o)));graph.append(row);}out.append(graph);
    }
    const wrap=node('div');wrap.className='explorer-table-wrap';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Osservazioni originali · tabella scorribile');wrap.setAttribute('aria-describedby','explorer-table-hint');const table=node('table');table.append(node('caption','Osservazioni originali · periodo e fonte per ogni riga'));
-   const head=node('thead');const hr=node('tr');for(const h of [...(ranked?['Posizione numerica']:[]),'Territorio','Periodo','Valore','Fonte e definizione']){const th=node('th',h);th.scope='col';hr.append(th);}head.append(hr);table.append(head);
-   const body=node('tbody');for(const o of visible){const tr=node('tr');if(ranked){tr.dataset.rankingGeography=o.geography;const position=node('td',o.nativeRank===undefined?'—':String(o.nativeRank));position.dataset.nativeRank=o.nativeRank===undefined?'':String(o.nativeRank);tr.append(position);}tr.append(node('td',townName(o.geography)+(o.localityName?' · '+o.localityName:'')),node('td',String(o.period??'Non dichiarato')));const cell=node('td',value(o));cell.dataset.observationValue='true';if(o.unit!=='category_code'&&o.value!==null&&o.value!==undefined&&!o.dataUnavailable&&!o.notApplicable)cell.append(node('span',' '+(unitLabel(o))));tr.append(cell);
+   const head=node('thead');const hr=node('tr');for(const h of [...(ranked?['Posizione numerica']:[]),'Territorio','Periodo','Valore','Fonte']){const th=node('th',h);th.scope='col';hr.append(th);}head.append(hr);table.append(head);
+   const body=node('tbody');for(const o of visible){const tr=node('tr');if(ranked){tr.dataset.rankingGeography=o.geography;const position=node('td',o.nativeRank===undefined?'—':String(o.nativeRank));position.dataset.nativeRank=o.nativeRank===undefined?'':String(o.nativeRank);tr.append(position);}tr.append(node('td',townName(o.geography)+(o.localityName?' · '+o.localityName:'')),node('td',periodLabel(o.period)));const cell=node('td',value(o));cell.dataset.observationValue='true';if(o.unit!=='category_code'&&o.value!==null&&o.value!==undefined&&!o.dataUnavailable&&!o.notApplicable)cell.append(node('span',' '+(unitLabel(o))));tr.append(cell);
      const source=node('td');const link=sourceURL(o.source);if(link){const a=node('a','Fonte');a.href=link;a.target='_blank';a.rel='noopener noreferrer';source.append(a);}else source.append(node('span',String(o.source||'Fonte non dichiarata')));
-     const explanation=node('div');for(const [key,label] of [['definition','Definizione'],['population','Popolazione descritta'],['numeratorPeriod','Periodo del numeratore'],['denominatorPeriod','Periodo del denominatore'],['periodBasis','Riferimento temporale'],['method','Metodo'],['parameter','Parametro'],['referenceText','Riferimento pubblicato, senza valutazione di conformità']])if(o[key])explanation.append(node('p',label+': '+o[key]));if(operation==='weighted_ratio')for(const [key,label] of [['numerator','Numeratore'],['denominator','Denominatore'],['scale','Scala']])if(typeof o[key]==='number'&&Number.isFinite(o[key]))explanation.append(node('p',label+': '+number(o[key])));source.append(fold('Definizione originale',explanation));tr.append(source);body.append(tr);}
+    tr.append(source);body.append(tr);}
    table.append(body);wrap.append(table);const hint=node('p','Scorri la tabella in orizzontale per leggere tutte le colonne.');hint.id='explorer-table-hint';hint.className='explorer-scroll-hint';out.append(hint,wrap);
-   if(!observations.length)out.append(node('p','Nessuna osservazione utilizzabile restituita. Non è stato inserito alcuno zero sostitutivo.'));
+   if(!observations.length)out.append(node('p','Nessun valore disponibile per questa scelta.'));
    if(observations.length>20){const nav=node('nav');nav.setAttribute('aria-label','Pagine delle osservazioni');const prev=node('button','Precedenti');prev.type='button';prev.disabled=pageIndex===0;prev.onclick=()=>{pageIndex--;render();};const next=node('button','Successive');next.type='button';next.disabled=(pageIndex+1)*20>=observations.length;next.onclick=()=>{pageIndex++;render();};nav.append(prev,node('span',`Pagina ${pageIndex+1} di ${Math.ceil(observations.length/20)} `),next);out.append(nav);}
-   if(response.excluded?.length)out.append(fold('Osservazioni escluse · nessuna imputazione',node('pre',JSON.stringify(response.excluded,null,2))));
-   const provenance=node('pre',JSON.stringify(current,null,2));provenance.dataset.explorerEvidence='true';out.append(fold('Evidenza completa per la verifica',provenance));
+   if(response.excluded?.length)out.append(node('p','Alcuni valori non sono disponibili e non sono stati stimati.'));
+   // Machine-readable evidence kept in the page for verification and export, not shown.
+   const provenance=node('pre',JSON.stringify(current,null,2));provenance.dataset.explorerEvidence='true';provenance.hidden=true;out.append(provenance);
  }
  $('theme').addEventListener('change',safe(themeChanged));
  $('metric').addEventListener('change',safe(async()=>{if(!$('metric').value){revoke();detail=null;$('view').replaceChildren();$('operation').replaceChildren();setBenchmark();setTown();$('run').disabled=true;return;}await metricChanged();}));
  $('filter').addEventListener('input',()=>{if(detail)filterViews();});
  $('view').addEventListener('change',setOperation);
  $('operation').addEventListener('change',()=>{revoke();setBenchmark();setTown();});
- $('benchmark').addEventListener('change',()=>{revoke();setTown();status('Riferimento modificato. Mostra i dati per verificare la nuova selezione.');});
+ $('benchmark').addEventListener('change',()=>{revoke();setTown();status('Riferimento modificato: premi «Mostra i dati».');});
  $('town').addEventListener('change',()=>{revoke();setTown();});
  $('form').addEventListener('submit',event=>{event.preventDefault();if(!$('run').disabled)safe(()=>execute({schemaVersion:1,steps:[{id:'selection',request:request()}]}))();});
  $('accept').addEventListener('click',()=>{if(pending){const plan=pending;safe(()=>execute(plan,true))();}});
- $('cancel').addEventListener('click',()=>{revoke();status('Consultazione annullata. Puoi cambiare selezione.');});
+ $('cancel').addEventListener('click',()=>{revoke();status('Consultazione annullata. Puoi cambiare scelta.');});
  async function initialize(){
    revoke();fields.disabled=true;$('retry').hidden=true;status('Verifica della versione dei dati…');
    runtime=await openRuntime();root=await runtime.discover();
