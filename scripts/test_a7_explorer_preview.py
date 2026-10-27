@@ -12,6 +12,12 @@ from pathlib import Path
 from build_a7_explorer_preview import build
 
 
+from a7_public_labels import period_label
+
+
+def shown_period(period):
+    return period_label(period) or str(period)
+
 def verify_association_interface(catalog, runtime, expected, output, *, dist=None):
     """Same page and original requests; no fixture pair list in the UI."""
     import hashlib
@@ -334,7 +340,7 @@ def verify_explorer(catalog, runtime, output, samples):
                             page.select_option('#explorer-town', selector['towns'][0])
                         if request['operation'] in ('absolute_change','relative_change','percentage_points'):
                             for period in selector.get('periods', []):
-                                assert str(period) in page.locator('#explorer-reference').text_content(), 'change_period_not_shown_before_execution'
+                                assert shown_period(period) in page.locator('#explorer-reference').text_content(), 'change_period_not_shown_before_execution'
                         if request['operation'] == 'trend':
                             assert 'intera serie nativa' in page.locator('#explorer-reference').text_content()
                             assert 'Nessuna previsione' in page.locator('#explorer-reference').text_content()
@@ -388,10 +394,10 @@ def verify_explorer(catalog, runtime, output, samples):
                                     row = rows.nth(index)
                                     assert row.get_attribute('data-ranking-geography') == item['geography']
                                     assert row.locator('[data-native-rank]').text_content() == str(item['rank'])
-                                    expected = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(item['value']))
+                                    expected = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}",json.dumps(item['value']))
                                     assert row.locator('[data-observation-value]').text_content().startswith(expected)
                                     observation = next(o for o in response['observations'] if o['geography']==item['geography'])
-                                    assert row.locator('td').nth(2).text_content() == str(observation['period'])
+                                    assert row.locator('td').nth(2).text_content() == shown_period(observation['period'])
                                 import re
                                 assert not re.search(r'\b(count|meters|hectares|currency2|cubicMetres|eurliter|eurm2month|per10k|celsius)\b',
                                     ' '.join(rows.locator('[data-observation-value]').all_text_contents())), 'technical_unit_token_in_public_values'
@@ -408,19 +414,16 @@ def verify_explorer(catalog, runtime, output, samples):
                             if response['status'] == 'computed':
                                 trends += 1; trend_signs.add(native['slope'] > 0); trend_units.add(native['unit'])
                                 assert shown.count() == 1
-                                expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native['slope']))
+                                expected = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}",json.dumps(native['slope']))
                                 assert expected in shown.locator('[data-trend-value=slope]').text_content()
-                                original = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(JSON.parse(text))",json.dumps(native['slope']))
-                                assert original in shown.locator('[data-trend-original]').text_content(), 'trend_original_precision_lost'
                                 method = shown.locator('details');method.locator('summary').click()
-                                assert shown.locator('[data-trend-original]').is_visible()
                                 assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'), 'expanded_trend_method_overflow'
                                 method.locator('summary').click()
                                 assert 'per anno' in shown.locator('[data-trend-value=slope]').text_content()
                                 assert '/year' not in shown.text_content(), 'technical_trend_unit'
                                 assert shown.locator('[data-trend-value=n]').text_content() == str(native['n'])
                                 for observation in (response['observations'][0], response['observations'][-1]):
-                                    assert str(observation['period']) in shown.locator('[data-trend-value=periods]').text_content()
+                                    assert shown_period(observation['period']) in shown.locator('[data-trend-value=periods]').text_content()
                                 assert ', '.join(map(str,native['timeAxis'])) in shown.locator('[data-trend-axis]').text_content()
                                 assert 'non è una previsione' in shown.text_content() and 'non indica automaticamente' in shown.text_content()
                                 if native['unit'] == 'percentage_points/year':
@@ -428,10 +431,10 @@ def verify_explorer(catalog, runtime, output, samples):
                                     assert 'non in percentuale relativa' in shown.text_content()
                                 chart = page.locator('.explorer-bar-row')
                                 if chart.count():
-                                    assert chart.locator(':scope > span:first-child').all_text_contents() == [str(o['period']) for o in response['observations'][:20]]
+                                    assert chart.locator(':scope > span:first-child').all_text_contents() == [shown_period(o['period']) for o in response['observations'][:20]]
                                 if len(response['observations']) > 20:
                                     page.get_by_role('button',name='Successive',exact=True).click()
-                                    assert str(response['observations'][20]['period']) == page.locator('#explorer-result tbody tr').first.locator('td').nth(1).text_content()
+                                    assert shown_period(response['observations'][20]['period']) == page.locator('#explorer-result tbody tr').first.locator('td').nth(1).text_content()
                                     page.get_by_role('button',name='Precedenti',exact=True).click();trend_pages += 1
                             else:
                                 trend_refusals += 1
@@ -451,9 +454,9 @@ def verify_explorer(catalog, runtime, output, samples):
                                 for o in native['observations']:
                                     assert shown.locator(f'[data-outlier-geography="{o["geography"]}"]').get_attribute('data-outlier-class') == o['classification']
                                 for key, field in (('lower','lowerFence'),('median','median'),('upper','upperFence')):
-                                    expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native[field]))
+                                    expected = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}",json.dumps(native[field]))
                                     assert expected in shown.locator(f'[data-outlier-value={key}]').text_content()
-                                original = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(native['upperFence']))
+                                original = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}",json.dumps(native['upperFence']))
                                 assert original in shown.locator('[data-outlier-original=upperFence]').text_content(), 'outlier_original_precision_lost'
                                 text = shown.text_content()
                                 assert 'non indica un errore' in text and 'Tukey' in text and 'anomal' not in text.lower(), 'outlier_wording'
@@ -469,10 +472,10 @@ def verify_explorer(catalog, runtime, output, samples):
                                 # Playwright's Python value bridge serializes float 0.0 as -0;
                                 # use integer zero for the presentation oracle, preserving native payloads.
                                 for key, amount in zip(('start','end','change'), amounts):
-                                    expected = page.evaluate("x=>new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)",0 if amount == 0 else amount)
+                                    expected = page.evaluate("x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x)",0 if amount == 0 else amount)
                                     assert expected in shown.locator('[data-change-value="'+key+'"]').text_content(), ('change_value_mismatch',entry['request'],key,amount,expected,shown.locator('[data-change-value="'+key+'"]').text_content())
                                 for field in ('startPeriod','endPeriod'):
-                                    assert str(native[field]) in shown.text_content()
+                                    assert shown_period(native[field]) in shown.text_content()
                                 assert 'non un tasso annuo' in shown.text_content()
                                 if native['unit'] in ('percentage_points','percentagePoints'):
                                     assert 'punti percentuali' in shown.locator('[data-change-value="change"]').text_content()
@@ -492,9 +495,9 @@ def verify_explorer(catalog, runtime, output, samples):
                                     # Compare visible numbers with native fields, not a recreated gap.
                                     # Parse the native JSON just as the product does. Playwright's
                                     # Python scalar bridge turns float 0.0 into JS -0.
-                                    expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}", json.dumps(native[field]))
+                                    expected = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}", json.dumps(native[field]))
                                     assert expected in shown.locator('[data-benchmark-value="'+key+'"]').text_content(), ('benchmark_value', key, entry['request'])
-                                assert page.evaluate('x=>String(x)',native['period']) in shown.text_content(), ('benchmark_period', native, entry['request'])
+                                assert shown_period(native['period']) in shown.text_content(), ('benchmark_period', native, entry['request'])
                                 for field in ('numeratorPeriod', 'denominatorPeriod'):
                                     if field in native:
                                         assert page.evaluate('x=>String(x)',native[field]) in shown.text_content(), ('benchmark_component_period', field, entry['request'])
@@ -514,16 +517,14 @@ def verify_explorer(catalog, runtime, output, samples):
                             if response['status'] == 'computed':
                                 aggregations += 1
                                 assert shown.count() == 1, 'missing_full_area_result'
-                                expected = page.evaluate("text=>{const x=JSON.parse(text);return new Intl.NumberFormat('it-IT',x!==0&&Math.abs(x)<.01?{maximumSignificantDigits:3}:{maximumFractionDigits:2}).format(x)}",json.dumps(native['value']))
+                                expected = page.evaluate("text=>{const f=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);return f(JSON.parse(text))}",json.dumps(native['value']))
                                 assert expected in shown.locator('[data-aggregation-value]').text_content(), 'aggregation_summary_value'
                                 assert sorted(native['geographies']) == sorted(t['code'] for t in root['towns'])
                                 assert response['coverage']['requested'] == response['coverage']['usable'] == len(root['towns'])
-                                for field in ('value','numerator','denominator','scale'):
-                                    expected = page.evaluate("text=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:15}).format(JSON.parse(text))",json.dumps(native[field]))
-                                    assert expected in shown.locator('[data-aggregation-component="'+field+'"]').text_content(), ('aggregation_component',field,entry['request'])
+                                assert not shown.locator('[data-aggregation-component]').count(), 'technical_components_shown'
                                 for field in ('period','numeratorPeriod','denominatorPeriod'):
                                     if field in native:
-                                        assert str(native[field]) in shown.text_content(), ('aggregation_period',field,entry['request'])
+                                        assert shown_period(native[field]) in shown.text_content(), ('aggregation_period',field,entry['request'])
                                 assert 'Non è la media dei tassi comunali' in shown.text_content()
                             else:
                                 aggregation_refusals += 1

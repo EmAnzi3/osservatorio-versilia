@@ -43,6 +43,30 @@ def presentation(catalog):
                 themes={k:v['label'] for k,v in data['themes'].items()}, metrics=metrics)
 
 
+def public_labels(meta, runtime, dist):
+    """Readable Italian names for every transported detail and coded period (display only)."""
+    import gzip
+    from a7_public_labels import ateco_taxonomy, dimension_label, period_label
+    taxonomy = ateco_taxonomy(dist)
+    root = json.loads((Path(runtime)/'release.json').read_text(encoding='utf-8'))
+    periods = {}
+    for summary in root['metrics']:
+        detail = json.loads(gzip.decompress((Path(runtime)/summary['detail']['path']).read_bytes()))
+        views = meta['metrics'].setdefault(summary['metric'], dict(description='', unit=None, unitLabel=None, views={}))['views']
+        for view in detail['views']:
+            if view['dimension'] != 'total' and view['dimension'] not in views:
+                views[view['dimension']] = dimension_label(view['dimension'], taxonomy)
+            for ref in view['shards'].values():
+                shard = json.loads(gzip.decompress((Path(runtime)/ref['path']).read_bytes()))
+                for entry in shard['entries']:
+                    for observation in entry['response'].get('observations', []):
+                        label = period_label(observation.get('period'))
+                        if label:
+                            periods[str(observation['period'])] = label
+    meta['periods'] = dict(sorted(periods.items()))
+    return meta
+
+
 def build(dist, runtime, output, *, public=False, associations=False):
     dist, runtime, output = (Path(p).absolute() for p in (dist, runtime, output))
     require(not (public and associations), 'association_interface_preview_only')
@@ -82,7 +106,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
             soup.head.append(soup.new_tag('meta', attrs={'name':'robots', 'content':'noindex,nofollow'}))
         graph = Path(tmp)/'graph'
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
-        metadata = 'export default '+encode(presentation(stage/'data/site-data.json'))+';\n'
+        metadata = 'export default '+encode(public_labels(presentation(stage/'data/site-data.json'), runtime, stage))+';\n'
         (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
         for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs']:
             shutil.copyfile(ASSETS/name, graph/name)

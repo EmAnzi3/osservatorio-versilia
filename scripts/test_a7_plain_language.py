@@ -36,6 +36,37 @@ def published_codes(dist):
     return codes
 
 
+def public_labels(dist):
+    """Ogni dettaglio e ogni periodo mostrato ha un nome leggibile, senza codici."""
+    from a7_public_labels import is_public
+    graph = sorted((Path(dist)/'chiedi/explorer-preview').glob('*/presentation.mjs'))
+    assert len(graph) == 1, 'presentazione_non_trovata'
+    text = graph[0].read_text(encoding='utf-8')
+    meta = json.loads(text[len('export default '):].rstrip().rstrip(';'))
+    runtime = graph[0].parent/'package/runtime'
+    views = raw = 0; raw = []; raw_periods = set(); count = 0
+    plain = re.compile(r'\d{4}([-/]\d{2,4})?|\d{4}-\d{2}-\d{2}')
+    for shard in runtime.rglob('*.json.gz'):
+        data = json.loads(gzip.decompress(shard.read_bytes()))
+        if not isinstance(data, dict):
+            continue
+        if 'declaration' in data:
+            for view in data['views']:
+                count += 1
+                if view['dimension'] == 'total':
+                    continue
+                label = meta['metrics'].get(data['metric'], {}).get('views', {}).get(view['dimension'])
+                if not label or not is_public(label):
+                    raw.append((data['metric'], view['dimension'], label))
+        for entry in data.get('entries', []):
+            for observation in entry['response'].get('observations', []):
+                period = str(observation.get('period'))
+                shown = meta.get('periods', {}).get(period, period)
+                if not plain.fullmatch(period) and not is_public(shown):
+                    raw_periods.add(period)
+    return dict(views=count, raw=raw, rawPeriods=sorted(raw_periods))
+
+
 def verify(dist):
     texts = readings()
     codes = published_codes(dist)
@@ -48,13 +79,16 @@ def verify(dist):
             assert isinstance(reading, str) and 15 <= len(reading) <= 220, (code, reading)
             assert (reading[0].isupper() or reading[0] == '«') and reading.endswith('.'), (code, reading)
             assert not ENGLISH.search(reading), ('lettura_non_italiana', code, reading)
+    labels = public_labels(dist)
+    assert labels['views'] and not labels['raw'], ('dettagli_senza_nome_leggibile', labels['raw'][:10])
+    assert not labels['rawPeriods'], ('periodi_in_codice', labels['rawPeriods'][:10])
     # Il browser importa il modulo: deve restare JavaScript valido.
     subprocess.run(['node', '--check', str(LIMITS)], check=True)
-    return {key: len(codes[key]) for key in codes}
+    return dict({key: len(codes[key]) for key in codes}, views=labels['views'])
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dist', type=Path, default=ROOT/'dist')
     counts = verify(parser.parse_args().dist)
-    print(f"A7 letture italiane PASS: {counts['warnings']} avvertenze e {counts['reasons']} motivi pubblicati, tutti tradotti")
+    print(f"A7 letture italiane PASS: {counts['warnings']} avvertenze e {counts['reasons']} motivi tradotti; {counts['views']} dettagli con nome leggibile")
