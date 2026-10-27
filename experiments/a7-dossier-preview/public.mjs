@@ -271,7 +271,7 @@ function presentPublic(out,answer){
   seen.add(e.path);const li=node('li');const link=node('a','Dati della fonte conservati');
   link.href=`https://github.com/EmAnzi3/osservatorio-versilia/${e.encoding==='concatenate_ascii_base64_gzip_json'?'tree':'blob'}/${sourceCommit}/${e.path}`;li.append(link);snapshots.append(li);
  }
- const evidence=node('pre',JSON.stringify(answer,null,2));evidence.hidden=true;
+ const evidence=node('pre',JSON.stringify(answer,null,2));evidence.hidden=true;evidence.style.display='none';
  verification.append(snapshots,evidence);
  out.append(fold('Scarica e verifica i dati',verification,true));
 }
