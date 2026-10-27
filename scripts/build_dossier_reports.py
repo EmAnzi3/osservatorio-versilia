@@ -12,7 +12,9 @@ un CSV dei dati usati. Nessun collegamento a GitHub, nessun JSON scaricabile.
 """
 from __future__ import annotations
 
+import base64
 import csv
+import hashlib
 import html
 import io
 import json
@@ -487,14 +489,17 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
     title = f'{dossier["title"]} · Dossier · Osservatorio Versilia'
     pdf = f'{dossier["slug"]}-versilia.pdf'
     csv_name = f'{dossier["slug"]}-dati.csv'
+    structured = json.dumps({'@context': 'https://schema.org', '@type': 'Report', 'name': dossier['title'],
+                             'description': dossier['description'], 'url': url, 'inLanguage': 'it',
+                             'publisher': {'@type': 'Organization', 'name': 'Osservatorio Versilia'}}, ensure_ascii=False)
+    structured_hash = base64.b64encode(hashlib.sha256(structured.encode()).digest()).decode()
     return f'''<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-{structured_hash}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>{esc(title)}</title><meta name="description" content="{esc(dossier['description'])}">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(dossier['description'])}">
-<meta property="og:type" content="article"><meta property="og:locale" content="it_IT"><meta property="og:url" content="{url}">
-<link rel="canonical" href="{url}">
+{social(title, dossier['description'], url)}
+<link rel="canonical" href="{url}"><script type="application/ld+json">{structured}</script>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../../site.webmanifest">
 {styles}<link rel="stylesheet" href="../report.css"><meta name="theme-color" content="#0F3654">
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
@@ -523,11 +528,22 @@ I confronti con Toscana e Italia compaiono solo dove le misure sono confrontabil
 usano i totali dei sette Comuni, non la media dei loro valori. Gli esempi per {EXAMPLE_M2} m² sono semplici
 moltiplicazioni delle quotazioni, utili come ordine di grandezza.</p>
 <h3>Fonti e note sui dati</h3><ul class="dr-source-list">{source_items}</ul>
-<p class="dr-more">Vuoi esplorare altri dati? <a href="../../confronta/">Confronta i Comuni</a> · <a href="../../stato-dati/">Stato dei dati</a> · <a href="../../segnala/">Segnala un errore</a></p>
+<p class="dr-more">Vuoi esplorare altri dati? <a href="../../confronta/abitare/">Tutti i dati sull’abitare</a> · <a href="../../stato-dati/">Stato dei dati</a> · <a href="../../segnala/">Segnala un errore</a></p>
 </section>
 </div></div></main></div>{shell.footer}
 <script src="{esc(shell.app_bundle)}" defer></script><script src="../report.js" defer></script>
 </body></html>'''
+
+
+def social(title: str, description: str, url: str) -> str:
+    image = 'https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg'
+    alt = 'Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia'
+    og = {'og:title': title, 'og:description': description, 'og:type': 'article', 'og:locale': 'it_IT',
+          'og:url': url, 'og:site_name': 'Osservatorio Versilia', 'og:image': image, 'og:image:alt': alt}
+    twitter = {'card': 'summary_large_image', 'title': title, 'description': description, 'site': '@OssVersilia',
+               'image': image, 'image:alt': alt}
+    return '\n'.join([f'<meta property="{k}" content="{esc(v)}">' for k, v in og.items()]
+                     + [f'<meta name="twitter:{k}" content="{esc(v)}">' for k, v in twitter.items()])
 
 
 def write_pdf(page: Path, target: Path) -> None:
