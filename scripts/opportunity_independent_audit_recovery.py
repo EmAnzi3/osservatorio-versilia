@@ -66,11 +66,16 @@ def verification_grade_transport(url: str, diagnostics: dict[str, Any]) -> tuple
     expected = str(origin.hostname or "").lower().removeprefix("www.")
     actual = str(resolved.hostname or "").lower().removeprefix("www.")
     approved = {host.removeprefix("www.") for host in APPROVED_HOSTS}
+    try:
+        origin_port = origin.port
+        resolved_port = resolved.port
+    except ValueError:
+        return False, "URL finale con porta non valida"
     if (
         origin.scheme != "https" or resolved.scheme != "https"
         or origin.username or resolved.username
         or origin.password or resolved.password
-        or origin.port not in (None, 443) or resolved.port not in (None, 443)
+        or origin_port not in (None, 443) or resolved_port not in (None, 443)
         or not expected or expected not in approved or actual != expected
     ):
         return False, "Redirect o host finale diverso dalla fonte ufficiale verificata"
