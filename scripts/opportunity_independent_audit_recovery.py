@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import date
 import json
 from pathlib import Path
+import time
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -60,6 +61,9 @@ def apply(
     already = []
     pending = []
     expired = []
+    # Non usare i retry generici da 30 s x 2 dell'engine: holdout non critici
+    # non devono consumare l'intero budget del refresh produttivo.
+    fetch_until = time.monotonic() + 18.0
     for entry in _entries():
         key = str(entry["coverage_id"])
         url = str(entry["url"])
@@ -70,9 +74,24 @@ def apply(
             expired.append(key)
             continue
 
+        raw = (detail_payloads or {}).get(url)
+        transport_error = None
+        if raw is None and live:
+            remaining = fetch_until - time.monotonic()
+            if remaining > 0.5:
+                try:
+                    raw = core.radar.v025.v022.fetch_resilient(
+                        url, timeout=min(4.0, remaining), attempts=1
+                    )
+                except Exception as exc:
+                    transport_error = str(exc)
+            else:
+                transport_error = "Budget breve holdout esaurito: riprova al prossimo run"
         ok, verification, error = core.verify_entry(
-            entry, today, detail_payloads=detail_payloads, live=live, fallback_max_days=0
+            entry, today, detail_payloads={url: raw} if raw is not None else None,
+            live=False, fallback_max_days=0
         )
+        error = error or transport_error
         if not ok or verification != "live":
             pending.append({
                 "coverage_id": key,
