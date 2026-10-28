@@ -219,7 +219,10 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     clean_review_queues(result, today.isoformat())
     audit_promotions.apply_complete_promotions(result, today)
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
-    independent_recovery.apply(result, today, live=kwargs.get("payloads") is None)
+    # Non effettuare discovery live sui payload sintetici dei test e replay:
+    # solo uno snapshot runtime datato può attivare il recupero indipendente.
+    if result.get("referenceDate") == today.isoformat():
+        independent_recovery.apply(result, today, live=kwargs.get("payloads") is None)
     if kwargs.get("payloads") is None:
         import opportunity_discovery_resilient as discovery
         if discovery.LIVE_BUDGET is not None:
