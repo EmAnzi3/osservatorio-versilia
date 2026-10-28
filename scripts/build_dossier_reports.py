@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Dossier tematici in forma di relazione divulgativa.
 
-Prototipo: «Abitare in Versilia» (casa e affitti). Ogni cifra viene da una
+Dossier: «Abitare in Versilia» (casa e affitti) e «Lavorare in Versilia»
+(lavoro e redditi). Ogni cifra viene da una
 risposta calcolata dal motore A6 sullo stesso catalogo del sito; le frasi sono
 modelli fissi che dichiarano periodo, confronto e limiti, senza attribuire
 cause. I testi «Perché conta» sono editoriali e non contengono numeri.
@@ -34,13 +35,18 @@ CSS = ROOT / 'assets/dossier-report.css'
 JS = ROOT / 'assets/dossier-report.js'
 BASE_URL = 'https://osservatorioversilia.it/dossier/'
 EXAMPLE_M2 = 80
-SOURCE_NAMES = {
-    'agenziaentrate.gov.it': 'Agenzia delle Entrate — Osservatorio del mercato immobiliare (OMI)',
-    'esploradati.istat.it': 'Istat — Censimento permanente e capacità ricettiva',
-    'istat.it': 'Istat — Censimento permanente e capacità ricettiva',
-    'finanze.gov.it': 'Ministero dell’Economia e delle Finanze — Dichiarazioni dei redditi su base comunale',
-    'erplucca.it': 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica',
-}
+SOURCE_NAMES = [
+    ('MATPEN', 'Istat — Pendolarismo per lavoro, Censimento 2021'),
+    ('DICA_ASIA', 'Istat — Registro delle unità locali delle imprese (ASIA)'),
+    ('risultati-economici-delle-imprese', 'Istat — Risultati economici delle imprese sul territorio'),
+    ('SDMXWS', 'Istat — Censimento permanente: occupazione e disoccupazione'),
+    ('PERMPOP/SUBCOM', 'Istat — Censimento permanente della popolazione e delle abitazioni'),
+    ('Capacity', 'Istat — Capacità degli esercizi ricettivi'),
+    ('capacita-degli-esercizi', 'Istat — Capacità degli esercizi ricettivi'),
+    ('agenziaentrate.gov.it', 'Agenzia delle Entrate — Osservatorio del mercato immobiliare (OMI)'),
+    ('finanze.gov.it', 'Ministero dell’Economia e delle Finanze — Dichiarazioni dei redditi su base comunale'),
+    ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
+]
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
 
 
@@ -60,6 +66,24 @@ def signed(value: float, decimals: int = 1) -> str:
     return ('+' if value > 0 else '−' if value < 0 else '') + num(abs(value), decimals)
 
 
+def _elides(text: str) -> bool:
+    """«otto», «undici», «ottanta»…: davanti a queste cifre l’articolo si apostrofa."""
+    whole = text.split(',')[0].replace('.', '')
+    return text.startswith('8') or whole == '11' or whole.startswith('11') and len(whole) in (4, 7)
+
+
+def il(text: str) -> str:
+    return ('l’' if _elides(text) else 'il ') + text
+
+
+def al(text: str) -> str:
+    return ('all’' if _elides(text) else 'al ') + text
+
+
+def dal(text: str) -> str:
+    return ('dall’' if _elides(text) else 'dal ') + text
+
+
 def esc(text: str) -> str:
     return html.escape(text, quote=True)
 
@@ -77,9 +101,8 @@ def ordinal(rank: int) -> str:
 
 
 def source_name(url: str) -> str:
-    host = re.sub(r'^https?://', '', url).split('/')[0]
-    for key, name in SOURCE_NAMES.items():
-        if host.endswith(key):
+    for pattern, name in SOURCE_NAMES:
+        if pattern in url:
             return name
     raise ValueError('fonte_senza_nome_pubblico:' + url)
 
@@ -107,10 +130,11 @@ class Measure:
         return {'eur': lambda v: num(v) + ' €', 'eurm2': lambda v: num(v) + ' €/m²',
                 'eurm2month': lambda v: num(v, 2) + ' €/m² al mese', 'percent': lambda v: pct(v, self.decimals),
                 'per1000': lambda v: num(v) + ' ogni 1.000 abitanti', 'decimal': lambda v: num(v, 2),
-                'change': lambda v: signed(v) + '%'}[self.unit](value)
+                'change': lambda v: signed(v) + '%', 'points': lambda v: num(v, 1) + ' punti',
+                'per1000s': lambda v: signed(v, 0) + ' ogni 1.000 abitanti', 'count': lambda v: num(v)}[self.unit](value)
 
     def short(self, value: float) -> str:
-        return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v),
+        return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, 0),
                 'eurm2': lambda v: num(v) + ' €'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
@@ -167,15 +191,22 @@ def bar_chart(m: Measure, names: dict[str, str], title: str, note: str = '') -> 
     refs = dict(m.benchmarks)
     if m.versilia is not None:
         refs = {'versilia': m.versilia, **refs}
-    top = max([v for _, v, _ in m.ranking] + list(refs.values()))
-    scale = lambda v: max(0.0, v) / top * 100 if top else 0
+    every = [v for _, v, _ in m.ranking] + list(refs.values())
+    low, high = min(0.0, *every), max(0.0, *every)
+    span = (high - low) or 1
+    scale = lambda v: (v - low) / span * 100
+    zero = scale(0)
+    bar = lambda v: (f'class="dr-bar{" dr-bar-neg" if v < 0 else ""}" '
+                     f'style="left:{min(zero, scale(v)):.2f}%;width:{abs(scale(v) - zero):.2f}%"')
     rows = ''.join(
         f'<div class="dr-row" data-town="{code}"><span class="dr-name" style="grid-row:{i}">{esc(names[code])}</span>'
-        f'<span class="dr-track" style="grid-row:{i}"><span class="dr-bar" style="width:{scale(value):.2f}%"></span></span>'
+        f'<span class="dr-track" style="grid-row:{i}"><span {bar(value)}></span></span>'
         f'<span class="dr-val" style="grid-row:{i}">{esc(m.short(value))}</span></div>'
         for i, (code, value, _) in enumerate(m.ranking, 1))
     lines = ''.join(f'<span class="dr-ref dr-ref-{scope}" style="left:{scale(value):.2f}%"></span>'
                     for scope, value in refs.items())
+    if low < 0:
+        lines += f'<span class="dr-ref dr-zero" style="left:{zero:.2f}%"></span>'
     legend = ''.join(f'<li class="dr-key dr-key-{scope}">{BENCH_LABEL[scope]} <b>{esc(m.short(value))}</b></li>'
                      for scope, value in refs.items())
     table = ''.join(f'<tr><th scope="row">{esc(names[code])}</th><td>{esc(m.fmt(value))}</td></tr>'
@@ -307,11 +338,11 @@ il valore reale dipende da zona, stato e caratteristiche dell’immobile.</p>
     single = m['single']
     over_t = [c for c, v, _ in single.ranking if v > single.benchmarks['tuscany']]
     single_text = (
-        f'Nel {single.period} le famiglie composte da una sola persona vanno dal {pct(lo("single")[1])} di '
-        f'{nm(lo("single")[0])} al <b>{pct(hi("single")[1])}</b> di {nm(hi("single")[0])}. '
+        f'Nel {single.period} le famiglie composte da una sola persona vanno {dal(pct(lo("single")[1]))} di '
+        f'{nm(lo("single")[0])} <b>{al(pct(hi("single")[1]))}</b> di {nm(hi("single")[0])}. '
         f'{len(over_t)} Comuni su 7 superano la media toscana ({pct(single.benchmarks["tuscany"])}) e italiana '
         f'({pct(single.benchmarks["italy"])}).' if all(single.values[c] > single.benchmarks['italy'] for c in over_t) else
-        f'Nel {single.period} le famiglie di una sola persona vanno dal {pct(lo("single")[1])} al {pct(hi("single")[1])}.')
+        f'Nel {single.period} le famiglie di una sola persona vanno {dal(pct(lo("single")[1]))} {al(pct(hi("single")[1]))}.')
     towns_single = {c: (f'<b>{esc(nm(c))}</b>: {pct(single.values[c])} delle famiglie è composta da una sola persona '
                         f'({ordinal(single.rank(c))} su 7; Toscana {pct(single.benchmarks["tuscany"])}).') for c in codes}
     ch3 = chapter(3, 'famiglie', 'Chi abita le case', 'Quante persone vivono da sole?',
@@ -338,7 +369,7 @@ il valore reale dipende da zona, stato e caratteristiche dell’immobile.</p>
         f'15.000 euro l’anno, più di una persona su tre.')
     towns_income = {c: (
         f'<b>{esc(nm(c))}</b>: reddito medio {inc.fmt(inc.values[c])} ({ordinal(inc.rank(c))} su 7), '
-        f'{signed(real.values[c])}% dal 2016 al netto dell’inflazione; il {pct(low.values[c])} dei dichiaranti '
+        f'{signed(real.values[c])}% dal 2016 al netto dell’inflazione; {il(pct(low.values[c]))} dei dichiaranti '
         f'è sotto i 15.000 euro.') for c in codes}
     ch4 = chapter(4, 'redditi', 'Con quali redditi', 'Quanto dichiarano le famiglie che devono pagare la casa?',
         f'<p>{inc_text}</p>{bar_chart(inc, N, "Reddito imponibile medio per dichiarante")}'
@@ -354,7 +385,7 @@ il valore reale dipende da zona, stato e caratteristiche dell’immobile.</p>
     erp_text = (
         f'Per le case popolari gestite da ERP Lucca, alla fine del {erp.period} risultava non pagato '
         f'<b>{pct(erp.versilia)}</b> di quanto fatturato negli anni agli inquilini dei sette Comuni per canoni e spese. '
-        f'Il valore va dal {pct(lo("erp")[1])} di {nm(lo("erp")[0])} al {pct(hi("erp")[1])} di {nm(hi("erp")[0])}.')
+        f'Il valore va {dal(pct(lo("erp")[1]))} di {nm(lo("erp")[0])} {al(pct(hi("erp")[1]))} di {nm(hi("erp")[0])}.')
     towns_erp = {c: (f'<b>{esc(nm(c))}</b>: {pct(erp.values[c])} degli importi fatturati agli inquilini delle case popolari '
                      f'risulta non pagato ({ordinal(erp.rank(c))} su 7 per quota più alta).') for c in codes}
     ch5 = chapter(5, 'case-popolari', 'Le case popolari', 'Quanto pesano gli affitti non pagati nell’edilizia pubblica?',
@@ -415,7 +446,9 @@ il valore reale dipende da zona, stato e caratteristiche dell’immobile.</p>
         'Quante famiglie aspettano una casa popolare: le graduatorie comunali non sono ancora fra i dati raccolti.',
     ]
     return dict(
-        slug='casa', title='Abitare in Versilia', eyebrow='Dossier · Casa e affitti',
+        slug='casa', title='Abitare in Versilia', unknown_topic='sulla casa', theme='abitare',
+        theme_label='Tutti i dati sull’abitare',
+        method=f'Gli esempi per {EXAMPLE_M2} m² sono semplici moltiplicazioni delle quotazioni, utili come ordine di grandezza.', eyebrow='Dossier · Casa e affitti',
         lead='Quanto costano le case, quante non sono abitate da residenti, chi ci vive e con quali redditi: '
              'una lettura dei dati pubblici sui sette Comuni della Versilia.',
         description='Prezzi e affitti, case non abitate da residenti, famiglie, redditi, case popolari e turismo nei sette '
@@ -429,7 +462,261 @@ il valore reale dipende da zona, stato e caratteristiche dell’immobile.</p>
              ('turismo', 'Turismo e abitare')])
 
 
-DOSSIERS = {'casa': casa}
+def summary_item(label: str, value: str, note: str) -> str:
+    return f'<li><span>{esc(label)}</span><b>{esc(value)}</b><em>{esc(note)}</em></li>'
+
+
+def count_words(n: int, total: int) -> str:
+    if n == total:
+        return 'tutti i sette Comuni' if total == 7 else f'tutti i {total} Comuni'
+    return f'{n} Comuni su {total}' if n != 1 else f'1 Comune su {total}'
+
+
+# ---------------------------------------------------------------------------
+# Dossier «Lavorare in Versilia».
+
+def lavoro(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    TI = ('tuscany', 'italy')
+    m = {
+        'emp': engine.measure('emp', 'employmentRate', 'total', 'Occupati fra i residenti di 25-64 anni, %',
+                              'percent', 1, benchmarks=TI),
+        'unemp': engine.measure('unemp', 'unemploymentRate', 'total',
+                                'Disoccupati fra i residenti attivi di 25-64 anni, %', 'percent', 1, benchmarks=TI),
+        'youth': engine.measure('youth', 'unemploymentRate', 'age:15-24|sex:total',
+                                'Disoccupati fra i giovani attivi di 15-24 anni, %', 'percent', 1),
+        'female': engine.measure('female', 'femaleEmploymentRate', 'total', 'Donne occupate fra 15 e 64 anni, %',
+                                 'percent', 1, benchmarks=TI, versilia=True),
+        'gap': engine.measure('gap', 'employmentGenderGap', 'total',
+                              'Differenza fra occupazione maschile e femminile, punti percentuali', 'points', 1,
+                              benchmarks=TI),
+        'growth': engine.measure('growth', 'localEmployeesChange', 'total',
+                                 'Variazione degli addetti nelle imprese del Comune', 'change', 1, benchmarks=TI),
+        'size': engine.measure('size', 'employeesPerLocalUnit', 'total', 'Addetti medi per sede d’impresa',
+                               'decimal', 2, benchmarks=TI, versilia=True),
+        'balance': engine.measure('balance', 'commuterBalanceRate', 'total',
+                                  'Lavoratori in entrata meno lavoratori in uscita, ogni 1.000 abitanti', 'per1000s', 0,
+                                  versilia=True),
+        'self': engine.measure('self', 'selfContainment', 'total',
+                               'Pendolari residenti che lavorano nel proprio Comune, %', 'percent', 1,
+                               benchmarks=TI, versilia=True),
+        'wage': engine.measure('wage', 'averageGrossRemunerationPerEmployee', 'total',
+                               'Retribuzione lorda media per dipendente delle imprese, euro', 'eur', 0, benchmarks=TI),
+        'prod': engine.measure('prod', 'labourProductivity', 'total', 'Valore aggiunto per addetto delle imprese, euro',
+                               'eur', 0, benchmarks=TI),
+        'job_income': engine.measure('job_income', 'incomeSourceProfile', 'source:employment',
+                                     'Reddito medio dichiarato da lavoro dipendente, euro', 'eur', 0,
+                                     benchmarks=TI, versilia=True),
+        'pension': engine.measure('pension', 'pensionIncomeShare', 'total',
+                                  'Quota dei redditi dichiarati che viene da pensioni, %', 'percent', 1,
+                                  benchmarks=TI, versilia=True),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    above = lambda k, scope: [c for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+    below = lambda k, scope: [c for c, v, _ in m[k].ranking if v < m[k].benchmarks[scope]]
+    total = len(codes)
+
+    # 01 — quanti lavorano
+    emp, unemp = m['emp'], m['unemp']
+    emp_above_t, emp_above_i = above('emp', 'tuscany'), above('emp', 'italy')
+    emp_text = (
+        f'Nel {emp.period}, fra i residenti di 25-64 anni, la quota di occupati va {dal(pct(lo("emp")[1]))} di '
+        f'{nm(lo("emp")[0])} <b>{al(pct(hi("emp")[1]))}</b> di {nm(hi("emp")[0])}. '
+        + (f'<b>Nessun Comune raggiunge la media toscana</b> ({pct(emp.benchmarks["tuscany"])}); '
+           if not emp_above_t else f'{count_words(len(emp_above_t), total)} superano la media toscana '
+                                    f'({pct(emp.benchmarks["tuscany"])}); ')
+        + f'{count_words(len(emp_above_i), total)} superano quella italiana ({pct(emp.benchmarks["italy"])}).')
+    unemp_above_t = above('unemp', 'tuscany')
+    unemp_text = (
+        f'Anche la disoccupazione è più alta della media toscana ({pct(unemp.benchmarks["tuscany"])}) in '
+        f'{count_words(len(unemp_above_t), total)}: va {dal(pct(lo("unemp")[1]))} di '
+        f'{nm(lo("unemp")[0])} <b>{al(pct(hi("unemp")[1]))}</b> di {nm(hi("unemp")[0])}.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: lavora {il(pct(emp.values[c]))} dei residenti di 25-64 anni '
+                  f'({ordinal(emp.rank(c))} su 7; Toscana {pct(emp.benchmarks["tuscany"])}); la disoccupazione è '
+                  f'{al(pct(unemp.values[c]))}.') for c in codes}
+    ch1 = chapter(1, 'occupazione', 'Quante persone lavorano', 'Quanti residenti hanno un lavoro e quanti lo cercano?',
+        f'<p>{emp_text}</p>{bar_chart(emp, N, "Tasso di occupazione, 25-64 anni")}'
+        f'<p>{unemp_text}</p>{bar_chart(unemp, N, "Tasso di disoccupazione, 25-64 anni")}' + town_blocks(towns1),
+        'Il tasso di occupazione è la misura più diretta di quante persone in età da lavoro hanno un impiego. '
+        'Descrive i residenti, ovunque lavorino, e non i posti di lavoro presenti nel Comune. Una quota più bassa può '
+        'dipendere da molti fattori, dall’età della popolazione al lavoro stagionale, che i dati annuali non '
+        'distinguono.')
+
+    # 02 — giovani e donne
+    youth, female, gap = m['youth'], m['female'], m['gap']
+    gap_all_above = all(v > gap.benchmarks['tuscany'] for v in gap.values.values())
+    youth_text = (
+        f'Fra i giovani di 15-24 anni che lavorano o cercano lavoro, la disoccupazione va {dal(pct(lo("youth")[1]))} di '
+        f'{nm(lo("youth")[0])} <b>{al(pct(hi("youth")[1]))}</b> di {nm(hi("youth")[0])}.')
+    female_text = (
+        f'In Versilia lavora <b>{il(pct(female.versilia))} delle donne fra 15 e 64 anni</b>, contro '
+        f'{il(pct(female.benchmarks["tuscany"]))} in Toscana e {il(pct(female.benchmarks["italy"]))} in Italia '
+        f'(dati {female.period}). ')
+    gap_text = (
+        (f'In tutti i sette Comuni la distanza fra uomini e donne è più ampia che in Toscana '
+         f'({num(gap.benchmarks["tuscany"], 1)} punti): ' if gap_all_above else
+         f'La distanza fra uomini e donne è di {num(gap.benchmarks["tuscany"], 1)} punti in Toscana; ')
+        + f'va da {num(lo("gap")[1], 1)} punti a {nm(lo("gap")[0])} a <b>{num(hi("gap")[1], 1)} punti</b> a '
+          f'{nm(hi("gap")[0])}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: disoccupazione giovanile {al(pct(youth.values[c]))}; lavora '
+                  f'{il(pct(female.values[c]))} delle donne, {num(gap.values[c], 1)} punti in meno degli uomini.')
+              for c in codes}
+    ch2 = chapter(2, 'giovani-donne', 'Giovani e donne', 'Chi fa più fatica a trovare lavoro?',
+        f'<p>{youth_text}</p>{bar_chart(youth, N, "Disoccupazione giovanile, 15-24 anni", "Fra i giovani molti studiano: il tasso si calcola solo su chi lavora o cerca lavoro.")}'
+        f'<p>{female_text}{gap_text}</p>{bar_chart(female, N, "Donne occupate, 15-64 anni")}'
+        f'{bar_chart(gap, N, "Distanza fra occupazione maschile e femminile")}' + town_blocks(towns2),
+        'Giovani e donne sono i gruppi in cui si vedono prima le difficoltà del mercato del lavoro locale. Una '
+        'distanza ampia fra uomini e donne può riflettere carichi di cura, servizi per l’infanzia, orari e '
+        'stagionalità dei settori: i dati ne misurano l’ampiezza, non le cause.')
+
+    # 03 — dove si lavora
+    growth, size = m['growth'], m['size']
+    grew = [c for c, v, _ in growth.ranking if v > 0]
+    fell = [c for c, v, _ in growth.ranking if v < 0]
+    growth_text = (
+        f'Fra il 2018 e il 2023 gli addetti delle imprese con sede nel territorio sono aumentati in '
+        f'{count_words(len(grew), total)}, e in {len(above("growth", "tuscany"))} più della media '
+        f'toscana ({signed(growth.benchmarks["tuscany"])}%). La crescita più forte è a {nm(hi("growth")[0])} '
+        f'(<b>{signed(hi("growth")[1])}%</b>)'
+        + (f', mentre a {join_names([nm(c) for c in fell])} gli addetti sono diminuiti '
+           f'({"; ".join(signed(growth.values[c]) + "%" for c in fell)}).' if fell else '.'))
+    size_text = (
+        f'Le imprese sono piccole: in media <b>{num(size.versilia, 2)} addetti per sede</b> in Versilia, contro '
+        f'{num(size.benchmarks["tuscany"], 2)} in Toscana e {num(size.benchmarks["italy"], 2)} in Italia.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: addetti delle imprese {signed(growth.values[c])}% dal 2018 al 2023 '
+                  f'(Toscana {signed(growth.benchmarks["tuscany"])}%), in media {num(size.values[c], 2)} per sede.')
+              for c in codes}
+    ch3 = chapter(3, 'imprese', 'Dove si lavora', 'Le imprese del territorio stanno creando lavoro?',
+        f'<p>{growth_text}</p>{bar_chart(growth, N, "Addetti delle imprese, variazione 2018-2023")}'
+        f'<p>{size_text}</p>{bar_chart(size, N, "Addetti medi per sede d’impresa")}' + town_blocks(towns3),
+        'Gli addetti delle imprese misurano il lavoro che si svolge nel Comune, chiunque lo faccia: residenti o '
+        'pendolari. Imprese piccole sono una caratteristica del tessuto economico locale; il dato non dice nulla '
+        'sulla loro solidità o sulla qualità del lavoro offerto.')
+
+    # 04 — pendolari
+    bal, slf = m['balance'], m['self']
+    pos = [c for c, v, _ in bal.ranking if v > 0]
+    neg = [c for c, v, _ in bal.ranking if v < 0]
+    bal_text = (
+        f'Al censimento del {bal.period} {join_names([nm(c) for c in pos])} '
+        f'{"attiravano" if len(pos) > 1 else "attirava"} più lavoratori di quanti ne uscissero: '
+        f'{nm(hi("balance")[0])} su tutti, con un saldo di <b>{signed(hi("balance")[1], 0)} ogni 1.000 abitanti</b>. '
+        f'Da {join_names([nm(c) for c in neg])} invece si usciva per lavorare più di quanto si entrasse: a '
+        f'{nm(lo("balance")[0])} il saldo era {signed(lo("balance")[1], 0)}.')
+    slf_text = (
+        f'Fra i residenti che si spostano ogni giorno per lavoro, quelli che restano nel proprio Comune vanno '
+        f'{dal(pct(lo("self")[1]))} di {nm(lo("self")[0])} <b>{al(pct(hi("self")[1]))}</b> di {nm(hi("self")[0])} '
+        f'(Versilia {pct(slf.versilia)}, Toscana {pct(slf.benchmarks["tuscany"])}).')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: saldo fra lavoratori in entrata e in uscita {signed(bal.values[c], 0)} ogni '
+                  f'1.000 abitanti; {il(pct(slf.values[c]))} dei pendolari residenti lavora nel Comune.') for c in codes}
+    ch4 = chapter(4, 'pendolari', 'Chi arriva e chi parte', 'Dove si lavora rispetto a dove si vive?',
+        f'<p>{bal_text}</p>{bar_chart(bal, N, "Saldo fra lavoratori in entrata e in uscita", "Barre verso destra: entrano più lavoratori di quanti escano. Verso sinistra: ne escono di più.")}'
+        f'<p>{slf_text}</p>{bar_chart(slf, N, "Pendolari che lavorano nel proprio Comune")}' + town_blocks(towns4),
+        'Il saldo pendolare distingue i Comuni che offrono lavoro a chi vive altrove da quelli in cui si vive ma si '
+        'lavora fuori. Conta per i trasporti, per i servizi e per il bilancio dei Comuni. È però una fotografia del '
+        '2021: non dice come si spostano le persone oggi, né con quali mezzi.')
+
+    # 05 — salari e produttività
+    wage, prod = m['wage'], m['prod']
+    wage_below = below('wage', 'tuscany')
+    prod_all_below = not above('prod', 'tuscany') and not above('prod', 'italy')
+    wage_text = (
+        f'Nel {wage.period} la retribuzione lorda media per dipendente delle imprese locali andava da '
+        f'{wage.fmt(lo("wage")[1])} a {nm(lo("wage")[0])} a <b>{wage.fmt(hi("wage")[1])}</b> a {nm(hi("wage")[0])}. '
+        f'{count_words(len(wage_below), total)[:1].upper()}{count_words(len(wage_below), total)[1:]} restano sotto la media toscana ({wage.fmt(wage.benchmarks["tuscany"])}).')
+    prod_text = (
+        (f'Il valore aggiunto per addetto è <b>sotto la media toscana ({prod.fmt(prod.benchmarks["tuscany"])}) e '
+         f'italiana ({prod.fmt(prod.benchmarks["italy"])}) in tutti i sette Comuni</b>' if prod_all_below else
+         f'Il valore aggiunto per addetto va confrontato con la media toscana ({prod.fmt(prod.benchmarks["tuscany"])})')
+        + f': da {prod.fmt(lo("prod")[1])} a {nm(lo("prod")[0])} a {prod.fmt(hi("prod")[1])} a {nm(hi("prod")[0])}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: retribuzione lorda media {wage.fmt(wage.values[c])} per dipendente '
+                  f'({ordinal(wage.rank(c))} su 7); valore aggiunto {prod.fmt(prod.values[c])} per addetto.')
+              for c in codes}
+    ch5 = chapter(5, 'salari', 'Quanto rende il lavoro', 'Quanto pagano e quanto producono le imprese locali?',
+        f'<p>{wage_text}</p>{bar_chart(wage, N, "Retribuzione lorda media per dipendente")}'
+        f'<p>{prod_text}</p>{bar_chart(prod, N, "Valore aggiunto per addetto")}' + town_blocks(towns5),
+        'Retribuzioni e valore aggiunto per addetto descrivono la struttura delle imprese: settori, dimensioni, '
+        'stagionalità. Sono valori lordi e nominali, calcolati sulle imprese dell’industria e dei servizi, senza '
+        'agricoltura e pubblica amministrazione. Non sono lo stipendio di una persona tipo, ma permettono di '
+        'confrontare il territorio con la regione e con il Paese.')
+
+    # 06 — redditi
+    job, pen = m['job_income'], m['pension']
+    job_text = (
+        f'Chi dichiara redditi da lavoro dipendente riceve in media <b>{job.fmt(job.versilia)}</b> in Versilia, '
+        f'contro {job.fmt(job.benchmarks["tuscany"])} in Toscana e {job.fmt(job.benchmarks["italy"])} in Italia '
+        f'(redditi {job.period}). Si va da {job.fmt(lo("job_income")[1])} a {nm(lo("job_income")[0])} a '
+        f'{job.fmt(hi("job_income")[1])} a {nm(hi("job_income")[0])}.')
+    pen_text = (
+        f'Le pensioni valgono <b>{il(pct(pen.versilia))}</b> dei redditi dichiarati in Versilia '
+        f'({pct(pen.benchmarks["tuscany"])} in Toscana): {dal(pct(lo("pension")[1]))} di {nm(lo("pension")[0])} '
+        f'al {pct(hi("pension")[1])} di {nm(hi("pension")[0])}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: reddito medio da lavoro dipendente {job.fmt(job.values[c])}; le pensioni '
+                  f'sono {il(pct(pen.values[c]))} dei redditi dichiarati.') for c in codes}
+    ch6 = chapter(6, 'redditi', 'Redditi da lavoro e pensioni', 'Da dove vengono i redditi delle famiglie?',
+        f'<p>{job_text}</p>{bar_chart(job, N, "Reddito medio da lavoro dipendente")}'
+        f'<p>{pen_text}</p>{bar_chart(pen, N, "Peso delle pensioni sui redditi dichiarati")}' + town_blocks(towns6),
+        'I redditi dichiarati mostrano quanto conta il lavoro rispetto alle pensioni nell’economia delle famiglie. '
+        'Una persona può avere più redditi, e i valori sono quelli dichiarati al fisco in termini nominali: non '
+        'misurano il reddito disponibile né il lavoro non dichiarato.')
+
+    key_points = [
+        ((f'{len(below("emp", "tuscany"))} su {total}'),
+         f'Comuni con un tasso di occupazione (25-64 anni) sotto la media toscana del {pct(emp.benchmarks["tuscany"])}.',
+         'occupazione'),
+        (pct(hi('youth')[1]), f'I giovani di 15-24 anni attivi senza lavoro a {nm(hi("youth")[0])}, il valore più alto.',
+         'giovani-donne'),
+        (pct(female.versilia), f'Le donne occupate in Versilia fra 15 e 64 anni. In Toscana sono '
+                               f'{il(pct(female.benchmarks["tuscany"]))}.', 'giovani-donne'),
+        (f'{len(grew)} su {total}', 'Comuni dove gli addetti delle imprese sono cresciuti fra il 2018 e il 2023.', 'imprese'),
+        (signed(hi('balance')[1], 0), f'Il saldo dei lavoratori in entrata a {nm(hi("balance")[0])}, ogni 1.000 '
+                                      f'abitanti: il Comune che attira più lavoro.', 'pendolari'),
+        (f'{len(wage_below)} su {total}', f'Comuni con una retribuzione media sotto la media toscana '
+                                          f'({wage.fmt(wage.benchmarks["tuscany"])}).', 'salari'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Occupati 25-64 anni', pct(emp.values[c]), f'Toscana {pct(emp.benchmarks["tuscany"])}'),
+        summary_item('Disoccupati 25-64 anni', pct(unemp.values[c]), f'Toscana {pct(unemp.benchmarks["tuscany"])}'),
+        summary_item('Donne occupate', pct(female.values[c]), f'Toscana {pct(female.benchmarks["tuscany"])}'),
+        summary_item('Addetti delle imprese 2018-2023', signed(growth.values[c]) + '%',
+                     f'Toscana {signed(growth.benchmarks["tuscany"])}%'),
+        summary_item('Saldo pendolare ogni 1.000 abitanti', signed(bal.values[c], 0), f'Versilia {signed(bal.versilia, 0)}'),
+        summary_item('Retribuzione media per dipendente', wage.fmt(wage.values[c]),
+                     f'Toscana {wage.fmt(wage.benchmarks["tuscany"])}'),
+        summary_item('Reddito medio da lavoro dipendente', job.fmt(job.values[c]),
+                     f'Toscana {job.fmt(job.benchmarks["tuscany"])}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanto pesa il lavoro stagionale: i dati sono annuali e non mostrano come cambia l’occupazione fra estate e '
+        'inverno.',
+        'Che tipo di contratti ci sono: tempo determinato, part-time e lavoro autonomo non sono distinti a livello '
+        'comunale.',
+        'Quanto lavoro non è dichiarato: per definizione non compare nelle fonti ufficiali.',
+        'Dove vanno e da dove vengono i pendolari: i totali comunali non indicano i Comuni di origine e destinazione, '
+        'e la fotografia è del 2021.',
+        'Quanto guadagnano i lavoratori di un settore preciso, come il turismo: le retribuzioni sono medie di tutte '
+        'le imprese.',
+    ]
+    return dict(
+        slug='lavoro', title='Lavorare in Versilia', eyebrow='Dossier · Lavoro e redditi',
+        unknown_topic='sul lavoro', theme='lavoro', theme_label='Tutti i dati sul lavoro',
+        lead='Quante persone lavorano, chi fa più fatica, dove si crea lavoro, quanto rende e da dove vengono i redditi: '
+             'una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Occupazione e disoccupazione, giovani e donne, imprese, pendolari, retribuzioni e redditi nei sette '
+                    'Comuni della Versilia, con confronti con Toscana e Italia.',
+        periods=f'Occupazione {emp.period}, donne occupate {female.period}, imprese {period_label(growth.period)}, '
+                f'pendolari {bal.period}, retribuzioni {wage.period}, redditi {job.period}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('occupazione', 'Quante persone lavorano'), ('giovani-donne', 'Giovani e donne'),
+             ('imprese', 'Dove si lavora'), ('pendolari', 'Chi arriva e chi parte'), ('salari', 'Quanto rende il lavoro'),
+             ('redditi', 'Redditi da lavoro e pensioni')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro}
 
 
 # ---------------------------------------------------------------------------
@@ -444,7 +731,8 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     writer = csv.writer(buffer, delimiter=';', lineterminator='\r\n')
     writer.writerow(['Indicatore', 'Territorio', 'Periodo', 'Valore', 'Unità', 'Fonte'])
     unit = {'eur': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
-            'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %'}
+            'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
+            'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -452,7 +740,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
         rows += [(BENCH_LABEL[s], v) for s, v in measure.benchmarks.items()]
         for territory, value in rows:
             writer.writerow([measure.label, territory, period_label(measure.period),
-                             num(value, max(measure.decimals, 2 if measure.unit != 'eur' else 0)).replace('.', ''),
+                             num(value, 0 if measure.unit in ('eur', 'count') else max(measure.decimals, 2)).replace('.', ''),
                              unit[measure.unit], source_name(measure.source)])
     path.write_bytes(b'\xef\xbb\xbf' + buffer.getvalue().encode('utf-8'))
 
@@ -521,14 +809,13 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
 <section class="dr-summary" aria-labelledby="sintesi"><h2 id="sintesi">In sintesi</h2><ol class="dr-points">{points}</ol>{town_cards}</section>
 {''.join(dossier['chapters'])}
 <section class="dr-chapter dr-unknown" id="non-sappiamo" aria-labelledby="non-sappiamo-title"><h2 id="non-sappiamo-title">Cosa non sappiamo</h2>
-<p>Alcune domande importanti sulla casa non hanno ancora una risposta nei dati pubblici disponibili:</p><ul>{unknown}</ul></section>
+<p>Alcune domande importanti {esc(dossier['unknown_topic'])} non hanno ancora una risposta nei dati pubblici disponibili:</p><ul>{unknown}</ul></section>
 <section class="dr-chapter dr-sources" id="fonti" aria-labelledby="fonti-title"><h2 id="fonti-title">Fonti e metodo</h2>
 <p>Tutti i numeri di questo dossier sono calcolati dall’Osservatorio sugli stessi dati pubblicati nelle schede del sito.
 I confronti con Toscana e Italia compaiono solo dove le misure sono confrontabili. Per la Versilia nel suo insieme si
-usano i totali dei sette Comuni, non la media dei loro valori. Gli esempi per {EXAMPLE_M2} m² sono semplici
-moltiplicazioni delle quotazioni, utili come ordine di grandezza.</p>
+usano i totali dei sette Comuni, non la media dei loro valori.{(' ' + esc(dossier['method'])) if dossier.get('method') else ''}</p>
 <h3>Fonti e note sui dati</h3><ul class="dr-source-list">{source_items}</ul>
-<p class="dr-more">Vuoi esplorare altri dati? <a href="../../confronta/abitare/">Tutti i dati sull’abitare</a> · <a href="../../stato-dati/">Stato dei dati</a> · <a href="../../segnala/">Segnala un errore</a></p>
+<p class="dr-more">Vuoi esplorare altri dati? <a href="../../confronta/{dossier['theme']}/">{esc(dossier['theme_label'])}</a> · <a href="../../stato-dati/">Stato dei dati</a> · <a href="../../segnala/">Segnala un errore</a></p>
 </section>
 </div></div></main></div>{shell.footer}
 <script src="{esc(shell.app_bundle)}" defer></script><script src="../report.js" defer></script>
