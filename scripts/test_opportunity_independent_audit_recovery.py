@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+from unittest.mock import patch
 
 import opportunity_independent_audit_recovery as recovery
 import opportunity_municipal_relevance as relevance
@@ -33,7 +34,7 @@ def test_documented_live_promotion_and_dedup() -> None:
     assert result["auditRecovery"]["pending"] == []
     assert len({x["coverage_id"] for x in result["opportunities"]}) == 5
     assert all(x.get("verified_direct") for x in result["opportunities"])
-    assert all(x["source_verification"]["type"] == "official_primary_webpage" for x in result["opportunities"])
+    assert all(x["source_verification"]["type"] == "offline_test_fixture" for x in result["opportunities"])
     relevance.apply_to_payload(result)
     assert result["municipalRelevance"]["headlineTotal"] == 2
     assert result["municipalRelevance"]["partnershipTotal"] == 3
@@ -73,6 +74,56 @@ def test_expired_never_promotes_and_host_contract() -> None:
     assert all(not e["allow_recent_evidence_fallback"] for e in entries)
 
 
+def test_reader_proxy_and_external_redirect_never_promote() -> None:
+    """An apparent matching source page is not enough to establish provenance."""
+    entries = recovery._entries()
+    fixtures = {e["url"]: _fixture(e) for e in entries}
+
+    def simulated_response(url, *, transport, proxy, final_url=None):
+        return (fixtures[url], {
+            "status": "ok", "transport": transport, "proxyUsed": proxy,
+            "resolvedUrl": final_url or url,
+        })
+
+    for transport, proxy, redirect in (
+        ("reader_proxy", True, None),
+        ("reader_proxy", False, None),  # Unknown/unsupported transport is never accepted.
+        ("http_browser", True, None),  # Contradictory diagnostics must fail closed.
+        ("http_browser", False, "https://r.jina.ai/https://anci.lombardia.it/"),
+        ("http_browser", False, "http://anci.lombardia.it/"),
+    ):
+        result = {"opportunities": [], "coverageHold": []}
+        with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                          side_effect=lambda url, **kw: simulated_response(
+                              url, transport=transport, proxy=proxy, final_url=redirect)):
+            recovery.apply(result, date(2026, 10, 28), live=True)
+        assert not result["opportunities"], (transport, proxy, redirect)
+        assert len(result["auditRecovery"]["pending"]) == len(entries)
+        assert result["coverageHold"] == []
+
+    result = {"opportunities": [], "coverageHold": []}
+    with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                      side_effect=lambda url, **kw: simulated_response(
+                          url, transport="http_browser", proxy=False)):
+        recovery.apply(result, date(2026, 10, 28), live=True)
+    assert len(result["opportunities"]) == len(entries)
+    assert all(x["source_verification"]["type"] == "official_primary_webpage"
+               and x["source_verification"]["proxy_used"] is False
+               and x["source_verification"]["transport"] == "http_browser"
+               for x in result["opportunities"])
+
+
+def test_live_fixture_override_is_rejected() -> None:
+    first = recovery._entries()[0]
+    try:
+        recovery.apply({"opportunities": []}, date(2026, 10, 28),
+                       live=True, detail_payloads={first["url"]: _fixture(first)})
+    except ValueError as exc:
+        assert "fixture" in str(exc)
+    else:
+        raise AssertionError("Test payload must not be accepted in production verification")
+
+
 def test_anci_favicon_local_in_full_release() -> None:
     """La fonte recuperata deve avere un'icona locale prima del gate di build."""
     import tempfile
@@ -106,7 +157,9 @@ def main() -> int:
     test_modified_deadline_or_municipality_evidence_never_promotes()
     test_expired_never_promotes_and_host_contract()
     test_anci_favicon_local_in_full_release()
-    print("Recupero indipendente Radar: 5 contratti PASS")
+    test_reader_proxy_and_external_redirect_never_promote()
+    test_live_fixture_override_is_rejected()
+    print("Recupero indipendente Radar: 7 contratti PASS")
     return 0
 
 
