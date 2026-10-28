@@ -74,6 +74,7 @@ jobs:
 
       - name: Validate v0.4.4 contracts and blind-test hardening
         run: |
+          python scripts/test_opportunity_municipal_relevance.py
           python scripts/test_opportunity_regione_toscana_guard.py
           python scripts/test_opportunity_issue_notification.py
           python scripts/test_opportunity_daily_continuity.py
