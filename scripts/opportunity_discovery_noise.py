@@ -116,9 +116,9 @@ def classify_signal(item, reference_date=None):
     if host == "prefettura.interno.gov.it":
         if re.search(
             r"^(?:(?:avviso|esito|verbale|comunicato|seduta|sorteggio|estrazione|"
-            r"pubblicazione|nomina|procedura)\\b.{0,100}\\b(?:revisor[ei]|sorteggi)\\b|"
-            r"(?:circolare|istituzione|lstituzione)\\b.{0,130}\\belettor[ei]\\b|"
-            r"comunicato stampa\\s*$|"
+            r"pubblicazione|nomina|procedura)\b.{0,100}\b(?:revisor[ei]|sorteggi)\b|"
+            r"(?:circolare|istituzione|lstituzione)\b.{0,130}\belettor[ei]\b|"
+            r"comunicato stampa\s*$|"
             r"avviso sospensione sportello telefonico|"
             r"comunicazione distacco energia elettrica|"
             r"blocco degli autotrasportatori|rimossi i blocchi dell.autotrasporto|"
@@ -135,7 +135,7 @@ def classify_signal(item, reference_date=None):
             r"^(?:(?:avvisi? pubblic[oi]|avviso pubblico).*?"
             r"(?:ricerca immob|reperimento.*immobil|locazione passiva|"
             r"indagine di mercato esplorativa)|"
-            r"affidamento (?:dei servizi|servizio)\\b|"
+            r"affidamento (?:dei servizi|servizio)\b|"
             r"fornitura titoli di viaggio|"
             r"comunicazione seduta (?:pubblica|riservata).*servizio)",
             title, re.I,
