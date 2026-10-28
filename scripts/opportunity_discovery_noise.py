@@ -109,6 +109,41 @@ def classify_signal(item, reference_date=None):
     # discovery-budget filter, not a decision about a published grant. A
     # reopening/current explicit application window already won above.
     host = (location.hostname or "").casefold()
+    # Segnalazioni amministrative e gare della Prefettura; non costituiscono
+    # contributi richiedibili dai Comuni. I titoli sono ancorati e la regola
+    # viene applicata SOLO dopo i guard per proroga/riapertura e scadenza attiva.
+    # Bandi nazionali (es. videosorveglianza, Scuole sicure) NON sono esclusi.
+    if host == "prefettura.interno.gov.it":
+        if re.search(
+            r"^(?:(?:avviso|esito|verbale|comunicato|seduta|sorteggio|estrazione|"
+            r"pubblicazione|nomina|procedura)\b.{0,100}\b(?:revisor[ei]|sorteggi)\b|"
+            r"(?:circolare|istituzione|lstituzione)\b.{0,130}\belettor[ei]\b|"
+            r"comunicato stampa\s*$|"
+            r"avviso estrazione del \d{1,2}\s+|"
+            r"interpello pubblico copertura|procedura interpello pubblico copertura|"
+            r"sito internet prefettura\s*$|"
+            r"avviso sospensione sportello telefonico|"
+            r"comunicazione distacco energia elettrica|"
+            r"blocco degli autotrasportatori|rimossi i blocchi dell.autotrasporto|"
+            r"bonifica ordigno bellico|forti temporali: attivato|"
+            r"cordoglio del prefetto|misure tutela ordine e sicurezza|"
+            r"accordo prefettura, comune e soprintendenza|"
+            r"aglianese - massese.*assenza di pubblico|"
+            r"inaugurazione nuovo asilo nido.*cofinanziato|"
+            r"sessione invernale esami capacità tecnica)",
+            title, re.I,
+        ):
+            return "administrative_update"
+        if re.search(
+            r"^(?:(?:avvisi? pubblic[oi]|avviso pubblico).*?"
+            r"(?:ricerca immob|reperimento.*immobil|locazione passiva|"
+            r"indagine di mercato esplorativa)|"
+            r"affidamento (?:dei servizi|servizio)\b|"
+            r"fornitura titoli di viaggio|"
+            r"comunicazione seduta (?:pubblica|riservata).*servizio)",
+            title, re.I,
+        ):
+            return "procurement_notice"
     if host in {"www.mim.gov.it", "mim.gov.it"} and re.match(
             r"^#?NoiSiamoLeScuole\b", title, re.I):
         return "administrative_update"
