@@ -80,6 +80,7 @@ jobs:
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
+          python scripts/test_opportunity_independent_audit_recovery.py
           python scripts/test_opportunity_publishability_matrix.py
           python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_content_sanitization.py
