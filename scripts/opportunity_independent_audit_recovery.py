@@ -16,6 +16,7 @@ from typing import Any
 from urllib.parse import urlsplit
 
 import run_opportunity_radar_v04 as core
+import opportunity_discovery_resilient as discovery
 
 ROOT = Path(__file__).resolve().parents[1]
 RECOVERY_PATH = ROOT / "data" / "opportunity-independent-audit-recovery-v1.json"
@@ -46,6 +47,36 @@ def _entries() -> list[dict[str, Any]]:
     return list(payload["entries"])
 
 
+def verification_grade_transport(url: str, diagnostics: dict[str, Any]) -> tuple[bool, str]:
+    """No publisher identity is inferred from a proxied response.
+
+    Discovery may use a reader proxy, but publication requires original-host
+    direct HTTP or Chromium with a trustworthy HTTPS final URL. A redirect to
+    an unrelated domain is not primary evidence, even if its text matches.
+    """
+    if diagnostics.get("status") != "ok":
+        return False, "Acquisizione primaria non riuscita"
+    if diagnostics.get("proxyUsed") is not False or diagnostics.get("transport") not in {
+        "http_browser", "chromium", "direct_https"
+    }:
+        return False, "Trasporto reader/proxy non valido come evidenza primaria"
+    origin = urlsplit(url)
+    final_url = str(diagnostics.get("resolvedUrl") or "")
+    resolved = urlsplit(final_url)
+    expected = str(origin.hostname or "").lower().removeprefix("www.")
+    actual = str(resolved.hostname or "").lower().removeprefix("www.")
+    approved = {host.removeprefix("www.") for host in APPROVED_HOSTS}
+    if (
+        origin.scheme != "https" or resolved.scheme != "https"
+        or origin.username or resolved.username
+        or origin.password or resolved.password
+        or origin.port not in (None, 443) or resolved.port not in (None, 443)
+        or not expected or expected not in approved or actual != expected
+    ):
+        return False, "Redirect o host finale diverso dalla fonte ufficiale verificata"
+    return True, ""
+
+
 def apply(
     result: dict[str, Any],
     today: date,
@@ -54,6 +85,8 @@ def apply(
     detail_payloads: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Promuove solo evidenze correnti; su errore non pubblica e registra la lacuna."""
+    if live and detail_payloads is not None:
+        raise ValueError("I payload di fixture non sono utilizzabili nelle verifiche live")
     current = list(result.get("opportunities") or [])
     ids = {str(x.get("coverage_id") or "") for x in current if x.get("coverage_id")}
     normalized = core.radar.v025.normalized_url
@@ -77,13 +110,19 @@ def apply(
 
         raw = (detail_payloads or {}).get(url)
         transport_error = None
+        diagnostics: dict[str, Any] | None = None
         if raw is None and live:
             remaining = fetch_until - time.monotonic()
             if remaining > 0.5:
                 try:
-                    raw = core.radar.v025.v022.fetch_resilient(
+                    candidate, diagnostics = discovery.fetch_with_diagnostics(
                         url, timeout=min(4.0, remaining), attempts=1
                     )
+                    trusted, reason = verification_grade_transport(url, diagnostics)
+                    if trusted:
+                        raw = candidate
+                    else:
+                        transport_error = reason
                 except Exception as exc:
                     transport_error = str(exc)
             else:
@@ -92,7 +131,7 @@ def apply(
             entry, today, detail_payloads={url: raw} if raw is not None else None,
             live=False, fallback_max_days=0
         )
-        error = error or transport_error
+        error = transport_error or error
         if not ok or verification != "live":
             pending.append({
                 "coverage_id": key,
@@ -106,8 +145,11 @@ def apply(
 
         item = core.build_seed_item(entry, today, "live_official_primary")
         item["source_verification"] = {
-            "type": "official_primary_webpage",
+            "type": "official_primary_webpage" if live else "offline_test_fixture",
             "url": url,
+            "resolved_url": str((diagnostics or {}).get("resolvedUrl") or url),
+            "transport": str((diagnostics or {}).get("transport") or "test_fixture"),
+            "proxy_used": False if live else None,
             "verified_at": today.isoformat(),
             "required_terms": list(entry.get("required_terms") or []),
         }
