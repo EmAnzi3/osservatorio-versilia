@@ -91,6 +91,7 @@ def test_reader_proxy_and_external_redirect_never_promote() -> None:
         ("http_browser", True, None),  # Contradictory diagnostics must fail closed.
         ("http_browser", False, "https://r.jina.ai/https://anci.lombardia.it/"),
         ("http_browser", False, "http://anci.lombardia.it/"),
+        ("http_browser", False, "https://anci.lombardia.it:invalid/path"),
     ):
         result = {"opportunities": [], "coverageHold": []}
         with patch.object(recovery.discovery, "fetch_with_diagnostics",
