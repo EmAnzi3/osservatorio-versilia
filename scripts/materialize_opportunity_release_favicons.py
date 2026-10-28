@@ -61,6 +61,7 @@ _GENERATED_HOST_MARKS = {
     "interreg-euro-med.eu": "MED",
     "regione.sardegna.it": "RAS",
     "trunsport.eu": "TRU",
+    "anci.lombardia.it": "ANCI",
 }
 
 
