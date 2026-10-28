@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier come relazione — «Invecchiare in Versilia» (29 ottobre 2026)
+
+Quarto dossier `dist/dossier/anziani/`: indice di vecchiaia e sua variazione,
+anziani per 100 persone in età da lavoro, grandi anziani (85+), saldo naturale e
+variazione della popolazione, speranza di vita (ARS), assistenza domiciliare e
+farmacie, spesa sociale dei Comuni. Costruito sopra il ramo del turismo (#501).
+
 ## Dossier come relazione — «La Versilia dei turisti» (29 ottobre 2026)
 
 Terzo dossier `dist/dossier/turismo/`: presenze e intensità turistica,
