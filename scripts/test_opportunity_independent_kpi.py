@@ -69,6 +69,31 @@ def test_threshold_and_distinct_phases() -> None:
     assert incomplete["timingLagDays"]["publication"]["median"] is None
 
 
+
+def test_iso_timestamps_and_offset_normalization() -> None:
+    cases = [_case(i) for i in range(20)]
+    for case in cases:
+        case.update({
+            "official_published_at": "2026-10-01T10:00:00+02:00",
+            "radar_detected_at": "2026-10-01T09:30:00Z",
+            "radar_qualified_at": "2026-10-01T12:00:00+02:00",
+            "radar_published_at": "2026-10-01T10:45:00+00:00",
+        })
+    report = _audit(cases, captured=20)["prospective"]
+    lag = report["timingLagDays"]
+    assert all(row["sampleSize"] == 20 for row in lag.values())
+    assert abs(lag["detection"]["median"] - 90 / 1440) < 1e-10
+    assert abs(lag["qualification"]["median"] - 30 / 1440) < 1e-10
+    assert abs(lag["publication"]["median"] - 45 / 1440) < 1e-10
+
+    # Un evento temporalmente impossibile non conta nel relativo campione.
+    cases[0]["radar_qualified_at"] = "2026-10-01T08:00:00Z"
+    report = _audit(cases, captured=20)["prospective"]
+    assert report["timingLagDays"]["qualification"]["sampleSize"] == 19
+    assert report["timingLagDays"]["qualification"]["median"] is None
+    assert report["timingLagDays"]["detection"]["sampleSize"] == 20
+
+
 def test_retro_audit_date_is_not_detection() -> None:
     case = {
         "id": "old",
@@ -87,6 +112,7 @@ def test_retro_audit_date_is_not_detection() -> None:
 def main() -> int:
     test_threshold_and_distinct_phases()
     test_retro_audit_date_is_not_detection()
+    test_iso_timestamps_and_offset_normalization()
     print("KPI indipendenti: soglia >=20 e tre lag separati PASS")
     return 0
 
