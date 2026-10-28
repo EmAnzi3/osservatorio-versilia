@@ -113,6 +113,30 @@ def test_reader_proxy_and_external_redirect_never_promote() -> None:
                for x in result["opportunities"])
 
 
+def test_bounded_live_fetch_passes_transport_deadline() -> None:
+    """The 18-second holdout budget must also reach the subprocess transport."""
+    entries = recovery._entries()
+    fixtures = {e["url"]: _fixture(e) for e in entries}
+    calls: list[float] = []
+
+    class FakeBudget:
+        def fetch(self, url, **kwargs):
+            assert kwargs.get("max_seconds") is not None
+            calls.append(float(kwargs["max_seconds"]))
+            return fixtures[url], {
+                "status": "ok", "transport": "http_browser",
+                "proxyUsed": False, "resolvedUrl": url, "errors": [],
+            }
+
+    result = {"opportunities": [], "coverageHold": []}
+    with patch.object(recovery.discovery, "LIVE_BUDGET", FakeBudget()):
+        recovery.apply(result, date(2026, 10, 28), live=True)
+    assert len(result["opportunities"]) == len(entries)
+    assert len(calls) == len(entries)
+    assert all(0 < value <= 4.0 for value in calls), calls
+    assert sum(calls) <= 20.0
+
+
 def test_live_fixture_override_is_rejected() -> None:
     first = recovery._entries()[0]
     try:
@@ -159,7 +183,8 @@ def main() -> int:
     test_anci_favicon_local_in_full_release()
     test_reader_proxy_and_external_redirect_never_promote()
     test_live_fixture_override_is_rejected()
-    print("Recupero indipendente Radar: 7 contratti PASS")
+    test_bounded_live_fetch_passes_transport_deadline()
+    print("Recupero indipendente Radar: 8 contratti PASS")
     return 0
 
 
