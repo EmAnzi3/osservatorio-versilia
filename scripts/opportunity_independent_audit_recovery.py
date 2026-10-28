@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RECOVERY_PATH = ROOT / "data" / "opportunity-independent-audit-recovery-v1.json"
 APPROVED_HOSTS = {
     "www.conai.org", "conai.org",
+    "anci.lombardia.it",  # ANCI già fonte nazionale nel Radar; co-promotore CONAI
     "centroperillibro.cultura.gov.it",
     "www.fondazionecarilucca.it", "fondazionecarilucca.it",
     "ec.europa.eu",
