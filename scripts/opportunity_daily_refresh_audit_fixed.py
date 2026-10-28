@@ -400,12 +400,12 @@ def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, A
         pending = recovery.get("pending") or []
         promoted = recovery.get("promoted") or []
         text += (
-            "\\n## Recupero omissioni da audit indipendente\\n\\n"
+            "\n## Recupero omissioni da audit indipendente\n\n"
             f"Nuove schede verificate: **{len(promoted)}**; "
-            f"verifiche primarie ancora in sospeso: **{len(pending)}**.\\n"
+            f"verifiche primarie ancora in sospeso: **{len(pending)}**.\n"
         )
         for row in pending:
-            text += f"- {row.get('title')}: {row.get('reason')} · {row.get('url')}\\n"
+            text += f"- {row.get('title')}: {row.get('reason')} · {row.get('url')}\n"
     return text
 
 
