@@ -5,18 +5,18 @@
   "entries": [
     {
       "coverage_id": "n-anci-conai-comunicazione-locale-2026",
-      "source_id": "conai-anci",
-      "source_label": "ANCI / CONAI",
-      "publisher": "CONAI · Consorzio Nazionale Imballaggi",
+      "source_id": "anci-lombardia-national-leads",
+      "source_label": "ANCI Lombardia · ANCI–CONAI",
+      "publisher": "ANCI · Associazione Nazionale Comuni Italiani / CONAI",
       "title": "ANCI–CONAI 2026 · Comunicazione locale su raccolta differenziata",
-      "url": "https://www.conai.org/news-e-press/bando-per-la-comunicazione-locale-anci-conai-candidature-entro-il-13-novembre-2026/",
+      "url": "https://anci.lombardia.it/dettaglio-circolari/202610161414-bando-anci-conai-per-i-contributi-sulle-attivit%C3%A0-di-comunicazione-locale/",
       "required_terms": [
-        "Bando per la comunicazione locale ANCI-CONAI",
+        "bando 2026 per la comunicazione locale",
         "13 novembre 2026",
         "enti locali",
         "raccolta differenziata"
       ],
-      "published_at": "2026-10-09",
+      "published_at": "2026-10-16",
       "deadline_at": "2026-11-13",
       "lifecycle_stage": "application_open",
       "category": "ambiente",
@@ -59,7 +59,9 @@
       "applicant_type": "Comune o ente locale con i requisiti dell'avviso",
       "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
       "geographic_scope": "Italia o UE secondo la call",
-      "condition_label": "Requisiti specifici del progetto"
+      "condition_label": "Requisiti specifici del progetto",
+      "original_conai_announcement_url": "https://www.conai.org/news-e-press/bando-per-la-comunicazione-locale-anci-conai-candidature-entro-il-13-novembre-2026/",
+      "verification_note": "Pagina primaria pubblicata dall'ANCI, co-promotore del bando; contiene il bando originale allegato. La pagina CONAI restituisce 403 WAF/401 reader nei runner e non è utilizzata come prova di verifica live."
     },
     {
       "coverage_id": "n-cepell-leggimi-0-6-2026",
