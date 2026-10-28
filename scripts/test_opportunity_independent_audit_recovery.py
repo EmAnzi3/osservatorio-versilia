@@ -73,12 +73,40 @@ def test_expired_never_promotes_and_host_contract() -> None:
     assert all(not e["allow_recent_evidence_fallback"] for e in entries)
 
 
+def test_anci_favicon_local_in_full_release() -> None:
+    """La fonte recuperata deve avere un'icona locale prima del gate di build."""
+    import tempfile
+    from pathlib import Path
+    from xml.etree import ElementTree
+
+    import materialize_opportunity_release_favicons as favicons
+
+    entry = next(e for e in recovery._entries()
+                 if e["coverage_id"] == "n-anci-conai-comunicazione-locale-2026")
+    assert "anci.lombardia.it" in entry["url"]
+    payload = {"opportunities": [{"title": entry["title"], "source_id": entry["source_id"],
+                                   "url": entry["url"], "presentation": {}}], "archive": []}
+    with tempfile.TemporaryDirectory(prefix="radar-anci-icon-") as folder:
+        dist = Path(folder)
+        provenance = favicons.materialize(payload, dist)
+        favicons.apply_to_payload(payload, provenance)
+        family = "generated:anci.lombardia.it"
+        assert payload["opportunities"][0]["presentation"]["source_favicon_family"] == family
+        local = payload["opportunities"][0]["presentation"]["source_favicon"]
+        assert local.endswith("source-anci-lombardia-it.svg")
+        artifact = dist / "assets" / "source-favicons" / "source-anci-lombardia-it.svg"
+        assert artifact.is_file() and artifact.stat().st_size > 0
+        assert ElementTree.fromstring(artifact.read_bytes()).tag.endswith("svg")
+        assert ">ANCI</text>" in artifact.read_text(encoding="utf-8")
+
+
 def main() -> int:
     test_offline_pending_does_not_block_or_publish()
     test_documented_live_promotion_and_dedup()
     test_modified_deadline_or_municipality_evidence_never_promotes()
     test_expired_never_promotes_and_host_contract()
-    print("Recupero indipendente Radar: 4 contratti PASS")
+    test_anci_favicon_local_in_full_release()
+    print("Recupero indipendente Radar: 5 contratti PASS")
     return 0
 
 
