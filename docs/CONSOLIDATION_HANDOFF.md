@@ -1,5 +1,16 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier come relazione — «Lavorare in Versilia» (28 ottobre 2026)
+
+Formato approvato dal proprietario con la #495 (casa). Secondo dossier
+`dist/dossier/lavoro/`: occupazione e disoccupazione 25-64 anni, giovani e donne,
+addetti e dimensione delle imprese, pendolari 2021, retribuzioni e valore
+aggiunto, redditi da lavoro e pensioni. Il generatore ora gestisce valori negativi
+(saldo pendolare), nomi delle fonti per tipo di rilevazione e articoli italiani
+davanti alle cifre. Chiuse su decisione del proprietario le PR superate #494, #443,
+#338 e #117. Pagine ancora `noindex` e fuori dal menu; manca una pagina indice
+`/dossier/` prima del lancio.
+
 ## Dossier come relazione — prototipo «Abitare in Versilia» (27 ottobre 2026)
 
 Il proprietario ha respinto i dossier come elenco di evidenze (#494, in pausa):

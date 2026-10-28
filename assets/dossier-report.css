@@ -76,6 +76,8 @@
 .dr-ref{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--dr-tuscany)}
 .dr-ref-italy{border-left:2px dotted var(--dr-italy)}
 .dr-ref-versilia{border-left:2px solid var(--dr-versilia)}
+.dr-zero{border-left:1px solid #7d8b93}
+
 .dr-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:14px 0 0;padding:0;list-style:none;font-size:13px;color:var(--dr-muted)}
 .dr-key{display:inline-flex;align-items:center;gap:6px}
 .dr-key::before{content:"";width:0;height:14px;border-left:2px dashed var(--dr-tuscany)}
@@ -88,6 +90,9 @@
 .dr.has-town .dr-bar{background:#ddcbbd}
 .dr.has-town .dr-name{color:var(--dr-muted)}
 .dr .dr-row.is-town .dr-bar{background:var(--dr-accent)}
+.dr .dr-bar.dr-bar-neg{background:#9db3bd}
+.dr.has-town .dr-bar.dr-bar-neg{background:#d5e0e5}
+.dr .dr-row.is-town .dr-bar.dr-bar-neg{background:#3f6f84}
 .dr .dr-row.is-town .dr-name,.dr .dr-row.is-town .dr-val{color:var(--dr-ink);font-weight:780}
 .dr-example{margin:6px 0 26px;padding:20px 22px;border-radius:14px;border:1px dashed #c8bbab}
 .dr-example p{font-size:15px;color:var(--dr-muted)}
