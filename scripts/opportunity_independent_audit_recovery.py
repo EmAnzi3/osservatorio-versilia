@@ -116,7 +116,8 @@ def apply(
             if remaining > 0.5:
                 try:
                     candidate, diagnostics = discovery.fetch_with_diagnostics(
-                        url, timeout=min(4.0, remaining), attempts=1
+                        url, timeout=min(4.0, remaining), attempts=1,
+                        max_seconds=min(4.0, remaining),
                     )
                     trusted, reason = verification_grade_transport(url, diagnostics)
                     if trusted:
