@@ -32,7 +32,9 @@ I tre tempi di attraversamento, separati, sono:
 - **Publication lag** = pubblicazione effettiva meno qualificazione.
 
 La mediana di ogni tempo resta non misurabile fino a 20 coppie di date
-coerenti per quello specifico passaggio. Un timestamp assente, incoerente o
+coerenti per quello specifico passaggio. I valori sono espressi in giorni, anche
+frazionari. I timestamp con offset sono normalizzati in UTC; per date prive di
+fuso orario e date senza ora viene adottata la convenzione UTC. Un timestamp assente, incoerente o
 precedente all'evento iniziale non viene riempito per deduzione.
 
 Le date `audit_found_at` del controllo retrospettivo misurano **quando

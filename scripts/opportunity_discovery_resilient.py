@@ -286,9 +286,13 @@ def _markdown_to_discovery_html(markdown: str, page_url: str) -> str:
     return "<html><body>" + "".join(cards) + "</body></html>"
 
 
-def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tuple[str, dict[str, Any]]:
+def fetch_with_diagnostics(
+    url: str, timeout: int = 30, attempts: int = 2, *, max_seconds: float | None = None
+) -> tuple[str, dict[str, Any]]:
     if LIVE_BUDGET is not None:
-        payload, diagnostics = LIVE_BUDGET.fetch(url, timeout=timeout, attempts=attempts)
+        payload, diagnostics = LIVE_BUDGET.fetch(
+            url, timeout=timeout, attempts=attempts, max_seconds=max_seconds
+        )
         _record_trace(url, diagnostics)
         if payload is None:
             raise DiscoveryFetchError("; ".join(diagnostics.get("errors") or []), diagnostics)

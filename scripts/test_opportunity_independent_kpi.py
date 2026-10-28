@@ -19,11 +19,11 @@ def _case(n: int) -> dict:
     }
 
 
-def _audit(cases: list[dict], captured: int) -> dict:
+def _audit(cases: list[dict], captured: int, minimum_sample: int = 20) -> dict:
     config = {
         "baselineDate": "2026-10-28",
         "baselineIsRepresentative": False,
-        "minimumProspectiveSample": 20,
+        "minimumProspectiveSample": minimum_sample,
         "cases": cases,
     }
     payload = {
@@ -44,6 +44,10 @@ def test_threshold_and_distinct_phases() -> None:
     assert small["sampleSize"] == 19
     assert small["status"] == "pending_minimum_sample"
     assert small["captureRate"] is None
+    # Configurazioni con soglia ridotta non possono violare il minimo 20.
+    misconfigured = _audit([_case(i) for i in range(19)], 19, minimum_sample=5)["prospective"]
+    assert misconfigured["minimumSample"] == 20
+    assert misconfigured["captureRate"] is None
     assert all(p["median"] is None for p in small["timingLagDays"].values())
 
     complete = _audit([_case(i) for i in range(20)], captured=19)["prospective"]
@@ -67,7 +71,6 @@ def test_threshold_and_distinct_phases() -> None:
     assert incomplete["timingLagDays"]["detection"]["median"] == 2
     assert incomplete["timingLagDays"]["qualification"]["median"] is None
     assert incomplete["timingLagDays"]["publication"]["median"] is None
-
 
 
 def test_iso_timestamps_and_offset_normalization() -> None:

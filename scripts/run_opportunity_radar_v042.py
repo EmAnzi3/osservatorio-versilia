@@ -229,8 +229,8 @@ def build_independent_audit(result: dict[str, Any], *, live: bool) -> dict[str, 
 
     prospective = [x for x in cases if x.get("expected") == "prospective_current"]
     prospective_captured = sum(str(x.get("coverage_id") or "") in active_ids for x in prospective)
-    min_sample = int(cfg.get("minimumProspectiveSample") or 20)
-    # Non esporre un KPI percentuale su campioni prospettici inferiori alla soglia.
+    min_sample = max(20, int(cfg.get("minimumProspectiveSample") or 20))
+    # Nessuna percentuale con meno di 20 casi, neppure se la configurazione è errata.
     prospective_rate = (prospective_captured / len(prospective)) if len(prospective) >= min_sample else None
     prospective_status = "measurable" if len(prospective) >= min_sample else "pending_minimum_sample"
     holdouts = _probe_holdouts(live)
