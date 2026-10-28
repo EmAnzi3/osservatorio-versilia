@@ -9,9 +9,14 @@ solo a mantenere compatibili le schede v0.4.4 già pubblicate.
 from __future__ import annotations
 
 from collections import Counter
+import json
+from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = "1.0"
+ROOT = Path(__file__).resolve().parents[1]
+MUNICIPALITY_EVIDENCE = ROOT / "data" / "opportunity-municipal-eligibility-overrides-v1.json"
+TOWNS = ("Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio")
 
 DIRECT = "direct"
 DIRECT_CONDITIONAL = "direct_conditional"
@@ -121,6 +126,67 @@ def classify_item(item: dict[str, Any]) -> str:
     return REVIEW_EXCLUDE
 
 
+def apply_documented_eligibility(result: dict[str, Any]) -> list[dict[str, str]]:
+    """Applica solo esclusioni/qualificazioni puntuali supportate da fonti.
+
+    Non trasforma l'appartenenza ai sette Comuni in ammissibilità: la matrice
+    comunale esistente è la fonte primaria. Questo livello corregge soltanto
+    errori dimostrati e conserva URL ed evidenza sulla singola voce.
+    """
+    config = json.loads(MUNICIPALITY_EVIDENCE.read_text(encoding="utf-8"))
+    if config.get("schemaVersion") != "1.0" or not isinstance(config.get("overrides"), list):
+        raise RuntimeError("Contratto delle evidenze territoriali non valido")
+    by_id = {
+        str(item.get("coverage_id") or ""): item
+        for item in result.get("opportunities") or []
+        if item.get("coverage_id")
+    }
+    applied: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for rule in config["overrides"]:
+        coverage_id = str(rule.get("coverage_id") or "").strip()
+        town = str(rule.get("municipality") or "").strip()
+        status = str(rule.get("status") or "").strip()
+        source = str(rule.get("source_url") or "").strip()
+        key = (coverage_id, town)
+        if (not coverage_id or town not in TOWNS or status not in {"eligible", "conditional", "not_eligible"}
+                or not source.startswith("https://") or not str(rule.get("reason") or "").strip()
+                or key in seen):
+            raise RuntimeError(f"Evidenza territoriale non valida o duplicata: {key}")
+        seen.add(key)
+        if "population" in rule and "upper_population_limit" in rule:
+            population = int(rule["population"])
+            limit = int(rule["upper_population_limit"])
+            if status == "not_eligible" and population <= limit:
+                raise RuntimeError(f"Esclusione demografica incoerente: {key}")
+        item = by_id.get(coverage_id)
+        if item is None:
+            continue
+        current = item.get("municipality_eligibility")
+        if not isinstance(current, dict) or not all(t in current for t in TOWNS):
+            raise RuntimeError(f"Matrice comunale incompleta per {coverage_id}: impossibile applicare override")
+        matrix = dict(current)
+        matrix[town] = {
+            **dict(current.get(town) or {}),
+            "status": status,
+            "reason": str(rule["reason"]),
+            "evidence_url": source,
+            "population_evidence_url": rule.get("population_evidence_url"),
+            "evidence_checked_at": config.get("verifiedOn"),
+        }
+        item["municipality_eligibility"] = matrix
+        # Non usare la lista generica di tutti i Comuni come indice di idoneità.
+        item["municipalities"] = [
+            name for name in TOWNS
+            if str((matrix.get(name) or {}).get("status") or "") in {"eligible", "conditional"}
+        ]
+        applied.append({"coverage_id": coverage_id, "municipality": town, "status": status})
+    result["municipalityEligibilityEvidence"] = {
+        "schemaVersion": "1.0", "applied": applied, "appliedCount": len(applied)
+    }
+    return applied
+
+
 def annotate_item(item: dict[str, Any]) -> str:
     relevance = classify_item(item)
     item["municipal_relevance_class"] = relevance
@@ -161,6 +227,7 @@ def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def apply_to_payload(result: dict[str, Any], *, drop_review: bool = True) -> dict[str, Any]:
+    apply_documented_eligibility(result)
     items = list(result.get("opportunities") or [])
     public_items: list[dict[str, Any]] = []
     review_items: list[dict[str, Any]] = []
@@ -187,6 +254,13 @@ def apply_to_payload(result: dict[str, Any], *, drop_review: bool = True) -> dic
     counts["partnershipUpcoming"] = summary["partnershipUpcoming"]
     counts["municipalReviewExcluded"] = summary["reviewExcluded"] + len(review_items)
     counts["public"] = len(public_items)
+    result["municipalitySummary"] = {
+        town: {
+            "eligible": sum((item.get("municipality_eligibility") or {}).get(town, {}).get("status") == "eligible" for item in public_items),
+            "conditional": sum((item.get("municipality_eligibility") or {}).get(town, {}).get("status") == "conditional" for item in public_items),
+        }
+        for town in TOWNS
+    }
     return result
 
 
