@@ -11,7 +11,7 @@ Estende la v0.4.1 con un controllo non autoreferenziale della copertura:
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from statistics import median
 from typing import Any
@@ -173,17 +173,26 @@ def _prospective_timing(cases: list[dict[str, Any]], min_sample: int) -> dict[st
         "qualification": ("radar_detected_at", "radar_qualified_at"),
         "publication": ("radar_qualified_at", "radar_published_at"),
     }
+    def documented_instant(raw: Any) -> datetime:
+        # Date-only e timestamp senza offset: convenzione UTC.
+        # I timestamp con offset sono normalizzati prima di calcolare il lag.
+        value = str(raw or "").strip().replace("Z", "+00:00")
+        instant = datetime.fromisoformat(value)
+        if instant.tzinfo is None:
+            instant = instant.replace(tzinfo=timezone.utc)
+        return instant.astimezone(timezone.utc)
+
     report = {}
     for phase, (start_field, end_field) in phases.items():
         days = []
         for case in cases:
             try:
-                start = date.fromisoformat(str(case.get(start_field) or ""))
-                end = date.fromisoformat(str(case.get(end_field) or ""))
+                start = documented_instant(case.get(start_field))
+                end = documented_instant(case.get(end_field))
             except ValueError:
                 continue
             if end >= start:
-                days.append((end - start).days)
+                days.append((end - start).total_seconds() / 86400)
         report[phase] = {
             "sampleSize": len(days),
             "minimumSample": min_sample,
