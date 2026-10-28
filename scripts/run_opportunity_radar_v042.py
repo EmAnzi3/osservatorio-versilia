@@ -11,7 +11,7 @@ Estende la v0.4.1 con un controllo non autoreferenziale della copertura:
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from statistics import median
 from typing import Any
@@ -161,6 +161,49 @@ def _probe_holdouts(live: bool) -> list[dict[str, Any]]:
     return sorted(rows, key=lambda x: str(x.get("id") or ""))
 
 
+
+def _prospective_timing(cases: list[dict[str, Any]], min_sample: int) -> dict[str, Any]:
+    """Misura tre passaggi diversi SOLO da timestamp osservati e documentati.
+
+    published_at/audit_found_at dei controlli retrospettivi non sono rilevazioni
+    del Radar e non possono alimentare il detection lag.
+    """
+    phases = {
+        "detection": ("official_published_at", "radar_detected_at"),
+        "qualification": ("radar_detected_at", "radar_qualified_at"),
+        "publication": ("radar_qualified_at", "radar_published_at"),
+    }
+    def documented_instant(raw: Any) -> datetime:
+        # Date-only e timestamp senza offset: convenzione UTC.
+        # I timestamp con offset sono normalizzati prima di calcolare il lag.
+        value = str(raw or "").strip().replace("Z", "+00:00")
+        instant = datetime.fromisoformat(value)
+        if instant.tzinfo is None:
+            instant = instant.replace(tzinfo=timezone.utc)
+        return instant.astimezone(timezone.utc)
+
+    report = {}
+    for phase, (start_field, end_field) in phases.items():
+        days = []
+        for case in cases:
+            try:
+                start = documented_instant(case.get(start_field))
+                end = documented_instant(case.get(end_field))
+            except ValueError:
+                continue
+            if end >= start:
+                days.append((end - start).total_seconds() / 86400)
+        report[phase] = {
+            "sampleSize": len(days),
+            "minimumSample": min_sample,
+            "median": median(days) if len(days) >= min_sample else None,
+            "status": "measurable" if len(days) >= min_sample else "pending_documented_timestamps",
+            "from": start_field,
+            "to": end_field,
+        }
+    return report
+
+
 def build_independent_audit(result: dict[str, Any], *, live: bool) -> dict[str, Any]:
     cfg = core._load(INDEPENDENT_AUDIT_V042)
     cases = list(cfg.get("cases") or [])
@@ -186,8 +229,9 @@ def build_independent_audit(result: dict[str, Any], *, live: bool) -> dict[str, 
 
     prospective = [x for x in cases if x.get("expected") == "prospective_current"]
     prospective_captured = sum(str(x.get("coverage_id") or "") in active_ids for x in prospective)
-    min_sample = int(cfg.get("minimumProspectiveSample") or 20)
-    prospective_rate = (prospective_captured / len(prospective)) if prospective else None
+    min_sample = max(20, int(cfg.get("minimumProspectiveSample") or 20))
+    # Nessuna percentuale con meno di 20 casi, neppure se la configurazione è errata.
+    prospective_rate = (prospective_captured / len(prospective)) if len(prospective) >= min_sample else None
     prospective_status = "measurable" if len(prospective) >= min_sample else "pending_minimum_sample"
     holdouts = _probe_holdouts(live)
     holdout_healthy = sum(row.get("status") == "ok" for row in holdouts)
@@ -217,9 +261,16 @@ def build_independent_audit(result: dict[str, Any], *, live: bool) -> dict[str, 
             "closureRate": (len(closed) / baseline_total) if baseline_total else None,
         },
         "targetedDetectionLagDays": {
+            "sampleSize": 0,
+            "median": None,
+            "status": "unavailable_retrospective_audit_is_not_radar_detection",
+            "note": "La data di scoperta dell'audit non è la prima rilevazione del Radar.",
+        },
+        "targetedAuditIdentificationDelayDays": {
             "sampleSize": len(lags),
             "median": median(lags) if lags else None,
-            "note": "Misura retrospettiva dei falsi negativi scoperti il 22/08/2026; non è il KPI prospettico.",
+            "status": "retrospective_not_kpi",
+            "note": "Tempo dalla pubblicazione ufficiale alla scoperta nell'audit; non è detection lag.",
         },
         "prospective": {
             "sampleSize": len(prospective),
@@ -229,6 +280,7 @@ def build_independent_audit(result: dict[str, Any], *, live: bool) -> dict[str, 
             "minimumSample": min_sample,
             "targetCaptureRate": cfg.get("targetCaptureRate"),
             "targetMedianDetectionLagDays": cfg.get("targetMedianDetectionLagDays"),
+            "timingLagDays": _prospective_timing(prospective, min_sample),
         },
         "holdouts": {
             "configured": len(holdouts),
