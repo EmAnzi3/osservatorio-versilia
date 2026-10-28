@@ -121,8 +121,48 @@ def _audit_fix_contract() -> None:
     assert not invalid, f"Verified audit entries senza municipal_relevance_class valida: {invalid}"
 
 
+def _territorial_eligibility_contract() -> None:
+    """Una soglia demografica o territoriale documentata non ammette tutti i sette Comuni."""
+    from build_opportunity_preview import eligible_town_slugs, slug
+
+    sinfi = _item("SINFI 2026", relevance.SUPPORT_FINANCE, stage="rolling_open")
+    sinfi["coverage_id"] = "sinfi-supporto-comuni-2026"
+    sinfi["municipalities"] = list(relevance.TOWNS)
+    sinfi["municipality_eligibility"] = {
+        town: {"status": "conditional", "reason": "Verificare accesso al servizio"}
+        for town in relevance.TOWNS
+    }
+    payload = {"opportunities": [sinfi], "municipalities": list(relevance.TOWNS), "counts": {}}
+    result = relevance.apply_to_payload(payload)
+    updated = result["opportunities"][0]
+    viareggio = updated["municipality_eligibility"]["Viareggio"]
+    assert viareggio["status"] == "not_eligible", viareggio
+    assert "60.680" in viareggio["reason"]
+    assert "infratelitalia.it" in viareggio["evidence_url"]
+    assert "Viareggio" not in updated["municipalities"]
+    assert slug("Viareggio") not in eligible_town_slugs(updated)
+    assert len(eligible_town_slugs(updated)) == 6
+    assert result["municipalitySummary"]["Viareggio"] == {"eligible": 0, "conditional": 0}
+    assert result["municipalitySummary"]["Massarosa"]["conditional"] == 1
+    assert result["municipalityEligibilityEvidence"]["appliedCount"] == 1
+    # Seconda esecuzione idempotente: la scheda non torna a essere ammissibile.
+    again = relevance.apply_to_payload(result)
+    assert again["opportunities"][0]["municipality_eligibility"]["Viareggio"]["status"] == "not_eligible"
+
+    # I casi già corretti nel baseline non devono subire regressioni.
+    original = json.loads((ROOT / "data" / "opportunity-release.json").read_text(encoding="utf-8"))
+    toscana = next(item for item in original["opportunities"] if "Comuni Toscana Diffusa" in item["title"])
+    eui = next(item for item in original["opportunities"] if "City-to-City Exchanges" in item["title"])
+    assert "Camaiore" in (town for town, data in toscana["municipality_eligibility"].items()
+                          if data["status"] == "conditional")
+    assert toscana["municipality_eligibility"]["Seravezza"]["status"] == "eligible"
+    assert toscana["municipality_eligibility"]["Viareggio"]["status"] == "not_eligible"
+    assert eui["municipality_eligibility"]["Stazzema"]["status"] == "not_eligible"
+
+
 def main() -> int:
     _synthetic_contract()
+    _territorial_eligibility_contract()
     _audit_fix_contract()
     real = _real_snapshot_contract()
     print(
