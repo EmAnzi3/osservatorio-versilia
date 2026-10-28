@@ -23,6 +23,7 @@ import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
 import opportunity_document_promotion as document_promotion
+import opportunity_independent_audit_recovery as independent_recovery
 import opportunity_review_actions as review_actions
 from opportunity_discovery_noise import clean_review_queues
 
@@ -218,6 +219,10 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     clean_review_queues(result, today.isoformat())
     audit_promotions.apply_complete_promotions(result, today)
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
+    # Non effettuare discovery live sui payload sintetici dei test e replay:
+    # solo uno snapshot runtime datato può attivare il recupero indipendente.
+    if result.get("referenceDate") == today.isoformat():
+        independent_recovery.apply(result, today, live=kwargs.get("payloads") is None)
     if kwargs.get("payloads") is None:
         import opportunity_discovery_resilient as discovery
         if discovery.LIVE_BUDGET is not None:
@@ -393,6 +398,17 @@ def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, A
                  f"Nuove schede verificate: **{promotion.get('added', 0)}** · "
                  f"schede riconfermate dal PDF: **{promotion.get('revalidated', 0)}**.\n"
                  "I conteggi distinguono le schede pubblicabili dalle segnalazioni ancora in discovery.\n")
+    recovery = result.get("auditRecovery") or {}
+    if recovery:
+        pending = recovery.get("pending") or []
+        promoted = recovery.get("promoted") or []
+        text += (
+            "\n## Recupero omissioni da audit indipendente\n\n"
+            f"Nuove schede verificate: **{len(promoted)}**; "
+            f"verifiche primarie ancora in sospeso: **{len(pending)}**.\n"
+        )
+        for row in pending:
+            text += f"- {row.get('title')}: {row.get('reason')} · {row.get('url')}\n"
     return text
 
 
