@@ -1,0 +1,298 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-10-28",
+  "rules": "Discovery holdout -> verifica diretta pagina ufficiale -> scheda; fallimenti non producono blocchi alla pubblicazione ma restano in recupero esplicito",
+  "entries": [
+    {
+      "coverage_id": "n-anci-conai-comunicazione-locale-2026",
+      "source_id": "conai-anci",
+      "source_label": "ANCI / CONAI",
+      "publisher": "CONAI · Consorzio Nazionale Imballaggi",
+      "title": "ANCI–CONAI 2026 · Comunicazione locale su raccolta differenziata",
+      "url": "https://www.conai.org/news-e-press/bando-per-la-comunicazione-locale-anci-conai-candidature-entro-il-13-novembre-2026/",
+      "required_terms": [
+        "Bando per la comunicazione locale ANCI-CONAI",
+        "13 novembre 2026",
+        "enti locali",
+        "raccolta differenziata"
+      ],
+      "published_at": "2026-10-09",
+      "deadline_at": "2026-11-13",
+      "lifecycle_stage": "application_open",
+      "category": "ambiente",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "description": "Sostegno ANCI-CONAI per campagne comunali di comunicazione sulla raccolta differenziata degli imballaggi; budget complessivo 1,5 milioni di euro.",
+      "project_requirements": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Candidatura dell'ente locale o soggetto delegato alla gestione della raccolta, secondo i requisiti e le linee guida dell'avviso. La candidatura non è automatica: è necessario un progetto di comunicazione ammissibile."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Comune o ente locale con i requisiti dell'avviso",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Requisiti specifici del progetto"
+    },
+    {
+      "coverage_id": "n-cepell-leggimi-0-6-2026",
+      "source_id": "mic-cepell",
+      "source_label": "MiC · Centro per il libro e la lettura",
+      "publisher": "Ministero della Cultura · Centro per il libro e la lettura",
+      "title": "Leggimi 0-6 · 9ª edizione — Comune partner",
+      "url": "https://centroperillibro.cultura.gov.it/e-online-il-bando-leggimi-0-6-9a-edizione-scadenza-10-novembre/",
+      "required_terms": [
+        "Leggimi 0-6",
+        "10 novembre 2026",
+        "organizzazioni senza scopo di lucro",
+        "Comuni",
+        "partnership"
+      ],
+      "published_at": "2026-10-07",
+      "deadline_at": "2026-11-10",
+      "deadline_time": "13:00",
+      "lifecycle_stage": "application_open",
+      "category": "cultura",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "description": "Contributi per progetti di lettura nella prima infanzia 0-6 anni promossi da organizzazioni non profit con partner istituzionali, fra cui i Comuni.",
+      "project_requirements": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune partecipa soltanto come partner della proposta di un'organizzazione senza scopo di lucro, non è capofila né richiedente diretto. Occorre una rete effettiva con biblioteche, nidi o altri servizi educativi territoriali."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Ente pubblico partner, non richiedente principale",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Partnership e requisiti del proponente"
+    },
+    {
+      "coverage_id": "t-fcrl-bella-li-2026",
+      "source_id": "fondazione-cr-lucca",
+      "source_label": "Fondazione Cassa di Risparmio di Lucca",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "title": "BELLA LÌ! 2026 · La cultura che cura — partnership pubblica",
+      "url": "https://www.fondazionecarilucca.it/torna-il-bando-bella-li-la-cultura-che-cura",
+      "required_terms": [
+        "20 novembre 2026",
+        "amministrazioni pubbliche",
+        "partnership",
+        "Zona Distretto"
+      ],
+      "published_at": "2026-10-19",
+      "deadline_at": "2026-11-20",
+      "deadline_time": "17:00",
+      "lifecycle_stage": "application_open",
+      "category": "cultura",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "description": "Contributi della Fondazione CR Lucca per progetti di welfare culturale in partenariato sul territorio provinciale.",
+      "project_requirements": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due soggetti con ruoli culturali e sociali; il Comune può partecipare come amministrazione pubblica. Per progetti di prescrizione sociale è inoltre obbligatoria la Zona Distretto. Ammissibilità progettuale e soggetto capofila da documentare secondo il testo del bando."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Ente pubblico partner, non richiedente principale",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Provincia di Lucca",
+      "condition_label": "Partnership e requisiti del proponente"
+    },
+    {
+      "coverage_id": "eu-cerv-daphne-convention-dir-2026",
+      "source_id": "eu-cerv",
+      "source_label": "Unione europea · CERV",
+      "publisher": "Commissione europea · DG JUST",
+      "title": "CERV 2026 DAPHNE · Convenzione contro la violenza sulle donne — autorità pubbliche",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CERV-2026-DAPHNE-CONVENTION-DIR",
+      "required_terms": [
+        "CERV-2026-DAPHNE-CONVENTION-DIR",
+        "05 November 2026"
+      ],
+      "published_at": "2026-07-07",
+      "deadline_at": "2026-11-05",
+      "deadline_time": "17:00",
+      "lifecycle_stage": "application_open",
+      "category": "welfare",
+      "municipality_role": "direct_applicant",
+      "municipal_relevance_class": "direct_conditional",
+      "description": "CERV DAPHNE: progetti contro la violenza sulle donne guidati da autorità pubbliche nazionali, regionali o locali.",
+      "project_requirements": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Capofila autorità pubblica competente, anche locale; servono progetto coerente, capacità operativa e rispetto delle condizioni del bando integrale. I ruoli comunali e i requisiti consortili restano condizionati al caso."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Comune o ente locale con i requisiti dell'avviso",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Requisiti specifici del progetto"
+    },
+    {
+      "coverage_id": "eu-cerv-daphne-children-2026",
+      "source_id": "eu-cerv",
+      "source_label": "Unione europea · CERV",
+      "publisher": "Commissione europea · DG JUST",
+      "title": "CERV 2026 DAPHNE · Protezione integrata dei minori — autorità pubblica partner",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CERV-2026-DAPHNE-CHILDREN",
+      "required_terms": [
+        "CERV-2026-DAPHNE-CHILDREN",
+        "05 November 2026"
+      ],
+      "published_at": "2026-07-07",
+      "deadline_at": "2026-11-05",
+      "deadline_time": "17:00",
+      "lifecycle_stage": "application_open",
+      "category": "welfare",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "description": "CERV DAPHNE: rafforzamento dei sistemi integrati di protezione dei minori, con autorità pubblica obbligatoria nel partenariato.",
+      "project_requirements": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Partenariato di almeno due beneficiari, con organizzazione non profit capofila e partecipazione obbligatoria di un'autorità pubblica; Comune possibile partner o coordinatore se conforme ai requisiti del bando."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Ente pubblico partner, non richiedente principale",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Partnership e requisiti del proponente"
+    }
+  ]
+}
