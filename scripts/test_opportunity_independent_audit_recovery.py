@@ -74,50 +74,56 @@ def test_expired_never_promotes_and_host_contract() -> None:
     assert all(not e["allow_recent_evidence_fallback"] for e in entries)
 
 
-def test_reader_proxy_and_external_redirect_never_promote() -> None:
-    """An apparent matching source page is not enough to establish provenance."""
-    entries = recovery._entries()
-    fixtures = {e["url"]: _fixture(e) for e in entries}
 
+def test_reader_proxy_and_external_redirect_never_promote() -> None:
+    """Un DOM che sembra corretto non basta a provarne la provenienza."""
+    entries = recovery._entries()
+    standard = [e for e in entries if not e.get("primary_composite_topic")]
+    fixtures = {e["url"]: _fixture(e) for e in standard}
     def simulated_response(url, *, transport, proxy, final_url=None):
-        return (fixtures[url], {
+        return fixtures[url], {
             "status": "ok", "transport": transport, "proxyUsed": proxy,
             "resolvedUrl": final_url or url,
-        })
+        }
 
     for transport, proxy, redirect in (
         ("reader_proxy", True, None),
-        ("reader_proxy", False, None),  # Unknown/unsupported transport is never accepted.
-        ("http_browser", True, None),  # Contradictory diagnostics must fail closed.
+        ("reader_proxy", False, None),
+        ("http_browser", True, None),
         ("http_browser", False, "https://r.jina.ai/https://anci.lombardia.it/"),
         ("http_browser", False, "http://anci.lombardia.it/"),
         ("http_browser", False, "https://anci.lombardia.it:invalid/path"),
     ):
         result = {"opportunities": [], "coverageHold": []}
-        with patch.object(recovery.discovery, "fetch_with_diagnostics",
-                          side_effect=lambda url, **kw: simulated_response(
-                              url, transport=transport, proxy=proxy, final_url=redirect)):
-            recovery.apply(result, date(2026, 10, 28), live=True)
+        with patch.object(recovery.daphne, "verify_live",
+                          side_effect=recovery.daphne.PrimaryEvidenceError("prova UE non disponibile")):
+            with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                              side_effect=lambda url, **kw: simulated_response(
+                                  url, transport=transport, proxy=proxy, final_url=redirect)):
+                recovery.apply(result, date(2026, 10, 28), live=True)
         assert not result["opportunities"], (transport, proxy, redirect)
         assert len(result["auditRecovery"]["pending"]) == len(entries)
         assert result["coverageHold"] == []
 
     result = {"opportunities": [], "coverageHold": []}
-    with patch.object(recovery.discovery, "fetch_with_diagnostics",
-                      side_effect=lambda url, **kw: simulated_response(
-                          url, transport="http_browser", proxy=False)):
-        recovery.apply(result, date(2026, 10, 28), live=True)
-    assert len(result["opportunities"]) == len(entries)
+    with patch.object(recovery.daphne, "verify_live",
+                      side_effect=recovery.daphne.PrimaryEvidenceError("prova UE non disponibile")):
+        with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                          side_effect=lambda url, **kw: simulated_response(
+                              url, transport="http_browser", proxy=False)):
+            recovery.apply(result, date(2026, 10, 28), live=True)
+    assert len(result["opportunities"]) == len(standard)
+    assert len(result["auditRecovery"]["pending"]) == len(entries) - len(standard)
     assert all(x["source_verification"]["type"] == "official_primary_webpage"
                and x["source_verification"]["proxy_used"] is False
-               and x["source_verification"]["transport"] == "http_browser"
                for x in result["opportunities"])
 
 
 def test_bounded_live_fetch_passes_transport_deadline() -> None:
-    """The 18-second holdout budget must also reach the subprocess transport."""
+    """Il budget holdout ordinario resta invariato; DAPHNE usa due prove a parte."""
     entries = recovery._entries()
-    fixtures = {e["url"]: _fixture(e) for e in entries}
+    ordinary = [e for e in entries if not e.get("primary_composite_topic")]
+    fixtures = {e["url"]: _fixture(e) for e in ordinary}
     calls: list[float] = []
 
     class FakeBudget:
@@ -131,12 +137,13 @@ def test_bounded_live_fetch_passes_transport_deadline() -> None:
 
     result = {"opportunities": [], "coverageHold": []}
     with patch.object(recovery.discovery, "LIVE_BUDGET", FakeBudget()):
-        recovery.apply(result, date(2026, 10, 28), live=True)
-    assert len(result["opportunities"]) == len(entries)
-    assert len(calls) == len(entries)
+        with patch.object(recovery.daphne, "verify_live",
+                          side_effect=recovery.daphne.PrimaryEvidenceError("prova UE non disponibile")):
+            recovery.apply(result, date(2026, 10, 28), live=True)
+    assert len(result["opportunities"]) == len(ordinary)
+    assert len(calls) == len(ordinary)
     assert all(0 < value <= 4.0 for value in calls), calls
     assert sum(calls) <= 20.0
-
 
 def test_live_fixture_override_is_rejected() -> None:
     first = recovery._entries()[0]
@@ -197,8 +204,9 @@ def test_anci_alternate_primary_requires_live_same_host() -> None:
         raise TimeoutError("Altri holdout non disponibili")
 
     result = {"opportunities": [], "coverageHold": []}
-    with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=fetch):
-        recovery.apply(result, date(2026, 10, 29), live=True)
+    with patch.object(recovery.daphne, "verify_live", side_effect=recovery.daphne.PrimaryEvidenceError("non disponibile")):
+        with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=fetch):
+            recovery.apply(result, date(2026, 10, 29), live=True)
     recovered = [item for item in result["opportunities"]
                  if item.get("coverage_id") == entry["coverage_id"]]
     assert len(recovered) == 1
@@ -219,12 +227,114 @@ def test_anci_alternate_primary_requires_live_same_host() -> None:
         raise TimeoutError("Altri holdout non disponibili")
 
     rejected = {"opportunities": [], "coverageHold": []}
-    with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=wrong_redirect):
-        recovery.apply(rejected, date(2026, 10, 29), live=True)
+    with patch.object(recovery.daphne, "verify_live", side_effect=recovery.daphne.PrimaryEvidenceError("non disponibile")):
+        with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=wrong_redirect):
+            recovery.apply(rejected, date(2026, 10, 29), live=True)
     assert not any(i.get("coverage_id") == entry["coverage_id"]
                    for i in rejected["opportunities"])
     assert any(p.get("coverage_id") == entry["coverage_id"]
                for p in rejected["auditRecovery"]["pending"])
+
+
+
+def test_daphne_two_primary_sources_and_fail_closed() -> None:
+    """PDF e portale UE devono attestare topic, ruolo e scadenza, distintamente."""
+    daphne = recovery.daphne
+    daphne_entries = [e for e in recovery._entries() if e.get("primary_composite_topic")]
+    assert len(daphne_entries) == 2
+    role_text = (
+        "For priority 1 and 4, proposals can be submitted by either a single applicant. "
+        "For priority 4: lead applicants must be public authorities either at national, "
+        "regional or local level. "
+        "For priorities 2, 3, and 5, proposals must be submitted by a consortium of at least 2 applicants. "
+        "For priorities 1, 2, 3 and 5: lead applicants must be non-profit making."
+    )
+    for entry in daphne_entries:
+        topic = entry["primary_composite_topic"]
+        pages = {
+            3: "Call for proposals " + topic,
+            14: "The participation of a public authority is mandatory under this priority.",
+            31: role_text,
+        }
+        portal = (topic + " Topic Calls for proposals Open For Submission "
+                  "Opening date 07 July 2026 Deadline date 05 November 2026 17:00:00 Brussels time")
+        assert daphne.validate_pdf_pages(pages, topic)
+        assert daphne.validate_portal_text(portal, topic, date(2026, 11, 5))
+        pdf_audit = {"url": daphne.PDF_URL, "resolved_url": daphne.PDF_URL,
+                     "transport": "direct_https_pdf", "proxy_used": False, "sha256": "test"}
+        portal_audit = {"url": entry["url"], "resolved_url": entry["url"],
+                        "transport": "chromium_https", "proxy_used": False, "sha256": "test"}
+        with patch.object(daphne, "fetch_pdf_live", return_value=(pages, dict(pdf_audit))):
+            with patch.object(daphne, "fetch_portal_live", return_value=(portal, dict(portal_audit))):
+                evidence = daphne.verify_live(entry, date(2026, 10, 29))
+        assert evidence["type"] == "official_primary_composite"
+        assert len(evidence["evidence_sources"]) == 2
+        assert evidence["proxy_used"] is False
+
+        for wrong_pdf in ({3: "other topic", 14: pages[14], 31: pages[31]},
+                          {3: pages[3], 14: "", 31: ""}):
+            try:
+                daphne.validate_pdf_pages(wrong_pdf, topic)
+            except daphne.PrimaryEvidenceError:
+                pass
+            else:
+                raise AssertionError("PDF incompleto promosso")
+
+        for wrong_portal in (
+            topic + " Open For Submission Deadline date 03 November 2026",
+            "OTHER-TOPIC Open For Submission Deadline date 05 November 2026",
+            topic + " Deadline date 05 November 2026",
+        ):
+            try:
+                daphne.validate_portal_text(wrong_portal, topic, date(2026, 11, 5))
+            except daphne.PrimaryEvidenceError:
+                pass
+            else:
+                raise AssertionError("Portale UE incompleto promosso")
+
+        for wrong_audit in (
+            dict(portal_audit, proxy_used=True),
+            dict(portal_audit, resolved_url="https://reader.example/doc"),
+            dict(portal_audit, transport="reader_proxy"),
+        ):
+            with patch.object(daphne, "fetch_pdf_live", return_value=(pages, dict(pdf_audit))):
+                with patch.object(daphne, "fetch_portal_live", return_value=(portal, wrong_audit)):
+                    try:
+                        daphne.verify_live(entry, date(2026, 10, 29))
+                    except daphne.PrimaryEvidenceError:
+                        pass
+                    else:
+                        raise AssertionError("Trasporto UE non primario promosso")
+
+        with patch.object(daphne, "fetch_pdf_live", side_effect=AssertionError("non chiamare")):
+            try:
+                daphne.verify_live(entry, date(2026, 11, 6))
+            except daphne.PrimaryEvidenceError:
+                pass
+            else:
+                raise AssertionError("Scadenza trascorsa promossa")
+        for invalid_url in ("http://ec.europa.eu/x",
+                            "https://reader.example/x",
+                            "https://ec.europa.eu@reader.example/x",
+                            "https://ec.europa.eu:invalid/x"):
+            try:
+                daphne._official_url(invalid_url)
+            except daphne.PrimaryEvidenceError:
+                pass
+            else:
+                raise AssertionError("URL non primario accettato")
+
+    # Mancando la seconda prova, non entra alcuna scheda DAPHNE nello snapshot.
+    result = {"opportunities": [], "coverageHold": []}
+    with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                      side_effect=TimeoutError("fonti ordinarie non disponibili")):
+        with patch.object(daphne, "verify_live",
+                          side_effect=daphne.PrimaryEvidenceError("deadline non validata")):
+            recovery.apply(result, date(2026, 10, 29), live=True)
+    assert not result["opportunities"]
+    assert len(result["auditRecovery"]["pending"]) == len(recovery._entries())
+    assert sum(1 for e in result["auditRecovery"]["pending"]
+               if "daphne" in e["coverage_id"]) == 2
 
 
 def main() -> int:
@@ -237,7 +347,8 @@ def main() -> int:
     test_live_fixture_override_is_rejected()
     test_bounded_live_fetch_passes_transport_deadline()
     test_anci_alternate_primary_requires_live_same_host()
-    print("Recupero indipendente Radar: 9 contratti PASS")
+    test_daphne_two_primary_sources_and_fail_closed()
+    print("Recupero indipendente Radar: 10 contratti PASS")
     return 0
 
 
