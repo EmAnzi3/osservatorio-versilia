@@ -250,7 +250,8 @@
       "applicant_type": "Comune o ente locale con i requisiti dell'avviso",
       "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
       "geographic_scope": "Italia o UE secondo la call",
-      "condition_label": "Requisiti specifici del progetto"
+      "condition_label": "Requisiti specifici del progetto",
+      "primary_composite_topic": "CERV-2026-DAPHNE-CONVENTION-DIR"
     },
     {
       "coverage_id": "eu-cerv-daphne-children-2026",
@@ -308,7 +309,8 @@
       "applicant_type": "Ente pubblico partner, non richiedente principale",
       "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
       "geographic_scope": "Italia o UE secondo la call",
-      "condition_label": "Partnership e requisiti del proponente"
+      "condition_label": "Partnership e requisiti del proponente",
+      "primary_composite_topic": "CERV-2026-DAPHNE-CHILDREN"
     }
   ]
 }
