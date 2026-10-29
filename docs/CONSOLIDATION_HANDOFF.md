@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier — pagina indice (29 ottobre 2026)
+
+`dist/dossier/index.html`: una scheda per dossier con tema, presentazione, primo
+dato della sintesi, link a pagina, PDF e CSV; il percorso di ogni dossier porta
+all’indice. Tutte le pagine restano `noindex` e fuori da menu e sitemap: il
+lancio (menu, home, indicizzazione) insieme a «Chiedi» richiede l’approvazione
+del proprietario.
+
 ## Dossier come relazione — «Crescere in Versilia» (29 ottobre 2026)
 
 Quinto dossier `dist/dossier/scuola/`: posti nei servizi per la prima infanzia,

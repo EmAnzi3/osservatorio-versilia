@@ -111,7 +111,23 @@
 .dr-notes{margin:8px 0 0;padding-left:18px;font-size:14px;color:#3b5566}
 .dr-notes li{break-inside:avoid;margin-bottom:6px}
 .dr-more{margin-top:26px!important;font-size:15px}
+/* Indice dei dossier */
+.dr-index-body{padding-top:40px;padding-bottom:64px}
+.dr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.dr-card{display:flex;flex-direction:column;border-radius:16px;background:var(--dr-surface);border:1px solid var(--dr-line);transition:border-color .15s,transform .15s}
+.dr-card:hover{border-color:var(--dr-accent);transform:translateY(-2px)}
+.dr-card-link{display:flex;flex-direction:column;flex:1;padding:24px 26px 14px;color:inherit;text-decoration:none}
+.dr-card h2{font-size:clamp(25px,2.6vw,31px);margin:0 0 10px}
+.dr-card-lead{font-size:16px;line-height:1.5;color:#2b4a5d;margin:0 0 18px!important}
+.dr-card-figure{display:flex;flex-direction:column;gap:2px;margin:auto 0 18px!important;padding:14px 16px;border-radius:12px;background:var(--dr-accent-soft)}
+.dr-card-figure b{font-size:26px;line-height:1.1;color:var(--dr-accent-dark)}
+.dr-card-figure span{font-size:14px;line-height:1.4;color:#2b4a5d}
+.dr-card-more{font-weight:720;color:var(--dr-ink)}
+.dr-card-more::after{content:" →"}
+.dr-card-files{margin:0!important;padding:0 26px 20px;font-size:14px;color:var(--dr-muted)}
+.dr-card-files a{color:var(--dr-ink)}
 @media (max-width:900px){
+  .dr-cards{grid-template-columns:1fr}
   .dr-body{grid-template-columns:1fr;gap:0;padding-top:32px}
   .dr-toc{display:none}
 }

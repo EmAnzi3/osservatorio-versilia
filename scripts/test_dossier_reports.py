@@ -80,12 +80,29 @@ def verify(dist: Path):
         yield key, len(chapters), engine.answers
 
 
+def verify_index(dist: Path) -> int:
+    """L'indice elenca ogni dossier una volta, con pagina, PDF e CSV esistenti."""
+    soup = BeautifulSoup((dist / 'dossier/index.html').read_text(encoding='utf-8'), 'html.parser')
+    assert soup.select_one('meta[name=robots][content=noindex]'), 'lancio_non_approvato_indice'
+    cards = soup.select('main.dr-index .dr-card')
+    slugs = [c.select_one('a.dr-card-link')['href'].rstrip('/') for c in cards]
+    assert len(slugs) == len(DOSSIERS) == len(set(slugs)), slugs
+    for card, slug_ in zip(cards, slugs):
+        assert (dist / 'dossier' / slug_ / 'index.html').exists(), slug_
+        for a in card.select('.dr-card-files a'):
+            assert (dist / 'dossier' / a['href']).exists(), a['href']
+        assert not TECHNICAL.search(card.get_text(' ', strip=True)), slug_
+    return len(cards)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dist', type=Path, default=Path(__file__).resolve().parents[1] / 'dist')
-    for key, chapters, answers in verify(parser.parse_args().dist):
+    dist = parser.parse_args().dist
+    for key, chapters, answers in verify(dist):
         print(f'Dossier {key} PASS: {chapters} sezioni, versioni per 7 Comuni, nessun link a GitHub né JSON, '
               f'{answers} risposte calcolate dal motore')
+    print(f'Indice dei dossier PASS: {verify_index(dist)} dossier con pagina, PDF e CSV')
 
 
 if __name__ == '__main__':
