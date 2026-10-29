@@ -176,6 +176,57 @@ def test_anci_favicon_local_in_full_release() -> None:
         assert ">ANCI</text>" in artifact.read_text(encoding="utf-8")
 
 
+
+def test_anci_alternate_primary_requires_live_same_host() -> None:
+    """Un mirror ufficiale ANCI e' valido solo con prova primaria diretta."""
+    entry = next(e for e in recovery._entries()
+                 if e["coverage_id"] == "n-anci-conai-comunicazione-locale-2026")
+    alternate = entry["alternate_primary_pages"][0]
+    assert len(alternate["required_terms"]) >= len(entry["required_terms"])
+    attempts = []
+
+    def fetch(url, **kwargs):
+        attempts.append(url)
+        if url == entry["url"]:
+            raise TimeoutError("ANCI Lombardia: timeout nel runner")
+        if url == alternate["url"]:
+            return _fixture(alternate), {
+                "status": "ok", "transport": "http_browser",
+                "proxyUsed": False, "resolvedUrl": url,
+            }
+        raise TimeoutError("Altri holdout non disponibili")
+
+    result = {"opportunities": [], "coverageHold": []}
+    with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=fetch):
+        recovery.apply(result, date(2026, 10, 29), live=True)
+    recovered = [item for item in result["opportunities"]
+                 if item.get("coverage_id") == entry["coverage_id"]]
+    assert len(recovered) == 1
+    assert recovered[0]["url"] == alternate["url"]
+    assert recovered[0]["source_verification"]["url"] == alternate["url"]
+    assert recovered[0]["source_verification"]["transport"] == "http_browser"
+    assert recovered[0]["presentation"]["source_label"] == alternate["source_label"]
+    assert attempts[:2] == [entry["url"], alternate["url"]]
+
+    def wrong_redirect(url, **kwargs):
+        if url == entry["url"]:
+            raise TimeoutError("ANCI Lombardia: timeout")
+        if url == alternate["url"]:
+            return _fixture(alternate), {
+                "status": "ok", "transport": "http_browser", "proxyUsed": False,
+                "resolvedUrl": "https://not-anci.example/other",
+            }
+        raise TimeoutError("Altri holdout non disponibili")
+
+    rejected = {"opportunities": [], "coverageHold": []}
+    with patch.object(recovery.discovery, "fetch_with_diagnostics", side_effect=wrong_redirect):
+        recovery.apply(rejected, date(2026, 10, 29), live=True)
+    assert not any(i.get("coverage_id") == entry["coverage_id"]
+                   for i in rejected["opportunities"])
+    assert any(p.get("coverage_id") == entry["coverage_id"]
+               for p in rejected["auditRecovery"]["pending"])
+
+
 def main() -> int:
     test_offline_pending_does_not_block_or_publish()
     test_documented_live_promotion_and_dedup()
@@ -185,7 +236,8 @@ def main() -> int:
     test_reader_proxy_and_external_redirect_never_promote()
     test_live_fixture_override_is_rejected()
     test_bounded_live_fetch_passes_transport_deadline()
-    print("Recupero indipendente Radar: 8 contratti PASS")
+    test_anci_alternate_primary_requires_live_same_host()
+    print("Recupero indipendente Radar: 9 contratti PASS")
     return 0
 
 
