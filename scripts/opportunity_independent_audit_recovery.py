@@ -22,7 +22,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RECOVERY_PATH = ROOT / "data" / "opportunity-independent-audit-recovery-v1.json"
 APPROVED_HOSTS = {
     "www.conai.org", "conai.org",
-    "anci.lombardia.it",  # ANCI già fonte nazionale nel Radar; co-promotore CONAI
+    "anci.lombardia.it",  # co-promotore ANCI–CONAI
+    "www.anciliguria.it",  # pagina primaria ufficiale alternativa ANCI
     "centroperillibro.cultura.gov.it",
     "www.fondazionecarilucca.it", "fondazionecarilucca.it",
     "ec.europa.eu",
@@ -43,6 +44,21 @@ def _entries() -> list[dict[str, Any]]:
                 or item.get("allow_recent_evidence_fallback") is not False
                 or len(item.get("municipality_status_overrides") or {}) != len(core.TOWNS)):
             raise RuntimeError(f"Audit Recovery: voce priva di evidenza primaria sufficiente: {coverage}")
+        alternates = item.get("alternate_primary_pages") or []
+        if not isinstance(alternates, list) or len(alternates) > 2:
+            raise RuntimeError(f"Audit Recovery: alternative primarie invalide: {coverage}")
+        candidates = {str(item.get("url") or "")}
+        for alternate in alternates:
+            candidate_url = str(alternate.get("url") or "")
+            parts = urlsplit(candidate_url)
+            terms = alternate.get("required_terms")
+            if (parts.scheme != "https" or parts.hostname not in APPROVED_HOSTS
+                    or candidate_url in candidates
+                    or not isinstance(terms, list)
+                    or len(terms) < len(item["required_terms"])
+                    or any(not isinstance(term, str) or not term.strip() for term in terms)):
+                raise RuntimeError(f"Audit Recovery: evidenza alternativa non valida: {coverage}")
+            candidates.add(candidate_url)
         seen.add(coverage)
     return list(payload["entries"])
 
@@ -106,58 +122,80 @@ def apply(
     for entry in _entries():
         key = str(entry["coverage_id"])
         url = str(entry["url"])
-        if key in ids or normalized(url) in urls:
+        candidate_urls = [url] + [str(x["url"]) for x in entry.get("alternate_primary_pages") or []]
+        if key in ids or any(normalized(candidate_url) in urls for candidate_url in candidate_urls):
             already.append(key)
             continue
         if date.fromisoformat(str(entry["deadline_at"])) < today:
             expired.append(key)
             continue
 
-        raw = (detail_payloads or {}).get(url)
-        transport_error = None
-        diagnostics: dict[str, Any] | None = None
-        if raw is None and live:
-            remaining = fetch_until - time.monotonic()
-            if remaining > 0.5:
-                try:
-                    candidate, diagnostics = discovery.fetch_with_diagnostics(
-                        url, timeout=min(4.0, remaining), attempts=1,
-                        max_seconds=min(4.0, remaining),
-                    )
-                    trusted, reason = verification_grade_transport(url, diagnostics)
-                    if trusted:
-                        raw = candidate
-                    else:
-                        transport_error = reason
-                except Exception as exc:
-                    transport_error = str(exc)
-            else:
-                transport_error = "Budget breve holdout esaurito: riprova al prossimo run"
-        ok, verification, error = core.verify_entry(
-            entry, today, detail_payloads={url: raw} if raw is not None else None,
-            live=False, fallback_max_days=0
-        )
-        error = transport_error or error
-        if not ok or verification != "live":
+        # L'alternativa ufficiale viene tentata solo dopo un fallimento.
+        # Vietati proxy, cache, fixture live e redirect cross-host.
+        selected_entry: dict[str, Any] | None = None
+        selected_diagnostics: dict[str, Any] | None = None
+        failures: list[str] = []
+        for primary in [entry, *(entry.get("alternate_primary_pages") or [])]:
+            primary_url = str(primary["url"])
+            candidate_entry = dict(entry)
+            candidate_entry["url"] = primary_url
+            candidate_entry["required_terms"] = list(primary["required_terms"])
+            if primary.get("source_label"):
+                candidate_entry["source_label"] = primary["source_label"]
+
+            raw = (detail_payloads or {}).get(primary_url)
+            transport_error = None
+            diagnostics: dict[str, Any] | None = None
+            if raw is None and live:
+                remaining = fetch_until - time.monotonic()
+                if remaining > 0.5:
+                    try:
+                        candidate, diagnostics = discovery.fetch_with_diagnostics(
+                            primary_url, timeout=min(4.0, remaining), attempts=1,
+                            max_seconds=min(4.0, remaining),
+                        )
+                        trusted, reason = verification_grade_transport(primary_url, diagnostics)
+                        if trusted:
+                            raw = candidate
+                        else:
+                            transport_error = reason
+                    except Exception as exc:
+                        transport_error = str(exc)
+                else:
+                    transport_error = "Budget breve holdout esaurito: riprova al prossimo run"
+
+            ok, verification, error = core.verify_entry(
+                candidate_entry, today,
+                detail_payloads={primary_url: raw} if raw is not None else None,
+                live=False, fallback_max_days=0,
+            )
+            if transport_error or not ok or verification != "live":
+                failures.append(f"{primary_url}: {transport_error or error or 'Pagina non verificata'}")
+                continue
+            selected_entry = candidate_entry
+            selected_diagnostics = diagnostics
+            break
+
+        if selected_entry is None:
             pending.append({
                 "coverage_id": key,
                 "title": entry["title"],
                 "url": url,
                 "deadline_at": entry["deadline_at"],
-                "reason": error or "Pagina ufficiale non verificata nel run corrente",
+                "reason": "; ".join(failures)[:900] or "Pagina ufficiale non verificata nel run corrente",
                 "stage": "primary_evidence_pending",
             })
             continue
 
-        item = core.build_seed_item(entry, today, "live_official_primary")
+        item = core.build_seed_item(selected_entry, today, "live_official_primary")
         item["source_verification"] = {
             "type": "official_primary_webpage" if live else "offline_test_fixture",
-            "url": url,
-            "resolved_url": str((diagnostics or {}).get("resolvedUrl") or url),
-            "transport": str((diagnostics or {}).get("transport") or "test_fixture"),
+            "url": selected_entry["url"],
+            "resolved_url": str((selected_diagnostics or {}).get("resolvedUrl") or selected_entry["url"]),
+            "transport": str((selected_diagnostics or {}).get("transport") or "test_fixture"),
             "proxy_used": False if live else None,
             "verified_at": today.isoformat(),
-            "required_terms": list(entry.get("required_terms") or []),
+            "required_terms": list(selected_entry.get("required_terms") or []),
         }
         item["first_seen_at"] = today.isoformat()
         if entry.get("municipal_relevance_class") == "partner":
@@ -166,7 +204,7 @@ def apply(
         item["municipal_relevance_class"] = str(entry["municipal_relevance_class"])
         result.setdefault("opportunities", []).append(item)
         ids.add(key)
-        urls.add(normalized(url))
+        urls.add(normalized(str(selected_entry["url"])))
         verified.append(key)
 
     result["auditRecovery"] = {
