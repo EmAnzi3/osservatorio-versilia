@@ -61,7 +61,19 @@
       "geographic_scope": "Italia o UE secondo la call",
       "condition_label": "Requisiti specifici del progetto",
       "original_conai_announcement_url": "https://www.conai.org/news-e-press/bando-per-la-comunicazione-locale-anci-conai-candidature-entro-il-13-novembre-2026/",
-      "verification_note": "Pagina primaria pubblicata dall'ANCI, co-promotore del bando; contiene il bando originale allegato. La pagina CONAI restituisce 403 WAF/401 reader nei runner e non è utilizzata come prova di verifica live."
+      "verification_note": "Pagina primaria pubblicata dall'ANCI, co-promotore del bando; contiene il bando originale allegato. La pagina CONAI restituisce 403 WAF/401 reader nei runner e non è utilizzata come prova di verifica live. In caso di timeout della pagina primaria ANCI Lombardia è ammessa una seconda verifica live sulla pagina ufficiale ANCI Liguria; il redirect cross-host e i proxy non provano l'identità del promotore.",
+      "alternate_primary_pages": [
+        {
+          "url": "https://www.anciliguria.it/newsbox/bando-comunicazione-locale-2026-anci-conai-domande-fino-al-13-novembre",
+          "required_terms": [
+            "comunicazione locale 2026",
+            "13 novembre 2026",
+            "enti locali",
+            "raccolta differenziata"
+          ],
+          "source_label": "ANCI Liguria · ANCI–CONAI"
+        }
+      ]
     },
     {
       "coverage_id": "n-cepell-leggimi-0-6-2026",

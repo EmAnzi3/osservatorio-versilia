@@ -62,6 +62,7 @@ _GENERATED_HOST_MARKS = {
     "regione.sardegna.it": "RAS",
     "trunsport.eu": "TRU",
     "anci.lombardia.it": "ANCI",
+    "anciliguria.it": "ANCI",
 }
 
 
