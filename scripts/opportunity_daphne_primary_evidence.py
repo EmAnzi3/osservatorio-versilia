@@ -206,6 +206,15 @@ def verify_live(entry: dict, today: date) -> dict:
     pdf_terms = validate_pdf_pages(pages, topic)
     body, portal_audit = fetch_portal_live(url, topic)
     portal_terms = validate_portal_text(body, topic, DEADLINE)
+    for audit, expected_url, expected_transport in (
+        (pdf_audit, PDF_URL, "direct_https_pdf"),
+        (portal_audit, url, "chromium_https"),
+    ):
+        if (audit.get("url") != expected_url or audit.get("resolved_url") != expected_url
+                or audit.get("transport") != expected_transport
+                or audit.get("proxy_used") is not False):
+            raise PrimaryEvidenceError("Provenienza composita UE non verificata")
+        _official_url(expected_url)
     timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
     pdf_audit["required_terms"] = pdf_terms
     portal_audit["required_terms"] = portal_terms
