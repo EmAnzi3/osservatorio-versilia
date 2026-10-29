@@ -1399,7 +1399,7 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
 {shell.header}<div id="app"><main id="dossier" class="dr" data-dossier="{dossier['slug']}">
 <header class="dr-hero"><div class="dr-wrap">
-<nav class="dr-crumbs" aria-label="Percorso pagina"><a href="../../">Home</a> · <span>Dossier</span></nav>
+<nav class="dr-crumbs" aria-label="Percorso pagina"><a href="../../">Home</a> · <a href="../">Dossier</a></nav>
 <p class="dr-eyebrow">{esc(dossier['eyebrow'])}</p>
 <h1>{esc(dossier['title'])}</h1>
 <p class="dr-lead">{esc(dossier['lead'])}</p>
@@ -1439,6 +1439,63 @@ def social(title: str, description: str, url: str) -> str:
                      + [f'<meta name="twitter:{k}" content="{esc(v)}">' for k, v in twitter.items()])
 
 
+INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
+              'turismo, sugli anziani e sulla scuola, per tutto il territorio e Comune per Comune.')
+
+
+def index_card(d: dict) -> str:
+    big, text, _ = d['key_points'][0]
+    return (f'<li class="dr-card"><a class="dr-card-link" href="{d["slug"]}/">'
+            f'<p class="dr-eyebrow">{esc(d["eyebrow"].split(" · ", 1)[-1])}</p>'
+            f'<h2>{esc(d["title"])}</h2><p class="dr-card-lead">{esc(d["lead"].split(": una lettura")[0])}.</p>'
+            f'<p class="dr-card-figure"><b>{esc(big)}</b><span>{esc(text)}</span></p>'
+            f'<span class="dr-card-more">Leggi il dossier</span></a>'
+            f'<p class="dr-card-files"><a href="{d["slug"]}/{d["slug"]}-versilia.pdf" download>PDF</a> · '
+            f'<a href="{d["slug"]}/{d["slug"]}-dati.csv" download>Dati CSV</a></p></li>')
+
+
+def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> str:
+    shell = extract_native_shell(dist, page)
+    styles = '\n'.join(line for line in shell.styles.splitlines() if 'secondary-pages-ui.css' not in line)
+    url = BASE_URL
+    title = 'Dossier · Osservatorio Versilia'
+    description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
+                   'anziani e scuola.')
+    cards = ''.join(index_card(d) for d in dossiers)
+    structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
+                             'description': description, 'url': url, 'inLanguage': 'it',
+                             'hasPart': [{'@type': 'Report', 'name': d['title'], 'url': BASE_URL + d['slug'] + '/'}
+                                         for d in dossiers]}, ensure_ascii=False)
+    structured_hash = base64.b64encode(hashlib.sha256(structured.encode()).digest()).decode()
+    head = (
+        '<!doctype html>\n<html lang="it"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
+        f'<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' '
+        f'\'sha256-{structured_hash}\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; connect-src '
+        f'\'self\'; base-uri \'none\'; form-action \'none\'; object-src \'none\'">\n'
+        f'<title>{esc(title)}</title><meta name="description" content="{esc(description)}">\n'
+        '<meta name="robots" content="noindex">\n'
+        f'{social(title, description, url)}\n'
+        f'<link rel="canonical" href="{url}"><script type="application/ld+json">{structured}</script>\n'
+        '<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../site.webmanifest">\n'
+        f'{styles}<link rel="stylesheet" href="report.css"><meta name="theme-color" content="#0F3654">\n'
+        '</head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">\n')
+    body = (
+        f'{shell.header}<div id="app"><main id="dossier" class="dr dr-index">\n'
+        '<header class="dr-hero"><div class="dr-wrap">\n'
+        '<nav class="dr-crumbs" aria-label="Percorso pagina"><a href="../">Home</a> · <span>Dossier</span></nav>\n'
+        '<p class="dr-eyebrow">Osservatorio Versilia</p>\n<h1>Dossier</h1>\n'
+        f'<p class="dr-lead">{esc(INDEX_LEAD)}</p>\n'
+        '<p class="dr-meta">Ogni dossier ha una versione per la Versilia e una per ciascun Comune, un PDF da scaricare '
+        f'e i dati in formato CSV · catalogo dati aggiornato al {built}</p>\n</div></header>\n'
+        f'<div class="dr-wrap dr-index-body"><ul class="dr-cards">{cards}</ul>\n'
+        '<p class="dr-more">Hai una domanda precisa? <a href="../chiedi/">Chiedi alla Versilia</a> · '
+        '<a href="../stato-dati/">Stato dei dati</a> · <a href="../segnala/">Segnala un errore</a></p>\n'
+        f'</div></main></div>{shell.footer}\n'
+        f'<script src="{esc(shell.app_bundle)}" defer></script>\n</body></html>')
+    return head + body
+
+
 def write_pdf(page: Path, target: Path) -> None:
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
@@ -1465,9 +1522,10 @@ def build(dist: Path = ROOT / 'dist', pdf: bool = True) -> list[Path]:
     shutil.copyfile(JS, folder / 'report.js')
     # Data deterministica: quella del catalogo, non quella della build.
     built = engine.engine.catalog['updated']
-    pages = []
+    pages, made = [], []
     for key, make in DOSSIERS.items():
         dossier = make(engine)
+        made.append(dossier)
         target = folder / dossier['slug'] / 'index.html'
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(render(dossier, engine, dist, target, built), encoding='utf-8')
@@ -1475,7 +1533,9 @@ def build(dist: Path = ROOT / 'dist', pdf: bool = True) -> list[Path]:
         if pdf:
             write_pdf(target, target.parent / f'{dossier["slug"]}-versilia.pdf')
         pages.append(target)
-    return pages
+    index = folder / 'index.html'
+    index.write_text(render_index(made, dist, index, built), encoding='utf-8')
+    return [index] + pages
 
 
 if __name__ == '__main__':
