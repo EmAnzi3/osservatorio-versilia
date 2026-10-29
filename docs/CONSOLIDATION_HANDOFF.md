@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier come relazione — «La Versilia dei turisti» (29 ottobre 2026)
+
+Terzo dossier `dist/dossier/turismo/`: presenze e intensità turistica,
+variazione delle presenze fra il primo e l’ultimo anno disponibili (una
+`relative_change` A6 per Comune), permanenza e turisti residenti all’estero,
+stagionalità, posti letto e strutture, spesa comunale per il turismo. Il
+generatore aggiunge le misure di variazione per Comune e i nomi pubblici di
+Regione Toscana e OpenBDAP; il gate abbina ogni grafico alla sua misura.
+
 ## Dossier come relazione — «Lavorare in Versilia» (28 ottobre 2026)
 
 Formato approvato dal proprietario con la #495 (casa). Secondo dossier

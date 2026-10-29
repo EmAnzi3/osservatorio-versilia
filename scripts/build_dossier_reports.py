@@ -45,6 +45,8 @@ SOURCE_NAMES = [
     ('capacita-degli-esercizi', 'Istat — Capacità degli esercizi ricettivi'),
     ('agenziaentrate.gov.it', 'Agenzia delle Entrate — Osservatorio del mercato immobiliare (OMI)'),
     ('finanze.gov.it', 'Ministero dell’Economia e delle Finanze — Dichiarazioni dei redditi su base comunale'),
+    ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
+    ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
 ]
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
@@ -63,7 +65,8 @@ def pct(value: float, decimals: int = 1) -> str:
 
 
 def signed(value: float, decimals: int = 1) -> str:
-    return ('+' if value > 0 else '−' if value < 0 else '') + num(abs(value), decimals)
+    shown = round(value, decimals)
+    return ('+' if shown > 0 else '−' if shown < 0 else '') + num(abs(shown), decimals)
 
 
 def _elides(text: str) -> bool:
@@ -129,9 +132,9 @@ class Measure:
     def fmt(self, value: float) -> str:
         return {'eur': lambda v: num(v) + ' €', 'eurm2': lambda v: num(v) + ' €/m²',
                 'eurm2month': lambda v: num(v, 2) + ' €/m² al mese', 'percent': lambda v: pct(v, self.decimals),
-                'per1000': lambda v: num(v) + ' ogni 1.000 abitanti', 'decimal': lambda v: num(v, 2),
+                'per1000': lambda v: num(v) + ' ogni 1.000 abitanti', 'decimal': lambda v: num(v, self.decimals),
                 'change': lambda v: signed(v) + '%', 'points': lambda v: num(v, 1) + ' punti',
-                'per1000s': lambda v: signed(v, 0) + ' ogni 1.000 abitanti', 'count': lambda v: num(v)}[self.unit](value)
+                'per1000s': lambda v: signed(v, 0) + ' ogni 1.000 abitanti', 'count': lambda v: num(v), 'nights': lambda v: num(v, 2) + ' notti'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, 0),
@@ -179,6 +182,20 @@ class Engine:
             measure.versilia = ratio['result']['value']
             measure.warnings += [w for w in ratio['warnings'] if w not in measure.warnings]
         return measure
+
+    def change(self, key, metric, dimension, label, start, end) -> Measure:
+        """Variazione percentuale per Comune fra due periodi, una richiesta A6 per Comune."""
+        values, sources, warnings = {}, set(), []
+        for code in self.codes:
+            response = self.ask({'operation': 'relative_change', 'selectors': [
+                {'metric': metric, 'dimension': dimension, 'towns': [code], 'periods': [start, end]}]})
+            values[code] = response['result']['value']
+            sources |= {o['source'] for o in response['observations']}
+            warnings += [w for w in response['warnings'] if w not in warnings]
+        ordered = sorted(values.items(), key=lambda item: -item[1])
+        ranking = [(code, value, 1 + sum(v > value for v in values.values())) for code, value in ordered]
+        return Measure(key, metric, dimension, label, 'change', 1, f'{start}-{end}', values, ranking,
+                       sorted(sources)[0], warnings=warnings)
 
 
 # ---------------------------------------------------------------------------
@@ -716,7 +733,194 @@ def lavoro(engine: Engine) -> dict:
              ('redditi', 'Redditi da lavoro e pensioni')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro}
+# ---------------------------------------------------------------------------
+# Dossier «La Versilia dei turisti».
+
+def turismo(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    m = {
+        'presences': engine.measure('presences', 'tourismPresences', 'total', 'Presenze turistiche (notti trascorse)',
+                                    'count', 0),
+        'arrivals': engine.measure('arrivals', 'tourismArrivals', 'total', 'Arrivi turistici', 'count', 0),
+        'intensity': engine.measure('intensity', 'tourismIntensity', 'total', 'Presenze turistiche per abitante',
+                                    'decimal', 1, benchmarks=('tuscany',), versilia=True),
+    }
+    pres = m['presences']
+    series_years = [o['period'] for o in engine.ask({'operation': 'series', 'selectors': [
+        {'metric': 'tourismPresences', 'dimension': 'total', 'towns': [codes[0]]}]})['observations']]
+    first, last = series_years[0], series_years[-1]
+    m['change'] = engine.change('change', 'tourismPresences', 'total', 'Variazione percentuale delle presenze',
+                                first, last)
+    m.update({
+        'stay': engine.measure('stay', 'tourismAverageStay', 'total', 'Permanenza media, notti per arrivo', 'nights', 2,
+                               benchmarks=('tuscany',), versilia=True),
+        'foreign': engine.measure('foreign', 'foreignTourismShare', 'total',
+                                  'Presenze di turisti residenti all’estero, %', 'percent', 1, benchmarks=('tuscany',)),
+        'season': engine.measure('season', 'tourismSeasonality', 'total',
+                                 'Presenze concentrate nei tre mesi di punta, %', 'percent', 1, benchmarks=('tuscany',)),
+        'beds': engine.measure('beds', 'tourismBedsPer1000', 'total', 'Posti letto turistici ogni 1.000 abitanti',
+                               'per1000', 0, benchmarks=('tuscany', 'italy'), versilia=True),
+        'structures': engine.measure('structures', 'tourismStructuresPer1000', 'total',
+                                     'Strutture ricettive ogni 1.000 abitanti', 'decimal', 1,
+                                     benchmarks=('tuscany', 'italy'), versilia=True),
+        'spend': engine.measure('spend', 'tourismDevelopmentMissionExpenditurePerResident', 'total',
+                                'Spesa comunale per sviluppo e valorizzazione del turismo, euro per abitante', 'eur', 0,
+                                versilia=True),
+    })
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    arr, inten, chg = m['arrivals'], m['intensity'], m['change']
+
+    # 01 — quanti turisti
+    top = pres.ranking[0]
+    pres_text = (
+        f'Nel {pres.period} le presenze più alte nelle strutture ricettive sono a {nm(top[0])} '
+        f'(<b>{num(top[1])} notti</b>), poi a {nm(pres.ranking[1][0])} ({num(pres.ranking[1][1])}) e a '
+        f'{nm(pres.ranking[2][0])} ({num(pres.ranking[2][1])}). Negli altri Comuni il turismo nelle strutture è molto '
+        f'più contenuto: a {nm(lo("presences")[0])} le notti sono state {num(lo("presences")[1])}.')
+    inten_text = (
+        f'Rapportate agli abitanti, in Versilia le presenze sono <b>{num(inten.versilia, 1)} per residente</b>, contro '
+        f'{num(inten.benchmarks["tuscany"], 1)} in Toscana. A {nm(hi("intensity")[0])} sono {num(hi("intensity")[1], 1)}: '
+        f'il Comune dove il turismo pesa di più rispetto alla popolazione.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {num(pres.values[c])} presenze e {num(arr.values[c])} arrivi nel {pres.period}, '
+                  f'{num(inten.values[c], 1)} presenze per abitante (Toscana {num(inten.benchmarks["tuscany"], 1)}).')
+              for c in codes}
+    ch1 = chapter(1, 'quanti', 'Quanti turisti', 'Quanto turismo passa dalle strutture ricettive di ogni Comune?',
+        f'<p>{pres_text}</p>{bar_chart(pres, N, "Presenze turistiche nelle strutture ricettive")}'
+        f'<p>{inten_text}</p>{bar_chart(inten, N, "Presenze turistiche per abitante")}' + town_blocks(towns1),
+        'Le presenze contano le notti trascorse nelle strutture ricettive registrate: alberghi, campeggi, case vacanza '
+        'gestite come impresa. Rapportarle agli abitanti dice quanto il turismo pesa sulla vita di un Comune. Non '
+        'comprendono gli affitti brevi fra privati né chi visita la Versilia in giornata.')
+
+    # 02 — come cambia
+    up = [c for c, v, _ in chg.ranking if round(v, 1) > 0]
+    down = [c for c, v, _ in chg.ranking if round(v, 1) < 0]
+    flat = [c for c in codes if c not in up and c not in down]
+    chg_text = (
+        f'Fra il {first} e il {last} le presenze sono aumentate in {count_words(len(up), total)} e diminuite in '
+        f'{count_words(len(down), total)}'
+        + (f'; a {join_names([nm(c) for c in flat])} sono rimaste invariate. ' if flat else '. ')
+        + (f'Il calo più forte è a {nm(lo("change")[0])} (<b>{signed(lo("change")[1])}%</b>)' if down else '')
+        + (f'{"; la" if down else "La"} crescita più forte a {nm(hi("change")[0])} ({signed(hi("change")[1])}%).'
+           if up else '.'))
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: presenze {signed(chg.values[c])}% fra il {first} e il {last}.') for c in codes}
+    ch2 = chapter(2, 'andamento', 'Come cambiano le presenze', f'Il turismo nelle strutture cresce o cala dal {first}?',
+        f'<p>{chg_text}</p>{bar_chart(chg, N, f"Variazione delle presenze, {first}-{last}", f"I dati {last} sono provvisori.")}'
+        + town_blocks(towns2),
+        'Un calo delle presenze nelle strutture registrate non significa per forza meno turisti: una parte '
+        'dell’ospitalità può spostarsi verso forme che queste statistiche non contano, come gli affitti brevi. Due o '
+        'tre anni sono un periodo breve: il dato va seguito nel tempo prima di trarne conclusioni.')
+
+    # 03 — chi arriva e quanto resta
+    stay, foreign = m['stay'], m['foreign']
+    stay_text = (
+        f'Chi arriva in Versilia resta in media <b>{num(stay.versilia, 1)} notti</b>, contro {num(stay.benchmarks["tuscany"], 1)} '
+        f'in Toscana: da {num(lo("stay")[1], 1)} a {nm(lo("stay")[0])} a {num(hi("stay")[1], 1)} a {nm(hi("stay")[0])}.')
+    foreign_text = (
+        f'I turisti residenti all’estero valgono {dal(pct(lo("foreign")[1]))} delle presenze a {nm(lo("foreign")[0])} '
+        f'{al(pct(hi("foreign")[1]))} a {nm(hi("foreign")[0])}; in Toscana sono {il(pct(foreign.benchmarks["tuscany"]))}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: permanenza media {num(stay.values[c], 1)} notti; {il(pct(foreign.values[c]))} '
+                  f'delle presenze è di turisti residenti all’estero.') for c in codes}
+    ch3 = chapter(3, 'chi-arriva', 'Chi arriva e quanto resta', 'Soggiorni lunghi o brevi, turisti italiani o stranieri?',
+        f'<p>{stay_text}</p>{bar_chart(stay, N, "Permanenza media")}'
+        f'<p>{foreign_text}</p>{bar_chart(foreign, N, "Presenze di turisti residenti all’estero")}' + town_blocks(towns3),
+        'La durata del soggiorno e la provenienza descrivono il tipo di turismo: vacanze lunghe o fine settimana, '
+        'mercato italiano o internazionale. «Straniero» qui vuol dire residente all’estero, non cittadinanza.')
+
+    # 04 — stagionalità
+    season = m['season']
+    season_above = [c for c, v, _ in season.ranking if v > season.benchmarks['tuscany']]
+    season_text = (
+        f'Nei tre mesi di punta si concentra {dal(pct(lo("season")[1]))} delle presenze annue a {nm(lo("season")[0])} '
+        f'{al(pct(hi("season")[1]))} a <b>{nm(hi("season")[0])}</b>. In {count_words(len(season_above), total)} la '
+        f'concentrazione è più alta della media toscana ({pct(season.benchmarks["tuscany"])}).')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(season.values[c]))} delle presenze cade nei tre mesi di punta '
+                  f'(Toscana {pct(season.benchmarks["tuscany"])}).') for c in codes}
+    ch4 = chapter(4, 'stagioni', 'Una stagione sola?', 'Quanto il turismo si concentra in pochi mesi?',
+        f'<p>{season_text}</p>{bar_chart(season, N, "Presenze nei tre mesi di punta")}' + town_blocks(towns4),
+        'Più il turismo è concentrato, più il territorio vive due vite diverse: servizi, lavoro, traffico e rifiuti '
+        'cambiano molto fra estate e inverno. La misura considera i tre mesi con più presenze in ciascun Comune, che '
+        'non sono necessariamente giugno, luglio e agosto.')
+
+    # 05 — dove si dorme
+    beds, struct = m['beds'], m['structures']
+    beds_text = (
+        f'Nel {beds.period} la Versilia contava <b>{num(beds.versilia)} posti letto ogni 1.000 abitanti</b>, contro '
+        f'{num(beds.benchmarks["tuscany"])} in Toscana e {num(beds.benchmarks["italy"])} in Italia: da '
+        f'{num(lo("beds")[1])} a {nm(lo("beds")[0])} a {num(hi("beds")[1])} a {nm(hi("beds")[0])}.')
+    struct_text = (
+        f'Le strutture ricettive sono {num(struct.versilia, 1)} ogni 1.000 abitanti ({num(struct.benchmarks["tuscany"], 1)} '
+        f'in Toscana); a {nm(hi("structures")[0])} {num(hi("structures")[1], 1)}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(beds.values[c])} posti letto e {num(struct.values[c], 1)} strutture ricettive '
+                  f'ogni 1.000 abitanti.') for c in codes}
+    ch5 = chapter(5, 'ospitalita', 'Dove si dorme', 'Quanta ospitalità c’è rispetto ai residenti?',
+        f'<p>{beds_text}</p>{bar_chart(beds, N, "Posti letto turistici ogni 1.000 abitanti")}'
+        f'<p>{struct_text}</p>{bar_chart(struct, N, "Strutture ricettive ogni 1.000 abitanti")}' + town_blocks(towns5),
+        'Posti letto e strutture misurano la capacità di accoglienza: quanto il territorio è attrezzato per ospitare. '
+        'Molte strutture piccole e pochi posti letto indicano un’ospitalità diffusa, fatta di case vacanza e '
+        'affittacamere; pochi grandi alberghi danno il risultato opposto.')
+
+    # 06 — spesa dei Comuni
+    spend = m['spend']
+    spend_text = (
+        f'Nel {spend.period} i sette Comuni hanno impegnato per sviluppo e valorizzazione del turismo nel complesso '
+        f'<b>{num(spend.versilia)} € per abitante</b>: da {num(lo("spend")[1])} € a {nm(lo("spend")[0])} a '
+        f'{num(hi("spend")[1])} € a {nm(hi("spend")[0])}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(spend.values[c])} € per abitante impegnati per il turismo nel '
+                  f'{spend.period} (Versilia {num(spend.versilia)} €).') for c in codes}
+    ch6 = chapter(6, 'spesa', 'Quanto spendono i Comuni', 'Quanto investono le amministrazioni nel turismo?',
+        f'<p>{spend_text}</p>{bar_chart(spend, N, "Spesa comunale per il turismo per abitante")}' + town_blocks(towns6),
+        'È la spesa che ogni Comune classifica nel proprio bilancio alla voce dedicata al turismo: eventi, promozione, '
+        'uffici informazioni, a volte opere. I Comuni non classificano tutti allo stesso modo, e una spesa più alta non '
+        'dice nulla sui risultati ottenuti.')
+
+    key_points = [
+        (num(top[1]), f'Le presenze turistiche registrate a {nm(top[0])} nel {pres.period}, il valore più alto.', 'quanti'),
+        (num(inten.versilia, 1), f'Presenze per abitante in Versilia. In Toscana sono {num(inten.benchmarks["tuscany"], 1)}.',
+         'quanti'),
+        (signed(lo('change')[1]) + '%', f'La variazione delle presenze a {nm(lo("change")[0])} fra il {first} e il {last}.',
+         'andamento'),
+        (num(stay.versilia, 1), f'Notti di permanenza media in Versilia, contro {num(stay.benchmarks["tuscany"], 1)} in Toscana.',
+         'chi-arriva'),
+        (pct(hi('season')[1]), f'Le presenze di {nm(hi("season")[0])} concentrate in soli tre mesi.', 'stagioni'),
+        (num(beds.versilia), f'Posti letto turistici ogni 1.000 abitanti: in Toscana {num(beds.benchmarks["tuscany"])}.',
+         'ospitalita'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Presenze turistiche', num(pres.values[c]), f'{ordinal(pres.rank(c))} su 7'),
+        summary_item('Presenze per abitante', num(inten.values[c], 1), f'Toscana {num(inten.benchmarks["tuscany"], 1)}'),
+        summary_item(f'Variazione {first}-{last}', signed(chg.values[c]) + '%', f'{ordinal(chg.rank(c))} su 7'),
+        summary_item('Permanenza media', num(stay.values[c], 1) + ' notti', f'Toscana {num(stay.benchmarks["tuscany"], 1)}'),
+        summary_item('Turisti dall’estero', pct(foreign.values[c]), f'Toscana {pct(foreign.benchmarks["tuscany"])}'),
+        summary_item('Presenze nei tre mesi di punta', pct(season.values[c]), f'Toscana {pct(season.benchmarks["tuscany"])}'),
+        summary_item('Posti letto ogni 1.000 abitanti', num(beds.values[c]), f'Toscana {num(beds.benchmarks["tuscany"])}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti turisti dormono negli affitti brevi fra privati: non sono contati nelle presenze ufficiali.',
+        'Quante persone visitano la Versilia in giornata, senza pernottare.',
+        'Quanto spendono i turisti e quanto resta all’economia locale.',
+        'Quanti visitatori ci sono nei giorni di punta: le presenze sono totali annui, non affollamento giornaliero.',
+        'Gli effetti del turismo su prezzi delle case, traffico e servizi: i dati mostrano coincidenze, non cause.',
+    ]
+    return dict(
+        slug='turismo', title='La Versilia dei turisti', eyebrow='Dossier · Turismo',
+        unknown_topic='sul turismo', theme='economia', theme_label='Tutti i dati sull’economia',
+        lead='Quanti turisti arrivano, come cambiano le presenze, quanto restano, quanto il turismo si concentra '
+             'd’estate e quanta ospitalità c’è: una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Presenze e arrivi, andamento, permanenza, turisti stranieri, stagionalità, posti letto e spesa dei '
+                    'Comuni per il turismo nei sette Comuni della Versilia.',
+        periods=f'Movimento turistico {pres.period} (provvisorio), confronto {first}-{last}, posti letto {beds.period}, '
+                f'bilanci comunali {spend.period}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanti', 'Quanti turisti'), ('andamento', 'Come cambiano le presenze'), ('chi-arriva', 'Chi arriva e quanto resta'),
+             ('stagioni', 'Una stagione sola?'), ('ospitalita', 'Dove si dorme'), ('spesa', 'Quanto spendono i Comuni')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo}
 
 
 # ---------------------------------------------------------------------------
@@ -732,7 +936,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     writer.writerow(['Indicatore', 'Territorio', 'Periodo', 'Valore', 'Unità', 'Fonte'])
     unit = {'eur': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
             'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
-            'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero'}
+            'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:

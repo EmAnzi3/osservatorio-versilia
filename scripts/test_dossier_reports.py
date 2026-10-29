@@ -58,9 +58,14 @@ def verify(dist: Path):
         assert not main.select('[data-town][hidden]:not(.dr-town-text):not(.dr-town-card)')
 
         # Grafici: ogni barra riporta il valore della risposta del motore.
+        # Una misura può comparire solo nel testo (per esempio gli arrivi), mai un
+        # grafico senza la sua misura.
         charts = main.select('figure.dr-chart')
-        assert len(charts) == len(dossier['measures']), (len(charts), len(dossier['measures']))
-        for figure, measure in zip(charts, dossier['measures'].values()):
+        by_key = {f['aria-labelledby'].removeprefix('fig-'): f for f in charts}
+        assert len(by_key) == len(charts) and set(by_key) <= set(dossier['measures']), sorted(by_key)
+        assert len(charts) >= len(dossier['measures']) - 2, (len(charts), len(dossier['measures']))
+        for key_, figure in by_key.items():
+            measure = dossier['measures'][key_]
             shown = [(r['data-town'], r.select_one('.dr-val').get_text()) for r in figure.select('.dr-row')]
             assert shown == [(c, measure.short(v)) for c, v, _ in measure.ranking], ('grafico', measure.key)
             assert period_label(measure.period) in figure.figcaption.get_text()
