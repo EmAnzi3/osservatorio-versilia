@@ -48,6 +48,9 @@ SOURCE_NAMES = [
     ('demo.istat.it', 'Istat — Popolazione residente e bilancio demografico'),
     ('ars.toscana.it', 'Agenzia regionale di sanità della Toscana (ARS)'),
     ('dati.salute.gov.it', 'Ministero della Salute — Anagrafe delle farmacie'),
+    ('dati.toscana.it', 'Regione Toscana — Servizi educativi per la prima infanzia'),
+    ('dati.istruzione.it', 'Ministero dell’Istruzione e del Merito — Open data della scuola'),
+    ('invalsi', 'INVALSI — Risultati delle prove nazionali'),
     ('misura-comune', 'Istat — Spesa dei Comuni per i servizi sociali'),
     ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
@@ -174,13 +177,17 @@ class Engine:
         self.answers += 1
         return response
 
-    def measure(self, key, metric, dimension, label, unit, decimals=1, benchmarks=(), versilia=False) -> Measure:
+    def measure(self, key, metric, dimension, label, unit, decimals=1, benchmarks=(), versilia=False,
+                partial=False) -> Measure:
+        """partial=True accetta Comuni senza dato (per esempio senza scuole di quel grado): la pagina lo dichiara."""
         selector = {'metric': metric, 'dimension': dimension, 'towns': self.codes}
-        compare = self.ask({'operation': 'compare', 'selectors': [selector]})
-        observations = compare['observations']
+        extra = {'allowPartial': True} if partial else {}
+        compare = self.ask({'operation': 'compare', 'selectors': [selector], **extra})
+        observations = [o for o in compare['observations'] if o['value'] is not None]
         periods = {o['period'] for o in observations}
-        assert len(periods) == 1 and len(observations) == len(self.codes), (key, periods)
-        ranked = self.ask({'operation': 'rank', 'selectors': [selector]})['result']['ranking']
+        assert len(periods) == 1 and (partial or len(observations) == len(self.codes)), (key, periods)
+        ranked = [r for r in self.ask({'operation': 'rank', 'selectors': [selector], **extra})['result']['ranking']
+                  if r['value'] is not None]
         values = {o['geography']: o['value'] for o in observations}
         assert {r['geography']: r['value'] for r in ranked} == values, key
         sources = {o['source'] for o in observations}
@@ -189,11 +196,11 @@ class Engine:
                           warnings=list(compare['warnings']))
         for scope in benchmarks:
             gap = self.ask({'operation': 'benchmark_gap', 'benchmark': scope,
-                            'selectors': [dict(selector, towns=[self.codes[0]])]})
+                            'selectors': [dict(selector, towns=[next(iter(values))])]})
             measure.benchmarks[scope] = gap['result']['benchmarkValue']
             measure.warnings += [w for w in gap['warnings'] if w not in measure.warnings]
         if versilia:
-            ratio = self.ask({'operation': 'weighted_ratio', 'selectors': [selector]})
+            ratio = self.ask({'operation': 'weighted_ratio', 'selectors': [selector], **extra})
             measure.versilia = ratio['result']['value']
             measure.warnings += [w for w in ratio['warnings'] if w not in measure.warnings]
         return measure
@@ -220,6 +227,9 @@ BENCH_LABEL = {'tuscany': 'Toscana', 'italy': 'Italia', 'versilia': 'Versilia'}
 
 
 def bar_chart(m: Measure, names: dict[str, str], title: str, note: str = '') -> str:
+    missing = [names[c] for c in sorted(names) if c not in m.values]
+    if missing:
+        note = (note + ' ' if note else '') + f'Dato non disponibile per {join_names(missing)}.'
     refs = dict(m.benchmarks)
     if m.versilia is not None:
         refs = {'versilia': m.versilia, **refs}
@@ -257,6 +267,9 @@ def period_label(period: str) -> str:
     match = re.fullmatch(r'(\d{4})-S([12])', period)
     if match:
         return f'{match.group(2)}° semestre {match.group(1)}'
+    school = re.fullmatch(r'(\d{4})[-/](\d{2})', period)
+    if school:
+        return f'anno scolastico {school.group(1)}/{school.group(2)}'
     return period
 
 
@@ -1127,7 +1140,188 @@ def anziani(engine: Engine) -> dict:
              ('salute', 'Quanto si vive'), ('assistenza', 'Cure vicino a casa'), ('spesa-sociale', 'Quanto spendono i Comuni')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani}
+# ---------------------------------------------------------------------------
+# Dossier «Crescere in Versilia».
+
+def scuola(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'nursery': engine.measure('nursery', 'earlyChildhoodPotentialCapacityRate', 'total',
+                                  'Posti nei servizi per la prima infanzia ogni 100 bambini fra 3 e 36 mesi',
+                                  'percent', 1, benchmarks=('tuscany',), versilia=True),
+        'full_time': engine.measure('full_time', 'primaryFullTimeShare', 'total',
+                                    'Alunni della primaria a tempo pieno, %', 'percent', 1, benchmarks=TI, versilia=True),
+        'class_size': engine.measure('class_size', 'studentsPerClass', 'total', 'Alunni per classe', 'decimal', 1,
+                                     benchmarks=TI, versilia=True),
+        'old_buildings': engine.measure('old_buildings', 'schoolBuildingAge', 'part:builtBy1970',
+                                        'Edifici scolastici costruiti entro il 1970, %', 'percent', 1,
+                                        benchmarks=TI, versilia=True),
+        'canteen': engine.measure('canteen', 'schoolBuildingFacilities', 'part:canteen',
+                                  'Edifici scolastici con mensa, %', 'percent', 1, benchmarks=TI, versilia=True),
+        'g5_ita': engine.measure('g5_ita', 'invalsiResults', 'view:g5-italiano',
+                                 'Punteggio medio INVALSI di italiano, quinta primaria', 'decimal', 0,
+                                 benchmarks=TI, partial=True),
+        'g5_mat': engine.measure('g5_mat', 'invalsiResults', 'view:g5-matematica',
+                                 'Punteggio medio INVALSI di matematica, quinta primaria', 'decimal', 0,
+                                 benchmarks=TI, partial=True),
+        'diploma': engine.measure('diploma', 'diplomaPlus', 'total',
+                                  'Residenti di 25-64 anni con almeno il diploma, %', 'percent', 1),
+        'spend': engine.measure('spend', 'educationMissionExpenditurePerResident', 'total',
+                                'Spesa comunale per istruzione e diritto allo studio, euro per abitante', 'eur', 0,
+                                versilia=True),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    cap = lambda text: text[:1].upper() + text[1:]
+
+    # 01 — nidi
+    nur = m['nursery']
+    none = [c for c, v, _ in nur.ranking if v == 0]
+    nur_text = (
+        f'Nell’{period_label(nur.period)} in Versilia c’erano <b>{num(nur.versilia, 1)} posti nei servizi per la prima '
+        f'infanzia ogni 100 bambini</b> fra 3 e 36 mesi, contro {num(nur.benchmarks["tuscany"], 1)} in Toscana. Si va da '
+        f'{num(hi("nursery")[1], 1)} a {nm(hi("nursery")[0])}'
+        + (f' a nessun posto a {join_names([nm(c) for c in none])}.' if none else
+           f' a {num(lo("nursery")[1], 1)} a {nm(lo("nursery")[0])}.'))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {num(nur.values[c], 1)} posti ogni 100 bambini fra 3 e 36 mesi '
+                  f'(Toscana {num(nur.benchmarks["tuscany"], 1)}).') for c in codes}
+    ch1 = chapter(1, 'nidi', 'I primi anni', 'Quanti posti al nido ci sono per i bambini piccoli?',
+        f'<p>{nur_text}</p>{bar_chart(nur, N, "Posti nei servizi per la prima infanzia", "Comprende nidi e altri servizi educativi, pubblici e privati.")}'
+        + town_blocks(towns1),
+        'Il nido conta per lo sviluppo dei bambini e per il lavoro dei genitori, soprattutto delle madri. Un Comune '
+        'senza posti non significa per forza famiglie senza servizio: i bambini possono frequentare strutture nei Comuni '
+        'vicini. Il dato misura l’offerta, non le iscrizioni né le liste d’attesa.')
+
+    # 02 — tempo pieno e classi
+    ft, cls = m['full_time'], m['class_size']
+    ft_text = (
+        f'Nella scuola primaria il tempo pieno riguarda <b>{il(pct(ft.versilia))} degli alunni</b> in Versilia, contro '
+        f'{il(pct(ft.benchmarks["tuscany"]))} in Toscana e {il(pct(ft.benchmarks["italy"]))} in Italia: '
+        f'{dal(pct(lo("full_time")[1]))} di {nm(lo("full_time")[0])} {al(pct(hi("full_time")[1]))} di {nm(hi("full_time")[0])}.')
+    cls_text = (
+        f'Le classi hanno in media {num(cls.versilia, 1)} alunni ({num(cls.benchmarks["tuscany"], 1)} in Toscana), '
+        f'da {num(lo("class_size")[1], 1)} a {nm(lo("class_size")[0])} a {num(hi("class_size")[1], 1)} a {nm(hi("class_size")[0])}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: tempo pieno per {il(pct(ft.values[c]))} degli alunni della primaria; '
+                  f'{num(cls.values[c], 1)} alunni per classe.') for c in codes}
+    ch2 = chapter(2, 'tempo-pieno', 'Tempo pieno e classi', 'Quanti bambini restano a scuola anche il pomeriggio?',
+        f'<p>{ft_text}</p>{bar_chart(ft, N, "Alunni della primaria a tempo pieno")}'
+        f'<p>{cls_text}</p>{bar_chart(cls, N, "Alunni per classe")}' + town_blocks(towns2),
+        'Il tempo pieno allunga la giornata scolastica e aiuta le famiglie in cui entrambi i genitori lavorano. I dati '
+        'riguardano le scuole che si trovano nel Comune, frequentate anche da bambini di altri Comuni; nei Comuni '
+        'piccoli poche classi bastano a cambiare molto la percentuale.')
+
+    # 03 — edifici
+    old, can = m['old_buildings'], m['canteen']
+    old_text = (
+        f'In Versilia {il(pct(old.versilia))} degli edifici scolastici è stato costruito entro il 1970, contro '
+        f'{il(pct(old.benchmarks["tuscany"]))} in Toscana: {dal(pct(lo("old_buildings")[1]))} di {nm(lo("old_buildings")[0])} '
+        f'{al(pct(hi("old_buildings")[1]))} di {nm(hi("old_buildings")[0])}.')
+    can_text = (
+        f'Le scuole con mensa sono {il(pct(can.versilia))}, più che in Toscana ({pct(can.benchmarks["tuscany"])}) e in Italia '
+        f'({pct(can.benchmarks["italy"])}).' if can.versilia > can.benchmarks['tuscany'] else
+        f'Le scuole con mensa sono {il(pct(can.versilia))} ({pct(can.benchmarks["tuscany"])} in Toscana).')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(old.values[c]))} degli edifici scolastici è costruito entro il 1970; '
+                  f'{il(pct(can.values[c]))} ha la mensa.') for c in codes}
+    ch3 = chapter(3, 'edifici', 'Gli edifici', 'In che scuole studiano i ragazzi?',
+        f'<p>{old_text}</p>{bar_chart(old, N, "Edifici scolastici costruiti entro il 1970")}'
+        f'<p>{can_text}</p>{bar_chart(can, N, "Edifici scolastici con mensa")}' + town_blocks(towns3),
+        'Gli edifici più vecchi richiedono più manutenzione e interventi di adeguamento, ma l’anno di costruzione non '
+        'dice da solo se una scuola è sicura: molti edifici sono stati ristrutturati. Sono informazioni dichiarate '
+        'dalle scuole all’anagrafe dell’edilizia scolastica.')
+
+    # 04 — apprendimenti
+    ita, mat = m['g5_ita'], m['g5_mat']
+    ita_above = [c for c in ita.values if ita.values[c] > ita.benchmarks['tuscany']]
+    mat_above = [c for c in mat.values if mat.values[c] > mat.benchmarks['tuscany']]
+    inv_text = (
+        f'Nelle prove INVALSI dell’{period_label(ita.period)}, gli alunni di quinta primaria hanno ottenuto in italiano '
+        f'punteggi da {num(lo("g5_ita")[1])} a {nm(lo("g5_ita")[0])} a {num(hi("g5_ita")[1])} a {nm(hi("g5_ita")[0])} '
+        f'(Toscana {num(ita.benchmarks["tuscany"])}); in matematica da {num(lo("g5_mat")[1])} a {nm(lo("g5_mat")[0])} a '
+        f'{num(hi("g5_mat")[1])} a {nm(hi("g5_mat")[0])} (Toscana {num(mat.benchmarks["tuscany"])}). Sopra la media toscana: '
+        f'{len(ita_above)} Comuni in italiano, {len(mat_above)} in matematica.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: punteggio medio INVALSI di quinta primaria {num(ita.values[c])} in italiano e '
+                  f'{num(mat.values[c])} in matematica (Toscana {num(ita.benchmarks["tuscany"])} e {num(mat.benchmarks["tuscany"])}).'
+                  if c in ita.values and c in mat.values else
+                  f'<b>{esc(nm(c))}</b>: per la quinta primaria il risultato INVALSI non è pubblicato.') for c in codes}
+    ch4 = chapter(4, 'apprendimenti', 'Cosa imparano', 'Come vanno le prove nazionali di italiano e matematica?',
+        f'<p>{inv_text}</p>{bar_chart(ita, N, "INVALSI italiano, quinta primaria", "Punteggi su scala nazionale con media 200 nel primo anno di rilevazione.")}'
+        f'{bar_chart(mat, N, "INVALSI matematica, quinta primaria")}' + town_blocks(towns4),
+        'Le prove INVALSI misurano alcune competenze di base con lo stesso metro in tutta Italia. Riguardano le scuole '
+        'del Comune, non i bambini residenti, e in un Comune con poche classi il risultato dipende da pochi alunni: '
+        'differenze di pochi punti non vanno lette come una classifica.')
+
+    # 05 — titoli di studio
+    dip = m['diploma']
+    dip_text = (
+        f'Nel {dip.period} fra i residenti di 25-64 anni ha almeno il diploma {dal(pct(lo("diploma")[1]))} di '
+        f'{nm(lo("diploma")[0])} {al(pct(hi("diploma")[1]))} di <b>{nm(hi("diploma")[0])}</b>.')
+    towns5 = {c: f'<b>{esc(nm(c))}</b>: {il(pct(dip.values[c]))} dei residenti di 25-64 anni ha almeno il diploma.' for c in codes}
+    ch5 = chapter(5, 'titoli', 'Gli adulti e lo studio', 'Quanti adulti hanno almeno un diploma?',
+        f'<p>{dip_text}</p>{bar_chart(dip, N, "Residenti di 25-64 anni con almeno il diploma")}' + town_blocks(towns5),
+        'Il titolo di studio degli adulti dice molto sull’ambiente in cui crescono i ragazzi e sulle possibilità del '
+        'mercato del lavoro locale. Non misura le competenze, né quanto il lavoro svolto corrisponda agli studi fatti.')
+
+    # 06 — spesa
+    sp = m['spend']
+    sp_text = (
+        f'Nel {sp.period} i sette Comuni hanno impegnato per istruzione e diritto allo studio nel complesso '
+        f'<b>{num(sp.versilia)} € per abitante</b>: da {num(lo("spend")[1])} € a {nm(lo("spend")[0])} a '
+        f'{num(hi("spend")[1])} € a {nm(hi("spend")[0])}.')
+    towns6 = {c: f'<b>{esc(nm(c))}</b>: {num(sp.values[c])} € per abitante per istruzione nel {sp.period}.' for c in codes}
+    ch6 = chapter(6, 'spesa', 'Quanto spendono i Comuni', 'Quanto investono le amministrazioni nella scuola?',
+        f'<p>{sp_text}</p>{bar_chart(sp, N, "Spesa comunale per istruzione per abitante")}' + town_blocks(towns6),
+        'I Comuni pagano edifici, mense, trasporto scolastico, servizi per l’infanzia e assistenza agli alunni. La '
+        'spesa comprende anche gli investimenti: un anno con un cantiere importante, come la costruzione di una nuova '
+        'scuola, fa salire molto il valore senza che cambino i servizi di tutti i giorni.')
+
+    key_points = [
+        (num(nur.versilia, 1), f'Posti al nido ogni 100 bambini fra 3 e 36 mesi in Versilia. In Toscana '
+                               f'{num(nur.benchmarks["tuscany"], 1)}.', 'nidi'),
+        (f'{len(none)} su {total}' if none else num(lo('nursery')[1], 1),
+         'Comuni senza posti nei servizi per la prima infanzia.' if none else 'Il valore più basso.', 'nidi'),
+        (pct(ft.versilia), f'Alunni della primaria a tempo pieno, contro {il(pct(ft.benchmarks["tuscany"]))} in Toscana.',
+         'tempo-pieno'),
+        (pct(old.versilia), 'Edifici scolastici costruiti entro il 1970.', 'edifici'),
+        (pct(can.versilia), f'Scuole con mensa. In Italia sono {il(pct(can.benchmarks["italy"]))}.', 'edifici'),
+        (f'{num(sp.versilia)} €', 'Spesa dei Comuni per istruzione per abitante nel complesso della Versilia.', 'spesa'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Posti al nido ogni 100 bambini', num(nur.values[c], 1), f'Toscana {num(nur.benchmarks["tuscany"], 1)}'),
+        summary_item('Tempo pieno nella primaria', pct(ft.values[c]), f'Toscana {pct(ft.benchmarks["tuscany"])}'),
+        summary_item('Alunni per classe', num(cls.values[c], 1), f'Toscana {num(cls.benchmarks["tuscany"], 1)}'),
+        summary_item('Edifici costruiti entro il 1970', pct(old.values[c]), f'Toscana {pct(old.benchmarks["tuscany"])}'),
+        summary_item('INVALSI italiano, quinta primaria', num(ita.values[c]) if c in ita.values else 'non pubblicato',
+                     f'Toscana {num(ita.benchmarks["tuscany"])}'),
+        summary_item('Adulti con almeno il diploma', pct(dip.values[c]), f'{ordinal(dip.rank(c))} su 7'),
+        summary_item('Spesa per istruzione per abitante', num(sp.values[c]) + ' €', f'Versilia {num(sp.versilia)} €'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti bambini restano in lista d’attesa per il nido e quanto pagano le famiglie.',
+        'Quanti ragazzi lasciano la scuola prima del diploma: a livello comunale non c’è un dato pubblico completo.',
+        'Dove vanno a scuola i ragazzi delle superiori: molti studiano in Comuni diversi da quello in cui vivono.',
+        'Lo stato reale di sicurezza degli edifici: l’età di costruzione non basta a dirlo.',
+        'I risultati INVALSI delle medie e delle superiori per tutti i Comuni: dove ci sono poche scuole non sono pubblicati.',
+    ]
+    return dict(
+        slug='scuola', title='Crescere in Versilia', eyebrow='Dossier · Scuola e infanzia',
+        unknown_topic='sulla scuola', theme='istruzione', theme_label='Tutti i dati sull’istruzione',
+        lead='Posti al nido, tempo pieno, edifici scolastici, risultati delle prove nazionali, titoli di studio e spesa dei '
+             'Comuni: una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Servizi per la prima infanzia, tempo pieno, classi, edifici scolastici, prove INVALSI, titoli di studio '
+                    'e spesa per l’istruzione nei sette Comuni della Versilia.',
+        periods=f'Servizi per l’infanzia e scuole {period_label(nur.period)}, prove INVALSI {period_label(ita.period)}, '
+                f'titoli di studio {dip.period}, bilanci comunali {sp.period}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('nidi', 'I primi anni'), ('tempo-pieno', 'Tempo pieno e classi'), ('edifici', 'Gli edifici'),
+             ('apprendimenti', 'Cosa imparano'), ('titoli', 'Gli adulti e lo studio'), ('spesa', 'Quanto spendono i Comuni')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola}
 
 
 # ---------------------------------------------------------------------------
