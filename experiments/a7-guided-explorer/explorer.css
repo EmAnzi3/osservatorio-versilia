@@ -77,3 +77,18 @@ section.a7-explorer.a7-explorer{--ink:#14324a;--muted:#4b6475;--line:#e3d9c6;--t
 .a7-explorer .explorer-strip-key-in::before{width:12px;height:12px;border-radius:50%;background:#2f6f94}
 .a7-explorer .explorer-strip-key-out::before{width:12px;height:12px;border-radius:50%;background:#c2410c;box-shadow:0 0 0 2px #fff,0 0 0 3px #c2410c}
 @media(max-width:600px){.a7-explorer .explorer-strip-legend{grid-template-columns:minmax(0,1fr)}.a7-explorer .explorer-strip-legend{gap:.5rem}.a7-explorer .explorer-strip-legend dd{font-size:1rem}.a7-explorer .explorer-strip{padding-top:2.8rem}.a7-explorer .explorer-outliers h4{font-size:1.15rem}}
+
+.a7-explorer .explorer-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem;margin:0 0 1.1rem;padding:.6rem .8rem;background:var(--tint);border-radius:12px}
+.a7-explorer .explorer-tools button{margin:.2rem 0;padding:.5rem .9rem;font-size:.9rem}
+.a7-explorer .explorer-tools-status{flex-basis:100%;font-size:.85rem;color:var(--muted);overflow-wrap:anywhere}
+.a7-explorer .explorer-tools-status:empty{display:none}
+.a7-explorer .explorer-print-only{display:none}
+@media print{
+  html.explorer-printing body *{visibility:hidden!important}
+  html.explorer-printing #explorer-result,html.explorer-printing #explorer-result *{visibility:visible!important}
+  html.explorer-printing #explorer-result{position:absolute;left:0;top:0;width:100%;margin:0;box-shadow:none;padding:0}
+  html.explorer-printing .explorer-tools,html.explorer-printing .explorer-scroll-hint,html.explorer-printing #explorer-result nav{display:none!important}
+  html.explorer-printing .explorer-print-only{display:block;font-size:.8rem}
+  html.explorer-printing .explorer-table-wrap{overflow:visible;border:0}
+  html.explorer-printing .a7-explorer table{min-width:0}
+}
