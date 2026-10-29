@@ -123,7 +123,7 @@ def _audit_fix_contract() -> None:
 
 def _territorial_eligibility_contract() -> None:
     """Una soglia demografica o territoriale documentata non ammette tutti i sette Comuni."""
-    from build_opportunity_preview import eligible_town_slugs, slug
+    from build_opportunity_preview import card_markup, eligible_town_slugs, slug
 
     sinfi = _item("SINFI 2026", relevance.SUPPORT_FINANCE, stage="rolling_open")
     sinfi["coverage_id"] = "sinfi-supporto-comuni-2026"
@@ -142,6 +142,14 @@ def _territorial_eligibility_contract() -> None:
     assert "Viareggio" not in updated["municipalities"]
     assert slug("Viareggio") not in eligible_town_slugs(updated)
     assert len(eligible_town_slugs(updated)) == 6
+    # Regressione sul renderer realmente utilizzato nella pagina pubblica.
+    card = card_markup(updated)
+    assert 'data-towns="camaiore|forte-dei-marmi|massarosa|pietrasanta|seravezza|stazzema"' in card
+    town_list = card.split('<ul class="op-town-list">', 1)[1].split("</ul>", 1)[0]
+    assert "Viareggio" not in town_list
+    assert town_list.count('class="op-town-chip"') == 6
+    assert 'data-town-status="not_eligible"' not in town_list
+    assert "Comuni con accesso diretto o condizionato" in card
     assert result["municipalitySummary"]["Viareggio"] == {"eligible": 0, "conditional": 0}
     assert result["municipalitySummary"]["Massarosa"]["conditional"] == 1
     assert result["municipalityEligibilityEvidence"]["appliedCount"] == 1

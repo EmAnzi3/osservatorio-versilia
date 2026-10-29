@@ -158,6 +158,10 @@ def render_town_chips(item: dict[str, Any]) -> str:
     for town in TOWNS:
         entry = matrix.get(town) or {}
         status = str(entry.get("status") or "not_eligible")
+        # La matrice mantiene i non ammissibili per audit, ma non devono
+        # comparire nell'elenco pubblico dei Comuni con accesso al bando.
+        if status not in {"eligible", "conditional"}:
+            continue
         reason = str(entry.get("reason") or "Nessuna ammissibilità documentata.")
         chips.append(
             f'<li class="op-town-chip" data-town-chip="{esc(slug(town))}" '
@@ -242,7 +246,7 @@ def card_markup(item: dict[str, Any]) -> str:
       {condition}
       {documents}
       <div class="op-town-block">
-        <h4>Comuni della Versilia</h4>
+        <h4>Comuni con accesso diretto o condizionato</h4>
         <ul class="op-town-list">{render_town_chips(item)}</ul>
       </div>
       <div class="op-card-foot">
