@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier come relazione — «Crescere in Versilia» (29 ottobre 2026)
+
+Quinto dossier `dist/dossier/scuola/`: posti nei servizi per la prima infanzia,
+tempo pieno e alunni per classe, età degli edifici e mense, INVALSI di quinta
+primaria (copertura parziale dichiarata: Stazzema non pubblicato), adulti con
+almeno il diploma, spesa comunale per l’istruzione. Il generatore accetta misure
+a copertura parziale (`allowPartial`), con nota nel grafico e frase per Comune.
+Restano la pagina indice `/dossier/` e il lancio.
+
 ## Dossier come relazione — «Invecchiare in Versilia» (29 ottobre 2026)
 
 Quarto dossier `dist/dossier/anziani/`: indice di vecchiaia e sua variazione,
