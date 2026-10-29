@@ -45,6 +45,10 @@ SOURCE_NAMES = [
     ('capacita-degli-esercizi', 'Istat — Capacità degli esercizi ricettivi'),
     ('agenziaentrate.gov.it', 'Agenzia delle Entrate — Osservatorio del mercato immobiliare (OMI)'),
     ('finanze.gov.it', 'Ministero dell’Economia e delle Finanze — Dichiarazioni dei redditi su base comunale'),
+    ('demo.istat.it', 'Istat — Popolazione residente e bilancio demografico'),
+    ('ars.toscana.it', 'Agenzia regionale di sanità della Toscana (ARS)'),
+    ('dati.salute.gov.it', 'Ministero della Salute — Anagrafe delle farmacie'),
+    ('misura-comune', 'Istat — Spesa dei Comuni per i servizi sociali'),
     ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
@@ -81,6 +85,13 @@ def il(text: str) -> str:
 
 def al(text: str) -> str:
     return ('all’' if _elides(text) else 'al ') + text
+
+
+def del_(text: str) -> str:
+    whole = text.split(',')[0].replace('.', '')
+    if whole == '0':
+        return 'dello ' + text
+    return ('dell’' if _elides(text) or whole == '1' else 'del ') + text
 
 
 def dal(text: str) -> str:
@@ -134,10 +145,14 @@ class Measure:
                 'eurm2month': lambda v: num(v, 2) + ' €/m² al mese', 'percent': lambda v: pct(v, self.decimals),
                 'per1000': lambda v: num(v) + ' ogni 1.000 abitanti', 'decimal': lambda v: num(v, self.decimals),
                 'change': lambda v: signed(v) + '%', 'points': lambda v: num(v, 1) + ' punti',
-                'per1000s': lambda v: signed(v, 0) + ' ogni 1.000 abitanti', 'count': lambda v: num(v), 'nights': lambda v: num(v, 2) + ' notti'}[self.unit](value)
+                'per1000s': lambda v: signed(v, self.decimals) + ' ogni 1.000 abitanti', 'count': lambda v: num(v),
+                'nights': lambda v: num(v, 2) + ' notti', 'per100': lambda v: num(v, 1) + ' ogni 100',
+                'years': lambda v: num(v, 1) + ' anni',
+                'per1000old': lambda v: num(v, 1) + ' ogni 1.000 anziani'}[self.unit](value)
 
     def short(self, value: float) -> str:
-        return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, 0),
+        return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
+                'years': lambda v: num(v, 1), 'per1000old': lambda v: num(v, 1),
                 'eurm2': lambda v: num(v) + ' €'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
@@ -920,7 +935,199 @@ def turismo(engine: Engine) -> dict:
              ('stagioni', 'Una stagione sola?'), ('ospitalita', 'Dove si dorme'), ('spesa', 'Quanto spendono i Comuni')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo}
+# ---------------------------------------------------------------------------
+# Dossier «Invecchiare in Versilia».
+
+def anziani(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    old_years = [o['period'] for o in engine.ask({'operation': 'series', 'selectors': [
+        {'metric': 'oldAgeIndex', 'dimension': 'total', 'towns': [codes[0]]}]})['observations']]
+    first, last = old_years[0], old_years[-1]
+    m = {
+        'old': engine.measure('old', 'oldAgeIndex', 'total', 'Indice di vecchiaia: residenti di 65 anni e più ogni 100 '
+                              'sotto i 15 anni', 'decimal', 0),
+        'old_change': engine.change('old_change', 'oldAgeIndex', 'total', 'Variazione percentuale dell’indice di vecchiaia',
+                                    first, last),
+        'dependency': engine.measure('dependency', 'dependencyIndices', 'part:elderly',
+                                     'Residenti di 65 anni e più ogni 100 persone di 15-64 anni', 'per100', 1,
+                                     benchmarks=TI, versilia=True),
+        'very_old': engine.measure('very_old', 'ageDistribution', 'age:85+', 'Residenti di 85 anni e più, % della popolazione',
+                                   'percent', 1, benchmarks=TI, versilia=True),
+        'natural': engine.measure('natural', 'naturalDemographicDynamics', 'part:balance',
+                                  'Nati meno morti, ogni 1.000 abitanti', 'per1000s', 1, benchmarks=TI, versilia=True),
+        'pop_change': engine.measure('pop_change', 'populationChange', 'total', 'Variazione della popolazione residente',
+                                     'change', 1, benchmarks=TI, versilia=True),
+        'life': engine.measure('life', 'lifeExpectancy', 'total', 'Speranza di vita alla nascita, anni', 'years', 1,
+                               benchmarks=('tuscany', 'versilia')),
+        'home_care': engine.measure('home_care', 'elderlyHomeCare', 'sex:total',
+                                    'Anziani assistiti a domicilio, tasso standardizzato ogni 1.000', 'per1000old', 1,
+                                    benchmarks=('tuscany', 'versilia')),
+        'pharmacies': engine.measure('pharmacies', 'pharmaciesPer1000', 'total', 'Farmacie ogni 1.000 abitanti',
+                                     'decimal', 2, benchmarks=TI),
+        'social': engine.measure('social', 'socialSpendingPerResident', 'total',
+                                 'Spesa dei Comuni per i servizi sociali, euro per abitante', 'eur', 0, benchmarks=TI),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    old, chg, dep, very = m['old'], m['old_change'], m['dependency'], m['very_old']
+
+    # 01 — quanti anziani
+    all_up = all(v > 0 for v in chg.values.values())
+    old_text = (
+        f'All’inizio del {old.period} in ogni Comune della Versilia ci sono molti più anziani che bambini: l’indice di '
+        f'vecchiaia va da {num(lo("old")[1])} a {nm(lo("old")[0])} a <b>{num(hi("old")[1])}</b> a {nm(hi("old")[0])}: '
+        f'qui ci sono {num(hi("old")[1] / 100, 1)} residenti di 65 anni e più per ogni ragazzo sotto i 15 anni.'
+        if all(v > 100 for v in old.values.values()) else
+        f'L’indice di vecchiaia va da {num(lo("old")[1])} a {nm(lo("old")[0])} a {num(hi("old")[1])} a {nm(hi("old")[0])}.')
+    chg_text = (
+        (f'Dal {first} l’indice è cresciuto <b>in tutti i sette Comuni</b>: ' if all_up else f'Dal {first} l’indice è cambiato: ')
+        + f'da {signed(lo("old_change")[1])}% a {nm(lo("old_change")[0])} a {signed(hi("old_change")[1])}% a '
+          f'{nm(hi("old_change")[0])}.')
+    dep_text = (
+        f'In Versilia ci sono <b>{num(dep.versilia, 1)} residenti di 65 anni e più ogni 100 persone in età da lavoro</b>, '
+        f'contro {num(dep.benchmarks["tuscany"], 1)} in Toscana e {num(dep.benchmarks["italy"], 1)} in Italia.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: indice di vecchiaia {num(old.values[c])} ({signed(chg.values[c])}% dal {first}); '
+                  f'{num(dep.values[c], 1)} anziani ogni 100 persone di 15-64 anni.') for c in codes}
+    ch1 = chapter(1, 'quanti', 'Quanti anziani', 'Quanto è anziana la popolazione e quanto in fretta invecchia?',
+        f'<p>{old_text} {chg_text}</p>{bar_chart(old, N, "Indice di vecchiaia")}'
+        f'{bar_chart(chg, N, f"Variazione dell’indice di vecchiaia, {first}-{last}")}'
+        f'<p>{dep_text}</p>{bar_chart(dep, N, "Anziani ogni 100 persone in età da lavoro")}' + town_blocks(towns1),
+        'L’indice di vecchiaia mette a confronto chi ha più di 65 anni con chi ne ha meno di 15: dice quanto pesa '
+        'ogni generazione. Il rapporto con le persone in età da lavoro dà un’idea di quante persone attive ci sono per '
+        'ogni anziano, anche se non tutte lavorano davvero.')
+
+    # 02 — i grandi anziani
+    very_text = (
+        f'Le persone di 85 anni e più sono {il(pct(very.versilia))} dei residenti in Versilia, contro '
+        f'{il(pct(very.benchmarks["tuscany"]))} in Toscana e {il(pct(very.benchmarks["italy"]))} in Italia. '
+        f'La quota più alta è a {nm(hi("very_old")[0])}: <b>{pct(hi("very_old")[1])}</b>.')
+    towns2 = {c: f'<b>{esc(nm(c))}</b>: {il(pct(very.values[c]))} dei residenti ha 85 anni o più.' for c in codes}
+    ch2 = chapter(2, 'grandi-anziani', 'I grandi anziani', 'Quante persone hanno più di 85 anni?',
+        f'<p>{very_text}</p>{bar_chart(very, N, "Residenti di 85 anni e più")}' + town_blocks(towns2),
+        'Dopo gli 85 anni crescono il bisogno di assistenza, di cure a casa e di servizi vicini. È la fascia d’età '
+        'che più dipende dall’organizzazione del territorio: trasporti, medici, farmacie, aiuto domestico.')
+
+    # 03 — nascite e morti
+    nat, pop = m['natural'], m['pop_change']
+    all_neg = all(v < 0 for v in nat.values.values())
+    nat_text = (
+        (f'Nel {nat.period} in tutti i sette Comuni i morti hanno superato i nati: ' if all_neg else f'Nel {nat.period} ')
+        + f'in Versilia il saldo naturale è di <b>{signed(nat.versilia)} ogni 1.000 abitanti</b>, contro '
+          f'{signed(nat.benchmarks["tuscany"])} in Toscana e {signed(nat.benchmarks["italy"])} in Italia.')
+    pop_text = (
+        f'Fra il {period_label(pop.period).split("-")[0]} e il {period_label(pop.period).split("-")[-1]} la popolazione '
+        f'della Versilia è {"calata" if pop.versilia < 0 else "cresciuta"} {del_(num(abs(pop.versilia), 1) + "%")} '
+        f'({signed(pop.benchmarks["tuscany"])}% in Toscana): '
+        f'da {signed(lo("pop_change")[1])}% a {nm(lo("pop_change")[0])} a {signed(hi("pop_change")[1])}% a '
+        f'{nm(hi("pop_change")[0])}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: nati meno morti {signed(nat.values[c])} ogni 1.000 abitanti nel {nat.period}; '
+                  f'popolazione {signed(pop.values[c])}% dal {period_label(pop.period).split("-")[0]}.') for c in codes}
+    ch3 = chapter(3, 'nascite-morti', 'Più morti che nati', 'La popolazione si rinnova?',
+        f'<p>{nat_text}</p>{bar_chart(nat, N, "Saldo naturale: nati meno morti", "Dati Istat provvisori.")}'
+        f'<p>{pop_text}</p>{bar_chart(pop, N, "Variazione della popolazione residente")}' + town_blocks(towns3),
+        'Il saldo naturale misura il ricambio fra generazioni. Quando è negativo, la popolazione resta stabile solo se '
+        'arrivano nuovi residenti. È una tendenza comune a gran parte dell’Italia, che in Versilia si somma a una '
+        'popolazione già più anziana della media.')
+
+    # 04 — salute
+    life = m['life']
+    life_text = (
+        f'Nel {life.period} la speranza di vita alla nascita era di <b>{num(life.benchmarks["versilia"], 1)} anni</b> nella '
+        f'zona Versilia e di {num(life.benchmarks["tuscany"], 1)} in Toscana: da {num(lo("life")[1], 1)} anni a '
+        f'{nm(lo("life")[0])} a {num(hi("life")[1], 1)} a {nm(hi("life")[0])}.')
+    towns4 = {c: f'<b>{esc(nm(c))}</b>: speranza di vita alla nascita {num(life.values[c], 1)} anni ({life.period}).' for c in codes}
+    ch4 = chapter(4, 'salute', 'Quanto si vive', 'Si vive più a lungo qui che nel resto della Toscana?',
+        f'<p>{life_text}</p>{bar_chart(life, N, "Speranza di vita alla nascita", "Nei Comuni piccoli il dato può variare molto da un anno all’altro.")}'
+        + town_blocks(towns4),
+        'La speranza di vita riassume in un numero le condizioni di salute di una popolazione. Nei Comuni piccoli '
+        'pochi decessi bastano a spostarla di molto, quindi le differenze vanno lette con prudenza e seguite nel tempo.')
+
+    # 05 — assistenza
+    care, ph = m['home_care'], m['pharmacies']
+    care_text = (
+        f'Nel {care.period} gli anziani assistiti a domicilio erano {num(care.benchmarks["versilia"], 1)} ogni 1.000 nella '
+        f'zona Versilia, contro <b>{num(care.benchmarks["tuscany"], 1)} in Toscana</b>: da {num(lo("home_care")[1], 1)} a '
+        f'{nm(lo("home_care")[0])} a {num(hi("home_care")[1], 1)} a {nm(hi("home_care")[0])}.')
+    ph_text = (
+        f'Le farmacie sono {num(ph.benchmarks["tuscany"], 2)} ogni 1.000 abitanti in Toscana; in Versilia vanno da '
+        f'{num(lo("pharmacies")[1], 2)} a {nm(lo("pharmacies")[0])} a {num(hi("pharmacies")[1], 2)} a '
+        f'{nm(hi("pharmacies")[0])} (si contano anche succursali e dispensari stagionali).')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(care.values[c], 1)} anziani assistiti a domicilio ogni 1.000 '
+                  f'(Toscana {num(care.benchmarks["tuscany"], 1)}); {num(ph.values[c], 2)} farmacie ogni 1.000 abitanti.')
+              for c in codes}
+    ch5 = chapter(5, 'assistenza', 'Cure vicino a casa', 'Quanti anziani ricevono assistenza a domicilio?',
+        f'<p>{care_text}</p>{bar_chart(care, N, "Anziani assistiti a domicilio", "Tasso standardizzato per età: permette di confrontare Comuni con popolazioni diverse.")}'
+        f'<p>{ph_text}</p>{bar_chart(ph, N, "Farmacie ogni 1.000 abitanti")}' + town_blocks(towns5),
+        'L’assistenza domiciliare permette agli anziani di restare a casa propria. Il dato conta le persone assistite, '
+        'non quante ne avrebbero bisogno: un valore basso può indicare meno bisogno, meno offerta o altre forme di '
+        'aiuto, per esempio badanti pagate dalle famiglie.')
+
+    # 06 — spesa sociale
+    soc = m['social']
+    soc_below = [c for c, v, _ in soc.ranking if v < soc.benchmarks['tuscany']]
+    soc_text = (
+        f'Nel {soc.period} i Comuni hanno speso per i servizi sociali da {num(lo("social")[1])} € per abitante a '
+        f'{nm(lo("social")[0])} a <b>{num(hi("social")[1])} €</b> a {nm(hi("social")[0])}. '
+        f'{count_words(len(soc_below), total)[:1].upper()}{count_words(len(soc_below), total)[1:]} restano sotto la media '
+        f'toscana ({num(soc.benchmarks["tuscany"])} €).')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(soc.values[c])} € per abitante di spesa sociale nel {soc.period} '
+                  f'(Toscana {num(soc.benchmarks["tuscany"])} €).') for c in codes}
+    ch6 = chapter(6, 'spesa-sociale', 'Quanto spendono i Comuni', 'Quante risorse vanno ai servizi sociali?',
+        f'<p>{soc_text}</p>{bar_chart(soc, N, "Spesa dei Comuni per i servizi sociali per abitante")}' + town_blocks(towns6),
+        'La spesa sociale comprende servizi per anziani, disabili, famiglie, minori e persone in difficoltà, anche '
+        'gestiti in forma associata. È l’ultimo anno disponibile a livello comunale; non misura il bisogno né la '
+        'qualità dei servizi, ma indica quante risorse i Comuni mettono in campo.')
+
+    key_points = [
+        (num(hi('old')[1]), f'Anziani ogni 100 ragazzi sotto i 15 anni a {nm(hi("old")[0])}, il valore più alto.', 'quanti'),
+        (f'{len([v for v in chg.values.values() if v > 0])} su {total}',
+         f'Comuni dove l’indice di vecchiaia è cresciuto dal {first} al {last}.', 'quanti'),
+        (pct(very.versilia), f'Residenti con 85 anni o più in Versilia. In Italia sono {il(pct(very.benchmarks["italy"]))}.',
+         'grandi-anziani'),
+        (signed(nat.versilia), f'Nati meno morti ogni 1.000 abitanti in Versilia nel {nat.period}: in Toscana '
+                               f'{signed(nat.benchmarks["tuscany"])}.', 'nascite-morti'),
+        (num(care.benchmarks['versilia'], 1), f'Anziani assistiti a domicilio ogni 1.000 nella zona Versilia, contro '
+                                              f'{num(care.benchmarks["tuscany"], 1)} in Toscana.', 'assistenza'),
+        (f'{len(soc_below)} su {total}', f'Comuni con una spesa sociale per abitante sotto la media toscana '
+                                         f'({num(soc.benchmarks["tuscany"])} €).', 'spesa-sociale'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Indice di vecchiaia', num(old.values[c]), f'{signed(chg.values[c])}% dal {first}'),
+        summary_item('Anziani ogni 100 in età da lavoro', num(dep.values[c], 1), f'Toscana {num(dep.benchmarks["tuscany"], 1)}'),
+        summary_item('Residenti di 85 anni e più', pct(very.values[c]), f'Toscana {pct(very.benchmarks["tuscany"])}'),
+        summary_item('Nati meno morti ogni 1.000 abitanti', signed(nat.values[c]), f'Toscana {signed(nat.benchmarks["tuscany"])}'),
+        summary_item('Speranza di vita', num(life.values[c], 1) + ' anni', f'Toscana {num(life.benchmarks["tuscany"], 1)}'),
+        summary_item('Anziani assistiti a domicilio ogni 1.000', num(care.values[c], 1),
+                     f'Toscana {num(care.benchmarks["tuscany"], 1)}'),
+        summary_item('Spesa sociale per abitante', num(soc.values[c]) + ' €', f'Toscana {num(soc.benchmarks["tuscany"])} €'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti anziani vivono da soli: il dato sulle famiglie di una persona non distingue l’età.',
+        'Quanti anziani non autosufficienti non ricevono aiuto: i dati contano chi è assistito, non chi ne avrebbe bisogno.',
+        'Quante famiglie si affidano a badanti o assistenti private.',
+        'Quanto si aspetta per una visita o un posto in una residenza per anziani.',
+        'Come stanno davvero gli anziani: i dati di salute disponibili sono medie su tutta la popolazione.',
+    ]
+    return dict(
+        slug='anziani', title='Invecchiare in Versilia', eyebrow='Dossier · Anziani e salute',
+        unknown_topic='sulla terza età', theme='demografia', theme_label='Tutti i dati sulla popolazione',
+        lead='Quanti anziani ci sono, quanto in fretta invecchia la popolazione, quanto si vive e quanta assistenza c’è: '
+             'una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Indice di vecchiaia, grandi anziani, nascite e morti, speranza di vita, assistenza domiciliare e spesa '
+                    'sociale nei sette Comuni della Versilia, con confronti con Toscana e Italia.',
+        periods=f'Popolazione {old.period}, bilancio demografico {nat.period}, speranza di vita {life.period}, '
+                f'assistenza domiciliare {care.period}, spesa sociale {soc.period}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanti', 'Quanti anziani'), ('grandi-anziani', 'I grandi anziani'), ('nascite-morti', 'Più morti che nati'),
+             ('salute', 'Quanto si vive'), ('assistenza', 'Cure vicino a casa'), ('spesa-sociale', 'Quanto spendono i Comuni')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani}
 
 
 # ---------------------------------------------------------------------------
@@ -936,7 +1143,8 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     writer.writerow(['Indicatore', 'Territorio', 'Periodo', 'Valore', 'Unità', 'Fonte'])
     unit = {'eur': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
             'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
-            'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti'}
+            'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti',
+            'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'per1000old': 'ogni 1.000 residenti di 65 anni e più'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
