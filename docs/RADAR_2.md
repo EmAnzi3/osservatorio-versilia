@@ -43,6 +43,22 @@ che cosa cambia.
 5. **Rapporto sulle PR.** Le PR che toccano il Radar eseguono uno scan live: il
    rapporto viene pubblicato come commento, così l'effetto si verifica sulla PR.
 
+## Verifica sul campo (30 ottobre 2026)
+
+- **Fonte UE**: 1.211 topic aperti o in arrivo, 101 dei programmi pertinenti con
+  scadenza futura. Qualificati i due CERV-DAPHNE (Comuni richiedenti diretti,
+  scadenza 5 novembre 2026) e tre topic Horizon Missions in cui le città sono
+  partner. Escluso il topic della European City Facility (un solo consorzio
+  gestore: i Comuni ne sono destinatari).
+- **Segnalazioni italiane** (137 lette): pubblicato il bando ANCI-CONAI per la
+  comunicazione locale (domande entro il 13 novembre 2026); riconosciuti come già
+  chiusi l'avviso MIM otto per mille (5-23 ottobre 2026), l'avviso antincendio
+  scuole e gli altri avvisi scaduti; esclusi comunicati su rendiconti, riparti e
+  conclusione dei lavori. La scadenza è sempre un termine per la domanda, mai un
+  termine di esecuzione o di rendiconto.
+- L'avviso MIM otto per mille era fra le segnalazioni dal 5 ottobre: con la
+  qualificazione automatica sarebbe stato pubblicato il giorno stesso.
+
 ## Fase successiva
 
 Il motore è ancora una catena di sette strati che si sostituiscono funzioni a
