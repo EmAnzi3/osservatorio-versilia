@@ -113,7 +113,6 @@ export async function startExplorer(openRuntime,presentation){
  }
  function show(result){
    current=result;pageIndex=0;render();
-   try{history.replaceState(null,'',location.pathname+location.search+'#'+shareState());}catch{}
    status(result.steps[0].response.status==='computed'?'Dati caricati dalla versione verificata.':'Per questa scelta il calcolo non è disponibile: il motivo è spiegato sotto.');
  }
  async function execute(plan,approvedPartial=false){
@@ -313,7 +312,8 @@ export async function startExplorer(openRuntime,presentation){
    const bar=node('div');bar.className='explorer-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','Usa questo risultato');
    const done=node('span');done.className='explorer-tools-status';done.setAttribute('role','status');
    const link=node('button','Copia il link');link.type='button';link.dataset.explorerTool='link';
-   link.onclick=async()=>{const url=location.href;try{await navigator.clipboard.writeText(url);done.textContent='Link copiato: chi lo apre vede questa stessa lettura.';}catch{done.textContent=url;}};
+   const shared=location.origin+location.pathname+location.search+'#'+shareState();
+   link.onclick=async()=>{const url=shared;try{await navigator.clipboard.writeText(url);done.textContent='Link copiato: chi lo apre vede questa stessa lettura.';}catch{done.textContent=url;}};
    const csv=node('button','Scarica i dati (CSV)');csv.type='button';csv.dataset.explorerTool='csv';
    csv.onclick=()=>{const text=csvRows(response,observations,selector,operation).map(r=>r.map(csvCell).join(';')).join('\r\n')+'\r\n';download('osservatorio-versilia-'+fileSlug(root.metrics.find(m=>m.metric===selector.metric).label)+'.csv','\ufeff'+text,'text/csv;charset=utf-8');done.textContent='CSV scaricato con i valori esatti, separati da punto e virgola.';};
    const print=node('button','Stampa o salva in PDF');print.type='button';print.dataset.explorerTool='print';
@@ -326,7 +326,9 @@ export async function startExplorer(openRuntime,presentation){
  }
  async function restore(){
    if(!location.hash.startsWith('#'+SHARE+'&'))return;
-   const p=new URLSearchParams(location.hash.slice(SHARE.length+2));const entry=root.metrics.find(m=>m.metric===p.get('indicatore'));
+   const p=new URLSearchParams(location.hash.slice(SHARE.length+2));
+   // The link is read once: a reload or a later failure starts from a clean page.
+   try{history.replaceState(null,'',location.pathname+location.search);}catch{}const entry=root.metrics.find(m=>m.metric===p.get('indicatore'));
    if(!entry){status('Il link aperto non corrisponde più a un indicatore disponibile. Scegli un tema per ricominciare.');return;}
    $('theme').value=entry.theme;await themeChanged();$('metric').value=entry.metric;await metricChanged();
    if(!detail)return;
@@ -344,7 +346,7 @@ export async function startExplorer(openRuntime,presentation){
    const out=$('result');out.replaceChildren();out.hidden=false;
    const heading=node('h3',root.metrics.find(m=>m.metric===selector.metric).label);heading.id='explorer-result-title';out.append(heading);
    out.append(node('p',viewLabel(selector.dimension)+' · '+(operations[operation]||operation)));
-   const printed=node('p','Osservatorio Versilia · Chiedi alla Versilia · '+location.href);printed.className='explorer-print-only';out.append(printed);
+   const printed=node('p','Osservatorio Versilia · Chiedi alla Versilia · '+location.origin+location.pathname+'#'+shareState());printed.className='explorer-print-only';out.append(printed);
    const toolbar=node('div');out.append(toolbar);
    if(response.status!=='computed')out.append(node('p','Per questa scelta il calcolo non è disponibile. I valori sotto sono solo informativi.'));
    if(changes.includes(operation)&&response.status==='computed')renderChange(response,out,selector,operation);
