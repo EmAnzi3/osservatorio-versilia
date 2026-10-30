@@ -446,8 +446,30 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                            "endpointOk": 0, "endpointResults": [], "errors": [],
                            "freshness": {"status": "discovery", "observedDate": None, "ageDays": None}})
             continue
+        if source.get("api") == "eu-funding-tenders-search" and not any(url in payloads for url in source.get("urls") or []):
+            # Interfaccia ufficiale strutturata: nessuna pagina da raschiare.
+            import opportunity_eu_calls as eu_calls
+            from datetime import date as _date
+            try:
+                api_candidates, api_state = eu_calls.candidates(source, _date.today())
+                status, errors = api_state["status"], api_state["errors"]
+            except Exception as exc:  # errore esplicito, mai uno zero silenzioso
+                api_candidates, api_state = [], {"rawResults": 0, "topics": 0, "errors": [str(exc)]}
+                status, errors = "error", [str(exc)]
+            queue.extend(api_candidates)
+            states.append({"sourceId": source["id"], "status": status, "endpointCount": 1,
+                           "endpointOk": int(status != "error"), "coverageEndpointOk": int(status != "error"),
+                           "supplementaryEndpointOk": 0, "fallbackSuccessCount": 0, "proxySuccessCount": 0,
+                           "failureClasses": [] if status != "error" else ["api_error"],
+                           "endpointResults": [{"url": eu_calls.SEARCH_URL, "role": "listing", "status": status,
+                                                "transport": "official_api", **api_state}],
+                           "candidateCount": len(api_candidates), "errors": errors,
+                           "silentZero": status == "degraded",
+                           "freshness": {"status": "discovery", "observedDate": None, "ageDays": None}})
+            continue
         urls = list(source.get("urls") or [])
         endpoint_ok = 0
+        listing_chars = 0
         endpoint_errors: list[str] = []
         endpoint_results: list[dict[str, Any]] = []
         source_candidates: list[dict[str, Any]] = []
@@ -473,6 +495,8 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                 diagnostics = {**diagnostics, "payloadFormat": payload_format}
                 endpoint_ok += 1
                 endpoint_results.append({"url": url, **diagnostics, "role": role})
+                if role == "listing":
+                    listing_chars += len(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", payload)).strip())
                 page_url = str(diagnostics.get("resolvedUrl") or url)
                 source_candidates.extend(radar_module.discovery_candidates(source, payload, page_url))
             except Exception as exc:  # pragma: no cover
@@ -510,6 +534,11 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
             "proxySuccessCount": proxy_successes,
             "failureClasses": sorted({str(row.get("failureClass")) for row in endpoint_results if row.get("failureClass")}),
             "endpointResults": endpoint_results, "candidateCount": len(source_candidates), "errors": endpoint_errors,
+            # Fonte raggiunta ma senza alcun candidato: pagina vuota, generata via
+            # JavaScript o cambiata. Non blocca la pubblicazione, ma il rapporto
+            # la elenca fra le fonti da riparare invece di dichiararla «ok».
+            "silentZero": runtime == "ok" and not source_candidates,
+            "listingChars": listing_chars,
             "freshness": {"status": "discovery", "observedDate": None, "ageDays": None},
         })
     queue.sort(key=lambda item: (str(item.get("source_label") or ""), str(item.get("title") or "")))
