@@ -6,7 +6,7 @@ from datetime import date
 import opportunity_eu_calls as eu
 import opportunity_qualifier as q
 
-SOURCE = {"id": "eu-funding-tenders", "label": "UE · Funding & Tenders", "apiQueries": ["local authorities"]}
+SOURCE = {"id": "eu-funding-tenders", "label": "UE · Funding & Tenders"}
 
 
 def search_payload(*rows):
@@ -19,12 +19,12 @@ def search_payload(*rows):
 
 DETAILS = {
     "cerv-2026-daphne-children": {"TopicDetails": {"title": "Integrated child protection",
-        "description": "<p>Projects funded under this topic support integrated child protection systems.</p>" * 4,
-        "conditions": "<p>Eligible applicants: public authorities, including local authorities and municipalities, "
-                      "and non-profit organisations.</p>"}},
-    "horizon-2026-xyz": {"TopicDetails": {"title": "Quantum materials",
-        "description": "<p>Research on quantum materials for advanced sensors and computing platforms.</p>" * 4,
-        "conditions": "<p>Eligible applicants: any legal entity, public or private bodies, universities.</p>"}},
+        "description": "<p>Projects funded under this topic support integrated child protection systems.</p>" * 4
+                       + "<p>Eligible applicants: public authorities, including local authorities and municipalities, "
+                         "and non-profit organisations.</p>"}},
+    "smp-2026-xyz": {"TopicDetails": {"title": "Quantum materials",
+        "description": "<p>Research on quantum materials for advanced sensors and computing platforms.</p>" * 4
+                       + "<p>Eligible applicants: any legal entity, public or private bodies, universities.</p>"}},
 }
 
 
@@ -45,17 +45,20 @@ def getter(url, timeout):
 def test_candidates_from_api_and_qualification():
     poster, calls = poster_for(search_payload(
         ("CERV-2026-DAPHNE-CHILDREN", "Integrated child protection", "2026-11-05"),
-        ("HORIZON-2026-XYZ", "Quantum materials", "2026-12-01"),
-        ("CERV-2025-OLD", "Closed topic", "2025-04-01")))
-    DETAILS["cerv-2025-old"] = DETAILS["horizon-2026-xyz"]
+        ("SMP-2026-XYZ", "Quantum materials", "2026-12-01"),
+        ("CERV-2025-OLD", "Closed topic", "2025-04-01"),
+        ("EURATOM-2026-X", "Fusion materials", "2026-12-01")))
+    DETAILS["cerv-2025-old"] = DETAILS["smp-2026-xyz"]
+    DETAILS["euratom-2026-x"] = DETAILS["smp-2026-xyz"]
     out, state = eu.candidates(SOURCE, date(2026, 10, 1), poster=poster, getter=getter)
-    assert state["status"] == "ok" and state["rawResults"] == 3 and len(calls) == 1
+    assert state["status"] == "ok" and state["rawResults"] == 4 and len(calls) == 1
     titles = {c["title"]: c for c in out}
     assert "CERV-2025-OLD · Closed topic" not in titles, "topic scaduti esclusi"
+    assert "EURATOM-2026-X · Fusion materials" not in titles, "programmi senza ruolo comunale esclusi"
     child = titles["CERV-2026-DAPHNE-CHILDREN · Integrated child protection"]
     assert child["deadline_at"] == "2026-11-05" and child["strict_municipal"] and child["url"].endswith("CERV-2026-DAPHNE-CHILDREN")
     assert q.qualify(child, child["structured_text"], {}, date(2026, 10, 1)).status == "qualified"
-    quantum = titles["HORIZON-2026-XYZ · Quantum materials"]
+    quantum = titles["SMP-2026-XYZ · Quantum materials"]
     assert q.qualify(quantum, quantum["structured_text"], {}, date(2026, 10, 1)).status == "rejected", \
         "«public bodies» generico non basta per i programmi UE"
 

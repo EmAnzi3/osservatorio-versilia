@@ -63,7 +63,7 @@ def test_rolling_call_qualified():
 
 def test_partner_role():
     text = (PAD + "Soggetti ammessi: associazioni del terzo settore, che possono presentare il progetto in "
-            "partenariato con i Comuni del territorio. Scadenza 20/12/2026.")
+            "partenariato con i Comuni del territorio. Le domande devono essere presentate entro il 20/12/2026.")
     d = decide("Avviso per progetti di inclusione sociale", text)
     assert d.status == "qualified" and d.role == "partner", d
 
@@ -75,6 +75,34 @@ def test_structured_eu_deadline():
                url="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/X",
                deadline_at="2026-11-05")
     assert d.status == "qualified" and d.deadline == "2026-11-05"
+
+
+def test_execution_deadline_is_not_the_call_deadline():
+    text = (PAD + "Possono presentare candidatura gli enti locali. Le candidature potranno essere presentate entro le ore "
+            "18.00 del 15 dicembre 2025. I lavori devono essere aggiudicati e conclusi entro il 31 dicembre 2026.")
+    d = decide("Avviso antincendio scuole", text, today=date(2026, 3, 1))
+    assert d.status == "expired" and d.deadline == "2025-12-15", d
+
+
+def test_obligation_notice_rejected():
+    text = (PAD + "I Comuni beneficiari dei contributi relativi alle annualità 2021-2025 sono tenuti a concludere i "
+            "lavori entro il 31 dicembre 2026, trasmettendo la certificazione sulla piattaforma.")
+    assert decide("Comunicato contributi investimenti", text).status == "rejected"
+
+
+def test_subject_before_verb_and_regional_relay():
+    text = (PAD + "ANCI Lombardia informa che gli enti locali potranno presentare, dalle ore 10.00 del giorno 5 ottobre "
+            "2026 alle ore 23.59 del giorno 23 ottobre 2026, le candidature relative all'allegato Avviso.")
+    d = decide("Edilizia scolastica – Interventi urgenti", text, today=date(2026, 10, 6))
+    assert d.status == "qualified" and d.deadline == "2026-10-23", d
+
+
+def test_facility_operator_topic_rejected():
+    text = (PAD + "Proposals are expected to run a facility which offers financial support to cities, municipalities "
+            "or their groupings. Applicants should mobilise local authorities. The Commission intends to select one "
+            "single proposal under this topic.")
+    d = decide("LIFE-2026-CET-FACILITY · City facility", text, deadline_at="2026-12-01")
+    assert d.status == "rejected" and "gestore" in d.reason
 
 
 def test_municipality_as_place_is_not_applicant():

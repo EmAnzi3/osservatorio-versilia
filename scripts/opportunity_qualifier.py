@@ -60,7 +60,8 @@ APPLICANT_HEAD = re.compile(
     r"beneficiari|destinatari|possono\s+(?:presentare|partecipare|candidarsi|accedere)|"
     r"chi\s+pu[oò]\s+(?:partecipare|presentare|candidarsi)|requisiti\s+di\s+(?:ammissibilit|partecipazione)|"
     r"sono\s+ammess[ie]|who\s+can\s+apply|eligible\s+(?:applicants|participants|entities|organisations|organizations)|"
-    r"eligibility(?:\s+criteria)?|admissibility)", re.I)
+    r"eligibility(?:\s+criteria)?|admissibility|applicants?\b|coordinators?\b|participation\s+of\s+a\s+public\s+authority|"
+    r"restricted\s+to\s+public\s+authorities|consortium)", re.I)
 MUNICIPAL = re.compile(
     r"\b(comun[ei]|enti\s+locali|ente\s+locale|amministrazion[ei]\s+comunal[ei]|unioni?\s+(?:dei|di)\s+comuni|"
     r"citt[àa]\s+metropolitan[ae]|local\s+(?:and\s+regional\s+)?authorit(?:y|ies)|municipalit(?:y|ies)|"
@@ -68,19 +69,57 @@ MUNICIPAL = re.compile(
 # Per i programmi UE «public bodies» comprende anche università e agenzie: serve
 # una menzione esplicita di autorità locali, Comuni o città.
 MUNICIPAL_STRICT = re.compile(
-    r"\b(local\s+(?:and\s+regional\s+)?authorit(?:y|ies)|municipalit(?:y|ies)|local\s+governments?|"
-    r"cities|towns?|comun[ei]|enti\s+locali)\b", re.I)
+    r"\b(local\s+(?:and\s+regional\s+)?authorit(?:y|ies)|(?:regional\s+or|regional,?\s+and)\s+local\s+authorit\w*|"
+    r"public\s+authorit\w+\s+at\s+local\s+level|authorities\s*\(local|municipalit(?:y|ies)|local\s+governments?|"
+    r"cities|comun[ei]|enti\s+locali)\b", re.I)
+# Nei programmi UE il Comune è richiedente solo se il testo lo dice: coordinatori o
+# richiedenti che «devono/possono essere» autorità pubbliche/locali, o priorità
+# riservata alle autorità pubbliche. Altrimenti partecipa come partner.
+EU_LEAD = re.compile(
+    r"((coordinator|applicant|lead)\w*[^.]{0,120}\b(must|shall|should|can|may)\s+be\b[^.]{0,160}"
+    r"(local|regional\s+or\s+local|public)\s+authorit|restricted\s+to\s+public\s+authorities|"
+    r"(eligible\s+applicants?|applicants?)[^.]{0,80}\b(local\s+authorit|municipalit))", re.I)
 # Il Comune come luogo, non come soggetto: «con sede nel Comune di», «residenti nel comune».
 MUNICIPAL_AS_PLACE = re.compile(
     r"(sede(?:\s+legale|\s+operativa)?\s+(?:nel|in\s+un|in)\s+comune|residen\w*\s+(?:nel|in)\s+(?:un\s+)?comune|"
     r"ubicat\w+\s+(?:nel|in)\s+(?:un\s+)?comune|nel\s+territorio\s+(?:del|di\s+un)\s+comune)", re.I)
+SUBJECT_APPLIES = re.compile(
+    r"\b(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|amministrazioni\s+comunali|unioni\s+di\s+comuni)\b"
+    r"(?:\s+[\w’']+){0,6}?\s+(?:possono|potranno|potrà|può)\s+(?:presentare|inoltrare|trasmettere|candidarsi|"
+    r"partecipare|richiedere|accedere|aderire)", re.I)
+# Frasi che impongono un adempimento a chi ha già ricevuto un contributo:
+# rendiconti, certificazioni, conclusione dei lavori. Non sono avvisi.
+OBLIGATION = re.compile(r"\b(?:sono\s+tenut[ie]|è\s+tenut[oa]|devono\s+(?:concludere|rendicontare|trasmettere\s+il\s+rendiconto)|"
+                        r"beneficiari\s+dei\s+contributi\s+(?:relativi|assegnati|concessi))", re.I)
+# Un avviso a domanda dice come presentarla. Senza questa indicazione la pagina
+# parla di un riparto, di un adempimento o di una notizia.
+APPLY = re.compile(
+    r"\b(?:presentare|presentano|inoltrare|trasmettere|inviare)\s+(?:la\s+|le\s+|una\s+|apposita\s+|propri[ae]\s+)?"
+    r"(?:domand|candidatur|istanz|richiest[ae]\s+di\s+(?:contribut|finanziament|ammission|partecipazion)|propost|progett|manifestazion)|"
+    r"presentazione\s+(?:delle|della|di)\s+(?:domand|candidatur|istanz|propost|progett|manifestazion|richiest)|"
+    r"\b(?:domand[ae]|candidatur[ae]|istanz[ae])\s+(?:di\s+(?:contributo|finanziamento|partecipazione|ammissione)\s+)?"
+    r"(?:dovranno|devono|possono|potranno)\s+essere\s+(?:presentat|inoltrat|trasmess|inviat)|"
+    r"\bcandidature\b|manifestazioni?\s+di\s+interesse|sportello\s+(?:telematico|online)|"
+    r"call\s+for\s+proposals|submission|apply\b|deadline", re.I)
+# Topic UE che finanziano un unico consorzio incaricato di gestire uno
+# strumento a cascata (per esempio la European City Facility): i Comuni ne
+# beneficiano in una fase successiva, non possono presentare la proposta.
+OPERATOR = re.compile(r"intends? to (?:select|fund) (?:only )?(?:one|a) single proposal|"
+                      r"(?:select|fund) (?:only )?one proposal under (?:this )?topic", re.I)
 ONLY_OTHERS = re.compile(
     r"\b(esclusivamente|solo|soltanto|unicamente)\s+(?:a(?:lle|gli|i)?\s+)?(imprese|associazioni|cittadini|persone\s+fisiche|"
     r"studenti|scuole|universit|enti\s+del\s+terzo\s+settore|organizzazioni)", re.I)
 PARTNER = re.compile(r"\b(partner|partenariato|in\s+collaborazione\s+con|capofila|consorzi[oa]|associated\s+partner)\b", re.I)
 DEADLINE_CUE = re.compile(
     r"(scadenz[ae]|scade|entro\s+(?:e\s+non\s+oltre\s+)?(?:il|le\s+ore)?|termine|fino\s+al|chiusura|"
-    r"presentazione\s+delle\s+(?:domande|candidature|proposte)|prorogat\w*|deadline|closing\s+date|until)", re.I)
+    r"presentazione\s+delle\s+(?:domande|candidature|proposte)|prorogat\w*|deadline|closing\s+date|until|"
+    r"\balle\s+ore\s+[\d.:]+\s+del(?:\s+giorno)?)", re.I)
+# Termini che riguardano la domanda, distinti da quelli di esecuzione o di
+# rendiconto (lavori, spese, relazioni) che seguono il finanziamento.
+SUBMISSION_CUE = re.compile(r"(domand|candidatur|istanz|propost|presentazion|manifestazion|invio\s+delle|iscrizion|"
+                            r"adesion|partecipazion|richiest[ae]\s+di|submission|applications?|deadline)", re.I)
+EXECUTION_CUE = re.compile(r"(lavori|conclu[sd]|rendicont|relazione|impegn|restituir|aggiudicat|appaltat|spes[ae]\b|erogazion|"
+                           r"liquidazion|realizzat|ultimat|collaud|certificazion|documentazione|utilizz)", re.I)
 OPEN_CUE = re.compile(r"(a\s+partire\s+dal|dal(?:le\s+ore\s+[\d.:]+\s+del)?|apertura|opening\s+date|opens?\s+on)", re.I)
 ROLLING = re.compile(r"\b(a\s+sportello|fino\s+ad?\s+esaurimento|senza\s+scadenza|sempre\s+aperto|open\s+until\s+further\s+notice)\b", re.I)
 DATE_NUMERIC = re.compile(r"\b(\d{1,2})[/.\-](\d{1,2})[/.\-](20\d{2})\b")
@@ -165,10 +204,20 @@ def find_deadline(text: str, today: date) -> tuple[date | None, str, date | None
     for position, value in _dates(text):
         window = text[max(0, position - 140):position]
         if DEADLINE_CUE.search(window):
-            deadlines.append((value, _sentence(text, position, position + 12)))
+            near = window[-110:]
+            # Decide l'indicazione più vicina alla data.
+            sub = max((m.end() for m in SUBMISSION_CUE.finditer(near)), default=-1)
+            exe = max((m.end() for m in EXECUTION_CUE.finditer(near)), default=-1)
+            kind = "generic" if sub == exe == -1 else ("submission" if sub > exe else "execution")
+            deadlines.append((value, _sentence(text, position, position + 12), kind))
         elif OPEN_CUE.search(window[-60:]):
             openings.append(value)
     rolling = bool(ROLLING.search(text))
+    if not deadlines:
+        return None, "", (max(openings) if openings else None), rolling
+    # Prima i termini della domanda; i termini di esecuzione non sono mai una scadenza dell'avviso.
+    submission = [d for d in deadlines if d[2] == "submission"]
+    deadlines = submission or [d for d in deadlines if d[2] == "generic"]
     if not deadlines:
         return None, "", (max(openings) if openings else None), rolling
     future = [d for d in deadlines if d[0] >= today]
@@ -181,6 +230,12 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
     """(frase sui soggetti ammessi che nomina i Comuni, ruolo)."""
     cleaned = MUNICIPAL_AS_PLACE.sub(" ", text)
     pattern = MUNICIPAL_STRICT if strict else MUNICIPAL
+    if not strict:
+        # «Gli enti locali potranno presentare…»: il soggetto precede il verbo.
+        for match in SUBJECT_APPLIES.finditer(cleaned):
+            sentence = _sentence(cleaned, match.start(), match.end())
+            if not OBLIGATION.search(sentence):
+                return sentence, "direct_applicant"
     for head in APPLICANT_HEAD.finditer(cleaned):
         window = cleaned[head.start():head.start() + 700]
         match = pattern.search(window)
@@ -188,15 +243,21 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
             continue
         absolute = head.start() + match.start()
         sentence = _sentence(cleaned, absolute, absolute + len(match.group(0)))
+        if OBLIGATION.search(sentence):
+            continue
         if ONLY_OTHERS.search(sentence) and not MUNICIPAL.search(ONLY_OTHERS.split(sentence, 1)[-1][:120]):
             continue
-        role = "partner" if PARTNER.search(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
+        if strict:
+            role = "direct_applicant" if EU_LEAD.search(cleaned) else "partner"
+        else:
+            role = "partner" if PARTNER.search(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
         return sentence, role
     return "", "direct_applicant"
 
 
 def other_region(title: str, applicant: str) -> str | None:
-    probe = f"{title} {applicant}"
+    # «ANCI Lombardia informa…»: è chi rilancia l'avviso, non il territorio ammesso.
+    probe = re.sub(r"\bANCI\s+\w+", " ", f"{title} {applicant}")
     for region in REGIONS:
         if re.search(r"\b" + re.escape(region) + r"\b", probe, re.I) and not re.search(r"\btoscan", probe, re.I):
             return region
@@ -217,10 +278,15 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     combined = " ".join([page_text, *documents.values()])
     if NOT_A_CALL.search(title):
         return Decision("rejected", "Il titolo indica una notizia, un esito o una comunicazione, non un avviso aperto.")
-    if not CALL.search(title) and not CALL.search(combined[:1500]):
-        return Decision("rejected", "Nessun elemento di avviso o bando nella pagina.")
     if len(combined) < 400:
         return Decision("unreadable", "Pagina e documenti senza testo sufficiente da leggere.")
+    # I menu dei siti occupano spesso le prime migliaia di caratteri.
+    if not CALL.search(title) and not CALL.search(combined[:6000]):
+        return Decision("rejected", "Nessun elemento di avviso o bando nella pagina.")
+    if not candidate.get("deadline_at") and not APPLY.search(combined):
+        return Decision("rejected", "La pagina non indica come presentare domanda: riparto, adempimento o notizia.")
+    if OPERATOR.search(combined):
+        return Decision("rejected", "Bando per il gestore di uno strumento di sostegno: i Comuni ne sono destinatari, non richiedenti.")
     applicant, role = find_applicant(combined, strict=bool(candidate.get("strict_municipal")))
     if not applicant:
         return Decision("rejected", "I soggetti ammessi non comprendono Comuni o enti locali, oppure non sono indicati.")
@@ -339,9 +405,13 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             page_text = str(candidate["structured_text"])
         elif loader is not None:
             try:
-                raw = loader(url, False)
-                page_text = visible_text(raw)
-                links = (document_links(raw, url) if document_links else [])
+                # Alcuni segnali puntano direttamente al PDF dell'avviso.
+                is_pdf = urlsplit(url).path.lower().endswith(".pdf")
+                raw = loader(url, is_pdf)
+                if not is_pdf and raw.lstrip().startswith("%PDF"):
+                    is_pdf, raw = True, loader(url, True)
+                page_text = re.sub(r"\s+", " ", raw) if is_pdf else visible_text(raw)
+                links = (document_links(raw, url) if document_links and not is_pdf else [])
                 cached = [d.get("url") for d in (lookup.get(url) or {}).get("documents") or [] if d.get("url")]
                 for doc_url in list(dict.fromkeys([*links, *cached]))[:MAX_DOCUMENTS]:
                     try:
