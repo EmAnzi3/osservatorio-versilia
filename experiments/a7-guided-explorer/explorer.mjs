@@ -317,8 +317,11 @@ export async function startExplorer(openRuntime,presentation){
    const csv=node('button','Scarica i dati (CSV)');csv.type='button';csv.dataset.explorerTool='csv';
    csv.onclick=()=>{const text=csvRows(response,observations,selector,operation).map(r=>r.map(csvCell).join(';')).join('\r\n')+'\r\n';download('osservatorio-versilia-'+fileSlug(root.metrics.find(m=>m.metric===selector.metric).label)+'.csv','\ufeff'+text,'text/csv;charset=utf-8');done.textContent='CSV scaricato con i valori esatti, separati da punto e virgola.';};
    const print=node('button','Stampa o salva in PDF');print.type='button';print.dataset.explorerTool='print';
-   print.onclick=()=>{const folds=[...$('result').querySelectorAll('details:not([open])')];folds.forEach(d=>d.open=true);document.documentElement.classList.add('explorer-printing');
-     const restore=()=>{document.documentElement.classList.remove('explorer-printing');folds.forEach(d=>d.open=false);window.removeEventListener('afterprint',restore);};window.addEventListener('afterprint',restore);window.print();};
+   // Print a copy of the result alone: the rest of the page is not laid out, so no blank pages.
+   print.onclick=()=>{const sheet=node('section');sheet.className='a7-explorer explorer-print-sheet';const copy=$('result').cloneNode(true);
+     copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));copy.querySelectorAll('details').forEach(d=>d.open=true);
+     sheet.append(copy);document.body.append(sheet);document.documentElement.classList.add('explorer-printing');
+     const restore=()=>{document.documentElement.classList.remove('explorer-printing');sheet.remove();window.removeEventListener('afterprint',restore);};window.addEventListener('afterprint',restore);window.print();};
    bar.append(link,csv,print,done);return bar;
  }
  async function restore(){
