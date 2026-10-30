@@ -1,5 +1,15 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## A7.5.5 — riuso dei risultati di «Chiedi» (30 ottobre 2026)
+
+Branch `feature/a7-reuse-export`. Ogni risultato dell’esploratore offre: «Copia
+il link» (indicatore, dettaglio, domanda, Comune e riferimento nel frammento
+`#esplora&…`, letto una sola volta e poi rimosso dall’indirizzo), «Scarica i dati
+(CSV)» con i valori esatti delle risposte A6 (separatore `;`, virgola decimale) e
+la riga del risultato nativo, «Stampa o salva in PDF» con una copia del solo
+risultato. Nessun nuovo calcolo nel browser. Restano A7.5.6 (riorganizzazione
+della pagina) e il lancio di «Chiedi» e «Dossier» in navigazione.
+
 ## Dossier — pagina indice (29 ottobre 2026)
 
 `dist/dossier/index.html`: una scheda per dossier con tema, presentazione, primo
