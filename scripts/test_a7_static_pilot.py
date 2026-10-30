@@ -104,10 +104,11 @@ def verify(catalog, output):
                 browser.close()
     finally:
         server.shutdown(); server.server_close(); thread.join()
-    from test_a7_dossier_preview import verify_preview, verify_public_page
+    from test_a7_dossier_preview import verify_preview
     preview_report = verify_preview(bundle, release, output/'preview')
-    public_report = verify_public_page(bundle, release, Path(catalog).resolve().parent.parent, output/'public')
-    report = dict(preview=preview_report, public=public_report, status='PASS', candidateTree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=ROOT,text=True).strip(),
+    # Il pilota resta un esperimento verificato: dal 30/10/2026 non è più
+    # incorporato nella pagina pubblica «Chiedi» (A7.5.6).
+    report = dict(preview=preview_report, status='PASS', candidateTree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],cwd=ROOT,text=True).strip(),
                   release=release, build=measurement, node=node, browser=browser_measurement,
                   gzipBytes=len(gzip.compress(encode(bundle).encode(), mtime=0)),
                   evidence='Canonical independent expectations + frozen sources; raw response replay; fact anchors; hostile reader inputs; exact browser/Node parity')

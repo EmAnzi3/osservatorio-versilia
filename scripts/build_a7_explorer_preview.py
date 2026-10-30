@@ -136,15 +136,16 @@ def build(dist, runtime, output, *, public=False, associations=False):
             panel.select_one('#explorer-title + p').string = 'Consulta una misura oppure esplora una relazione preparata fra due variabili, con periodi, fonti e limiti originali.'
             panel.select_one('.explorer-scope').string = 'Anteprima: le misure singole conservano le capacità del loro runtime. Gli incroci mostrano soltanto le selezioni del piano esplicito preparato, non tutte le coppie del catalogo. Il motore può rifiutare una richiesta; nessuna correlazione dimostra causalità.'
         if public:
-            hero = soup.select_one('.a7-hero')
-            hero.select_one('h1 + p').string = 'Dai dati alle domande sul territorio: scegli una misura e un confronto, oppure consulta le letture tematiche.'
-            hero.select_one('.notice').string = 'Ogni risultato riporta periodo, fonte e limiti. I confronti comunali non sono un aggregato della Versilia.'
-            hero.select_one('.a7-how').string = 'Esplorazione dei dati · Letture tematiche · Dossier'
-            soup.select_one('#scegli').string = 'Letture tematiche e dossier'
-            panel.select_one('.explorer-eyebrow').string = 'ESPLORAZIONE DEI DATI · IN SVILUPPO'
+            # Hero e rimando ai dossier sono scritti da build_a7_public_page.
+            panel.select_one('.explorer-eyebrow').string = 'ESPLORAZIONE DEI DATI'
             panel.select_one('.explorer-scope').string = 'Sono consultabili letture comunali, confronti, ordini numerici, serie, tendenze native, variazioni fra estremi, valori fuori scala, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un ordine numerico o un valore fuori scala non valutano la qualità amministrativa. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.'
         panel.section['data-explorer-graph'] = relative
-        soup.select_one('#a7-guided').insert(1, panel.section)
+        # Subito dopo il percorso di navigazione, prima del rimando ai dossier.
+        crumbs = soup.select_one('#a7-guided > nav')
+        if crumbs:
+            crumbs.insert_after(panel.section)
+        else:
+            soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
         if associations:
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'associations.css'))

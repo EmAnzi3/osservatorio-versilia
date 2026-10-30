@@ -1,5 +1,16 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## A7.5.6 — riorganizzazione di «Chiedi» (30 ottobre 2026)
+
+Branch `feature/a7-chiedi-reorg`. Su decisione del proprietario `/chiedi/` non
+pubblica più le domande guidate del pilota (offerta educativa, percorsi
+Massarosa): la pagina è hero, esploratore e rimando a `/dossier/`.
+`build_a7_public_page.py` genera la pagina senza rilascio del pilota;
+`validate_public_site.py` richiede esploratore e link ai dossier; ritirati
+`a7_public_release.py`, `a7_education_editorial.py`,
+`test_a7_education_editorial.py` e `verify_public_page`. Il pilota resta
+verificato come esperimento. Dopo la revisione dell’anteprima resta il lancio.
+
 ## Dossier — pagina indice (29 ottobre 2026)
 
 `dist/dossier/index.html`: una scheda per dossier con tema, presentazione, primo

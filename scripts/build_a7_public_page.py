@@ -1,131 +1,83 @@
 #!/usr/bin/env python3
-"""Publish the reviewed guided reader inside the canonical static OV shell."""
+"""Pagina pubblica «Chiedi alla Versilia» nella shell statica canonica del sito.
+
+Dal 30 ottobre 2026 (A7.5.6, decisione del proprietario) la pagina ospita solo
+l'esploratore dei dati, inserito da `build_a7_explorer_preview`, e un rimando ai
+dossier. Le domande guidate del pilota (offerta educativa e percorsi su
+Massarosa) non sono più pubblicate: i loro temi sono coperti dai dossier in forma
+di relazione. Il pilota resta verificato come esperimento, fuori dalla pagina.
+"""
 from __future__ import annotations
 
 import base64
 import hashlib
 import html
 import json
-import shutil
-import subprocess
-import tempfile
 from pathlib import Path
 
-from bs4 import BeautifulSoup
-from build_a7_dossier_preview import preview, validate_repository_commit
 from site_chrome import ensure_sitemap_entries, extract_native_shell
-from a7_public_release import FILES, PDF_FILES, manifest_text
-from a7_education_editorial import build_education, write_report, territorial_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 URL = 'https://osservatorioversilia.it/chiedi/'
+STYLE_SOURCE = ROOT / 'experiments/a7-dossier-preview/public.css'
+STYLE = 'chiedi.css'
+TITLE = 'Chiedi alla Versilia · Osservatorio Versilia'
+DESCRIPTION = ('Scegli un indicatore e un confronto: valori dei sette Comuni della Versilia, confronti con Toscana e '
+               'Italia, serie e variazioni, con periodi, fonti e limiti di ogni dato.')
+
+
+def social(title: str, description: str) -> str:
+    image = 'https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg'
+    alt = 'Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia'
+    og = {'og:title': title, 'og:description': description, 'og:type': 'website', 'og:locale': 'it_IT', 'og:url': URL,
+          'og:site_name': 'Osservatorio Versilia', 'og:image': image, 'og:image:alt': alt}
+    twitter = {'card': 'summary_large_image', 'title': title, 'description': description, 'site': '@OssVersilia',
+               'image': image, 'image:alt': alt}
+    esc = lambda value: html.escape(value, quote=True)
+    return '\n'.join([f'<meta property="{k}" content="{esc(v)}">' for k, v in og.items()]
+                     + [f'<meta name="twitter:{k}" content="{esc(v)}">' for k, v in twitter.items()])
 
 
 def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
-    commit = commit or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    """`commit` è accettato per compatibilità con la build: la pagina non incorpora più un rilascio del pilota."""
     folder = dist / 'chiedi'
+    folder.mkdir(parents=True, exist_ok=True)
     page = folder / 'index.html'
-    # Build an immutable graph before changing the HTML entry point. Every
-    # relative module import and bundle fetch resolves inside this one graph.
-    with tempfile.TemporaryDirectory(prefix='a7-public-release-') as tmp:
-        stage = Path(tmp)
-        preview(stage, commit, catalog=dist / 'data/site-data.json')
-        original = BeautifulSoup((stage / 'index.html').read_text(encoding='utf-8'), 'html.parser')
-        for name in ['public.css', 'public.mjs', 'education.mjs']:
-            shutil.copyfile(ROOT / 'experiments/a7-dossier-preview' / name, stage / name)
-        bundle = json.loads((stage / 'bundle.json').read_text())
-        territorial = territorial_evidence(bundle, dist / 'data/site-data.json')
-        validate_repository_commit(dict(bundle, cases=dict(bundle['cases'], **territorial)), commit)
-        reading = build_education(bundle, commit, territorial)
-        css = (ROOT / 'experiments/a7-dossier-preview/education.css').read_text()
-        (stage / 'public.css').write_text((stage / 'public.css').read_text() + '\n' + css)
-        (stage / 'education.json').write_text(json.dumps(reading, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
-        for code, filename in PDF_FILES.items():
-            write_report(reading['townReadings'][code], css, stage / filename)
-        release = json.loads((stage / 'release.mjs').read_text().removeprefix('export default ').strip().removesuffix(';'))
-        release.update(educationSha256=hashlib.sha256((stage / 'education.json').read_bytes()).hexdigest(),
-                       educationPdfSha256=hashlib.sha256((stage / 'education.pdf').read_bytes()).hexdigest(),
-                       educationPdfs={code:dict(file=filename,sha256=hashlib.sha256((stage / filename).read_bytes()).hexdigest()) for code,filename in PDF_FILES.items()})
-        (stage / 'release.mjs').write_text('export default ' + json.dumps(release, ensure_ascii=False, sort_keys=True) + ';\n')
-        assets = {name: (stage / name).read_bytes() for name in FILES}
-        manifest = manifest_text(assets)
-        relative = 'releases/' + hashlib.sha256(manifest.encode()).hexdigest() + '/'
-        destination = folder / relative
-        destination.mkdir(parents=True, exist_ok=True)
-        for name, data in dict(assets, **{'manifest.json': manifest.encode()}).items():
-            target = destination / name
-            if target.exists() and target.read_bytes() != data:
-                raise ValueError('immutable_a7_asset_changed:' + name)
-            target.write_bytes(data)
-    for name in (*FILES, 'preview.css'):
-        (folder / name).unlink(missing_ok=True)
-    hero = original.header
-    hero.name = 'section'
-    hero['class'] = ['a7-hero', 'editorial-hero']
-    hero.h1.string = 'Chiedi alla Versilia'
-    hero.select_one('.eyebrow').string = 'CONOSCERE IL TERRITORIO'
-    hero.select_one('h1 + p').string = 'Famiglie, scuola, lavoro: parti dalle tue domande e scopri che cosa raccontano i dati del territorio.'
-    hero.select_one('.notice').string = 'Offerta educativa nei sette Comuni della Versilia; gli altri primi percorsi riguardano Massarosa. Ogni lettura indica periodi e informazioni da approfondire.'
-    for selector, text in {
-        '#scrivi':'Da dove vuoi partire?',
-        'label[for=domanda-testo]':'Scrivi la tua domanda',
-        '#aiuto-testo':'Scrivi ciò che ti interessa: ti aiutiamo a scegliere fra le domande disponibili qui sotto.',
-        '#verifica-testo':'Trova un percorso',
-        '#scegli':'Lasciati guidare dalle domande',
-        'label[for=dossier]':'Di cosa vuoi sapere di più?',
-        'label[for=domanda]':'Scegli una domanda',
-        '#mostra':'Scopri cosa dicono i dati',
-        '#titolo-consenso':'Prima di proseguire',
-        '#accetta':'Prosegui con questi limiti',
-    }.items(): original.select_one(selector).string=text
-    original.select_one('#domanda-testo')['placeholder']='Per esempio: come cambia il lavoro a Massarosa?'
-    original.select_one('#selezione + p').string='La domanda sull’offerta educativa permette di scegliere fra i sette Comuni. Gli altri primi percorsi riguardano Massarosa. Puoi esplorarli anche senza scrivere una domanda.'
-    original.select_one('#chiarimento > p').string='Per questa richiesta non abbiamo ancora una risposta pronta. Puoi scegliere una delle domande qui sotto: ciascuna apre una lettura diversa, con le sue fonti e i suoi limiti.'
-    original.select_one('#consenso > p').string='I dati aiutano a leggere una parte del problema, ma non bastano a rispondere a tutto. In alcuni confronti mancano dati per uno o più Comuni: te lo indichiamo insieme a ciò che non possiamo concludere.'
-    local_note=original.new_tag('p',attrs={'class':'a7-how'});local_note.string='Offerta educativa: sette Comuni · Altri percorsi: pilota Massarosa';hero.append(local_note)
-    grid=original.new_tag('div',attrs={'class':'a7-question-grid'})
-    original.main.insert(0,grid)
-    grid.append(original.select_one('#scrivi').parent)
-    grid.append(original.select_one('#scegli').parent)
-    local_footer = original.footer
-    local_footer.name = 'section'
-    local_footer['aria-label'] = 'Limiti delle letture'
-    original.main.noscript.clear()
-    fallback = original.new_tag('p')
-    fallback.string = 'Per scegliere una domanda occorre JavaScript. '
-    link = original.new_tag('a', href=relative + 'answers.md')
-    link.string = 'Leggi le evidenze in formato testo.'
-    fallback.append(link)
-    original.main.noscript.append(fallback)
-    content = original.main.decode_contents() + str(local_footer)
+    # Il foglio di stile della pagina: lo stesso del pilota, con il percorso
+    # dell'immagine del banner riportato alla cartella della pagina.
+    css = STYLE_SOURCE.read_text(encoding='utf-8').replace("url('../../../assets/", "url('../assets/")
+    (folder / STYLE).write_text(css, encoding='utf-8')
     shell = extract_native_shell(dist, page)
     # The seven-route secondary-page stylesheet has its own approved scope.
     styles = '\n'.join(line for line in shell.styles.splitlines() if 'secondary-pages-ui.css' not in line)
-    title = 'Chiedi alla Versilia · Osservatorio Versilia'
-    description = 'Esplora lavoro e infanzia/scuola a Massarosa con domande guidate, evidenze verificabili, fonti e limiti espliciti.'
-    image = 'https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg'
-    image_alt = 'Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia'
-    metas = {'og:title': title, 'og:description': description, 'og:type': 'website', 'og:locale': 'it_IT', 'og:url': URL, 'og:site_name': 'Osservatorio Versilia', 'og:image': image, 'og:image:alt': image_alt}
-    social = '\n'.join(f'<meta property="{key}" content="{html.escape(value, quote=True)}">' for key, value in metas.items())
-    twitter = {'card': 'summary_large_image', 'title': title, 'description': description, 'site': '@OssVersilia', 'image': image, 'image:alt': image_alt}
-    social += '\n' + '\n'.join(f'<meta name="twitter:{key}" content="{html.escape(value, quote=True)}">' for key, value in twitter.items())
-    structured = json.dumps({'@context': 'https://schema.org', '@type': 'WebPage', 'name': title, 'description': description, 'url': URL}, ensure_ascii=False)
+    structured = json.dumps({'@context': 'https://schema.org', '@type': 'WebPage', 'name': TITLE,
+                             'description': DESCRIPTION, 'url': URL}, ensure_ascii=False)
     structured_hash = base64.b64encode(hashlib.sha256(structured.encode()).digest()).decode()
     page.write_text(f'''<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-{structured_hash}'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
-<title>{title}</title><meta name="description" content="{description}">{social}
+<title>{TITLE}</title><meta name="description" content="{html.escape(DESCRIPTION, quote=True)}">{social(TITLE, DESCRIPTION)}
 <link rel="canonical" href="{URL}"><script type="application/ld+json">{structured}</script>
 <link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../site.webmanifest">
-{styles}<link rel="stylesheet" href="{relative}public.css"><meta name="theme-color" content="#0F3654">
+{styles}<link rel="stylesheet" href="{STYLE}"><meta name="theme-color" content="#0F3654">
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
-<a class="a7-skip" href="#a7-guided">Vai alle domande</a>
-{shell.header}<div id="app"><div class="a7-banner">{hero}</div><main id="a7-guided" data-a7-release="{relative}" class="editorial-page page-width a7-guided">
+<a class="a7-skip" href="#a7-guided">Vai all’esplorazione dei dati</a>
+{shell.header}<div id="app"><div class="a7-banner"><section class="a7-hero editorial-hero">
+<p class="eyebrow">CONOSCERE IL TERRITORIO</p>
+<h1>Chiedi alla Versilia</h1>
+<p>Scegli un indicatore e che cosa vuoi sapere: il valore di un Comune, il confronto fra i sette Comuni, l’andamento nel tempo o il confronto con Toscana e Italia.</p>
+<p class="notice">Ogni risultato riporta periodo, fonte e limiti del dato. Puoi copiarne il link, scaricare i dati o salvarlo in PDF.</p>
+<p class="a7-how">Esplorazione dei dati · Dossier</p>
+</section></div><main id="a7-guided" class="editorial-page page-width a7-guided">
 <nav aria-label="Percorso pagina"><a href="../">Home</a> · Chiedi alla Versilia</nav>
-{content}
-<p>Approfondisci i dati: <a data-a7-town-link href="../comuni/massarosa/">scheda di Massarosa</a> · <a href="../confronta/lavoro/">lavoro</a> · <a href="../confronta/istruzione/">istruzione</a> · <a href="../stato-dati/">stato dei dati</a>.</p>
+<section class="a7-dossier-link" aria-labelledby="chiedi-dossier">
+<h2 id="chiedi-dossier">Preferisci una lettura già pronta?</h2>
+<p>I dossier raccontano i grandi temi della Versilia — casa, lavoro, turismo, anziani e scuola — con grafici, confronti e una versione per ciascun Comune.</p>
+<p><a href="../dossier/">Vai ai dossier</a></p>
+</section>
+<p>Approfondisci i dati: <a href="../#comuni">schede dei Comuni</a> · <a href="../stato-dati/">stato dei dati</a> · <a href="../segnala/">segnala un errore</a>.</p>
 </main></div>{shell.footer}
-<script src="{html.escape(shell.app_bundle, quote=True)}" defer></script><script type="module" src="{relative}public.mjs"></script>
+<script src="{html.escape(shell.app_bundle, quote=True)}" defer></script>
 </body></html>''', encoding='utf-8')
     from build_static_brand_impl import cache_bust_app_bundle, cache_bust_favicon, inject_pwa
     page.write_text(inject_pwa(cache_bust_app_bundle(cache_bust_favicon(page.read_text(encoding='utf-8'))), '../'), encoding='utf-8')
@@ -134,4 +86,4 @@ def build(dist: Path = ROOT / 'dist', commit: str | None = None) -> Path:
 
 
 if __name__ == '__main__':
-    print('A7 guided public page generated: ' + str(build()))
+    print('Pagina «Chiedi alla Versilia» generata: ' + str(build()))

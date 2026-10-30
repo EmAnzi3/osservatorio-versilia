@@ -1,5 +1,12 @@
 # A7 — primi percorsi guidati sul sito
 
+> **Ritirato dalla pagina pubblica il 30 ottobre 2026 (A7.5.6).** Per decisione del proprietario
+> `/chiedi/` ospita solo l’esploratore dei dati e un rimando ai dossier in forma di relazione;
+> i percorsi guidati e la lettura educativa non sono più pubblicati. Il pilota resta verificato come
+> esperimento (`test_a7_static_pilot.py`, `test_a7_dossier_preview.verify_preview`). Questo documento
+> resta come storia della decisione.
+
+
 Stato: candidato in revisione. `/chiedi/` rende consultabili i percorsi Massarosa lavoro e infanzia/scuola della #434. Non conclude A7 né implementa una conversazione o un interprete libero. Merge e pubblicazione restano decisioni del proprietario.
 
 ## Esperienza e perimetro
