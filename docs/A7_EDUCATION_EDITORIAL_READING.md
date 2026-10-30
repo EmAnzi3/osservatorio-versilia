@@ -1,5 +1,12 @@
 # A7 — lettura educativa: dal pilota Massarosa ai sette Comuni
 
+> **Ritirato dalla pagina pubblica il 30 ottobre 2026 (A7.5.6).** Per decisione del proprietario
+> `/chiedi/` ospita solo l’esploratore dei dati e un rimando ai dossier in forma di relazione;
+> i percorsi guidati e la lettura educativa non sono più pubblicati. Il pilota resta verificato come
+> esperimento (`test_a7_static_pilot.py`, `test_a7_dossier_preview.verify_preview`). Questo documento
+> resta come storia della decisione.
+
+
 ## Problema e obiettivo
 
 La prima integrazione #436 esponeva le componenti del motore in sequenza verticale. La correttezza del calcolo non rendeva quella pagina una risposta utile al pubblico. Il proprietario ha chiesto di cambiare il modello prima di ampliare il repertorio: sintesi, grafici commentati, dossier interno e rapporto PDF.

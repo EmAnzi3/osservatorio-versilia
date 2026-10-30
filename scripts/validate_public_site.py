@@ -7,13 +7,12 @@ import sys
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
-from a7_public_release import validate_release
 from a7_explorer_release import validate_explorer
 
 TOWNS = ("camaiore", "forte-dei-marmi", "massarosa", "pietrasanta", "seravezza", "stazzema", "viareggio")
 STATIC_ROUTES = ("/stato-dati/", "/pnrr/", "/percorsi/", "/chiedi/")
 STATIC_MARKERS = {
-    "/chiedi/": ('data-page="special"', 'id="a7-guided"', 'Chiedi alla Versilia', 'public.mjs', 'data-a7-release='),
+    "/chiedi/": ('data-page="special"', 'id="a7-guided"', 'Chiedi alla Versilia', 'id="a7-explorer"', 'href="../dossier/"'),
     "/stato-dati/": ('data-page="status"', "Stato dei dati."),
     "/percorsi/": ('data-page="special"', "Percorsi e mobilità lenta"),
 }
@@ -26,9 +25,8 @@ REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", 
 
 
 def validate_a7(read, failures: list[str], *, explorer=False) -> None:
-    """Require the complete guided reader and hash-consistent frozen bundle."""
+    """Require the hash-consistent public explorer. The guided pilot is no longer published (A7.5.6)."""
     try:
-        validate_release(read)
         if explorer:
             validate_explorer(read)
     except (OSError, URLError, TimeoutError, RuntimeError, UnicodeDecodeError, ValueError, KeyError, TypeError, StopIteration, EOFError) as exc:
