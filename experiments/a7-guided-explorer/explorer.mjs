@@ -19,6 +19,12 @@ const value=o=>o.notApplicable?'Non applicabile':o.dataUnavailable||o.value===nu
 const sourceURL=x=>{try{const u=new URL(x);return ['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}};
 const option=(value,label,disabled=false)=>{const o=node('option',label);o.value=value;o.disabled=disabled;return o;};
 const canonical=x=>JSON.stringify(x);
+// Reuse (A7.5.5): exact values for the CSV, a shareable link for the selection
+// and a printable reading. Nothing here computes a new number.
+const csvCell=x=>{const t=x===null||x===undefined?'':String(x);return /[;"\n\r]/u.test(t)?'"'+t.replace(/"/gu,'""')+'"':t;};
+const exact=x=>typeof x==='number'&&Number.isFinite(x)?String(x).replace('.',','):x===null||x===undefined?'':String(x);
+const fileSlug=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/gu,'').toLowerCase().replace(/[^a-z0-9]+/gu,'-').replace(/^-|-$/gu,'').slice(0,60)||'dati';
+const SHARE='esplora';
 let periodNames={};const periodLabel=p=>p===null||p===undefined?'Non dichiarato':periodNames[String(p)]||String(p); // used only to preserve the exact UI selection snapshot
 
 export async function startExplorer(openRuntime,presentation){
@@ -276,11 +282,72 @@ export async function startExplorer(openRuntime,presentation){
    out.append(summary);
    return [...ordered,...observations.filter(o=>!r.ranking.some(row=>row.geography===o.geography))];
  }
+ function shareState(){
+   const p=new URLSearchParams();const operation=$('operation').value;
+   p.set('indicatore',$('metric').value);p.set('dettaglio',$('view').value);p.set('domanda',operation);
+   if(!allTowns.includes(operation))p.set('comune',$('town').value);
+   if(operation==='benchmark_gap')p.set('riferimento',$('benchmark').value);
+   return SHARE+'&'+p.toString();
+ }
+ function csvRows(response,observations,selector,operation){
+   const metric=root.metrics.find(m=>m.metric===selector.metric).label,detailLabel=viewLabel(selector.dimension),reading=operations[operation]||operation;
+   const rows=[['Indicatore','Dettaglio','Lettura','Territorio','Periodo','Valore','Unità','Nota','Fonte']];
+   for(const o of observations){
+     const note=o.nativeRank!==undefined?'Posizione '+o.nativeRank:(response.result?.observations||[]).find(x=>x.geography===o.geography)?.classification?outlierClasses[(response.result.observations.find(x=>x.geography===o.geography)).classification]:o.dataUnavailable?'Dato non disponibile':o.notApplicable?'Non applicabile':'';
+     rows.push([metric,detailLabel,reading,townName(o.geography)+(o.localityName?' · '+o.localityName:''),periodLabel(o.period),o.unit==='category_code'?(o.categoryLabel||''):exact(o.value),o.unit==='category_code'?'':unitLabel(o),note,o.source||'']);
+   }
+   const r=response.status==='computed'?response.result:null;
+   const add=(territory,period,amount,unit,note)=>rows.push([metric,detailLabel,reading,territory,period,exact(amount),unit,note,'']);
+   if(r&&operation==='benchmark_gap')add(townName(r.geography)+' meno '+townName(r.benchmarkScope),periodLabel(r.period),r.value,unitLabel(r),'Scostamento');
+   if(r&&operation==='weighted_ratio')add('Versilia · sette Comuni',periodLabel(r.period),r.value,unitLabel(r),'Rapporto aggregato');
+   if(r&&changes.includes(operation))add(townName(selector.towns[0]),periodLabel(r.startPeriod)+' → '+periodLabel(r.endPeriod),r.value,unitLabel(r),reading);
+   if(r&&operation==='trend')add(townName(selector.towns[0]),'Intera serie',r.slope,unitLabel({unit:r.unit.replace(/\/year$/u,'')})+' per anno','Pendenza stimata');
+   if(r&&operation==='anomaly')for(const [key,label] of [['lowerFence','Soglia inferiore'],['median','Valore mediano'],['upperFence','Soglia superiore']])add('Sette Comuni','',r[key],unitLabel({unit:r.unit}),label);
+   return rows;
+ }
+ function download(name,text,type){
+   const url=URL.createObjectURL(new Blob([text],{type}));const a=node('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ }
+ function tools(response,observations,selector,operation){
+   const bar=node('div');bar.className='explorer-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','Usa questo risultato');
+   const done=node('span');done.className='explorer-tools-status';done.setAttribute('role','status');
+   const link=node('button','Copia il link');link.type='button';link.dataset.explorerTool='link';
+   const shared=location.origin+location.pathname+location.search+'#'+shareState();
+   link.onclick=async()=>{const url=shared;try{await navigator.clipboard.writeText(url);done.textContent='Link copiato: chi lo apre vede questa stessa lettura.';}catch{done.textContent=url;}};
+   const csv=node('button','Scarica i dati (CSV)');csv.type='button';csv.dataset.explorerTool='csv';
+   csv.onclick=()=>{const text=csvRows(response,observations,selector,operation).map(r=>r.map(csvCell).join(';')).join('\r\n')+'\r\n';download('osservatorio-versilia-'+fileSlug(root.metrics.find(m=>m.metric===selector.metric).label)+'.csv','\ufeff'+text,'text/csv;charset=utf-8');done.textContent='CSV scaricato con i valori esatti, separati da punto e virgola.';};
+   const print=node('button','Stampa o salva in PDF');print.type='button';print.dataset.explorerTool='print';
+   // Print a copy of the result alone: the rest of the page is not laid out, so no blank pages.
+   print.onclick=()=>{const sheet=node('section');sheet.className='a7-explorer explorer-print-sheet';const copy=$('result').cloneNode(true);
+     copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));copy.querySelectorAll('details').forEach(d=>d.open=true);
+     sheet.append(copy);document.body.append(sheet);document.documentElement.classList.add('explorer-printing');
+     const restore=()=>{document.documentElement.classList.remove('explorer-printing');sheet.remove();window.removeEventListener('afterprint',restore);};window.addEventListener('afterprint',restore);window.print();};
+   bar.append(link,csv,print,done);return bar;
+ }
+ async function restore(){
+   if(!location.hash.startsWith('#'+SHARE+'&'))return;
+   const p=new URLSearchParams(location.hash.slice(SHARE.length+2));
+   // The link is read once: a reload or a later failure starts from a clean page.
+   try{history.replaceState(null,'',location.pathname+location.search);}catch{}const entry=root.metrics.find(m=>m.metric===p.get('indicatore'));
+   if(!entry){status('Il link aperto non corrisponde più a un indicatore disponibile. Scegli un tema per ricominciare.');return;}
+   $('theme').value=entry.theme;await themeChanged();$('metric').value=entry.metric;await metricChanged();
+   if(!detail)return;
+   const wanted=p.get('dettaglio');if(wanted&&detail.views.some(v=>v.dimension===wanted)){$('view').value=wanted;setOperation();}
+   const operation=p.get('domanda');if(Array.from($('operation').options).some(o=>o.value===operation)){$('operation').value=operation;setBenchmark();}
+   const town=p.get('comune');if(town&&Array.from($('town').options).some(o=>o.value===town))$('town').value=town;
+   const scope=p.get('riferimento');if(scope&&Array.from($('benchmark').options).some(o=>o.value===scope))$('benchmark').value=scope;
+   setTown();
+   document.getElementById('a7-explorer')?.scrollIntoView({block:'start'});
+   if(!$('run').disabled)await execute({schemaVersion:1,steps:[{id:'selection',request:request()}]});
+   else status('Il link aperto non corrisponde più a una lettura disponibile: controlla le scelte e premi «Mostra i dati».');
+ }
  function render(){
    const response=current.steps[0].response;const selector=current.plan.steps[0].request.selectors[0];const operation=current.plan.steps[0].request.operation;
    const out=$('result');out.replaceChildren();out.hidden=false;
    const heading=node('h3',root.metrics.find(m=>m.metric===selector.metric).label);heading.id='explorer-result-title';out.append(heading);
    out.append(node('p',viewLabel(selector.dimension)+' · '+(operations[operation]||operation)));
+   const printed=node('p','Osservatorio Versilia · Chiedi alla Versilia · '+location.origin+location.pathname+'#'+shareState());printed.className='explorer-print-only';out.append(printed);
+   const toolbar=node('div');out.append(toolbar);
    if(response.status!=='computed')out.append(node('p','Per questa scelta il calcolo non è disponibile. I valori sotto sono solo informativi.'));
    if(changes.includes(operation)&&response.status==='computed')renderChange(response,out,selector,operation);
    if(changes.includes(operation)&&response.status!=='computed')out.append(node('p','Nessuna variazione calcolabile per questi anni.'));
@@ -331,6 +398,7 @@ export async function startExplorer(openRuntime,presentation){
    if(observations.length>20){const nav=node('nav');nav.setAttribute('aria-label','Pagine delle osservazioni');const prev=node('button','Precedenti');prev.type='button';prev.disabled=pageIndex===0;prev.onclick=()=>{pageIndex--;render();};const next=node('button','Successive');next.type='button';next.disabled=(pageIndex+1)*20>=observations.length;next.onclick=()=>{pageIndex++;render();};nav.append(prev,node('span',`Pagina ${pageIndex+1} di ${Math.ceil(observations.length/20)} `),next);out.append(nav);}
    if(response.excluded?.length)out.append(node('p','Alcuni valori non sono disponibili e non sono stati stimati.'));
    // Machine-readable evidence kept in the page for verification and export, not shown.
+   toolbar.replaceWith(tools(response,observations,selector,operation));
    const provenance=node('pre',JSON.stringify(current,null,2));provenance.dataset.explorerEvidence='true';provenance.hidden=true;out.append(provenance);
  }
  $('theme').addEventListener('change',safe(themeChanged));
@@ -351,6 +419,7 @@ export async function startExplorer(openRuntime,presentation){
    $('metric').replaceChildren();$('view').replaceChildren();$('operation').replaceChildren();$('town').replaceChildren(...[...root.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t=>option(t.code,t.name)));
    detail=null;setBenchmark();setTown();$('run').disabled=true;fields.disabled=false;
    status(root.scope==='all_metrics'?'Scegli un tema per esplorare il catalogo. Le capacità consultabili dipendono dalla vista.':'Anteprima su un sottoinsieme esplicito del catalogo. Non rappresenta tutte le capacità disponibili.');
+   await restore();
  }
  $('retry').onclick=safe(initialize);
  await safe(initialize)();
