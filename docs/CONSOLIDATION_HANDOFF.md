@@ -15,6 +15,13 @@ mobile, sotto 440 px, l’header mostra solo il marchio OV senza la scritta
 sforava di ~60 px a 768). `test_site_chrome_browser.py` verifica la scritta
 nascosta sotto 440 px invece di misurarne la geometria.
 
+## Radar 2.0 — fonti bloccate ma coperte (31 ottobre 2026)
+
+Branch `fix/radar-gse-blocked-covered`: il GSE blocca la CI con il firewall;
+se MASE, ANCI o ANCI Toscana rispondono, il rapporto lo elenca fra le «Fonti
+bloccate ma coperte» invece che fra quelle da riparare (`COVERED_WHEN_BLOCKED`
+in `opportunity_qualifier.py`). Dettagli in `docs/RADAR_2.md`.
+
 ## Radar 2.0 — correzioni del qualificatore (31 ottobre 2026)
 
 Branch `fix/radar-qualifier-eu-topics`: il primo run di produzione del

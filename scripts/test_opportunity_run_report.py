@@ -146,6 +146,10 @@ def main() -> int:
     cleaned_new = {**data_loss_old, "summary": "Testo più aggiornato"}
     cleaned = build_report(_snapshot([data_loss_old]), _snapshot([cleaned_new]), phase_statuses=phases)
     assert cleaned["modified"][0]["changeCategory"] == "metadata_update"
+    covered_snapshot = {**_snapshot([cleaned_new]), "sourcesBlockedCovered": [
+        {"sourceId": "gse", "coveredBy": ["mase-bandi"], "reason": "il sito blocca i server della CI"}]}
+    covered = build_report(_snapshot([data_loss_old]), covered_snapshot, phase_statuses=phases)
+    assert "Fonti bloccate ma coperte" in render_markdown(covered) and "`gse`" in render_markdown(covered)
     assert report["added"][0]["title"] == "Bando nuovo"
     assert report["archived"][0]["title"] == "Bando scaduto"
     assert report["removed"][0]["title"] == "Bando scomparso"

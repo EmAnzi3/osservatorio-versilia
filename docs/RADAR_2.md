@@ -59,6 +59,16 @@ che cosa cambia.
 - L'avviso MIM otto per mille era fra le segnalazioni dal 5 ottobre: con la
   qualificazione automatica sarebbe stato pubblicato il giorno stesso.
 
+## Fonti bloccate ma coperte (31 ottobre 2026)
+
+Il sito del GSE rifiuta i server della CI con il firewall (403, poi 401 anche
+dalle vie alternative). Non si ripara dal codice. Decisione del proprietario: se
+il blocco è del sito e almeno una fonte di copertura risponde (MASE · Bandi e
+avvisi, ANCI, ANCI Toscana), il GSE non compare fra le «Fonti da riparare» ma
+fra le «Fonti bloccate ma coperte». Le FAQ del portale di assistenza GSE restano
+il controllo diretto. Un errore diverso (timeout, pagina cambiata) o l'assenza
+di coperture lo riporta fra le fonti da riparare.
+
 ## Correzioni dopo il primo run di produzione (31 ottobre 2026)
 
 Il run del 31 ottobre ha letto 120 segnalazioni senza qualificarne nessuna.

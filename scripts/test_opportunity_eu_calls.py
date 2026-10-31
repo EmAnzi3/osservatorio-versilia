@@ -96,6 +96,22 @@ def test_silent_zero_tracking_and_lag():
     assert lag["sample"] == 2 and [r["title"] for r in lag["late"]] == ["X"] and lag["late"][0]["lagDays"] == 113
 
 
+def test_blocked_source_covered_by_others_is_not_to_repair():
+    waf = {"sourceId": "gse", "status": "error", "failureClasses": ["http_403_waf"],
+           "endpointResults": [{"failureClass": "http_403_waf", "terminalFailureClass": "http_401"}]}
+    result = {"discoverySources": [dict(waf), {"sourceId": "mase-bandi", "status": "ok"}]}
+    assert q.track_silent_zero(result, None) == []
+    assert result["sourcesBlockedCovered"][0]["coveredBy"] == ["mase-bandi"]
+    # Senza fonti di copertura raggiungibili il blocco resta da riparare.
+    alone = {"discoverySources": [dict(waf), {"sourceId": "mase-bandi", "status": "degraded"}]}
+    assert [row["sourceId"] for row in q.track_silent_zero(alone, None)] == ["gse"]
+    assert alone["sourcesBlockedCovered"] == []
+    # Un errore che non è un blocco del sito (timeout) resta da riparare.
+    timeout = dict(waf, failureClasses=["timeout_client"], endpointResults=[{"failureClass": "timeout_client"}])
+    other = {"discoverySources": [timeout, {"sourceId": "mase-bandi", "status": "ok"}]}
+    assert [row["sourceId"] for row in q.track_silent_zero(other, None)] == ["gse"]
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:
