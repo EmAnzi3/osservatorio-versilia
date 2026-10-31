@@ -560,7 +560,8 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
                       f"Segnalazioni lette: **{auto.get('checked', 0)}** · pubblicate con «Requisiti da confermare»: "
                       f"**{auto.get('qualified', 0)}** · mantenute dai giorni precedenti: **{auto.get('carried', 0)}** · "
                       f"scartate: **{auto.get('rejected', 0)}** · scadute: **{auto.get('expired', 0)}** · "
-                      f"illeggibili: **{auto.get('unreadable', 0)}** · rinviate al prossimo run: **{auto.get('deferred', 0)}**."])
+                      f"illeggibili: **{auto.get('unreadable', 0)}** · rinviate al prossimo run: **{auto.get('deferred', 0)}** · "
+                      f"già scartate negli ultimi 7 giorni: **{auto.get('skippedRecent', 0)}**."])
         for check in (auto.get("published") or [])[:detail_limit]:
             lines.append(f"- [{_markdown_cell(check.get('title'), 120)}](<{check.get('url')}>) · scadenza "
                          f"{check.get('deadline') or 'a sportello'} · «{_markdown_cell(check.get('applicant'), 200)}»")

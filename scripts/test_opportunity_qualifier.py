@@ -112,6 +112,42 @@ def test_old_years_are_skipped_without_download():
     assert result["autoQualification"]["rejected"] == 1 and result["autoQualification"]["unreadable"] == 0
 
 
+def test_eu_city_as_context_or_reserved_is_not_applicant():
+    context = (PAD + "Expected outcome: waterfront cities and islands are provided with innovative solutions. "
+               "The consortium could include partners supporting knowledge uptake in regions.")
+    assert decide("HORIZON-MISS-2027-OCEAN · Coastal resilience", context, deadline_at="2027-09-21",
+                  strict_municipal=True).status == "rejected"
+    reserved = (PAD + "Applicants: at least one entity in each project must be from one of the 112 cities selected for "
+                "the EU Mission on Climate-neutral and Smart Cities; local authorities should be involved.")
+    assert decide("HORIZON-MISS-2027-CIT · Wastewater", reserved, deadline_at="2027-09-22",
+                  strict_municipal=True).status == "rejected"
+
+
+def test_curated_previous_entry_is_not_duplicated():
+    url = "https://ec.europa.eu/topic-details/CERV-X"
+    previous = {"opportunities": [{"url": url, "title": "CERV · scheda curata", "verification_status": "verified"}]}
+    result = {"opportunities": [], "discoveryQueue": [candidate("CERV-X · Topic", url=url, structured_text="x")]}
+    q.apply(result, date(2026, 10, 1), loader=None, previous=previous, build_item=lambda *a: {}, towns=TOWNS)
+    assert result["autoQualification"]["checked"] == 0 and result["opportunities"] == []
+
+
+def test_recent_rejections_are_not_reread():
+    calls = []
+    def loader(url, document):
+        calls.append(url)
+        return "<html><body><main>" + "Comunicato stampa sulla sicurezza. " * 30 + "</main></body></html>"
+    queue = [candidate("Notizia varia", url="https://x.gov.it/n1")]
+    first = {"opportunities": [], "discoveryQueue": list(queue)}
+    q.apply(first, date(2026, 10, 1), loader=loader, build_item=lambda *a: {}, towns=TOWNS)
+    assert first["autoQualificationCache"]["https://x.gov.it/n1"]["status"] == "rejected"
+    second = {"opportunities": [], "discoveryQueue": list(queue)}
+    q.apply(second, date(2026, 10, 3), loader=loader, previous=first, build_item=lambda *a: {}, towns=TOWNS)
+    assert len(calls) == 1 and second["autoQualification"]["skippedRecent"] == 1
+    third = {"opportunities": [], "discoveryQueue": list(queue)}
+    q.apply(third, date(2026, 10, 9), loader=loader, previous=second, build_item=lambda *a: {}, towns=TOWNS)
+    assert len(calls) == 2
+
+
 def test_facility_operator_topic_rejected():
     text = (PAD + "Proposals are expected to run a facility which offers financial support to cities, municipalities "
             "or their groupings. Applicants should mobilise local authorities. The Commission intends to select one "

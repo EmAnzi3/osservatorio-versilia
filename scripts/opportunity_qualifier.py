@@ -24,7 +24,7 @@ import html as html_lib
 import re
 import time
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
@@ -33,6 +33,7 @@ LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
 MAX_SECONDS = 420
+RECHECK_DAYS = 7
 MAX_DOCUMENTS = 3
 
 MONTHS = {name: i for i, name in enumerate(
@@ -81,6 +82,14 @@ EU_LEAD = re.compile(
     r"((coordinator|applicant|lead)\w*[^.]{0,120}\b(must|shall|should|can|may)\s+be\b[^.]{0,160}"
     r"(local|regional\s+or\s+local|public)\s+authorit|restricted\s+to\s+public\s+authorities|"
     r"(eligible\s+applicants?|applicants?)[^.]{0,80}\b(local\s+authorit|municipalit))", re.I)
+EU_PARTNER = re.compile(
+    r"((consorti(?:um|a)|proposals?|projects?|applicants?|partnerships?)[^.]{0,80}\b(must|should|shall|are\s+(?:expected|required|encouraged)\s+to)\s+"
+    r"(?:include|involve|have)[^.]{0,100}\b(local\s+(?:and\s+regional\s+)?(?:public\s+)?authorit|municipalit|city\s+authorit|local\s+governments?)|"
+    r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,40}\b(are|is)\s+eligible|"
+    r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,60}\b(must|should)\s+(?:be\s+)?(?:involved|participate|part\s+of))", re.I)
+# Topic riservati a gruppi chiusi di città (per esempio le 112 della Missione
+# città climaticamente neutre): un Comune qualsiasi non può partecipare.
+EU_RESERVED = re.compile(r"(?:must|shall)\s+be\s+from\s+one\s+of\s+the\s+\d+\s+cities|cities\s+selected\s+for\s+the\s+EU\s+Mission", re.I)
 # Il Comune come luogo, non come soggetto: «con sede nel Comune di», «residenti nel comune».
 MUNICIPAL_AS_PLACE = re.compile(
     r"(sede(?:\s+legale|\s+operativa)?\s+(?:nel|in\s+un|in)\s+comune|residen\w*\s+(?:nel|in)\s+(?:un\s+)?comune|"
@@ -256,7 +265,14 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
         if ONLY_OTHERS.search(sentence) and not MUNICIPAL.search(ONLY_OTHERS.split(sentence, 1)[-1][:120]):
             continue
         if strict:
-            role = "direct_applicant" if EU_LEAD.search(cleaned) else "partner"
+            # Nei topic UE una città citata come contesto non basta: serve che le
+            # autorità locali guidino il progetto o vi partecipino espressamente.
+            lead = EU_LEAD.search(cleaned)
+            if not lead and not EU_PARTNER.search(cleaned):
+                continue
+            if EU_RESERVED.search(cleaned):
+                continue
+            role = "direct_applicant" if lead else "partner"
         else:
             role = "partner" if PARTNER.search(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
         return sentence, role
@@ -400,6 +416,13 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         known_urls.add(_fold(old.get("url")))
         report["carried"] += 1
 
+    # Le schede verificate dello snapshot precedente (regole e corpora curati)
+    # possono essere ricostruite più avanti nella catena: non vanno duplicate.
+    for old in (previous or {}).get("opportunities") or []:
+        if old.get("verification_status") != VERIFICATION_STATUS:
+            known_urls.add(_fold(old.get("url")))
+            known_titles.add(_fold(old.get("title")))
+
     candidates = []
     for candidate in queue:
         if _fold(candidate.get("url")) in known_urls or _fold(candidate.get("title")) in known_titles:
@@ -408,6 +431,20 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         candidates.append(candidate)
     unique = list({_fold(c.get("url")): c for c in candidates}.values())
+    # Decisioni negative recenti: non si rileggono ogni giorno, così la coda
+    # avanza e le segnalazioni nuove vengono lette entro un giorno.
+    horizon = (today - timedelta(days=RECHECK_DAYS)).isoformat()
+    cache = {url: row for url, row in ((previous or {}).get("autoQualificationCache") or {}).items()
+             if str(row.get("checkedAt") or "") >= horizon}
+    result["autoQualificationCache"] = cache
+    pending = []
+    for candidate in unique:
+        row = cache.get(str(candidate.get("url")))
+        if row and row.get("status") in {"rejected", "expired"}:
+            report["skippedRecent"] = report.get("skippedRecent", 0) + 1
+            continue
+        pending.append(candidate)
+    unique = pending
     # Segnalazioni che citano solo anni ormai chiusi: scartate senza scaricarle.
     fresh = []
     for candidate in unique:
@@ -457,6 +494,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         decision = qualify(candidate, page_text, documents, today)
         check.update(status=decision.status, reason=decision.reason, applicant=decision.applicant,
                      deadline=decision.deadline, documents=decision.documents)
+        if not candidate.get("structured_text"):
+            cache[url] = {"status": decision.status, "checkedAt": today.isoformat()}
         if decision.status != "qualified":
             report[decision.status] = report.get(decision.status, 0) + 1
             continue
