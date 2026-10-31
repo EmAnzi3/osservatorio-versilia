@@ -543,14 +543,17 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
             "",
             "> Il confronto dei contenuti non è conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
         ])
-    lines.append(render_actions_markdown(report.get("reviewActions") or {}))
+    # Le verifiche richieste possono occupare decine di migliaia di caratteri:
+    # vanno dopo esito, qualificazione e gate, che devono restare leggibili anche
+    # quando il rapporto viene troncato (per esempio nel commento della PR).
+    review_lines: list[str] = [render_actions_markdown(report.get("reviewActions") or {})]
     discovery_review = report.get("discoveryReview") or {}
     discovery_added = discovery_review.get("added") or []
-    lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
+    review_lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
                   f"nuove alla coda rispetto allo snapshot precedente: **{len(discovery_added)}**. "
                   "Queste segnalazioni non sono nuove opportunità pubblicate; possono riguardare avvisi già noti o non ammissibili."])
     for item in discovery_added[:detail_limit]:
-        lines.append(f"- {_markdown_link(item)} · {_markdown_cell(item.get('source'))}")
+        review_lines.append(f"- {_markdown_link(item)} · {_markdown_cell(item.get('source'))}")
     auto = report.get("autoQualification") or {}
     if auto:
         lines.extend(["", "## Qualificazione automatica", "",
@@ -583,6 +586,7 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         lines.append(f"| {phase['label']} | **{_status_label(phase['status'])}** | — |")
     for gate in report["gates"]:
         lines.append(f"| {gate['name']} | **{_status_label(gate['status'])}** | {gate['detail']} |")
+    lines.extend(review_lines)
 
     lines.extend([
         "",
