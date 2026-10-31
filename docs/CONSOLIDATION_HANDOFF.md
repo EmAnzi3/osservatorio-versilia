@@ -1,5 +1,15 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Lancio di «Chiedi» e «Dossier» (31 ottobre 2026)
+
+Branch `feature/launch-chiedi-dossier`, su decisione del proprietario: nel menu
+principale «Dossier» e «Chiedi» dopo «Comuni» (contratto `HEADER_LINK_LABELS`,
+coerenza, fixture e browser test aggiornati; voce attiva calcolata dal percorso);
+in home un riquadro dopo i Temi con i link a `/dossier/` e `/chiedi/`. Dossier e
+indice senza `noindex` e registrati nella sitemap da `build_dossier_reports.py`;
+`/chiedi/` era già indicizzabile. `materialize_opportunity_public_shell.py`
+riconosce la voce Opportunità già materializzata anche con le nuove voci.
+
 ## A7.5.6 — riorganizzazione di «Chiedi» (30 ottobre 2026)
 
 Branch `feature/a7-chiedi-reorg`. Su decisione del proprietario `/chiedi/` non

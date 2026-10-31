@@ -14,9 +14,11 @@ ATLAS_TOOLTIP_MARKER = "/* ov-site-tooltip-contract */"
 ATLAS_EXPORT_MARKER = "/* ov-atlas-export-actions */"
 
 
-def replace_once(path: Path, old: str, new: str, label: str) -> None:
+def replace_once(path: Path, old: str, new: str, label: str, present: str | None = None) -> None:
+    """`present` riconosce una materializzazione già fatta anche se voci successive
+    (per esempio Dossier e Chiedi nel menu) hanno cambiato il testo intorno."""
     text = path.read_text(encoding="utf-8")
-    if new in text:
+    if new in text or (present is not None and present in text):
         return
     count = text.count(old)
     if count != 1:
@@ -110,7 +112,7 @@ def main() -> None:
     replace_once(core,
         '              <a href="${route(\'#comuni\')}">Comuni</a>\n              <a href="${route(\'progetto/\')}">Il progetto</a>',
         '              <a href="${route(\'#comuni\')}">Comuni</a>\n              <a href="${route(\'opportunita/\')}">Opportunità</a>\n              <a href="${route(\'progetto/\')}">Il progetto</a>',
-        "header Opportunità")
+        "header Opportunità", present="<a href=\"${route('opportunita/')}\">Opportunità</a>\n              <a href=\"${route('progetto/')}\">")
     replace_once(core,
         '          <a href="${route(\'stato-dati/\')}" data-data-status-nav="footer">Stato dei dati</a>\n          <a href="${route(\'progetto/#metodo\')}">Metodo</a>',
         '          <a href="${route(\'stato-dati/\')}" data-data-status-nav="footer">Stato dei dati</a>\n          <a href="${route(\'opportunita/\')}">Opportunità</a>\n          <a href="${route(\'progetto/#metodo\')}">Metodo</a>',
@@ -131,14 +133,14 @@ def main() -> None:
     replace_once(chrome,
         'HEADER_LINK_LABELS = ("Temi", "Comuni", "Il progetto", "Stato dati", "Segnala")',
         'HEADER_LINK_LABELS = ("Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala")',
-        "contratto header")
+        "contratto header", present='"Opportunità", "Il progetto", "Stato dati", "Segnala")')
     replace_once(chrome, '    "Stato dei dati",\n    "Metodo",', '    "Stato dei dati",\n    "Opportunità",\n    "Metodo",', "contratto footer")
 
     t = ROOT / "scripts/test_site_chrome.py"
     replace_once(t,
         '<a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../progetto/">Il progetto</a>',
         '<a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../opportunita/">Opportunità</a><a href="../progetto/">Il progetto</a>',
-        "fixture header")
+        "fixture header", present='<a href="../opportunita/">Opportunità</a><a href="../progetto/">Il progetto</a>')
     replace_once(t,
         '<a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../progetto/#metodo">Metodo</a>',
         '<a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../opportunita/">Opportunità</a><a href="../progetto/#metodo">Metodo</a>',

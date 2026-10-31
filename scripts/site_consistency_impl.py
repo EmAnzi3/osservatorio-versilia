@@ -154,6 +154,8 @@ def assert_shell(path: Path, document: str, canonical: str) -> None:
     expected_header = (
         ("Temi", BASE_URL + "#temi"),
         ("Comuni", BASE_URL + "#comuni"),
+        ("Dossier", BASE_URL + "dossier/"),
+        ("Chiedi", BASE_URL + "chiedi/"),
         ("Opportunità", BASE_URL + "opportunita/"),
         ("Il progetto", BASE_URL + "progetto/"),
         ("Stato dati", BASE_URL + "stato-dati/"),

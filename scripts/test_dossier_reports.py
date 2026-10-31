@@ -31,7 +31,8 @@ def verify(dist: Path):
         soup = BeautifulSoup(text, 'html.parser')
         main = soup.select_one('main.dr')
         assert main is not None, key
-        assert soup.select_one('meta[name=robots][content=noindex]'), ('lancio_non_approvato', key)
+        assert not soup.select_one('meta[name=robots]'), ('pagina_non_indicizzabile', key)
+        assert f"https://osservatorioversilia.it/dossier/{dossier['slug']}/" in (dist / 'sitemap.xml').read_text(encoding='utf-8'), ('sitemap', key)
         hrefs = [a.get('href', '') for a in soup.select('a[href]')]
         assert not [h for h in hrefs if 'github' in h.lower()], ('link_github', key)
         assert not [h for h in hrefs if re.search(r'\.json(\b|$)', h)], ('json_scaricabile', key)
@@ -83,7 +84,8 @@ def verify(dist: Path):
 def verify_index(dist: Path) -> int:
     """L'indice elenca ogni dossier una volta, con pagina, PDF e CSV esistenti."""
     soup = BeautifulSoup((dist / 'dossier/index.html').read_text(encoding='utf-8'), 'html.parser')
-    assert soup.select_one('meta[name=robots][content=noindex]'), 'lancio_non_approvato_indice'
+    assert not soup.select_one('meta[name=robots]'), 'indice_non_indicizzabile'
+    assert 'https://osservatorioversilia.it/dossier/</loc>' in (dist / 'sitemap.xml').read_text(encoding='utf-8'), 'sitemap_indice'
     cards = soup.select('main.dr-index .dr-card')
     slugs = [c.select_one('a.dr-card-link')['href'].rstrip('/') for c in cards]
     assert len(slugs) == len(DOSSIERS) == len(set(slugs)), slugs

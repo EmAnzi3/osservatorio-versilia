@@ -6,7 +6,7 @@ import argparse
 import re
 from pathlib import Path
 
-EXPECTED_NAV = ("Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala")
+EXPECTED_NAV = ("Temi", "Comuni", "Dossier", "Chiedi", "Opportunità", "Il progetto", "Stato dati", "Segnala")
 
 
 def labels(fragment: str) -> tuple[str, ...]:

@@ -1391,7 +1391,6 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-{structured_hash}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>{esc(title)}</title><meta name="description" content="{esc(dossier['description'])}">
-<meta name="robots" content="noindex">
 {social(title, dossier['description'], url)}
 <link rel="canonical" href="{url}"><script type="application/ld+json">{structured}</script>
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../../site.webmanifest">
@@ -1474,7 +1473,6 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
         f'\'sha256-{structured_hash}\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; connect-src '
         f'\'self\'; base-uri \'none\'; form-action \'none\'; object-src \'none\'">\n'
         f'<title>{esc(title)}</title><meta name="description" content="{esc(description)}">\n'
-        '<meta name="robots" content="noindex">\n'
         f'{social(title, description, url)}\n'
         f'<link rel="canonical" href="{url}"><script type="application/ld+json">{structured}</script>\n'
         '<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../site.webmanifest">\n'
@@ -1535,6 +1533,10 @@ def build(dist: Path = ROOT / 'dist', pdf: bool = True) -> list[Path]:
         pages.append(target)
     index = folder / 'index.html'
     index.write_text(render_index(made, dist, index, built), encoding='utf-8')
+    # Lanciati il 31 ottobre 2026: indicizzabili e nella sitemap.
+    from site_chrome import ensure_sitemap_entries
+    base = 'https://osservatorioversilia.it/dossier/'
+    ensure_sitemap_entries(dist, (base, *(f"{base}{d['slug']}/" for d in made)))
     return [index] + pages
 
 
