@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
 
-HEADER_LINK_LABELS = ("Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala")
+HEADER_LINK_LABELS = ("Temi", "Comuni", "Dossier", "Chiedi", "Opportunità", "Il progetto", "Stato dati", "Segnala")
 FOOTER_LINK_LABELS = (
     "Il progetto",
     "Stato dei dati",

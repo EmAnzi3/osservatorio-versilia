@@ -14,9 +14,11 @@ ATLAS_TOOLTIP_MARKER = "/* ov-site-tooltip-contract */"
 ATLAS_EXPORT_MARKER = "/* ov-atlas-export-actions */"
 
 
-def replace_once(path: Path, old: str, new: str, label: str) -> None:
+def replace_once(path: Path, old: str, new: str, label: str, present: str | None = None) -> None:
+    """`present` riconosce una materializzazione già fatta anche se voci successive
+    (per esempio Dossier e Chiedi nel menu) hanno cambiato il testo intorno."""
     text = path.read_text(encoding="utf-8")
-    if new in text:
+    if new in text or (present is not None and present in text):
         return
     count = text.count(old)
     if count != 1:
@@ -110,7 +112,7 @@ def main() -> None:
     replace_once(core,
         '              <a href="${route(\'#comuni\')}">Comuni</a>\n              <a href="${route(\'progetto/\')}">Il progetto</a>',
         '              <a href="${route(\'#comuni\')}">Comuni</a>\n              <a href="${route(\'opportunita/\')}">Opportunità</a>\n              <a href="${route(\'progetto/\')}">Il progetto</a>',
-        "header Opportunità")
+        "header Opportunità", present="<a href=\"${route('opportunita/')}\">Opportunità</a>\n              <a href=\"${route('progetto/')}\">")
     replace_once(core,
         '          <a href="${route(\'stato-dati/\')}" data-data-status-nav="footer">Stato dei dati</a>\n          <a href="${route(\'progetto/#metodo\')}">Metodo</a>',
         '          <a href="${route(\'stato-dati/\')}" data-data-status-nav="footer">Stato dei dati</a>\n          <a href="${route(\'opportunita/\')}">Opportunità</a>\n          <a href="${route(\'progetto/#metodo\')}">Metodo</a>',
@@ -131,14 +133,14 @@ def main() -> None:
     replace_once(chrome,
         'HEADER_LINK_LABELS = ("Temi", "Comuni", "Il progetto", "Stato dati", "Segnala")',
         'HEADER_LINK_LABELS = ("Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala")',
-        "contratto header")
+        "contratto header", present='"Opportunità", "Il progetto", "Stato dati", "Segnala")')
     replace_once(chrome, '    "Stato dei dati",\n    "Metodo",', '    "Stato dei dati",\n    "Opportunità",\n    "Metodo",', "contratto footer")
 
     t = ROOT / "scripts/test_site_chrome.py"
     replace_once(t,
         '<a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../progetto/">Il progetto</a>',
         '<a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../opportunita/">Opportunità</a><a href="../progetto/">Il progetto</a>',
-        "fixture header")
+        "fixture header", present='<a href="../opportunita/">Opportunità</a><a href="../progetto/">Il progetto</a>')
     replace_once(t,
         '<a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../progetto/#metodo">Metodo</a>',
         '<a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../opportunita/">Opportunità</a><a href="../progetto/#metodo">Metodo</a>',
@@ -164,7 +166,8 @@ def main() -> None:
 .site-header nav{flex:1 1 auto;min-width:0;gap:8px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;font-size:10px}
 .site-header nav::-webkit-scrollbar{display:none}.site-header nav a,.site-header nav a:nth-child(n+3){display:inline-flex;flex:0 0 auto;scroll-snap-align:start}
 .global-search-trigger{flex:0 0 38px}.site-brand{gap:8px}.site-brand-copy strong{font-size:12px}}
-@media (max-width:380px){.site-brand-copy{display:none}.site-header-inner{width:min(100% - 20px,1240px)}}
+@media (max-width:440px){.site-brand-copy{display:none}.site-header-inner{width:min(100% - 20px,1240px)}}
+@media (min-width:701px) and (max-width:940px){.site-header-actions{flex:1 1 auto;min-width:0}.site-header nav{flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}.site-header nav::-webkit-scrollbar{display:none}.site-header nav a{flex:0 0 auto;scroll-snap-align:start}.global-search-trigger{flex:0 0 auto}}
 '''
         css.write_text(text, encoding="utf-8")
 
