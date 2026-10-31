@@ -8,7 +8,9 @@ coerenza, fixture e browser test aggiornati; voce attiva calcolata dal percorso)
 in home un riquadro dopo i Temi con i link a `/dossier/` e `/chiedi/`. Dossier e
 indice senza `noindex` e registrati nella sitemap da `build_dossier_reports.py`;
 `/chiedi/` era già indicizzabile. `materialize_opportunity_public_shell.py`
-riconosce la voce Opportunità già materializzata anche con le nuove voci.
+riconosce la voce Opportunità già materializzata anche con le nuove voci. Su
+mobile, sotto 440 px, l’header mostra solo il marchio OV senza la scritta
+(prima sotto 380 px), così «Opportunità» resta visibile nel menu.
 
 ## Radar 2.0 — qualificazione automatica (31 ottobre 2026)
 
