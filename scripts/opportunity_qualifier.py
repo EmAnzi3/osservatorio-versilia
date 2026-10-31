@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import html as html_lib
 import re
+import time
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Callable
@@ -30,7 +31,8 @@ from urllib.parse import urlsplit
 VERSION = "1.0"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
-MAX_CANDIDATES = 40
+MAX_CANDIDATES = 120
+MAX_SECONDS = 420
 MAX_DOCUMENTS = 3
 
 MONTHS = {name: i for i, name in enumerate(
@@ -63,7 +65,7 @@ APPLICANT_HEAD = re.compile(
     r"eligibility(?:\s+criteria)?|admissibility|applicants?\b|coordinators?\b|participation\s+of\s+a\s+public\s+authority|"
     r"restricted\s+to\s+public\s+authorities|consortium)", re.I)
 MUNICIPAL = re.compile(
-    r"\b(comun[ei]|enti\s+locali|ente\s+locale|amministrazion[ei]\s+comunal[ei]|unioni?\s+(?:dei|di)\s+comuni|"
+    r"\b(comun[ei]|enti\s+locali|ente\s+locale|autonomie\s+territoriali|amministrazion[ei]\s+comunal[ei]|unioni?\s+(?:dei|di)\s+comuni|"
     r"citt[àa]\s+metropolitan[ae]|local\s+(?:and\s+regional\s+)?authorit(?:y|ies)|municipalit(?:y|ies)|"
     r"public\s+(?:bodies|authorit(?:y|ies))|local\s+governments?|towns?|cities)\b", re.I)
 # Per i programmi UE «public bodies» comprende anche università e agenzie: serve
@@ -99,6 +101,7 @@ APPLY = re.compile(
     r"presentazione\s+(?:delle|della|di)\s+(?:domand|candidatur|istanz|propost|progett|manifestazion|richiest)|"
     r"\b(?:domand[ae]|candidatur[ae]|istanz[ae])\s+(?:di\s+(?:contributo|finanziamento|partecipazione|ammissione)\s+)?"
     r"(?:dovranno|devono|possono|potranno)\s+essere\s+(?:presentat|inoltrat|trasmess|inviat)|"
+    r"\bdomande\s+(?:fino\s+al|entro|esclusivamente|tramite|da\s+presentare)|"
     r"\bcandidature\b|manifestazioni?\s+di\s+interesse|sportello\s+(?:telematico|online)|"
     r"call\s+for\s+proposals|submission|apply\b|deadline", re.I)
 # Topic UE che finanziano un unico consorzio incaricato di gestire uno
@@ -162,8 +165,13 @@ def visible_text(payload: str) -> str:
         soup = BeautifulSoup(payload, "html.parser")
         for tag in soup(["script", "style", "noscript", "nav", "header", "footer", "form", "svg"]):
             tag.decompose()
-        root = soup.select_one("main, article, #main, .main-content, #content, .content") or soup.body or soup
-        text = root.get_text(" ", strip=True)
+        # Il contenitore più ricco, non il primo: molti temi WordPress hanno
+        # piccoli <article> di anteprima prima del testo della pagina.
+        texts = [node.get_text(" ", strip=True) for node in
+                 soup.select("main, article, #main, .main-content, #content, .content, .entry-content")]
+        text = max(texts, key=len, default="")
+        if len(text) < 500:
+            text = (soup.body or soup).get_text(" ", strip=True)
     except Exception:
         text = re.sub(r"<[^>]+>", " ", payload)
     return re.sub(r"\s+", " ", html_lib.unescape(text)).strip()
@@ -317,6 +325,11 @@ def identity(candidate: dict[str, Any], decision: Decision) -> str:
     return "auto-" + hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
+def _years(candidate: dict[str, Any]) -> list[int]:
+    probe = f"{candidate.get('title') or ''} {urlsplit(str(candidate.get('url') or '')).path}"
+    return [int(y) for y in re.findall(r"(?<!\d)(20[0-3]\d)(?!\d)", probe)]
+
+
 def _fold(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", " ", str(value or "").lower()).strip()
 
@@ -395,7 +408,26 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         candidates.append(candidate)
     unique = list({_fold(c.get("url")): c for c in candidates}.values())
-    for candidate in unique[:MAX_CANDIDATES]:
+    # Segnalazioni che citano solo anni ormai chiusi: scartate senza scaricarle.
+    fresh = []
+    for candidate in unique:
+        years = _years(candidate)
+        if years and max(years) <= today.year - 2:
+            report["checks"].append({"url": candidate.get("url"), "title": candidate.get("title"),
+                                     "source_id": candidate.get("source_id"), "status": "rejected",
+                                     "reason": f"Avviso riferito al {max(years)}: non più aperto."})
+            report["rejected"] += 1
+            continue
+        fresh.append(candidate)
+    # Prima i dati strutturati (nessuno scaricamento), poi le segnalazioni più recenti.
+    fresh.sort(key=lambda c: (not c.get("structured_text"), -(max(_years(c)) if _years(c) else today.year)))
+    report["deferred"] = max(0, len(fresh) - MAX_CANDIDATES)
+    started = time.monotonic()
+    for position, candidate in enumerate(fresh[:MAX_CANDIDATES]):
+        # Tempo massimo per run: il resto passa al run successivo, in ordine di priorità.
+        if loader is not None and time.monotonic() - started > MAX_SECONDS:
+            report["deferred"] += min(len(fresh), MAX_CANDIDATES) - position
+            break
         url = str(candidate["url"])
         check: dict[str, Any] = {"url": url, "title": candidate.get("title"), "source_id": candidate.get("source_id")}
         report["checks"].append(check)
@@ -445,7 +477,6 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         known_ids.add(entry["coverage_id"])
         published_urls.add(url)
         check["coverage_id"] = entry["coverage_id"]
-    report["deferred"] = max(0, len(unique) - MAX_CANDIDATES)
     result["discoveryQueue"] = [x for x in queue if x.get("url") not in published_urls]
     counts = result.setdefault("counts", {})
     counts["autoQualified"] = report["qualified"] + report["carried"]

@@ -97,6 +97,21 @@ def test_subject_before_verb_and_regional_relay():
     assert d.status == "qualified" and d.deadline == "2026-10-23", d
 
 
+def test_richest_container_is_read():
+    page = ("<html><body><article><p>Anteprima breve</p></article><div class='entry-content'><p>"
+            + "Possono presentare domanda i Comuni della Toscana. " * 20 + "</p></div></body></html>")
+    assert "Possono presentare domanda" in q.visible_text(page)
+
+
+def test_old_years_are_skipped_without_download():
+    def loader(url, document):
+        raise AssertionError("non deve scaricare")
+    old = candidate("Avviso pubblico finanziamenti Enti Locali 2018", url="https://x.gov.it/avviso-2018")
+    result = {"opportunities": [], "discoveryQueue": [old]}
+    q.apply(result, date(2026, 10, 1), loader=loader, build_item=lambda *a: {}, towns=TOWNS)
+    assert result["autoQualification"]["rejected"] == 1 and result["autoQualification"]["unreadable"] == 0
+
+
 def test_facility_operator_topic_rejected():
     text = (PAD + "Proposals are expected to run a facility which offers financial support to cities, municipalities "
             "or their groupings. Applicants should mobilise local authorities. The Commission intends to select one "

@@ -486,7 +486,7 @@ def build_report(
         },
         "autoQualification": {k: v for k, v in (current.get("autoQualification") or {}).items() if k != "checks"} | {
             "published": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "qualified"],
-            "unreadable": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "unreadable"],
+            "unreadableChecks": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "unreadable"],
         },
         "sourcesToRepair": list(current.get("sourcesToRepair") or []),
         "detectionLag": dict(current.get("detectionLag") or {}),
