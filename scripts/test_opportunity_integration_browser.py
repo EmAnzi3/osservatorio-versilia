@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from playwright.sync_api import sync_playwright
 
-EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
+EXPECTED_NAV = ["Temi", "Comuni", "Dossier", "Chiedi", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
 
 
 def nav_labels(page):

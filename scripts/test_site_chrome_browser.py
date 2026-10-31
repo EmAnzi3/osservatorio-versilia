@@ -68,9 +68,21 @@ def stable_box(page: Page, selector: str) -> dict[str, float]:
     raise AssertionError(f"Elemento senza geometria stabile: {selector}")
 
 
+# Sotto questa larghezza l'header mostra solo il marchio OV: la scritta
+# "Osservatorio Versilia" e' nascosta per lasciare spazio al menu.
+BRAND_COPY_HIDDEN_MAX_WIDTH = 440
+
+
 def geometry(page: Page) -> dict[str, dict[str, float]]:
     result: dict[str, dict[str, float]] = {}
+    width = page.viewport_size["width"]
     for selector in GEOMETRY_SELECTORS:
+        if selector == ".site-brand-copy" and width <= BRAND_COPY_HIDDEN_MAX_WIDTH:
+            locator = page.locator(selector).first
+            require(locator.count() == 1, f"Scritta del marchio assente a {width}px")
+            require(not locator.is_visible(), f"Scritta del marchio visibile a {width}px")
+            result[selector] = {"hidden": 1.0}
+            continue
         box = stable_box(page, selector)
         result[selector] = {key: round(float(box[key]), 2) for key in ("x", "y", "width", "height")}
     return result

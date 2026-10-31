@@ -241,6 +241,8 @@
             <nav aria-label="Navigazione principale">
               <a href="${route('#temi')}">Temi</a>
               <a href="${route('#comuni')}">Comuni</a>
+              <a href="${route('dossier/')}">Dossier</a>
+              <a href="${route('chiedi/')}">Chiedi</a>
               <a href="${route('opportunita/')}">Opportunità</a>
               <a href="${route('progetto/')}">Il progetto</a>
               <a href="${route('stato-dati/')}" data-data-status-nav="header">Stato dati</a>

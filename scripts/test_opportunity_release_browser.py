@@ -9,7 +9,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
+EXPECTED_NAV = ["Temi", "Comuni", "Dossier", "Chiedi", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
 FORBIDDEN = [
     "Anteprima tecnica", "Collaudo", "non pubblicata", "revisione interna", "prototipo",
     "Audit indipendente", "capture rate", "buchi baseline", "fonti di controllo",
