@@ -582,6 +582,14 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
     if report.get("failureReasons"):
         lines.extend(["", "## Motivo del blocco", ""])
         lines.extend(f"- {reason}" for reason in report["failureReasons"])
+        # Quali schede tengono fermo il run: senza questo elenco il blocco non è
+        # diagnosticabile dal solo rapporto.
+        diagnostic = report.get("diagnostic") or {}
+        for key, label in (("continuityHold", "Continuità"), ("coverageHold", "Verifiche dirette")):
+            for row in (diagnostic.get(key) or [])[:detail_limit]:
+                title = _markdown_cell(row.get("title") or row.get("id") or row.get("coverage_id"), 120)
+                reason = _markdown_cell(row.get("reason") or row.get("status"), 240)
+                lines.append(f"- {label} · {title} (`{row.get('source_id') or row.get('sourceId') or 'n.d.'}`): {reason}")
     lines.extend(["", "## Fasi e gate", "", "| Controllo | Esito | Dettaglio |", "|---|---|---|"])
     for phase in report["phases"]:
         lines.append(f"| {phase['label']} | **{_status_label(phase['status'])}** | — |")
