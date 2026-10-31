@@ -167,6 +167,7 @@ def main() -> None:
 .site-header nav::-webkit-scrollbar{display:none}.site-header nav a,.site-header nav a:nth-child(n+3){display:inline-flex;flex:0 0 auto;scroll-snap-align:start}
 .global-search-trigger{flex:0 0 38px}.site-brand{gap:8px}.site-brand-copy strong{font-size:12px}}
 @media (max-width:440px){.site-brand-copy{display:none}.site-header-inner{width:min(100% - 20px,1240px)}}
+@media (min-width:701px) and (max-width:940px){.site-header-actions{flex:1 1 auto;min-width:0}.site-header nav{flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}.site-header nav::-webkit-scrollbar{display:none}.site-header nav a{flex:0 0 auto;scroll-snap-align:start}.global-search-trigger{flex:0 0 auto}}
 '''
         css.write_text(text, encoding="utf-8")
 

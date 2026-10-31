@@ -10,7 +10,10 @@ indice senza `noindex` e registrati nella sitemap da `build_dossier_reports.py`;
 `/chiedi/` era già indicizzabile. `materialize_opportunity_public_shell.py`
 riconosce la voce Opportunità già materializzata anche con le nuove voci. Su
 mobile, sotto 440 px, l’header mostra solo il marchio OV senza la scritta
-(prima sotto 380 px), così «Opportunità» resta visibile nel menu.
+(prima sotto 380 px), così «Opportunità» resta visibile nel menu; fra 701 e
+940 px il menu scorre in orizzontale come su mobile (con 8 voci l’header
+sforava di ~60 px a 768). `test_site_chrome_browser.py` verifica la scritta
+nascosta sotto 440 px invece di misurarne la geometria.
 
 ## Radar 2.0 — qualificazione automatica (31 ottobre 2026)
 
