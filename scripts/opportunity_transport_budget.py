@@ -100,7 +100,7 @@ class TransportBudget:
                 if host in self.regional_hosts:
                     source_limit -= self.regional_reserve_seconds
                 if not (kind.startswith("official_") or kind in {
-                    "promotion_document", "promotion_page", "review_page",
+                    "promotion_document", "promotion_page", "review_page", "qualifier_page", "qualifier_document",
                 }):
                     source_limit -= self.verification_reserve_seconds
         # Lock only shared accounting. I/O must never hold this lock.
@@ -189,10 +189,11 @@ def _worker():
     import opportunity_discovery_resilient as discovery
     try:
         kind = request["kind"]
-        if kind in {"promotion_document", "promotion_page", "review_page"}:
+        if kind in {"promotion_document", "promotion_page", "review_page", "qualifier_page", "qualifier_document"}:
             from opportunity_document_promotion import fetch_receipt
-            payload = fetch_receipt(request["url"], document=kind == "promotion_document", timeout=request["timeout"],
-                                    allowed_hosts=set(request["options"]["allowedHosts"]) if kind == "review_page" else None)
+            payload = fetch_receipt(request["url"], document=kind in {"promotion_document", "qualifier_document"},
+                                    timeout=request["timeout"],
+                                    allowed_hosts=set(request["options"]["allowedHosts"]) if kind in {"review_page", "qualifier_page", "qualifier_document"} else None)
             result = (payload, {"status": "ok", "transport": "direct_https", "proxyUsed": False,
                                 "fallbackUsed": False, "failureClass": None, "resolvedUrl": payload["resolvedUrl"], "errors": []})
         elif kind == "continuity":
