@@ -59,6 +59,23 @@ che cosa cambia.
 - L'avviso MIM otto per mille era fra le segnalazioni dal 5 ottobre: con la
   qualificazione automatica sarebbe stato pubblicato il giorno stesso.
 
+## Correzioni dopo il primo run di produzione (31 ottobre 2026)
+
+Il run del 31 ottobre ha letto 120 segnalazioni senza qualificarne nessuna.
+Due regole erano troppo strette per i topic UE:
+
+- l'anno nel codice del topic (I3-2024-INV1) veniva letto come anno
+  dell'avviso: con una scadenza strutturata futura ora decide la scadenza;
+- «public authorities can be national, regional or local…» con l'autorità
+  pubblica nel consorzio come beneficiaria è una partecipazione da partner;
+  la frase sui soggetti può essere spezzata da note a piè di pagina, quindi nei
+  topic UE la si cerca entro 1.200 caratteri. «Public authority» senza livello
+  locale resta insufficiente.
+
+Sui 101 topic UE in coda il risultato è CERV-2026-DAPHNE-PREVENTION e
+CERV-2026-DAPHNE-PROTECTION come partner (scadenza 5 novembre 2026), oltre ai
+due DAPHNE già pubblicati; nessun altro topic cambia esito.
+
 ## Fase successiva
 
 Il motore è ancora una catena di sette strati che si sostituiscono funzioni a
