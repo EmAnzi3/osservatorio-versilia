@@ -47,6 +47,8 @@
     },
     {
       "id": "eu-funding-tenders",
+      "api": "eu-funding-tenders-search",
+      "apiQueries": ["local authorities", "municipalities", "public authorities", "cities", "town twinning", "regions"],
       "label": "UE · Funding & Tenders",
       "publisher": "Commissione europea · Funding & Tenders Portal",
       "territory": "Unione europea",
@@ -62,6 +64,6 @@
     "pcm-pari-opportunita": {"label":"PCM · Pari opportunità","monitoringStatus":"active","role":"discovery","priority":105,"family":"social-welfare-equality","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.pariopportunita.gov.it/favicon.ico","note":"Bandi e avvisi con possibile partecipazione di enti locali e partenariati territoriali."},
     "pcm-casa-italia": {"label":"PCM · Casa Italia","monitoringStatus":"active","role":"discovery","priority":105,"family":"resilience-civil-protection","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.casaitalia.governo.it/favicon.ico","note":"Avvisi su piccoli Comuni, aree interne, prevenzione sismica e infrastrutture pubbliche."},
     "mic-generale": {"label":"Ministero della Cultura · Avvisi","monitoringStatus":"active","role":"discovery","priority":90,"family":"culture","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://cultura.gov.it/favicon.ico","note":"Rete generale MiC usata per non dipendere da una sola Direzione generale; le gare di acquisto restano escluse dal contratto di opportunità."},
-    "eu-funding-tenders": {"label":"UE · Funding & Tenders","monitoringStatus":"active","role":"discovery","priority":90,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://ec.europa.eu/favicon.ico","note":"Portale trasversale UE. Essendo fortemente dinamico può risultare degradato al collector HTML; resta affiancato da canali tematici ufficiali."}
+    "eu-funding-tenders": {"label":"UE · Funding & Tenders","monitoringStatus":"active","role":"discovery","priority":90,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://ec.europa.eu/favicon.ico","note":"Portale trasversale UE letto dall'interfaccia di ricerca ufficiale (api.tech.ec.europa.eu) e dalle schede JSON dei topic, non dalla pagina HTML generata via JavaScript."}
   }
 }

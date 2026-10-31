@@ -484,6 +484,12 @@ def build_report(
             "contentSanitized": int((current.get("contentSanitization") or {}).get("repairedCount") or 0),
             "attention": sorted(source_rows, key=lambda row: str(row.get("sourceId") or "")),
         },
+        "autoQualification": {k: v for k, v in (current.get("autoQualification") or {}).items() if k != "checks"} | {
+            "published": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "qualified"],
+            "unreadableChecks": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "unreadable"],
+        },
+        "sourcesToRepair": list(current.get("sourcesToRepair") or []),
+        "detectionLag": dict(current.get("detectionLag") or {}),
         "diagnostic": diagnostic or {},
         "errors": load_errors,
         "failureReasons": failure_reasons,
@@ -537,14 +543,42 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
             "",
             "> Il confronto dei contenuti non è conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
         ])
-    lines.append(render_actions_markdown(report.get("reviewActions") or {}))
+    # Le verifiche richieste possono occupare decine di migliaia di caratteri:
+    # vanno dopo esito, qualificazione e gate, che devono restare leggibili anche
+    # quando il rapporto viene troncato (per esempio nel commento della PR).
+    review_lines: list[str] = [render_actions_markdown(report.get("reviewActions") or {})]
     discovery_review = report.get("discoveryReview") or {}
     discovery_added = discovery_review.get("added") or []
-    lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
+    review_lines.extend(["", f"Segnalazioni interne da verificare: **{discovery_review.get('current', 0)}**; "
                   f"nuove alla coda rispetto allo snapshot precedente: **{len(discovery_added)}**. "
                   "Queste segnalazioni non sono nuove opportunità pubblicate; possono riguardare avvisi già noti o non ammissibili."])
     for item in discovery_added[:detail_limit]:
-        lines.append(f"- {_markdown_link(item)} · {_markdown_cell(item.get('source'))}")
+        review_lines.append(f"- {_markdown_link(item)} · {_markdown_cell(item.get('source'))}")
+    auto = report.get("autoQualification") or {}
+    if auto:
+        lines.extend(["", "## Qualificazione automatica", "",
+                      f"Segnalazioni lette: **{auto.get('checked', 0)}** · pubblicate con «Requisiti da confermare»: "
+                      f"**{auto.get('qualified', 0)}** · mantenute dai giorni precedenti: **{auto.get('carried', 0)}** · "
+                      f"scartate: **{auto.get('rejected', 0)}** · scadute: **{auto.get('expired', 0)}** · "
+                      f"illeggibili: **{auto.get('unreadable', 0)}** · rinviate al prossimo run: **{auto.get('deferred', 0)}** · "
+                      f"già scartate negli ultimi 7 giorni: **{auto.get('skippedRecent', 0)}**."])
+        for check in (auto.get("published") or [])[:detail_limit]:
+            lines.append(f"- [{_markdown_cell(check.get('title'), 120)}](<{check.get('url')}>) · scadenza "
+                         f"{check.get('deadline') or 'a sportello'} · «{_markdown_cell(check.get('applicant'), 200)}»")
+    repair = report.get("sourcesToRepair") or []
+    if repair:
+        lines.extend(["", f"## Fonti da riparare ({len(repair)})", "",
+                      "Fonti raggiunte che non producono segnalazioni: senza intervento il Radar non può vedere i loro bandi.", ""])
+        for row in repair[:detail_limit]:
+            lines.append(f"- `{row.get('sourceId')}`: {row.get('reason')}")
+    lag = report.get("detectionLag") or {}
+    if lag.get("sample"):
+        lines.extend(["", "## Ritardo di rilevazione (ultimi 30 giorni)", "",
+                      f"Mediana fra pubblicazione ufficiale e prima rilevazione: **{lag.get('medianDays')} giorni** "
+                      f"su {lag.get('sample')} schede; oltre {lag.get('thresholdDays')} giorni: **{len(lag.get('late') or [])}**."])
+        for row in (lag.get("late") or [])[:detail_limit]:
+            lines.append(f"- [{_markdown_cell(row.get('title'), 120)}](<{row.get('url')}>) · pubblicato il "
+                         f"{row.get('publishedAt')}, rilevato il {row.get('firstSeenAt')} (**{row.get('lagDays')} giorni**)")
     if report.get("failureReasons"):
         lines.extend(["", "## Motivo del blocco", ""])
         lines.extend(f"- {reason}" for reason in report["failureReasons"])
@@ -553,6 +587,7 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         lines.append(f"| {phase['label']} | **{_status_label(phase['status'])}** | — |")
     for gate in report["gates"]:
         lines.append(f"| {gate['name']} | **{_status_label(gate['status'])}** | {gate['detail']} |")
+    lines.extend(review_lines)
 
     lines.extend([
         "",

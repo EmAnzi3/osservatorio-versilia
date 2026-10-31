@@ -1,5 +1,16 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar 2.0 — qualificazione automatica (31 ottobre 2026)
+
+Branch `feature/radar-discovery-overhaul`, presa in carico su richiesta del
+proprietario dopo l’issue #511 (CERV-DAPHNE aperti a luglio, rilevati a fine
+ottobre). Diagnosi e piano in `docs/RADAR_2.md`. Questa fase: qualificazione
+automatica delle segnalazioni con etichetta «Requisiti da confermare»
+(`opportunity_qualifier.py`), fonte UE dall’interfaccia ufficiale Funding &
+Tenders (`opportunity_eu_calls.py`), fonti da riparare, ritardo di rilevazione nel
+rapporto e rapporto come commento sulle PR del Radar. Fase 2: pipeline unica al
+posto dei sette strati.
+
 ## A7.5.6 — riorganizzazione di «Chiedi» (30 ottobre 2026)
 
 Branch `feature/a7-chiedi-reorg`. Su decisione del proprietario `/chiedi/` non

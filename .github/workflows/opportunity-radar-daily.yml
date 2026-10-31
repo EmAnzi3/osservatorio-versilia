@@ -89,6 +89,8 @@ jobs:
           python scripts/test_opportunity_independent_kpi.py
           python scripts/test_opportunity_prefecture_noise.py
           python scripts/test_opportunity_document_promotion.py
+          python scripts/test_opportunity_qualifier.py
+          python scripts/test_opportunity_eu_calls.py
           python scripts/test_opportunity_runtime_snapshot.py
           python scripts/test_opportunity_automation_workflow.py
           python scripts/test_opportunity_radar_v044.py
@@ -265,6 +267,21 @@ jobs:
           for key in ('added', 'modified', 'archived', 'removed'):
               print(f"{key}={int(counts[key])}")
           PY
+
+      - name: Comment run report on pull request
+        # Le PR sul Radar eseguono uno scan live: il rapporto in commento rende
+        # verificabile l'effetto della modifica senza scaricare artefatti.
+        if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f reports/runtime/opportunity-run-report.md || exit 0
+          head -c 60000 reports/runtime/opportunity-run-report.md > /tmp/radar-pr-report.md
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file /tmp/radar-pr-report.md
 
       - name: Upload complete run evidence
         if: always()

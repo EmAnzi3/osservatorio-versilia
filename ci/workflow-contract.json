@@ -214,6 +214,16 @@
         "args": []
       },
       {
+        "label": "Radar automatic qualification of discovery signals",
+        "script": "scripts/test_opportunity_qualifier.py",
+        "args": []
+      },
+      {
+        "label": "Radar structured EU calls, silent sources and detection lag",
+        "script": "scripts/test_opportunity_eu_calls.py",
+        "args": []
+      },
+      {
         "label": "Radar actionable document review",
         "script": "scripts/test_opportunity_run_report.py",
         "args": []

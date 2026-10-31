@@ -23,6 +23,7 @@ import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
 import opportunity_document_promotion as document_promotion
+import opportunity_qualifier as auto_qualifier
 import opportunity_independent_audit_recovery as independent_recovery
 import opportunity_review_actions as review_actions
 from opportunity_discovery_noise import clean_review_queues
@@ -219,6 +220,11 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     clean_review_queues(result, today.isoformat())
     audit_promotions.apply_complete_promotions(result, today)
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
+    # Qualificazione automatica delle segnalazioni (Radar 2.0): pubblica con
+    # «Requisiti da confermare» ciò che i documenti ufficiali giustificano.
+    if kwargs.get("payloads") is None:
+        auto_qualifier.run_live(result, today, previous=previous)
+    auto_qualifier.track_silent_zero(result, previous)
     # Non effettuare discovery live sui payload sintetici dei test e replay:
     # solo uno snapshot runtime datato può attivare il recupero indipendente.
     if result.get("referenceDate") == today.isoformat():
@@ -370,6 +376,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
     relevance.apply_to_payload(result, drop_review=True)
+    auto_qualifier.detection_lag(result, today)
     result["dailyHardeningVersion"] = DAILY_HARDENING_VERSION
     result["auditGapFixVersion"] = FIX_VERSION
     result["auditCorpusPromotionVersion"] = audit_promotions.PROMOTION_VERSION
