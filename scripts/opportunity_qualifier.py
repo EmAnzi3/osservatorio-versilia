@@ -90,7 +90,10 @@ EU_PARTNER = re.compile(
     r"(?:include|involve|have)[^.]{0,100}\b(local\s+(?:and\s+regional\s+)?(?:public\s+)?authorit|municipalit|city\s+authorit|local\s+governments?)|"
     r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,40}\b(are|is)\s+eligible|"
     r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,60}\b(must|should)\s+(?:be\s+)?(?:involved|participate|part\s+of)|"
-    r"public\s+authorit\w*\s+in\s+the\s+consorti\w+[^.]{0,30}\bas\s+(?:a\s+)?beneficiar)", re.I)
+    r"public\s+authorit\w*\s+in\s+the\s+consorti\w+[^.]{0,30}\bas\s+(?:a\s+)?beneficiar|"
+    # «The participation of a public authority is mandatory under this priority»
+    # (CERV-DAPHNE-CHILDREN): partecipazione obbligatoria, non capofila.
+    r"(?:participation|involvement)\s+of\s+(?:a\s+)?public\s+authorit\w*[^.]{0,20}\b(?:is\s+)?(?:mandatory|compulsory|required))", re.I)
 # Topic riservati a gruppi chiusi di città (per esempio le 112 della Missione
 # città climaticamente neutre): un Comune qualsiasi non può partecipare.
 EU_RESERVED = re.compile(r"(?:must|shall)\s+be\s+from\s+one\s+of\s+the\s+\d+\s+cities|cities\s+selected\s+for\s+the\s+EU\s+Mission", re.I)

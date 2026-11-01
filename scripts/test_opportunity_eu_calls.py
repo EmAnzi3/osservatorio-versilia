@@ -112,6 +112,63 @@ def test_blocked_source_covered_by_others_is_not_to_repair():
     assert [row["sourceId"] for row in q.track_silent_zero(other, None)] == ["gse"]
 
 
+FICHE_HEADER = "Call: CERV-2026-DAPHNE: Call for proposals to prevent and combat gender -based violence \nagainst children \n"
+FICHE_PAGES = [
+    "Priority 3 - Targeted actions for the prevention of gender-based violence [Topic CERV-2026-DAPHNE-PREVENTION] "
+    "Projects should prevent violence. " + "Awareness raising and education activities are funded. " * 20,
+    "Applicants are encouraged to also involve a public authority in support of their project. "
+    "These public authorities can be national, regional or local Ministries/agencies/equality bodies "
+    "responsible for gender equality. Involvement of a public authority in the consortium (either as beneficiary "
+    "or as associated partner) will be taken into account. "
+    # La priorità successiva apre con la frase sui coordinatori, prima del suo marcatore.
+    "Priority 4 - Supporting the Convention objectives. While the coordinators of proposals to be submitted "
+    "under this Priority must be public authorities (relevant national, regional or local authorities), we "
+    "encourage consortium partners. [Topic CERV-2026-DAPHNE-CONVENTION-DIR] " + "Training of professionals. " * 20,
+    "Priority 5 – Strengthening integrated child protection systems [Topic CERV-2026-DAPHNE-CHILDREN] "
+    "The involvement of stakeholders – and notably public authorities at local level - in the project is "
+    "essential under this priority. The participation of a public authority is mandatory under this priority. "
+    "The call emphasises collaboration between public authorities (local, regional, national) and other "
+    "key stakeholders. " + "Child protection systems are strengthened. " * 20,
+]
+
+
+def fiche_document():
+    return eu.strip_running_headers([f"{FICHE_HEADER}  \n{n} \n{page}" for n, page in enumerate(FICHE_PAGES, 12)])
+
+
+def test_running_header_does_not_enter_citations():
+    document = fiche_document()
+    assert "Call: CERV-2026-DAPHNE" not in document and " 13 " not in document, document[:200]
+    assert document.startswith("Priority 3 - Targeted actions")
+    # Un PDF senza intestazione ripetuta resta intatto.
+    assert eu.strip_running_headers(["Uno due tre.", "Quattro cinque.", "Sei sette."]) == \
+        "Uno due tre. Quattro cinque. Sei sette."
+
+
+def test_topic_section_stops_at_next_priority_heading():
+    """Un topic non eredita i requisiti della priorità vicina nello stesso documento."""
+    document = fiche_document()
+    prevention = eu.topic_section(document, "CERV-2026-DAPHNE-PREVENTION")
+    convention = eu.topic_section(document, "CERV-2026-DAPHNE-CONVENTION-DIR")
+    children = eu.topic_section(document, "CERV-2026-DAPHNE-CHILDREN")
+    assert "coordinators of proposals" not in prevention and "encouraged to also involve" in prevention
+    assert convention.startswith("Priority 4") and "coordinators of proposals" in convention
+    assert children.startswith("Priority 5") and "coordinators of proposals" not in children
+    assert eu.topic_section(document, "CERV-2026-DAPHNE-REGRANTING") == ""
+    today = date(2026, 11, 1)
+
+    def decide(identifier, section):
+        candidate = {"title": identifier, "deadline_at": "2026-11-05", "strict_municipal": True}
+        return q.qualify(candidate, f"{identifier}. {section}", {}, today)
+
+    assert (decide("CERV-2026-DAPHNE-PREVENTION", prevention).role, decide("CERV-2026-DAPHNE-CONVENTION-DIR", convention).role,
+            decide("CERV-2026-DAPHNE-CHILDREN", children).role) == ("partner", "direct_applicant", "partner"), \
+        "autorità pubblica raccomandata o obbligatoria = partner; capofila solo dove il testo lo richiede"
+    # Con la vecchia finestra fissa di 1.500 caratteri CHILDREN citava la frase
+    # sui coordinatori della priorità 4 e risultava richiedente diretto.
+    assert "coordinators" not in decide("CERV-2026-DAPHNE-CHILDREN", children).applicant
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

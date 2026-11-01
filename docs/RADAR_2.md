@@ -95,9 +95,26 @@ coinvolgimento dell'autorità pubblica è raccomandato, non obbligatorio. Il ruo
 «partner» era corretto. Le due schede ora sono verificate come CONVENTION-DIR e
 CHILDREN (call fiche + portale, nello stesso run) e, quando la verifica riesce,
 sostituiscono quelle automatiche sullo stesso URL (`replacedAutoQualified`).
-Se la verifica non riesce, la scheda automatica resta. Resta da correggere nel
-qualificatore l'attribuzione dei requisiti quando più topic condividono un
-documento.
+Se la verifica non riesce, la scheda automatica resta.
+
+## Requisiti del topic giusto nei documenti condivisi (1° novembre 2026)
+
+Riletta sulla call fiche, la sezione di ogni topic era una finestra fissa: 1.500
+caratteri prima del marcatore `[Topic …]` fino al marcatore successivo. Così
+entrava la coda della priorità precedente: CHILDREN (priorità 5) citava la frase
+sui coordinatori della priorità 4 («must be public authorities») e risultava
+richiedente diretto, mentre per la call fiche l'autorità pubblica vi partecipa
+obbligatoriamente ma non è capofila. Le citazioni di PROTECTION e PREVENTION
+venivano dalla loro priorità, ma con l'intestazione di pagina in mezzo
+(«…local 13 authorities…»).
+
+Ora `topic_section` parte dal titolo della priorità che apre il topic («Priority
+5 – …») e si ferma al titolo della successiva; `pdf_text` toglie l'intestazione
+ripetuta su ogni pagina e il numero di pagina. «La partecipazione di
+un'autorità pubblica è obbligatoria» vale come partecipazione da partner. Sulla
+call fiche vera i cinque topic DAPHNE escono come nella verifica manuale:
+REGRANTING escluso, PROTECTION, PREVENTION e CHILDREN partner, CONVENTION-DIR
+richiedente diretto.
 
 ## Fase successiva
 
