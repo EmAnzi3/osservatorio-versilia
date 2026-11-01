@@ -1,5 +1,26 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Muoversi in Versilia» e icone dei temi (1° novembre 2026)
+
+Branch `feature/dossier-mobilita`, su richiesta del proprietario (proseguire con
+gli altri dossier; alla pubblicazione icone e colori dei temi del sito). Sesto
+dossier in forma di relazione, primo dei due prioritari rimasti (poi bilanci e
+servizi): occupati che lavorano fuori Comune e pendolari in uscita e in entrata,
+corse di autobus e treni, ampiezza della giornata di servizio e fermate (GTFS,
+un giorno feriale d’estate), automobili ed Euro 0-3, punti di ricarica, fibra
+fino all’edificio (AGCOM), percorsi a piedi e in bici. Saldo e autocontenimento
+restano nel dossier lavoro, con rimando. Nessun aggregato Versilia dove il
+motore lo rifiuta (TPL, veicoli, ricarica, fibra, percorsi). Le date dei periodi
+(`AAAA-MM-GG`) sono scritte per esteso; lo zero prende l’articolo «lo»; la fonte
+GTFS ha un nome proprio prima della regola generica `dati.toscana.it`, che
+l’avrebbe chiamata «servizi per la prima infanzia».
+
+Icone e colori: ogni dossier e ogni scheda dell’indice portano l’icona del tema
+del sito (tracciati letti da `themeSvgPaths` in `assets/app-parts/00.txt`, non
+duplicati) e la palette DS2 delle pagine tematiche (`--ds-theme-accent`); il
+turismo usa il colore di Economia con un’icona propria (ombrellone). Barre,
+riquadri e numeri del dossier prendono il colore del tema.
+
 ## Workflow superati — primo lotto (1° novembre 2026)
 
 Branch `chore/retire-obsolete-workflows`, su decisione del proprietario (pulizia
