@@ -11,7 +11,10 @@ from pathlib import Path
 
 from PIL import Image
 
+import inspect
+
 import generate_social_kit as renderer
+import generate_weekly_social_kit as weekly
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,6 +58,19 @@ def check_fitted_text(svg_path: Path, root: ET.Element, errors: list[str]) -> No
 
 def main() -> int:
     errors: list[str] = []
+    # Ogni indicatore del catalogo deve avere un sottotitolo di copertina contenibile:
+    # una descrizione allungata nel sito non deve bloccare il pacchetto settimanale.
+    width, height, start, minimum, lines = weekly.COVER_SUBTITLE_BOX
+    assert f'"subtitle", {start}, {minimum}, {lines}' in inspect.getsource(renderer.frame) and \
+        f"{width}, {height}" in inspect.getsource(renderer.frame), "box del sottotitolo disallineato dal renderer"
+    catalog = load(ROOT / "data" / "site-data.json")["metrics"]
+    for key, metric in catalog.items():
+        meta = metric.get("meta", {})
+        if meta.get("label") and meta.get("year"):
+            renderer.fit_lines(weekly.cover_subtitle(meta, meta["year"]), *weekly.COVER_SUBTITLE_BOX)
+    long_meta = {"key": "fixture", "label": "Reddito imponibile medio per dichiarante",
+                 "description": "Reddito imponibile diviso per i dichiaranti. " + "Nota metodologica molto lunga. " * 12}
+    assert weekly.cover_subtitle(long_meta, 2024) == "Reddito imponibile diviso per i dichiaranti · 2024"
     # Le unità lunghe devono entrare anche quando la barra positiva è al massimo.
     design_fixture = load(KIT / "config" / "design-system.json")
     theme_fixture = next(iter(load(KIT / "config" / "themes.json")["themes"].values()))
