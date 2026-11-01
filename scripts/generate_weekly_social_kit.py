@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 from collections import Counter
 from datetime import date
@@ -119,6 +120,34 @@ def temporal_spec(metric: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+# Box del sottotitolo di copertina nel renderer: larghezza, altezza, corpo massimo e minimo, righe.
+COVER_SUBTITLE_BOX = (900, 62, 24, 20, 2)
+
+
+def _fits_cover_subtitle(text: str) -> bool:
+    try:
+        renderer.fit_lines(text, *COVER_SUBTITLE_BOX)
+    except ValueError:
+        return False
+    return True
+
+
+def cover_subtitle(meta: dict[str, Any], year: int) -> str:
+    """Sottotitolo di copertina che entra nel box, senza troncare a metà frase.
+
+    Prima la descrizione completa; se è troppo lunga, la sua prima frase; se anche
+    quella non entra, l'etichetta dell'indicatore. Le note metodologiche restano nel
+    sito: il renderer non deve mai fallire per una descrizione allungata nel catalogo.
+    """
+    description = " ".join(str(meta.get("description") or "").split())
+    lead = re.split(r"(?<=[^\s.]{2})\.\s+(?=[A-ZÀ-ÚÈÉ«0-9])", description, maxsplit=1)[0].rstrip(".")
+    for text in (description, lead, meta["label"]):
+        candidate = f"{text} · {year}"
+        if text and _fits_cover_subtitle(candidate):
+            return candidate
+    raise ValueError(f"Nessun sottotitolo di copertina contenibile per {meta.get('key')}")
+
+
 def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[str], list[str]]:
     meta = metric["meta"]
     short = meta.get("shortLabel") or meta["label"]
@@ -131,10 +160,10 @@ def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[s
             else f"Differenza percentuale rispetto al {base}"
         )
         titles = [short, f"Dal {base} al {year}", f"Variazione: {short}", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"{meta['description']} · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
+        subtitles = [cover_subtitle(meta, year), meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
     else:
         titles = [short, "Che cosa misura il dato", "Come leggere il confronto", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"{meta['description']} · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
+        subtitles = [cover_subtitle(meta, year), meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
     if meta.get("key") == "employmentGenderGap":
         subtitles[0] = "Tasso maschile meno femminile · 15–64 anni · punti percentuali · " + str(year)
         subtitles[1] = "Differenza tra tassi di occupazione · punti percentuali"
