@@ -19,33 +19,33 @@ def test_offline_pending_does_not_block_or_publish() -> None:
     recovery.apply(result, date(2026, 10, 28), live=False)
     assert result["opportunities"] == []
     assert result["coverageHold"] == []
-    assert result["auditRecovery"]["checked"] == 5
-    assert len(result["auditRecovery"]["pending"]) == 5
+    assert result["auditRecovery"]["checked"] == 7
+    assert len(result["auditRecovery"]["pending"]) == 7
     assert result["auditRecovery"]["blocksPublication"] is False
 
 
 def test_documented_live_promotion_and_dedup() -> None:
     entries = recovery._entries()
-    assert len(entries) == 5
+    assert len(entries) == 7
     payloads = {entry["url"]: _fixture(entry) for entry in entries}
     result = {"opportunities": [], "coverageHold": [], "counts": {}}
     recovery.apply(result, date(2026, 10, 28), live=False, detail_payloads=payloads)
-    assert len(result["opportunities"]) == 5
+    assert len(result["opportunities"]) == 7
     assert result["auditRecovery"]["pending"] == []
-    assert len({x["coverage_id"] for x in result["opportunities"]}) == 5
+    assert len({x["coverage_id"] for x in result["opportunities"]}) == 7
     assert all(x.get("verified_direct") for x in result["opportunities"])
     assert all(x["source_verification"]["type"] == "offline_test_fixture" for x in result["opportunities"])
     relevance.apply_to_payload(result)
     assert result["municipalRelevance"]["headlineTotal"] == 2
-    assert result["municipalRelevance"]["partnershipTotal"] == 3
+    assert result["municipalRelevance"]["partnershipTotal"] == 5
     # Le partnership non devono diventare candidature comunali dirette.
     for x in result["opportunities"]:
         if x["municipality_role"] == "partner":
             assert x["applicant_eligibility"] == "not_direct_applicant"
             assert x["municipal_headline"] is False
     recovery.apply(result, date(2026, 10, 28), live=False, detail_payloads=payloads)
-    assert len(result["opportunities"]) == 5
-    assert len(result["auditRecovery"]["alreadyRepresented"]) == 5
+    assert len(result["opportunities"]) == 7
+    assert len(result["auditRecovery"]["alreadyRepresented"]) == 7
 
 
 def test_modified_deadline_or_municipality_evidence_never_promotes() -> None:
@@ -59,7 +59,7 @@ def test_modified_deadline_or_municipality_evidence_never_promotes() -> None:
     result = {"opportunities": [], "coverageHold": []}
     recovery.apply(result, date(2026, 10, 28), live=False, detail_payloads=data)
     assert len(result["opportunities"]) == 0
-    assert len(result["auditRecovery"]["pending"]) == 5
+    assert len(result["auditRecovery"]["pending"]) == 7
     assert result["coverageHold"] == []
 
 
@@ -69,7 +69,7 @@ def test_expired_never_promotes_and_host_contract() -> None:
     recovery.apply(result, date(2026, 11, 21), live=False,
                    detail_payloads={e["url"]: _fixture(e) for e in entries})
     assert result["opportunities"] == []
-    assert len(result["auditRecovery"]["expired"]) == 5
+    assert len(result["auditRecovery"]["expired"]) == 7
     assert all(e["review_policy"] == "opportunistic" for e in entries)
     assert all(not e["allow_recent_evidence_fallback"] for e in entries)
 
@@ -241,20 +241,25 @@ def test_daphne_two_primary_sources_and_fail_closed() -> None:
     """PDF e portale UE devono attestare topic, ruolo e scadenza, distintamente."""
     daphne = recovery.daphne
     daphne_entries = [e for e in recovery._entries() if e.get("primary_composite_topic")]
-    assert len(daphne_entries) == 2
+    assert {e["primary_composite_topic"] for e in daphne_entries} == set(daphne.TOPICS)
+    assert len(daphne_entries) == 4
     role_text = (
         "For priority 1 and 4, proposals can be submitted by either a single applicant. "
         "For priority 4: lead applicants must be public authorities either at national, "
         "regional or local level. "
         "For priorities 2, 3, and 5, proposals must be submitted by a consortium of at least 2 applicants. "
+        "The beneficiaries must be public entities or private organisations. "
         "For priorities 1, 2, 3 and 5: lead applicants must be non-profit making."
     )
+    authority_text = ("For priority 2 and 3: Applicants are encouraged to involve a public "
+                      "authority in support of their project.")
     for entry in daphne_entries:
         topic = entry["primary_composite_topic"]
         pages = {
             3: "Call for proposals " + topic,
             14: "The participation of a public authority is mandatory under this priority.",
             31: role_text,
+            32: authority_text,
         }
         portal = (topic + " Topic Calls for proposals Open For Submission "
                   "Opening date 07 July 2026 Deadline date 05 November 2026 17:00:00 Brussels time")
@@ -271,8 +276,8 @@ def test_daphne_two_primary_sources_and_fail_closed() -> None:
         assert len(evidence["evidence_sources"]) == 2
         assert evidence["proxy_used"] is False
 
-        for wrong_pdf in ({3: "other topic", 14: pages[14], 31: pages[31]},
-                          {3: pages[3], 14: "", 31: ""}):
+        for wrong_pdf in ({3: "other topic", 14: pages[14], 31: pages[31], 32: pages[32]},
+                          {3: pages[3], 14: "", 31: "", 32: ""}):
             try:
                 daphne.validate_pdf_pages(wrong_pdf, topic)
             except daphne.PrimaryEvidenceError:
@@ -334,7 +339,71 @@ def test_daphne_two_primary_sources_and_fail_closed() -> None:
     assert not result["opportunities"]
     assert len(result["auditRecovery"]["pending"]) == len(recovery._entries())
     assert sum(1 for e in result["auditRecovery"]["pending"]
-               if "daphne" in e["coverage_id"]) == 2
+               if "daphne" in e["coverage_id"]) == 4
+
+
+def test_daphne_partner_topics_require_recommended_public_authority() -> None:
+    """Priorità 2 e 3: senza la clausola sull'autorità pubblica non si promuove."""
+    daphne = recovery.daphne
+    pages = {
+        3: "CERV-2026-DAPHNE-PROTECTION CERV-2026-DAPHNE-PREVENTION",
+        14: "",
+        31: ("For priorities 2, 3, and 5, proposals must be submitted by a consortium of at least 2 "
+             "applicants. The beneficiaries must be public entities or private organisations. "
+             "For priorities 1, 2, 3 and 5: lead applicants must be non-profit making."),
+        32: "For priority 1, the involvement of a public authority is not required.",
+    }
+    for topic in ("CERV-2026-DAPHNE-PROTECTION", "CERV-2026-DAPHNE-PREVENTION"):
+        try:
+            daphne.validate_pdf_pages(pages, topic)
+        except daphne.PrimaryEvidenceError:
+            pass
+        else:
+            raise AssertionError("Ruolo dell'autorità pubblica non attestato ma promosso")
+
+
+def test_verified_entry_replaces_auto_qualified_card_on_same_url() -> None:
+    """La scheda verificata in italiano sostituisce quella automatica, senza doppioni."""
+    entry = next(e for e in recovery._entries()
+                 if e.get("primary_composite_topic") == "CERV-2026-DAPHNE-PREVENTION")
+    auto_card = {
+        "id": "opp-auto", "coverage_id": "auto-6646f1252fd4414c",
+        "title": "CERV-2026-DAPHNE-PREVENTION · Preventing gender-based violence",
+        "url": entry["url"], "verification_status": recovery.auto_qualifier.VERIFICATION_STATUS,
+        "deadline_at": entry["deadline_at"],
+    }
+    other_auto = dict(auto_card, id="opp-other", coverage_id="auto-other",
+                      url="https://ec.europa.eu/info/funding-tenders/other")
+    evidence = {"type": "official_primary_composite", "transport": "direct_https_pdf+chromium_https"}
+
+    def verify(candidate, today):
+        if candidate["coverage_id"] != entry["coverage_id"]:
+            raise recovery.daphne.PrimaryEvidenceError("solo il topic sotto test")
+        return dict(evidence)
+
+    result = {"opportunities": [auto_card, other_auto], "coverageHold": []}
+    with patch.object(recovery.daphne, "verify_live", side_effect=verify):
+        with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                          side_effect=TimeoutError("altre fonti non disponibili")):
+            recovery.apply(result, date(2026, 11, 1), live=True)
+    same_url = [x for x in result["opportunities"] if x.get("url") == entry["url"]]
+    assert len(same_url) == 1
+    assert same_url[0]["coverage_id"] == entry["coverage_id"]
+    assert same_url[0]["title"] == entry["title"]
+    assert same_url[0]["verification_status"] == "live_official_primary"
+    assert same_url[0]["municipal_relevance_class"] == "partner"
+    assert any(x.get("id") == "opp-other" for x in result["opportunities"])
+    assert result["auditRecovery"]["replacedAutoQualified"] == [entry["coverage_id"]]
+
+    # Senza verifica documentale la scheda automatica resta: nessuna sparizione.
+    kept = {"opportunities": [dict(auto_card)], "coverageHold": []}
+    with patch.object(recovery.daphne, "verify_live",
+                      side_effect=recovery.daphne.PrimaryEvidenceError("non disponibile")):
+        with patch.object(recovery.discovery, "fetch_with_diagnostics",
+                          side_effect=TimeoutError("altre fonti non disponibili")):
+            recovery.apply(kept, date(2026, 11, 1), live=True)
+    assert [x["id"] for x in kept["opportunities"]] == ["opp-auto"]
+    assert kept["auditRecovery"]["replacedAutoQualified"] == []
 
 
 def main() -> int:
@@ -348,7 +417,9 @@ def main() -> int:
     test_bounded_live_fetch_passes_transport_deadline()
     test_anci_alternate_primary_requires_live_same_host()
     test_daphne_two_primary_sources_and_fail_closed()
-    print("Recupero indipendente Radar: 10 contratti PASS")
+    test_daphne_partner_topics_require_recommended_public_authority()
+    test_verified_entry_replaces_auto_qualified_card_on_same_url()
+    print("Recupero indipendente Radar: 12 contratti PASS")
     return 0
 
 
