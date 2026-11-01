@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Workflow superati — primo lotto (1° novembre 2026)
+
+Branch `chore/retire-obsolete-workflows`, su decisione del proprietario (pulizia
+caso per caso). Ritirati `invalsi-v138-preview` e `biometria-comune-preview`:
+anteprime di rilasci già in produzione, ultimo run il 13/9 fallito. I loro gate
+di sorgente (`test_invalsi_v138.py`, `test_biometria_comune_release.py`, offline,
+meno di un secondo) passano ora nei quickChecks canonici, quindi la copertura
+non cala. Restano attivi, con motivazione: le acquisizioni
+`meteo-poc`, `climate-minmax-extend` e `probe-istat-lavoro-istruzione` sono
+l'unica via documentata per rigenerare quei dati; lo shadow
+`opportunity-radar-daily-v2-shadow` esce con la fase 2 del Radar insieme a
+`opportunity-radar-v044-ci`, che ne esegue il test.
+
 ## Lancio di «Chiedi» e «Dossier» (31 ottobre 2026)
 
 Branch `feature/launch-chiedi-dossier`, su decisione del proprietario: nel menu
