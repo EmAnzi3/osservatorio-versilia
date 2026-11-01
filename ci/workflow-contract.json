@@ -237,6 +237,16 @@
         "label": "territorial dossier editorial structure",
         "script": "scripts/test_territorial_dossier_program.py",
         "args": []
+      },
+      {
+        "label": "INVALSI v1.38 source gate",
+        "script": "scripts/test_invalsi_v138.py",
+        "args": []
+      },
+      {
+        "label": "Biometria v1.35 source gate",
+        "script": "scripts/test_biometria_comune_release.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
@@ -448,7 +458,8 @@
     {
       "path": ".github/workflows/biometria-comune-preview.yml",
       "category": "specialized-gate",
-      "status": "active"
+      "status": "retired",
+      "note": "Ritirato il 1/11/2026: anteprima del rilascio v1.35 già in produzione, ultimo run 13/9 fallito nel test browser dell'anteprima. Il gate di sorgente test_biometria_comune_release.py passa nei quickChecks canonici."
     },
     {
       "path": ".github/workflows/bilanci-v139-gate.yml",
@@ -483,7 +494,8 @@
     {
       "path": ".github/workflows/invalsi-v138-preview.yml",
       "category": "specialized-gate",
-      "status": "active"
+      "status": "retired",
+      "note": "Ritirato il 1/11/2026: anteprima del rilascio v1.38 già in produzione, solo manuale, ultimo run 13/9 fallito. Il gate di sorgente test_invalsi_v138.py passa nei quickChecks canonici."
     },
     {
       "path": ".github/workflows/meteo-clima-page.yml",
