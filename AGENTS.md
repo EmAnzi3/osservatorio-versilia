@@ -16,11 +16,13 @@ Per qualunque attività che rientra nel programma di consolidamento del prodotto
 
 1. Non fare push diretto su `main`. Lavora sempre su un branch dedicato e passa da pull request.
 2. Per modifiche tecniche **non visibili nell'interfaccia** (CI, test, manutenzione) la PR può essere aperta direttamente **Ready**: il flusso canonico deve eseguire `quick` e poi `full` nello stesso run. Per modifiche UI, rendering o interazioni mantieni invece la PR in **draft** finché preview e verifiche browser locali non sono concluse.
-3. Prima di qualunque push esegui localmente:
+3. Prima di un push che modifica codice, dati, contratti, workflow o build esegui localmente:
 
    ```bash
    python scripts/preflight.py --quick
    ```
+
+   Per un push che modifica solo documentazione (`docs/`, file `.md` non letti dalla build), o che riallinea il branch a `main` senza conflitti nel codice rispetto a un commit già verde in CI, bastano i test pertinenti alla modifica: il verdetto resta al `quick` e al `full` della CI sullo stesso commit, che non cambiano.
 
 4. Il `full` è verificato dalla CI: una PR è pronta al merge quando il flusso canonico ha eseguito `quick` e poi `full` con esito verde sullo stesso commit della head. Non serve ripeterlo localmente prima del push. Eseguilo in locale (`python scripts/preflight.py --full`) quando riproduci un fallimento full-only della CI o quando la modifica tocca regressioni browser, rendering o interazioni.
 
