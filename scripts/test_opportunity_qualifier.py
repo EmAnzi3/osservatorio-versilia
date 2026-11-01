@@ -201,6 +201,34 @@ def test_unreachable_page_is_reported_not_published():
     assert len(result["discoveryQueue"]) == 1
 
 
+def test_public_authority_beneficiary_in_consortium_is_partner():
+    text = (PAD + "Applicants are encouraged to also involve a public authority in support of their project. These "
+            "public authorities can be national, regional or local Mini stries/agencies/equality bodies responsible "
+            "for gender equality. This support can be expressed either via the involvement of a public authority in "
+            "the consortium (either as beneficiary or as associated partner) or through a Letter of support.")
+    decision = decide("CERV-2026-XYZ · Preventing violence", text, deadline_at="2026-11-05", strict_municipal=True)
+    assert decision.status == "qualified" and decision.role == "partner", decision
+    # Senza il livello locale, «public authority» resta insufficiente nei programmi UE.
+    generic = text.replace("national, regional or local Mini stries/agencies/equality bodies", "ministries")
+    assert decide("CERV-2026-XYZ · Preventing violence", generic, deadline_at="2026-11-05",
+                  strict_municipal=True).status == "rejected"
+
+
+def test_code_year_does_not_expire_structured_open_topic():
+    def loader(url, document):
+        raise AssertionError("dati strutturati: nessuno scaricamento")
+    text = (PAD + "Eligible applicants: local authorities and municipalities. Coordinators must be local authorities. "
+            "Submission of proposals by the deadline.")
+    topic = candidate("I3-2024-INV1 · Interregional investments", url="https://ec.europa.eu/topic/I3-2024-INV1",
+                      deadline_at="2026-11-10", structured_text=text, strict_municipal=True)
+    closed = candidate("I3-2023-INV2 · Closed", url="https://ec.europa.eu/topic/I3-2023-INV2", deadline_at="2023-05-01")
+    result = {"opportunities": [], "discoveryQueue": [topic, closed]}
+    q.apply(result, date(2026, 10, 31), loader=loader, build_item=lambda *a: {}, towns=TOWNS)
+    statuses = {c["url"]: c["status"] for c in result["autoQualification"]["checks"]}
+    assert statuses["https://ec.europa.eu/topic/I3-2024-INV1"] == "qualified", statuses
+    assert statuses["https://ec.europa.eu/topic/I3-2023-INV2"] == "rejected", statuses
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

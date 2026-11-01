@@ -74,7 +74,10 @@ MUNICIPAL = re.compile(
 MUNICIPAL_STRICT = re.compile(
     r"\b(local\s+(?:and\s+regional\s+)?authorit(?:y|ies)|(?:regional\s+or|regional,?\s+and)\s+local\s+authorit\w*|"
     r"public\s+authorit\w+\s+at\s+local\s+level|authorities\s*\(local|municipalit(?:y|ies)|local\s+governments?|"
-    r"cities|comun[ei]|enti\s+locali)\b", re.I)
+    r"cities|comun[ei]|enti\s+locali|"
+    # «public authorities can be national, regional or local Ministries/agencies…»:
+    # il livello locale è nominato espressamente (i PDF spezzano a volte le parole).
+    r"regional\s+or\s+local\s+(?:mini\s?str\w*|agenc\w*|authorit\w*|bod\w*|public\s+\w+))\b", re.I)
 # Nei programmi UE il Comune è richiedente solo se il testo lo dice: coordinatori o
 # richiedenti che «devono/possono essere» autorità pubbliche/locali, o priorità
 # riservata alle autorità pubbliche. Altrimenti partecipa come partner.
@@ -86,7 +89,8 @@ EU_PARTNER = re.compile(
     r"((consorti(?:um|a)|proposals?|projects?|applicants?|partnerships?)[^.]{0,80}\b(must|should|shall|are\s+(?:expected|required|encouraged)\s+to)\s+"
     r"(?:include|involve|have)[^.]{0,100}\b(local\s+(?:and\s+regional\s+)?(?:public\s+)?authorit|municipalit|city\s+authorit|local\s+governments?)|"
     r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,40}\b(are|is)\s+eligible|"
-    r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,60}\b(must|should)\s+(?:be\s+)?(?:involved|participate|part\s+of))", re.I)
+    r"(local\s+(?:and\s+regional\s+)?authorities|municipalities)[^.]{0,60}\b(must|should)\s+(?:be\s+)?(?:involved|participate|part\s+of)|"
+    r"public\s+authorit\w*\s+in\s+the\s+consorti\w+[^.]{0,30}\bas\s+(?:a\s+)?beneficiar)", re.I)
 # Topic riservati a gruppi chiusi di città (per esempio le 112 della Missione
 # città climaticamente neutre): un Comune qualsiasi non può partecipare.
 EU_RESERVED = re.compile(r"(?:must|shall)\s+be\s+from\s+one\s+of\s+the\s+\d+\s+cities|cities\s+selected\s+for\s+the\s+EU\s+Mission", re.I)
@@ -254,7 +258,9 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
             if not OBLIGATION.search(sentence):
                 return sentence, "direct_applicant"
     for head in APPLICANT_HEAD.finditer(cleaned):
-        window = cleaned[head.start():head.start() + 700]
+        # Nei bandi UE le note a piè di pagina spezzano spesso la frase sui
+        # soggetti ammessi; la conferma vera resta EU_LEAD/EU_PARTNER più sotto.
+        window = cleaned[head.start():head.start() + (1200 if strict else 700)]
         match = pattern.search(window)
         if not match:
             continue
@@ -449,7 +455,10 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     fresh = []
     for candidate in unique:
         years = _years(candidate)
-        if years and max(years) <= today.year - 2:
+        # Nei topic UE l'anno è parte del codice (I3-2024-INV1 può scadere nel
+        # 2026): con una scadenza strutturata futura decide la scadenza.
+        structured_open = str(candidate.get("deadline_at") or "")[:10] >= today.isoformat()
+        if years and max(years) <= today.year - 2 and not structured_open:
             report["checks"].append({"url": candidate.get("url"), "title": candidate.get("title"),
                                      "source_id": candidate.get("source_id"), "status": "rejected",
                                      "reason": f"Avviso riferito al {max(years)}: non più aperto."})

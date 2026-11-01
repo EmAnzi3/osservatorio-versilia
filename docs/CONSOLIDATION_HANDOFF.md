@@ -15,6 +15,14 @@ mobile, sotto 440 px, l’header mostra solo il marchio OV senza la scritta
 sforava di ~60 px a 768). `test_site_chrome_browser.py` verifica la scritta
 nascosta sotto 440 px invece di misurarne la geometria.
 
+## Radar 2.0 — correzioni del qualificatore (31 ottobre 2026)
+
+Branch `fix/radar-qualifier-eu-topics`: il primo run di produzione del
+qualificatore non ha pubblicato nulla. L'anno nel codice di un topic UE non lo
+scarta più se la scadenza strutturata è futura; un'autorità pubblica locale nel
+consorzio come beneficiaria vale come partecipazione da partner. Dettagli in
+`docs/RADAR_2.md`. Fase 2 (pipeline unica) ancora da fare.
+
 ## Radar 2.0 — qualificazione automatica (31 ottobre 2026)
 
 Branch `feature/radar-discovery-overhaul`, presa in carico su richiesta del
