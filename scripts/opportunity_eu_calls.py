@@ -126,18 +126,65 @@ def pdf_text(url: str, *, timeout: int = 45, getter: Callable[..., bytes] = _get
     if not data.startswith(b"%PDF-"):
         raise ValueError("Il documento della call non è un PDF")
     reader = PdfReader(io.BytesIO(data))
-    return re.sub(r"\s+", " ", " ".join((page.extract_text() or "") for page in reader.pages[:120]))
+    return strip_running_headers([page.extract_text() or "" for page in reader.pages[:120]])
+
+
+def strip_running_headers(pages: list[str]) -> str:
+    """Testo del PDF senza l'intestazione ripetuta e il numero di pagina.
+
+    Nei documenti delle call ogni pagina si apre con «Call: <codice>: <titolo>»
+    e il numero di pagina: estratti di seguito, finivano in mezzo alle frasi
+    citate come requisito («…local 13 authorities can be…»).
+    """
+    flat = [re.sub(r"\s+", " ", page).strip() for page in pages]
+    header = ""
+    if len(flat) >= 3:
+        first = flat[len(flat) // 2]
+        for size in range(min(len(first), 300), 19, -1):
+            probe = first[:size]
+            if sum(1 for page in flat if page.startswith(probe)) >= max(3, len(flat) * 0.6):
+                header = probe
+                break
+    cleaned = []
+    for page in flat:
+        if header and page.startswith(header):
+            page = re.sub(r"^\s*\d{1,3}\s+", " ", page[len(header):])
+        cleaned.append(page)
+    return re.sub(r"\s+", " ", " ".join(cleaned)).strip()
+
+
+HEADING = re.compile(r"(?:Priority|Topic|Strand|Objective|Area|Lot)\s+\d+[a-z]?\s*[-–—:.]", re.I)
+LOOKBACK = 1500
+
+
+def _heading_before(document: str, position: int, floor: int) -> int:
+    """Inizio del titolo della priorità che precede il marcatore, se è vicino."""
+    window_start = max(floor, position - LOOKBACK)
+    headings = list(HEADING.finditer(document, window_start, position))
+    return headings[-1].start() if headings else position
 
 
 def topic_section(document: str, identifier: str) -> str:
-    """La parte del documento della call dedicata al topic (le call coprono più topic)."""
-    marker = re.search(r"\[\s*Topic\s+" + re.escape(identifier) + r"\s*\]", document, re.I)
-    if not marker:
+    """La parte del documento della call dedicata al topic (le call coprono più topic).
+
+    Il testo parte dal titolo della priorità che apre il topic e si ferma al
+    titolo della priorità successiva: la coda del topic precedente o l'inizio
+    di quello seguente non entrano nella sezione, così i requisiti citati sono
+    quelli del topic giusto.
+    """
+    markers = list(re.finditer(r"\[\s*Topic\s+([A-Z0-9-]+)\s*\]", document, re.I))
+    position = next((i for i, m in enumerate(markers) if m.group(1).upper() == identifier.upper()), None)
+    if position is None:
         return ""
-    following = re.search(r"\[\s*Topic\s+[A-Z0-9-]+\s*\]", document[marker.end():])
-    end = marker.end() + following.start() if following else marker.end() + 8000
-    # Il paragrafo che precede il marcatore apre la priorità: lo includiamo.
-    return document[max(0, marker.start() - 1500):end]
+    marker = markers[position]
+    floor = markers[position - 1].end() if position else 0
+    start = _heading_before(document, marker.start(), floor)
+    if position + 1 < len(markers):
+        following = markers[position + 1]
+        end = _heading_before(document, following.start(), marker.end())
+    else:
+        end = marker.end() + 8000
+    return document[start:end]
 
 
 def candidates(source: dict[str, Any], today: date, *, poster: Callable[..., bytes] = _post_multipart,
