@@ -33,13 +33,20 @@ ROOT = Path(__file__).resolve().parents[1]
 LIMITS = ROOT / 'experiments/a7-guided-explorer/limits-it.mjs'
 CSS = ROOT / 'assets/dossier-report.css'
 JS = ROOT / 'assets/dossier-report.js'
+APP_ICONS = ROOT / 'assets/app-parts/00.txt'
 BASE_URL = 'https://osservatorioversilia.it/dossier/'
 EXAMPLE_M2 = 80
 SOURCE_NAMES = [
+    ('rt-oraritb', 'Regione Toscana — Orari del trasporto pubblico (GTFS di autobus e treni)'),
     ('MATPEN', 'Istat — Pendolarismo per lavoro, Censimento 2021'),
     ('DICA_ASIA', 'Istat — Registro delle unità locali delle imprese (ASIA)'),
     ('risultati-economici-delle-imprese', 'Istat — Risultati economici delle imprese sul territorio'),
     ('SDMXWS', 'Istat — Censimento permanente: occupazione e disoccupazione'),
+    ('censimenti/popolazione-e-abitazioni', 'Istat — Censimento permanente: occupati che lavorano fuori Comune'),
+    ('aci.gov.it', 'ACI — Autoritratto, parco veicolare'),
+    ('piattaformaunicanazionale.it', 'Piattaforma Unica Nazionale dei punti di ricarica (MASE)'),
+    ('geo.agcom.it', 'AGCOM — Mappa della banda larga'),
+    ('percorsi/metodo', 'Osservatorio Versilia — Inventario dei percorsi pubblici'),
     ('PERMPOP/SUBCOM', 'Istat — Censimento permanente della popolazione e delle abitazioni'),
     ('Capacity', 'Istat — Capacità degli esercizi ricettivi'),
     ('capacita-degli-esercizi', 'Istat — Capacità degli esercizi ricettivi'),
@@ -56,6 +63,8 @@ SOURCE_NAMES = [
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
 ]
+MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
+          'novembre', 'dicembre']
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
 
 
@@ -82,12 +91,16 @@ def _elides(text: str) -> bool:
     return text.startswith('8') or whole == '11' or whole.startswith('11') and len(whole) in (4, 7)
 
 
+def _zero(text: str) -> bool:
+    return text.split(',')[0] == '0'
+
+
 def il(text: str) -> str:
-    return ('l’' if _elides(text) else 'il ') + text
+    return ('lo ' if _zero(text) else 'l’' if _elides(text) else 'il ') + text
 
 
 def al(text: str) -> str:
-    return ('all’' if _elides(text) else 'al ') + text
+    return ('allo ' if _zero(text) else 'all’' if _elides(text) else 'al ') + text
 
 
 def del_(text: str) -> str:
@@ -98,7 +111,7 @@ def del_(text: str) -> str:
 
 
 def dal(text: str) -> str:
-    return ('dall’' if _elides(text) else 'dal ') + text
+    return ('dallo ' if _zero(text) else 'dall’' if _elides(text) else 'dal ') + text
 
 
 def esc(text: str) -> str:
@@ -122,6 +135,30 @@ def source_name(url: str) -> str:
         if pattern in url:
             return name
     raise ValueError('fonte_senza_nome_pubblico:' + url)
+
+
+# ---------------------------------------------------------------------------
+# Icone e colori dei temi: gli stessi tracciati e la stessa palette del sito.
+
+# Il turismo nel sito sta dentro «Economia»: colore del tema, icona propria.
+EXTRA_ICONS = {'turismo': '<path d="M22 12a10.06 10.06 1 0 0-20 0Z"></path><path d="M12 12v8a2 2 0 0 0 4 0"></path>'
+                          '<path d="M12 2v1"></path>'}
+
+
+def theme_icons() -> dict[str, str]:
+    """Tracciati SVG di themeSvgPaths, letti dal runtime del sito per non duplicarli."""
+    block = APP_ICONS.read_text(encoding='utf-8').split('const themeSvgPaths = {', 1)[1].split('\n  };', 1)[0]
+    icons = {k: v.replace('\\"', '"') for k, v in re.findall(r"^\s*(\w+): '(.*)',?$", block, re.M)}
+    if len(icons) < 11:
+        raise ValueError('icone_tema_non_trovate')
+    return icons
+
+
+def dossier_icon(dossier: dict, size: int = 26) -> str:
+    paths = EXTRA_ICONS.get(dossier['slug']) or theme_icons()[dossier['theme']]
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
+            f'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" '
+            f'aria-hidden="true" focusable="false">{paths}</svg>')
 
 
 # ---------------------------------------------------------------------------
@@ -150,12 +187,13 @@ class Measure:
                 'change': lambda v: signed(v) + '%', 'points': lambda v: num(v, 1) + ' punti',
                 'per1000s': lambda v: signed(v, self.decimals) + ' ogni 1.000 abitanti', 'count': lambda v: num(v),
                 'nights': lambda v: num(v, 2) + ' notti', 'per100': lambda v: num(v, 1) + ' ogni 100',
-                'years': lambda v: num(v, 1) + ' anni',
+                'years': lambda v: num(v, 1) + ' anni', 'hours': lambda v: num(v, 1) + ' ore',
+                'rate1000': lambda v: num(v, self.decimals) + ' ogni 1.000 abitanti',
                 'per1000old': lambda v: num(v, 1) + ' ogni 1.000 anziani'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
-                'years': lambda v: num(v, 1), 'per1000old': lambda v: num(v, 1),
+                'years': lambda v: num(v, 1), 'hours': lambda v: num(v, 1), 'rate1000': lambda v: num(v, self.decimals), 'per1000old': lambda v: num(v, 1),
                 'eurm2': lambda v: num(v) + ' €'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
@@ -267,6 +305,9 @@ def period_label(period: str) -> str:
     match = re.fullmatch(r'(\d{4})-S([12])', period)
     if match:
         return f'{match.group(2)}° semestre {match.group(1)}'
+    day = re.fullmatch(r'(\d{4})-(\d{2})-(\d{2})', period)
+    if day:
+        return f'{int(day.group(3))} {MONTHS[int(day.group(2)) - 1]} {day.group(1)}'
     school = re.fullmatch(r'(\d{4})[-/](\d{2})', period)
     if school:
         return f'anno scolastico {school.group(1)}/{school.group(2)}'
@@ -1321,7 +1362,217 @@ def scuola(engine: Engine) -> dict:
              ('apprendimenti', 'Cosa imparano'), ('titoli', 'Gli adulti e lo studio'), ('spesa', 'Quanto spendono i Comuni')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola}
+# ---------------------------------------------------------------------------
+# Dossier «Muoversi in Versilia».
+
+def mobilita(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'outside': engine.measure('outside', 'outsideMunicipality', 'total',
+                                  'Occupati residenti che lavorano in un altro Comune, %', 'percent', 1),
+        'outbound': engine.measure('outbound', 'outboundCommutersRate', 'total',
+                                   'Residenti che escono dal Comune per lavorare, ogni 1.000 abitanti', 'per1000', 0,
+                                   benchmarks=TI, versilia=True),
+        'inbound': engine.measure('inbound', 'inboundCommutersRate', 'total',
+                                  'Lavoratori che entrano da altri Comuni, ogni 1.000 abitanti', 'per1000', 0,
+                                  benchmarks=TI, versilia=True),
+        'trips': engine.measure('trips', 'scheduledTplTripsPer1000', 'view:normalized',
+                                'Corse programmate di autobus e treni, ogni 1.000 abitanti', 'rate1000', 1),
+        'span': engine.measure('span', 'tplServiceSpan', 'total',
+                               'Ore fra la prima e l’ultima partenza programmata', 'hours', 1),
+        'stops': engine.measure('stops', 'activeTplAccessPoints', 'view:normalized',
+                                'Punti di fermata serviti, ogni 1.000 abitanti', 'rate1000', 1),
+        'cars': engine.measure('cars', 'motorization', 'total', 'Automobili ogni 1.000 abitanti', 'per1000', 0,
+                               benchmarks=TI),
+        'old_cars': engine.measure('old_cars', 'pollutingCars', 'total',
+                                   'Automobili delle classi più inquinanti (Euro 0-3), %', 'percent', 1, benchmarks=TI),
+        'ev': engine.measure('ev', 'evPoints', 'total', 'Punti di ricarica pubblici per auto elettriche, ogni 1.000 abitanti',
+                             'rate1000', 2),
+        'ftth': engine.measure('ftth', 'ftthCoverageDesi', 'total',
+                               'Famiglie raggiunte dalla fibra fino all’edificio, %', 'percent', 1, benchmarks=TI),
+        'routes': engine.measure('routes', 'slowMobilityRoutes', 'total',
+                                 'Sentieri, cammini e percorsi in bici che attraversano il Comune', 'count', 0),
+        'bike': engine.measure('bike', 'slowMobilityBici', 'total', 'Percorsi in bici che attraversano il Comune',
+                               'count', 0),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+
+    # 01 — pendolari
+    out, outb, inb = m['outside'], m['outbound'], m['inbound']
+    majority = [c for c, v, _ in out.ranking if v > 50]
+    out_text = (
+        f'Nel {out.period} lavorava fuori dal proprio Comune una quota di occupati che va '
+        f'{dal(pct(lo("outside")[1]))} di {nm(lo("outside")[0])} {al(pct(hi("outside")[1]))} di <b>{nm(hi("outside")[0])}</b>'
+        + (f': a {join_names([nm(c) for c in majority])} più di metà dei lavoratori si sposta ogni giorno in un altro '
+           f'Comune.' if majority else '.'))
+    flow_text = (
+        f'In rapporto alla popolazione, in Versilia escono per lavoro <b>{num(outb.versilia)} residenti ogni 1.000 '
+        f'abitanti</b> ({num(outb.benchmarks["tuscany"])} in Toscana) e ne entrano {num(inb.versilia)} da altri Comuni '
+        f'({num(inb.benchmarks["tuscany"])} in Toscana). Il Comune che attira più lavoratori da fuori è '
+        f'<b>{nm(hi("inbound")[0])}</b>, con {num(hi("inbound")[1])} ingressi ogni 1.000 abitanti; quello da cui si '
+        f'esce di più è {nm(hi("outbound")[0])}, con {num(hi("outbound")[1])}.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(out.values[c]))} degli occupati residenti lavora in un altro Comune; '
+                  f'ogni 1.000 abitanti escono {num(outb.values[c])} lavoratori e ne entrano {num(inb.values[c])}.')
+              for c in codes}
+    ch1 = chapter(1, 'pendolari', 'Chi parte e chi arriva', 'Quante persone si spostano ogni giorno per lavorare?',
+        f'<p>{out_text}</p>{bar_chart(out, N, "Occupati che lavorano fuori dal proprio Comune")}'
+        f'<p>{flow_text}</p>{bar_chart(outb, N, "Residenti che escono per lavorare")}'
+        f'{bar_chart(inb, N, "Lavoratori che entrano da altri Comuni")}'
+        '<p>Il saldo fra chi entra e chi esce e quanto lavoro resta dentro ogni Comune sono nel dossier '
+        '<a href="../lavoro/#pendolari">Lavorare in Versilia</a>.</p>' + town_blocks(towns1),
+        'Gli spostamenti per lavoro decidono gli orari del traffico, la domanda di autobus e treni e quanto tempo le '
+        'famiglie passano in viaggio. Il censimento conta solo chi va al lavoro, non studenti, turisti o chi si sposta '
+        'per fare la spesa o per curarsi; e i flussi sono di qualche anno fa, rapportati alla popolazione di oggi.')
+
+    # 02 — trasporto pubblico
+    trp, spn = m['trips'], m['span']
+    long_day = [c for c, v, _ in spn.ranking if v >= 22]
+    short_day = sorted((c for c in codes if c not in long_day), key=lambda c: spn.values[c])
+    trp_text = (
+        f'Nel giorno feriale d’estate preso come riferimento ({period_label(trp.period)}) gli orari ufficiali '
+        f'prevedevano da <b>{num(lo("trips")[1], 1)} corse di autobus e treni ogni 1.000 abitanti</b> a '
+        f'{nm(lo("trips")[0])} a {num(hi("trips")[1], 1)} a {nm(hi("trips")[0])}.')
+    spn_text = (
+        (f'Il servizio copre quasi tutta la giornata, 22 ore o più fra la prima e l’ultima partenza, a '
+         f'{join_names([nm(c) for c in long_day])}' if long_day else 'Nessun Comune ha corse lungo tutta la giornata')
+        + (f'; a {join_names([nm(c) for c in short_day])} la giornata si ferma prima, con '
+           + ', '.join(f'{num(spn.values[c], 1)} ore a {nm(c)}' for c in short_day) + '.' if short_day else '.'))
+    stops = m['stops']
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {num(trp.values[c], 1)} corse ogni 1.000 abitanti, {num(spn.values[c], 1)} '
+                  f'ore fra la prima e l’ultima partenza, {num(stops.values[c], 1)} punti di fermata ogni 1.000 abitanti.')
+              for c in codes}
+    ch2 = chapter(2, 'trasporto-pubblico', 'Autobus e treni', 'Quante corse passano e per quante ore al giorno?',
+        f'<p>{trp_text}</p>{bar_chart(trp, N, "Corse di autobus e treni programmate", "Una corsa conta per ogni Comune in cui ferma: un treno che attraversa la Versilia vale per ciascuno dei Comuni serviti.")}'
+        f'<p>{spn_text}</p>{bar_chart(spn, N, "Durata della giornata di servizio")}'
+        f'{bar_chart(stops, N, "Punti di fermata serviti")}' + town_blocks(towns2),
+        'Sono gli orari programmati di un solo giorno feriale d’estate, non il servizio di tutto l’anno, i ritardi o i '
+        'passeggeri. Molte corse sono in poche ore, per cui una giornata lunga non vuol dire autobus frequenti; e una '
+        'fermata nell’elenco ufficiale non dice quanto sia comoda da raggiungere a piedi.')
+
+    # 03 — automobili
+    car, old = m['cars'], m['old_cars']
+    old_above = [c for c in codes if old.values[c] > old.benchmarks['tuscany']]
+    car_text = (
+        f'Nel {car.period} si va da {num(lo("cars")[1])} automobili ogni 1.000 abitanti a {nm(lo("cars")[0])} a '
+        f'<b>{num(hi("cars")[1])} a {nm(hi("cars")[0])}</b>, contro {num(car.benchmarks["tuscany"])} in Toscana e '
+        f'{num(car.benchmarks["italy"])} in Italia.')
+    old_text = (
+        f'Le automobili delle classi più vecchie e inquinanti, da Euro 0 a Euro 3, sono '
+        f'{dal(pct(lo("old_cars")[1]))} di {nm(lo("old_cars")[0])} {al(pct(hi("old_cars")[1]))} di {nm(hi("old_cars")[0])}: '
+        f'sopra la media toscana ({pct(old.benchmarks["tuscany"])}) in {count_words(len(old_above), total)}, mentre in '
+        f'Italia sono {il(pct(old.benchmarks["italy"]))}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {num(car.values[c])} automobili ogni 1.000 abitanti; '
+                  f'{il(pct(old.values[c]))} è di classe Euro 0-3.') for c in codes}
+    ch3 = chapter(3, 'automobili', 'Le automobili', 'Quante auto ci sono e quanto sono vecchie?',
+        f'<p>{car_text}</p>{bar_chart(car, N, "Automobili ogni 1.000 abitanti")}'
+        f'<p>{old_text}</p>{bar_chart(old, N, "Automobili Euro 0-3")}' + town_blocks(towns3),
+        'Tante auto per abitante indicano spesso che, per spostarsi, alternative comode non ci sono. Le auto più vecchie '
+        'inquinano di più e rischiano limitazioni alla circolazione. I veicoli sono contati dove è residente il '
+        'proprietario: le auto aziendali e a noleggio possono risultare intestate altrove.')
+
+    # 04 — ricarica elettrica
+    ev = m['ev']
+    ev_text = (
+        f'Nel {ev.period} i punti di ricarica pubblici per auto elettriche vanno da {num(lo("ev")[1], 2)} ogni 1.000 '
+        f'abitanti a {nm(lo("ev")[0])} a <b>{num(hi("ev")[1], 2)} a {nm(hi("ev")[0])}</b>.')
+    towns4 = {c: f'<b>{esc(nm(c))}</b>: {num(ev.values[c], 2)} punti di ricarica pubblici ogni 1.000 abitanti.'
+              for c in codes}
+    ch4 = chapter(4, 'ricarica', 'Ricarica elettrica', 'Dove si può ricaricare un’auto elettrica?',
+        f'<p>{ev_text}</p>{bar_chart(ev, N, "Punti di ricarica pubblici")}' + town_blocks(towns4),
+        'Chi non ha un garage dipende dalle colonnine pubbliche per passare all’elettrico. Il dato conta i punti attivi '
+        'registrati nella piattaforma nazionale, non la loro potenza né quanto sono usati; nei Comuni turistici le '
+        'colonnine servono anche i visitatori, non solo i residenti.')
+
+    # 05 — fibra
+    ft = m['ftth']
+    ft_below = [c for c in codes if ft.values[c] < ft.benchmarks['tuscany']]
+    ft_none = [c for c in codes if ft.values[c] < 1]
+    ft_text = (
+        f'Secondo AGCOM, {al(period_label(ft.period))} la fibra fino all’edificio raggiungeva {il(pct(hi("ftth")[1]))} '
+        f'delle famiglie a <b>{nm(hi("ftth")[0])}</b>'
+        + (f', ma quasi nessuna a {join_names([nm(c) for c in ft_none])}' if ft_none else
+           f' e {il(pct(lo("ftth")[1]))} a {nm(lo("ftth")[0])}')
+        + f'. In Toscana la quota è {il(pct(ft.benchmarks["tuscany"]))}, in Italia {il(pct(ft.benchmarks["italy"]))}: '
+          f'sono sotto la media toscana {count_words(len(ft_below), total)}.')
+    towns5 = {c: f'<b>{esc(nm(c))}</b>: {il(pct(ft.values[c]))} delle famiglie è raggiunto dalla fibra fino all’edificio '
+                 f'(Toscana {pct(ft.benchmarks["tuscany"])}).' for c in codes}
+    ch5 = chapter(5, 'fibra', 'Internet veloce', 'Quante famiglie possono avere la fibra fino a casa?',
+        f'<p>{ft_text}</p>{bar_chart(ft, N, "Famiglie raggiunte dalla fibra fino all’edificio")}' + town_blocks(towns5),
+        'Una buona connessione permette di lavorare e studiare da casa, e quindi di spostarsi meno. Il dato dice dove la '
+        'rete è disponibile secondo gli operatori, non quante famiglie l’hanno attivata né la velocità reale; dove la '
+        'fibra non arriva all’edificio ci possono essere altre tecnologie, più lente.')
+
+    # 06 — percorsi
+    rt, bk = m['routes'], m['bike']
+    rt_text = (
+        f'L’inventario dei percorsi pubblici verificati conta da {num(lo("routes")[1])} sentieri, cammini e percorsi in '
+        f'bici che attraversano {nm(lo("routes")[0])} a <b>{num(hi("routes")[1])} a {nm(hi("routes")[0])}</b>; '
+        f'quelli in bici sono da {num(lo("bike")[1])} a {num(hi("bike")[1])} per Comune. Uno stesso percorso può '
+        f'attraversare più Comuni, perciò i numeri non si sommano.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(rt.values[c])} percorsi pubblici attraversano il Comune, di cui '
+                  f'{num(bk.values[c])} in bici.') for c in codes}
+    ch6 = chapter(6, 'percorsi', 'A piedi e in bici', 'Quanti percorsi ci sono per camminare e pedalare?',
+        f'<p>{rt_text}</p>{bar_chart(rt, N, "Percorsi pubblici che attraversano il Comune")}'
+        f'{bar_chart(bk, N, "Percorsi in bici")}' + town_blocks(towns6),
+        'Sentieri e ciclovie servono al tempo libero e al turismo, e in parte anche agli spostamenti di tutti i giorni. '
+        'L’inventario conta i percorsi, non i chilometri, e non dice se sono sicuri, illuminati o adatti a chi va al '
+        'lavoro o a scuola.')
+
+    key_points = [
+        (num(outb.versilia), f'Residenti che escono dal Comune per lavorare, ogni 1.000 abitanti della Versilia. In '
+                             f'Toscana {num(outb.benchmarks["tuscany"])}.', 'pendolari'),
+        (num(hi('inbound')[1]), f'Lavoratori che entrano ogni 1.000 abitanti a {nm(hi("inbound")[0])}, il Comune che ne '
+                                f'attira di più.', 'pendolari'),
+        (f'{num(lo("trips")[1], 1)}–{num(hi("trips")[1], 1)}',
+         f'Corse di autobus e treni ogni 1.000 abitanti in un giorno feriale d’estate, da {nm(lo("trips")[0])} a '
+         f'{nm(hi("trips")[0])}.', 'trasporto-pubblico'),
+        (num(hi('cars')[1]), f'Automobili ogni 1.000 abitanti a {nm(hi("cars")[0])}, il valore più alto. In Toscana '
+                             f'{num(car.benchmarks["tuscany"])}.', 'automobili'),
+        (num(hi('ev')[1], 2), f'Punti di ricarica pubblici ogni 1.000 abitanti a {nm(hi("ev")[0])}; negli altri Comuni '
+                              f'al massimo {num(m["ev"].ranking[1][1], 2)}.', 'ricarica'),
+        (f'{len(ft_below)} su {total}', f'Comuni con la fibra fino all’edificio sotto la media toscana '
+                                        f'({pct(ft.benchmarks["tuscany"])} delle famiglie).', 'fibra'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Occupati che lavorano fuori Comune', pct(out.values[c]), f'{ordinal(out.rank(c))} su 7'),
+        summary_item('Lavoratori in entrata ogni 1.000 abitanti', num(inb.values[c]), f'Toscana {num(inb.benchmarks["tuscany"])}'),
+        summary_item('Corse di autobus e treni ogni 1.000 abitanti', num(trp.values[c], 1), f'{ordinal(trp.rank(c))} su 7'),
+        summary_item('Automobili ogni 1.000 abitanti', num(car.values[c]), f'Toscana {num(car.benchmarks["tuscany"])}'),
+        summary_item('Automobili Euro 0-3', pct(old.values[c]), f'Toscana {pct(old.benchmarks["tuscany"])}'),
+        summary_item('Punti di ricarica ogni 1.000 abitanti', num(ev.values[c], 2), f'{ordinal(ev.rank(c))} su 7'),
+        summary_item('Famiglie raggiunte dalla fibra', pct(ft.values[c]), f'Toscana {pct(ft.benchmarks["tuscany"])}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quante persone usano davvero autobus e treni: gli orari dicono quante corse ci sono, non quanti passeggeri.',
+        'Come si spostano studenti, anziani e turisti: i dati sul pendolarismo riguardano solo chi va al lavoro.',
+        'Quanto traffico c’è d’estate e quanto tempo si perde in coda.',
+        'Quanti chilometri di piste ciclabili ci sono in ogni Comune e in che stato sono.',
+        'Quanto spendono le famiglie per muoversi, fra carburante, abbonamenti e manutenzione dell’auto.',
+        'Quante famiglie hanno attivato la fibra e a che velocità navigano davvero.',
+    ]
+    return dict(
+        slug='mobilita', title='Muoversi in Versilia', eyebrow='Dossier · Mobilità e collegamenti',
+        unknown_topic='sulla mobilità', theme='mobilita', theme_label='Tutti i dati sulla mobilità',
+        lead='Pendolari, autobus e treni, automobili, ricarica elettrica, fibra e percorsi a piedi e in bici: una lettura '
+             'dei dati pubblici sui sette Comuni della Versilia.',
+        description='Pendolarismo per lavoro, corse di autobus e treni, automobili, punti di ricarica, copertura in fibra e '
+                    'percorsi a piedi e in bici nei sette Comuni della Versilia, con confronti con Toscana e Italia.',
+        periods=f'Pendolarismo {out.period}, orari del trasporto pubblico {period_label(trp.period)}, automobili '
+                f'{car.period}, punti di ricarica {ev.period}, fibra {period_label(ft.period)}, percorsi '
+                f'{period_label(rt.period)}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('pendolari', 'Chi parte e chi arriva'), ('trasporto-pubblico', 'Autobus e treni'),
+             ('automobili', 'Le automobili'), ('ricarica', 'Ricarica elettrica'), ('fibra', 'Internet veloce'),
+             ('percorsi', 'A piedi e in bici')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita}
 
 
 # ---------------------------------------------------------------------------
@@ -1338,7 +1589,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     unit = {'eur': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
             'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
             'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti',
-            'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'per1000old': 'ogni 1.000 residenti di 65 anni e più'}
+            'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -1396,10 +1647,10 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml"><link rel="manifest" href="../../site.webmanifest">
 {styles}<link rel="stylesheet" href="../report.css"><meta name="theme-color" content="#0F3654">
 </head><body class="antialiased" data-page="special" data-theme="" data-town="" data-prerendered="true">
-{shell.header}<div id="app"><main id="dossier" class="dr" data-dossier="{dossier['slug']}">
+{shell.header}<div id="app"><main id="dossier" class="dr" data-dossier="{dossier['slug']}" data-dr-theme="{dossier['theme']}">
 <header class="dr-hero"><div class="dr-wrap">
 <nav class="dr-crumbs" aria-label="Percorso pagina"><a href="../../">Home</a> · <a href="../">Dossier</a></nav>
-<p class="dr-eyebrow">{esc(dossier['eyebrow'])}</p>
+<p class="dr-eyebrow"><span class="dr-icon">{dossier_icon(dossier, 22)}</span>{esc(dossier['eyebrow'])}</p>
 <h1>{esc(dossier['title'])}</h1>
 <p class="dr-lead">{esc(dossier['lead'])}</p>
 <p class="dr-meta">Relazione dell’Osservatorio Versilia · catalogo dati aggiornato al {built}<br>{esc(dossier['periods'])}</p>
@@ -1439,13 +1690,14 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani e sulla scuola, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola e sulla mobilità, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
     big, text, _ = d['key_points'][0]
-    return (f'<li class="dr-card"><a class="dr-card-link" href="{d["slug"]}/">'
-            f'<p class="dr-eyebrow">{esc(d["eyebrow"].split(" · ", 1)[-1])}</p>'
+    return (f'<li class="dr-card" data-dr-theme="{d["theme"]}"><a class="dr-card-link" href="{d["slug"]}/">'
+            f'<p class="dr-eyebrow"><span class="dr-icon">{dossier_icon(d, 24)}</span>'
+            f'{esc(d["eyebrow"].split(" · ", 1)[-1])}</p>'
             f'<h2>{esc(d["title"])}</h2><p class="dr-card-lead">{esc(d["lead"].split(": una lettura")[0])}.</p>'
             f'<p class="dr-card-figure"><b>{esc(big)}</b><span>{esc(text)}</span></p>'
             f'<span class="dr-card-more">Leggi il dossier</span></a>'
@@ -1459,7 +1711,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani e scuola.')
+                   'anziani, scuola e mobilità.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
