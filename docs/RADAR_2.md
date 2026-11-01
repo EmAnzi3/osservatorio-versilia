@@ -86,6 +86,19 @@ Sui 101 topic UE in coda il risultato è CERV-2026-DAPHNE-PREVENTION e
 CERV-2026-DAPHNE-PROTECTION come partner (scadenza 5 novembre 2026), oltre ai
 due DAPHNE già pubblicati; nessun altro topic cambia esito.
 
+Verifica sul testo (1° novembre 2026): i topic DAPHNE condividono un'unica call
+fiche, quindi il qualificatore leggeva per tutti lo stesso documento e citava la
+frase di un'altra priorità. Per PROTECTION (priorità 2) e PREVENTION
+(priorità 3) la call fiche richiede un consorzio di almeno due beneficiari con
+capofila non profit; gli enti pubblici possono essere beneficiari e il
+coinvolgimento dell'autorità pubblica è raccomandato, non obbligatorio. Il ruolo
+«partner» era corretto. Le due schede ora sono verificate come CONVENTION-DIR e
+CHILDREN (call fiche + portale, nello stesso run) e, quando la verifica riesce,
+sostituiscono quelle automatiche sullo stesso URL (`replacedAutoQualified`).
+Se la verifica non riesce, la scheda automatica resta. Resta da correggere nel
+qualificatore l'attribuzione dei requisiti quando più topic condividono un
+documento.
+
 ## Fase successiva
 
 Il motore è ancora una catena di sette strati che si sostituiscono funzioni a

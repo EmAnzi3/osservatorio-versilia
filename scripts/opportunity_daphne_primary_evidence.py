@@ -24,6 +24,10 @@ PDF_URL = (
 TOPICS = {
     "CERV-2026-DAPHNE-CONVENTION-DIR": "convention",
     "CERV-2026-DAPHNE-CHILDREN": "children",
+    # Priorità 2 e 3: consorzio con capofila non profit; l'autorità pubblica
+    # è raccomandata (beneficiario, partner associato o lettera di supporto).
+    "CERV-2026-DAPHNE-PROTECTION": "partner_recommended",
+    "CERV-2026-DAPHNE-PREVENTION": "partner_recommended",
 }
 DEADLINE = date(2026, 11, 5)
 MAX_PDF_BYTES = 12 * 1024 * 1024
@@ -58,6 +62,7 @@ def validate_pdf_pages(pages: dict[int, str], topic: str) -> list[str]:
         raise PrimaryEvidenceError("Topic DAPHNE non autorizzato")
     intro = _fold(pages.get(3, ""))
     eligibility = _fold(pages.get(31, ""))
+    public_authority = _fold(pages.get(32, ""))
     scope = _fold(pages.get(14, ""))
     compact = re.sub(r"[^a-z0-9]", "", intro)
     if re.sub(r"[^a-z0-9]", "", topic.casefold()) not in compact:
@@ -69,6 +74,14 @@ def validate_pdf_pages(pages: dict[int, str], topic: str) -> list[str]:
             "for priority 1 and 4, proposals can be submitted",
         )
         texts = (eligibility, eligibility, eligibility)
+    elif TOPICS[topic] == "partner_recommended":
+        terms = (
+            "for priorities 2, 3, and 5, proposals must be submitted by a consortium of at least",
+            "the beneficiaries must be public entities or private organisations",
+            "for priorities 1, 2, 3 and 5: lead applicants must be non-profit making",
+            "for priority 2 and 3: applicants are encouraged to involve a public authority",
+        )
+        texts = (eligibility, eligibility, eligibility, public_authority)
     else:
         terms = (
             "the participation of a public authority is mandatory under this priority",
@@ -128,7 +141,7 @@ def fetch_pdf_live(url: str = PDF_URL) -> tuple[dict[int, str], dict]:
         reader = PdfReader(BytesIO(data), strict=False)
         if not 32 <= len(reader.pages) <= PAGE_LIMIT:
             raise PrimaryEvidenceError("PDF UE: numero pagine inatteso")
-        pages = {index: reader.pages[index].extract_text() or "" for index in (3, 14, 31)}
+        pages = {index: reader.pages[index].extract_text() or "" for index in (3, 14, 31, 32)}
     except PrimaryEvidenceError:
         raise
     except Exception as exc:

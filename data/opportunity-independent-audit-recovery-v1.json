@@ -311,6 +311,124 @@
       "geographic_scope": "Italia o UE secondo la call",
       "condition_label": "Partnership e requisiti del proponente",
       "primary_composite_topic": "CERV-2026-DAPHNE-CHILDREN"
+    },
+    {
+      "coverage_id": "eu-cerv-daphne-protection-2026",
+      "source_id": "eu-cerv",
+      "source_label": "Unione europea · CERV",
+      "publisher": "Commissione europea · DG JUST",
+      "title": "CERV 2026 DAPHNE · Protezione e sostegno alle vittime di violenza di genere — Comune partner",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CERV-2026-DAPHNE-PROTECTION",
+      "required_terms": [
+        "CERV-2026-DAPHNE-PROTECTION",
+        "05 November 2026",
+        "public authority"
+      ],
+      "published_at": "2026-07-07",
+      "deadline_at": "2026-11-05",
+      "deadline_time": "17:00",
+      "lifecycle_stage": "application_open",
+      "category": "welfare",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "description": "CERV DAPHNE: servizi di protezione e sostegno a vittime e sopravvissute alla violenza di genere, con autorità pubblica raccomandata nel partenariato.",
+      "project_requirements": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Ente pubblico partner, non richiedente principale",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Partnership e requisiti del proponente",
+      "primary_composite_topic": "CERV-2026-DAPHNE-PROTECTION"
+    },
+    {
+      "coverage_id": "eu-cerv-daphne-prevention-2026",
+      "source_id": "eu-cerv",
+      "source_label": "Unione europea · CERV",
+      "publisher": "Commissione europea · DG JUST",
+      "title": "CERV 2026 DAPHNE · Prevenzione della violenza di genere — Comune partner",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CERV-2026-DAPHNE-PREVENTION",
+      "required_terms": [
+        "CERV-2026-DAPHNE-PREVENTION",
+        "05 November 2026",
+        "public authority"
+      ],
+      "published_at": "2026-07-07",
+      "deadline_at": "2026-11-05",
+      "deadline_time": "17:00",
+      "lifecycle_stage": "application_open",
+      "category": "welfare",
+      "municipality_role": "partner",
+      "municipal_relevance_class": "partner",
+      "description": "CERV DAPHNE: azioni mirate di prevenzione della violenza di genere, con autorità pubblica raccomandata nel partenariato.",
+      "project_requirements": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio.",
+      "municipality_status_overrides": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Consorzio di almeno due beneficiari con capofila non profit; il Comune può entrare come beneficiario partner o partner associato, oppure sostenere il progetto con una lettera di supporto. Il coinvolgimento di un'autorità pubblica è raccomandato e premiato nel punteggio, non obbligatorio."
+        }
+      },
+      "allow_recent_evidence_fallback": false,
+      "review_policy": "opportunistic",
+      "applicant_type": "Ente pubblico partner, non richiedente principale",
+      "final_beneficiaries": "Comunità e servizi locali dei Comuni della Versilia",
+      "geographic_scope": "Italia o UE secondo la call",
+      "condition_label": "Partnership e requisiti del proponente",
+      "primary_composite_topic": "CERV-2026-DAPHNE-PREVENTION"
     }
   ]
 }

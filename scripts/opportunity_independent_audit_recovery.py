@@ -18,6 +18,7 @@ from urllib.parse import urlsplit
 import run_opportunity_radar_v04 as core
 import opportunity_discovery_resilient as discovery
 import opportunity_daphne_primary_evidence as daphne
+import opportunity_qualifier as auto_qualifier
 
 ROOT = Path(__file__).resolve().parents[1]
 RECOVERY_PATH = ROOT / "data" / "opportunity-independent-audit-recovery-v1.json"
@@ -120,6 +121,7 @@ def apply(
     urls = {normalized(str(x.get("url") or "")) for x in current}
     verified = []
     already = []
+    replaced = []
     pending = []
     expired = []
     # Non usare i retry generici da 30 s x 2 dell'engine: holdout non critici
@@ -129,7 +131,13 @@ def apply(
         key = str(entry["coverage_id"])
         url = str(entry["url"])
         candidate_urls = [url] + [str(x["url"]) for x in entry.get("alternate_primary_pages") or []]
-        if key in ids or any(normalized(candidate_url) in urls for candidate_url in candidate_urls):
+        candidate_keys = {normalized(candidate_url) for candidate_url in candidate_urls}
+        # Una scheda qualificata in automatico sullo stesso URL non è una
+        # copertura equivalente: la verifica documentale la sostituisce.
+        auto_matches = [x for x in current
+                        if x.get("verification_status") == auto_qualifier.VERIFICATION_STATUS
+                        and normalized(str(x.get("url") or "")) in candidate_keys]
+        if key in ids or (not auto_matches and candidate_keys & urls):
             already.append(key)
             continue
         if date.fromisoformat(str(entry["deadline_at"])) < today:
@@ -221,6 +229,10 @@ def apply(
             item["applicant_eligibility"] = "not_direct_applicant"
             item["territorial_relevance"] = "indirect"
         item["municipal_relevance_class"] = str(entry["municipal_relevance_class"])
+        if auto_matches:
+            result["opportunities"] = [x for x in result.get("opportunities") or []
+                                       if not any(x is match for match in auto_matches)]
+            replaced.append(key)
         result.setdefault("opportunities", []).append(item)
         ids.add(key)
         urls.add(normalized(str(selected_entry["url"])))
@@ -232,6 +244,7 @@ def apply(
         "checked": len(verified) + len(already) + len(pending) + len(expired),
         "promoted": verified,
         "alreadyRepresented": already,
+        "replacedAutoQualified": replaced,
         "pending": pending,
         "expired": expired,
         "blocksPublication": False,
