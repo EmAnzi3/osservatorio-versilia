@@ -489,6 +489,7 @@ def build_report(
             "unreadableChecks": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "unreadable"],
         },
         "sourcesToRepair": list(current.get("sourcesToRepair") or []),
+        "sourcesBlockedCovered": list(current.get("sourcesBlockedCovered") or []),
         "detectionLag": dict(current.get("detectionLag") or {}),
         "diagnostic": diagnostic or {},
         "errors": load_errors,
@@ -570,6 +571,12 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         lines.extend(["", f"## Fonti da riparare ({len(repair)})", "",
                       "Fonti raggiunte che non producono segnalazioni: senza intervento il Radar non può vedere i loro bandi.", ""])
         for row in repair[:detail_limit]:
+            lines.append(f"- `{row.get('sourceId')}`: {row.get('reason')}")
+    covered = report.get("sourcesBlockedCovered") or []
+    if covered:
+        lines.extend(["", f"## Fonti bloccate ma coperte ({len(covered)})", "",
+                      "Il sito rifiuta i server della CI; i suoi bandi arrivano da altre fonti monitorate.", ""])
+        for row in covered[:detail_limit]:
             lines.append(f"- `{row.get('sourceId')}`: {row.get('reason')}")
     lag = report.get("detectionLag") or {}
     if lag.get("sample"):

@@ -574,10 +574,30 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
                  towns=core.TOWNS, document_links=links)
 
 
+# Fonti che bloccano i server della CI (firewall) e i cui bandi per i Comuni
+# arrivano comunque da altre fonti monitorate: il Ministero che emana i decreti
+# e l'ANCI che li rilancia. Se il blocco è del sito e almeno una fonte di
+# copertura risponde, la fonte non è «da riparare» ma «bloccata e coperta».
+COVERED_WHEN_BLOCKED = {
+    "gse": ("mase-bandi", "anci-nazionale", "anci-toscana"),
+}
+BLOCK_CLASSES = {"http_401", "http_403", "http_403_waf", "http_429"}
+
+
+def _blocked_by_site(state: dict[str, Any]) -> bool:
+    classes = set(state.get("failureClasses") or [])
+    for endpoint in state.get("endpointResults") or []:
+        for key in ("failureClass", "initialFailureClass", "terminalFailureClass"):
+            if endpoint.get(key):
+                classes.add(endpoint[key])
+    return bool(classes) and classes <= BLOCK_CLASSES
+
+
 def track_silent_zero(result: dict[str, Any], previous: dict[str, Any] | None) -> list[dict[str, Any]]:
     """Giorni consecutivi senza candidati per fonte; elenca quelle da riparare."""
     before = {s.get("sourceId"): s for s in (previous or {}).get("discoverySources") or []}
-    broken = []
+    status = {s.get("sourceId"): s.get("status") for s in result.get("discoverySources") or []}
+    broken, covered = [], []
     for state in result.get("discoverySources") or []:
         if state.get("status") == "deferred":
             state["zeroStreak"] = (before.get(state.get("sourceId")) or {}).get("zeroStreak", 0)
@@ -585,6 +605,12 @@ def track_silent_zero(result: dict[str, Any], previous: dict[str, Any] | None) -
         zero = bool(state.get("silentZero"))
         state["zeroStreak"] = (int((before.get(state.get("sourceId")) or {}).get("zeroStreak") or 0) + 1) if zero else 0
         empty_page = zero and 0 < int(state.get("listingChars") or 0) < 1500
+        backups = [b for b in COVERED_WHEN_BLOCKED.get(state.get("sourceId"), ()) if status.get(b) == "ok"]
+        if state.get("status") == "error" and backups and _blocked_by_site(state):
+            covered.append({"sourceId": state.get("sourceId"), "coveredBy": backups,
+                            "reason": "il sito blocca i server della CI; i suoi bandi per i Comuni arrivano da "
+                                      + ", ".join(backups)})
+            continue
         if state.get("status") == "error" or empty_page or state["zeroStreak"] >= 14:
             broken.append({"sourceId": state.get("sourceId"), "status": state.get("status"),
                            "zeroStreak": state["zeroStreak"], "listingChars": state.get("listingChars"),
@@ -592,6 +618,7 @@ def track_silent_zero(result: dict[str, Any], previous: dict[str, Any] | None) -
                                       "pagina quasi vuota: probabilmente generata via JavaScript o cambiata" if empty_page
                                       else f"nessun candidato da {state['zeroStreak']} giorni")})
     result["sourcesToRepair"] = broken
+    result["sourcesBlockedCovered"] = covered
     result.setdefault("counts", {})["sourcesToRepair"] = len(broken)
     return broken
 
