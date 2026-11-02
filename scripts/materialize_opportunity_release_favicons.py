@@ -36,6 +36,10 @@ _HOST_ALIASES = {
     "www.urban-initiative.eu": "eu-eui",
     "new-european-bauhaus.europa.eu": "eu-neb",
     "avvisibandi.sport.governo.it": "pcm-famiglia",
+    # Domini ufficiali che il qualificatore automatico può pubblicare.
+    "sviluppo.toscana.it": "sviluppo-toscana",
+    "fondazionecarilucca.it": "fondazione-cr-lucca",
+    "gse.it": "gse",
 }
 
 # Source-mark locali per domini indipendenti non ancora dotati di asset acquisito.
@@ -63,6 +67,15 @@ _GENERATED_HOST_MARKS = {
     "trunsport.eu": "TRU",
     "anci.lombardia.it": "ANCI",
     "anciliguria.it": "ANCI",
+    "anciabruzzo.it": "ANCI",
+    "anci.it": "ANCI",
+    "ancitoscana.it": "ANCI",
+    "invitalia.it": "INV",
+    "cassaddpp.it": "CDP",
+    "italiadomani.gov.it": "PNRR",
+    "interregeurope.eu": "IE",
+    "urbact.eu": "URB",
+    "interreg-maritime.eu": "MAR",
 }
 
 
