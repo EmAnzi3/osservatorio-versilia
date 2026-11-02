@@ -1041,7 +1041,7 @@ body[data-theme="istruzione"]{--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;
 body[data-theme="salute"]{--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
 body[data-theme="mobilita"]{--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
 body[data-theme="sicurezza"]{--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
-body[data-theme="abitare"]{--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
+body[data-theme="abitare"]{--ds-theme-accent:#8e5a46;--ds-theme-dark:#734637;--ds-theme-soft:#fbf4f1;--ds-theme-line:#e6d3ca}
 body[data-theme="ambiente"]{--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
 body[data-theme="bilanci"]{--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
 body[data-theme="comunita"]{--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
@@ -1225,7 +1225,7 @@ main.a5-editorial-pilot .context-nav-links a[data-context-theme="salute"]:not(.a
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="mobilita"]:not(.active){border-color:#c5dfe9;color:#16749a;background:#f1f9fc}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="sicurezza"]:not(.active){border-color:#ebcfbd;color:#a75a29;background:#fff7f1}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="ambiente"]:not(.active){border-color:#cbdfc5;color:#4d873f;background:#f4faf2}
-main.a5-editorial-pilot .context-nav-links a[data-context-theme="abitare"]:not(.active){border-color:#d7d0e9;color:#6d5ca6;background:#f8f6fc}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="abitare"]:not(.active){border-color:#e6d3ca;color:#8e5a46;background:#fbf4f1}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="bilanci"]:not(.active){border-color:#b9c5cf;color:#425c6b;background:#f0f4f6}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="comunita"]:not(.active){border-color:#d7bfd1;color:#7a456b;background:#f8f0f5}
 
@@ -3487,7 +3487,7 @@ body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[dat
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="salute"]){--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="mobilita"]){--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="sicurezza"]){--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
-body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="abitare"]){--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
+body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="abitare"]){--ds-theme-accent:#8e5a46;--ds-theme-dark:#734637;--ds-theme-soft:#fbf4f1;--ds-theme-line:#e6d3ca}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="ambiente"]){--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="bilanci"]){--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="comunita"]){--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
@@ -3519,7 +3519,7 @@ body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-prof
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="salute"]{--a5-pill-accent:#aa465b;--a5-pill-soft:#fff5f7;--a5-pill-line:#eccbd3}
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="mobilita"]{--a5-pill-accent:#16749a;--a5-pill-soft:#f1f9fc;--a5-pill-line:#c5dfe9}
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="sicurezza"]{--a5-pill-accent:#a75a29;--a5-pill-soft:#fff7f1;--a5-pill-line:#ebcfbd}
-body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="abitare"]{--a5-pill-accent:#6d5ca6;--a5-pill-soft:#f8f6fc;--a5-pill-line:#d7d0e9}
+body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="abitare"]{--a5-pill-accent:#8e5a46;--a5-pill-soft:#fbf4f1;--a5-pill-line:#e6d3ca}
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="ambiente"]{--a5-pill-accent:#4d873f;--a5-pill-soft:#f4faf2;--a5-pill-line:#cbdfc5}
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="bilanci"]{--a5-pill-accent:#425c6b;--a5-pill-soft:#f0f4f6;--a5-pill-line:#b9c5cf}
 body[data-page="town"]:has(main.a5-municipal-rollout) .town-theme-row [data-profile-theme="comunita"]{--a5-pill-accent:#7a456b;--a5-pill-soft:#f8f0f5;--a5-pill-line:#d7bfd1}
