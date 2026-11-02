@@ -57,7 +57,9 @@ NOT_A_CALL = re.compile(
     r"seduta di gara|appalto|affidamento|rendicontazion[ei]|erogazion[ei]|liquidazion[ei]|riparto|ripartizion[ei]|"
     r"decreto di assegnazione|comunicato stampa|intervista|news in evidenza|"
     r"assunzion[ei]|concorso pubblico|selezione di personale|incarico|nomina|protocollo d.intesa|tasso annuo|"
-    r"capitalizzazione|front office|description|who can apply|get support|work with us|come to our)\b", re.I)
+    r"capitalizzazione|front office|description|who can apply|get support|work with us|come to our|"
+    # Sezioni per chi è già finanziato (varianti, progetti esecutivi), non nuovi avvisi.
+    r"varianti\s*/\s*esecutivi)\b", re.I)
 APPLICANT_HEAD = re.compile(
     r"(soggetti\s+(?:beneficiari|ammessi|ammissibili|destinatari|proponenti|richiedenti|candidabili)|"
     r"beneficiari|destinatari|possono\s+(?:presentare|partecipare|candidarsi|accedere)|"
@@ -100,7 +102,9 @@ EU_RESERVED = re.compile(r"(?:must|shall)\s+be\s+from\s+one\s+of\s+the\s+\d+\s+c
 # Il Comune come luogo, non come soggetto: «con sede nel Comune di», «residenti nel comune».
 MUNICIPAL_AS_PLACE = re.compile(
     r"(sede(?:\s+legale|\s+operativa)?\s+(?:nel|in\s+un|in)\s+comune|residen\w*\s+(?:nel|in)\s+(?:un\s+)?comune|"
-    r"ubicat\w+\s+(?:nel|in)\s+(?:un\s+)?comune|nel\s+territorio\s+(?:del|di\s+un)\s+comune)", re.I)
+    r"ubicat\w+\s+(?:nel|in)\s+(?:un\s+)?comune|nel\s+territorio\s+(?:del|di\s+un)\s+comune|"
+    # «beni comuni», «spazi comuni»: aggettivo, non l'ente.
+    r"\b(?:ben[ei]|spaz[io]|aree?|part[ei]|obiettiv[oi]|interess[ei])\s+comun[ei]\b)", re.I)
 SUBJECT_APPLIES = re.compile(
     r"\b(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|amministrazioni\s+comunali|unioni\s+di\s+comuni)\b"
     r"(?:\s+[\w’']+){0,6}?\s+(?:possono|potranno|potrà|può)\s+(?:presentare|inoltrare|trasmettere|candidarsi|"
@@ -397,6 +401,53 @@ def build_entry(candidate: dict[str, Any], decision: Decision, today: date, town
     }
 
 
+# Fonti la cui coda interna contiene notizie di altri territori e non avvisi:
+# hanno filtri dedicati e non passano dalla qualificazione automatica.
+REVIEW_EXCLUDED_SOURCES = {"ministero-interno-prefetture"}
+SOURCE_META_PATH = None  # sostituibile nei test
+
+
+def _tokens(value: Any) -> set[str]:
+    return {t for t in _fold(value).split() if len(t) >= 4 and not t.isdigit() and t not in {"bando", "avviso", "pubblico"}}
+
+
+def review_candidates(result: dict[str, Any], items: list[dict[str, Any]],
+                      source_meta: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    """Schede della coda interna da leggere come segnalazioni.
+
+    Una scheda già pubblicata con un titolo diverso (curata a mano o da un
+    altro corpus) non viene duplicata: se quasi tutte le parole significative
+    del titolo in coda compaiono nel titolo pubblicato, si considera la stessa.
+    """
+    if source_meta is None:
+        source_meta = _source_meta()
+    published = [(_tokens(x.get("title")), x.get("source_id")) for x in items]
+    out = []
+    for row in result.get("reviewQueue") or []:
+        if row.get("source_id") in REVIEW_EXCLUDED_SOURCES or not row.get("url"):
+            continue
+        words = _tokens(row.get("title"))
+        if words and any(source == row.get("source_id") and len(words & other) / len(words) >= 0.8
+                         for other, source in published):
+            continue
+        meta = source_meta.get(row.get("source_id")) or {}
+        out.append({**row, "origin": "review_queue",
+                    "source_label": meta.get("publisher") or row.get("source_id"),
+                    "publisher": meta.get("publisher"), "territory": meta.get("territory")})
+    return out
+
+
+def _source_meta() -> dict[str, dict[str, Any]]:
+    import json
+    from pathlib import Path
+    path = SOURCE_META_PATH or Path(__file__).resolve().parents[1] / "data" / "opportunity-sources.json"
+    try:
+        sources = json.loads(Path(path).read_text(encoding="utf-8")).get("sources") or []
+    except (OSError, ValueError):
+        return {}
+    return {s["id"]: s for s in sources if isinstance(s, dict) and s.get("id")}
+
+
 def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], str] | None,
           previous: dict[str, Any] | None = None, build_item: Callable[..., dict[str, Any]],
           towns: tuple[str, ...], document_links: Callable[[str, str], list[str]] | None = None) -> dict[str, Any]:
@@ -409,6 +460,11 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     known_titles = {_fold(x.get("title")) for x in items}
     known_ids = {x.get("coverage_id") for x in items}
     queue = list(result.get("discoveryQueue") or [])
+    # Anche le schede delle fonti primarie rimaste in coda interna per mancanza
+    # di una regola dedicata passano dalla stessa lettura dei documenti.
+    review = review_candidates(result, items)
+    queue_urls = {_fold(x.get("url")) for x in queue}
+    queue += [x for x in review if _fold(x.get("url")) not in queue_urls]
     lookup = {x.get("url"): x for x in (result.get("reviewDocumentLookup") or [])}
     published_urls: set[str] = set()
 
@@ -479,6 +535,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             break
         url = str(candidate["url"])
         check: dict[str, Any] = {"url": url, "title": candidate.get("title"), "source_id": candidate.get("source_id")}
+        if candidate.get("origin"):
+            check["origin"] = candidate["origin"]
         report["checks"].append(check)
         report["checked"] += 1
         page_text, documents = "", {}
@@ -528,7 +586,10 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         known_ids.add(entry["coverage_id"])
         published_urls.add(url)
         check["coverage_id"] = entry["coverage_id"]
-    result["discoveryQueue"] = [x for x in queue if x.get("url") not in published_urls]
+    result["discoveryQueue"] = [x for x in result.get("discoveryQueue") or [] if x.get("url") not in published_urls]
+    if "reviewQueue" in result:
+        result["reviewQueue"] = [x for x in result["reviewQueue"] if x.get("url") not in published_urls]
+    report["fromReviewQueue"] = sum(1 for c in report["checks"] if c.get("origin") == "review_queue")
     counts = result.setdefault("counts", {})
     counts["autoQualified"] = report["qualified"] + report["carried"]
     counts["discoveryReview"] = len(result["discoveryQueue"])

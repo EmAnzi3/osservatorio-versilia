@@ -81,6 +81,16 @@ l'unica via documentata per rigenerare quei dati; lo shadow
 `opportunity-radar-daily-v2-shadow` esce con la fase 2 del Radar insieme a
 `opportunity-radar-v044-ci`, che ne esegue il test.
 
+## Radar 2.0 — coda interna letta dal qualificatore (2 novembre 2026)
+
+- Origine: audit indipendente del 2 novembre. FUORILUOGO (Fondazione CR Lucca, Comuni richiedenti diretti, scadenza 11/12/2026) era stato trovato ma restava in `reviewQueue` con «Manca una regola documentale v0.2.1»: il qualificatore automatico leggeva solo `discoveryQueue`.
+- Ora `opportunity_qualifier.apply` legge anche le schede in `reviewQueue` delle fonti primarie (`review_candidates`), con le stesse regole generali e l'etichetta «Requisiti da confermare»; le schede pubblicate escono dalla coda interna. Escluse le prefetture (`REVIEW_EXCLUDED_SOURCES`), che hanno filtri dedicati.
+- Nessun doppione delle schede curate con titolo diverso: se almeno l'80% delle parole significative del titolo in coda compare in un titolo pubblicato della stessa fonte, la scheda è saltata (caso BELLA LÌ).
+- Prova sul vivo dalla coda del 2/11: oltre a FUORILUOGO si sblocca «Contributi agli enti locali per lo sviluppo di progettualità sui dati» (Regione Toscana, Comuni toscani, a sportello dal 22/10). Concorsi, selezioni di personale e bandi per imprese restano scartati.
+- Due correzioni emerse dalla prova: «beni comuni», «spazi comuni» e simili non valgono come Comuni richiedenti; le sezioni «Varianti/Esecutivi» non sono avvisi.
+- SRA31: nessun difetto, la proroga al 13/11 era già nello snapshot del 2/11 ore 07:36; l'audit aveva letto la pagina del 30/10.
+- GSE: resta «bloccata e coperta» (firewall sui server della CI); nessuna modifica in questa PR.
+
 ## Lancio di «Chiedi» e «Dossier» (31 ottobre 2026)
 
 Branch `feature/launch-chiedi-dossier`, su decisione del proprietario: nel menu

@@ -229,6 +229,63 @@ def test_code_year_does_not_expire_structured_open_topic():
     assert statuses["https://ec.europa.eu/topic/I3-2023-INV2"] == "rejected", statuses
 
 
+FOUNDATION_PAGE = ("<html><body><main>" + PAD + "Obiettivi. Il bando intende ampliare l'offerta culturale sull'intero "
+                   "territorio provinciale. Destinatari. La partecipazione al bando è riservata a soli soggetti "
+                   "pubblici (Comuni; Unioni di Comuni; Enti gestori di parchi regionali e locali; Conservatori di "
+                   "musica; Teatri di tradizione). Come fare. Le domande vanno presentate esclusivamente tramite il "
+                   "portale ROL dal 2 Novembre 2026 al 11 Dicembre 2026.</main></body></html>")
+
+
+def _seed(entry, today, status):
+    return {"coverage_id": entry["coverage_id"], "title": entry["title"], "url": entry["url"],
+            "deadline_at": entry["deadline_at"], "verification_status": status, "source_id": entry["source_id"],
+            "geographic_scope": entry["geographic_scope"], "municipality_role": entry["municipality_role"]}
+
+
+def test_review_queue_primary_source_is_qualified():
+    url = "https://www.fondazionecarilucca.it/bandi/territori-in-scena"
+    held = {"id": "opp-x", "source_id": "fondazione-cr-lucca", "title": "Bando 2027 Territori in scena", "url": url,
+            "deadline_at": "2026-12-11", "reason": "Manca una regola documentale v0.2.1 su richiedente, ruolo o geografia"}
+    other = dict(held, id="opp-y", url="https://x.gov.it/b", title="Bando sicurezza",
+                 source_id="ministero-interno-prefetture")
+    result = {"opportunities": [], "discoveryQueue": [], "reviewQueue": [held, other]}
+    meta = {"fondazione-cr-lucca": {"publisher": "Fondazione CR Lucca", "territory": "Provincia di Lucca"}}
+    q.SOURCE_META_PATH = None
+    original = q._source_meta
+    q._source_meta = lambda: meta
+    try:
+        q.apply(result, date(2026, 11, 2), loader=lambda u, d: FOUNDATION_PAGE, build_item=_seed, towns=TOWNS)
+    finally:
+        q._source_meta = original
+    published = [x for x in result["opportunities"] if x.get("discovery_url") == url]
+    assert len(published) == 1, result["autoQualification"]
+    assert published[0]["municipality_role"] == "direct_applicant"
+    assert published[0]["geographic_scope"] == "Provincia di Lucca"
+    assert [x["id"] for x in result["reviewQueue"]] == ["opp-y"], "le prefetture restano ai loro filtri"
+    assert result["autoQualification"]["fromReviewQueue"] == 1
+
+
+def test_review_queue_does_not_duplicate_curated_title():
+    curated = {"source_id": "fondazione-cr-lucca", "title": "BELLA LÌ! 2026 · La cultura che cura — partnership pubblica",
+               "url": "https://www.fondazionecarilucca.it/torna-il-bando"}
+    held = {"source_id": "fondazione-cr-lucca", "title": "Bando 2026 BELLA Lì! La cultura che cura",
+            "url": "https://www.fondazionecarilucca.it/bandi/bella-li"}
+    sibling = dict(held, title="Bando GRANFEST. Grandi Festival 2027", url="https://www.fondazionecarilucca.it/granfest")
+    rows = q.review_candidates({"reviewQueue": [held, sibling]}, [curated], source_meta={})
+    assert [r["url"] for r in rows] == [sibling["url"]]
+
+
+def test_common_goods_are_not_municipalities():
+    text = (PAD + "Beneficiari: associazioni Pro Loco per la valorizzazione dei beni comuni materiali e immateriali "
+            "delle località. Le domande devono essere presentate entro il 30 novembre 2026.")
+    assert decide("Sostegno a progetti per le identità locali", text).status == "rejected"
+
+
+def test_variants_section_is_not_a_call():
+    text = PAD + "Beneficiari: Comuni. Le domande possono essere presentate entro il 30 novembre 2026."
+    assert decide("FER immobili pubblici (Varianti/Esecutivi)", text).status == "rejected"
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:
