@@ -51,6 +51,8 @@ SOURCE_NAMES = [
     ('Capacity', 'Istat — Capacità degli esercizi ricettivi'),
     ('capacita-degli-esercizi', 'Istat — Capacità degli esercizi ricettivi'),
     ('agenziaentrate.gov.it', 'Agenzia delle Entrate — Osservatorio del mercato immobiliare (OMI)'),
+    ('nuova_addcomirpef', 'Ministero dell’Economia e delle Finanze — Addizionale comunale all’IRPEF'),
+    ('nuova_at', 'Ministero dell’Economia e delle Finanze — Delibere e tariffe TARI dei Comuni'),
     ('finanze.gov.it', 'Ministero dell’Economia e delle Finanze — Dichiarazioni dei redditi su base comunale'),
     ('demo.istat.it', 'Istat — Popolazione residente e bilancio demografico'),
     ('ars.toscana.it', 'Agenzia regionale di sanità della Toscana (ARS)'),
@@ -59,8 +61,13 @@ SOURCE_NAMES = [
     ('dati.istruzione.it', 'Ministero dell’Istruzione e del Merito — Open data della scuola'),
     ('invalsi', 'INVALSI — Risultati delle prove nazionali'),
     ('misura-comune', 'Istat — Spesa dei Comuni per i servizi sociali'),
+    ('indicatori-comunali', 'Regione Toscana — Indicatori comunali per le politiche locali (Istat, ICT nelle PA locali)'),
     ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
+    ('bdap-opendata.rgs', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (open data BDAP)'),
+    ('siope.it', 'SIOPE — Incassi e pagamenti delle amministrazioni pubbliche'),
+    ('contoannuale.rgs', 'Ragioneria Generale dello Stato — Conto annuale del personale'),
+    ('catasto-rifiuti', 'ISPRA — Catasto dei rifiuti: costi del servizio'),
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
 ]
 MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
@@ -76,6 +83,11 @@ def num(value: float, decimals: int = 0) -> str:
     return text.replace(',', ' ').replace('.', ',').replace(' ', '.')
 
 
+def money(value: float) -> str:
+    """Euro con i centesimi solo quando ci sono: 144,50 ma 240."""
+    return num(value, 2) if round(value, 2) != round(value) else num(round(value))
+
+
 def pct(value: float, decimals: int = 1) -> str:
     return num(value, decimals) + '%'
 
@@ -88,7 +100,7 @@ def signed(value: float, decimals: int = 1) -> str:
 def _elides(text: str) -> bool:
     """«otto», «undici», «ottanta»…: davanti a queste cifre l’articolo si apostrofa."""
     whole = text.split(',')[0].replace('.', '')
-    return text.startswith('8') or whole == '11' or whole.startswith('11') and len(whole) in (4, 7)
+    return text.startswith('8') or whole in ('1', '11') or whole.startswith('11') and len(whole) in (4, 7)
 
 
 def _zero(text: str) -> bool:
@@ -181,7 +193,7 @@ class Measure:
     warnings: list[str] = field(default_factory=list)
 
     def fmt(self, value: float) -> str:
-        return {'eur': lambda v: num(v) + ' €', 'eurm2': lambda v: num(v) + ' €/m²',
+        return {'eur': lambda v: num(v) + ' €', 'eurc': lambda v: money(v) + ' €', 'eurm2': lambda v: num(v) + ' €/m²',
                 'eurm2month': lambda v: num(v, 2) + ' €/m² al mese', 'percent': lambda v: pct(v, self.decimals),
                 'per1000': lambda v: num(v) + ' ogni 1.000 abitanti', 'decimal': lambda v: num(v, self.decimals),
                 'change': lambda v: signed(v) + '%', 'points': lambda v: num(v, 1) + ' punti',
@@ -1572,7 +1584,264 @@ def mobilita(engine: Engine) -> dict:
              ('percorsi', 'A piedi e in bici')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita}
+def bilanci(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    eur = lambda key, metric, label, dimension='total': engine.measure(key, metric, dimension, label, 'eur', 0,
+                                                                         versilia=True)
+    m = {
+        'revenue': eur('revenue', 'currentRevenueAccruedPerResident', 'Entrate correnti accertate per residente'),
+        'own': engine.measure('own', 'ownRevenueShare', 'total', 'Entrate proprie sul totale delle entrate correnti, %',
+                              'percent', 1, versilia=True),
+        'collect': engine.measure('collect', 'currentCollectionCapacity', 'total',
+                                  'Entrate correnti incassate sul totale accertato, %', 'percent', 1, versilia=True),
+        'spend': eur('spend', 'currentExpenditureCommittedPerResident', 'Spesa corrente impegnata per residente'),
+        'social': eur('social', 'socialMissionExpenditurePerResident',
+                      'Spesa per diritti sociali e famiglie, per residente'),
+        'school': eur('school', 'educationMissionExpenditurePerResident',
+                      'Spesa per istruzione e diritto allo studio, per residente'),
+        'capital': eur('capital', 'capitalExpenditureCommittedPerResident',
+                       'Spesa per investimenti impegnata per residente'),
+        'capay': eur('capay', 'capitalPayments', 'Pagamenti per investimenti, per residente'),
+        'result': eur('result', 'availableAdministrationResultPerResident',
+                      'Parte disponibile del risultato di amministrazione, per residente'),
+        'rigid': engine.measure('rigid', 'rigidExpenditureShare', 'total',
+                                'Spese rigide (personale, debito, disavanzo) sulle entrate correnti, %', 'percent', 1),
+        'paycap': engine.measure('paycap', 'currentPaymentCapacity', 'total',
+                                 'Spesa corrente pagata sul totale impegnato, %', 'percent', 1, versilia=True),
+        'debt': eur('debt', 'financialDebtProfile', 'Debito per mutui e prestiti, per residente', 'part:debtPerResident'),
+        'interest': engine.measure('interest', 'financialDebtProfile', 'part:interestShare',
+                                   'Interessi sul debito, % delle entrate correnti', 'percent', 1, versilia=True),
+        'irpef': engine.measure('irpef', 'municipalIrpef', 'income:30000',
+                                'Addizionale comunale IRPEF su un reddito imponibile di 30.000 €', 'eurc', 0),
+        'tari': engine.measure('tari', 'tariStandardHousehold', 'total',
+                               'TARI annua per una famiglia di 3 persone in 100 m²', 'eur', 0),
+        'waste': engine.measure('waste', 'wasteServiceCost', 'total',
+                                'Costo del servizio rifiuti per abitante', 'eur', 0, benchmarks=('tuscany',)),
+        'staff': engine.measure('staff', 'municipalEmployeesPer1000', 'total',
+                                'Dipendenti comunali ogni 1.000 abitanti', 'rate1000', 1, benchmarks=('tuscany',),
+                                versilia=True),
+        'staff55': engine.measure('staff55', 'municipalStaffAgeStructure', 'age:age55plus',
+                                  'Dipendenti comunali con 55 anni o più, %', 'percent', 1, versilia=True),
+        'online': engine.measure('online', 'municipalOnlineServicesAdvanced', 'total',
+                                 'Servizi comunali completamente online, %', 'percent', 1, benchmarks=('tuscany',)),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    second = lambda k: m[k].ranking[1]
+    nm = lambda code: N[code]
+    euro = lambda v: num(v) + ' euro'
+    cents = lambda v: money(v) + ' euro'
+
+    # 01 — entrate
+    rev, own, col = m['revenue'], m['own'], m['collect']
+    rev_text = (
+        f'Nel rendiconto {rev.period} i Comuni della Versilia hanno accertato in media <b>{euro(rev.versilia)} di entrate '
+        f'correnti per residente</b>: tributi, trasferimenti ed entrate extratributarie come multe, canoni e tariffe. Si '
+        f'va da {euro(lo("revenue")[1])} di {nm(lo("revenue")[0])} a {euro(hi("revenue")[1])} di '
+        f'<b>{nm(hi("revenue")[0])}</b>; dopo {nm(hi("revenue")[0])} viene {nm(second("revenue")[0])} con '
+        f'{euro(second("revenue")[1])}.')
+    own_text = (
+        f'Le entrate proprie (tributi ed extratributarie) sono {il(pct(own.versilia))} del totale in Versilia: '
+        f'{dal(pct(lo("own")[1]))} di {nm(lo("own")[0])}, che dipende di più dai trasferimenti, '
+        f'{al(pct(hi("own")[1]))} di {nm(hi("own")[0])}. Delle entrate correnti accertate, nello stesso anno i Comuni '
+        f'ne hanno incassate {il(pct(col.versilia))}: {dal(pct(lo("collect")[1]))} di {nm(lo("collect")[0])} '
+        f'{al(pct(hi("collect")[1]))} di {nm(hi("collect")[0])}.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {euro(rev.values[c])} di entrate correnti per residente, '
+                  f'{il(pct(own.values[c]))} proprie; incassato nell’anno {il(pct(col.values[c]))} di quanto accertato.')
+              for c in codes}
+    ch1 = chapter(1, 'entrate', 'Quanto entra', 'Quante risorse ha ogni Comune e da dove arrivano?',
+        f'<p>{rev_text}</p>{bar_chart(rev, N, "Entrate correnti per residente")}'
+        f'<p>{own_text}</p>{bar_chart(own, N, "Quota delle entrate proprie")}'
+        f'{bar_chart(col, N, "Entrate correnti incassate nell’anno")}' + town_blocks(towns1),
+        'Le entrate correnti pagano i servizi di tutti i giorni. Sono divise per i residenti, ma nei Comuni turistici '
+        'le pagano e le usano anche proprietari di seconde case, imprese e visitatori: per questo i valori per '
+        'residente dei Comuni della costa possono risultare molto alti. Accertare un’entrata vuol dire averne diritto, '
+        'non averla già incassata.')
+
+    # 02 — spesa corrente e servizi
+    sp, so, sc = m['spend'], m['social'], m['school']
+    sp_text = (
+        f'La spesa corrente impegnata, cioè quella per far funzionare servizi e uffici, è stata in media di '
+        f'<b>{euro(sp.versilia)} per residente</b>, da {euro(lo("spend")[1])} di {nm(lo("spend")[0])} '
+        f'a {euro(hi("spend")[1])} di {nm(hi("spend")[0])}.')
+    so_text = (
+        f'Per i servizi sociali e le famiglie, compresi asili nido e assistenza agli anziani, i Comuni hanno impegnato '
+        f'{euro(so.versilia)} per residente: il valore più alto è a {nm(hi("social")[0])} ({euro(hi("social")[1])}), '
+        f'il più basso a {nm(lo("social")[0])} ({euro(lo("social")[1])}). Per scuola e diritto allo studio, mense e '
+        f'trasporto scolastico compresi, la media è {euro(sc.versilia)}, da {euro(lo("school")[1])} a '
+        f'{nm(lo("school")[0])} a {euro(hi("school")[1])} a {nm(hi("school")[0])}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: spesa corrente {euro(sp.values[c])} per residente, di cui '
+                  f'{euro(so.values[c])} per sociale e famiglie e {euro(sc.values[c])} per scuola e diritto allo studio.')
+              for c in codes}
+    ch2 = chapter(2, 'spesa', 'Dove vanno i soldi', 'Quanto spendono i Comuni per i servizi?',
+        f'<p>{sp_text}</p>{bar_chart(sp, N, "Spesa corrente per residente")}'
+        f'<p>{so_text}</p>{bar_chart(so, N, "Spesa per sociale e famiglie")}'
+        f'{bar_chart(sc, N, "Spesa per istruzione e diritto allo studio")}' + town_blocks(towns2),
+        'Spendere di più non vuol dire per forza offrire servizi migliori, né spendere di meno essere più efficienti: '
+        'contano quanti utenti ci sono, come è organizzato il servizio e se è gestito da un altro ente, come '
+        'un’unione dei Comuni o un’azienda sanitaria. I dati dicono quanto è stato impegnato, non che cosa hanno '
+        'ricevuto i cittadini.')
+
+    # 03 — investimenti
+    cp, py = m['capital'], m['capay']
+    cp_text = (
+        f'Per opere e investimenti (strade, scuole, edifici, verde) i Comuni hanno impegnato in media '
+        f'<b>{euro(cp.versilia)} per residente</b>, da {euro(lo("capital")[1])} di {nm(lo("capital")[0])} '
+        f'a {euro(hi("capital")[1])} di {nm(hi("capital")[0])}. I pagamenti effettivi per investimenti '
+        f'registrati nell’anno sono stati {euro(py.versilia)} per residente.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {euro(cp.values[c])} per residente impegnati per investimenti, '
+                  f'{euro(py.values[c])} pagati nell’anno.') for c in codes}
+    ch3 = chapter(3, 'investimenti', 'Gli investimenti', 'Quanto investono i Comuni in opere pubbliche?',
+        f'<p>{cp_text}</p>{bar_chart(cp, N, "Investimenti impegnati per residente")}'
+        f'{bar_chart(py, N, "Investimenti pagati per residente")}' + town_blocks(towns3),
+        'Gli investimenti cambiano molto da un anno all’altro: basta una grande opera, o un finanziamento del PNRR, per '
+        'far salire il valore di un Comune. Impegni e pagamenti non coincidono, perché un cantiere si paga a stati di '
+        'avanzamento, anche negli anni successivi.')
+
+    # 04 — equilibrio dei conti
+    rs, rg, pc = m['result'], m['rigid'], m['paycap']
+    deficit = [c for c, v, _ in rs.ranking if v < 0]
+    rs_text = (
+        f'Alla chiusura dei conti, la parte del risultato di amministrazione libera da vincoli era in media di '
+        f'{euro(rs.versilia)} per residente. '
+        + (f'A {join_names([nm(c) for c in deficit])} era negativa: un disavanzo che il Comune deve recuperare negli '
+           f'anni successivi.' if deficit else 'In nessun Comune era negativa.'))
+    rg_text = (
+        f'Le spese rigide, cioè personale, rate dei prestiti ed eventuale recupero del disavanzo, assorbivano '
+        f'{dal(pct(lo("rigid")[1]))} delle entrate correnti a {nm(lo("rigid")[0])} '
+        f'{al(pct(hi("rigid")[1]))} a <b>{nm(hi("rigid")[0])}</b>. Della spesa corrente impegnata, i Comuni ne hanno '
+        f'pagata nell’anno {il(pct(pc.versilia))}, {dal(pct(lo("paycap")[1]))} di {nm(lo("paycap")[0])} '
+        f'{al(pct(hi("paycap")[1]))} di {nm(hi("paycap")[0])}.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: parte disponibile del risultato {euro(rs.values[c])} per residente; spese '
+                  f'rigide {il(pct(rg.values[c]))} delle entrate correnti; pagato nell’anno {il(pct(pc.values[c]))} '
+                  f'della spesa corrente.') for c in codes}
+    ch4 = chapter(4, 'equilibrio', 'I conti in ordine', 'Quanto margine hanno i bilanci comunali?',
+        f'<p>{rs_text}</p>{bar_chart(rs, N, "Parte disponibile del risultato di amministrazione")}'
+        f'<p>{rg_text}</p>{bar_chart(rg, N, "Spese rigide sulle entrate correnti")}' + town_blocks(towns4),
+        'Un risultato disponibile positivo può essere usato, con molte regole, per nuove spese; uno negativo obbliga a '
+        'rientrare. Più alte sono le spese rigide, meno spazio resta per scegliere. Sono indicatori del bilancio, non '
+        'un giudizio sulla gestione, e non dicono quanto il Comune potrà spendere davvero l’anno dopo.')
+
+    # 05 — debito
+    db, it = m['debt'], m['interest']
+    no_debt = [c for c in codes if db.values[c] == 0]
+    db_text = (
+        f'Alla fine del {db.period} il debito per mutui e prestiti era in media di <b>{euro(db.versilia)} per '
+        f'residente</b>. I più indebitati sono {nm(hi("debt")[0])}, con {euro(hi("debt")[1])}, e '
+        f'{nm(second("debt")[0])}, con {euro(second("debt")[1])}'
+        + (f'; {join_names([nm(c) for c in no_debt])} non ha debiti di questo tipo.' if len(no_debt) == 1 else
+           f'; {join_names([nm(c) for c in no_debt])} non hanno debiti di questo tipo.' if no_debt else '.'))
+    it_text = (
+        f'Gli interessi pagati sui prestiti valgono in media {il(pct(it.versilia))} delle entrate correnti, fino '
+        f'{al(pct(hi("interest")[1]))} di {nm(hi("interest")[0])}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: debito per mutui e prestiti {euro(db.values[c])} per residente; interessi '
+                  f'{il(pct(it.values[c]))} delle entrate correnti.') for c in codes}
+    ch5 = chapter(5, 'debito', 'Il debito', 'Quanto pesano mutui e prestiti?',
+        f'<p>{db_text}</p>{bar_chart(db, N, "Debito per mutui e prestiti, per residente")}'
+        f'<p>{it_text}</p>{bar_chart(it, N, "Interessi sulle entrate correnti")}' + town_blocks(towns5),
+        'I Comuni possono indebitarsi solo per investire, e ogni rata toglie risorse ai servizi degli anni successivi. '
+        'Il dato conta i prestiti, non tutti gli altri debiti verso fornitori; per Massarosa non comprende le passività '
+        'del dissesto del 2019, gestite fuori dal bilancio ordinario.')
+
+    # 06 — tasse e tariffe
+    ir, ta, ws = m['irpef'], m['tari'], m['waste']
+    ir_text = (
+        f'Con un reddito imponibile di 30.000 euro, l’addizionale comunale IRPEF del {ir.period} va da '
+        f'{cents(lo("irpef")[1])} a {nm(lo("irpef")[0])} a <b>{cents(hi("irpef")[1])} a '
+        f'{join_names([nm(c) for c, v, _ in ir.ranking if v == hi("irpef")[1]])}</b>.')
+    ta_text = (
+        f'La TARI per una stessa famiglia di tre persone in una casa di 100 m², senza riduzioni, va da '
+        f'{euro(lo("tari")[1])} a {nm(lo("tari")[0])} a <b>{euro(hi("tari")[1])} a {nm(hi("tari")[0])}</b>. Il costo '
+        f'complessivo del servizio rifiuti nel {ws.period} va da {euro(lo("waste")[1])} per abitante a '
+        f'{nm(lo("waste")[0])} a {euro(hi("waste")[1])} a {nm(hi("waste")[0])}, contro {euro(ws.benchmarks["tuscany"])} '
+        f'nei Comuni toscani.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: addizionale IRPEF {cents(ir.values[c])} su 30.000 euro di reddito; TARI '
+                  f'{euro(ta.values[c])} per 3 persone in 100 m²; servizio rifiuti {euro(ws.values[c])} per abitante.')
+              for c in codes}
+    ch6 = chapter(6, 'tasse', 'Tasse e tariffe', 'Quanto chiede il Comune a una famiglia tipo?',
+        f'<p>{ir_text}</p>{bar_chart(ir, N, "Addizionale comunale IRPEF su 30.000 € di reddito")}'
+        f'<p>{ta_text}</p>{bar_chart(ta, N, "TARI di una famiglia di 3 persone in 100 m²")}'
+        f'{bar_chart(ws, N, "Costo del servizio rifiuti per abitante")}' + town_blocks(towns6),
+        'Sono casi tipo, utili per confrontare le scelte dei Comuni, non il conto di una famiglia reale: esenzioni, '
+        'riduzioni e situazioni personali cambiano l’importo. Il costo del servizio rifiuti per abitante è più alto '
+        'dove ci sono molti turisti e seconde case, perché i rifiuti prodotti da chi non è residente vengono divisi '
+        'per i soli residenti.')
+
+    # 07 — personale e servizi online
+    st, s55, on = m['staff'], m['staff55'], m['online']
+    on_below = [c for c in codes if on.values[c] < on.benchmarks['tuscany']]
+    st_text = (
+        f'Nel {st.period} lavoravano nei Comuni della Versilia <b>{num(st.versilia, 1)} dipendenti ogni 1.000 '
+        f'abitanti</b> (in Toscana {num(st.benchmarks["tuscany"], 1)}), da {num(lo("staff")[1], 1)} di '
+        f'{nm(lo("staff")[0])} a {num(hi("staff")[1], 1)} di {nm(hi("staff")[0])}. Ha 55 anni o più '
+        f'{il(pct(s55.versilia))} del personale, fino {al(pct(hi("staff55")[1]))} di {nm(hi("staff55")[0])}.')
+    on_text = (
+        f'Secondo l’ultima rilevazione Istat ({on.period}), i servizi che si possono chiedere e completare online '
+        f'andavano {dal(pct(lo("online")[1]))} di {nm(lo("online")[0])} {al(pct(hi("online")[1]))} di '
+        f'<b>{nm(hi("online")[0])}</b>; in Toscana la media era {il(pct(on.benchmarks["tuscany"]))}'
+        + (f', e sotto questa media c’erano {join_names([nm(c) for c in on_below])}.' if on_below else '.'))
+    towns7 = {c: (f'<b>{esc(nm(c))}</b>: {num(st.values[c], 1)} dipendenti comunali ogni 1.000 abitanti, '
+                  f'{il(pct(s55.values[c]))} con 55 anni o più; servizi completamente online {il(pct(on.values[c]))}.')
+              for c in codes}
+    ch7 = chapter(7, 'personale', 'Chi lavora in Comune', 'Quanto personale hanno i Comuni e quanti servizi sono online?',
+        f'<p>{st_text}</p>{bar_chart(st, N, "Dipendenti comunali ogni 1.000 abitanti")}'
+        f'{bar_chart(s55, N, "Dipendenti con 55 anni o più")}'
+        f'<p>{on_text}</p>{bar_chart(on, N, "Servizi comunali completamente online")}' + town_blocks(towns7),
+        'Il personale serve a far funzionare uffici e servizi, ma molti Comuni ne affidano una parte ad aziende o '
+        'unioni, e chi lavora lì non è contato. Un organico anziano annuncia pensionamenti e la necessità di nuove '
+        'assunzioni. Il dato sui servizi online è di qualche anno fa e conta i servizi offerti, non quanti cittadini '
+        'li usano.')
+
+    key_points = [
+        (euro(rev.versilia), f'Entrate correnti per residente nel {rev.period}, media dei Comuni della Versilia; da '
+                             f'{euro(lo("revenue")[1])} a {nm(lo("revenue")[0])} a {euro(hi("revenue")[1])} a '
+                             f'{nm(hi("revenue")[0])}.', 'entrate'),
+        (euro(cp.versilia), 'Investimenti impegnati per residente, media dei Comuni della Versilia.', 'investimenti'),
+        (pct(hi('rigid')[1]), f'Entrate correnti assorbite da personale, prestiti e disavanzo a {nm(hi("rigid")[0])}, '
+                              f'il valore più alto.', 'equilibrio'),
+        (euro(db.versilia), 'Debito per mutui e prestiti per residente, media dei Comuni della Versilia.', 'debito'),
+        (f'{num(lo("tari")[1])}–{num(hi("tari")[1])} euro', f'TARI annua di una famiglia di 3 persone in 100 m², da '
+                                                         f'{nm(lo("tari")[0])} a {nm(hi("tari")[0])}.', 'tasse'),
+        (f'{len(on_below)} su {total}', f'Comuni sotto la media toscana per servizi completamente online '
+                                        f'({pct(on.benchmarks["tuscany"])}).', 'personale'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Entrate correnti per residente', euro(rev.values[c]), f'Versilia {euro(rev.versilia)}'),
+        summary_item('Spesa corrente per residente', euro(sp.values[c]), f'Versilia {euro(sp.versilia)}'),
+        summary_item('Investimenti impegnati per residente', euro(cp.values[c]), f'Versilia {euro(cp.versilia)}'),
+        summary_item('Spese rigide sulle entrate correnti', pct(rg.values[c]), f'{ordinal(rg.rank(c))} su 7'),
+        summary_item('Debito per residente', euro(db.values[c]), f'Versilia {euro(db.versilia)}'),
+        summary_item('TARI famiglia tipo', euro(ta.values[c]), f'{ordinal(ta.rank(c))} su 7'),
+        summary_item('Servizi completamente online', pct(on.values[c]), f'Toscana {pct(on.benchmarks["tuscany"])}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti cittadini usano ogni servizio e quanto costa ciascuna prestazione: i bilanci dicono quanto si spende, '
+        'non per quante persone.',
+        'Quanto i servizi sono di buona qualità: tempi di attesa, soddisfazione degli utenti, risultati.',
+        'Di quante risorse avrebbe bisogno ogni Comune per i servizi essenziali (i fabbisogni standard).',
+        'Quanto delle risorse disponibili è vincolato a scopi precisi e quanto può essere davvero speso liberamente.',
+        'A che punto sono i cantieri finanziati: gli impegni non dicono quando un’opera sarà finita.',
+        'Quanto pagano davvero le famiglie di tasse e tariffe comunali, tenendo conto di esenzioni e riduzioni.',
+    ]
+    return dict(
+        slug='bilanci', title='I conti dei Comuni', eyebrow='Dossier · Bilanci e servizi',
+        unknown_topic='sui conti dei Comuni', theme='bilanci', theme_label='Tutti i dati su bilanci e amministrazione',
+        lead='Entrate, spesa per i servizi, investimenti, debito, tasse locali e personale: una lettura dei bilanci '
+             'pubblici dei sette Comuni della Versilia.',
+        description='Entrate e spese, investimenti, equilibrio dei conti, debito, addizionale IRPEF e TARI, personale e '
+                    'servizi online dei sette Comuni della Versilia, dai rendiconti ufficiali.',
+        periods=f'Rendiconti {rev.period}, tasse e tariffe {ir.period}, costo dei rifiuti {ws.period}, personale '
+                f'{st.period}, servizi online {on.period}.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points,
+        towns_summary=towns_summary, unknown=unknown,
+        toc=[('entrate', 'Quanto entra'), ('spesa', 'Dove vanno i soldi'), ('investimenti', 'Gli investimenti'),
+             ('equilibrio', 'I conti in ordine'), ('debito', 'Il debito'), ('tasse', 'Tasse e tariffe'),
+             ('personale', 'Chi lavora in Comune')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci}
 
 
 # ---------------------------------------------------------------------------
@@ -1586,7 +1855,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     buffer = io.StringIO()
     writer = csv.writer(buffer, delimiter=';', lineterminator='\r\n')
     writer.writerow(['Indicatore', 'Territorio', 'Periodo', 'Valore', 'Unità', 'Fonte'])
-    unit = {'eur': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
+    unit = {'eur': 'euro', 'eurc': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
             'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
             'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti',
             'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più'}
@@ -1690,7 +1959,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola e sulla mobilità, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità e sui conti dei Comuni, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -1711,7 +1980,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola e mobilità.')
+                   'anziani, scuola, mobilità e bilanci comunali.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
