@@ -1,5 +1,39 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «I conti dei Comuni» (2 novembre 2026)
+
+Branch `feature/dossier-bilanci`, settimo dossier in forma di relazione e ultimo dei
+due prioritari (dopo la mobilità). Sette capitoli dai rendiconti 2025 (OpenBDAP),
+da SIOPE, dalle delibere MEF 2025 su addizionale IRPEF e TARI, dal costo ISPRA dei
+rifiuti 2024, dal Conto annuale RGS 2024 e dall'indicatore regionale sui servizi
+online (Istat ICT 2022):
+
+1. entrate e riscossione;
+2. spesa corrente, sociale e scuola;
+3. investimenti impegnati e pagati;
+4. risultato disponibile e spese rigide;
+5. debito e interessi;
+6. IRPEF e TARI su casi tipo, costo dei rifiuti;
+7. personale e servizi online.
+
+Gli aggregati Versilia sono quelli che il motore calcola (`weighted_ratio`).
+Per spese rigide, risultato del Piano degli indicatori, TARI e IRPEF il motore non
+ammette aggregati, quindi il testo cita solo i valori comunali. Toscana compare solo
+dove il motore ha il confronto: dipendenti, servizi online, costo dei rifiuti.
+
+Seguendo `ci/territorial-dossier-program.json` (scheda bilanci), il testo:
+- non calcola margini disponibili;
+- non equipara la spesa ai servizi ricevuti;
+- avverte che i valori per residente dei Comuni turistici sono gonfiati da chi non
+  vi risiede.
+
+Altre modifiche:
+- nuova funzione `money()` e unità `eurc`, per gli euro con i centesimi solo quando
+  servono (IRPEF di Camaiore 144,50);
+- l'articolo si apostrofa anche davanti a 1 («l'1,7%»);
+- nuovi nomi di fonte: SIOPE, Conto annuale, BDAP open data, delibere MEF, ISPRA,
+  indicatori comunali regionali.
+
 ## Abitare in terracotta (2 novembre 2026)
 
 Branch `feature/abitare-terracotta`, su richiesta del proprietario. Il viola di
