@@ -197,9 +197,10 @@ def beneficiary_sections(text: str) -> list[tuple[str, bool]]:
             continue
         subject_after = re.match(r"\s*(?:le|i|gli|l['’]|tutt[ie]|esclusivamente|solo|soltanto|unicamente|anche)\b", body, re.I)
         if head.group(0).lower().startswith("possono") and subject_after:
-            # «Possono presentare domanda le associazioni pro-loco…»: decide la frase stessa.
+            # «Possono presentare domanda le associazioni pro-loco…»: decide la frase
+            # stessa; le frasi seguenti contano solo se fanno partecipare il Comune.
             end = body.find(". ")
-            body = head.group(0) + (body[:end] if end > 0 else body[:300])
+            body = head.group(0) + (body[:end + 400] if end > 0 else body[:300])
         elif head.group(0).lower().startswith("possono"):
             # «I Comuni che intendono… possono presentare»: il soggetto precede il verbo.
             before = text[max(0, head.start() - 200):head.start()]
@@ -213,16 +214,56 @@ def beneficiary_sections(text: str) -> list[tuple[str, bool]]:
     return sections
 
 
+# Regola del proprietario: basta che il Comune possa partecipare in qualche forma
+# (richiedente, partner, collaborazione con accordo, adesione). Non partecipa se
+# si limita a patrocinare, sostenere, autorizzare o dare un parere.
+MUNICIPAL_AS_SUPPORTER = re.compile(
+    r"\b(?:sostegno|parere|nulla\s*osta|autorizzazion\w*|patrocin\w*)\b[^.;]{0,60}?\b(?:comun[ei]|enti\s+locali|ente\s+locale|"
+    r"amministrazion\w+\s+comunal\w+)\b"
+    r"|\b(?:comun[ei]|enti\s+locali|ente\s+locale)\b[^.;]{0,40}?\b(?:pu[òo]|possono|potr\w+)\s+(?:sostener\w*|patrocinar\w*)",
+    re.I)
+# Il Comune partecipa come collaboratore o partner del progetto.
+MUNICIPAL_AS_COLLABORATOR = re.compile(
+    r"\b(?:collabor\w*|accord\w*|coinvolg\w*|d['’]\s*intesa|lettera\s+di\s+adesione|adesion\w*|partner\w*|partenariat\w*|"
+    r"condivis\w*|co-?progett\w*)\b[^.;]{0,100}?\b(?:comun[ei]|enti\s+locali|ente\s+locale|amministrazion\w+\s+comunal\w+|"
+    r"soggett\w+\s+pubblic\w+|enti\s+pubblici)\b"
+    r"|\b(?:comun[ei]|enti\s+locali|ente\s+locale)\b[^.;]{0,40}?\b(?:pu[òo]|possono|potr\w+)\s+(?:collaborar\w*|aderir\w*|partecipar\w*)",
+    re.I)
+# Dopo la prima frase della voce, un Comune conta se il testo lo fa partecipare
+# (ammesso, partner, partenariato, consorzio, ATS, collaborazione…).
+LATER_ADMISSION = re.compile(
+    r"\b(?:ammess\w*|ammissibil\w*|possono\s+(?:altresì\s+|anche\s+)?(?:partecipare|presentare|candidarsi|aggiungersi|"
+    r"far\s+parte|essere\s+(?:partner|beneficiari|soggetti|capofila|proponenti))|partenariato|consorzi\w*|aggregazion\w*|"
+    r"associazion[ei]\s+temporane\w*|partnership|soggett\w+\s+partner|raggruppament\w*|in\s+forma\s+associata|capofila|co-?beneficiar\w*|partner\s+beneficiar\w*)\b",
+    re.I)
+# Voce di elenco che inizia con un soggetto pubblico («Altri soggetti pubblici…»).
+LIST_ITEM_PUBLIC = re.compile(
+    r"\s*(?:[a-z0-9]\)\s*)?(?:altri\s+|altre\s+|gli\s+|i\s+|le\s+)?(?:comuni|unioni\s+(?:dei|di)\s+comuni|enti\s+locali|"
+    r"enti\s+pubblici|soggetti\s+pubblici|amministrazioni\s+(?:pubbliche|comunali)|pubbliche\s+amministrazioni|"
+    r"enti\s+(?:di\s+)?diritto\s+pubblico|enti\s+territoriali)\b", re.I)
+SENTENCE_END = re.compile(r"(?<=[^\W\d]{2}[.!?])\s+(?=[A-ZÀ-Ý«\"(])")
+
+
 def classify_section(section: str) -> tuple[str, str]:
     """(esito, ruolo) di una voce sui destinatari: municipal | other."""
     cleaned = MUNICIPAL_AS_FUNDER.sub(" ", MUNICIPAL_AS_PLACE.sub(" ", section))
     if PRIVATE_ONLY.search(cleaned) or PUBLIC_EXCLUDED.search(cleaned):
         return "other", ""
-    only = ONLY_OTHERS.search(cleaned)
-    if only and not (MUNICIPAL.search(cleaned[only.end():only.end() + 120]) or PUBLIC_BODIES.search(cleaned[only.end():only.end() + 120])):
-        return "other", ""
+    cleaned = MUNICIPAL_AS_SUPPORTER.sub(" ", cleaned)
+    # La prima frase è il contenuto della voce; le successive contano solo se
+    # fanno partecipare i Comuni o gli enti pubblici (anche come partner).
+    first, *rest = SENTENCE_END.split(cleaned.strip(), maxsplit=12) or [""]
+    collaborator = False
+    if not (MUNICIPAL.search(first) or PUBLIC_BODIES.search(first)):
+        clauses = [c for r in rest for c in re.split(r";\s+|\s[-–•]\s", r)]
+        kept = [c for c in clauses if LATER_ADMISSION.search(c) or LIST_ITEM_PUBLIC.match(c)]
+        helped = [c for c in clauses if c not in kept and MUNICIPAL_AS_COLLABORATOR.search(c)]
+        collaborator = bool(helped) and not any(MUNICIPAL.search(c) or PUBLIC_BODIES.search(c) for c in kept)
+        cleaned = " ".join([first, *kept, *helped])
     if not (MUNICIPAL.search(cleaned) or PUBLIC_BODIES.search(cleaned)):
         return "other", ""
+    if collaborator:
+        return "municipal", "partner"
     lead = re.search(r"\b(capofila|proponente|soggetto\s+richiedente|soggetto\s+capofila)\b[^.;]{0,80}\b(comun|ente\s+locale|enti\s+locali|soggett\w+\s+pubblic)", cleaned, re.I)
     role = "partner" if PARTNER.search(cleaned) and not lead and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
     return "municipal", role

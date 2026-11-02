@@ -342,12 +342,37 @@ def test_parking_subject_before_verb():
 
 
 def test_statement_names_the_applicant():
-    # Pro Loco: la frase «possono presentare domanda le associazioni…» decide;
-    # la collaborazione con gli enti locali citata dopo non rende il Comune richiedente.
+    # Pro Loco: la frase «possono presentare domanda le associazioni…» decide chi
+    # presenta; gli accordi formalizzati con gli enti locali fanno del Comune un partner.
     text = (PAD + "Il bando favorisce la collaborazione tra associazioni pro-loco ed enti locali. Possono presentare "
             "domanda le associazioni pro-loco iscritte al Registro regionale. Sono finanziabili i progetti realizzati "
             "con accordi formalizzati con enti locali. Le domande devono essere presentate entro il 30 novembre 2026.")
-    assert decide("Sostegno ai progetti delle Pro Loco", text).status == "rejected"
+    result = decide("Sostegno ai progetti delle Pro Loco", text)
+    assert result.status == "qualified" and result.role == "partner"
+    alone = (PAD + "Possono presentare domanda le associazioni pro-loco iscritte al Registro regionale. "
+             "Le domande devono essere presentate entro il 30 novembre 2026.")
+    assert decide("Sostegno ai progetti delle Pro Loco", alone).status == "rejected"
+
+
+def test_municipality_counts_if_it_takes_part_in_any_form():
+    # Regola del proprietario: basta che il Comune possa partecipare in qualche
+    # forma (richiedente, partner, collaborazione, accordo); patrocinio o parere no.
+    tail = " Le domande devono essere presentate entro il 30 novembre 2026 tramite PEC."
+    out = {
+        "Soggetti beneficiari: associazioni di promozione sociale. Il progetto può prevedere la collaborazione del Comune tramite accordo.": ("qualified", "partner"),
+        "Soggetti ammessi: associazioni culturali, anche in collaborazione con il Comune.": ("qualified", "partner"),
+        "Soggetti ammessi: associazioni culturali. Il Comune può patrocinare l'iniziativa.": ("rejected", None),
+        "Soggetti ammessi: associazioni culturali. Serve il nulla osta del Comune.": ("rejected", None),
+        "Soggetti ammessi: associazioni culturali con sede nel Comune di Lucca.": ("rejected", None),
+        "Soggetti beneficiari: enti del terzo settore, singoli o in partenariato con Comuni ed enti locali.": ("qualified", "partner"),
+        "Soggetti beneficiari: ASD e SSD. Al partenariato possono aggiungersi anche enti pubblici.": ("qualified", None),
+        "Soggetti beneficiari: associazioni. Possono partecipare anche i Comuni in forma associata.": ("qualified", None),
+        "Soggetti beneficiari: i Comuni della Toscana, anche in collaborazione con associazioni.": ("qualified", "direct_applicant"),
+    }
+    for body, (status, role) in out.items():
+        result = decide("Bando di prova", PAD + body + tail)
+        assert result.status == status, body
+        assert role is None or result.role == role, (body, result.role)
 
 
 if __name__ == "__main__":
