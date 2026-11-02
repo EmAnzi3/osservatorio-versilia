@@ -111,6 +111,30 @@
 .dr-notes{margin:8px 0 0;padding-left:18px;font-size:14px;color:#3b5566}
 .dr-notes li{break-inside:avoid;margin-bottom:6px}
 .dr-more{margin-top:26px!important;font-size:15px}
+/* Colori e icone dei temi: stessa palette delle pagine tematiche del sito (DS2). */
+[data-dr-theme=demografia]{--dr-accent:#b84b34;--dr-accent-dark:#963925}
+[data-dr-theme=economia]{--dr-accent:#39795d;--dr-accent-dark:#2f654d}
+[data-dr-theme=lavoro]{--dr-accent:#9b6818;--dr-accent-dark:#7e5311}
+[data-dr-theme=istruzione]{--dr-accent:#7357a8;--dr-accent-dark:#5d448d}
+[data-dr-theme=salute]{--dr-accent:#aa465b;--dr-accent-dark:#8c3749}
+[data-dr-theme=mobilita]{--dr-accent:#16749a;--dr-accent-dark:#115f7f}
+[data-dr-theme=sicurezza]{--dr-accent:#a75a29;--dr-accent-dark:#894820}
+[data-dr-theme=abitare]{--dr-accent:#6d5ca6;--dr-accent-dark:#58488b}
+[data-dr-theme=ambiente]{--dr-accent:#4d873f;--dr-accent-dark:#3e6e33}
+[data-dr-theme=bilanci]{--dr-accent:#425c6b;--dr-accent-dark:#334a57}
+[data-dr-theme=comunita]{--dr-accent:#7a456b;--dr-accent-dark:#633756}
+[data-dr-theme]{--dr-accent-soft:color-mix(in srgb,var(--dr-accent) 11%,#fffaf1);
+  --dr-bar:color-mix(in srgb,var(--dr-accent) 52%,#fffaf1);--dr-bar-dim:color-mix(in srgb,var(--dr-accent) 20%,#fffaf1)}
+.dr[data-dr-theme] .dr-hero{background:linear-gradient(180deg,color-mix(in srgb,var(--dr-accent) 9%,transparent),transparent 70%);
+  border-bottom:3px solid color-mix(in srgb,var(--dr-accent) 45%,transparent)}
+.dr[data-dr-theme].has-town .dr-bar{background:var(--dr-bar-dim)}
+.dr[data-dr-theme] .dr-row.is-town .dr-bar{background:var(--dr-accent)}
+.dr-eyebrow{display:flex;align-items:center;gap:12px}
+.dr-icon{display:inline-grid;place-items:center;flex:none;width:42px;height:42px;border-radius:12px;
+  background:var(--dr-accent-soft);color:var(--dr-accent-dark);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--dr-accent) 22%,transparent)}
+.dr-card .dr-icon{width:46px;height:46px}
+.dr-card[data-dr-theme]{border-top:4px solid var(--dr-accent)}
+.dr-card[data-dr-theme]:hover{border-color:var(--dr-accent)}
 /* Indice dei dossier */
 .dr-index-body{padding-top:40px;padding-bottom:64px}
 .dr-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -158,4 +182,5 @@
   .dr-chart,.dr-example,.dr-why,.dr-points li{break-inside:avoid}
   .dr-points a{transform:none}
   .dr-crumbs{display:none}
+  .dr-icon{box-shadow:none}
 }
