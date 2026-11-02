@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Abitare in terracotta (2 novembre 2026)
+
+Branch `feature/abitare-terracotta`, su richiesta del proprietario. Il viola di
+Abitare (#6d5ca6) era quasi identico a quello di Istruzione (#7357a8, distanza
+percettiva ΔE 6). Nuova palette DS2 di Abitare: accento #8e5a46, scuro #734637,
+fondo #fbf4f1, linea #e6d3ca. Contrasto sul bianco 5,7:1; ΔE minimo dagli altri
+temi 23 (Sicurezza). Una terracotta più accesa (#b5653f) sarebbe finita a ΔE 8
+da Sicurezza e 15 da Demografia ed è stata scartata. File toccati: fidelity.css
+(tema, pillole del contesto, pilota municipale), dossier-report.css,
+secondary-pages-ui.css (card della home, ora coerente col marrone delle icone).
+Le baseline visive (golden lock tematico e municipale, visual-regression
+themes) si aggiornano in una PR successiva secondo docs/A5_GOLDEN_MASTERS.md.
+
 ## Dossier «Muoversi in Versilia» e icone dei temi (1° novembre 2026)
 
 Branch `feature/dossier-mobilita`, su richiesta del proprietario (proseguire con
