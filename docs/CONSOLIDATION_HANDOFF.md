@@ -90,6 +90,16 @@ l'unica via documentata per rigenerare quei dati; lo shadow
 - Due correzioni emerse dalla prova: «beni comuni», «spazi comuni» e simili non valgono come Comuni richiedenti; le sezioni «Varianti/Esecutivi» non sono avvisi.
 - SRA31: nessun difetto, la proroga al 13/11 era già nello snapshot del 2/11 ore 07:36; l'audit aveva letto la pagina del 30/10.
 - GSE: resta «bloccata e coperta» (firewall sui server della CI); nessuna modifica in questa PR.
+- Correzione dopo il primo giro reale (#533): GranFest 2027 era pubblicato come partnership, ma la scheda dice «riservata a soli soggetti privati» (il Comune compariva solo fra i possibili finanziatori). Il bando regionale sui dati era già pubblicato con altro titolo e il controllo dei doppioni lo ha saltato correttamente.
+
+## Radar 2.0 — chi può candidarsi si legge nella voce dei destinatari (2 novembre 2026)
+
+- Decisione del proprietario: la voce dei destinatari del bando è l'unica base per stabilire se il Comune può candidarsi. Niente più ricerca della parola «Comune» in tutta la pagina.
+- `find_beneficiaries` legge prima la scheda, poi i documenti: voci «Beneficiari», «Soggetti ammessi/beneficiari/richiedenti…», «Chi può partecipare», «Possono presentare domanda…», «Domanda presentata da», «Requisiti di ammissibilità», «Eligible applicants». Decide la prima voce sui richiedenti; «Destinatari» da solo può indicare il pubblico delle attività (cittadini, scuole) e quindi include ma non esclude.
+- Prevalgono sempre «riservata a soli soggetti privati» e l'esclusione espressa degli enti pubblici. Il Comune come finanziatore, patrocinatore o luogo del progetto non è un richiedente. Contano anche «enti pubblici», «soggetti pubblici o privati», «enti di diritto pubblico» e l'etichetta regionale «Destinatari: Enti».
+- Nessuna voce trovata: la scheda resta in coda, non si pubblica. La scheda pubblicata cita la voce.
+- I topic UE (`strict_municipal`) mantengono le regole dedicate EU_LEAD/EU_PARTNER.
+- Prova sulla coda live del 2/11 (282 segnalazioni lette): escono servizio civile regionale (destinatari: giovani 18-29 anni) e una pagina indice «Avvisi pubblici e premi»; entra Sport e Salute «Fabbrica Spazi Civici» come partnership («al partenariato possono aggiungersi anche enti pubblici»). Sulle schede curate già pubblicate la regola contraddice solo «Identità locali: collaborazione con le Pro Loco» (possono presentare domanda solo le associazioni pro-loco): segnalata al proprietario, non toccata.
 
 ## Lancio di «Chiedi» e «Dossier» (31 ottobre 2026)
 
