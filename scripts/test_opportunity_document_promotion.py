@@ -461,6 +461,18 @@ IL DIRETTORE GENERALE
                 if item["coverage_id"].startswith("mim-"):
                     self.assertIn("MIM", asset.read_text())
 
+    def test_every_official_qualifier_host_has_a_source_icon(self):
+        # Un'opportunità qualificata automaticamente da un dominio ufficiale non
+        # deve bloccare la build per un'icona fonte mancante (ANCI Abruzzo, 2/11).
+        import materialize_opportunity_release_favicons as icons
+        import opportunity_qualifier as qualifier
+        hosts = [s.lstrip(".") for s in qualifier.OFFICIAL_SUFFIXES
+                 if s.lstrip(".") not in {"gov.it", "governo.it", "europa.eu"}]
+        items = [{"url": f"https://www.{h}/bando", "source_id": "auto-qualified", "title": h} for h in hosts]
+        with TemporaryDirectory() as tmp:
+            provenance = icons.materialize({"opportunities": items}, Path(tmp))
+            self.assertTrue(all(icons._resolve_icon_key(item, provenance) for item in items))
+
 
 if __name__ == "__main__":
     unittest.main()
