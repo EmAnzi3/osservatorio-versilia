@@ -175,7 +175,8 @@ def test_apply_publishes_carries_and_dedups():
                 "municipality_role": entry["municipality_role"]}
 
     carried = {"coverage_id": "auto-old", "url": "https://x.gov.it/old", "title": "Vecchio avviso",
-               "deadline_at": "2026-12-31", "verification_status": q.VERIFICATION_STATUS}
+               "deadline_at": "2026-12-31", "verification_status": q.VERIFICATION_STATUS,
+               "auto_qualification_version": q.VERSION}
     expired = dict(carried, coverage_id="auto-expired", deadline_at="2026-09-01")
     result = {"opportunities": [{"url": "https://www.example.gov.it/gia", "title": "Già pubblicato"}],
               "discoveryQueue": [candidate("Avviso pubblico prevenzione sismica", url="https://www.example.gov.it/a"),
@@ -373,6 +374,42 @@ def test_municipality_counts_if_it_takes_part_in_any_form():
         result = decide("Bando di prova", PAD + body + tail)
         assert result.status == status, body
         assert role is None or result.role == role, (body, result.role)
+
+
+def test_cards_from_older_rules_are_reread():
+    """Se le regole cambiano, le schede già pubblicate si rileggono con le regole attuali."""
+    private = (PAD + "Art. 3 – Soggetti ammissibili. Possono presentare domanda esclusivamente associazioni "
+               "culturali senza scopo di lucro. Termine: 20 novembre 2026.")
+    pages = {"https://x.gov.it/festival": private, "https://x.gov.it/scuole": SEISMIC}
+
+    def loader(url, document):
+        if url not in pages:
+            raise TimeoutError("timeout")
+        return "<html><body><main>" + pages[url] + "</main></body></html>"
+
+    def build_item(entry, today, status):
+        return {"coverage_id": entry["coverage_id"], "title": entry["title"], "url": entry["url"],
+                "deadline_at": entry["deadline_at"], "verification_status": status}
+
+    def old(cid, url):
+        return {"coverage_id": cid, "id": cid, "url": url, "discovery_url": url, "title": cid,
+                "deadline_at": "2026-12-31", "verification_status": q.VERIFICATION_STATUS,
+                "auto_qualification_version": "0.9"}
+
+    previous = {"opportunities": [old("auto-festival", "https://x.gov.it/festival"),
+                                  old("auto-scuole", "https://x.gov.it/scuole"),
+                                  old("auto-offline", "https://x.gov.it/offline")],
+                "autoQualificationCache": {"https://x.gov.it/festival": {"status": "rejected",
+                                                                         "checkedAt": "2026-09-30"}}}
+    result = {"opportunities": [], "discoveryQueue": []}
+    q.apply(result, date(2026, 10, 1), loader=loader, previous=previous, build_item=build_item, towns=TOWNS)
+    urls = sorted(x.get("discovery_url") or x["url"] for x in result["opportunities"])
+    # Solo privati: esce. Comuni ammessi: resta con le regole nuove. Pagina non letta: resta com'era.
+    assert urls == ["https://x.gov.it/offline", "https://x.gov.it/scuole"]
+    report = result["autoQualification"]
+    assert report["withdrawn"] == 1 and report["carried"] == 1
+    reread = [x for x in result["opportunities"] if x.get("discovery_url") == "https://x.gov.it/scuole"]
+    assert reread[0]["auto_qualification_version"] == q.VERSION
 
 
 if __name__ == "__main__":
