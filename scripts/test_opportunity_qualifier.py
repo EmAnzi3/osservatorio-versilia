@@ -286,6 +286,95 @@ def test_variants_section_is_not_a_call():
     assert decide("FER immobili pubblici (Varianti/Esecutivi)", text).status == "rejected"
 
 
+def test_private_only_call_is_not_for_municipalities():
+    # GranFest 2027: il Comune compare solo come possibile finanziatore.
+    text = (PAD + "Destinatari: La partecipazione al bando è riservata a soli soggetti privati in possesso dei "
+            "requisiti indicati nel Bando. Compilare la sezione Partner/Finanziatori indicando almeno un finanziatore "
+            "tra il Ministero della Cultura, la Regione Toscana, il Comune o altro ente territoriale. "
+            "Le domande devono essere presentate entro il 20 novembre 2026.")
+    assert decide("Bando GRANFEST. Grandi Festival 2027", text).status == "rejected"
+
+
+def test_beneficiary_section_decides_over_other_mentions():
+    # La voce dei destinatari nomina solo associazioni: il Comune citato altrove non conta.
+    text = (PAD + "Soggetti ammessi: associazioni culturali e Pro Loco con sede in provincia di Lucca. "
+            "Obiettivi: valorizzare il territorio in collaborazione con il Comune e la Regione Toscana. "
+            "Le domande devono essere presentate entro il 30 novembre 2026.")
+    d = decide("Bando cultura diffusa 2027", text)
+    assert d.status == "rejected" and "associazioni culturali" in d.applicant, d
+
+
+def test_missing_beneficiary_section_is_not_published():
+    text = (PAD + "Il bando sostiene progetti realizzati nel territorio dei Comuni della provincia. "
+            "Le domande devono essere presentate entro il 30 novembre 2026.")
+    d = decide("Bando territorio 2027", text)
+    assert d.status == "rejected" and "Nessuna voce sui destinatari" in d.reason, d
+
+
+def test_beneficiary_section_read_from_document_when_page_lacks_it():
+    page = PAD + "Il bando è pubblicato. Le domande devono essere presentate entro il 30 novembre 2026."
+    document = PAD + "Art. 3 – Soggetti beneficiari. Possono accedere al contributo i Comuni della Toscana. Art. 4 – Spese."
+    d = q.qualify(candidate("Avviso contributi 2026"), page, {"https://x.it/avviso.pdf": document}, date(2026, 10, 1))
+    assert d.status == "qualified" and "Comuni della Toscana" in d.applicant, d
+
+
+def test_public_bodies_excluded():
+    text = (PAD + "Soggetti ammessi: imprese e liberi professionisti; sono esclusi gli enti pubblici e i Comuni. "
+            "Le domande devono essere presentate entro il 30 novembre 2026.")
+    assert decide("Bando innovazione 2027", text).status == "rejected"
+
+
+def test_audience_is_not_the_applicant():
+    # ANCI-CONAI: «Destinatari» è il pubblico della campagna; chi presenta è indicato altrove.
+    text = (PAD + "1. Finalità e destinatari delle attività. Destinatari: cittadini (utenze domestiche), scuole e "
+            "utenze non domestiche. 2. Requisiti dei progetti. PREREQUISITI DI AMMISSIBILITA’ Domanda presentata da: "
+            "Ente di governo del servizio rifiuti; Comuni singoli o associati con almeno 5.000 abitanti. "
+            "Le domande devono essere presentate entro il 13 novembre 2026.")
+    d = decide("Bando ANCI-CONAI comunicazione locale 2026", text)
+    assert d.status == "qualified" and "Comuni singoli o associati" in d.applicant, d
+
+
+def test_parking_subject_before_verb():
+    text = (PAD + "I Comuni che intendono accedere al contributo previsto dal presente bando possono presentare "
+            "istanza tramite il modulo on-line. Data di scadenza presentazione domande: 30.11.2026.")
+    d = decide("Bando parcheggi 2026", text)
+    assert d.status == "qualified" and d.applicant.startswith("I Comuni"), d
+
+
+def test_statement_names_the_applicant():
+    # Pro Loco: la frase «possono presentare domanda le associazioni…» decide chi
+    # presenta; gli accordi formalizzati con gli enti locali fanno del Comune un partner.
+    text = (PAD + "Il bando favorisce la collaborazione tra associazioni pro-loco ed enti locali. Possono presentare "
+            "domanda le associazioni pro-loco iscritte al Registro regionale. Sono finanziabili i progetti realizzati "
+            "con accordi formalizzati con enti locali. Le domande devono essere presentate entro il 30 novembre 2026.")
+    result = decide("Sostegno ai progetti delle Pro Loco", text)
+    assert result.status == "qualified" and result.role == "partner"
+    alone = (PAD + "Possono presentare domanda le associazioni pro-loco iscritte al Registro regionale. "
+             "Le domande devono essere presentate entro il 30 novembre 2026.")
+    assert decide("Sostegno ai progetti delle Pro Loco", alone).status == "rejected"
+
+
+def test_municipality_counts_if_it_takes_part_in_any_form():
+    # Regola del proprietario: basta che il Comune possa partecipare in qualche
+    # forma (richiedente, partner, collaborazione, accordo); patrocinio o parere no.
+    tail = " Le domande devono essere presentate entro il 30 novembre 2026 tramite PEC."
+    out = {
+        "Soggetti beneficiari: associazioni di promozione sociale. Il progetto può prevedere la collaborazione del Comune tramite accordo.": ("qualified", "partner"),
+        "Soggetti ammessi: associazioni culturali, anche in collaborazione con il Comune.": ("qualified", "partner"),
+        "Soggetti ammessi: associazioni culturali. Il Comune può patrocinare l'iniziativa.": ("rejected", None),
+        "Soggetti ammessi: associazioni culturali. Serve il nulla osta del Comune.": ("rejected", None),
+        "Soggetti ammessi: associazioni culturali con sede nel Comune di Lucca.": ("rejected", None),
+        "Soggetti beneficiari: enti del terzo settore, singoli o in partenariato con Comuni ed enti locali.": ("qualified", "partner"),
+        "Soggetti beneficiari: ASD e SSD. Al partenariato possono aggiungersi anche enti pubblici.": ("qualified", None),
+        "Soggetti beneficiari: associazioni. Possono partecipare anche i Comuni in forma associata.": ("qualified", None),
+        "Soggetti beneficiari: i Comuni della Toscana, anche in collaborazione con associazioni.": ("qualified", "direct_applicant"),
+    }
+    for body, (status, role) in out.items():
+        result = decide("Bando di prova", PAD + body + tail)
+        assert result.status == status, body
+        assert role is None or result.role == role, (body, result.role)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

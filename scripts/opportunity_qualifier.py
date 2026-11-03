@@ -132,6 +132,186 @@ OPERATOR = re.compile(r"intends? to (?:select|fund) (?:only )?(?:one|a) single p
 ONLY_OTHERS = re.compile(
     r"\b(esclusivamente|solo|soltanto|unicamente)\s+(?:a(?:lle|gli|i)?\s+)?(imprese|associazioni|cittadini|persone\s+fisiche|"
     r"studenti|scuole|universit|enti\s+del\s+terzo\s+settore|organizzazioni)", re.I)
+# «Riservata a soli soggetti privati»: il bando esclude gli enti pubblici, anche
+# se più avanti cita il Comune come possibile finanziatore o partner.
+PRIVATE_ONLY = re.compile(
+    r"riservat[ao]\s+(?:a\s+)?(?:soli|sol[oe]|esclusivamente|unicamente|soltanto)\s+(?:a(?:i|gli|lle)?\s+)?"
+    r"(?:soggetti|enti|organismi|organizzazioni)\s+privat", re.I)
+# Voce dei destinatari: la scheda del bando, o l'articolo dell'avviso, dice chi
+# può presentare domanda. È l'unica fonte della decisione su chi è ammesso.
+BENEFICIARY_HEAD = re.compile(
+    r"\b(?:soggetti\s+(?:beneficiari|ammessi|ammissibili|destinatari|proponenti|richiedenti|legittimati|candidabili)"
+    r"(?:\s+(?:a\s+(?:presentare|partecipare)|alla\s+presentazione)[^.:;]{0,40})?|"
+    r"destinatari\b(?:\s+(?:del\s+(?:bando|contributo|finanziamento)|dell[’']\s*avviso|dei\s+contributi))?|"
+    r"beneficiari\b(?!\s+(?:finali|dei\s+contributi\s+(?:relativi|assegnati|concessi)|ammess))"
+    r"(?:\s+(?:del\s+(?:bando|contributo|finanziamento)|dell[’']\s*avviso))?|"
+    r"chi\s+pu[oò]\s+(?:partecipare|presentare(?:\s+domanda)?|candidarsi|fare\s+domanda|accedere)|"
+    r"a\s+chi\s+(?:è|e['’])\s+rivolt[oa]|a\s+chi\s+si\s+rivolge|requisiti\s+soggettivi|"
+    r"(?:pre)?requisiti\s+di\s+(?:ammissibilit[àa]|partecipazione|accesso)|domanda\s+(?:deve\s+essere\s+)?presentata\s+da|"
+    r"(?:le\s+)?domande\s+possono\s+essere\s+presentate\s+da|"
+    r"possono\s+(?:presentare\s+(?:domanda|candidatura|istanza|richiesta|progett\w+|propost\w+)|partecipare|candidarsi)"
+    r"(?:\s+al(?:l[’'])?\s*(?:bando|avviso))?|"
+    r"eligible\s+(?:applicants|participants|entities|organisations|organizations|beneficiaries)|who\s+can\s+apply|"
+    r"eligibility\s+(?:criteria|conditions))"
+    r"\s*[:.\-–—]?\s*", re.I)
+# Dove finisce la voce: la voce successiva della scheda o dell'avviso.
+SECTION_STOP = re.compile(
+    r"\b(?:obiettiv[oi]|finalit[àa]|oggetto\s+(?:del|dell)|come\s+(?:fare|partecipare)|modalit[àa]\s+(?:di|e)\s|"
+    r"scadenz[ae]|termin[ei]\s+(?:di|e|per)\s|dotazione|risorse\s+(?:disponibili|finanziarie)|entit[àa]\s+del|"
+    r"spese\s+ammissibili|interventi\s+ammissibili|ambiti?\s+di\s+intervento|documentazione|contatti|allegati|"
+    r"criteri\s+di|tempistic\w+|(?-i:Art(?:icolo|\.)\s*\d+)|requisiti\s+(?:dei|del)\s+progett\w+|importo|"
+    r"come\s+presentare|presentazione\s+delle\s+domande|per\s+informazioni)\b", re.I)
+PUBLIC_BODIES = re.compile(
+    r"\b(?:soggetti\s+pubblici|enti\s+pubblici|enti\s+territoriali|pubbliche\s+amministrazioni|"
+    r"amministrazioni\s+pubbliche|enti\s+locali\s+territoriali|enti\s+(?:di\s+)?diritto\s+pubblico|"
+    r"di\s+diritto\s+pubblico|pubblic[ie]\s+(?:e|o|e/o)\s+privat[ie]|privat[ie]\s+(?:e|o|e/o)\s+pubblic[ie])\b|"
+    # Etichetta «Destinatari: Enti» delle schede regionali (enti pubblici).
+    r"^\s*enti\b(?!\s+(?:del\s+terzo|privat|non\s+profit|no[\s-]?profit|ecclesiastic|religios|gestori|di\s+formazione|accreditat))",
+    re.I)
+PUBLIC_EXCLUDED = re.compile(r"\b(?:esclus[ie]\b|non\s+(?:sono\s+ammess[ie]|possono))[^.;]{0,60}\b(?:enti\s+pubblici|soggetti\s+pubblici|comuni|enti\s+locali|pubbliche\s+amministrazioni)", re.I)
+# Il Comune come finanziatore o come sede del progetto altrui: non è un richiedente.
+MUNICIPAL_AS_FUNDER = re.compile(
+    r"\b(?:finanziator\w*|cofinanzi\w*|patrocin\w*)\b[^.;]{0,100}?\bcomun[ei]\b", re.I)
+
+
+def beneficiary_sections(text: str) -> list[tuple[str, bool]]:
+    """Le voci «Destinatari», «Soggetti ammessi»… di un testo, nell'ordine: (testo, voce debole)."""
+    sections = []
+    for head in BENEFICIARY_HEAD.finditer(text):
+        word = head.group(0)
+        # Una voce è un'etichetta («Beneficiari», «Destinatari:») o una frase che
+        # dice chi presenta («possono partecipare…»). «beneficiari» in mezzo a una
+        # frase («i beneficiari di altri contributi») non è una voce.
+        label = word[:1].isupper() or word.rstrip().endswith((":", "-", "–", "—"))
+        statement = re.match(r"(?:possono|chi|a\s+chi|soggetti\s+\w+\s+(?:a|alla)\s|domand)", word, re.I)
+        if not (label or statement):
+            continue
+        start = head.end()
+        body = text[start:start + 1200]
+        stop = next((m.start() for m in SECTION_STOP.finditer(body) if m.start() >= 15), len(body))
+        body = body[:stop].strip(" .:;-–—")
+        # Le righe dell'indice («Destinatari e partnership ..... 7») non sono voci.
+        if re.search(r"(?:\.\s?){6,}|…{2,}", text[start:start + 160]):
+            continue
+        if len(body) < 8 or OBLIGATION.search(text[max(0, head.start() - 60):head.end()]):
+            continue
+        subject_after = re.match(r"\s*(?:le|i|gli|l['’]|tutt[ie]|esclusivamente|solo|soltanto|unicamente|anche)\b", body, re.I)
+        if head.group(0).lower().startswith("possono") and subject_after:
+            # «Possono presentare domanda le associazioni pro-loco…»: decide la frase
+            # stessa; le frasi seguenti contano solo se fanno partecipare il Comune.
+            end = body.find(". ")
+            body = head.group(0) + (body[:end + 400] if end > 0 else body[:300])
+        elif head.group(0).lower().startswith("possono"):
+            # «I Comuni che intendono… possono presentare»: il soggetto precede il verbo.
+            before = text[max(0, head.start() - 200):head.start()]
+            cut = max(before.rfind(". "), before.rfind("; "), before.rfind(": "))
+            subject = before[cut + 2:] if cut >= 0 else before
+            body = subject + head.group(0) + body[:200]
+        # «Destinatari» indica a volte il pubblico delle attività (cittadini,
+        # scuole), non chi presenta domanda: vale per includere, non per escludere.
+        weak = bool(re.match(r"(?:soggetti\s+)?destinatari|a\s+chi", word, re.I))
+        sections.append((re.sub(r"\s+", " ", body).strip(), weak))
+    return sections
+
+
+# Regola del proprietario: basta che il Comune possa partecipare in qualche forma
+# (richiedente, partner, collaborazione con accordo, adesione). Non partecipa se
+# si limita a patrocinare, sostenere, autorizzare o dare un parere.
+MUNICIPAL_AS_SUPPORTER = re.compile(
+    r"\b(?:sostegno|parere|nulla\s*osta|autorizzazion\w*|patrocin\w*)\b[^.;]{0,60}?\b(?:comun[ei]|enti\s+locali|ente\s+locale|"
+    r"amministrazion\w+\s+comunal\w+)\b"
+    r"|\b(?:comun[ei]|enti\s+locali|ente\s+locale)\b[^.;]{0,40}?\b(?:pu[òo]|possono|potr\w+)\s+(?:sostener\w*|patrocinar\w*)",
+    re.I)
+# Il Comune partecipa come collaboratore o partner del progetto.
+MUNICIPAL_AS_COLLABORATOR = re.compile(
+    r"\b(?:collabor\w*|accord\w*|coinvolg\w*|d['’]\s*intesa|lettera\s+di\s+adesione|adesion\w*|partner\w*|partenariat\w*|"
+    r"condivis\w*|co-?progett\w*)\b[^.;]{0,100}?\b(?:comun[ei]|enti\s+locali|ente\s+locale|amministrazion\w+\s+comunal\w+|"
+    r"soggett\w+\s+pubblic\w+|enti\s+pubblici)\b"
+    r"|\b(?:comun[ei]|enti\s+locali|ente\s+locale)\b[^.;]{0,40}?\b(?:pu[òo]|possono|potr\w+)\s+(?:collaborar\w*|aderir\w*|partecipar\w*)",
+    re.I)
+# Dopo la prima frase della voce, un Comune conta se il testo lo fa partecipare
+# (ammesso, partner, partenariato, consorzio, ATS, collaborazione…).
+LATER_ADMISSION = re.compile(
+    r"\b(?:ammess\w*|ammissibil\w*|possono\s+(?:altresì\s+|anche\s+)?(?:partecipare|presentare|candidarsi|aggiungersi|"
+    r"far\s+parte|essere\s+(?:partner|beneficiari|soggetti|capofila|proponenti))|partenariato|consorzi\w*|aggregazion\w*|"
+    r"associazion[ei]\s+temporane\w*|partnership|soggett\w+\s+partner|raggruppament\w*|in\s+forma\s+associata|capofila|co-?beneficiar\w*|partner\s+beneficiar\w*)\b",
+    re.I)
+# Voce di elenco che inizia con un soggetto pubblico («Altri soggetti pubblici…»).
+LIST_ITEM_PUBLIC = re.compile(
+    r"\s*(?:[a-z0-9]\)\s*)?(?:altri\s+|altre\s+|gli\s+|i\s+|le\s+)?(?:comuni|unioni\s+(?:dei|di)\s+comuni|enti\s+locali|"
+    r"enti\s+pubblici|soggetti\s+pubblici|amministrazioni\s+(?:pubbliche|comunali)|pubbliche\s+amministrazioni|"
+    r"enti\s+(?:di\s+)?diritto\s+pubblico|enti\s+territoriali)\b", re.I)
+SENTENCE_END = re.compile(r"(?<=[^\W\d]{2}[.!?])\s+(?=[A-ZÀ-Ý«\"(])")
+
+
+def classify_section(section: str) -> tuple[str, str]:
+    """(esito, ruolo) di una voce sui destinatari: municipal | other."""
+    cleaned = MUNICIPAL_AS_FUNDER.sub(" ", MUNICIPAL_AS_PLACE.sub(" ", section))
+    if PRIVATE_ONLY.search(cleaned) or PUBLIC_EXCLUDED.search(cleaned):
+        return "other", ""
+    cleaned = MUNICIPAL_AS_SUPPORTER.sub(" ", cleaned)
+    # La prima frase è il contenuto della voce; le successive contano solo se
+    # fanno partecipare i Comuni o gli enti pubblici (anche come partner).
+    first, *rest = SENTENCE_END.split(cleaned.strip(), maxsplit=12) or [""]
+    collaborator = False
+    if not (MUNICIPAL.search(first) or PUBLIC_BODIES.search(first)):
+        clauses = [c for r in rest for c in re.split(r";\s+|\s[-–•]\s", r)]
+        kept = [c for c in clauses if LATER_ADMISSION.search(c) or LIST_ITEM_PUBLIC.match(c)]
+        helped = [c for c in clauses if c not in kept and MUNICIPAL_AS_COLLABORATOR.search(c)]
+        collaborator = bool(helped) and not any(MUNICIPAL.search(c) or PUBLIC_BODIES.search(c) for c in kept)
+        cleaned = " ".join([first, *kept, *helped])
+    if not (MUNICIPAL.search(cleaned) or PUBLIC_BODIES.search(cleaned)):
+        return "other", ""
+    if collaborator:
+        return "municipal", "partner"
+    lead = re.search(r"\b(capofila|proponente|soggetto\s+richiedente|soggetto\s+capofila)\b[^.;]{0,80}\b(comun|ente\s+locale|enti\s+locali|soggett\w+\s+pubblic)", cleaned, re.I)
+    role = "partner" if PARTNER.search(cleaned) and not lead and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
+    return "municipal", role
+
+
+def find_beneficiaries(page_text: str, documents: dict[str, str]) -> tuple[str, str, str]:
+    """(voce citata, ruolo, esito) dalla scheda del bando o, se manca, dai documenti.
+
+    esito: municipal (Comuni o enti pubblici fra i richiedenti), other (la voce
+    esiste e non li comprende), missing (nessuna voce sui destinatari).
+    """
+    for text in [page_text, *documents.values()]:
+        sections = beneficiary_sections(text or "")
+        if not sections:
+            # «Gli enti locali potranno presentare domanda…»: il testo dice
+            # espressamente chi presenta, anche senza una voce dedicata.
+            cleaned = MUNICIPAL_AS_PLACE.sub(" ", text or "")
+            for match in SUBJECT_APPLIES.finditer(cleaned):
+                sentence = _sentence(cleaned, match.start(), match.end())
+                if not OBLIGATION.search(sentence):
+                    return sentence, "direct_applicant", "municipal"
+            continue
+        verdicts = [(section, weak, *classify_section(section)) for section, weak in sections[:6]]
+        # Una voce che riserva il bando ai privati, o esclude gli enti pubblici, prevale.
+        for section, _, _, _ in verdicts:
+            probe = MUNICIPAL_AS_PLACE.sub(" ", section)
+            if PRIVATE_ONLY.search(probe) or PUBLIC_EXCLUDED.search(probe):
+                return _quote(section), "", "other"
+        # Decide la prima voce sui richiedenti (soggetti ammessi, beneficiari, chi può…).
+        strong = [v for v in verdicts if not v[1]]
+        if strong:
+            section, _, verdict, role = strong[0]
+            return _quote(section), role, verdict
+        # Solo voci «Destinatari»: includono se nominano i Comuni, altrimenti non decidono.
+        for section, _, verdict, role in verdicts:
+            if verdict == "municipal":
+                return _quote(section), role, "municipal"
+    return "", "", "missing"
+
+
+def _quote(section: str, limit: int = 320) -> str:
+    text = section.strip(" .;:")
+    if len(text) > limit:
+        cut = max(text.rfind("; ", 0, limit), text.rfind(". ", 0, limit))
+        text = text[:cut if cut > 80 else limit].rstrip(" ,;") + "…"
+    return text + ("" if text.endswith(("…", ".")) else ".")
+
+
 PARTNER = re.compile(r"\b(partner|partenariato|in\s+collaborazione\s+con|capofila|consorzi[oa]|associated\s+partner)\b", re.I)
 DEADLINE_CUE = re.compile(
     r"(scadenz[ae]|scade|entro\s+(?:e\s+non\s+oltre\s+)?(?:il|le\s+ore)?|termine|fino\s+al|chiusura|"
@@ -324,9 +504,17 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
         return Decision("rejected", "La pagina non indica come presentare domanda: riparto, adempimento o notizia.")
     if OPERATOR.search(combined):
         return Decision("rejected", "Bando per il gestore di uno strumento di sostegno: i Comuni ne sono destinatari, non richiedenti.")
-    applicant, role = find_applicant(combined, strict=bool(candidate.get("strict_municipal")))
-    if not applicant:
-        return Decision("rejected", "I soggetti ammessi non comprendono Comuni o enti locali, oppure non sono indicati.")
+    if candidate.get("strict_municipal"):
+        applicant, role = find_applicant(combined, strict=True)
+        if not applicant:
+            return Decision("rejected", "I soggetti ammessi non comprendono Comuni o enti locali, oppure non sono indicati.")
+    else:
+        applicant, role, verdict = find_beneficiaries(page_text, documents)
+        if verdict == "missing":
+            return Decision("rejected", "Nessuna voce sui destinatari nella scheda né nei documenti: il caso resta in coda.")
+        if verdict == "other":
+            return Decision("rejected", f"I destinatari indicati dal bando non comprendono Comuni o enti pubblici: «{applicant}»",
+                            applicant=applicant)
     region = other_region(title, applicant)
     if region:
         return Decision("rejected", f"Avviso riservato a enti di un'altra regione ({region}).")
