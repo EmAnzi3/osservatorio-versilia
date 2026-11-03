@@ -1,5 +1,9 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+
+## Radar 2.0 — icone fonte per tutti i domini ufficiali (2 novembre 2026)
+
+Branch `fix/radar-icona-anci-abruzzo`: il Radar del 2/11 su main non si pubblicava (`build_static_brand.py`: «Icone fonte incomplete: 161/162», scheda ANCI Abruzzo «Avviso MIM vulnerabilità sismica»). `materialize_opportunity_release_favicons.py` copre ora tutti i domini di `OFFICIAL_SUFFIXES` del qualificatore: alias ai favicon versionati (Sviluppo Toscana, Fondazione CR Lucca, GSE) e source-mark locali (ANCI, ANCI Toscana, ANCI Abruzzo, Invitalia, CDP, Italia Domani, Interreg Europe, URBACT, Interreg Marittimo). Il test `test_every_official_qualifier_host_has_a_source_icon` fallisce se si aggiunge un dominio ufficiale senza icona.
 ## Dossier «I conti dei Comuni» (2 novembre 2026)
 
 Branch `feature/dossier-bilanci`, settimo dossier in forma di relazione e ultimo dei
