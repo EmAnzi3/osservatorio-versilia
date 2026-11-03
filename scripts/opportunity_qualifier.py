@@ -28,7 +28,7 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.0"
+VERSION = "1.1"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -658,16 +658,31 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
 
     # Le schede qualificate nei giorni precedenti restano fino alla scadenza:
     # una pagina momentaneamente irraggiungibile non le fa sparire.
+    # Quando le regole cambiano (VERSION) le schede qualificate con le regole
+    # precedenti si rileggono: restano solo se superano le regole attuali. Se
+    # la pagina non si legge in questo run, la scheda resta com'era.
+    stale: dict[str, dict[str, Any]] = {}
     for old in (previous or {}).get("opportunities") or []:
         if old.get("verification_status") != VERIFICATION_STATUS or old.get("coverage_id") in known_ids:
             continue
         deadline = old.get("deadline_at")
         if deadline and str(deadline) < today.isoformat():
             continue
+        source_url = old.get("discovery_url") or old.get("url")
+        if old.get("auto_qualification_version") != VERSION and source_url:
+            stale[_fold(source_url)] = old
+            continue
         items.append(dict(old, is_new=False))
         known_ids.add(old.get("coverage_id"))
         known_urls.add(_fold(old.get("url")))
         report["carried"] += 1
+    queue_urls = {_fold(x.get("url")) for x in queue}
+    for key, old in stale.items():
+        if key not in queue_urls:
+            queue.append({"url": old.get("discovery_url") or old.get("url"), "title": old.get("title"),
+                          "source_id": old.get("source_id"), "source_label": old.get("source_name"),
+                          "deadline_at": old.get("deadline_at"), "origin": "requalify",
+                          "discovery_first_seen_at": old.get("first_seen_at")})
 
     # Le schede verificate dello snapshot precedente (regole e corpora curati)
     # possono essere ricostruite più avanti nella catena: non vanno duplicate.
@@ -693,7 +708,7 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     pending = []
     for candidate in unique:
         row = cache.get(str(candidate.get("url")))
-        if row and row.get("status") in {"rejected", "expired"}:
+        if row and row.get("status") in {"rejected", "expired"} and _fold(candidate.get("url")) not in stale:
             report["skippedRecent"] = report.get("skippedRecent", 0) + 1
             continue
         pending.append(candidate)
@@ -713,7 +728,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         fresh.append(candidate)
     # Prima i dati strutturati (nessuno scaricamento), poi le segnalazioni più recenti.
-    fresh.sort(key=lambda c: (not c.get("structured_text"), -(max(_years(c)) if _years(c) else today.year)))
+    fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, not c.get("structured_text"),
+                              -(max(_years(c)) if _years(c) else today.year)))
     report["deferred"] = max(0, len(fresh) - MAX_CANDIDATES)
     started = time.monotonic()
     for position, candidate in enumerate(fresh[:MAX_CANDIDATES]):
@@ -774,6 +790,20 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         known_ids.add(entry["coverage_id"])
         published_urls.add(url)
         check["coverage_id"] = entry["coverage_id"]
+    # Schede da rileggere: senza una decisione in questo run restano com'erano;
+    # respinte o scadute con le regole attuali escono dal Radar.
+    decided = {_fold(c.get("url")): c.get("status") for c in report["checks"]}
+    report["withdrawn"] = 0
+    for key, old in stale.items():
+        status = decided.get(key)
+        if status in {"rejected", "expired"}:
+            report["withdrawn"] += 1
+            continue
+        if status in {"qualified", "duplicate"} or old.get("coverage_id") in known_ids:
+            continue
+        items.append(dict(old, is_new=False))
+        known_ids.add(old.get("coverage_id"))
+        report["carried"] += 1
     result["discoveryQueue"] = [x for x in result.get("discoveryQueue") or [] if x.get("url") not in published_urls]
     if "reviewQueue" in result:
         result["reviewQueue"] = [x for x in result["reviewQueue"] if x.get("url") not in published_urls]
