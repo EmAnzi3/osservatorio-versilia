@@ -1,5 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Chi vive in Versilia» (4 novembre 2026)
+
+Branch `feature/dossier-demografia`, nono dossier in forma di relazione (slug
+`demografia`, tema popolazione), dopo ambiente; poi investimenti. Sei capitoli, 431
+risposte del motore in tutto il generatore:
+
+1. quanti siamo: residenti 2026 (totale Versilia = somma dei sette Comuni, dichiarata
+   nel metodo) e variazione 2019-2026 con Toscana e Italia;
+2. nascite: nati e morti ogni 1.000 abitanti 2025 (provvisori) e saldo naturale, con
+   rimando al dossier anziani che usa lo stesso saldo;
+3. chi arriva e chi parte: saldo dei trasferimenti 2024 totale, con l’Italia e con
+   l’estero; arrivati e partiti interni solo nel testo (eccezione Forte dei Marmi);
+4. stranieri: quota e numero dei residenti con cittadinanza straniera 2025;
+5. giovani: quote 0-14 e 20-34 anni 2026;
+6. famiglie: componenti medi e famiglie unipersonali 2023 (censimento permanente;
+   nessun valore Versilia, il motore non lo calcola), rimando al dossier casa.
+
+Seguendo `ci/territorial-dossier-program.json` (scheda demografia): saldo naturale e
+mobilità restano flussi distinti, in periodi propri, mai sommati né usati per previsioni;
+la cittadinanza non è descritta come luogo di nascita. Unità `rate1000` per nati e morti
+(senza segno), `per1000s` per i saldi.
+
 ## Dossier «Ambiente e rischi in Versilia» (3 novembre 2026)
 
 Branch `feature/dossier-ambiente`, ottavo dossier in forma di relazione, scelto dal
