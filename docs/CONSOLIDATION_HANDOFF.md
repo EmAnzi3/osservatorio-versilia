@@ -1,5 +1,28 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «I redditi in Versilia» (4 novembre 2026)
+
+Branch `feature/dossier-redditi`, dodicesimo dossier in forma di relazione (slug `redditi`,
+tema economia), scheda `redditi` di `ci/territorial-dossier-program.json`. Sette capitoli,
+tutti su dati MEF del periodo d’imposta 2024:
+
+1. quanto si dichiara: reddito imponibile medio con Toscana e Italia (il motore non
+   calcola un `weighted_ratio` Versilia per `income`, quindi nessun valore Versilia);
+2. redditi e prezzi: `incomeVsInflation` 2016-2024 con Toscana e Italia (NIC nazionale);
+3. redditi bassi: `incomeDistribution` `macro:0` (fino a 15.000 €) e `band:0to10k`, Versilia
+   ponderata;
+4. redditi alti: `macro:3` (oltre 55.000 €); la fascia centrale è il complemento a 100 delle
+   due macro-fasce esclusive, dichiarato nel testo;
+5. fonti: `incomeSourceProfile` lavoro dipendente (unica fonte con benchmark), autonomo e
+   fabbricati; le medie valgono per chi dichiara quella fonte e non si sommano;
+6. pensioni: `pensionIncomeShare` con Toscana e Italia e pensione media dichiarata;
+7. contribuenti: `taxpayersAdultPopulationRate` (periodo ibrido MEF 2024 · residenti 2026),
+   nuova unità `per100adult` («ogni 100 residenti maggiorenni» nel CSV).
+
+Le fasce oltre 120.000 € e l’impresa in contabilità ordinaria hanno celle MEF vuote in alcuni
+Comuni e restano fuori. Seguendo la scheda: il reddito dichiarato non è il reddito
+disponibile della famiglia e un reddito basso non prova un bisogno.
+
 ## Dossier «La salute in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-salute`, undicesimo dossier in forma di relazione (slug `salute`,

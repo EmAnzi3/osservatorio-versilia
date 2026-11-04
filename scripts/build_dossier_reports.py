@@ -234,13 +234,14 @@ class Measure:
                 'celsius': lambda v: num(v, 1) + ' °C', 'celsiusdelta': lambda v: signed(v, 1) + ' °C',
                 'mm': lambda v: num(v) + ' mm', 'kg': lambda v: num(v) + ' kg',
                 'per100k': lambda v: num(v) + ' ogni 100.000 abitanti', 'per100res': lambda v: num(v, 1) + ' ogni 100 abitanti',
-                'minutes': lambda v: num(v, 1) + ' minuti'}[self.unit](value)
+                'minutes': lambda v: num(v, 1) + ' minuti',
+                'per100adult': lambda v: num(v, 1) + ' ogni 100 maggiorenni'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
                 'years': lambda v: num(v, 1), 'hours': lambda v: num(v, 1), 'rate1000': lambda v: num(v, self.decimals), 'per1000old': lambda v: num(v, 1),
                 'eurm2': lambda v: num(v) + ' €', 'per100k': lambda v: num(v), 'per100res': lambda v: num(v, 1),
-                'minutes': lambda v: num(v, 1)}.get(self.unit, self.fmt)(value)
+                'minutes': lambda v: num(v, 1), 'per100adult': lambda v: num(v, 1)}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -354,6 +355,9 @@ def period_label(period: str) -> str:
     day = re.fullmatch(r'(\d{4})-(\d{2})-(\d{2})', period)
     if day:
         return f'{int(day.group(3))} {MONTHS[int(day.group(2)) - 1]} {day.group(1)}'
+    hybrid = re.fullmatch(r'MEF a\.i\. (\d{4}) · residenti 1\.1\.(\d{4})', period)
+    if hybrid:
+        return f'dichiarazioni {hybrid.group(1)}, residenti al 1° gennaio {hybrid.group(2)}'
     school = re.fullmatch(r'(\d{4})[-/](\d{2})', period)
     if school:
         return f'anno scolastico {school.group(1)}/{school.group(2)}'
@@ -2866,7 +2870,229 @@ def salute(engine: Engine) -> dict:
              ('visite', 'Visite ed esami'), ('servizi', 'Ospedali, RSA e farmacie')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute}
+# ---------------------------------------------------------------------------
+# Dossier «I redditi in Versilia».
+
+def redditi(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'income': engine.measure('income', 'income', 'total', 'Reddito imponibile medio per dichiarante, euro', 'eur', 0,
+                                 benchmarks=TI),
+        'real': engine.measure('real', 'incomeVsInflation', 'total',
+                               'Variazione del reddito medio dal 2016, al netto dell’inflazione', 'change', 1,
+                               benchmarks=TI),
+        'low': engine.measure('low', 'incomeDistribution', 'macro:0', 'Dichiaranti fino a 15.000 €, % dei dichiaranti',
+                              'percent', 1, versilia=True),
+        'vlow': engine.measure('vlow', 'incomeDistribution', 'band:0to10k',
+                               'Dichiaranti fino a 10.000 €, % dei dichiaranti', 'percent', 1, versilia=True),
+        'high': engine.measure('high', 'incomeDistribution', 'macro:3', 'Dichiaranti oltre 55.000 €, % dei dichiaranti',
+                               'percent', 1, versilia=True),
+        'emp': engine.measure('emp', 'incomeSourceProfile', 'source:employment',
+                              'Reddito medio da lavoro dipendente di chi lo dichiara, euro', 'eur', 0,
+                              benchmarks=TI, versilia=True),
+        'self': engine.measure('self', 'incomeSourceProfile', 'source:selfEmployment',
+                               'Reddito medio da lavoro autonomo di chi lo dichiara, euro', 'eur', 0, versilia=True),
+        'bld': engine.measure('bld', 'incomeSourceProfile', 'source:buildings',
+                              'Reddito medio da fabbricati di chi lo dichiara, euro', 'eur', 0, versilia=True),
+        'pens': engine.measure('pens', 'incomeSourceProfile', 'source:pension',
+                               'Reddito medio da pensione di chi lo dichiara, euro', 'eur', 0, versilia=True),
+        'share': engine.measure('share', 'pensionIncomeShare', 'total',
+                                'Quota dei redditi dichiarati che viene da pensioni, %', 'percent', 1,
+                                benchmarks=TI, versilia=True),
+        'tax': engine.measure('tax', 'taxpayersAdultPopulationRate', 'total', 'Contribuenti ogni 100 residenti maggiorenni',
+                              'per100adult', 1, benchmarks=TI, versilia=True),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    eur = lambda v: num(v) + ' €'
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    span_eur = lambda k: f'da {eur(lo(k)[1])} a {nm(lo(k)[0])} a {eur(hi(k)[1])} a {nm(hi(k)[0])}'
+    above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+
+    # 01 — quanto si dichiara
+    inc = m['income']
+    inc_t, inc_i = inc.benchmarks['tuscany'], inc.benchmarks['italy']
+    inc_above = above('income', 'tuscany')
+    second = inc.ranking[1]
+    inc_text = (
+        f'Nel {inc.period} chi ha presentato la dichiarazione dei redditi ha dichiarato in media, come reddito imponibile, '
+        f'da {eur(lo("income")[1])} a {nm(lo("income")[0])} fino a <b>{eur(hi("income")[1])} a {nm(hi("income")[0])}</b>. '
+        f'La media è di {eur(inc_t)} in Toscana e di {eur(inc_i)} in Italia: '
+        + (f'la superano solo {join_names(inc_above)}.' if 1 < len(inc_above) < total else
+           f'la supera solo {inc_above[0]}.' if len(inc_above) == 1 else
+           'la superano tutti e sette i Comuni.' if len(inc_above) == total else 'nessun Comune la raggiunge.')
+        + f' {nm(hi("income")[0])} è un caso a parte: il secondo Comune, {nm(second[0])}, si ferma a {eur(second[1])}.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {eur(inc.values[c])} di reddito imponibile medio nel {inc.period}, '
+                  f'{ordinal(inc.rank(c))} su {total}; '
+                  + ('sopra' if inc.values[c] > inc_t else 'sotto') + f' la media toscana di {eur(inc_t)}.') for c in codes}
+    ch1 = chapter(1, 'quanto', 'Quanto si dichiara', 'Quanto reddito dichiara in media chi vive in Versilia?',
+        f'<p>{inc_text}</p>{bar_chart(inc, N, "Reddito imponibile medio per dichiarante")}' + town_blocks(towns1),
+        'Il reddito dichiarato è il dato più diffuso per confrontare i Comuni fra loro e con il resto del Paese. È una '
+        'media: un piccolo gruppo di redditi molto alti basta a spostarla in alto. Non è il reddito disponibile delle '
+        'famiglie e non comprende le entrate che non passano dalla dichiarazione, come molte rendite finanziarie.')
+
+    # 02 — nel tempo
+    real = m['real']
+    rt, ri = real.benchmarks['tuscany'], real.benchmarks['italy']
+    real_above = above('real', 'tuscany')
+    start = '2016'
+    real_text = (
+        f'Tolto l’aumento dei prezzi, dal {start} al {real.period} il reddito imponibile medio è cresciuto '
+        + (f'<b>in tutti i sette Comuni più che in Toscana ({signed(rt)}%) e in Italia ({signed(ri)}%)</b>'
+           if len(real_above) == total and all(v > ri for v in real.values.values()) else
+           f'più che in Toscana ({signed(rt)}%) a {join_names(real_above)}' if real_above else
+           f'meno che in Toscana ({signed(rt)}%) in tutti i Comuni')
+        + f': {span("real", lambda v: signed(v) + "%")}. '
+        f'A parte {nm(hi("real")[0])}, nessun Comune va oltre il {signed(real.ranking[1][1])}% in otto anni.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {signed(real.values[c])}% di reddito medio dal {start} al {real.period}, al netto '
+                  f'dell’inflazione ({ordinal(real.rank(c))} su {total}; Toscana {signed(rt)}%).') for c in codes}
+    ch2 = chapter(2, 'nel-tempo', 'Redditi e prezzi', 'I redditi sono cresciuti più dei prezzi?',
+        f'<p>{real_text}</p>{bar_chart(real, N, "Crescita del reddito medio dal 2016, al netto dell’inflazione")}'
+        + town_blocks(towns2),
+        'Un reddito che cresce meno dei prezzi compra meno di prima. Il calcolo usa l’inflazione nazionale, perché non '
+        'esiste un indice dei prezzi per Comune: in un territorio dove la casa costa più della media il potere d’acquisto '
+        'può essere cresciuto meno di quanto dice il dato.')
+
+    # 03 — redditi bassi
+    low, vlow = m['low'], m['vlow']
+    low_text = (
+        f'In Versilia <b>{il(pct(low.versilia))} dei dichiaranti</b> denuncia al massimo 15.000 euro l’anno: '
+        f'{span("low", pct)}. Al di sotto dei 10.000 euro c’è {il(pct(vlow.versilia))} dei dichiaranti, '
+        f'{span("vlow", pct)}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(low.values[c]))} dei dichiaranti è fino a 15.000 euro '
+                  f'({ordinal(low.rank(c))} su {total} per quota più alta), {il(pct(vlow.values[c]))} fino a 10.000 euro.')
+              for c in codes}
+    ch3 = chapter(3, 'redditi-bassi', 'I redditi bassi', 'Quante persone dichiarano poco?',
+        f'<p>{low_text}</p>{bar_chart(low, N, "Dichiaranti fino a 15.000 euro")}'
+        f'{bar_chart(vlow, N, "Dichiaranti fino a 10.000 euro")}' + town_blocks(towns3),
+        'Dietro un reddito basso ci possono essere situazioni molto diverse: chi lavora poche settimane l’anno, chi ha '
+        'una pensione minima, uno studente con un lavoro occasionale, chi ha altre entrate o vive in una famiglia con altri '
+        'redditi. Il dato è per persona, non per famiglia, e non basta a dire chi è in difficoltà: indica dove vale la '
+        'pena guardare meglio.')
+
+    # 04 — redditi alti
+    high = m['high']
+    mid = 100 - low.versilia - high.versilia
+    high_text = (
+        f'All’altro capo, <b>{il(pct(high.versilia))} dei dichiaranti</b> della Versilia supera i 55.000 euro: '
+        f'{span("high", pct)}. Tutti gli altri, {il(pct(mid))}, stanno fra 15.000 e 55.000 euro. '
+        f'A {nm(hi("high")[0])} i redditi oltre 55.000 euro sono {il(pct(hi("high")[1]))}, '
+        f'mentre quelli fino a 15.000 euro sono comunque {il(pct(low.values[hi("high")[0]]))}: anche dove la media è '
+        'più alta, una parte grande dei dichiaranti ha redditi bassi.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(high.values[c]))} dei dichiaranti supera i 55.000 euro '
+                  f'({ordinal(high.rank(c))} su {total}); {il(pct(low.values[c]))} è fino a 15.000 euro.') for c in codes}
+    ch4 = chapter(4, 'redditi-alti', 'I redditi alti', 'Quanti dichiarano redditi alti, e dove?',
+        f'<p>{high_text}</p>{bar_chart(high, N, "Dichiaranti oltre 55.000 euro")}' + town_blocks(towns4),
+        'La quota di redditi alti spiega buona parte delle differenze fra le medie dei Comuni. Mettere accanto i redditi '
+        'alti e quelli bassi aiuta a capire se un Comune è più ricco nel complesso o se ha soprattutto una piccola parte '
+        'di contribuenti con redditi molto elevati.')
+
+    # 05 — da dove vengono
+    emp, self_, bld = m['emp'], m['self'], m['bld']
+    et, ei = emp.benchmarks['tuscany'], emp.benchmarks['italy']
+    emp_text = (
+        f'Chi dichiara un reddito da lavoro dipendente riceve in media <b>{eur(emp.versilia)}</b> in Versilia, contro '
+        f'{eur(et)} in Toscana e {eur(ei)} in Italia: {span_eur("emp")}.')
+    self_text = (
+        f'Il reddito medio di chi dichiara lavoro autonomo, cioè soprattutto professionisti, è di {eur(self_.versilia)} '
+        f'in Versilia, {span_eur("self")}. Chi dichiara redditi da fabbricati, per esempio da case date in affitto, ne '
+        f'ricava in media {eur(bld.versilia)}: {span_eur("bld")}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: in media {eur(emp.values[c])} da lavoro dipendente, '
+                  f'{eur(self_.values[c])} da lavoro autonomo e {eur(bld.values[c])} da fabbricati, per chi dichiara '
+                  'ciascuno di questi redditi.') for c in codes}
+    ch5 = chapter(5, 'da-dove', 'Lavoro, professioni e case', 'Quanto rendono il lavoro dipendente, quello autonomo e le case?',
+        f'<p>{emp_text}</p>{bar_chart(emp, N, "Reddito medio da lavoro dipendente")}'
+        f'<p>{self_text}</p>{bar_chart(self_, N, "Reddito medio da lavoro autonomo")}'
+        f'{bar_chart(bld, N, "Reddito medio da fabbricati")}' + town_blocks(towns5),
+        'Ogni media riguarda solo chi dichiara quel tipo di reddito, e una stessa persona può averne più di uno: i '
+        'lavoratori autonomi sono molti meno dei dipendenti, e le medie non si possono sommare fra loro. Il lavoro '
+        'dipendente comprende anche chi lavora solo una parte dell’anno, come molti stagionali.')
+
+    # 06 — pensioni
+    pens, share = m['pens'], m['share']
+    st, si = share.benchmarks['tuscany'], share.benchmarks['italy']
+    share_text = (
+        f'Le pensioni valgono <b>{il(pct(share.versilia))}</b> di tutti i redditi dichiarati in Versilia, contro '
+        f'{il(pct(st))} in Toscana e {il(pct(si))} in Italia: {span("share", pct)}. '
+        f'Chi riceve una pensione dichiara in media {eur(pens.versilia)}, {span_eur("pens")}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: le pensioni sono {il(pct(share.values[c]))} dei redditi dichiarati '
+                  f'({ordinal(share.rank(c))} su {total}); la pensione media dichiarata è di {eur(pens.values[c])}.')
+              for c in codes}
+    ch6 = chapter(6, 'pensioni', 'Il peso delle pensioni', 'Quanto contano le pensioni nei redditi del territorio?',
+        f'<p>{share_text}</p>{bar_chart(share, N, "Peso delle pensioni sui redditi dichiarati")}'
+        f'{bar_chart(pens, N, "Reddito medio da pensione")}' + town_blocks(towns6),
+        'Dove le pensioni pesano di più l’economia delle famiglie dipende di più da entrate fisse, che non crescono con '
+        'il lavoro. Il dato non è la quota di pensionati: misura quanta parte dei redditi dichiarati viene da pensioni.')
+
+    # 07 — chi dichiara
+    tax = m['tax']
+    tt, tii = tax.benchmarks['tuscany'], tax.benchmarks['italy']
+    tax_text = (
+        f'Nel {tax.period.split(" ·")[0].replace("MEF a.i.", "periodo d’imposta")} i contribuenti della Versilia sono '
+        f'<b>{num(tax.versilia, 1)} ogni 100 residenti maggiorenni</b>, contro {num(tt, 1)} in Toscana e {num(tii, 1)} in '
+        f'Italia: {span("tax", lambda v: num(v, 1))}.')
+    towns7 = {c: (f'<b>{esc(nm(c))}</b>: {num(tax.values[c], 1)} contribuenti ogni 100 residenti maggiorenni '
+                  f'({ordinal(tax.rank(c))} su {total}; Toscana {num(tt, 1)}).') for c in codes}
+    ch7 = chapter(7, 'contribuenti', 'Quanti dichiarano', 'Quante persone presentano una dichiarazione dei redditi?',
+        f'<p>{tax_text}</p>{bar_chart(tax, N, "Contribuenti ogni 100 residenti maggiorenni")}' + town_blocks(towns7),
+        'Tutte le medie di questo dossier riguardano solo chi presenta una dichiarazione. Chi non ha redditi, o ne ha '
+        'pochissimi e non è tenuto a dichiararli, non compare. Il rapporto non è la quota di adulti che paga l’IRPEF: i '
+        'contribuenti possono comprendere anche qualche minorenne, e i residenti sono contati in un anno diverso.')
+
+    key_points = [
+        (eur(hi('income')[1]), f'Reddito imponibile medio a {nm(hi("income")[0])} nel {inc.period}, il più alto della '
+                               f'Versilia; a {nm(lo("income")[0])} è {eur(lo("income")[1])}.', 'quanto'),
+        (f'{len(inc_above)} su {total}', f'Comuni con un reddito medio sopra la media toscana di {eur(inc_t)}.', 'quanto'),
+        (pct(low.versilia), 'Dei dichiaranti della Versilia ha un reddito fino a 15.000 euro l’anno.', 'redditi-bassi'),
+        (pct(high.versilia), 'Dei dichiaranti della Versilia supera i 55.000 euro l’anno.', 'redditi-alti'),
+        (eur(emp.versilia), f'Reddito medio da lavoro dipendente in Versilia; in Toscana {eur(et)}.', 'da-dove'),
+        (pct(share.versilia), f'Dei redditi dichiarati in Versilia viene da pensioni; in Toscana {pct(st)}.', 'pensioni'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Reddito imponibile medio', eur(inc.values[c]), f'Toscana {eur(inc_t)}'),
+        summary_item('Crescita reale dal 2016', signed(real.values[c]) + '%', f'Toscana {signed(rt)}%'),
+        summary_item('Dichiaranti fino a 15.000 euro', pct(low.values[c]), f'Versilia {pct(low.versilia)}'),
+        summary_item('Dichiaranti oltre 55.000 euro', pct(high.values[c]), f'Versilia {pct(high.versilia)}'),
+        summary_item('Reddito medio da lavoro dipendente', eur(emp.values[c]), f'Toscana {eur(et)}'),
+        summary_item('Peso delle pensioni sui redditi', pct(share.values[c]), f'Toscana {pct(st)}'),
+        summary_item('Contribuenti ogni 100 maggiorenni', num(tax.values[c], 1), f'Toscana {num(tt, 1)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanto guadagnano le famiglie nel loro insieme: i dati sono per singolo contribuente.',
+        'Quante famiglie sono in povertà o faticano ad arrivare a fine mese.',
+        'Quanto valgono i redditi che non passano dalla dichiarazione, come molte rendite finanziarie, e il lavoro non '
+        'dichiarato.',
+        'Quanto costa davvero vivere in Versilia rispetto al resto della Toscana, perché l’inflazione è misurata solo a '
+        'livello nazionale.',
+        'Come cambiano i redditi da una frazione all’altra: i dati sono medie per Comune.',
+    ]
+    return dict(
+        slug='redditi', title='I redditi in Versilia', eyebrow='Dossier · Redditi',
+        unknown_topic='sui redditi', theme='economia', theme_label='Tutti i dati sull’economia',
+        lead='Quanto si dichiara, come sono cambiati i redditi rispetto ai prezzi, quanti hanno redditi bassi e quanti '
+             'alti, quanto rendono lavoro, professioni, case e pensioni: una lettura delle dichiarazioni dei redditi nei '
+             'sette Comuni della Versilia.',
+        description='Reddito medio dichiarato, crescita al netto dell’inflazione, redditi bassi e alti, lavoro dipendente '
+                    'e autonomo, fabbricati, pensioni e contribuenti nei sette Comuni della Versilia, con confronti con '
+                    'la Toscana e l’Italia.',
+        periods=f'Dichiarazioni dei redditi del periodo d’imposta {inc.period}; crescita reale dal 2016 al {real.period}; '
+                'residenti maggiorenni al 1° gennaio 2026.',
+        method='I dati vengono dalle dichiarazioni dei redditi pubblicate dal Ministero dell’Economia e delle Finanze per '
+               'ogni Comune. Il valore della Versilia è calcolato sommando gli importi e i dichiaranti dei sette Comuni; '
+               'per il reddito imponibile medio e per la crescita reale il confronto è solo fra Comuni, Toscana e '
+               'Italia. La crescita reale usa l’indice nazionale dei prezzi al consumo dell’Istat.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanto', 'Quanto si dichiara'), ('nel-tempo', 'Redditi e prezzi'), ('redditi-bassi', 'I redditi bassi'),
+             ('redditi-alti', 'I redditi alti'), ('da-dove', 'Lavoro, professioni e case'),
+             ('pensioni', 'Il peso delle pensioni'), ('contribuenti', 'Quanti dichiarano')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi}
 
 
 # ---------------------------------------------------------------------------
@@ -2886,7 +3112,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più',
             'celsius': 'gradi centigradi', 'celsiusdelta': 'variazione in gradi centigradi', 'mm': 'millimetri',
             'kg': 'kg per abitante', 'per100k': 'ogni 100.000 abitanti', 'per100res': 'ogni 100 abitanti',
-            'minutes': 'minuti'}
+            'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -2987,7 +3213,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti e sulla salute, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute e sui redditi, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -3008,7 +3234,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti e salute.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute e redditi.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
