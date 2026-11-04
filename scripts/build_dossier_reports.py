@@ -76,6 +76,7 @@ SOURCE_NAMES = [
     ('dati.istruzione.it', 'Ministero dell’Istruzione e del Merito — Open data della scuola'),
     ('invalsi', 'INVALSI — Risultati delle prove nazionali'),
     ('misura-comune', 'Istat — Spesa dei Comuni per i servizi sociali'),
+    ('servizi.lavoro.gov.it/runts', 'Ministero del Lavoro — Registro unico nazionale del Terzo settore (RUNTS)'),
     ('indicatori-comunali', 'Regione Toscana — Indicatori comunali per le politiche locali (Istat, ICT nelle PA locali)'),
     ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
@@ -90,7 +91,9 @@ SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitora
                     'emsResponseTimeP75': 'Regione Toscana — Indicatori comunali per le politiche locali (tempi del 118)',
                     'hospitals': 'Ministero della Salute — Elenco delle strutture di ricovero',
                     'accreditedRsaCount': 'Regione Toscana — Elenco delle strutture accreditate del sistema sociale integrato',
-                    'essentialServicesAccessibility': 'Istat — Indice di fragilità comunale, accessibilità ai servizi essenziali'}
+                    'essentialServicesAccessibility': 'Istat — Indice di fragilità comunale, accessibilità ai servizi essenziali',
+                    'municipalFragility': 'Istat — Indice composito di fragilità comunale',
+                    'disability064Per1000': 'Regione Toscana — Indicatori comunali per le politiche locali'}
 MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
           'novembre', 'dicembre']
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
@@ -235,13 +238,18 @@ class Measure:
                 'mm': lambda v: num(v) + ' mm', 'kg': lambda v: num(v) + ' kg',
                 'per100k': lambda v: num(v) + ' ogni 100.000 abitanti', 'per100res': lambda v: num(v, 1) + ' ogni 100 abitanti',
                 'minutes': lambda v: num(v, 1) + ' minuti',
-                'per100adult': lambda v: num(v, 1) + ' ogni 100 maggiorenni'}[self.unit](value)
+                'per100adult': lambda v: num(v, 1) + ' ogni 100 maggiorenni',
+                'per1000young': lambda v: num(v, 1) + ' ogni 1.000 residenti di 0-64 anni',
+                'per1000dec': lambda v: num(v, self.decimals) + ' ogni 1.000 abitanti',
+                'decile': lambda v: f'classe {num(v)} su 10'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
                 'years': lambda v: num(v, 1), 'hours': lambda v: num(v, 1), 'rate1000': lambda v: num(v, self.decimals), 'per1000old': lambda v: num(v, 1),
                 'eurm2': lambda v: num(v) + ' €', 'per100k': lambda v: num(v), 'per100res': lambda v: num(v, 1),
-                'minutes': lambda v: num(v, 1), 'per100adult': lambda v: num(v, 1)}.get(self.unit, self.fmt)(value)
+                'minutes': lambda v: num(v, 1), 'per100adult': lambda v: num(v, 1),
+                'per1000young': lambda v: num(v, 1), 'per1000dec': lambda v: num(v, self.decimals),
+                'decile': lambda v: num(v)}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -289,6 +297,27 @@ class Engine:
             measure.versilia = ratio['result']['value']
             measure.warnings += [w for w in ratio['warnings'] if w not in measure.warnings]
         return measure
+
+    def ordinal(self, key, metric, dimension, label) -> Measure:
+        """Classi ordinali (per esempio decili Istat): solo confronto, nessuna graduatoria né aggregato."""
+        selector = {'metric': metric, 'dimension': dimension, 'towns': self.codes}
+        compare = self.ask({'operation': 'compare', 'selectors': [selector]})
+        observations = [o for o in compare['observations'] if o['value'] is not None]
+        periods = {o['period'] for o in observations}
+        assert len(periods) == 1 and len(observations) == len(self.codes), (key, periods)
+        values = {o['geography']: o['value'] for o in observations}
+        ordered = [(code, values[code], 0) for code in sorted(values, key=lambda c: self.names[c])]
+        return Measure(key, metric, dimension, label, 'decile', 0, periods.pop(), values, ordered,
+                       sorted({o['source'] for o in observations})[0], warnings=list(compare['warnings']))
+
+    def ordinal_history(self, metric, dimension) -> dict[str, list[tuple[str, float]]]:
+        """Classi pubblicate per anno, una richiesta per Comune; nessuna variazione calcolata."""
+        history = {}
+        for code in self.codes:
+            response = self.ask({'operation': 'series', 'selectors': [
+                {'metric': metric, 'dimension': dimension, 'towns': [code]}]})
+            history[code] = [(o['period'], o['value']) for o in response['observations'] if o['value'] is not None]
+        return history
 
     def change(self, key, metric, dimension, label, start, end) -> Measure:
         """Variazione percentuale per Comune fra due periodi, una richiesta A6 per Comune."""
@@ -3092,7 +3121,246 @@ def redditi(engine: Engine) -> dict:
              ('pensioni', 'Il peso delle pensioni'), ('contribuenti', 'Quanti dichiarano')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi}
+# ---------------------------------------------------------------------------
+# Dossier «Il welfare in Versilia».
+
+SOCIAL_AREAS = (('families-minors', 'famiglie e minori'), ('disability', 'disabilità'), ('elderly', 'anziani'),
+                ('poverty-hardship', 'povertà e disagio degli adulti'), ('immigration', 'immigrati'),
+                ('addictions', 'dipendenze'), ('multiuser', 'servizi per più categorie'))
+
+
+def decile_chart(m: Measure, names: dict[str, str], title: str, note: str = '') -> str:
+    """Classi ordinali su scala fissa 1-10, in ordine alfabetico: nessuna graduatoria."""
+    rows = ''.join(
+        f'<div class="dr-row" data-town="{code}"><span class="dr-name" style="grid-row:{i}">{esc(names[code])}</span>'
+        f'<span class="dr-track" style="grid-row:{i}"><span class="dr-bar" style="left:0.00%;width:{value * 10:.2f}%">'
+        f'</span></span><span class="dr-val" style="grid-row:{i}">{esc(m.short(value))}</span></div>'
+        for i, (code, value, _) in enumerate(m.ranking, 1))
+    table = ''.join(f'<tr><th scope="row">{esc(names[code])}</th><td>{esc(m.fmt(value))}</td></tr>'
+                    for code, value, _ in m.ranking)
+    return f'''<figure class="dr-chart" aria-labelledby="fig-{m.key}">
+<figcaption id="fig-{m.key}"><strong>{esc(title)}</strong><span>{esc(m.label)} · {esc(period_label(m.period))}</span></figcaption>
+<div class="dr-bars" aria-hidden="true"><div class="dr-refs" style="grid-row:1 / span {len(m.ranking)}"></div>{rows}</div>
+<div class="dr-sr"><table><caption>{esc(title)} — {esc(period_label(m.period))}</caption><tbody>{table}</tbody></table></div>
+{f'<p class="dr-fig-note">{esc(note)}</p>' if note else ''}
+</figure>'''
+
+
+def welfare(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'frag': engine.ordinal('frag', 'municipalFragility', 'total',
+                               'Indice di fragilità comunale, classe da 1 (meno fragile) a 10 (più fragile)'),
+        'spend': engine.measure('spend', 'socialSpendingPerResident', 'total',
+                                'Spesa dei Comuni per interventi e servizi sociali, euro per abitante', 'eur', 0,
+                                benchmarks=TI),
+    }
+    for part, name in SOCIAL_AREAS[:4]:
+        m[part] = engine.measure(part, 'socialSpendingByUserArea', 'part:' + part,
+                                 f'Quota della spesa sociale per {name}, %', 'percent', 1)
+    m.update({
+        'dis': engine.measure('dis', 'disability064Per1000', 'total',
+                              'Persone di 0-64 anni con disabilità riconosciuta ogni 1.000 residenti della stessa età',
+                              'per1000young', 1, benchmarks=('tuscany',)),
+        'frn': engine.measure('frn', 'foreignResidents', 'total', 'Residenti con cittadinanza straniera, %', 'percent', 1,
+                              benchmarks=TI, versilia=True),
+        'frnc': engine.measure('frnc', 'foreignResidents', 'count', 'Residenti con cittadinanza straniera, numero',
+                               'count', 0),
+        'ets': engine.measure('ets', 'thirdSector', 'nativeRatio',
+                              'Enti del Terzo settore con sede nel Comune ogni 1.000 residenti', 'per1000dec', 2,
+                              versilia=True),
+        'etsn': engine.measure('etsn', 'thirdSector', 'registeredEntities',
+                               'Enti del Terzo settore con sede nel Comune, numero', 'count', 0),
+    })
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    eur = lambda v: num(v) + ' €'
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+    cls = lambda v: f'classe {num(v)}'
+
+    # 01 — fragilità
+    frag = m['frag']
+    history = engine.ordinal_history('municipalFragility', 'total')
+    groups = {}
+    for code, value, _ in frag.ranking:
+        groups.setdefault(value, []).append(nm(code))
+    lower = [nm(c) for c, v, _ in frag.ranking if v <= 5]
+    frag_text = (
+        f'L’Istat mette ogni Comune italiano in una di dieci classi di fragilità crescente, dalla 1 alla 10, con le soglie '
+        f'che nel 2018 dividevano i Comuni in dieci gruppi di uguale numero. L’indice mette insieme dodici aspetti diversi, dalla '
+        f'popolazione al lavoro, dall’istruzione ai servizi fino ai rischi del territorio. Nel {frag.period} '
+        + '; '.join(f'{join_names(sorted(g))} {"è" if len(g) == 1 else "sono"} nella {cls(v)}'
+                    for v, g in sorted(groups.items())) + '. '
+        + (f'<b>{len(lower)} Comuni su {total} stanno nelle classi da 1 a 5, quelle meno fragili</b>.'
+           if len(lower) > 1 else f'<b>Solo {lower[0]} sta nelle classi da 1 a 5, quelle meno fragili</b>.' if lower
+           else '<b>Nessun Comune sta nelle classi da 1 a 5, quelle meno fragili</b>.'))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {cls(frag.values[c])} su 10 nel {frag.period}; '
+                  + ', '.join(f'{cls(v)} nel {p}' for p, v in history[c][:-1]) + '.') for c in codes}
+    ch1 = chapter(1, 'fragilita', 'La fragilità dei Comuni', 'Quanto sono fragili i Comuni della Versilia?',
+        f'<p>{frag_text}</p>{decile_chart(frag, N, "Indice di fragilità comunale")}' + town_blocks(towns1),
+        'L’indice serve a capire dove più problemi si sommano nello stesso Comune: popolazione che invecchia o cala, '
+        'lavoro e redditi più deboli, servizi lontani, rischi ambientali. Le classi sono posizioni rispetto agli altri '
+        'Comuni italiani, non quantità: una classe 4 non è il doppio di una classe 2, e salire o scendere di una classe '
+        'può dipendere anche da come sono cambiati gli altri Comuni.')
+
+    # 02 — spesa sociale
+    spend = m['spend']
+    st, si = spend.benchmarks['tuscany'], spend.benchmarks['italy']
+    sp_above = above('spend', 'tuscany')
+    below_it = [nm(c) for c, v, _ in spend.ranking if v < si]
+    spend_text = (
+        f'Nel {spend.period} i Comuni della Versilia, da soli o insieme ad altri Comuni, hanno speso per interventi e '
+        f'servizi sociali da {eur(lo("spend")[1])} per abitante a {nm(lo("spend")[0])} a {eur(hi("spend")[1])} a '
+        f'{nm(hi("spend")[0])}. La media è di {eur(st)} in Toscana e di {eur(si)} in Italia: '
+        + (f'<b>la superano solo {join_names(sp_above)}</b>' if 1 < len(sp_above) < total else
+           f'<b>la supera solo {sp_above[0]}</b>' if len(sp_above) == 1 else
+           '<b>la superano tutti e sette i Comuni</b>' if len(sp_above) == total else '<b>nessun Comune la raggiunge</b>')
+        + (f', mentre {join_names(below_it)} {"resta" if len(below_it) == 1 else "restano"} sotto anche la media italiana.'
+           if below_it else '.'))
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {eur(spend.values[c])} per abitante nel {spend.period}, '
+                  f'{ordinal(spend.rank(c))} su {total}; '
+                  + ('sopra' if spend.values[c] > st else 'sotto') + f' la media toscana di {eur(st)}.') for c in codes}
+    ch2 = chapter(2, 'spesa', 'La spesa sociale', 'Quanto spendono i Comuni per i servizi sociali?',
+        f'<p>{spend_text}</p>{bar_chart(spend, N, "Spesa per interventi e servizi sociali per abitante")}'
+        + town_blocks(towns2),
+        'È la spesa che resta a carico dei Comuni, tolto quanto pagano gli utenti e il Servizio sanitario. Spendere di '
+        'più non vuol dire avere più bisogni né servizi migliori: dipende anche da come sono organizzati i servizi, da '
+        'quanto paga la sanità e da quanto si spende per gli asili nido, compresi nel dato. Gli importi non tengono '
+        'conto dell’inflazione.')
+
+    # 03 — a chi va
+    areas = [(part, name) for part, name in SOCIAL_AREAS[:4]]
+    first = {c: max(SOCIAL_AREAS[:4], key=lambda a: m[a[0]].values[c]) for c in codes}
+    fam, dis_area = m['families-minors'], m['disability']
+    first_fam = [nm(c) for c in codes if first[c][0] == 'families-minors']
+    first_dis = [nm(c) for c in codes if first[c][0] == 'disability']
+    area_text = (
+        f'Nel {fam.period} la voce più grande della spesa sociale è quella per famiglie e minori, asili nido compresi, a '
+        f'{join_names(first_fam)}: {span("families-minors", pct)}. '
+        + (f'A {join_names(first_dis)} la prima voce è invece la disabilità, che pesa {span("disability", pct)}. '
+           if first_dis else '')
+        + f'Agli anziani va {span("elderly", pct)}; alla povertà e al disagio degli adulti {span("poverty-hardship", pct)}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: ' + ', '.join(f'{name} {pct(m[part].values[c])}' for part, name in areas)
+                  + ' della spesa sociale.') for c in codes}
+    ch3 = chapter(3, 'a-chi-va', 'A chi va la spesa', 'Per chi spendono i Comuni nel sociale?',
+        f'<p>{area_text}</p>' + ''.join(bar_chart(m[part], N, f'Spesa sociale per {name}') for part, name in areas)
+        + town_blocks(towns3),
+        'Le quote mostrano le scelte e i vincoli di ogni Comune: una quota alta per la disabilità può voler dire molte '
+        'persone seguite, servizi costosi o un modo diverso di contabilizzarli. Una quota bassa o pari a zero non vuol '
+        'dire che quel bisogno non ci sia: può essere coperto dalla sanità, da altri enti o dai servizi gestiti insieme.')
+
+    # 04 — disabilità
+    dis = m['dis']
+    dt = dis.benchmarks['tuscany']
+    dis_above = above('dis', 'tuscany')
+    dis_text = (
+        f'Nel {dis.period} le persone fino a 64 anni con una disabilità riconosciuta, anche grave, sono '
+        f'{span("dis", lambda v: num(v, 1))} ogni 1.000 residenti della stessa età, contro {num(dt, 1)} in Toscana: '
+        + (f'<b>sopra la media toscana {"ci sono tutti i Comuni" if len(dis_above) == total else join_names(dis_above)}'
+           + ('' if len(dis_above) in (0, total) else
+              f', sotto c’è {join_names([nm(c) for c in codes if nm(c) not in dis_above])}') + '</b>.'
+           if dis_above else '<b>nessun Comune supera la media toscana</b>.'))
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {num(dis.values[c], 1)} persone di 0-64 anni con disabilità riconosciuta '
+                  f'ogni 1.000 residenti della stessa età ({ordinal(dis.rank(c))} su {total}; Toscana {num(dt, 1)}).')
+              for c in codes}
+    ch4 = chapter(4, 'disabilita', 'La disabilità riconosciuta', 'Quante persone sotto i 65 anni hanno una disabilità riconosciuta?',
+        f'<p>{dis_text}</p>{bar_chart(dis, N, "Persone di 0-64 anni con disabilità riconosciuta")}' + town_blocks(towns4),
+        'È il dato più vicino al numero di persone che possono avere bisogno di sostegno a scuola, al lavoro o in casa. '
+        'Conta i riconoscimenti amministrativi, non tutte le persone con disabilità: dipende anche da quante famiglie '
+        'chiedono il riconoscimento e da quanto ci vuole a ottenerlo. In un Comune piccolo pochi casi bastano a '
+        'cambiare molto il valore.')
+
+    # 05 — stranieri
+    frn, frnc = m['frn'], m['frnc']
+    ft, fi = frn.benchmarks['tuscany'], frn.benchmarks['italy']
+    frn_text = (
+        f'Al 1° gennaio {frn.period} i residenti con cittadinanza straniera sono <b>{il(pct(frn.versilia))} della '
+        f'popolazione della Versilia</b>, contro {il(pct(ft))} in Toscana e {il(pct(fi))} in Italia: '
+        f'{span("frn", pct)}. '
+        + ('Tutti i Comuni restano sotto la media toscana e quella italiana. '
+           if all(v < min(ft, fi) for v in frn.values.values()) else '')
+        + f'In numeri assoluti vanno da {num(lo("frnc")[1])} a {nm(lo("frnc")[0])} a {num(hi("frnc")[1])} a '
+        f'{nm(hi("frnc")[0])}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(frnc.values[c])} residenti con cittadinanza straniera, '
+                  f'{il(pct(frn.values[c]))} della popolazione ({ordinal(frn.rank(c))} su {total}; Toscana {pct(ft)}).')
+              for c in codes}
+    ch5 = chapter(5, 'stranieri', 'I residenti stranieri', 'Quanti residenti hanno una cittadinanza straniera?',
+        f'<p>{frn_text}</p>{bar_chart(frn, N, "Residenti con cittadinanza straniera")}' + town_blocks(towns5),
+        'Chi arriva da un altro Paese può avere bisogno di servizi particolari, come la mediazione linguistica o '
+        'l’orientamento. Il dato conta la cittadinanza, non il luogo di nascita: non comprende chi è diventato italiano e '
+        'comprende chi è nato in Italia da genitori stranieri. Non dice nulla sulle condizioni di vita di queste persone.')
+
+    # 06 — terzo settore
+    ets, etsn = m['ets'], m['etsn']
+    ets_text = (
+        f'All’{period_label(ets.period)} gli enti del Terzo settore iscritti al registro nazionale con sede in un Comune '
+        f'della Versilia sono <b>{num(ets.versilia, 2)} ogni 1.000 residenti</b>: {span("ets", lambda v: num(v, 2))}. '
+        f'In numeri assoluti si va da {num(lo("etsn")[1])} enti a {nm(lo("etsn")[0])} a {num(hi("etsn")[1])} a '
+        f'{nm(hi("etsn")[0])}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(etsn.values[c])} enti del Terzo settore, {num(ets.values[c], 2)} ogni 1.000 '
+                  f'residenti ({ordinal(ets.rank(c))} su {total}).') for c in codes}
+    ch6 = chapter(6, 'terzo-settore', 'Il Terzo settore', 'Quante associazioni ed enti del Terzo settore ci sono?',
+        f'<p>{ets_text}</p>{bar_chart(ets, N, "Enti del Terzo settore ogni 1.000 residenti")}' + town_blocks(towns6),
+        'Associazioni di volontariato, di promozione sociale, cooperative e fondazioni sono spesso i primi interlocutori '
+        'dei servizi sociali. Il registro conta dove hanno la sede legale, non dove lavorano né quante persone '
+        'aiutano: un ente con sede a Viareggio può operare in tutta la Versilia, e molte associazioni non sono iscritte.')
+
+    key_points = [
+        (f'{len(lower)} su {total}', 'Comuni della Versilia nelle cinque classi meno fragili dell’indice Istat.',
+         'fragilita'),
+        (eur(hi('spend')[1]), f'Spesa sociale per abitante a {nm(hi("spend")[0])} nel {spend.period}; a '
+                              f'{nm(lo("spend")[0])} è {eur(lo("spend")[1])}, in Toscana {eur(st)}.', 'spesa'),
+        (f'{len(sp_above)} su {total}', f'Comuni che spendono per il sociale più della media toscana di {eur(st)}.', 'spesa'),
+        (num(hi('dis')[1], 1), f'Persone di 0-64 anni con disabilità riconosciuta ogni 1.000 a {nm(hi("dis")[0])}; in '
+                               f'Toscana {num(dt, 1)}.', 'disabilita'),
+        (pct(frn.versilia), f'Dei residenti della Versilia ha una cittadinanza straniera; in Toscana {pct(ft)}.',
+         'stranieri'),
+        (num(ets.versilia, 2), 'Enti del Terzo settore ogni 1.000 residenti con sede in Versilia.', 'terzo-settore'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Indice di fragilità comunale', f'{num(frag.values[c])} su 10', '1 = meno fragile'),
+        summary_item('Spesa sociale per abitante', eur(spend.values[c]), f'Toscana {eur(st)}'),
+        summary_item('Prima voce della spesa sociale', first[c][1].capitalize(), pct(m[first[c][0]].values[c])),
+        summary_item('Disabilità riconosciuta, 0-64 anni', num(dis.values[c], 1) + ' ogni 1.000', f'Toscana {num(dt, 1)}'),
+        summary_item('Residenti stranieri', pct(frn.values[c]), f'Versilia {pct(frn.versilia)}'),
+        summary_item('Enti del Terzo settore', num(etsn.values[c]), f'{num(ets.values[c], 2)} ogni 1.000 residenti'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quante persone hanno diritto a un servizio sociale, quante lo chiedono e quante lo ricevono davvero.',
+        'Quanto si aspetta per un servizio, quante domande restano senza risposta e quante persone rinunciano.',
+        'Se i servizi funzionano: la spesa dice quanto si investe, non che cosa cambia per chi li usa.',
+        'Quante famiglie sono in povertà, perché non esiste un dato comunale aggiornato.',
+        'Che cosa fanno davvero gli enti del Terzo settore e quante persone aiutano.',
+    ]
+    return dict(
+        slug='welfare', title='Il welfare in Versilia', eyebrow='Dossier · Welfare',
+        unknown_topic='sul welfare', theme='comunita', theme_label='Tutti i dati su comunità e welfare',
+        lead='Quanto sono fragili i Comuni, quanto spendono per i servizi sociali e per chi, quante persone hanno una '
+             'disabilità riconosciuta, quanti residenti sono stranieri e quanti enti del Terzo settore ci sono: una '
+             'lettura dei dati pubblici sul welfare nei sette Comuni della Versilia.',
+        description='Fragilità dei Comuni, spesa sociale per abitante e per area, disabilità riconosciuta, residenti '
+                    'stranieri ed enti del Terzo settore nei sette Comuni della Versilia, con confronti con la Toscana e '
+                    'l’Italia.',
+        periods=f'Indice di fragilità {frag.period}; spesa sociale {spend.period}; disabilità {dis.period}; residenti '
+                f'stranieri al 1° gennaio {frn.period}; Terzo settore all’{period_label(ets.period)}.',
+        method='I dati vengono dall’Istat (indice di fragilità, spesa sociale dei Comuni, residenti per cittadinanza), '
+               'dalla Regione Toscana (disabilità riconosciuta) e dal Registro unico nazionale del Terzo settore. Il '
+               'valore della Versilia è calcolato solo dove sono disponibili i dati di partenza, cioè per i residenti '
+               'stranieri e per gli enti del Terzo settore; per la spesa sociale e la disabilità il confronto è fra '
+               'Comuni, Toscana e Italia. L’indice di fragilità è una classe e non si somma né si fa la media.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('fragilita', 'La fragilità dei Comuni'), ('spesa', 'La spesa sociale'), ('a-chi-va', 'A chi va la spesa'),
+             ('disabilita', 'La disabilità riconosciuta'), ('stranieri', 'I residenti stranieri'),
+             ('terzo-settore', 'Il Terzo settore')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare}
 
 
 # ---------------------------------------------------------------------------
@@ -3112,7 +3380,9 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più',
             'celsius': 'gradi centigradi', 'celsiusdelta': 'variazione in gradi centigradi', 'mm': 'millimetri',
             'kg': 'kg per abitante', 'per100k': 'ogni 100.000 abitanti', 'per100res': 'ogni 100 abitanti',
-            'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni'}
+            'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni',
+            'per1000young': 'ogni 1.000 residenti di 0-64 anni', 'per1000dec': 'ogni 1.000 abitanti',
+            'decile': 'classe da 1 (meno fragile) a 10 (più fragile)'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -3120,7 +3390,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
         rows += [(BENCH_LABEL[s], v) for s, v in measure.benchmarks.items()]
         for territory, value in rows:
             writer.writerow([measure.label, territory, period_label(measure.period),
-                             num(value, 0 if measure.unit in ('eur', 'count') else max(measure.decimals, 2)).replace('.', ''),
+                             num(value, 0 if measure.unit in ('eur', 'count', 'decile') else max(measure.decimals, 2)).replace('.', ''),
                              unit[measure.unit], measure_source(measure)])
     path.write_bytes(b'\xef\xbb\xbf' + buffer.getvalue().encode('utf-8'))
 
@@ -3213,7 +3483,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute e sui redditi, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi e sul welfare, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -3234,7 +3504,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute e redditi.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi e welfare.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',

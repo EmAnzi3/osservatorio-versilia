@@ -1,5 +1,28 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Il welfare in Versilia» (4 novembre 2026)
+
+Branch `feature/dossier-welfare`, tredicesimo dossier in forma di relazione (slug `welfare`,
+tema comunita), scheda `welfare` di `ci/territorial-dossier-program.json`, con tutti i sei
+`metricRefs`. Sei capitoli, 593 risposte del motore in tutto il generatore:
+
+1. fragilità: `municipalFragility` (decili IFC 2022 e classi 2018-2021). È ordinale e il motore
+   ammette solo `compare` e `series` (una richiesta per Comune): nuovi `Engine.ordinal` e
+   `Engine.ordinal_history`, unità `decile`, grafico `decile_chart` su scala fissa 1-10 in
+   ordine alfabetico, senza graduatoria, medie né variazioni;
+2. spesa sociale: `socialSpendingPerResident` 2022 con Toscana e Italia (niente valore
+   Versilia: denominatori nativi non disponibili);
+3. a chi va: `socialSpendingByUserArea` per famiglie e minori, disabilità, anziani, povertà;
+   immigrati, dipendenze e multiutenza restano fuori dai grafici (quote piccole o nulle);
+4. disabilità: `disability064Per1000` 2024 con Toscana, nuova unità `per1000young`;
+5. stranieri: `foreignResidents` 2025 con Toscana, Italia e Versilia ponderata, più i conteggi;
+6. Terzo settore: `thirdSector` `nativeRatio` (Versilia ponderata) e `registeredEntities`,
+   nuova unità `per1000dec`; sedi legali, non servizi erogati.
+
+Nuove fonti con nome pubblico: RUNTS in `SOURCE_NAMES`; IFC e indicatori regionali della
+disabilità in `SOURCE_BY_METRIC`. Seguendo la scheda: nessuna graduatoria politica dalla
+fragilità o dalla spesa, e la spesa non misura bisogno né qualità dei servizi.
+
 ## Dossier «I redditi in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-redditi`, dodicesimo dossier in forma di relazione (slug `redditi`,
