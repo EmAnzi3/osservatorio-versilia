@@ -1,5 +1,40 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Ambiente e rischi in Versilia» (3 novembre 2026)
+
+Branch `feature/dossier-ambiente`, ottavo dossier in forma di relazione, scelto dal
+proprietario come primo dopo bilanci e mobilità (poi demografia e investimenti).
+Sette capitoli, 361 risposte del motore in tutto il generatore:
+
+1. alluvioni: residenti in pericolosità media (P2) ed elevata (P3), mappa ISPRA 2020,
+   censimento 2011; scenari annidati, non sommati;
+2. frane: residenti e territorio in pericolosità elevata e molto elevata (P3+P4),
+   mappa 2024, censimento 2021;
+3. clima: temperatura e pioggia 2025, delta OLS 1975-2025 (LaMMA/ERA5-Land); nessun
+   valore Versilia né confronto con Toscana, che il motore rifiuta;
+4. costa: dinamica della riva 2006-2020 e costa protetta da opere rigide (quattro
+   Comuni costieri, `partial=True`; confronto con Toscana e Italia solo per le opere);
+5. mare: aree di balneazione eccellenti 2022-2025, campioni di routine fuori limite
+   2025 (non i campioni suppletivi, mirati), Bandiere Blu 2026 solo nel testo;
+6. rifiuti e acqua: raccolta differenziata e rifiuti per abitante 2024, perdite
+   idriche 2018; rimando al dossier bilanci per costo del servizio e TARI;
+7. bonifiche: procedimenti SISBON aperti e totali.
+
+Seguendo `ci/territorial-dossier-program.json` (scheda ambiente): pericolosità ed
+esposizione distinte dal rischio, nessuna previsione per edificio, protezione rigida e
+procedimento chiuso non descritti come efficacia o risanamento. Consumo di suolo e
+agricoltura restano per il dossier «suolo».
+
+Altre modifiche:
+- `SOURCE_NAMES`: le voci specifiche (IdroGEO, LaMMA, ISPRA coste, ARPAT
+  balneazione, FEE, catasto rifiuti per la produzione, censimento Istat delle
+  acque, SISBON) stanno in testa, perché vince la prima corrispondenza;
+- unità `celsius`, `celsiusdelta`, `mm`, `kg`; funzione `sul()` per «sull’87,8%»;
+- frasi che citano montagna e quota solo se i valori estremi sono di Stazzema o
+  Seravezza;
+- `ci/content-contract.json`: `dossier/ambiente/index.html`; indice dei dossier
+  aggiornato.
+
 ## Radar 2.0 — le schede automatiche si rileggono quando cambiano le regole (3 novembre 2026)
 
 Branch `fix/radar-rilettura-schede-auto`: dopo il merge della #536 il run del 3/11 ha tenuto pubblicata GranFest (Fondazione CR Lucca), qualificata il 2/11 con le regole precedenti su una frase che cita il Comune solo come possibile finanziatore. Causa: `apply()` riportava le schede `auto_qualified` dei giorni precedenti fino alla scadenza senza rileggerle. Ora `VERSION` del qualificatore è `1.1` e una scheda con `auto_qualification_version` diversa torna in lettura per prima, anche se scartata di recente: se le regole attuali la qualificano viene ricostruita, se la respingono o è scaduta esce (conteggio `withdrawn`, «ritirate perché non superano più le regole» nel rapporto del run), se la pagina non si legge in quel run resta com'era. Ogni futura modifica alle regole di ammissibilità deve alzare `VERSION`. Test: `test_cards_from_older_rules_are_reread` (fallisce senza la correzione).

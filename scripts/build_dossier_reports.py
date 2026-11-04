@@ -37,6 +37,17 @@ APP_ICONS = ROOT / 'assets/app-parts/00.txt'
 BASE_URL = 'https://osservatorioversilia.it/dossier/'
 EXAMPLE_M2 = 80
 SOURCE_NAMES = [
+    # Le voci più specifiche prima: vince la prima che corrisponde.
+    ('idrogeo.isprambiente.it', 'ISPRA — Piattaforma IdroGEO: pericolosità da alluvioni e frane'),
+    ('dati.lamma.toscana.it', 'Consorzio LaMMA — Serie climatiche ricostruite (LaMMA ed ERA5-Land)'),
+    ('indicatoriambientali.isprambiente.it/it/coste', 'ISPRA — Indicatori ambientali: coste'),
+    ('arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione',
+     'ARPAT — Controllo delle acque di balneazione'),
+    ('bandierablu.org', 'FEE Italia — Bandiere Blu'),
+    ('catasto-rifiuti.isprambiente.it/index.php?pg=findComune',
+     'ISPRA — Catasto dei rifiuti: produzione e raccolta differenziata'),
+    ('esploradati.istat.it', 'Istat — Censimento delle acque per uso civile'),
+    ('sisbon.regione.toscana.it', 'Regione Toscana — Anagrafe dei siti oggetto di bonifica (SISBON)'),
     ('rt-oraritb', 'Regione Toscana — Orari del trasporto pubblico (GTFS di autobus e treni)'),
     ('MATPEN', 'Istat — Pendolarismo per lavoro, Censimento 2021'),
     ('DICA_ASIA', 'Istat — Registro delle unità locali delle imprese (ASIA)'),
@@ -126,6 +137,10 @@ def dal(text: str) -> str:
     return ('dallo ' if _zero(text) else 'dall’' if _elides(text) else 'dal ') + text
 
 
+def sul(text: str) -> str:
+    return ('sullo ' if _zero(text) else 'sull’' if _elides(text) else 'sul ') + text
+
+
 def esc(text: str) -> str:
     return html.escape(text, quote=True)
 
@@ -201,7 +216,9 @@ class Measure:
                 'nights': lambda v: num(v, 2) + ' notti', 'per100': lambda v: num(v, 1) + ' ogni 100',
                 'years': lambda v: num(v, 1) + ' anni', 'hours': lambda v: num(v, 1) + ' ore',
                 'rate1000': lambda v: num(v, self.decimals) + ' ogni 1.000 abitanti',
-                'per1000old': lambda v: num(v, 1) + ' ogni 1.000 anziani'}[self.unit](value)
+                'per1000old': lambda v: num(v, 1) + ' ogni 1.000 anziani',
+                'celsius': lambda v: num(v, 1) + ' °C', 'celsiusdelta': lambda v: signed(v, 1) + ' °C',
+                'mm': lambda v: num(v) + ' mm', 'kg': lambda v: num(v) + ' kg'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
@@ -1841,7 +1858,305 @@ def bilanci(engine: Engine) -> dict:
              ('personale', 'Chi lavora in Comune')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci}
+# ---------------------------------------------------------------------------
+# Dossier «Ambiente e rischi in Versilia».
+
+STAZZEMA, SERAVEZZA = '046030', '046028'
+
+
+def ambiente(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'flood2': engine.measure('flood2', 'floodExposure', 'residentsPct:P2',
+                                 'Residenti in aree a pericolosità media di alluvione, %', 'percent', 1, versilia=True),
+        'floodn': engine.measure('floodn', 'floodExposure', 'residents:P2',
+                                 'Residenti in aree a pericolosità media di alluvione, numero', 'count', 0),
+        'flood3': engine.measure('flood3', 'floodExposure', 'residentsPct:P3',
+                                 'Residenti in aree a pericolosità elevata di alluvione, %', 'percent', 1, versilia=True),
+        'slide': engine.measure('slide', 'landslideExposure', 'residentsPct:P3+P4',
+                                'Residenti in aree a pericolosità elevata o molto elevata di frana, %', 'percent', 1,
+                                versilia=True),
+        'slidearea': engine.measure('slidearea', 'landslideExposure', 'areaPct:P3+P4',
+                                    'Territorio a pericolosità elevata o molto elevata di frana, %', 'percent', 1,
+                                    versilia=True),
+        'temp': engine.measure('temp', 'climateTemperatureTrend50y', 'total', 'Temperatura media annua, °C',
+                               'celsius', 1),
+        'tempd': engine.measure('tempd', 'climateTemperatureTrend50y', 'trend:1975-2025',
+                                'Aumento stimato della temperatura media fra il 1975 e il 2025, °C', 'celsiusdelta', 1),
+        'rain': engine.measure('rain', 'climatePrecipitationTrend50y', 'total', 'Pioggia caduta nell’anno, mm', 'mm', 0),
+        'raind': engine.measure('raind', 'climatePrecipitationTrend50y', 'trend_percent:1975-2025',
+                                'Variazione stimata della pioggia annua fra il 1975 e il 2025, %', 'change', 1),
+        'erosion': engine.measure('erosion', 'shorelineDynamics', 'share:erosion',
+                                  'Spiaggia naturale arretrata di oltre 5 metri, % dei km analizzati', 'percent', 1,
+                                  versilia=True, partial=True),
+        'advance': engine.measure('advance', 'shorelineDynamics', 'share:advance',
+                                  'Spiaggia naturale avanzata di oltre 5 metri, % dei km analizzati', 'percent', 1,
+                                  versilia=True, partial=True),
+        'rigid': engine.measure('rigid', 'rigidDefenceProtectedCoast', 'total',
+                                'Costa protetta da scogliere e altre opere rigide, %', 'percent', 1,
+                                benchmarks=TI, versilia=True, partial=True),
+        'bath': engine.measure('bath', 'bathingWaterQuality', 'share:areas:excellent',
+                               'Acque di balneazione in classe eccellente, % delle aree', 'percent', 1,
+                               versilia=True, partial=True),
+        'samples': engine.measure('samples', 'bathingNonCompliantSamples', 'share:routine',
+                                  'Campioni di routine fuori dai limiti di legge, %', 'percent', 1,
+                                  versilia=True, partial=True),
+        'flags': engine.measure('flags', 'blueFlagBeaches', 'total', 'Località con la Bandiera Blu', 'count', 0,
+                                partial=True),
+        'recycling': engine.measure('recycling', 'recycling', 'total', 'Raccolta differenziata, % dei rifiuti urbani',
+                                    'percent', 1, benchmarks=TI),
+        'waste': engine.measure('waste', 'wastePerResident', 'total', 'Rifiuti urbani per abitante, kg l’anno', 'kg',
+                                0, benchmarks=TI),
+        'losses': engine.measure('losses', 'waterNetworkLosses', 'total',
+                                 'Acqua potabile persa nella rete di distribuzione, %', 'percent', 1,
+                                 benchmarks=TI, versilia=True),
+        'sites': engine.measure('sites', 'remediationProceedings', 'view:active',
+                                'Siti con procedimento di bonifica aperto', 'count', 0),
+        'sites_all': engine.measure('sites_all', 'remediationProceedings', 'view:all',
+                                    'Siti con procedimento di bonifica, aperto o chiuso', 'count', 0),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    coast = [c for c in codes if c in m['rigid'].values]
+    inland = [c for c in codes if c not in coast]
+    inland_names = join_names([nm(c) for c in sorted(inland, key=lambda c: nm(c))])
+
+    # 01 — alluvioni
+    f2, fn, f3 = m['flood2'], m['floodn'], m['flood3']
+    majority = [c for c, v, _ in f2.ranking if v > 50]
+    f2_text = (
+        f'Secondo la mappa ISPRA del {f2.period}, in Versilia vive in aree a <b>pericolosità media di alluvione</b> '
+        f'{il(pct(f2.versilia))} dei residenti: sono zone che un fiume o un canale può allagare con eventi poco '
+        f'frequenti ma possibili. La quota va {dal(pct(lo("flood2")[1]))} di {nm(lo("flood2")[0])} '
+        f'{al(pct(hi("flood2")[1]))} di <b>{nm(hi("flood2")[0])}</b>'
+        + (f', dove riguarda più di metà degli abitanti, {num(fn.values[majority[0]])} persone.' if majority else '.')
+        + (f' Per numero di persone seguono {nm(fn.ranking[1][0])} ({num(fn.ranking[1][1])}) e {nm(fn.ranking[2][0])} '
+           f'({num(fn.ranking[2][1])}).' if majority and fn.ranking[0][0] == majority[0] else
+           f' In numero di persone, il Comune con più residenti in queste aree è {nm(fn.ranking[0][0])} '
+           f'({num(fn.ranking[0][1])}).'))
+    f3_text = (
+        f'Nelle aree a <b>pericolosità elevata</b>, dove gli allagamenti sono più frequenti, vive {il(pct(f3.versilia))} '
+        f'dei residenti della Versilia, fino {al(pct(hi("flood3")[1]))} di {nm(hi("flood3")[0])}. Le aree a pericolosità '
+        f'elevata sono comprese in quelle a pericolosità media: le due quote non si sommano.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(f2.values[c]))} dei residenti ({num(fn.values[c])} persone) vive in '
+                  f'aree a pericolosità media di alluvione, {il(pct(f3.values[c]))} in aree a pericolosità elevata.')
+              for c in codes}
+    ch1 = chapter(1, 'alluvioni', 'Le alluvioni', 'Quante persone vivono dove fiumi e canali possono esondare?',
+        f'<p>{f2_text}</p>{bar_chart(f2, N, "Residenti in aree a pericolosità media di alluvione")}'
+        f'{bar_chart(fn, N, "Residenti in aree a pericolosità media di alluvione, in numero di persone")}'
+        f'<p>{f3_text}</p>{bar_chart(f3, N, "Residenti in aree a pericolosità elevata di alluvione")}'
+        + town_blocks(towns1),
+        'Sapere quante persone abitano nelle zone allagabili aiuta a preparare i piani di protezione civile, a decidere '
+        'dove fare manutenzione e opere e a informare chi ci vive. La mappa dice dove l’acqua può arrivare, non quando '
+        'né con quali danni: per questo serve conoscere anche lo stato degli argini, dei canali e delle case. I '
+        'residenti sono quelli contati dal censimento sui confini delle aree.')
+
+    # 02 — frane
+    sl, sa = m['slide'], m['slidearea']
+    none_ = [c for c, v, _ in sl.ranking if v < 0.05]
+    sl_text = (
+        f'Le aree a pericolosità di frana elevata o molto elevata coprono {il(pct(sa.versilia))} del territorio della '
+        f'Versilia (mappa ISPRA del {sl.period}) e ospitano {il(pct(sl.versilia))} dei residenti. Il Comune più esposto '
+        f'è <b>{nm(hi("slide")[0])}</b>, dove in queste aree vive {il(pct(hi("slide")[1]))} degli abitanti; seguono '
+        f'{nm(sl.ranking[1][0])} ({pct(sl.ranking[1][1])}) e {nm(sl.ranking[2][0])} ({pct(sl.ranking[2][1])}).'
+        + (f' A {join_names([nm(c) for c in none_])} la quota è praticamente nulla.' if none_ else ''))
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(sl.values[c]))} dei residenti vive in aree a pericolosità di frana '
+                  f'elevata o molto elevata, che coprono {il(pct(sa.values[c]))} del territorio comunale.')
+              for c in codes}
+    ch2 = chapter(2, 'frane', 'Le frane', 'Dove il terreno può franare, e quante persone ci abitano?',
+        f'<p>{sl_text}</p>{bar_chart(sl, N, "Residenti in aree a pericolosità di frana elevata o molto elevata")}'
+        f'{bar_chart(sa, N, "Territorio a pericolosità di frana elevata o molto elevata")}' + town_blocks(towns2),
+        'Sulle colline e sulle Apuane le frane possono isolare paesi e interrompere strade e servizi. La mappa indica '
+        'dove il terreno è più instabile, non dove una frana avverrà né quali edifici sono a rischio: per questo servono '
+        'studi locali, monitoraggi e manutenzione dei versanti e delle strade.')
+
+    # 03 — clima
+    tp, td, rn, rd = m['temp'], m['tempd'], m['rain'], m['raind']
+    tp_text = (
+        f'Nel {tp.period} la temperatura media annua andava da {tp.fmt(lo("temp")[1])} a {nm(lo("temp")[0])}'
+        + (', il Comune più in montagna,' if lo('temp')[0] == STAZZEMA else '')
+        + f' a {tp.fmt(hi("temp")[1])} a {nm(hi("temp")[0])}. Fra il 1975 e il 2025 la retta che '
+        f'descrive l’andamento delle temperature indica <b>un aumento di circa {num(round(sum(td.values.values()) / total, 0))} '
+        f'gradi in tutti i sette Comuni</b>, da {td.fmt(lo("tempd")[1])} a {td.fmt(hi("tempd")[1])}.')
+    rn_text = (
+        f'La pioggia del {rn.period} va da {rn.fmt(lo("rain")[1])} a {nm(lo("rain")[0])} a <b>{rn.fmt(hi("rain")[1])} a '
+        f'{nm(hi("rain")[0])}</b>' + (': piove di più verso le montagne.' if hi('rain')[0] in (STAZZEMA, SERAVEZZA) else '.')
+        + f' Nei cinquant’anni fino al 2025 la tendenza della '
+        f'pioggia annua è in lieve calo ovunque, da {rd.fmt(hi("raind")[1])} a {nm(hi("raind")[0])} a '
+        f'{rd.fmt(lo("raind")[1])} a {nm(lo("raind")[0])}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: temperatura media {tp.fmt(tp.values[c])} nel {tp.period}, '
+                  f'{td.fmt(td.values[c])} dal 1975 secondo la tendenza; pioggia {rn.fmt(rn.values[c])} nell’anno, '
+                  f'tendenza {rd.fmt(rd.values[c])} in cinquant’anni.') for c in codes}
+    ch3 = chapter(3, 'clima', 'Il clima che cambia', 'Quanto è aumentata la temperatura e come cambia la pioggia?',
+        f'<p>{tp_text}</p>{bar_chart(tp, N, "Temperatura media annua")}'
+        f'{bar_chart(td, N, "Aumento stimato della temperatura media dal 1975 al 2025")}'
+        f'<p>{rn_text}</p>{bar_chart(rn, N, "Pioggia caduta nell’anno")}'
+        f'{bar_chart(rd, N, "Variazione stimata della pioggia annua dal 1975 al 2025")}' + town_blocks(towns3),
+        'Estati più calde pesano sulla salute degli anziani, sulle scuole, sui consumi di energia e sull’acqua. Le serie '
+        'sono ricostruite su una griglia di celle a partire da modelli e osservazioni, non misurate da una stazione nel '
+        'Comune; la tendenza riassume cinquant’anni e non prevede il clima dei prossimi anni né gli eventi estremi, '
+        'come i temporali molto intensi.')
+
+    # 04 — costa
+    er, ad, rg = m['erosion'], m['advance'], m['rigid']
+    er_text = (
+        f'Fra il 2006 e il 2020 ISPRA ha confrontato la linea di riva dei tratti di spiaggia naturale. In Versilia è '
+        f'<b>avanzata di oltre 5 metri</b> {sul(pct(ad.versilia))} dei chilometri analizzati ed è arretrata di oltre '
+        f'5 metri {sul(pct(er.versilia))}. Il Comune con la quota più alta di spiaggia arretrata è '
+        f'{nm(hi("erosion")[0])} ({pct(hi("erosion")[1])}).')
+    rg_text = (
+        f'Le scogliere e le altre opere rigide proteggono {il(pct(rg.versilia))} della costa della Versilia, contro '
+        f'{il(pct(rg.benchmarks["tuscany"]))} della Toscana e {il(pct(rg.benchmarks["italy"]))} dell’Italia; il valore '
+        f'più alto è a {nm(hi("rigid")[0])} ({pct(hi("rigid")[1])}). I ripascimenti, cioè la sabbia riportata sulle '
+        f'spiagge, non sono contati fra le opere rigide.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: spiaggia naturale avanzata {sul(pct(ad.values[c]))} dei chilometri '
+                  f'analizzati e arretrata {sul(pct(er.values[c]))}; '
+                  + (f'opere di difesa rigide {sul(pct(rg.values[c]))} della costa.' if rg.values[c] > 0 else
+                     'nessuna opera di difesa rigida sulla costa.')) if c in coast else
+              f'<b>{esc(nm(c))}</b> non ha un tratto di costa sul mare: i dati di questo capitolo non lo riguardano.'
+              for c in codes}
+    ch4 = chapter(4, 'costa', 'La costa', 'La spiaggia avanza o arretra, e quanto è protetta da opere?',
+        f'<p>{er_text}</p>{bar_chart(ad, N, "Spiaggia naturale avanzata di oltre 5 metri, 2006-2020")}'
+        f'{bar_chart(er, N, "Spiaggia naturale arretrata di oltre 5 metri, 2006-2020")}'
+        f'<p>{rg_text}</p>{bar_chart(rg, N, "Costa protetta da scogliere e altre opere rigide")}' + town_blocks(towns4),
+        f'La spiaggia è il primo patrimonio economico della costa e anche una difesa naturale dalle mareggiate. I dati '
+        f'riguardano i quattro Comuni sul mare, non {inland_names}. Le misure confrontano due fotografie: dicono come '
+        f'si è spostata la riva, non perché né a che ritmo anno per anno, e la presenza di opere non dice se funzionano.')
+
+    # 05 — mare
+    bt, sm, fl = m['bath'], m['samples'], m['flags']
+    flag_towns = [c for c, v, _ in fl.ranking if v > 0]
+    bt_text = (
+        f'Le acque di balneazione sono classificate da ARPAT sugli esiti delle stagioni dal {bt.period[:4]} al '
+        f'{bt.period[-4:]}. '
+        f'In Versilia è in classe <b>eccellente</b> {il(pct(bt.versilia))} delle aree controllate: '
+        f'{il(pct(hi("bath")[1]))} a {nm(hi("bath")[0])}, {il(pct(lo("bath")[1]))} a {nm(lo("bath")[0])}.')
+    sm_text = (
+        f'Nella stagione {sm.period} {il(pct(sm.versilia))} dei campioni di routine ha superato almeno un limite di '
+        f'legge, da {pct(lo("samples")[1])} a {nm(lo("samples")[0])} a {pct(hi("samples")[1])} a '
+        f'{nm(hi("samples")[0])}: un singolo campione fuori limite porta di solito a un divieto temporaneo, non '
+        f'cambia da solo la classe dell’area. Nel {fl.period} le località con la Bandiera Blu sono '
+        + join_names([f'{num(fl.values[c])} a {nm(c)}' for c in flag_towns]) + '.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(bt.values[c]))} delle aree di balneazione in classe eccellente; '
+                  f'{il(pct(sm.values[c]))} dei campioni di routine {sm.period} fuori limite; '
+                  f'{num(fl.values[c])} località con la Bandiera Blu {fl.period}.') if c in coast else
+              f'<b>{esc(nm(c))}</b> non ha acque di balneazione sul mare.' for c in codes}
+    ch5 = chapter(5, 'mare', 'Il mare', 'Quanto è pulita l’acqua dove si fa il bagno?',
+        f'<p>{bt_text}</p>{bar_chart(bt, N, "Aree di balneazione in classe eccellente")}'
+        f'<p>{sm_text}</p>{bar_chart(sm, N, "Campioni di routine fuori dai limiti di legge")}' + town_blocks(towns5),
+        'La qualità del mare conta per la salute di chi fa il bagno e per il turismo. La classe riassume quattro '
+        'stagioni e non dice com’è l’acqua oggi: per sapere se si può fare il bagno valgono i cartelli e le ordinanze '
+        'in spiaggia. La Bandiera Blu tiene conto anche di servizi e gestione, non solo della qualità dell’acqua.')
+
+    # 06 — rifiuti e acqua
+    rc, ws, ls = m['recycling'], m['waste'], m['losses']
+    rc_below = [c for c in codes if rc.values[c] < rc.benchmarks['tuscany']]
+    rc_text = (
+        f'Nel {rc.period} la raccolta differenziata andava {dal(pct(lo("recycling")[1]))} di {nm(lo("recycling")[0])} '
+        f'{al(pct(hi("recycling")[1]))} di <b>{nm(hi("recycling")[0])}</b>; in Toscana era {il(pct(rc.benchmarks["tuscany"]))}, '
+        f'in Italia {il(pct(rc.benchmarks["italy"]))}'
+        + (f'. Sotto la media toscana {"c’è" if len(rc_below) == 1 else "ci sono"} {join_names([nm(c) for c in rc_below])}.'
+           if rc_below else '.')
+        + f' I rifiuti per abitante vanno da {ws.fmt(lo("waste")[1])} a {nm(lo("waste")[0])} a '
+          f'<b>{ws.fmt(hi("waste")[1])} a {nm(hi("waste")[0])}</b> (in Toscana {ws.fmt(ws.benchmarks["tuscany"])}): nei '
+          f'Comuni turistici una parte dei rifiuti è prodotta da chi non vi risiede ma viene divisa fra i soli residenti.')
+    ls_text = (
+        f'Secondo l’ultimo censimento Istat delle acque ({ls.period}), la rete di distribuzione perdeva in Versilia '
+        f'{il(pct(ls.versilia))} dell’acqua immessa (Toscana {pct(ls.benchmarks["tuscany"])}, Italia '
+        f'{pct(ls.benchmarks["italy"])}), da {pct(lo("losses")[1])} a {nm(lo("losses")[0])} a '
+        f'<b>{pct(hi("losses")[1])} a {nm(hi("losses")[0])}</b>.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: raccolta differenziata {al(pct(rc.values[c]))} e {ws.fmt(ws.values[c])} di '
+                  f'rifiuti per abitante nel {rc.period}; nel {ls.period} la rete idrica perdeva {il(pct(ls.values[c]))} '
+                  f'dell’acqua immessa.') for c in codes}
+    ch6 = chapter(6, 'rifiuti-acqua', 'Rifiuti e acqua', 'Quanto si ricicla e quanta acqua si perde nei tubi?',
+        f'<p>{rc_text}</p>{bar_chart(rc, N, "Raccolta differenziata")}'
+        f'{bar_chart(ws, N, "Rifiuti urbani per abitante")}'
+        f'<p>{ls_text}</p>{bar_chart(ls, N, "Acqua persa nella rete di distribuzione")}'
+        '<p>Quanto costa il servizio rifiuti e quanto paga una famiglia di TARI è nel dossier '
+        '<a href="../bilanci/#tasse">I conti dei Comuni</a>.</p>' + town_blocks(towns6),
+        'Raccolta differenziata e acqua sono servizi di tutti i giorni, pagati in bolletta. La raccolta differenziata '
+        'misura quanto si separa, non quanto viene poi davvero riciclato. Le perdite della rete sono di qualche anno fa '
+        'e comprendono sia i tubi che perdono sia l’acqua che sfugge ai contatori.')
+
+    # 07 — bonifiche
+    st, sa_ = m['sites'], m['sites_all']
+    st_sum = sum(st.values.values())
+    st_text = (
+        f'{"All’" if re.match(r"(8|11) ", period_label(st.period)) else "Al "}{period_label(st.period)} l’anagrafe regionale contava in Versilia <b>{num(st_sum)} siti con un '
+        f'procedimento di bonifica ancora aperto</b>, su {num(sum(sa_.values.values()))} siti registrati in tutto. Il '
+        f'numero più alto è a {nm(hi("sites")[0])} ({num(hi("sites")[1])} aperti su {num(sa_.values[hi("sites")[0]])}), '
+        f'il più basso a {nm(lo("sites")[0])} ({num(lo("sites")[1])}).')
+    towns7 = {c: (f'<b>{esc(nm(c))}</b>: {num(st.values[c])} siti con procedimento di bonifica aperto, '
+                  f'{num(sa_.values[c])} registrati in tutto.') for c in codes}
+    ch7 = chapter(7, 'bonifiche', 'I siti da bonificare', 'Quanti terreni contaminati, o sospetti tali, sono in attesa?',
+        f'<p>{st_text}</p>{bar_chart(st, N, "Siti con procedimento di bonifica aperto")}' + town_blocks(towns7),
+        'Un procedimento si apre quando un terreno o una falda possono essere inquinati, per esempio dopo una perdita '
+        'da un serbatoio o la chiusura di un’attività. Il numero dice quante pratiche sono in corso, non quanto è grave '
+        'l’inquinamento: un procedimento chiuso non vuol dire per forza che il sito sia stato bonificato.')
+
+    key_points = [
+        (pct(f2.versilia), f'Dei residenti della Versilia vive in aree a pericolosità media di alluvione; a '
+                           f'{nm(hi("flood2")[0])} {il(pct(hi("flood2")[1]))}.', 'alluvioni'),
+        (pct(hi('slide')[1]), f'Dei residenti di {nm(hi("slide")[0])} vive in aree a pericolosità di frana elevata o '
+                              f'molto elevata.', 'frane'),
+        (f'{td.fmt(lo("tempd")[1])} / {td.fmt(hi("tempd")[1])}',
+         'Aumento stimato della temperatura media fra il 1975 e il 2025, in tutti i sette Comuni.', 'clima'),
+        (pct(rg.versilia), f'Della costa protetta da scogliere e opere rigide; in Toscana '
+                           f'{il(pct(rg.benchmarks["tuscany"]))}.', 'costa'),
+        (pct(bt.versilia), 'Delle acque di balneazione della Versilia in classe eccellente.', 'mare'),
+        (pct(ls.versilia), f'Dell’acqua potabile persa nella rete di distribuzione; in Toscana '
+                           f'{il(pct(ls.benchmarks["tuscany"]))}.', 'rifiuti-acqua'),
+    ]
+    towns_summary = {}
+    for c in codes:
+        items = [
+            summary_item('Residenti in aree di alluvione a pericolosità media', pct(f2.values[c]),
+                         f'Versilia {pct(f2.versilia)}'),
+            summary_item('Residenti in aree di frana a pericolosità elevata', pct(sl.values[c]),
+                         f'Versilia {pct(sl.versilia)}'),
+            summary_item('Aumento stimato della temperatura dal 1975', td.fmt(td.values[c]), f'{tp.fmt(tp.values[c])} nel {tp.period}'),
+        ]
+        if c in coast:
+            items += [summary_item('Costa protetta da opere rigide', pct(rg.values[c]), f'Versilia {pct(rg.versilia)}'),
+                      summary_item('Aree di balneazione eccellenti', pct(bt.values[c]), f'Versilia {pct(bt.versilia)}')]
+        items += [summary_item('Raccolta differenziata', pct(rc.values[c]), f'Toscana {pct(rc.benchmarks["tuscany"])}'),
+                  summary_item('Acqua persa nella rete', pct(ls.values[c]), f'Versilia {pct(ls.versilia)}'),
+                  summary_item('Siti con bonifica aperta', num(st.values[c]), f'{ordinal(st.rank(c))} su 7')]
+        towns_summary[c] = '<ul class="dr-town-list">' + ''.join(items) + '</ul>'
+    unknown = [
+        'Quanto sono vulnerabili case, strade e servizi nelle aree pericolose, e quali danni ci si può aspettare: le '
+        'mappe indicano la pericolosità, non il rischio per il singolo edificio.',
+        'Quanti residenti vivono oggi nelle aree pericolose: le mappe usano la popolazione dei censimenti.',
+        'Quali opere di difesa e manutenzione sono state fatte, e con quali risultati.',
+        'Quanto fa caldo nelle diverse zone dei paesi e delle città, e quante persone soffrono le ondate di calore.',
+        'Qual è la qualità dell’aria: in buona parte dei Comuni non ci sono centraline di misura.',
+        'Quali inquinanti ci sono nei siti da bonificare e a che punto sono i lavori.',
+    ]
+    return dict(
+        slug='ambiente', title='Ambiente e rischi in Versilia', eyebrow='Dossier · Ambiente, clima e rischio',
+        unknown_topic='sull’ambiente', theme='ambiente', theme_label='Tutti i dati sull’ambiente',
+        lead='Alluvioni e frane, clima, costa e mare, rifiuti, acqua e siti da bonificare: una lettura dei dati pubblici '
+             'sui sette Comuni della Versilia.',
+        description='Residenti nelle aree a pericolosità di alluvione e frana, temperature e pioggia, spiagge e opere di '
+                    'difesa, qualità del mare, raccolta differenziata, perdite idriche e bonifiche nei sette Comuni '
+                    'della Versilia.',
+        periods=f'Mappe di pericolosità ISPRA {f2.period} (alluvioni) e {sl.period} (frane), clima fino al {tp.period}, '
+                f'costa {er.period}, balneazione {bt.period}, rifiuti {rc.period}, rete idrica {ls.period}, bonifiche '
+                f'{period_label(st.period)}.',
+        method='Le quote di residenti in aree pericolose usano la popolazione del censimento indicata dalla fonte: 2011 '
+               'per le alluvioni, 2021 per le frane. Per clima e Bandiere Blu non si calcola un valore unico della '
+               'Versilia.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points,
+        towns_summary=towns_summary, unknown=unknown,
+        toc=[('alluvioni', 'Le alluvioni'), ('frane', 'Le frane'), ('clima', 'Il clima che cambia'), ('costa', 'La costa'),
+             ('mare', 'Il mare'), ('rifiuti-acqua', 'Rifiuti e acqua'), ('bonifiche', 'I siti da bonificare')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente}
 
 
 # ---------------------------------------------------------------------------
@@ -1858,7 +2173,9 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
     unit = {'eur': 'euro', 'eurc': 'euro', 'eurm2': 'euro al m²', 'eurm2month': 'euro al m² al mese', 'percent': '%',
             'per1000': 'ogni 1.000 abitanti', 'decimal': 'persone', 'change': 'variazione %',
             'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti',
-            'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più'}
+            'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più',
+            'celsius': 'gradi centigradi', 'celsiusdelta': 'variazione in gradi centigradi', 'mm': 'millimetri',
+            'kg': 'kg per abitante'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -1959,7 +2276,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità e sui conti dei Comuni, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni e sull’ambiente, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -1980,7 +2297,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità e bilanci comunali.')
+                   'anziani, scuola, mobilità, bilanci comunali e ambiente.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
