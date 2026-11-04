@@ -1,5 +1,30 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Investimenti e opere in Versilia» (4 novembre 2026)
+
+Branch `feature/dossier-investimenti`, decimo dossier in forma di relazione (slug
+`investimenti`, tema comunità), ultimo della terna ambiente-demografia-investimenti.
+Cinque capitoli, 460 risposte del motore in tutto il generatore:
+
+1. PNRR: fondi dei progetti con il Comune soggetto attuatore (fotografia Regione
+   Toscana 25 settembre 2026), per abitante (`nativeRatio`, valore Versilia) e in euro;
+2. avanzamento: quota e numero dei progetti in fase ReGiS «conclusione» (stato
+   amministrativo, non collaudo né apertura);
+3. opere: valore delle opere monitorate BDAP-MOP per abitante (stock, non spesa annua);
+4. bilanci: impegni del titolo 2 e pagamenti SIOPE in conto capitale 2025, rimando al
+   dossier bilanci;
+5. fossi e canali: PAB 2026 del Consorzio 1 Toscana Nord (interventi e valore
+   programmati) e quota registrata come conclusa nel portale al 31 agosto 2026; nessuna
+   somma fra Comuni, rimando al dossier ambiente.
+
+Nessun confronto con Toscana o Italia: il motore non ne certifica per questi indicatori.
+Seguendo `ci/territorial-dossier-program.json` (scheda investimenti): finanziato,
+impegnato, pagato e concluso restano distinti e non si sommano; nessun effetto attribuito
+alle opere. Nuovo `SOURCE_BY_METRIC`: `publicWorks` condivide l’URL OpenBDAP con le misure
+di rendiconto, quindi il nome pubblico della fonte segue l’indicatore. Il nome della fonte
+dei pagamenti in conto capitale diventa «SIOPE — Pagamenti dei Comuni (open data BDAP)»
+anche nel dossier bilanci.
+
 ## Dossier «Chi vive in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-demografia`, nono dossier in forma di relazione (slug
