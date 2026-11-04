@@ -1,5 +1,33 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «La salute in Versilia» (4 novembre 2026)
+
+Branch `feature/dossier-salute`, undicesimo dossier in forma di relazione (slug `salute`,
+tema salute), scheda `sanita` di `ci/territorial-dossier-program.json`. Sette capitoli,
+517 risposte del motore in tutto il generatore:
+
+1. quanto si vive: speranza di vita 2022 e mortalità per tutte le cause 2013-2022
+   (tassi standardizzati ARS), con Toscana e zona Versilia ARS;
+2. cause: mortalità per tumori e per malattie del sistema circolatorio 2013-2022;
+3. malattie croniche: almeno una cronicità (solo zona Versilia: il motore non certifica
+   il benchmark Toscana per `chronicTotal`), diabete e ipertensione 2025;
+4. pronto soccorso e ricoveri: accessi 2025 e residenti ricoverati 2021-2025 (solo zona
+   Versilia per i ricoveri, stessa ragione);
+5. 118: 75° percentile 2024 con la sola Toscana, nessun valore Versilia (la mediana dei
+   sette Comuni non è ufficiale);
+6. visite ed esami: visite delle sette specialità PSR e diagnostica per immagini 2025;
+7. servizi: strutture di ricovero e RSA accreditate 2025 (somma dei sette Comuni, solo
+   nel testo), farmacie ogni 1.000 abitanti con Toscana e Italia, minuti dal polo IFC 2019.
+
+Per le misure ARS il valore «Versilia» è il benchmark ufficiale della zona (scope
+`versilia` di `benchmark_gap`), non un `weighted_ratio`: il metodo lo dichiara. Nuove unità
+`per100k`, `per100res` (accessi ogni 100 abitanti, distinta da `per100` che nel CSV vale
+«ogni 100 persone di 15-64 anni») e `minutes`. `SOURCE_BY_METRIC` dà un nome pubblico a
+118, strutture di ricovero, RSA accreditate e accessibilità IFC: il nome per URL
+assegnava alle RSA la fonte del movimento turistico e al 118 quella sull’ICT.
+Seguendo la scheda: utilizzo non è accessibilità, una struttura censita non è capacità,
+nessuna lettura clinica né causale.
+
 ## Dossier «Investimenti e opere in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-investimenti`, decimo dossier in forma di relazione (slug
