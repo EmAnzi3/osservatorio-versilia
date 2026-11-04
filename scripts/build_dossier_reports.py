@@ -2156,7 +2156,245 @@ def ambiente(engine: Engine) -> dict:
              ('mare', 'Il mare'), ('rifiuti-acqua', 'Rifiuti e acqua'), ('bonifiche', 'I siti da bonificare')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente}
+# ---------------------------------------------------------------------------
+# Dossier «Chi vive in Versilia».
+
+def demografia(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'pop': engine.measure('pop', 'population', 'total', 'Residenti al 1° gennaio, numero', 'count', 0),
+        'chg': engine.measure('chg', 'populationChange', 'total', 'Variazione dei residenti dal 2019', 'change', 1,
+                              benchmarks=TI, versilia=True),
+        'births': engine.measure('births', 'naturalDemographicDynamics', 'part:births', 'Nati ogni 1.000 abitanti',
+                                 'rate1000', 1, benchmarks=TI, versilia=True),
+        'deaths': engine.measure('deaths', 'naturalDemographicDynamics', 'part:deaths', 'Morti ogni 1.000 abitanti',
+                                 'rate1000', 1, benchmarks=TI, versilia=True),
+        'nat': engine.measure('nat', 'naturalDemographicDynamics', 'part:balance', 'Nati meno morti, ogni 1.000 abitanti',
+                              'per1000s', 1, benchmarks=TI, versilia=True),
+        'tot': engine.measure('tot', 'totalResidentialMobility', 'part:balance',
+                              'Iscritti meno cancellati per trasferimento di residenza, ogni 1.000 abitanti', 'per1000s', 1,
+                              benchmarks=TI, versilia=True),
+        'int': engine.measure('int', 'internalResidentialMobility', 'part:balance',
+                              'Saldo dei trasferimenti con gli altri Comuni italiani, ogni 1.000 abitanti', 'per1000s', 1,
+                              benchmarks=TI, versilia=True),
+        'intin': engine.measure('intin', 'internalResidentialMobility', 'part:arrivals',
+                                'Arrivati da altri Comuni italiani, ogni 1.000 abitanti', 'rate1000', 1,
+                                benchmarks=TI, versilia=True),
+        'intout': engine.measure('intout', 'internalResidentialMobility', 'part:departures',
+                                 'Partiti verso altri Comuni italiani, ogni 1.000 abitanti', 'rate1000', 1,
+                                 benchmarks=TI, versilia=True),
+        'for': engine.measure('for', 'foreignResidentialMobility', 'part:balance',
+                              'Saldo dei trasferimenti con l’estero, ogni 1.000 abitanti', 'per1000s', 1,
+                              benchmarks=TI, versilia=True),
+        'frn': engine.measure('frn', 'foreignResidents', 'total', 'Residenti con cittadinanza straniera, %', 'percent', 1,
+                              benchmarks=TI, versilia=True),
+        'frnc': engine.measure('frnc', 'foreignResidents', 'count', 'Residenti con cittadinanza straniera, numero',
+                               'count', 0),
+        'kids': engine.measure('kids', 'ageDistribution', 'age:0-14', 'Residenti sotto i 15 anni, %', 'percent', 1,
+                               benchmarks=TI, versilia=True),
+        'young': engine.measure('young', 'ageDistribution', 'age:20-34', 'Residenti fra 20 e 34 anni, %', 'percent', 1,
+                                benchmarks=TI, versilia=True),
+        'hh': engine.measure('hh', 'householdSize', 'total', 'Componenti medi per famiglia', 'decimal', 2),
+        'single': engine.measure('single', 'singleHouseholds', 'total', 'Famiglie di una sola persona, %', 'percent', 1,
+                                 benchmarks=TI),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    T = lambda k, d=1: num(m[k].benchmarks['tuscany'], d)
+    I = lambda k, d=1: num(m[k].benchmarks['italy'], d)
+    pop, chg = m['pop'], m['chg']
+    pop_sum = sum(pop.values.values())
+    start, end = period_label(chg.period).split('-')[0], period_label(chg.period).split('-')[-1]
+
+    # 01 — quanti siamo
+    up = [c for c, v, _ in chg.ranking if v > 0]
+    down = [c for c, v, _ in chg.ranking if v < 0]
+    pop_text = (
+        f'All’inizio del {pop.period} in Versilia vivono <b>{num(pop_sum)} persone</b>. {nm(hi("pop")[0])} da sola ne '
+        f'conta {num(hi("pop")[1])}, {il(pct(hi("pop")[1] / pop_sum * 100, 0))} del totale; il Comune più piccolo è '
+        f'{nm(lo("pop")[0])}, con {num(lo("pop")[1])} residenti.')
+    chg_text = (
+        f'Fra il {start} e il {end} la popolazione della Versilia è '
+        f'{"calata" if chg.versilia < 0 else "cresciuta"} {del_(num(abs(chg.versilia), 1) + "%")}, '
+        f'{"meno" if abs(chg.versilia) < abs(chg.benchmarks["tuscany"]) else "più"} che in Toscana '
+        f'({signed(chg.benchmarks["tuscany"])}%) e in Italia ({signed(chg.benchmarks["italy"])}%). '
+        + (f'Crescono di poco {join_names([nm(c) for c in up])}; ' if up else 'Nessun Comune cresce; ')
+        + (f'calano soprattutto {join_names([nm(c) for c in down[-2:]])} '
+           f'({", ".join(signed(chg.values[c]) + "%" for c in down[-2:])}).' if len(down) >= 2 else
+           f'cala {nm(down[0])} ({signed(chg.values[down[0]])}%).' if down else 'nessuno cala.'))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {num(pop.values[c])} residenti nel {pop.period}, '
+                  f'{signed(chg.values[c])}% rispetto al {start}.') for c in codes}
+    ch1 = chapter(1, 'quanti', 'Quanti siamo', 'Quante persone vivono in Versilia e quante ce n’erano qualche anno fa?',
+        f'<p>{pop_text}</p>{bar_chart(pop, N, "Residenti al 1° gennaio")}'
+        f'<p>{chg_text}</p>{bar_chart(chg, N, f"Variazione dei residenti, {start}-{end}")}' + town_blocks(towns1),
+        'Il numero di residenti decide molte cose: quanti posti servono a scuola, quanti medici di famiglia, quanti '
+        'soldi arrivano ai Comuni dallo Stato. I residenti non sono però tutte le persone presenti: in Versilia d’estate '
+        'ci sono molti più turisti e proprietari di seconde case.')
+
+    # 02 — nascite e morti
+    bi, de, nat = m['births'], m['deaths'], m['nat']
+    births_text = (
+        f'Nel {bi.period} in Versilia sono nati <b>{num(bi.versilia, 1)} bambini ogni 1.000 abitanti</b>, '
+        f'{"meno" if bi.versilia < bi.benchmarks["tuscany"] else "più"} che in Toscana ({T("births")}) e in Italia '
+        f'({I("births")}): da {num(lo("births")[1], 1)} a {nm(lo("births")[0])} a {num(hi("births")[1], 1)} a '
+        f'{nm(hi("births")[0])}. I morti sono stati {num(de.versilia, 1)} ogni 1.000 abitanti (Toscana {T("deaths")}).')
+    all_neg = all(v < 0 for v in nat.values.values())
+    nat_text = (
+        ('In tutti i sette Comuni i morti superano i nati. ' if all_neg else '')
+        + f'In Versilia il saldo fra nati e morti è di <b>{signed(nat.versilia)} ogni 1.000 abitanti</b> (Toscana '
+          f'{signed(nat.benchmarks["tuscany"])}), con il valore più basso a {nm(lo("nat")[0])} ({signed(lo("nat")[1])}). '
+          'Il dossier <a href="../anziani/">Invecchiare in Versilia</a> segue lo stesso dato dal lato degli anziani.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {num(bi.values[c], 1)} nati e {num(de.values[c], 1)} morti ogni 1.000 abitanti '
+                  f'nel {bi.period}, saldo {signed(nat.values[c])}.') for c in codes}
+    ch2 = chapter(2, 'nascite', 'Poche nascite', 'Quanti bambini nascono?',
+        f'<p>{births_text}</p>{bar_chart(bi, N, "Nati ogni 1.000 abitanti", "Dati Istat provvisori.")}'
+        f'{bar_chart(de, N, "Morti ogni 1.000 abitanti", "Dati Istat provvisori.")}'
+        f'<p>{nat_text}</p>{bar_chart(nat, N, "Saldo naturale: nati meno morti")}' + town_blocks(towns2),
+        'Le nascite di oggi sono gli iscritti alla scuola fra sei anni e i lavoratori fra venticinque. Quando i nati '
+        'sono molti meno dei morti, la popolazione resta stabile solo se arrivano nuovi residenti da fuori.')
+
+    # 03 — chi arriva e chi parte
+    tot, it, fo, iin, iout = m['tot'], m['int'], m['for'], m['intin'], m['intout']
+    neg_int = [c for c, v, _ in it.ranking if v < 0]
+    tot_text = (
+        f'Nel {tot.period} in Versilia '
+        f'{"sono arrivati più nuovi residenti di quanti ne siano partiti" if tot.versilia > 0 else "sono partiti più residenti di quanti ne siano arrivati"}: '
+        f'il saldo dei trasferimenti è di '
+        f'<b>{signed(tot.versilia)} ogni 1.000 abitanti</b> (Toscana {signed(tot.benchmarks["tuscany"])}, Italia '
+        f'{signed(tot.benchmarks["italy"])}). Con gli altri Comuni italiani '
+        f'il saldo è di {signed(it.versilia)} (Toscana {signed(it.benchmarks["tuscany"])}), con l’estero di '
+        f'{signed(fo.versilia)} (Toscana {signed(fo.benchmarks["tuscany"])}).')
+    int_text = (
+        f'Ogni anno si spostano molte persone in entrambe le direzioni: in Versilia sono arrivati da altri Comuni '
+        f'{num(iin.versilia, 1)} residenti ogni 1.000 abitanti e ne sono partiti {num(iout.versilia, 1)}. '
+        + (f'Fa eccezione {nm(neg_int[0])}, dove le partenze superano gli arrivi: {num(iout.values[neg_int[0]], 1)} '
+           f'partiti e {num(iin.values[neg_int[0]], 1)} arrivati ogni 1.000 abitanti.' if len(neg_int) == 1 else
+           f'Fanno eccezione {join_names([nm(c) for c in neg_int])}, dove le partenze superano gli arrivi: '
+           + '; '.join(f'a {nm(c)} {num(iout.values[c], 1)} partiti e {num(iin.values[c], 1)} arrivati ogni 1.000 abitanti'
+                       for c in neg_int) + '.'
+           if neg_int else 'In tutti i sette Comuni gli arrivi superano le partenze.'))
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: saldo dei trasferimenti {signed(tot.values[c])} ogni 1.000 abitanti nel '
+                  f'{tot.period}; con l’Italia {signed(it.values[c])}, con l’estero {signed(fo.values[c])}.') for c in codes}
+    ch3 = chapter(3, 'arrivi', 'Chi arriva e chi parte', 'Si viene a vivere in Versilia o se ne va via?',
+        f'<p>{tot_text}</p>{bar_chart(tot, N, "Saldo dei trasferimenti di residenza")}'
+        f'<p>{int_text}</p>{bar_chart(it, N, "Saldo con gli altri Comuni italiani")}'
+        f'{bar_chart(fo, N, "Saldo con l’estero")}' + town_blocks(towns3),
+        f'Chi arriva e chi parte cambia la popolazione quanto chi nasce e chi muore. Sono però flussi diversi, qui '
+        f'misurati in anni diversi ({tot.period} e {nat.period}): non si sommano per ricostruire la variazione dei '
+        'residenti né per prevederla. Contano solo i cambi di residenza registrati in anagrafe: chi vive qui senza '
+        'spostare la residenza, o chi si trasferisce senza comunicarlo, non compare.')
+
+    # 04 — stranieri
+    fr, frc = m['frn'], m['frnc']
+    fr_sum = sum(frc.values.values())
+    fr_text = (
+        f'All’inizio del {fr.period} i residenti con cittadinanza straniera in Versilia erano <b>{num(fr_sum)}</b>, '
+        f'{il(pct(fr.versilia))} della popolazione: '
+        + (f'{"meno" if fr.versilia < fr.benchmarks["tuscany"] else "più"} che in Toscana ({pct(fr.benchmarks["tuscany"])}) '
+           f'e in Italia ({pct(fr.benchmarks["italy"])}). '
+           if (fr.versilia < fr.benchmarks["tuscany"]) == (fr.versilia < fr.benchmarks["italy"]) else
+           f'{"meno" if fr.versilia < fr.benchmarks["tuscany"] else "più"} che in Toscana ({pct(fr.benchmarks["tuscany"])}) '
+           f'e {"meno" if fr.versilia < fr.benchmarks["italy"] else "più"} che in Italia ({pct(fr.benchmarks["italy"])}). ')
+        + f'La quota più alta è a {nm(hi("frn")[0])} ({pct(hi("frn")[1])}), la più bassa a {nm(lo("frn")[0])} '
+        f'({pct(lo("frn")[1])}).')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {num(frc.values[c])} residenti stranieri, {il(pct(fr.values[c]))} della '
+                  f'popolazione (Toscana {pct(fr.benchmarks["tuscany"])}).') for c in codes}
+    ch4 = chapter(4, 'stranieri', 'I residenti stranieri', 'Quante persone con cittadinanza straniera vivono qui?',
+        f'<p>{fr_text}</p>{bar_chart(fr, N, "Residenti con cittadinanza straniera")}'
+        f'{bar_chart(frc, N, "Residenti con cittadinanza straniera, numero")}' + town_blocks(towns4),
+        'Il dato conta la cittadinanza, non il luogo di nascita: chi è nato all’estero ed è diventato italiano non è '
+        'compreso, mentre lo sono i figli di stranieri nati in Italia che non hanno ancora la cittadinanza. Una quota bassa '
+        'può dipendere sia da quante persone arrivano dall’estero sia da quante, nel tempo, sono diventate italiane.')
+
+    # 05 — giovani
+    ki, yo = m['kids'], m['young']
+    ki_below = [c for c, v, _ in ki.ranking if v < ki.benchmarks['tuscany']]
+    ki_text = (
+        f'All’inizio del {ki.period} i ragazzi sotto i 15 anni sono {il(pct(ki.versilia))} dei residenti della '
+        f'Versilia, contro {il(pct(ki.benchmarks["tuscany"]))} in Toscana e {il(pct(ki.benchmarks["italy"]))} in Italia. '
+        f'{count_words(len(ki_below), total)[:1].upper()}{count_words(len(ki_below), total)[1:]} restano sotto la media '
+        f'toscana; la quota va {dal(pct(lo("kids")[1]))} a {nm(lo("kids")[0])} {al(pct(hi("kids")[1]))} a '
+        f'{nm(hi("kids")[0])}.')
+    yo_text = (
+        f'Le persone fra 20 e 34 anni, l’età in cui si cerca casa e lavoro e si fanno figli, sono '
+        f'<b>{il(pct(yo.versilia))}</b> dei residenti (Toscana {pct(yo.benchmarks["tuscany"])}, Italia '
+        f'{pct(yo.benchmarks["italy"])}): {dal(pct(lo("young")[1]))} a {nm(lo("young")[0])} {al(pct(hi("young")[1]))} a '
+        f'{nm(hi("young")[0])}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: sotto i 15 anni {il(pct(ki.values[c]))} dei residenti, fra 20 e 34 anni '
+                  f'{il(pct(yo.values[c]))}.') for c in codes}
+    ch5 = chapter(5, 'giovani', 'Bambini e giovani', 'Quanti sono i più giovani?',
+        f'<p>{ki_text}</p>{bar_chart(ki, N, "Residenti sotto i 15 anni")}'
+        f'<p>{yo_text}</p>{bar_chart(yo, N, "Residenti fra 20 e 34 anni")}' + town_blocks(towns5),
+        'Bambini e giovani adulti sono la parte della popolazione che terrà in piedi scuole, lavoro e servizi nei '
+        'prossimi decenni. Una quota bassa di 20-34enni può indicare che i giovani se ne vanno per studio, lavoro o per '
+        'il costo della casa.')
+
+    # 06 — famiglie
+    hh, si = m['hh'], m['single']
+    hh_text = (
+        f'Nel {hh.period} una famiglia conta in media da {num(lo("hh")[1], 2)} persone a {nm(lo("hh")[0])} a '
+        f'{num(hi("hh")[1], 2)} a {nm(hi("hh")[0])}. Le famiglie di una sola persona vanno '
+        f'{dal(pct(lo("single")[1]))} a {nm(lo("single")[0])} {al(pct(hi("single")[1]))} a {nm(hi("single")[0])}, '
+        f'contro {il(pct(si.benchmarks["tuscany"]))} in Toscana e {il(pct(si.benchmarks["italy"]))} in Italia. '
+        'Il dossier <a href="../casa/">Abitare in Versilia</a> legge questi dati insieme alle case e agli affitti.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(hh.values[c], 2)} persone per famiglia; famiglie di una sola persona '
+                  f'{pct(si.values[c])} (Toscana {pct(si.benchmarks["tuscany"])}).') for c in codes}
+    ch6 = chapter(6, 'famiglie', 'Le famiglie', 'Come sono fatte le famiglie?',
+        f'<p>{hh_text}</p>{bar_chart(hh, N, "Componenti medi per famiglia")}'
+        f'{bar_chart(si, N, "Famiglie di una sola persona")}' + town_blocks(towns6),
+        'Famiglie più piccole vogliono dire più case per lo stesso numero di abitanti e più persone che vivono da sole, '
+        'spesso anziani. Sono dati del censimento permanente, aggiornati con qualche anno di ritardo.')
+
+    key_points = [
+        (num(pop_sum), f'Residenti in Versilia all’inizio del {pop.period}.', 'quanti'),
+        (f'{signed(chg.versilia)}%', f'Variazione dei residenti dal {start}; in Toscana {signed(chg.benchmarks["tuscany"])}%.',
+         'quanti'),
+        (num(bi.versilia, 1), f'Nati ogni 1.000 abitanti nel {bi.period}, contro {T("births")} in Toscana.', 'nascite'),
+        (signed(tot.versilia), f'Saldo dei trasferimenti di residenza ogni 1.000 abitanti nel {tot.period}: arrivano più '
+                               'persone di quante ne partano.' if tot.versilia > 0 else
+                               f'Saldo dei trasferimenti di residenza ogni 1.000 abitanti nel {tot.period}.', 'arrivi'),
+        (pct(fr.versilia), f'Residenti con cittadinanza straniera; in Toscana {il(pct(fr.benchmarks["tuscany"]))}.',
+         'stranieri'),
+        (pct(ki.versilia), f'Residenti sotto i 15 anni; in Italia {il(pct(ki.benchmarks["italy"]))}.', 'giovani'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Residenti', num(pop.values[c]), f'{signed(chg.values[c])}% dal {start}'),
+        summary_item('Nati ogni 1.000 abitanti', num(bi.values[c], 1), f'Toscana {T("births")}'),
+        summary_item('Saldo dei trasferimenti ogni 1.000 abitanti', signed(tot.values[c]),
+                     f'Toscana {signed(tot.benchmarks["tuscany"])}'),
+        summary_item('Residenti stranieri', pct(fr.values[c]), f'Toscana {pct(fr.benchmarks["tuscany"])}'),
+        summary_item('Residenti sotto i 15 anni', pct(ki.values[c]), f'Toscana {pct(ki.benchmarks["tuscany"])}'),
+        summary_item('Componenti medi per famiglia', num(hh.values[c], 2), f'{ordinal(hh.rank(c))} su {total}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quante persone vivono davvero in Versilia nei mesi estivi, fra turisti, lavoratori stagionali e proprietari di '
+        'seconde case.',
+        'Dove vanno e da dove arrivano i residenti che si trasferiscono, e quanti anni hanno.',
+        'Quanti giovani se ne vanno per studio o lavoro senza spostare la residenza.',
+        'Quanti residenti sono nati all’estero: i dati contano la cittadinanza, non il luogo di nascita.',
+        'Come cambierà la popolazione nei prossimi anni: le previsioni Istat non scendono al livello dei singoli Comuni.',
+    ]
+    return dict(
+        slug='demografia', title='Chi vive in Versilia', eyebrow='Dossier · Popolazione',
+        unknown_topic='sulla popolazione', theme='demografia', theme_label='Tutti i dati sulla popolazione',
+        lead='Quante persone ci vivono, quanti bambini nascono, chi arriva e chi parte, quanti sono gli stranieri, i '
+             'giovani e come sono fatte le famiglie: una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Residenti, nascite e morti, trasferimenti di residenza, cittadini stranieri, bambini e giovani, '
+                    'dimensione delle famiglie nei sette Comuni della Versilia, con confronti con Toscana e Italia.',
+        periods=f'Residenti {pop.period}, nascite e morti {bi.period}, trasferimenti {tot.period}, stranieri {fr.period}, '
+                f'età {ki.period}, famiglie {hh.period}.',
+        method='Il numero totale di residenti e di stranieri della Versilia è la somma dei valori dei sette Comuni.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanti', 'Quanti siamo'), ('nascite', 'Poche nascite'), ('arrivi', 'Chi arriva e chi parte'),
+             ('stranieri', 'I residenti stranieri'), ('giovani', 'Bambini e giovani'), ('famiglie', 'Le famiglie')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia}
 
 
 # ---------------------------------------------------------------------------
@@ -2276,7 +2514,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni e sull’ambiente, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente e sulla popolazione, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -2297,7 +2535,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali e ambiente.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente e popolazione.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
