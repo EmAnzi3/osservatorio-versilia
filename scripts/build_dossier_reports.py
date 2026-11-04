@@ -86,7 +86,11 @@ SOURCE_NAMES = [
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
 ]
 # Stesso indirizzo di fonte per letture diverse: il nome pubblico segue l'indicatore.
-SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitoraggio delle opere pubbliche (BDAP)'}
+SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitoraggio delle opere pubbliche (BDAP)',
+                    'emsResponseTimeP75': 'Regione Toscana — Indicatori comunali per le politiche locali (tempi del 118)',
+                    'hospitals': 'Ministero della Salute — Elenco delle strutture di ricovero',
+                    'accreditedRsaCount': 'Regione Toscana — Elenco delle strutture accreditate del sistema sociale integrato',
+                    'essentialServicesAccessibility': 'Istat — Indice di fragilità comunale, accessibilità ai servizi essenziali'}
 MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
           'novembre', 'dicembre']
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
@@ -228,12 +232,15 @@ class Measure:
                 'rate1000': lambda v: num(v, self.decimals) + ' ogni 1.000 abitanti',
                 'per1000old': lambda v: num(v, 1) + ' ogni 1.000 anziani',
                 'celsius': lambda v: num(v, 1) + ' °C', 'celsiusdelta': lambda v: signed(v, 1) + ' °C',
-                'mm': lambda v: num(v) + ' mm', 'kg': lambda v: num(v) + ' kg'}[self.unit](value)
+                'mm': lambda v: num(v) + ' mm', 'kg': lambda v: num(v) + ' kg',
+                'per100k': lambda v: num(v) + ' ogni 100.000 abitanti', 'per100res': lambda v: num(v, 1) + ' ogni 100 abitanti',
+                'minutes': lambda v: num(v, 1) + ' minuti'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
                 'years': lambda v: num(v, 1), 'hours': lambda v: num(v, 1), 'rate1000': lambda v: num(v, self.decimals), 'per1000old': lambda v: num(v, 1),
-                'eurm2': lambda v: num(v) + ' €'}.get(self.unit, self.fmt)(value)
+                'eurm2': lambda v: num(v) + ' €', 'per100k': lambda v: num(v), 'per100res': lambda v: num(v, 1),
+                'minutes': lambda v: num(v, 1)}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -2584,7 +2591,282 @@ def investimenti(engine: Engine) -> dict:
              ('bilanci', 'Gli investimenti nei bilanci'), ('fossi', 'Fossi e canali')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti}
+# ---------------------------------------------------------------------------
+# Dossier «La salute in Versilia».
+
+def salute(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TV = ('tuscany', 'versilia')
+    m = {
+        'life': engine.measure('life', 'lifeExpectancy', 'total', 'Speranza di vita alla nascita, anni', 'years', 1,
+                               benchmarks=TV),
+        'mort': engine.measure('mort', 'mortalityAll', 'total',
+                               'Mortalità per tutte le cause, tasso standardizzato ogni 100.000 abitanti', 'per100k', 0,
+                               benchmarks=TV),
+        'cancer': engine.measure('cancer', 'mortalityCancer', 'total',
+                                 'Mortalità per tumori, tasso standardizzato ogni 100.000 abitanti', 'per100k', 0,
+                                 benchmarks=TV),
+        'circ': engine.measure('circ', 'mortalityCirculatory', 'total',
+                               'Mortalità per malattie del sistema circolatorio, tasso standardizzato ogni 100.000 abitanti',
+                               'per100k', 0, benchmarks=TV),
+        'chronic': engine.measure('chronic', 'chronicTotal', 'total',
+                                  'Persone con almeno una malattia cronica, tasso standardizzato ogni 1.000 abitanti',
+                                  'per1000', 0, benchmarks=('versilia',)),
+        'diab': engine.measure('diab', 'diabetes', 'total',
+                               'Persone con diabete, tasso standardizzato ogni 1.000 abitanti', 'per1000', 0,
+                               benchmarks=TV),
+        'hyper': engine.measure('hyper', 'hypertensionPrevalence', 'total',
+                                'Persone con ipertensione, tasso standardizzato ogni 1.000 abitanti', 'per1000', 0,
+                                benchmarks=TV),
+        'ps': engine.measure('ps', 'emergencyAccess', 'total',
+                             'Accessi al pronto soccorso, tasso standardizzato ogni 100 abitanti', 'per100res', 1,
+                             benchmarks=TV),
+        'hosp': engine.measure('hosp', 'hospitalizedAll', 'total',
+                               'Residenti con almeno un ricovero, tasso standardizzato ogni 1.000 abitanti', 'per1000', 0,
+                               benchmarks=('versilia',)),
+        'ems': engine.measure('ems', 'emsResponseTimeP75', 'total',
+                              'Minuti entro cui arriva il primo mezzo del 118 in tre interventi su quattro', 'minutes', 1,
+                              benchmarks=('tuscany',)),
+        'spec': engine.measure('spec', 'specialistVisits7Psr', 'total',
+                               'Visite specialistiche nelle sette specialità di riferimento, tasso standardizzato ogni '
+                               '1.000 abitanti', 'per1000', 0, benchmarks=TV),
+        'img': engine.measure('img', 'diagnosticImagingServices', 'total',
+                              'Esami di diagnostica per immagini, tasso standardizzato ogni 1.000 abitanti', 'per1000', 0,
+                              benchmarks=TV),
+        'hospn': engine.measure('hospn', 'hospitals', 'total', 'Strutture di ricovero presenti nel Comune, numero',
+                                'count', 0),
+        'rsa': engine.measure('rsa', 'accreditedRsaCount', 'total', 'RSA accreditate presenti nel Comune, numero', 'count', 0),
+        'pharm': engine.measure('pharm', 'pharmaciesPer1000', 'total', 'Farmacie ogni 1.000 abitanti', 'decimal', 2,
+                                benchmarks=('tuscany', 'italy')),
+        'reach': engine.measure('reach', 'essentialServicesAccessibility', 'total',
+                                'Minuti in auto dal centro del Comune al polo di servizi più vicino', 'minutes', 1,
+                                benchmarks=('tuscany', 'italy')),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    zona = lambda k: m[k].benchmarks['versilia']
+    tosc = lambda k: m[k].benchmarks['tuscany']
+    span = lambda k, f: f'da {f(lo(k)[1])} a {nm(lo(k)[0])} a {f(hi(k)[1])} a {nm(hi(k)[0])}'
+    n0 = lambda v: num(v)
+    n1 = lambda v: num(v, 1)
+    first_last = lambda p: (p.split('-')[0], p.split('-')[-1])
+
+    def versus(k: str, f, unit: str = '') -> str:
+        z, t = f(zona(k)), f(tosc(k))
+        head = f'{z} {unit} nella zona Versilia' if unit else f'{z} nella zona Versilia'
+        if z == t:
+            return head + ', come in Toscana'
+        return head + (', più' if zona(k) > tosc(k) else ', meno') + f' che in Toscana ({t})'
+
+    # 01 — quanto si vive
+    life, mort = m['life'], m['mort']
+    m0, m1 = first_last(mort.period)
+    below = [nm(c) for c, v, _ in mort.ranking if v < tosc('mort')]
+    life_text = (
+        f'Nel {life.period} la speranza di vita alla nascita era di <b>{n1(zona("life"))} anni</b> nella zona Versilia e '
+        f'di {n1(tosc("life"))} in Toscana: {span("life", lambda v: n1(v) + " anni")}.')
+    mort_text = (
+        f'Fra il {m0} e il {m1} la mortalità per tutte le cause, a parità di età, è stata di '
+        f'{n0(zona("mort"))} decessi ogni 100.000 abitanti nella zona Versilia, contro {n0(tosc("mort"))} in Toscana: '
+        f'{span("mort", n0)}.'
+        + (f' Solo a {join_names(below)} il valore è sotto quello toscano.' if 0 < len(below) < 3 else
+           ' In tutti i sette Comuni il valore è sopra quello toscano.' if not below else ''))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: speranza di vita {n1(life.values[c])} anni nel {life.period}; mortalità '
+                  f'{n0(mort.values[c])} ogni 100.000 abitanti fra il {m0} e il {m1} (Toscana {n0(tosc("mort"))}).')
+              for c in codes}
+    ch1 = chapter(1, 'quanto-si-vive', 'Quanto si vive', 'Quanto si vive in Versilia e quanto pesa la mortalità?',
+        f'<p>{life_text}</p>{bar_chart(life, N, "Speranza di vita alla nascita", "Nei Comuni piccoli il dato può variare molto da un anno all’altro.")}'
+        f'<p>{mort_text}</p>{bar_chart(mort, N, "Mortalità per tutte le cause", "Tasso standardizzato per età, media del decennio.")}'
+        + town_blocks(towns1),
+        'Il tasso standardizzato tiene conto del fatto che una popolazione più anziana ha più decessi, così i Comuni si '
+        'possono confrontare fra loro. Il periodo di dieci anni rende il dato più stabile nei Comuni piccoli. Il dossier '
+        '<a href="../anziani/">Invecchiare in Versilia</a> legge la speranza di vita insieme all’età della popolazione.')
+
+    # 02 — le cause
+    ca, ci = m['cancer'], m['circ']
+    same = hi('cancer')[0] == hi('circ')[0]
+    cause_text = (
+        f'Fra il {m0} e il {m1} la mortalità per tumori è stata di {versus("cancer", n0, "decessi ogni 100.000 abitanti")}; '
+        f'quella per le malattie del cuore e dei vasi sanguigni di {versus("circ", n0)}. '
+        + (f'Il valore più alto, per entrambe le cause, è a <b>{nm(hi("cancer")[0])}</b>.' if same else
+           f'Il valore più alto è a {nm(hi("cancer")[0])} per i tumori e a {nm(hi("circ")[0])} per le malattie del '
+           'sistema circolatorio.'))
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: mortalità per tumori {n0(ca.values[c])} e per malattie del sistema circolatorio '
+                  f'{n0(ci.values[c])} ogni 100.000 abitanti, fra il {m0} e il {m1}.') for c in codes}
+    ch2 = chapter(2, 'cause', 'Tumori e malattie del cuore', 'Di che cosa si muore di più?',
+        f'<p>{cause_text}</p>{bar_chart(ca, N, "Mortalità per tumori")}'
+        f'{bar_chart(ci, N, "Mortalità per malattie del sistema circolatorio")}' + town_blocks(towns2),
+        'Tumori e malattie del sistema circolatorio sono le prime cause di morte. Le differenze fra territori dipendono '
+        'da molti fattori insieme, come età, abitudini, ambiente, diagnosi e cure, e questi dati da soli non dicono '
+        'quale pesi di più.')
+
+    # 03 — malattie croniche
+    ch_, di, hy = m['chronic'], m['diab'], m['hyper']
+    chr_text = (
+        f'Nel {ch_.period} nella zona Versilia <b>{n0(zona("chronic"))} persone ogni 1.000</b> risultano seguite per almeno '
+        f'una malattia cronica, a parità di età: {span("chronic", n0)}.')
+    dh_text = (
+        f'Le persone con diabete sono {versus("diab", n0, "ogni 1.000 abitanti")}; quelle con la pressione alta '
+        f'{versus("hyper", n0)}. Il valore più alto per tutte e due è a '
+        f'{nm(hi("diab")[0])}.' if hi('diab')[0] == hi('hyper')[0] else
+        f'Le persone con diabete sono {versus("diab", n0, "ogni 1.000 abitanti")}; quelle con la pressione alta '
+        f'{versus("hyper", n0)}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {n0(ch_.values[c])} persone ogni 1.000 con almeno una malattia cronica, '
+                  f'{n0(di.values[c])} con diabete e {n0(hy.values[c])} con ipertensione, nel {ch_.period}.') for c in codes}
+    ch3 = chapter(3, 'croniche', 'Le malattie croniche', 'Quante persone convivono con una malattia cronica?',
+        f'<p>{chr_text}</p>{bar_chart(ch_, N, "Persone con almeno una malattia cronica")}'
+        f'<p>{dh_text}</p>{bar_chart(di, N, "Persone con diabete")}{bar_chart(hy, N, "Persone con ipertensione")}'
+        + town_blocks(towns3),
+        'Il dato conta le persone che le banche dati sanitarie riconoscono come malate, per esempio da farmaci, '
+        'esenzioni e ricoveri: dipende anche da quanto il sistema riesce a individuarle e a seguirle. Un valore più alto '
+        'non vuol dire per forza una popolazione più malata.')
+
+    # 04 — pronto soccorso e ricoveri
+    ps, ho = m['ps'], m['hosp']
+    h0, h1 = first_last(ho.period)
+    ps_text = (
+        f'Nel {ps.period} gli accessi dei residenti al pronto soccorso sono stati <b>{versus("ps", n1, "ogni 100 abitanti")}</b>, '
+        f'a parità di età: {span("ps", n1)}.')
+    narrow = (hi('hosp')[1] - lo('hosp')[1]) / zona('hosp') < 0.1
+    ho_text = (
+        f'Fra il {h0} e il {h1} le persone con almeno un ricovero in ospedale sono state {n0(zona("hosp"))} ogni 1.000 '
+        f'abitanti nella zona Versilia, ' + ('con differenze piccole fra i Comuni: ' if narrow else '')
+        + f'{span("hosp", n0)}.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {n1(ps.values[c])} accessi al pronto soccorso ogni 100 abitanti nel {ps.period} '
+                  f'(Toscana {n1(tosc("ps"))}); {n0(ho.values[c])} residenti ricoverati ogni 1.000 fra il {h0} e il {h1}.')
+              for c in codes}
+    ch4 = chapter(4, 'pronto-soccorso', 'Pronto soccorso e ricoveri', 'Quanto si ricorre al pronto soccorso e all’ospedale?',
+        f'<p>{ps_text}</p>{bar_chart(ps, N, "Accessi al pronto soccorso")}'
+        f'<p>{ho_text}</p>{bar_chart(ho, N, "Residenti con almeno un ricovero", "Media di cinque anni.")}'
+        + town_blocks(towns4),
+        'Molti accessi al pronto soccorso non vogliono dire una salute peggiore: possono dipendere anche da quanto sono '
+        'raggiungibili il medico di famiglia, la guardia medica e gli ambulatori. Il dato non dice quanti accessi erano '
+        'urgenti né quanto si è aspettato.')
+
+    # 05 — il 118
+    em = m['ems']
+    slow = [nm(c) for c, v, _ in em.ranking if v > tosc('ems')]
+    em_text = (
+        f'Nel {em.period}, in tre interventi su quattro, il primo mezzo del 118 è arrivato a {nm(hi("ems")[0])} entro '
+        f'<b>{n1(hi("ems")[1])} minuti</b> dalla chiamata e a {nm(lo("ems")[0])} entro {n1(lo("ems")[1])} minuti. '
+        f'In Toscana il valore è di {n1(tosc("ems"))} minuti'
+        + (f': lo supera solo {slow[0]}.' if len(slow) == 1 else f': lo superano {join_names(slow)}.' if slow else
+           ' e tutti i sette Comuni restano sotto.'))
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: il 118 arriva entro {n1(em.values[c])} minuti in tre interventi su quattro '
+                  f'(Toscana {n1(tosc("ems"))}), nel {em.period}.') for c in codes}
+    ch5 = chapter(5, 'soccorso', 'Il soccorso del 118', 'Quanto ci mette ad arrivare un’ambulanza?',
+        f'<p>{em_text}</p>{bar_chart(em, N, "Tempo di arrivo del 118", "Tre interventi su quattro arrivano entro questi minuti.")}'
+        + town_blocks(towns5),
+        'Il valore dice entro quanti minuti arriva il soccorso in tre casi su quattro: il quarto caso può aspettare di '
+        'più. Nei Comuni di collina e di montagna le distanze pesano molto, e pochi interventi all’anno bastano a '
+        'spostare il valore. Non esiste un valore ufficiale per la Versilia nel suo insieme.')
+
+    # 06 — visite ed esami
+    sp, im = m['spec'], m['img']
+    vi_text = (
+        f'Nel {sp.period} le visite specialistiche nelle sette specialità di riferimento del piano sanitario regionale '
+        f'sono state {versus("spec", n0, "ogni 1.000 abitanti")}, a parità di età; gli esami di diagnostica per immagini, '
+        f'come radiografie, ecografie e risonanze, {versus("img", n0)}.'
+        + (f' Il valore più basso, per tutte e due, è a <b>{nm(lo("spec")[0])}</b>.' if lo('spec')[0] == lo('img')[0] else ''))
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {n0(sp.values[c])} visite specialistiche e {n0(im.values[c])} esami di '
+                  f'diagnostica per immagini ogni 1.000 abitanti nel {sp.period}.') for c in codes}
+    ch6 = chapter(6, 'visite', 'Visite ed esami', 'Quante visite specialistiche ed esami si fanno?',
+        f'<p>{vi_text}</p>{bar_chart(sp, N, "Visite specialistiche")}{bar_chart(im, N, "Esami di diagnostica per immagini")}'
+        + town_blocks(towns6),
+        'Il dato conta le prestazioni registrate dal servizio sanitario regionale, non quelle richieste: chi rinuncia o va '
+        'da un privato pagando di tasca propria non compare, e il dato non dice quanto si è aspettato.')
+
+    # 07 — dove ci si cura
+    hn, rs, ph, re_ = m['hospn'], m['rsa'], m['pharm'], m['reach']
+    hn_sum, rs_sum = sum(hn.values.values()), sum(rs.values.values())
+    with_h = [nm(c) for c, v, _ in hn.ranking if v > 0]
+    no_rsa = [nm(c) for c, v, _ in rs.ranking if v == 0]
+    poles = [nm(c) for c, v, _ in re_.ranking if v == 0]
+    count_list = lambda meas: join_names([f'{num(v)} a {nm(c)}' for c, v, _ in meas.ranking if v > 0])
+    sv_text = (
+        f'Nel {hn.period} il Ministero della Salute censisce in Versilia {num(hn_sum)} strutture di ricovero, a '
+        f'{join_names(with_h)}. Le residenze sanitarie per anziani (RSA) accreditate sono <b>{num(rs_sum)}</b>: '
+        f'{count_list(rs)}' + (f'; a {join_names(no_rsa)} non ce ne sono.' if no_rsa else '.'))
+    tt, ti = ph.benchmarks['tuscany'], ph.benchmarks['italy']
+    ph_ref = (f'{num(tt, 2)} ogni 1.000 abitanti in Toscana e in Italia' if num(tt, 2) == num(ti, 2) else
+              f'{num(tt, 2)} ogni 1.000 abitanti in Toscana e {num(ti, 2)} in Italia')
+    ph_text = (
+        f'Le farmacie, contando anche succursali e dispensari stagionali, sono {ph_ref}; in Versilia vanno '
+        f'{span("pharm", lambda v: num(v, 2))}.')
+    re_text = (
+        f'Secondo l’Istat, dal centro di {nm(hi("reach")[0])} servono {n1(hi("reach")[1])} minuti in auto per arrivare al '
+        'polo di servizi più vicino, cioè al Comune, o al gruppo di Comuni vicini, che offre insieme un ospedale attrezzato '
+        f'per l’emergenza, le scuole superiori e una stazione ferroviaria. La mediana dei Comuni è di {n1(re_.benchmarks["tuscany"])} minuti in Toscana e di '
+        f'{n1(re_.benchmarks["italy"])} in Italia.'
+        + (f' A {join_names(poles)} il valore è zero perché fanno parte loro stessi di un polo.' if len(poles) > 1 else
+           f' A {poles[0]} il valore è zero perché fa parte esso stesso di un polo.' if poles else ''))
+    many = lambda v, one, more, none: none if v == 0 else one if v == 1 else f'{num(v)} {more}'
+    towns7 = {c: (f'<b>{esc(nm(c))}</b>: {many(hn.values[c], "una struttura di ricovero", "strutture di ricovero", "nessuna struttura di ricovero")} e '
+                  f'{many(rs.values[c], "una RSA accreditata", "RSA accreditate", "nessuna RSA accreditata")} '
+                  f'nel {hn.period}; {num(ph.values[c], 2)} farmacie ogni 1.000 abitanti; '
+                  + ('fa parte di un polo di servizi.' if re_.values[c] == 0 else
+                     f'{n1(re_.values[c])} minuti in auto dal polo di servizi più vicino.')) for c in codes}
+    ch7 = chapter(7, 'servizi', 'Ospedali, RSA e farmacie', 'Quali servizi per la salute ci sono sul territorio?',
+        f'<p>{sv_text}</p><p>{ph_text}</p>{bar_chart(ph, N, "Farmacie ogni 1.000 abitanti")}'
+        f'<p>{re_text}</p>{bar_chart(re_, N, "Minuti in auto dal polo di servizi più vicino", f"Riferimento {re_.period}.")}'
+        + town_blocks(towns7),
+        'Contare strutture e farmacie dice che cosa c’è sul territorio, non quanti posti sono liberi, quanto si aspetta '
+        'né quanto è facile arrivarci senza auto. Un ospedale serve anche i Comuni vicini, e le RSA accolgono anziani '
+        'da tutta la zona.')
+
+    key_points = [
+        (n1(zona('life')) + ' anni', f'Speranza di vita alla nascita nella zona Versilia nel {life.period}; in Toscana '
+                                     f'{n1(tosc("life"))}.', 'quanto-si-vive'),
+        (n0(zona('mort')), f'Decessi ogni 100.000 abitanti fra il {m0} e il {m1}, a parità di età; in Toscana '
+                           f'{n0(tosc("mort"))}.', 'quanto-si-vive'),
+        (n0(zona('chronic')), f'Persone ogni 1.000 con almeno una malattia cronica nella zona Versilia nel {ch_.period}.',
+         'croniche'),
+        (n1(zona('ps')), f'Accessi al pronto soccorso ogni 100 abitanti nella zona Versilia nel {ps.period}; in Toscana '
+                         f'{n1(tosc("ps"))}.', 'pronto-soccorso'),
+        (n1(hi('ems')[1]) + ' min', f'Tempo entro cui arriva il 118 in tre interventi su quattro a {nm(hi("ems")[0])}; in '
+                                    f'Toscana {n1(tosc("ems"))} minuti.', 'soccorso'),
+        (num(rs_sum), f'RSA accreditate in Versilia nel {rs.period}, in {total - len(no_rsa)} Comuni su {total}.', 'servizi'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Speranza di vita', n1(life.values[c]) + ' anni', f'Toscana {n1(tosc("life"))}'),
+        summary_item('Mortalità ogni 100.000 abitanti', n0(mort.values[c]), f'Toscana {n0(tosc("mort"))}'),
+        summary_item('Persone con una malattia cronica ogni 1.000', n0(ch_.values[c]), f'Zona Versilia {n0(zona("chronic"))}'),
+        summary_item('Accessi al pronto soccorso ogni 100 abitanti', n1(ps.values[c]), f'Toscana {n1(tosc("ps"))}'),
+        summary_item('Arrivo del 118 in tre casi su quattro', n1(em.values[c]) + ' min', f'Toscana {n1(tosc("ems"))} min'),
+        summary_item('Visite specialistiche ogni 1.000 abitanti', n0(sp.values[c]), f'Toscana {n0(tosc("spec"))}'),
+        summary_item('Farmacie ogni 1.000 abitanti', num(ph.values[c], 2), f'Toscana {num(tt, 2)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanto si aspetta per una visita, un esame o un intervento, e quante persone rinunciano a curarsi.',
+        'Quanti posti sono davvero disponibili negli ospedali e nelle RSA, e per chi.',
+        'Quanti medici di famiglia e pediatri ci sono per abitante e quanti pazienti segue ciascuno.',
+        'Quanto tempo serve per arrivare a un ambulatorio o a un ospedale con l’autobus o a piedi.',
+        'Come stanno le persone nelle singole frazioni: i dati sono medie per Comune.',
+    ]
+    return dict(
+        slug='salute', title='La salute in Versilia', eyebrow='Dossier · Salute e cure',
+        unknown_topic='sulla salute e sulle cure', theme='salute', theme_label='Tutti i dati sulla salute',
+        lead='Quanto si vive e di che cosa ci si ammala, quanto si ricorre al pronto soccorso e alle visite, quanto ci mette '
+             'il 118 e quali servizi ci sono sul territorio: una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Speranza di vita, mortalità, malattie croniche, pronto soccorso e ricoveri, tempi del 118, visite ed '
+                    'esami, ospedali, RSA e farmacie nei sette Comuni della Versilia, con confronti con la Toscana.',
+        periods=f'Speranza di vita {life.period}, mortalità {m0}-{m1}, malattie croniche e pronto soccorso {ps.period}, '
+                f'ricoveri {h0}-{h1}, 118 {em.period}, strutture {hn.period}.',
+        method='Per i dati dell’Agenzia regionale di sanità il valore della Versilia è quello ufficiale della zona '
+               'Versilia, pubblicato dall’Agenzia, e i tassi sono standardizzati per età. Per i tempi del 118 non esiste '
+               'un valore ufficiale della Versilia. Le strutture di ricovero e le RSA della Versilia sono la somma dei '
+               'sette Comuni.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanto-si-vive', 'Quanto si vive'), ('cause', 'Tumori e malattie del cuore'), ('croniche', 'Le malattie croniche'),
+             ('pronto-soccorso', 'Pronto soccorso e ricoveri'), ('soccorso', 'Il soccorso del 118'),
+             ('visite', 'Visite ed esami'), ('servizi', 'Ospedali, RSA e farmacie')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute}
 
 
 # ---------------------------------------------------------------------------
@@ -2603,7 +2885,8 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'points': 'punti percentuali', 'per1000s': 'ogni 1.000 abitanti', 'count': 'numero', 'nights': 'notti',
             'per100': 'ogni 100 persone di 15-64 anni', 'years': 'anni', 'hours': 'ore', 'rate1000': 'ogni 1.000 abitanti', 'per1000old': 'ogni 1.000 residenti di 65 anni e più',
             'celsius': 'gradi centigradi', 'celsiusdelta': 'variazione in gradi centigradi', 'mm': 'millimetri',
-            'kg': 'kg per abitante'}
+            'kg': 'kg per abitante', 'per100k': 'ogni 100.000 abitanti', 'per100res': 'ogni 100 abitanti',
+            'minutes': 'minuti'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -2704,7 +2987,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione e sugli investimenti, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti e sulla salute, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -2725,7 +3008,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione e investimenti.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti e salute.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
