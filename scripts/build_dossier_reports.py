@@ -38,6 +38,10 @@ BASE_URL = 'https://osservatorioversilia.it/dossier/'
 EXAMPLE_M2 = 80
 SOURCE_NAMES = [
     # Le voci più specifiche prima: vince la prima che corrisponde.
+    ('pnrrPerSitoWeb', 'Regione Toscana — Open data PNRR (dati del sistema di monitoraggio ReGiS)'),
+    ('74533d22-b1c2-4d89-b1b9-b98e6c9713ff', 'SIOPE — Pagamenti dei Comuni (open data BDAP)'),
+    ('manutenzione-del-reticolo-idrografico', 'Regione Toscana — Piani delle attività di bonifica'),
+    ('cbtoscananord.it', 'Consorzio 1 Toscana Nord — Portale delle manutenzioni'),
     ('idrogeo.isprambiente.it', 'ISPRA — Piattaforma IdroGEO: pericolosità da alluvioni e frane'),
     ('dati.lamma.toscana.it', 'Consorzio LaMMA — Serie climatiche ricostruite (LaMMA ed ERA5-Land)'),
     ('indicatoriambientali.isprambiente.it/it/coste', 'ISPRA — Indicatori ambientali: coste'),
@@ -81,6 +85,8 @@ SOURCE_NAMES = [
     ('catasto-rifiuti', 'ISPRA — Catasto dei rifiuti: costi del servizio'),
     ('erplucca.it', 'ERP Lucca — Bilanci e rendiconti dell’edilizia residenziale pubblica'),
 ]
+# Stesso indirizzo di fonte per letture diverse: il nome pubblico segue l'indicatore.
+SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitoraggio delle opere pubbliche (BDAP)'}
 MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
           'novembre', 'dicembre']
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
@@ -155,6 +161,10 @@ def join_names(names: list[str]) -> str:
 
 def ordinal(rank: int) -> str:
     return f'{rank}°'
+
+
+def measure_source(measure) -> str:
+    return SOURCE_BY_METRIC.get(measure.metric) or source_name(measure.source)
 
 
 def source_name(url: str) -> str:
@@ -2394,7 +2404,187 @@ def demografia(engine: Engine) -> dict:
              ('stranieri', 'I residenti stranieri'), ('giovani', 'Bambini e giovani'), ('famiglie', 'Le famiglie')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia}
+# ---------------------------------------------------------------------------
+# Dossier «Investimenti e opere in Versilia».
+
+def investimenti(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    m = {
+        'pnrr': engine.measure('pnrr', 'pnrrFunding', 'nativeRatio',
+                               'Fondi PNRR dei progetti di cui il Comune è attuatore, euro per abitante', 'eur', 0,
+                               versilia=True),
+        'pnrre': engine.measure('pnrre', 'pnrrFunding', 'fundingEuro',
+                                'Fondi PNRR dei progetti di cui il Comune è attuatore, euro', 'eur', 0),
+        'done': engine.measure('done', 'pnrrConcluded', 'nativeRatio',
+                               'Progetti PNRR del Comune in fase di conclusione, %', 'percent', 1, versilia=True),
+        'sel': engine.measure('sel', 'pnrrConcluded', 'selectedProjects', 'Progetti PNRR di cui il Comune è attuatore, numero',
+                              'count', 0),
+        'donen': engine.measure('donen', 'pnrrConcluded', 'concludedProjects',
+                                'Progetti PNRR del Comune in fase di conclusione, numero', 'count', 0),
+        'works': engine.measure('works', 'publicWorks', 'total',
+                                'Valore delle opere pubbliche monitorate in BDAP, euro per abitante', 'eur', 0),
+        'capc': engine.measure('capc', 'capitalExpenditureCommittedPerResident', 'total',
+                               'Spesa per investimenti impegnata nell’anno, euro per abitante', 'eur', 0, versilia=True),
+        'capp': engine.measure('capp', 'capitalPayments', 'total',
+                               'Pagamenti per investimenti nell’anno, euro per abitante', 'eur', 0, versilia=True),
+        'pabn': engine.measure('pabn', 'pabProgrammedInterventions', 'total',
+                               'Interventi di manutenzione di fossi e canali programmati nel 2026, numero', 'count', 0),
+        'pabv': engine.measure('pabv', 'pabProgrammedMaintenanceValue', 'total',
+                               'Valore della manutenzione di fossi e canali programmata nel 2026, euro', 'eur', 0),
+        'pabs': engine.measure('pabs', 'pabInterventionsCompleted', 'share:operational',
+                               'Interventi di manutenzione registrati come conclusi, % di quelli nel portale', 'percent', 1,
+                               versilia=True),
+        'pabd': engine.measure('pabd', 'pabInterventionsCompleted', 'total',
+                               'Interventi di manutenzione registrati come conclusi, numero', 'count', 0),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    eur = lambda v: num(v) + ' €'
+    mln = lambda v: num(v / 1e6, 1) + ' milioni di euro'
+
+    # 01 — i fondi PNRR
+    pn, pe = m['pnrr'], m['pnrre']
+    pe_sum = sum(pe.values.values())
+    day = period_label(pn.period)
+    pn_text = (
+        f'Al {day} i sette Comuni risultano responsabili, come soggetti attuatori, di progetti PNRR per '
+        f'<b>{mln(pe_sum)}</b>: {eur(pn.versilia)} per abitante in Versilia. In valore assoluto il primo è '
+        f'{nm(hi("pnrre")[0])}, con {mln(hi("pnrre")[1])}. Per abitante, invece, il valore più alto è a '
+        f'{nm(hi("pnrr")[0])} ({eur(hi("pnrr")[1])}) e il più basso a {nm(lo("pnrr")[0])} ({eur(lo("pnrr")[1])}).')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: progetti PNRR per {mln(pe.values[c])}, {eur(pn.values[c])} per abitante '
+                  f'({ordinal(pn.rank(c))} su {total}).') for c in codes}
+    ch1 = chapter(1, 'pnrr', 'I fondi del PNRR', 'Quanti fondi del PNRR gestiscono i Comuni?',
+        f'<p>{pn_text}</p>{bar_chart(pn, N, "Fondi PNRR per abitante", f"Fotografia della Regione Toscana al {day}.")}'
+        f'{bar_chart(pe, N, "Fondi PNRR, euro")}' + town_blocks(towns1),
+        'Il dato conta i fondi assegnati ai progetti di cui il Comune è responsabile, non i soldi già pagati né tutti i '
+        'progetti PNRR sul territorio: quelli gestiti da Regione, Provincia, scuole, aziende sanitarie o gestori dei '
+        'servizi non sono compresi. Nei Comuni piccoli un solo progetto grande basta a far salire molto il valore per '
+        'abitante.')
+
+    # 02 — a che punto sono
+    dn, se, dc = m['done'], m['sel'], m['donen']
+    se_sum, dc_sum = sum(se.values.values()), sum(dc.values.values())
+    dn_text = (
+        f'Dei <b>{num(se_sum)} progetti PNRR</b> di cui i Comuni sono attuatori, {num(dc_sum)} risultano nella fase '
+        f'«conclusione» del sistema nazionale di monitoraggio: {il(pct(dn.versilia))}. La quota va '
+        f'{dal(pct(lo("done")[1]))} a {nm(lo("done")[0])} {al(pct(hi("done")[1]))} a '
+        f'{join_names([nm(c) for c, v, _ in dn.ranking if v == hi("done")[1]])}. Il Comune con più progetti è '
+        f'{nm(hi("sel")[0])}, con {num(hi("sel")[1])}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {num(dc.values[c])} progetti in fase di conclusione su {num(se.values[c])}, '
+                  f'{il(pct(dn.values[c]))}.') for c in codes}
+    ch2 = chapter(2, 'avanzamento', 'A che punto sono i progetti', 'Quanti progetti PNRR sono arrivati alla fine?',
+        f'<p>{dn_text}</p>{bar_chart(dn, N, "Progetti PNRR in fase di conclusione")}'
+        f'{bar_chart(se, N, "Progetti PNRR di cui il Comune è attuatore")}' + town_blocks(towns2),
+        'La fase «conclusione» è uno stato amministrativo registrato nel sistema di monitoraggio: non dice se l’opera è '
+        'stata collaudata, se è aperta e se le persone la usano. Per sapere che cosa hanno prodotto i progetti servono '
+        'i dati sui tempi, sui costi finali e sui risultati di ciascuno.')
+
+    # 03 — le opere pubbliche
+    wk = m['works']
+    wk_text = (
+        f'Nella banca dati delle amministrazioni pubbliche del Ministero dell’Economia (BDAP) il valore delle opere '
+        f'pubbliche monitorate va da {eur(lo("works")[1])} per abitante a {nm(lo("works")[0])} a '
+        f'{eur(hi("works")[1])} a {nm(hi("works")[0])}. È un valore complessivo, che somma opere avviate in '
+        'anni diversi e in fasi diverse: non è quanto si spende in un anno.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: opere pubbliche monitorate per {eur(wk.values[c])} per abitante '
+                  f'({ordinal(wk.rank(c))} su {total}).') for c in codes}
+    ch3 = chapter(3, 'opere', 'Le opere pubbliche', 'Quanto valgono le opere pubbliche dei Comuni?',
+        f'<p>{wk_text}</p>{bar_chart(wk, N, "Opere pubbliche monitorate per abitante")}' + town_blocks(towns3),
+        'Il monitoraggio delle opere pubbliche registra ogni progetto con il suo codice unico, dal finanziamento alla '
+        'fine dei lavori. Il valore per abitante dà un’idea del peso delle opere rispetto alla dimensione del Comune, '
+        'ma non dice quante sono concluse né se i costi sono stati rispettati.')
+
+    # 04 — gli investimenti nei bilanci
+    cc, cp = m['capc'], m['capp']
+    cc_text = (
+        f'Nel {cc.period} i Comuni della Versilia hanno impegnato per investimenti <b>{eur(cc.versilia)} per '
+        f'abitante</b>: da {eur(lo("capc")[1])} a {nm(lo("capc")[0])} a {eur(hi("capc")[1])} a '
+        f'{nm(hi("capc")[0])}. Nello stesso anno hanno pagato per investimenti {eur(cp.versilia)} per abitante, da '
+        f'{eur(lo("capp")[1])} a {nm(lo("capp")[0])} a {eur(hi("capp")[1])} a {nm(hi("capp")[0])}. Il dossier '
+        '<a href="../bilanci/">I conti dei Comuni</a> legge il resto dei bilanci.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {eur(cc.values[c])} per abitante impegnati per investimenti nel {cc.period}, '
+                  f'{eur(cp.values[c])} pagati.') for c in codes}
+    ch4 = chapter(4, 'bilanci', 'Gli investimenti nei bilanci', 'Quanto spendono i Comuni per investire?',
+        f'<p>{cc_text}</p>{bar_chart(cc, N, "Spesa per investimenti impegnata per abitante")}'
+        f'{bar_chart(cp, N, "Pagamenti per investimenti per abitante")}' + town_blocks(towns4),
+        'Gli impegni dicono quanto il Comune si è obbligato a spendere nell’anno; i pagamenti quanto è uscito davvero '
+        'dalla cassa, anche per impegni presi negli anni precedenti. Un’opera grande può far salire molto un solo anno, '
+        'quindi il dato va letto insieme agli anni vicini.')
+
+    # 05 — fossi e canali
+    pn_, pv, ps, pd = m['pabn'], m['pabv'], m['pabs'], m['pabd']
+    zero = [c for c, v, _ in ps.ranking if v == 0]
+    pab_text = (
+        f'Nel {pn_.period} il piano delle attività di bonifica del Consorzio 1 Toscana Nord programma in Versilia '
+        f'interventi di manutenzione ordinaria di fossi, canali e argini: da {num(lo("pabn")[1])} interventi a '
+        f'{nm(lo("pabn")[0])} a {num(hi("pabn")[1])} a {nm(hi("pabn")[0])}, per un valore programmato che va da '
+        f'{eur(lo("pabv")[1])} a {nm(lo("pabv")[0])} a {eur(hi("pabv")[1])} a {nm(hi("pabv")[0])}.')
+    ps_text = (
+        f'Al {period_label(ps.period)} il portale delle manutenzioni del Consorzio registra come conclusi '
+        f'<b>{il(pct(ps.versilia))}</b> degli interventi presenti per la Versilia. La quota più alta è a {nm(hi("pabs")[0])} ({pct(hi("pabs")[1])})'
+        + (f'; a {join_names([nm(c) for c in zero])} il portale non registra ancora lavori conclusi.' if zero else '.'))
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(pn_.values[c])} interventi programmati nel {pn_.period} per '
+                  f'{eur(pv.values[c])}; {num(pd.values[c])} registrati come conclusi al {period_label(ps.period)} '
+                  f'({pct(ps.values[c])}).') for c in codes}
+    ch5 = chapter(5, 'fossi', 'Fossi e canali', 'Quanta manutenzione dei corsi d’acqua è programmata e quanta è fatta?',
+        f'<p>{pab_text}</p>{bar_chart(pn_, N, "Interventi di manutenzione programmati")}'
+        f'{bar_chart(pv, N, "Valore della manutenzione programmata")}'
+        f'<p>{ps_text}</p>{bar_chart(ps, N, "Interventi registrati come conclusi", "Quota degli interventi presenti nel portale del Consorzio.")}'
+        + town_blocks(towns5),
+        'La manutenzione di fossi e canali la fa il Consorzio di bonifica, non il Comune, ma serve a ridurre gli '
+        'allagamenti: il dossier <a href="../ambiente/">Ambiente e rischi in Versilia</a> mostra quanti residenti '
+        'vivono nelle aree a pericolosità di alluvione. Il piano dice che cosa è programmato; lo stato dei lavori viene '
+        'dal portale del Consorzio, che può essere aggiornato in ritardo, e una parte dei lavori si fa più avanti '
+        'nell’anno.')
+
+    key_points = [
+        (num(pe_sum / 1e6, 1) + ' mln €', f'Fondi PNRR dei progetti di cui i sette Comuni sono attuatori, al {day}.', 'pnrr'),
+        (eur(hi('pnrr')[1]), f'Fondi PNRR per abitante a {nm(hi("pnrr")[0])}, il valore più alto.', 'pnrr'),
+        (pct(dn.versilia), f'Progetti PNRR dei Comuni nella fase «conclusione»: {num(dc_sum)} su {num(se_sum)}.',
+         'avanzamento'),
+        (eur(hi('works')[1]), f'Opere pubbliche monitorate per abitante a {nm(hi("works")[0])}.', 'opere'),
+        (eur(cc.versilia), f'Spesa per investimenti impegnata per abitante in Versilia nel {cc.period}.', 'bilanci'),
+        (pct(ps.versilia), f'Interventi di manutenzione di fossi e canali registrati come conclusi al '
+                           f'{period_label(ps.period)}.', 'fossi'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Fondi PNRR per abitante', eur(pn.values[c]), f'Versilia {eur(pn.versilia)}'),
+        summary_item('Progetti PNRR in fase di conclusione', pct(dn.values[c]),
+                     f'{num(dc.values[c])} su {num(se.values[c])}'),
+        summary_item('Opere pubbliche monitorate per abitante', eur(wk.values[c]), f'{ordinal(wk.rank(c))} su {total}'),
+        summary_item('Investimenti impegnati per abitante', eur(cc.values[c]), f'Versilia {eur(cc.versilia)}'),
+        summary_item('Manutenzioni di fossi e canali concluse', pct(ps.values[c]), f'Versilia {pct(ps.versilia)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti progetti PNRR sono davvero finiti, collaudati e aperti al pubblico, e con quali risultati.',
+        'Quanto sono costate alla fine le opere rispetto a quanto previsto, e con quali ritardi.',
+        'Quali opere si trovano in ciascun Comune: i dati seguono l’ente responsabile, non il luogo dei lavori.',
+        'Quanto si spende ogni anno per la manutenzione di strade, scuole ed edifici pubblici.',
+        'Quanto la manutenzione di fossi e canali riduce davvero gli allagamenti.',
+    ]
+    return dict(
+        slug='investimenti', title='Investimenti e opere in Versilia', eyebrow='Dossier · Investimenti, PNRR e opere',
+        unknown_topic='sugli investimenti', theme='comunita', theme_label='Tutti i dati su comunità e welfare',
+        lead='Quanti fondi del PNRR gestiscono i Comuni e a che punto sono i progetti, quante opere pubbliche sono '
+             'monitorate, quanto investono i bilanci e quanta manutenzione di fossi e canali è programmata e fatta: '
+             'una lettura dei dati pubblici sui sette Comuni della Versilia.',
+        description='Fondi e avanzamento dei progetti PNRR, opere pubbliche monitorate, spesa per investimenti nei '
+                    'bilanci e manutenzione di fossi e canali nei sette Comuni della Versilia.',
+        periods=f'PNRR al {day}, opere pubbliche {wk.period}, bilanci {cc.period}, manutenzione di fossi e canali: piano '
+                f'{pn_.period} e stato dei lavori al {period_label(ps.period)}.',
+        method='Per questi dati non esiste un confronto ufficiale con Toscana e Italia. I fondi e il numero di progetti '
+               'PNRR della Versilia sono la somma dei sette Comuni; per la manutenzione di fossi e canali non si somma '
+               'nulla, perché un intervento può riguardare più Comuni.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('pnrr', 'I fondi del PNRR'), ('avanzamento', 'A che punto sono i progetti'), ('opere', 'Le opere pubbliche'),
+             ('bilanci', 'Gli investimenti nei bilanci'), ('fossi', 'Fossi e canali')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti}
 
 
 # ---------------------------------------------------------------------------
@@ -2422,7 +2612,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
         for territory, value in rows:
             writer.writerow([measure.label, territory, period_label(measure.period),
                              num(value, 0 if measure.unit in ('eur', 'count') else max(measure.decimals, 2)).replace('.', ''),
-                             unit[measure.unit], source_name(measure.source)])
+                             unit[measure.unit], measure_source(measure)])
     path.write_bytes(b'\xef\xbb\xbf' + buffer.getvalue().encode('utf-8'))
 
 
@@ -2443,7 +2633,7 @@ def render(dossier: dict, engine: Engine, dist: Path, page: Path, built: str) ->
     readings = limits()['warnings']
     sources = {}
     for measure in dossier['measures'].values():
-        link, items, cautions = sources.setdefault(source_name(measure.source), (measure.source, [], []))
+        link, items, cautions = sources.setdefault(measure_source(measure), (measure.source, [], []))
         items.append(f'{measure.label} ({period_label(measure.period)})')
         for code in measure.warnings:
             if code not in readings:
@@ -2514,7 +2704,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente e sulla popolazione, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione e sugli investimenti, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -2535,7 +2725,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente e popolazione.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione e investimenti.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
