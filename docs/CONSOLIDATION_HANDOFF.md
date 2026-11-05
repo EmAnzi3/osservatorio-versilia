@@ -1,5 +1,29 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Aggiornamento dati RTCave e ARS (5 novembre 2026)
+
+Branch `feature/aggiorna-cave-ars`, sopra `fix/data-check-2026-11` (#555). File sorgente scaricati a
+mano il 5 novembre, impronte identiche alla sonda mensile.
+
+- **RTCave**: nuovo `scripts/update_rtcave_public.py` (solo `rtcave` e la scheda
+  `extractiveSites`; verifica che la scheda pubblicata coincida con lo snapshot prima di
+  scrivere). Snapshot `attivita-estrattive-v128.json` con `rtcave.retrievedAt`
+  2026-11-05 (produzione e PRC invariati), 667 record regionali, 90 in Versilia; attivi 16,
+  sospesi 4. Adattatore A6 `semantic_query_extractive_adapters.py` riallineato (data, SHA, 667).
+- **ARS mortalità** (1438, 1499, 1327, 1606): periodo 2014–2023 aggiunto in coda, storico
+  2002–2011 … 2013–2022 invariato (verificato). `materialize_salute_v140.py` ora espone
+  `indicator_from_csv`; `EXPECTED_SHA`/`EXPECTED_PERIODS` aggiornati. Mortalità complessiva:
+  catalogo, benchmark Toscana 829,96 e serie legacy A3.5.
+- **ARS speranza di vita** (1290): serie 2008–2023; l'export rivede alcuni valori 2014–2020
+  (Stazzema fino a +0,78 anni, maschi 2016), adottati. Il nome del file snapshot resta
+  `ars-life-expectancy-1290-2008-2022.json` per non toccare il workflow dedicato.
+  Materializzatore parametrico (`YEARS`, `--zip`, `--retrieved`).
+- Snapshot demografico ARS rigenerato per i cinque indicatori.
+- `semantic_query_road_adapters.py`: `CANONICAL_HASH` è l'impronta dell'intero
+  `data/site-data.json`; va aggiornato a ogni modifica del catalogo.
+- Domande verificate `ars_mortality_window_gap`/`ars_mortality_endpoint_refused` portate al
+  2014–2023 (108,203); resoconti del programma dossier rigenerati (solo impronte).
+
 ## Controllo dati 2026-11: verifiche manuali RTCave e ARS (5 novembre 2026)
 
 Branch `fix/data-check-2026-11`, costruito sulla PR automatica #552 (stato del monitor e

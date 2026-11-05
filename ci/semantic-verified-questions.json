@@ -898,7 +898,7 @@
     },
     {
       "id": "ars_mortality_window_gap",
-      "question": "Quanto differisce la mortalità standardizzata di Massarosa dalla Toscana nel periodo 2013–2022?",
+      "question": "Quanto differisce la mortalità standardizzata di Massarosa dalla Toscana nel periodo 2014–2023?",
       "query": {
         "operation": "benchmark_gap",
         "selectors": [
@@ -918,20 +918,20 @@
           {
             "path": "/result/value",
             "fraction": [
-              107034,
+              108203,
               1000
             ]
           },
           {
             "path": "/result/period",
-            "value": "2013-2022"
+            "value": "2014-2023"
           }
         ],
         "warnings": [
           "overlapping_windows_not_independent_years"
         ]
       },
-      "reference": "ARS 1438: 945,211 − 838,177 = 107,034 ogni 100.000; intera finestra decennale"
+      "reference": "ARS 1438: 938,166 − 829,963 = 108,203 ogni 100.000; intera finestra decennale 2014–2023"
     },
     {
       "id": "ars_rsa_change",
@@ -968,7 +968,7 @@
     },
     {
       "id": "ars_mortality_endpoint_refused",
-      "question": "Posso usare il solo 2022 al posto del periodo di mortalità 2013–2022?",
+      "question": "Posso usare il solo 2023 al posto del periodo di mortalità 2014–2023?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -980,7 +980,7 @@
               "046033"
             ],
             "periods": [
-              "2022"
+              "2023"
             ]
           }
         ]
