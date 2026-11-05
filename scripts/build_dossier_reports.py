@@ -257,7 +257,7 @@ class Measure:
                 'sqm': lambda v: num(v) + ' m² per abitante',
                 'hectares': lambda v: num(v, self.decimals) + ' ettari',
                 'haPerFarm': lambda v: num(v, 1) + ' ettari per azienda',
-                'eurliter': lambda v: num(v, 3) + ' €/l'}[self.unit](value)
+                'eurliter': lambda v: num(v, 2) + ' €/l'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
@@ -267,7 +267,7 @@ class Measure:
                 'per1000young': lambda v: num(v, 1), 'per1000dec': lambda v: num(v, self.decimals),
                 'decile': lambda v: num(v), 'sqm': lambda v: num(v) + ' m²',
                 'hectares': lambda v: num(v, self.decimals) + ' ha', 'haPerFarm': lambda v: num(v, 1) + ' ha',
-                'eurliter': lambda v: num(v, 3) + ' €'}.get(self.unit, self.fmt)(value)
+                'eurliter': lambda v: num(v, 2) + ' €'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -3647,9 +3647,9 @@ def energia(engine: Engine) -> dict:
     TI = ('tuscany', 'italy')
     m = {
         'petrol': engine.measure('petrol', 'fuelPrices', 'fuel:benzina',
-                                 'Prezzo mediano della benzina self-service, euro al litro', 'eurliter', 3, partial=True),
+                                 'Prezzo mediano della benzina self-service, euro al litro', 'eurliter', 2, partial=True),
         'diesel': engine.measure('diesel', 'fuelPrices', 'fuel:gasolio',
-                                 'Prezzo mediano del gasolio self-service, euro al litro', 'eurliter', 3, partial=True),
+                                 'Prezzo mediano del gasolio self-service, euro al litro', 'eurliter', 2, partial=True),
         'ev': engine.measure('ev', 'evPoints', 'total',
                              'Punti di ricarica pubblici per auto elettriche, ogni 1.000 abitanti', 'rate1000', 2),
         'cars': engine.measure('cars', 'motorization', 'nativeRatio', 'Automobili ogni 1.000 abitanti', 'per1000', 0,
@@ -3667,7 +3667,7 @@ def energia(engine: Engine) -> dict:
     nm = lambda code: N[code]
     span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
     above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
-    litre = lambda v: num(v, 3) + ' euro al litro'
+    litre = lambda v: num(v, 2) + ' euro al litro'
     span_at = lambda k, f: f'da {f(lo(k)[1])} a {nm(lo(k)[0])} a {f(hi(k)[1])} a {nm(hi(k)[0])}'
 
     # Serie mensili dei prezzi: valori pubblicati, nessuna variazione calcolata.
@@ -3698,9 +3698,9 @@ def energia(engine: Engine) -> dict:
     pj, pl = window('benzina', january), window('benzina', last)
     dj, dl = window('gasolio', january), window('gasolio', last)
     fuel_text = (
-        f'A {month_label(january)} un litro di benzina self-service costava in Versilia fra {num(pj[0], 3)} e '
-        f'{num(pj[1], 3)} euro, a seconda del Comune; a {month_label(last)} <b>fra {num(pl[0], 3)} e {num(pl[1], 3)} '
-        f'euro</b>. Il gasolio è passato da {num(dj[0], 3)}-{num(dj[1], 3)} euro a {num(dl[0], 3)}-{num(dl[1], 3)} euro. '
+        f'A {month_label(january)} un litro di benzina self-service costava in Versilia fra {num(pj[0], 2)} e '
+        f'{num(pj[1], 2)} euro, a seconda del Comune; a {month_label(last)} <b>fra {num(pl[0], 2)} e {num(pl[1], 2)} '
+        f'euro</b>. Il gasolio è passato da {num(dj[0], 2)}-{num(dj[1], 2)} euro a {num(dl[0], 2)}-{num(dl[1], 2)} euro. '
         + (f'In tutti i Comuni {month_label(last)} è il mese più caro da quando la serie comincia, a '
            f'{month_label(first)}. ' if record else '')
         + f'Al {period_label(petrol.period)} la benzina va {span_at("petrol", litre)}, il gasolio '
@@ -3774,8 +3774,8 @@ def energia(engine: Engine) -> dict:
         (litre(hi('petrol')[1]).replace(' euro al litro', ' €/l'),
          f'Prezzo mediano della benzina a {nm(hi("petrol")[0])} al {period_label(petrol.period)}, il più alto della '
          'Versilia.', 'carburanti'),
-        (f'{num(pl[0], 3)}-{num(pl[1], 3)} €/l',
-         f'Benzina a {month_label(last)}; a {month_label(january)} era a {num(pj[0], 3)}-{num(pj[1], 3)} €/l.',
+        (f'{num(pl[0], 2)}-{num(pl[1], 2)} €/l',
+         f'Benzina a {month_label(last)}; a {month_label(january)} era a {num(pj[0], 2)}-{num(pj[1], 2)} €/l.',
          'carburanti'),
         (num(hi('ev')[1], 2), f'Punti di ricarica ogni 1.000 abitanti a {nm(hi("ev")[0])}; a {nm(lo("ev")[0])} '
                               f'{num(lo("ev")[1], 2)}.', 'ricarica'),
