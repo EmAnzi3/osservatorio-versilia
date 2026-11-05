@@ -24,6 +24,12 @@ Fonti con nome pubblico per metrica in `SOURCE_BY_METRIC`, perché gli URL regio
 corrisponderebbero a fonti sbagliate. Suolo consumato ISPRA, UCS e carta forestale sono fonti
 distinte e il testo non le confronta; superficie tutelata non misura lo stato della biodiversità.
 
+Nello stesso branch: `scripts/build_static.py` apre una scheda nuova ogni 25 rotte nel
+prerender (`PRERENDER_PAGE_BATCH`). Con una sola scheda per tutte le 198 rotte Chromium
+superava i 5,5 GB e veniva terminato dal kernel nei container con limite di 5,8 GB (due
+preflight falliti su pagine diverse). Ogni rotta era già una navigazione completa, quindi
+l’HTML prerenderizzato non cambia.
+
 ## Dossier «Il welfare in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-welfare`, tredicesimo dossier in forma di relazione (slug `welfare`,

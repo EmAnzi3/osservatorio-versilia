@@ -401,6 +401,9 @@ def inject_metadata(document: str, route: str, data: dict) -> str:
     return document
 
 
+PRERENDER_PAGE_BATCH = 25
+
+
 def prerender() -> None:
     data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
     with local_server(DIST) as server_url, sync_playwright() as playwright:
@@ -409,8 +412,14 @@ def prerender() -> None:
         if chromium_path:
             launch_args["executable_path"] = chromium_path
         browser = playwright.chromium.launch(**launch_args)
-        page = browser.new_page(viewport={"width": 1440, "height": 1100})
-        for route in ROUTES:
+        page = None
+        for index, route in enumerate(ROUTES):
+            # Una scheda nuova ogni PRERENDER_PAGE_BATCH pagine: la memoria della SPA cresce a ogni
+            # navigazione e con tutte le rotte in una sola scheda supera i limiti dei container.
+            if index % PRERENDER_PAGE_BATCH == 0:
+                if page is not None:
+                    page.close()
+                page = browser.new_page(viewport={"width": 1440, "height": 1100})
             page.goto(server_url + route, wait_until="networkidle")
             page.wait_for_selector("#app main", timeout=30_000)
             page.wait_for_timeout(350)
