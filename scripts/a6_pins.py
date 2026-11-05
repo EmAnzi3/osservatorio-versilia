@@ -59,3 +59,6 @@ class Pin(str):
         return not self.__eq__(other)
 
     __hash__ = str.__hash__
+
+    def __reduce__(self):  # copia/deepcopy/pickle ricreano lo stesso Pin
+        return (Pin, (self.name,))
