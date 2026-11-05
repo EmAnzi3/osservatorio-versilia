@@ -1,5 +1,25 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Personale e servizi digitali dei Comuni» (5 novembre 2026)
+
+Branch `feature/dossier-capacita`, sedicesimo dossier in forma di relazione (slug `capacita`,
+tema bilanci), scheda `capacita` di `ci/territorial-dossier-program.json`, con tutti i sei
+`metricRefs` più `ftthCoverage20m`. Sei capitoli:
+
+1. dipendenti: `municipalEmployeesPer1000` ogni 1.000 abitanti con Toscana e Versilia, e numero;
+2. età: `municipalStaffAgeStructure` 55 anni e più e sotto i 40, Versilia ponderata;
+3. assunzioni e uscite: `municipalStaffTurnover` saldo % con Versilia, assunzioni e cessazioni;
+4. formazione: `municipalStaffTraining` media per dipendente con la media Versilia pubblicata
+   dalla RGS (scope `versilia`) e giornate totali; nuova unità `daysPerEmployee`;
+5. servizi online: `municipalOnlineServicesAdvanced` 2022 con Toscana;
+6. fibra: `ftthCoverageDesi` e `ftthCoverage20m` con Toscana e Italia (il motore non aggrega
+   le percentuali arrotondate AGCOM, quindi niente Versilia).
+
+Nome della fonte corretto: i CSV BDAP «Dipendenti Pubblici» sono il conto annuale del
+personale, non i rendiconti dei Comuni. La nuova voce in `SOURCE_NAMES` vale anche per il
+dossier bilanci, che usa le stesse metriche. Nessun giudizio su produttività o qualità del
+lavoro dai tassi.
+
 ## Dossier «Energia e transizione in Versilia» (5 novembre 2026)
 
 Branch `feature/dossier-energia`, quindicesimo dossier in forma di relazione (slug `energia`,
