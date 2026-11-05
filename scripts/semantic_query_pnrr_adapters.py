@@ -1,5 +1,5 @@
 """Frozen PNRR municipal implementing-body portfolio, amounts and ReGiS phase."""
-from a6_pins import Pin as _pin
+from a6_pins import Pin as _pin, matches_any as _matches_any, matches_any as _matches_any
 from decimal import Decimal
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
@@ -45,7 +45,7 @@ def selection_guard(key, dim, op):
 
 def context(metric, key, dim):
     if key not in KEYS or dim not in dimensions(key): raise ValueError('pnrr_dimension_not_reviewed')
-    if fingerprint(metric) not in PUBLIC_HASHES[key]: raise ValueError('pnrr_public_definition_or_values_changed')
+    if not _matches_any(PUBLIC_HASHES[key], fingerprint(metric)): raise ValueError('pnrr_public_definition_or_values_changed')
     funding = key == 'pnrrFunding'; ratio = dim in ('total', 'nativeRatio')
     return dict(unit=('currency_per_resident' if ratio else 'currency') if funding else ('percent' if ratio else 'count'),
                 population='PNRR or PNRR-PNC, pure PNC excluded; municipal implementing body; globally unique id_progetto',
@@ -63,7 +63,7 @@ def validated(engine):
     if len(engine._catalog['towns']) != 7 or {t['code']:t['name'] for t in engine._catalog['towns']} != TOWNS:
         raise ValueError('pnrr_municipal_identity_changed')
     population = engine._catalog['metrics']['population']
-    if not any(pin == fingerprint(population) for pin in sorted(POPULATION_HASHES)):
+    if not _matches_any(POPULATION_HASHES, fingerprint(population)):
         raise ValueError('pnrr_resident_denominator_changed')
     pop = {r['code']:r for r in population['rows']}
     out = {c:dict(funding=Decimal(0),projects=0,concluded=0,indices=[]) for c in TOWNS}

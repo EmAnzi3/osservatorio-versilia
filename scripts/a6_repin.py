@@ -40,8 +40,11 @@ def exercise(catalog: Path) -> int:
         except Exception:
             dims = ["total"]
         for dim in dims or ["total"]:
-            for operation in ("compare", "series"):
-                request = {"operation": operation, "selectors": [{"metric": key, "dimension": dim}], "allowPartial": True}
+            requests = [{"operation": op, "selectors": [{"metric": key, "dimension": dim}], "allowPartial": True} for op in ("compare", "series", "trend")]
+            requests += [{"operation": "benchmark_gap", "benchmark": scope, "selectors": [{"metric": key, "dimension": dim, "towns": ["046018"]}], "allowPartial": True}
+                         for scope in ("tuscany", "versilia", "italy", "province")]
+            requests.append({"operation": "weighted_ratio", "selectors": [{"metric": key, "dimension": dim}], "allowPartial": True})
+            for request in requests:
                 try:
                     engine.query(request)
                 except Exception:

@@ -1,5 +1,25 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Registro unico delle impronte A6 (6 novembre 2026)
+
+Branch `feature/a6-registro-impronte` (sopra il lotto 1). Approvato da Ema.
+
+- Le 201 impronte SHA-256 scritte in 40 adattatori `semantic_query_*_adapters.py` sono ora in
+  `ci/a6-source-pins.json` (chiave `<adattatore>#<n>`) e lette come `a6_pins.Pin`, una stringa
+  che in uso normale si confronta come prima: stessi rifiuti, stessi codici d'errore.
+- `A6_REPIN=1` (solo tramite `scripts/a6_repin.py`): ogni confronto con un `Pin` annota il valore
+  osservato e passa. Lo script esegue compare/series/trend/benchmark_gap/weighted_ratio su
+  ogni indicatore e dimensione del catalogo effettivo; senza `--write` è una prova a secco, con
+  `--write --allow modulo,...` scrive solo se cambiano impronte degli adattatori dichiarati.
+  Impronte alternative (più valori ammessi): `a6_pins.matches_any`.
+- Prova a secco sul catalogo attuale: 26.872 richieste, 194/201 impronte esercitate, 0 cambiate.
+  Non esercitate: alternative già soddisfatte (`hospital#1`, `pnrr#3`, `pnrr#7`), `mef#3`,
+  `mef#4`, `water_quality#1-2`.
+- `scripts/test_a6_pins.py` (quickCheck): nessuna impronta nel codice, registro e codice
+  allineati, semantica normale e di ri-registrazione.
+- Restano congelati nel codice i **periodi** (es. `'2024'` strade, data RTCave): vanno trattati
+  famiglia per famiglia insieme ai lotti del controllo mensile.
+
 ## Controllo mensile completo, lotto 1: ARS (5 novembre 2026)
 
 Branch `feature/check-mensile-completo` (sopra `feature/aggiorna-cave-ars`). Obiettivo deciso da

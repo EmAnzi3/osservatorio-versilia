@@ -62,3 +62,15 @@ class Pin(str):
 
     def __reduce__(self):  # copia/deepcopy/pickle ricreano lo stesso Pin
         return (Pin, (self.name,))
+
+
+def matches_any(candidates, observed: str) -> bool:
+    """Più valori ammessi per la stessa impronta: in ri-registrazione si annota
+    un cambio solo se il valore osservato non coincide con nessuno di essi."""
+    ordered = sorted(candidates, key=lambda pin: pin.name)
+    for pin in ordered:
+        if str.__eq__(pin, observed):
+            if repinning():
+                RECORDED[pin.name] = str(observed)
+            return True
+    return any(pin == observed for pin in ordered[:1])
