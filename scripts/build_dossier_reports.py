@@ -81,6 +81,7 @@ SOURCE_NAMES = [
     ('indicatori-comunali', 'Regione Toscana — Indicatori comunali per le politiche locali (Istat, ICT nelle PA locali)'),
     ('regione.toscana.it', 'Regione Toscana — Movimento turistico nelle strutture ricettive'),
     ('openbdap.rgs.mef.gov.it', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (OpenBDAP)'),
+    ('Dipendenti-Pubblici', 'Ragioneria Generale dello Stato — Conto annuale del personale (open data BDAP)'),
     ('bdap-opendata.rgs', 'Ragioneria Generale dello Stato — Rendiconti dei Comuni (open data BDAP)'),
     ('siope.it', 'SIOPE — Incassi e pagamenti delle amministrazioni pubbliche'),
     ('contoannuale.rgs', 'Ragioneria Generale dello Stato — Conto annuale del personale'),
@@ -257,7 +258,8 @@ class Measure:
                 'sqm': lambda v: num(v) + ' m² per abitante',
                 'hectares': lambda v: num(v, self.decimals) + ' ettari',
                 'haPerFarm': lambda v: num(v, 1) + ' ettari per azienda',
-                'eurliter': lambda v: num(v, 2) + ' €/l'}[self.unit](value)
+                'eurliter': lambda v: num(v, 2) + ' €/l',
+                'daysPerEmployee': lambda v: num(v, 1) + ' giornate per dipendente'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
@@ -267,7 +269,7 @@ class Measure:
                 'per1000young': lambda v: num(v, 1), 'per1000dec': lambda v: num(v, self.decimals),
                 'decile': lambda v: num(v), 'sqm': lambda v: num(v) + ' m²',
                 'hectares': lambda v: num(v, self.decimals) + ' ha', 'haPerFarm': lambda v: num(v, 1) + ' ha',
-                'eurliter': lambda v: num(v, 2) + ' €'}.get(self.unit, self.fmt)(value)
+                'eurliter': lambda v: num(v, 2) + ' €', 'daysPerEmployee': lambda v: num(v, 1)}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -3822,7 +3824,213 @@ def energia(engine: Engine) -> dict:
              ('redditi-bassi', 'I redditi bassi')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia}
+# ---------------------------------------------------------------------------
+# Dossier «Personale e servizi digitali dei Comuni».
+
+def capacita(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'staff': engine.measure('staff', 'municipalEmployeesPer1000', 'total', 'Dipendenti comunali ogni 1.000 abitanti',
+                                'rate1000', 1, benchmarks=('tuscany',), versilia=True),
+        'staff_n': engine.measure('staff_n', 'municipalEmployeesPer1000', 'staff', 'Dipendenti comunali, numero',
+                                  'count', 0),
+        'old': engine.measure('old', 'municipalStaffAgeStructure', 'age:age55plus',
+                              'Dipendenti comunali con 55 anni o più, %', 'percent', 1, versilia=True),
+        'young': engine.measure('young', 'municipalStaffAgeStructure', 'age:under40',
+                                'Dipendenti comunali con meno di 40 anni, %', 'percent', 1, versilia=True),
+        'turnover': engine.measure('turnover', 'municipalStaffTurnover', 'total',
+                                   'Assunzioni meno uscite, % del personale a fine anno', 'change', 1, versilia=True),
+        'hires': engine.measure('hires', 'municipalStaffTurnover', 'hires', 'Dipendenti assunti nell’anno, numero',
+                                'count', 0),
+        'exits': engine.measure('exits', 'municipalStaffTurnover', 'cessations', 'Dipendenti usciti nell’anno, numero',
+                                'count', 0),
+        'train': engine.measure('train', 'municipalStaffTraining', 'total',
+                                'Giornate di formazione per dipendente', 'daysPerEmployee', 1, benchmarks=('versilia',)),
+        'train_days': engine.measure('train_days', 'municipalStaffTraining', 'measure:totalDays',
+                                     'Giornate di formazione nell’anno, totale', 'count', 0),
+        'online': engine.measure('online', 'municipalOnlineServicesAdvanced', 'total',
+                                 'Servizi comunali online ai livelli più avanzati, %', 'percent', 1, benchmarks=('tuscany',)),
+        'ftth': engine.measure('ftth', 'ftthCoverageDesi', 'total', 'Famiglie raggiunte dalla fibra fino all’edificio, %',
+                               'percent', 1, benchmarks=TI),
+        'ftth20': engine.measure('ftth20', 'ftthCoverage20m', 'total',
+                                 'Famiglie con la fibra entro 20 metri da casa, %', 'percent', 1, benchmarks=TI),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    span_at = lambda k, f: f'da {f(lo(k)[1])} a {nm(lo(k)[0])} a {f(hi(k)[1])} a {nm(hi(k)[0])}'
+    above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+    one = lambda v, word, plural: f'{num(v)} {word if round(v) == 1 else plural}'
+
+    # 01 — quanti dipendenti
+    staff, staff_n = m['staff'], m['staff_n']
+    st = staff.benchmarks['tuscany']
+    staff_text = (
+        f'Nel {staff.period} i sette Comuni della Versilia hanno in media <b>{num(staff.versilia, 1)} dipendenti ogni '
+        f'1.000 abitanti</b>, contro {num(st, 1)} dei Comuni toscani: {span_at("staff", lambda v: num(v, 1))}. '
+        f'{nm(hi("staff")[0])} è un caso a parte: ha {num(staff_n.values[hi("staff")[0]])} dipendenti per pochi '
+        f'residenti, e d’estate deve servire molte più persone di quelle che ci abitano. Il secondo Comune, '
+        f'{nm(staff.ranking[1][0])}, si ferma a {num(staff.ranking[1][1], 1)}. In numeri assoluti si va da '
+        f'{num(lo("staff_n")[1])} dipendenti a {nm(lo("staff_n")[0])} a {num(hi("staff_n")[1])} a {nm(hi("staff_n")[0])}.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {num(staff_n.values[c])} dipendenti nel {staff.period}, '
+                  f'{num(staff.values[c], 1)} ogni 1.000 abitanti ({ordinal(staff.rank(c))} su {total}; Comuni toscani '
+                  f'{num(st, 1)}).') for c in codes}
+    ch1 = chapter(1, 'dipendenti', 'Quanti dipendenti', 'Quante persone lavorano nei Comuni?',
+        f'<p>{staff_text}</p>{bar_chart(staff, N, "Dipendenti comunali ogni 1.000 abitanti")}'
+        f'{bar_chart(staff_n, N, "Dipendenti comunali")}' + town_blocks(towns1),
+        'Sono le persone che rilasciano documenti, seguono i lavori pubblici, i servizi sociali, la scuola e la polizia '
+        'municipale. Avere più o meno personale non vuol dire lavorare meglio o peggio: dipende da quali servizi il '
+        'Comune gestisce da solo e quali affida ad altri enti, a società o ad altri Comuni insieme.')
+
+    # 02 — età
+    old, young = m['old'], m['young']
+    age_text = (
+        f'In Versilia <b>{il(pct(old.versilia))} dei dipendenti comunali ha 55 anni o più</b>: {span("old", pct)}. '
+        f'Quelli con meno di 40 anni sono {il(pct(young.versilia))}, {span("young", pct)}. A '
+        f'{nm(hi("old")[0])} quasi la metà del personale ha almeno 55 anni.'
+        if hi('old')[1] >= 45 else
+        f'In Versilia <b>{il(pct(old.versilia))} dei dipendenti comunali ha 55 anni o più</b>: {span("old", pct)}. '
+        f'Quelli con meno di 40 anni sono {il(pct(young.versilia))}, {span("young", pct)}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(old.values[c]))} dei dipendenti ha 55 anni o più, '
+                  f'{il(pct(young.values[c]))} meno di 40 anni.') for c in codes}
+    ch2 = chapter(2, 'eta', 'L’età del personale', 'Quanto sono giovani o anziani i dipendenti comunali?',
+        f'<p>{age_text}</p>{bar_chart(old, N, "Dipendenti con 55 anni o più")}'
+        f'{bar_chart(young, N, "Dipendenti con meno di 40 anni")}' + town_blocks(towns2),
+        'Dove molti dipendenti sono vicini alla pensione, nei prossimi anni ci saranno molte uscite da sostituire e '
+        'molte competenze da trasmettere. Nei Comuni piccoli bastano poche persone per cambiare di molto le quote.')
+
+    # 03 — ricambio
+    turn, hires, exits = m['turnover'], m['hires'], m['exits']
+    grew = [nm(c) for c, v, _ in turn.ranking if v > 0]
+    shrank = [nm(c) for c, v, _ in turn.ranking if v < 0]
+    steady = [nm(c) for c, v, _ in turn.ranking if v == 0]
+    turn_text = (
+        f'Nel {turn.period} i Comuni della Versilia hanno assunto più persone di quante ne siano uscite: il saldo è '
+        f'<b>{signed(turn.versilia)}% del personale</b>. ' if turn.versilia > 0 else
+        f'Nel {turn.period} nei Comuni della Versilia sono uscite più persone di quante ne siano state assunte: il saldo '
+        f'è <b>{signed(turn.versilia)}% del personale</b>. ')
+    turn_text += (
+        (f'Il personale è cresciuto a {join_names(grew)}' if grew else 'Il personale non è cresciuto in nessun Comune')
+        + (f' ed è calato a {join_names(shrank)}' if shrank else '')
+        + (f'; a {join_names(steady)} è rimasto uguale' if steady else '') + '. '
+        f'{nm(hi("hires")[0])} ha fatto {one(hi("hires")[1], "assunzione", "assunzioni")} e '
+        f'{one(exits.values[hi("hires")[0]], "uscita", "uscite")}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {one(hires.values[c], "assunzione", "assunzioni")} e '
+                  f'{one(exits.values[c], "uscita", "uscite")} nel {turn.period}, saldo {signed(turn.values[c])}% del '
+                  'personale.') for c in codes}
+    ch3 = chapter(3, 'ricambio', 'Assunzioni e uscite', 'Il personale cresce o diminuisce?',
+        f'<p>{turn_text}</p>{bar_chart(turn, N, "Assunzioni meno uscite sul personale")}'
+        f'{bar_chart(hires, N, "Dipendenti assunti nell’anno")}' + town_blocks(towns3),
+        'Il saldo di un solo anno dice se in quel momento un Comune sta rinforzando o riducendo il personale. Non tiene '
+        'conto dei trasferimenti fra amministrazioni e può cambiare molto da un anno all’altro, per esempio dopo un '
+        'concorso: va letto insieme all’età del personale.')
+
+    # 04 — formazione
+    train, tdays = m['train'], m['train_days']
+    tv = train.benchmarks['versilia']
+    train_text = (
+        f'Nel {train.period} ogni dipendente comunale della Versilia ha fatto in media <b>{num(tv, 1)} giornate di '
+        f'formazione</b>: {span_at("train", lambda v: num(v, 1))}. In numeri assoluti si va da '
+        f'{num(lo("train_days")[1])} giornate a {nm(lo("train_days")[0])} a {num(hi("train_days")[1])} a '
+        f'{nm(hi("train_days")[0])}.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {num(train.values[c], 1)} giornate di formazione per dipendente, '
+                  f'{num(tdays.values[c])} in tutto nel {train.period} (Versilia {num(tv, 1)}).') for c in codes}
+    ch4 = chapter(4, 'formazione', 'La formazione', 'Quanta formazione fanno i dipendenti comunali?',
+        f'<p>{train_text}</p>{bar_chart(train, N, "Giornate di formazione per dipendente")}' + town_blocks(towns4),
+        'Nuove regole, appalti, fondi europei e servizi digitali chiedono competenze che vanno aggiornate. Il dato conta '
+        'le giornate registrate nel conto annuale del personale, non la qualità dei corsi né quello che si impara '
+        'lavorando, e può dipendere da come ogni Comune le registra.')
+
+    # 05 — servizi online
+    online = m['online']
+    ot = online.benchmarks['tuscany']
+    on_above = above('online', 'tuscany')
+    online_text = (
+        f'Nel {online.period} la quota di servizi che il Comune offre online ai livelli più avanzati, cioè con l’invio '
+        f'dei moduli o l’intera pratica fatta da casa, va {span("online", pct)}. In Toscana è in media '
+        f'{il(pct(ot))}: '
+        + (f'la superano {join_names(on_above)}' if len(on_above) > 1 else
+           f'la supera solo {on_above[0]}' if on_above else 'nessun Comune la raggiunge')
+        + (f', mentre {join_names([nm(c) for c in codes if nm(c) not in on_above])} '
+           f'{"resta" if total - len(on_above) == 1 else "restano"} sotto.' if 0 < len(on_above) < total else '.'))
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(online.values[c]))} dei servizi online ai livelli più avanzati nel '
+                  f'{online.period} ({ordinal(online.rank(c))} su {total}; Toscana {pct(ot)}).') for c in codes}
+    ch5 = chapter(5, 'servizi-online', 'I servizi online', 'Quanti servizi comunali si possono fare online?',
+        f'<p>{online_text}</p>{bar_chart(online, N, "Servizi online ai livelli più avanzati")}' + town_blocks(towns5),
+        'Fare una pratica da casa fa risparmiare tempo a cittadini e imprese e riduce le code agli sportelli. Il dato '
+        f'è del {online.period} e da allora molti Comuni hanno aggiunto servizi con i fondi del PNRR. Conta i servizi '
+        'offerti, non quanti li usano, e non dice se sono facili da usare per chi ha poca dimestichezza con il digitale.')
+
+    # 06 — fibra
+    ftth, f20 = m['ftth'], m['ftth20']
+    ft, fi = ftth.benchmarks['tuscany'], ftth.benchmarks['italy']
+    none = [nm(c) for c, v, _ in ftth.ranking if v < 1]
+    ftth_text = (
+        f'Secondo la mappa dell’AGCOM al {period_label(ftth.period)}, la quota di famiglie raggiunte dalla fibra fino '
+        f'all’edificio va {span("ftth", pct)}, contro {il(pct(ft))} in Toscana e {il(pct(fi))} in Italia. '
+        + (f'<b>A {join_names(none)} la fibra fino a casa praticamente non c’è</b>, mentre a {nm(hi("ftth")[0])} '
+           f'raggiunge {il(pct(hi("ftth")[1]))} delle famiglie. ' if none else '')
+        + f'La quota di famiglie con la fibra a meno di 20 metri da casa va {span("ftth20", pct)}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: fibra fino all’edificio per {il(pct(ftth.values[c]))} delle famiglie, entro 20 '
+                  f'metri per {il(pct(f20.values[c]))} (Toscana {pct(ft)}).') for c in codes}
+    ch6 = chapter(6, 'fibra', 'La fibra', 'Quante famiglie possono avere la fibra?',
+        f'<p>{ftth_text}</p>{bar_chart(ftth, N, "Famiglie raggiunte dalla fibra fino all’edificio")}'
+        f'{bar_chart(f20, N, "Famiglie con la fibra entro 20 metri")}' + town_blocks(towns6),
+        'I servizi online servono a poco se a casa la connessione è lenta. Il dato dice dove la rete in fibra è '
+        'arrivata, non quante famiglie hanno davvero un abbonamento né quanto è veloce la connessione mobile.')
+
+    key_points = [
+        (num(staff.versilia, 1), f'Dipendenti comunali ogni 1.000 abitanti in Versilia; nei Comuni toscani {num(st, 1)}.',
+         'dipendenti'),
+        (pct(old.versilia), 'Dei dipendenti comunali della Versilia ha 55 anni o più.', 'eta'),
+        (signed(turn.versilia) + '%', f'Saldo fra assunzioni e uscite del personale nel {turn.period}.', 'ricambio'),
+        (num(tv, 1), 'Giornate di formazione per dipendente comunale in Versilia.', 'formazione'),
+        (pct(hi('online')[1]), f'Dei servizi di {nm(hi("online")[0])} è online ai livelli più avanzati; in Toscana '
+                               f'{pct(ot)}.', 'servizi-online'),
+        (pct(hi('ftth')[1]), f'Delle famiglie di {nm(hi("ftth")[0])} è raggiunto dalla fibra fino all’edificio; '
+                             f'in Toscana {pct(ft)}.', 'fibra'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Dipendenti ogni 1.000 abitanti', num(staff.values[c], 1), f'Comuni toscani {num(st, 1)}'),
+        summary_item('Dipendenti con 55 anni o più', pct(old.values[c]), f'Versilia {pct(old.versilia)}'),
+        summary_item('Assunzioni meno uscite', signed(turn.values[c]) + '%', f'Versilia {signed(turn.versilia)}%'),
+        summary_item('Giornate di formazione per dipendente', num(train.values[c], 1), f'Versilia {num(tv, 1)}'),
+        summary_item('Servizi online avanzati', pct(online.values[c]), f'Toscana {pct(ot)}'),
+        summary_item('Famiglie con la fibra fino all’edificio', pct(ftth.values[c]), f'Toscana {pct(ft)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti dipendenti lavorano in ogni ufficio e quanto lavoro hanno, per esempio quante pratiche seguono.',
+        'Quanto tempo ci vuole per ottenere un permesso, un certificato o una risposta dal Comune.',
+        'Quante persone usano davvero i servizi online, quante pratiche vengono completate e quante abbandonate.',
+        'Quante persone hanno difficoltà con il digitale e come vengono aiutate.',
+        'Quali servizi sono gestiti insieme ad altri Comuni o affidati a società esterne, e con quanto personale.',
+    ]
+    return dict(
+        slug='capacita', title='Personale e servizi digitali dei Comuni', eyebrow='Dossier · Amministrazione',
+        unknown_topic='sulla capacità dei Comuni', theme='bilanci', theme_label='Tutti i dati su bilanci e amministrazione',
+        lead='Quanti dipendenti hanno i Comuni, quanto sono anziani, quanti ne entrano ed escono, quanta formazione '
+             'fanno, quanti servizi si possono fare online e quante famiglie hanno la fibra: una lettura dei dati '
+             'pubblici sulla capacità dei sette Comuni della Versilia di offrire servizi.',
+        description='Dipendenti comunali, età del personale, assunzioni e uscite, formazione, servizi online e copertura '
+                    'della fibra nei sette Comuni della Versilia, con confronti con la Toscana e l’Italia.',
+        periods=f'Personale e formazione {staff.period}; servizi online {online.period}; fibra al '
+                f'{period_label(ftth.period)}.',
+        method='I dati sul personale vengono dal conto annuale della Ragioneria Generale dello Stato, quelli sui servizi '
+               'online dall’indagine Istat sulle tecnologie nelle amministrazioni locali, pubblicata dalla Regione '
+               'Toscana, e quelli sulla fibra dalla mappa della banda larga dell’AGCOM. Il valore della Versilia è '
+               'calcolato sommando i dati dei sette Comuni dove la fonte lo consente; per la formazione è la media '
+               'pubblicata dalla Ragioneria, per servizi online e fibra il confronto è fra Comuni, Toscana e Italia.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('dipendenti', 'Quanti dipendenti'), ('eta', 'L’età del personale'), ('ricambio', 'Assunzioni e uscite'),
+             ('formazione', 'La formazione'), ('servizi-online', 'I servizi online'), ('fibra', 'La fibra')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia, 'capacita': capacita}
 
 
 # ---------------------------------------------------------------------------
@@ -3845,7 +4053,8 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni',
             'per1000young': 'ogni 1.000 residenti di 0-64 anni', 'per1000dec': 'ogni 1.000 abitanti',
             'decile': 'classe da 1 (meno fragile) a 10 (più fragile)', 'sqm': 'metri quadrati per abitante',
-            'hectares': 'ettari', 'haPerFarm': 'ettari per azienda', 'eurliter': 'euro al litro'}
+            'hectares': 'ettari', 'haPerFarm': 'ettari per azienda', 'eurliter': 'euro al litro',
+            'daysPerEmployee': 'giornate di formazione per dipendente'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -3946,7 +4155,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio e sull’energia, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio, sull’energia e sul personale dei Comuni, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -3967,7 +4176,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio ed energia.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio, energia e personale dei Comuni.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
