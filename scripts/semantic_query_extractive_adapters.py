@@ -4,8 +4,8 @@ import math
 from semantic_operations import finite
 KEYS=('extractiveSites','extractiveProduction','extractivePlanning')
 NATIVE='data/source-snapshots/attivita-estrattive-v128.json'
-LABELS=('2 settembre 2026','2025','PRC vigente · variante 2025')
-PERIODS=('2026-09-02','2025','PRC-2025')
+LABELS=('5 novembre 2026','2025','PRC vigente · variante 2025')
+PERIODS=('2026-11-05','2025','PRC-2025')
 URLS=('https://cave.regione.toscana.it/api/v1/cave_public','https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave','https://www.regione.toscana.it/piano-regionale-cave')
 PRODUCERS=('046028','046030')
 SITE={'state_active':('stato','Attiva'),'state_inactive':('stato','Inattiva'),'state_suspended':('stato','Sospesa'),'state_expired':('stato','Scaduta'),'state_restoration':('stato','In ripristino'),'state_closed':('stato','Chiusa'),'state_nd':('stato',None),'type_ordinary':('tipologia','Cava Ordinaria'),'type_restoreworks':('tipologia','Opere di ripristino'),'type_recovery':('tipologia','Piano di recupero'),'prod_ornamental':('tipo_produzione','ORNAMENTALE'),'prod_industrial':('tipo_produzione','INDUSTRIALE'),'prod_construction':('tipo_produzione','COSTRUZIONE')}
@@ -39,7 +39,7 @@ def native(engine,key,row):
  if len(rows)!=7 or {r['code'] for r in rows}!=set(towns) or row['town']!=towns.get(row['code']) or row['slug']!='-'.join(row['town'].lower().split()) or row.get('notApplicable'):raise ValueError('extractive_row_identity_changed')
  if s.get('snapshotId')!='attivita-estrattive-v128' or s.get('retrievedAt')!='2026-09-02T10:49:00+00:00' or [s['sourceUrls'][f] for f in ('rtcave','prcMonitor','prc')]!=list(URLS):raise ValueError('extractive_native_reference_changed')
  rtc=s['rtcave'];records=rtc['records']
- if rtc.get('sha256')!='f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2' or any(rtc.get(f)!=666 for f in ('regionalRecordCount','regionalUniqueCodiceRt','regionalUniqueIdCava')):raise ValueError('extractive_native_reference_changed')
+ if rtc.get('retrievedAt')!='2026-11-05T16:04:00+00:00' or rtc.get('sha256')!='51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6' or any(rtc.get(f)!=667 for f in ('regionalRecordCount','regionalUniqueCodiceRt','regionalUniqueIdCava')):raise ValueError('extractive_native_reference_changed')
  if len(records)!=90 or rtc.get('versiliaRecordCount')!=90 or any(not isinstance(r.get('codice_rt'),str) or not r['codice_rt'] or not count(r.get('id_cava')) for r in records) or len({r['codice_rt'] for r in records})!=90 or len({r['id_cava'] for r in records})!=90:raise ValueError('extractive_duplicate_or_invalid_records')
  for r in records:
   if r['cod_istat'] not in towns or r['nome_comune']!=towns[r['cod_istat']]:raise ValueError('extractive_native_identity_changed')

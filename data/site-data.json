@@ -33770,7 +33770,7 @@
         "shortLabel": "Siti RTCave",
         "description": "Siti presenti nella banca dati pubblica RTCave alla data dello snapshot. La card mantiene separati stato, tipologia e classe produttiva e conserva l’anagrafica pubblica di ciascun record.",
         "unit": "number",
-        "year": "2 settembre 2026",
+        "year": "5 novembre 2026",
         "source": "Regione Toscana — RTCave",
         "polarity": "neutral",
         "detailGroup": "extractive",
@@ -35938,7 +35938,7 @@
               "label": "Siti attivi",
               "selectorLabel": "Stato · Attivi",
               "unit": "number",
-              "value": 9
+              "value": 10
             },
             {
               "key": "state_inactive",
@@ -35952,7 +35952,7 @@
               "label": "Siti sospesi",
               "selectorLabel": "Stato · Sospesi",
               "unit": "number",
-              "value": 1
+              "value": 0
             },
             {
               "key": "state_expired",
@@ -36034,7 +36034,7 @@
               },
               {
                 "label": "Attiva",
-                "count": 9
+                "count": 10
               },
               {
                 "label": "Scaduta",
@@ -36042,10 +36042,6 @@
               },
               {
                 "label": "Inattiva",
-                "count": 1
-              },
-              {
-                "label": "Sospesa",
                 "count": 1
               },
               {
@@ -36650,7 +36646,7 @@
                 "id_comprensorio": 92,
                 "id_comune": 84,
                 "id_giacimento": 75,
-                "id_stato": 3,
+                "id_stato": 1,
                 "id_tipo_prestito": null,
                 "id_tipo_prima_prod": 3,
                 "id_tipologia": 1,
@@ -36663,7 +36659,7 @@
                 "nome_giacimento": "ACC Ficaio",
                 "nome_provincia": "Lucca",
                 "sigla_provincia": "LU",
-                "stato": "Sospesa",
+                "stato": "Attiva",
                 "tipo_produzione": "ORNAMENTALE",
                 "tipologia": "Cava Ordinaria"
               },
@@ -37335,7 +37331,7 @@
             "label": "Siti attivi",
             "selectorLabel": "Stato · Attivi",
             "unit": "number",
-            "value": 15
+            "value": 16
           },
           {
             "key": "state_inactive",
@@ -37349,7 +37345,7 @@
             "label": "Siti sospesi",
             "selectorLabel": "Stato · Sospesi",
             "unit": "number",
-            "value": 5
+            "value": 4
           },
           {
             "key": "state_expired",

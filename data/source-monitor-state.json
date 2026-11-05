@@ -7981,10 +7981,10 @@
       "periodVerifiedAt": ""
     },
     "extractiveSites": {
-      "publishedPeriod": "2 settembre 2026",
+      "publishedPeriod": "5 novembre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "2026-11-05",
-      "status": "release_detected",
+      "status": "current",
       "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
       "verificationEvidence": {
         "provider": "Regione Toscana — RTCave",
@@ -7992,7 +7992,7 @@
         "referenceDate": "2026-11-05",
         "contentSha256": "51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6",
         "method": "Confronto record per id_cava e campi pubblici con lo snapshot attivita-estrattive-v128 (2 settembre 2026); file scaricato manualmente con contenuto identico alla sonda mensile.",
-        "verdict": "new_period",
+        "verdict": "match",
         "regionalRecords": {
           "published": 666,
           "observed": 667
@@ -8011,34 +8011,8 @@
             "published": "Sospesa",
             "observed": "Attiva"
           }
-        ]
-      },
-      "releaseEvidence": {
-        "provider": "Regione Toscana — RTCave",
-        "url": "https://cave.regione.toscana.it/api/v1/cave_public",
-        "referenceDate": "2026-11-05",
-        "contentSha256": "51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6",
-        "method": "Confronto record per id_cava e campi pubblici con lo snapshot attivita-estrattive-v128 (2 settembre 2026); file scaricato manualmente con contenuto identico alla sonda mensile.",
-        "verdict": "new_period",
-        "regionalRecords": {
-          "published": 666,
-          "observed": 667
-        },
-        "versiliaRecords": {
-          "published": 90,
-          "observed": 90
-        },
-        "versiliaChanges": [
-          {
-            "id_cava": 402,
-            "codice_rt": "09046030003",
-            "town": "Stazzema",
-            "nome_cava": "LA NOCE DEL CARDOSO",
-            "field": "stato",
-            "published": "Sospesa",
-            "observed": "Attiva"
-          }
-        ]
+        ],
+        "valuesMatchPublished": true
       }
     },
     "extractiveProduction": {

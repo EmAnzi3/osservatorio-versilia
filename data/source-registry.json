@@ -1035,7 +1035,7 @@
         "method": "official_service_to_versioned_snapshot",
         "path": "data/source-snapshots/attivita-estrattive-v128.json"
       },
-      "releaseCheck": "Confrontare i record RTCave per identificativo e contenuto con lo snapshot 2 settembre 2026; non confrontare la data snapshot con un mese generico."
+      "releaseCheck": "Confrontare i record RTCave per identificativo e contenuto con lo snapshot 5 novembre 2026; non confrontare la data snapshot con un mese generico."
     },
     "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": {
       "role": "information",
