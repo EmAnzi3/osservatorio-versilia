@@ -247,6 +247,11 @@
         "label": "Biometria v1.35 source gate",
         "script": "scripts/test_biometria_comune_release.py",
         "args": []
+      },
+      {
+        "label": "monthly release period probes",
+        "script": "scripts/test_release_period_probes.py",
+        "args": []
       }
     ],
     "monitorRuntime": {

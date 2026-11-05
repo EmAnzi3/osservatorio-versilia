@@ -20,6 +20,7 @@ if str(SCRIPT_DIR) not in sys.path:
 import monthly_data_check_coverage as coverage  # noqa: E402
 import monitor_semantic_checks as semantics  # noqa: E402
 import pnrr_toscana_audit  # noqa: E402
+import release_period_probes  # noqa: E402
 import update_fuel_prices_mimit as fuel_mimit  # noqa: E402
 from data_status_model import canonical_url, published_period, compare_periods  # noqa: E402
 
@@ -153,6 +154,59 @@ def apply_fuel_verification_result(
         evidence["verdict"] = "period_not_comparable"
         item["releaseEvidence"] = evidence
     return evidence
+
+
+def apply_release_probe_results(
+    metrics: dict[str, dict[str, Any]],
+    results: dict[str, dict[str, Any]],
+    checked_at: str,
+) -> None:
+    """Il probe del periodo prevale sullo stato derivato dalla sola raggiungibilità."""
+    for key, result in results.items():
+        item = metrics.get(key)
+        if not isinstance(item, dict):
+            continue
+        evidence = {k: v for k, v in result.items() if k not in {"metric", "status", "manualAction"}}
+        evidence["verdict"] = result.get("reason")
+        item["checkedAt"] = checked_at
+        item["status"] = str(result.get("status") or "verification_required")
+        item["verificationEvidence"] = evidence
+        if result.get("observedLatestPeriod"):
+            item["observedLatestPeriod"] = str(result["observedLatestPeriod"])
+            item["periodVerifiedAt"] = checked_at
+        if item["status"] == "release_detected":
+            item["releaseEvidence"] = evidence
+        else:
+            item.pop("releaseEvidence", None)
+        if result.get("manualAction"):
+            item["manualAction"] = result["manualAction"]
+        else:
+            item.pop("manualAction", None)
+
+
+def run_release_probes(
+    data: dict[str, Any],
+    metrics: dict[str, dict[str, Any]],
+    checked_at: str,
+) -> tuple[dict[str, dict[str, Any]] | None, str]:
+    try:
+        coverage_contract = release_period_probes.load_coverage()
+        results = release_period_probes.run_all(data, coverage_contract)
+    except Exception as exc:  # il monitor non deve interrompersi: lo stato resta prudenziale
+        return None, f"{type(exc).__name__}: {exc}"
+    apply_release_probe_results(metrics, results, checked_at)
+    return results, ""
+
+
+def append_release_probe_section(report_md: Path, results: dict[str, dict[str, Any]] | None, error: str = "") -> None:
+    if results is None and not error:
+        return
+    if results is None:
+        lines = ["", "### Verifica dei periodi alla fonte", "", f"Verifica non completata: `{error}`. Gli stati restano prudenziali."]
+    else:
+        lines = release_period_probes.report_lines(results, release_period_probes.load_coverage())
+    with report_md.open("a", encoding="utf-8") as handle:
+        handle.write("\n".join(lines) + "\n")
 
 
 def run_fuel_verification(
@@ -389,6 +443,8 @@ def main(argv: list[str] | None = None) -> int:
 
     fuel_result = None
     fuel_error = ""
+    probe_results = None
+    probe_error = ""
     pnrr_result = None
     pnrr_error = ""
     if args.mode == "live":
@@ -431,6 +487,11 @@ def main(argv: list[str] | None = None) -> int:
             report["pnrrToscanaVerification"] = pnrr_result
         elif pnrr_error:
             report["pnrrToscanaVerificationError"] = pnrr_error
+        probe_results, probe_error = run_release_probes(data, metrics, str(next_state.get("checkedAt") or ""))
+        if probe_results is not None:
+            report["releasePeriodProbes"] = probe_results
+        elif probe_error:
+            report["releasePeriodProbesError"] = probe_error
         args.report_json.write_text(
             json.dumps(report, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
@@ -443,6 +504,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     append_report_section(args.report_md, next_state, pnrr_result, pnrr_error)
     append_fuel_report_section(args.report_md, fuel_result, fuel_error)
+    append_release_probe_section(args.report_md, probe_results, probe_error)
     return 0
 
 

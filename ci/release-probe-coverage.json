@@ -1,0 +1,997 @@
+{
+  "schemaVersion": 1,
+  "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
+  "maxPending": 206,
+  "metrics": {
+    "accreditedRsaCount": {
+      "pendingLot": 4,
+      "source": "servizi.toscana.it"
+    },
+    "activeTplAccessPoints": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "activityRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "ageDistribution": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "agriculturalDiversificationAndModernization": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "agriculturalFarms": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "agriculturalRenewalAndLeadership": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "agriculturalUsedArea": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "altitudeProfile": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "availableAdministrationResultPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "averageAgriculturalFarmSize": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "averageGrossRemunerationPerEmployee": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "bathingNonCompliantSamples": {
+      "pendingLot": 4,
+      "source": "arpat.toscana.it"
+    },
+    "bathingWaterQuality": {
+      "pendingLot": 4,
+      "source": "arpat.toscana.it"
+    },
+    "blueFlagBeaches": {
+      "pendingLot": 6,
+      "source": "bandierablu.org"
+    },
+    "businessTurnover": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "businessValueAdded": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "capitalExpenditureCommittedPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "capitalPayments": {
+      "pendingLot": 3,
+      "source": "siope.it"
+    },
+    "cashBalancePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "cashReceiptsPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "chronicTotal": {
+      "probe": "ars_export",
+      "indicatorId": 275,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "civilProtectionMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "climatePrecipitationTrend50y": {
+      "pendingLot": 4,
+      "source": "dati.lamma.toscana.it"
+    },
+    "climateTemperatureTrend50y": {
+      "pendingLot": 4,
+      "source": "dati.lamma.toscana.it"
+    },
+    "climateTmaxTrend": {
+      "pendingLot": 4,
+      "source": "dati.lamma.toscana.it"
+    },
+    "climateTminTrend": {
+      "pendingLot": 4,
+      "source": "dati.lamma.toscana.it"
+    },
+    "cohabitingHouseholds": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "commuterBalance": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "commuterBalanceRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "copdPrevalence": {
+      "probe": "ars_export",
+      "indicatorId": 268,
+      "strato1": [
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "cropProfile": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "cultureSportMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "currentCollectionCapacity": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "currentExpenditureCommittedPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "currentPaymentCapacity": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "currentPayments": {
+      "pendingLot": 3,
+      "source": "siope.it"
+    },
+    "currentRevenueAccruedPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "dementia": {
+      "probe": "ars_export",
+      "indicatorId": 270,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "dependencyIndices": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "diabetes": {
+      "probe": "ars_export",
+      "indicatorId": 271,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "diagnosticImagingServices": {
+      "probe": "ars_export",
+      "indicatorId": 1325,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "diplomaPlus": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "disability064Per1000": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "drinkingWaterQuality": {
+      "pendingLot": 4,
+      "source": "gaia-spa.it"
+    },
+    "earlyChildhoodPotentialCapacityRate": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "economicDevelopmentMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "economyActivityAtlas": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "educationMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "elderlyHomeCare": {
+      "probe": "ars_export",
+      "indicatorId": 260,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "emergencyAccess": {
+      "probe": "ars_export",
+      "indicatorId": 1657,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "employeesPerLocalUnit": {
+      "pendingLot": 2,
+      "source": "esploradati.istat.it"
+    },
+    "employmentGenderGap": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "employmentRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "emsResponseTimeP75": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "environmentMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "erpArrears": {
+      "pendingLot": 4,
+      "source": "at.erplucca.it"
+    },
+    "essentialServicesAccessibility": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "evPoints": {
+      "pendingLot": 6,
+      "source": "piattaformaunicanazionale.it"
+    },
+    "extractivePlanning": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "extractiveProduction": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "extractiveSites": {
+      "pendingLot": 4,
+      "source": "cave.regione.toscana.it"
+    },
+    "fcdePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "femaleEmploymentRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "financialDebtProfile": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "fiscalRecoveryActivity": {
+      "pendingLot": 3,
+      "source": "bdap-opendata.rgs.mef.gov.it"
+    },
+    "floodExposure": {
+      "pendingLot": 6,
+      "source": "idrogeo.isprambiente.it"
+    },
+    "foreignBornSoleProprietorShare": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "foreignResidentialMobility": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "foreignResidents": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "foreignTourismShare": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "forestCoverIndex": {
+      "pendingLot": 6,
+      "source": "uncem.it"
+    },
+    "ftthCoverage20m": {
+      "pendingLot": 6,
+      "source": "maps.agcom.it"
+    },
+    "ftthCoverageDesi": {
+      "pendingLot": 6,
+      "source": "maps.agcom.it"
+    },
+    "ftthReachedHouseholds": {
+      "pendingLot": 6,
+      "source": "maps.agcom.it"
+    },
+    "ftthUnreachedHouseholds": {
+      "pendingLot": 6,
+      "source": "maps.agcom.it"
+    },
+    "fuelPrices": {
+      "pendingLot": 6,
+      "source": "mimit.gov.it"
+    },
+    "generalAdministrationMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "grossOperatingMargin": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "heartFailurePrevalence": {
+      "probe": "ars_export",
+      "indicatorId": 272,
+      "strato1": [
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "hospitalizedAll": {
+      "probe": "ars_export",
+      "indicatorId": 1332,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "hospitals": {
+      "pendingLot": 6,
+      "source": "salute.gov.it"
+    },
+    "householdSize": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "housingStockPer1000": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "hydraulicWorksCensusElements": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "hypertensionPrevalence": {
+      "probe": "ars_export",
+      "indicatorId": 255,
+      "strato1": [
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "inboundCommuters": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "inboundCommutersRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "income": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "incomeDistribution": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "incomeSourceProfile": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "incomeVsInflation": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "industryValueAddedShare": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "industryWorkerShare": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "innovationBusinessShare": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "internalResidentialMobility": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "invalsiAcademicExcellence": {
+      "pendingLot": 5,
+      "source": "serviziostatistico.invalsi.it"
+    },
+    "invalsiCompetence": {
+      "pendingLot": 5,
+      "source": "serviziostatistico.invalsi.it"
+    },
+    "invalsiImplicitDispersion": {
+      "pendingLot": 5,
+      "source": "serviziostatistico.invalsi.it"
+    },
+    "invalsiResults": {
+      "pendingLot": 5,
+      "source": "serviziostatistico.invalsi.it"
+    },
+    "irrigatedAgriculturalArea": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "ischemicHeartDiseasePrevalence": {
+      "probe": "ars_export",
+      "indicatorId": 269,
+      "strato1": [
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "labourCost": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "labourProductivity": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "landCoverProfile": {
+      "pendingLot": 4,
+      "source": "www502.regione.toscana.it"
+    },
+    "landUse": {
+      "pendingLot": 6,
+      "source": "isprambiente.gov.it"
+    },
+    "landUseChange": {
+      "pendingLot": 6,
+      "source": "isprambiente.gov.it"
+    },
+    "landslideExposure": {
+      "pendingLot": 6,
+      "source": "idrogeo.isprambiente.it"
+    },
+    "libraryActiveBorrowersPer100": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "libraryLoansPerResident": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "libraryWeeklyOpeningHours": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "lifeExpectancy": {
+      "probe": "ars_export",
+      "indicatorId": 1290,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "raw"
+    },
+    "localEmployees": {
+      "pendingLot": 2,
+      "source": "esploradati.istat.it"
+    },
+    "localEmployeesChange": {
+      "pendingLot": 2,
+      "source": "esploradati.istat.it"
+    },
+    "localUnits": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "localUnitsChange": {
+      "pendingLot": 2,
+      "source": "esploradati.istat.it"
+    },
+    "lowProductivityEmployment": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "maleEmploymentRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "managedReticulumLength": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "maritimeConcessionFeesDue": {
+      "pendingLot": 6,
+      "source": "dati.mit.gov.it"
+    },
+    "maritimeConcessions": {
+      "pendingLot": 6,
+      "source": "dati.mit.gov.it"
+    },
+    "microUnits": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "mobilityMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "mortalityAll": {
+      "probe": "ars_export",
+      "indicatorId": 1438,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "mortalityCancer": {
+      "probe": "ars_export",
+      "indicatorId": 1499,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "mortalityCirculatory": {
+      "probe": "ars_export",
+      "indicatorId": 1327,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "mortalityRespiratory": {
+      "probe": "ars_export",
+      "indicatorId": 1606,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "motorization": {
+      "pendingLot": 6,
+      "source": "aci.gov.it"
+    },
+    "municipalEmployeesPer1000": {
+      "pendingLot": 3,
+      "source": "contoannuale.rgs.mef.gov.it"
+    },
+    "municipalFragility": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "municipalImuStandard": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "municipalIrpef": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "municipalOnlineServicesAdvanced": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "municipalStaffAgeStructure": {
+      "pendingLot": 3,
+      "source": "contoannuale.rgs.mef.gov.it"
+    },
+    "municipalStaffTraining": {
+      "pendingLot": 3,
+      "source": "contoannuale.rgs.mef.gov.it"
+    },
+    "municipalStaffTurnover": {
+      "pendingLot": 3,
+      "source": "contoannuale.rgs.mef.gov.it"
+    },
+    "municipalSurface": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "naturalDemographicDynamics": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "nonOccupiedHomesPer1000": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "oldAgeIndex": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "omiResidential": {
+      "pendingLot": 5,
+      "source": "www1.agenziaentrate.gov.it"
+    },
+    "organicAgriculturalAreaShare": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "outboundCommuters": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "outboundCommutersRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "outsideMunicipality": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "ownRevenueShare": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "pabCompletedOperationalGrossValue": {
+      "pendingLot": 4,
+      "source": "cbtoscananord.it"
+    },
+    "pabInProgressOperationalGrossValue": {
+      "pendingLot": 4,
+      "source": "cbtoscananord.it"
+    },
+    "pabInterventionsCompleted": {
+      "pendingLot": 4,
+      "source": "cbtoscananord.it"
+    },
+    "pabInterventionsInProgress": {
+      "pendingLot": 4,
+      "source": "cbtoscananord.it"
+    },
+    "pabProgrammedInterventionLength": {
+      "pendingLot": 4,
+      "source": "cbtoscananord.it"
+    },
+    "pabProgrammedInterventions": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "pensionIncomeShare": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "permanentRsaAssisted": {
+      "probe": "ars_export",
+      "indicatorId": 261,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "pharmaciesPer1000": {
+      "pendingLot": 6,
+      "source": "dati.salute.gov.it"
+    },
+    "pnrrConcluded": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "pnrrFunding": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "pollutingCars": {
+      "pendingLot": 6,
+      "source": "aci.gov.it"
+    },
+    "population": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "populationChange": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "populationDensity": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "primaryFullTimeShare": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "priorStrokePrevalence": {
+      "probe": "ars_export",
+      "indicatorId": 273,
+      "strato1": [
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "protectedNaturalAreas": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "publicWorks": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "recycling": {
+      "pendingLot": 6,
+      "source": "catasto-rifiuti.isprambiente.it"
+    },
+    "remediationProceedings": {
+      "pendingLot": 4,
+      "source": "sisbon.regione.toscana.it"
+    },
+    "residualWaste": {
+      "pendingLot": 6,
+      "source": "catasto-rifiuti.isprambiente.it"
+    },
+    "rigidDefenceProtectedCoast": {
+      "pendingLot": 6,
+      "source": "indicatoriambientali.isprambiente.it"
+    },
+    "rigidExpenditureShare": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "roadFinesPerResident": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "roadNetworkProfile": {
+      "pendingLot": 4,
+      "source": "www502.regione.toscana.it"
+    },
+    "roadSafety": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "scheduledTplTripsPer1000": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "schoolBuildingAccessibility": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolBuildingAge": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolBuildingFacilities": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolBuildingSafetyDocs": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolBuildingTransport": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolSites": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "schoolStudents": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "securityMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "selfContainment": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "shorelineDynamics": {
+      "pendingLot": 6,
+      "source": "indicatoriambientali.isprambiente.it"
+    },
+    "singleHouseholds": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "siopePayments": {
+      "pendingLot": 3,
+      "source": "siope.it"
+    },
+    "slowMobilityBici": {
+      "pendingLot": 6,
+      "source": "osservatorioversilia.it"
+    },
+    "slowMobilityCammini": {
+      "pendingLot": 6,
+      "source": "osservatorioversilia.it"
+    },
+    "slowMobilityMtb": {
+      "pendingLot": 6,
+      "source": "osservatorioversilia.it"
+    },
+    "slowMobilityRoutes": {
+      "pendingLot": 6,
+      "source": "osservatorioversilia.it"
+    },
+    "slowMobilityTrekking": {
+      "pendingLot": 6,
+      "source": "osservatorioversilia.it"
+    },
+    "socialMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "socialSpendingByUserArea": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "socialSpendingPerResident": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "specialistVisits7Psr": {
+      "probe": "ars_export",
+      "indicatorId": 1425,
+      "strato1": [
+        "",
+        "totale"
+      ],
+      "measurement": "standardized"
+    },
+    "statisticalCoastlineLength": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "studentsPerClass": {
+      "pendingLot": 5,
+      "source": "dati.istruzione.it"
+    },
+    "tariStandardHousehold": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "taxpayersAdultPopulationRate": {
+      "pendingLot": 5,
+      "source": "www1.finanze.gov.it"
+    },
+    "territorialClassification": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "territorialPlanningMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "tertiary": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "thirdSector": {
+      "pendingLot": 6,
+      "source": "servizi.lavoro.gov.it"
+    },
+    "totalResidentialMobility": {
+      "pendingLot": 2,
+      "source": "demo.istat.it"
+    },
+    "tourismArrivals": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "tourismAverageStay": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "tourismBeds": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "tourismBedsPer1000": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "tourismDevelopmentMissionExpenditurePerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "tourismIntensity": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "tourismPresences": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "tourismSeasonality": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    },
+    "tourismStructuresPer1000": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "tplServiceSpan": {
+      "pendingLot": 4,
+      "source": "dati.toscana.it"
+    },
+    "turnoverPerPersonEmployed": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "unemploymentRate": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "vacantHomes": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "valueAddedTurnoverShare": {
+      "pendingLot": 2,
+      "source": "istat.it"
+    },
+    "voterTurnout": {
+      "pendingLot": 6,
+      "source": "elezionistorico.interno.gov.it"
+    },
+    "wastePerResident": {
+      "pendingLot": 6,
+      "source": "catasto-rifiuti.isprambiente.it"
+    },
+    "wasteServiceCost": {
+      "pendingLot": 6,
+      "source": "catasto-rifiuti.isprambiente.it"
+    },
+    "waterNetworkLosses": {
+      "pendingLot": 2,
+      "source": "esploradati.istat.it"
+    },
+    "yearEndCashFundPerResident": {
+      "pendingLot": 3,
+      "source": "openbdap.rgs.mef.gov.it"
+    },
+    "youthOtherStatus": {
+      "pendingLot": 4,
+      "source": "regione.toscana.it"
+    }
+  }
+}
