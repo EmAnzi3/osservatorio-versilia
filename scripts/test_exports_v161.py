@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import csv
 import io
+import json
 import os
 import socket
 import tempfile
@@ -152,14 +153,15 @@ def main() -> None:
             "Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta",
             "Seravezza", "Stazzema", "Viareggio", "Versilia",
         }
-        expected_life_years = {str(year) for year in range(2008, 2023)}
+        snapshot_years = json.loads((ROOT / "data" / "source-snapshots" / "ars-life-expectancy-1290-2008-2022.json").read_text(encoding="utf-8"))["scope"]["years"]
+        expected_life_years = {str(year) for year in snapshot_years}
         expected_life_sexes = {"Totale", "Maschi", "Femmine"}
-        require(len(life_rows) == 360,
-                f"CSV speranza di vita: attese 360 osservazioni, trovate {len(life_rows)}")
+        require(len(life_rows) == 24 * len(snapshot_years),
+                f"CSV speranza di vita: attese {24 * len(snapshot_years)} osservazioni, trovate {len(life_rows)}")
         require({row[0] for row in life_rows} == expected_life_territories,
                 "CSV speranza di vita: copertura territoriale incompleta")
         require({row[3] for row in life_rows} == expected_life_years,
-                "CSV speranza di vita: annualità 2008–2022 incomplete")
+                f"CSV speranza di vita: annualità {snapshot_years[0]}–{snapshot_years[-1]} incomplete")
         require({row[4] for row in life_rows} == expected_life_sexes,
                 "CSV speranza di vita: disaggregazione per sesso incompleta")
         require({row[6] for row in life_rows} == {"years"},
@@ -169,7 +171,7 @@ def main() -> None:
         for territory in expected_life_territories:
             for sex in expected_life_sexes:
                 rows = [row for row in life_rows if row[0] == territory and row[4] == sex]
-                require(len(rows) == 15 and {row[3] for row in rows} == expected_life_years,
+                require(len(rows) == len(snapshot_years) and {row[3] for row in rows} == expected_life_years,
                         f"CSV speranza di vita: serie incompleta per {territory}, {sex}")
 
         page.goto(base + "confronta/economia/?indicatore=tourismPresences", wait_until="networkidle")
