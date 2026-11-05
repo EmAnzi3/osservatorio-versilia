@@ -7631,16 +7631,60 @@
     "lifeExpectancy": {
       "publishedPeriod": "2022",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_checked",
-      "periodVerifiedAt": ""
+      "observedLatestPeriod": "2023",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290",
+        "referenceDate": "2023",
+        "contentSha256": "610c25e9ad37740237befdbcafe015539d9cccac02e79a890250fb07c3a43d92",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_grezza",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      },
+      "releaseEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290",
+        "referenceDate": "2023",
+        "contentSha256": "610c25e9ad37740237befdbcafe015539d9cccac02e79a890250fb07c3a43d92",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_grezza",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      }
     },
     "mortalityAll": {
       "publishedPeriod": "2013–2022",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_checked",
-      "periodVerifiedAt": ""
+      "observedLatestPeriod": "2014–2023",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1438",
+        "referenceDate": "2014–2023",
+        "contentSha256": "cbefd374a7c1791e8cf36d209530c064ba39a6d61d26ed23218bf8668cc01c56",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      },
+      "releaseEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1438",
+        "referenceDate": "2014–2023",
+        "contentSha256": "cbefd374a7c1791e8cf36d209530c064ba39a6d61d26ed23218bf8668cc01c56",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      }
     },
     "chronicTotal": {
       "publishedPeriod": "2025",
@@ -7939,9 +7983,63 @@
     "extractiveSites": {
       "publishedPeriod": "2 settembre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "2026-09",
-      "status": "verification_required",
-      "periodVerifiedAt": "2026-09-02T10:49:00+00:00"
+      "observedLatestPeriod": "2026-11-05",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "Regione Toscana — RTCave",
+        "url": "https://cave.regione.toscana.it/api/v1/cave_public",
+        "referenceDate": "2026-11-05",
+        "contentSha256": "51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6",
+        "method": "Confronto record per id_cava e campi pubblici con lo snapshot attivita-estrattive-v128 (2 settembre 2026); file scaricato manualmente con contenuto identico alla sonda mensile.",
+        "verdict": "new_period",
+        "regionalRecords": {
+          "published": 666,
+          "observed": 667
+        },
+        "versiliaRecords": {
+          "published": 90,
+          "observed": 90
+        },
+        "versiliaChanges": [
+          {
+            "id_cava": 402,
+            "codice_rt": "09046030003",
+            "town": "Stazzema",
+            "nome_cava": "LA NOCE DEL CARDOSO",
+            "field": "stato",
+            "published": "Sospesa",
+            "observed": "Attiva"
+          }
+        ]
+      },
+      "releaseEvidence": {
+        "provider": "Regione Toscana — RTCave",
+        "url": "https://cave.regione.toscana.it/api/v1/cave_public",
+        "referenceDate": "2026-11-05",
+        "contentSha256": "51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6",
+        "method": "Confronto record per id_cava e campi pubblici con lo snapshot attivita-estrattive-v128 (2 settembre 2026); file scaricato manualmente con contenuto identico alla sonda mensile.",
+        "verdict": "new_period",
+        "regionalRecords": {
+          "published": 666,
+          "observed": 667
+        },
+        "versiliaRecords": {
+          "published": 90,
+          "observed": 90
+        },
+        "versiliaChanges": [
+          {
+            "id_cava": 402,
+            "codice_rt": "09046030003",
+            "town": "Stazzema",
+            "nome_cava": "LA NOCE DEL CARDOSO",
+            "field": "stato",
+            "published": "Sospesa",
+            "observed": "Attiva"
+          }
+        ]
+      }
     },
     "extractiveProduction": {
       "publishedPeriod": "2025",
@@ -8978,23 +9076,89 @@
     "mortalityCancer": {
       "publishedPeriod": "2013–2022",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_checked",
-      "periodVerifiedAt": ""
+      "observedLatestPeriod": "2014–2023",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1499",
+        "referenceDate": "2014–2023",
+        "contentSha256": "9b26397d76b4b55745594994972b7fd1227f8ff9a90512fe721c7cda869f9095",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      },
+      "releaseEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1499",
+        "referenceDate": "2014–2023",
+        "contentSha256": "9b26397d76b4b55745594994972b7fd1227f8ff9a90512fe721c7cda869f9095",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      }
     },
     "mortalityCirculatory": {
       "publishedPeriod": "2013–2022",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_checked",
-      "periodVerifiedAt": ""
+      "observedLatestPeriod": "2014–2023",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1327",
+        "referenceDate": "2014–2023",
+        "contentSha256": "198d2bf496452e52d1a308635380af0e4ce844c209cbf6ac7225b43fda90dd56",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      },
+      "releaseEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1327",
+        "referenceDate": "2014–2023",
+        "contentSha256": "198d2bf496452e52d1a308635380af0e4ce844c209cbf6ac7225b43fda90dd56",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      }
     },
     "mortalityRespiratory": {
       "publishedPeriod": "2013–2022",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_checked",
-      "periodVerifiedAt": ""
+      "observedLatestPeriod": "2014–2023",
+      "status": "release_detected",
+      "periodVerifiedAt": "2026-11-05T16:04:00+00:00",
+      "verificationEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1606",
+        "referenceDate": "2014–2023",
+        "contentSha256": "6fd83b89ef6b08e9cc9a87a666ad6da18c1fc483f46f855435d6266a34572b42",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      },
+      "releaseEvidence": {
+        "provider": "ARS Toscana",
+        "url": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1606",
+        "referenceDate": "2014–2023",
+        "contentSha256": "6fd83b89ef6b08e9cc9a87a666ad6da18c1fc483f46f855435d6266a34572b42",
+        "contentHashMode": "zip-members",
+        "method": "Export scaricato manualmente il 5 novembre 2026, contenuto identico alla sonda mensile. Serie pubblicate confrontate punto per punto: nessuna revisione dei valori già pubblicati.",
+        "verdict": "new_period",
+        "measurement": "misura_standardizzata",
+        "coverage": "7/7 Comuni + Zona Versilia + Toscana"
+      }
     },
     "hypertensionPrevalence": {
       "publishedPeriod": "2025",
