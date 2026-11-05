@@ -3498,7 +3498,8 @@ def suolo(engine: Engine) -> dict:
                   f'acque {pct(water.values[c])} del territorio nel {art.period}.') for c in codes}
     ch3 = chapter(3, 'copertura', 'Com’è fatto il territorio', 'Quanta parte del territorio è bosco, campagna o città?',
         f'<p>{cover_text}</p>{bar_chart(nat, N, "Boschi e ambienti seminaturali")}'
-        f'{bar_chart(agri, N, "Superfici agricole")}{bar_chart(art, N, "Superfici artificiali")}' + town_blocks(towns3),
+        f'{bar_chart(agri, N, "Superfici agricole")}{bar_chart(art, N, "Superfici artificiali")}'
+        f'{bar_chart(wet, N, "Zone umide")}{bar_chart(water, N, "Acque")}' + town_blocks(towns3),
         'La carta dell’uso del suolo mostra come si divide il territorio fra città, campagna e natura. È una fonte '
         'diversa da quella del suolo consumato: misura le superfici artificiali con un altro metodo e si ferma al '
         f'{art.period}, per cui i due valori non coincidono e non si confrontano fra loro.')
@@ -3512,7 +3513,8 @@ def suolo(engine: Engine) -> dict:
     towns4 = {c: (f'<b>{esc(nm(c))}</b>: {ha(fha.values[c])} di bosco, {il(pct(forest.values[c]))} del Comune '
                   f'({ordinal(forest.rank(c))} su {total}).') for c in codes}
     ch4 = chapter(4, 'boschi', 'I boschi', 'Quanto bosco c’è in Versilia?',
-        f'<p>{forest_text}</p>{bar_chart(forest, N, "Superficie coperta da bosco")}' + town_blocks(towns4),
+        f'<p>{forest_text}</p>{bar_chart(forest, N, "Superficie coperta da bosco")}'
+        f'{bar_chart(fha, N, "Ettari di bosco")}' + town_blocks(towns4),
         'I boschi trattengono il terreno sui versanti, regolano l’acqua, assorbono anidride carbonica e sono una risorsa '
         'per il legname e il turismo. Il dato misura quanta superficie è coperta, non lo stato di salute del bosco né '
         'quanto è curato, e viene da una carta diversa da quella dell’uso del suolo.')
@@ -3552,7 +3554,9 @@ def suolo(engine: Engine) -> dict:
                   'e pascoli.') for c in codes}
     ch6 = chapter(6, 'agricoltura', 'L’agricoltura', 'Quanta terra si coltiva, e come?',
         f'<p>{agri_text}</p>{bar_chart(sau, N, "Superficie agricola utilizzata sulla superficie del Comune")}'
-        f'{bar_chart(size, N, "Superficie agricola media per azienda")}' + town_blocks(towns6),
+        f'{bar_chart(size, N, "Superficie agricola media per azienda")}{bar_chart(farms, N, "Aziende agricole")}'
+        f'{bar_chart(arable, N, "Ettari di seminativi")}{bar_chart(olive, N, "Ettari di olivi da olio")}'
+        f'{bar_chart(meadow, N, "Ettari di prati permanenti e pascoli")}' + town_blocks(towns6),
         'L’agricoltura tiene curato il territorio, soprattutto in collina e nella piana, e produce cibo e paesaggio. '
         f'I dati sono di un censimento del {sau.period}: da allora molte cose possono essere cambiate. Le aziende '
         'piccole non sono per forza meno produttive, e gli ettari di una coltura non dicono quanto rende.')
