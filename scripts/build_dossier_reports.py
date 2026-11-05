@@ -60,6 +60,7 @@ SOURCE_NAMES = [
     ('censimenti/popolazione-e-abitazioni', 'Istat — Censimento permanente: occupati che lavorano fuori Comune'),
     ('aci.gov.it', 'ACI — Autoritratto, parco veicolare'),
     ('mimit.gov.it', 'Ministero delle Imprese e del made in Italy — Osservaprezzi carburanti'),
+    ('elezionistorico.interno.gov.it', 'Ministero dell’Interno — Archivio storico delle elezioni (Eligendo)'),
     ('piattaformaunicanazionale.it', 'Piattaforma Unica Nazionale dei punti di ricarica (MASE)'),
     ('geo.agcom.it', 'AGCOM — Mappa della banda larga'),
     ('percorsi/metodo', 'Osservatorio Versilia — Inventario dei percorsi pubblici'),
@@ -96,6 +97,9 @@ SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitora
                     'essentialServicesAccessibility': 'Istat — Indice di fragilità comunale, accessibilità ai servizi essenziali',
                     'municipalFragility': 'Istat — Indice composito di fragilità comunale',
                     'disability064Per1000': 'Regione Toscana — Indicatori comunali per le politiche locali',
+                    'libraryLoansPerResident': 'Regione Toscana — Monitoraggio delle biblioteche degli enti locali',
+                    'libraryActiveBorrowersPer100': 'Regione Toscana — Monitoraggio delle biblioteche degli enti locali',
+                    'libraryWeeklyOpeningHours': 'Regione Toscana — Monitoraggio delle biblioteche degli enti locali',
                     'landUse': 'ISPRA — Consumo di suolo, dinamiche territoriali e servizi ecosistemici',
                     'landUseChange': 'ISPRA — Consumo di suolo, dinamiche territoriali e servizi ecosistemici',
                     'landCoverProfile': 'Regione Toscana — Uso e copertura del suolo (UCS)',
@@ -407,6 +411,8 @@ def period_label(period: str) -> str:
     hybrid = re.fullmatch(r'MEF a\.i\. (\d{4}) · residenti 1\.1\.(\d{4})', period)
     if hybrid:
         return f'dichiarazioni {hybrid.group(1)}, residenti al 1° gennaio {hybrid.group(2)}'
+    if re.fullmatch(r'(politiche_camera|europee|regionali_toscana|referendum)-\d{8}(-q\d+)?', period):
+        return election_label(period)
     school = re.fullmatch(r'(\d{4})[-/](\d{2})', period)
     if school:
         return f'anno scolastico {school.group(1)}/{school.group(2)}'
@@ -4030,7 +4036,232 @@ def capacita(engine: Engine) -> dict:
              ('formazione', 'La formazione'), ('servizi-online', 'I servizi online'), ('fibra', 'La fibra')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia, 'capacita': capacita}
+# ---------------------------------------------------------------------------
+# Dossier «Partecipazione e cultura in Versilia».
+
+ELECTIONS = {'politiche_camera': ('elezioni politiche', 'alle politiche'), 'europee': ('elezioni europee', 'alle europee'),
+             'regionali_toscana': ('elezioni regionali', 'alle regionali'), 'referendum': ('referendum', 'al referendum')}
+
+
+def election_label(period: str) -> str:
+    family, day = period.split('-')[:2]
+    return f'{ELECTIONS[family][0]} del {int(day[6:])} {MONTHS[int(day[4:6]) - 1]} {day[:4]}'
+
+
+def partecipazione(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    m = {}
+    for family, (name, _) in ELECTIONS.items():
+        m[family] = engine.measure(family, 'voterTurnout', f'family:{family}|nativeRatio',
+                                   f'Votanti alle ultime {name}, % degli aventi diritto' if family != 'referendum' else
+                                   'Votanti all’ultimo referendum, % degli aventi diritto', 'percent', 1, versilia=True)
+    m.update({
+        'loans': engine.measure('loans', 'libraryLoansPerResident', 'total', 'Prestiti delle biblioteche per abitante',
+                                'decimal', 2, benchmarks=('tuscany',), partial=True),
+        'users': engine.measure('users', 'libraryActiveBorrowersPer100', 'total',
+                                'Persone che hanno preso almeno un libro in prestito, ogni 100 abitanti', 'per100res', 1,
+                                benchmarks=('tuscany',), partial=True),
+        'hours': engine.measure('hours', 'libraryWeeklyOpeningHours', 'total',
+                                'Ore di apertura settimanale delle biblioteche', 'hours', 1, benchmarks=('tuscany',),
+                                partial=True),
+        'culture': engine.measure('culture', 'cultureSportMissionExpenditurePerResident', 'total',
+                                  'Spesa del Comune per cultura, sport e giovani, euro per abitante', 'eur', 0,
+                                  versilia=True),
+        'ets': engine.measure('ets', 'thirdSector', 'nativeRatio',
+                              'Enti del Terzo settore con sede nel Comune ogni 1.000 residenti', 'per1000dec', 2,
+                              versilia=True),
+        'etsn': engine.measure('etsn', 'thirdSector', 'registeredEntities',
+                               'Enti del Terzo settore con sede nel Comune, numero', 'count', 0),
+        'routes': engine.measure('routes', 'slowMobilityRoutes', 'total',
+                                 'Sentieri, cammini e percorsi in bici che attraversano il Comune', 'count', 0),
+    })
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    span_at = lambda k, f: f'da {f(lo(k)[1])} a {nm(lo(k)[0])} a {f(hi(k)[1])} a {nm(hi(k)[0])}'
+    eur = lambda v: num(v) + ' €'
+
+    # Serie storiche Versilia: un rapporto ponderato per ogni elezione pubblicata, nessuna variazione calcolata.
+    history = {}
+    for family in ('politiche_camera', 'europee'):
+        series = engine.ask({'operation': 'series', 'selectors': [
+            {'metric': 'voterTurnout', 'dimension': f'family:{family}|nativeRatio', 'towns': [codes[0]]}]})
+        history[family] = [
+            (o['period'], engine.ask({'operation': 'weighted_ratio', 'selectors': [
+                {'metric': 'voterTurnout', 'dimension': f'family:{family}|nativeRatio', 'towns': codes,
+                 'periods': [o['period']]}]})['result']['value'])
+            for o in series['observations'] if o['value'] is not None]
+
+    # 01 — quanto si vota
+    pol, eu, reg, ref = m['politiche_camera'], m['europee'], m['regionali_toscana'], m['referendum']
+    latest = sorted(ELECTIONS, key=lambda f: m[f].period.split('-')[1], reverse=True)
+    vote_text = (
+        'Quanto si vota dipende molto dal tipo di elezione. In Versilia ha votato, sugli aventi diritto, '
+        + '; '.join(f'{il(pct(m[f].versilia))} {ELECTIONS[f][1]} del '
+                    f'{int(m[f].period.split("-")[1][6:])} {MONTHS[int(m[f].period.split("-")[1][4:6]) - 1]} '
+                    f'{m[f].period.split("-")[1][:4]}' for f in latest) + '. '
+        f'{nm(lo("regionali_toscana")[0])} è il Comune dove si vota meno: alle ultime regionali '
+        f'{il(pct(lo("regionali_toscana")[1]))}. '
+        + (f'{nm(hi("politiche_camera")[0])} è il Comune dove si vota di più in tutte e quattro le elezioni.'
+           if len({hi(f)[0] for f in ELECTIONS}) == 1 else
+           f'Il Comune dove si vota di più cambia da un’elezione all’altra.'))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: ' + '; '.join(f'{ELECTIONS[f][1]} {pct(m[f].values[c])}' for f in latest)
+                  + '.') for c in codes}
+    ch1 = chapter(1, 'voto', 'Quanto si vota', 'Quante persone vanno a votare?',
+        f'<p>{vote_text}</p>'
+        + ''.join(bar_chart(m[f], N, f'Votanti, {election_label(m[f].period)}') for f in latest)
+        + town_blocks(towns1),
+        'Andare a votare è la forma di partecipazione più diffusa e quella misurata meglio. Una bassa affluenza non '
+        'vuol dire per forza disinteresse: conta anche chi vive o lavora fuori ma resta iscritto nelle liste, come molti '
+        'residenti all’estero e molti studenti.')
+
+    # 02 — nel tempo
+    def peak(family):
+        return max(history[family], key=lambda x: x[1])
+    pp, pl = peak('politiche_camera'), history['politiche_camera'][-1]
+    ep, el = peak('europee'), history['europee'][-1]
+    time_text = (
+        f'Alle elezioni politiche la Versilia ha toccato il massimo nel {pp[0].split("-")[1][:4]}, quando votò '
+        f'<b>{il(pct(pp[1]))} degli aventi diritto</b>; alle ultime, nel {pl[0].split("-")[1][:4]}, ha votato '
+        f'{il(pct(pl[1]))}. Alle europee si è passati {dal(pct(ep[1]))} del {ep[0].split("-")[1][:4]} '
+        f'{al(pct(el[1]))} del {el[0].split("-")[1][:4]}, quando ha votato meno di un avente diritto su due.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {pct(pol.values[c])} alle politiche del {pol.period.split("-")[1][:4]}, '
+                  f'{pct(eu.values[c])} alle europee del {eu.period.split("-")[1][:4]}.') for c in codes}
+    events = sorted([(p.split('-')[1], f, v) for f in history for p, v in history[f]])
+    rows = ''.join(f'<tr><th scope="row">{int(d[6:])} {MONTHS[int(d[4:6]) - 1]} {d[:4]}</th>'
+                   f'<td>{ELECTIONS[f][0].capitalize()}</td><td>{pct(v)}</td></tr>' for d, f, v in events)
+    tables = (f'<div class="dr-example"><h3>Votanti in Versilia, elezione per elezione</h3>'
+              '<p>Percentuale degli aventi diritto dei sette Comuni che hanno votato, alle elezioni politiche (Camera) '
+              'e alle europee.</p><table><thead><tr><th scope="col">Data</th><th scope="col">Elezione</th>'
+              f'<th scope="col">Votanti</th></tr></thead><tbody>{rows}</tbody></table></div>')
+    ch2 = chapter(2, 'nel-tempo', 'Il voto nel tempo', 'Si vota meno di una volta?',
+        f'<p>{time_text}</p>{tables}' + town_blocks(towns2),
+        'Il calo dell’affluenza riguarda tutta l’Italia e ha molte cause. Le elezioni non sono tutte uguali: cambiano le '
+        'regole, il numero dei giorni per votare e il peso degli iscritti che vivono all’estero, per cui i valori di '
+        'anni lontani vanno confrontati con prudenza.')
+
+    # 03 — biblioteche
+    loans, users, hours = m['loans'], m['users'], m['hours']
+    lt, ut, ht = (x.benchmarks['tuscany'] for x in (loans, users, hours))
+    nolib = [nm(c) for c in codes if c not in loans.values]
+    lib_text = (
+        f'Nel {loans.period} i prestiti delle biblioteche comunali, fra libri e altri materiali, vanno '
+        f'{span_at("loans", lambda v: num(v, 2))} per abitante, contro {num(lt, 2)} in Toscana. Le persone che hanno '
+        f'preso almeno un prestito vanno {span_at("users", lambda v: num(v, 1))} ogni 100 abitanti (Toscana '
+        f'{num(ut, 1)}). Le ore di apertura settimanale vanno {span_at("hours", lambda v: num(v, 1))}, '
+        + ('in tutti i Comuni più della media toscana' if all(v > ht for v in hours.values.values()) else
+           'contro una media toscana') + f' di {num(ht, 1)} ore. '
+        + (f'Per {join_names(nolib)} il dato non è pubblicato.' if nolib else ''))
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {num(loans.values[c], 2)} prestiti per abitante, {num(users.values[c], 1)} utenti '
+                  f'ogni 100 abitanti, {num(hours.values[c], 1)} ore di apertura a settimana nel {loans.period}.'
+                  if c in loans.values else f'<b>{esc(nm(c))}</b>: dato sulle biblioteche non pubblicato.')
+              for c in codes}
+    ch3 = chapter(3, 'biblioteche', 'Le biblioteche', 'Quanto si usano le biblioteche?',
+        f'<p>{lib_text}</p>{bar_chart(loans, N, "Prestiti per abitante")}'
+        f'{bar_chart(users, N, "Utenti del prestito ogni 100 abitanti")}'
+        f'{bar_chart(hours, N, "Ore di apertura settimanale")}' + town_blocks(towns3),
+        'La biblioteca è spesso l’unico spazio pubblico gratuito, aperto a tutti e al chiuso, per studiare, leggere o '
+        'incontrarsi. I prestiti misurano solo una parte di quello che vi succede: non contano chi ci va a studiare, '
+        'chi partecipa agli incontri o chi usa i computer.')
+
+    # 04 — spesa per cultura e sport
+    cul = m['culture']
+    cul_text = (
+        f'Nel {cul.period} i Comuni della Versilia hanno impegnato per cultura, sport e politiche giovanili '
+        f'<b>{eur(cul.versilia)} per abitante</b>: {span_at("culture", eur)}. {nm(hi("culture")[0])} spende molto più '
+        f'degli altri; il secondo Comune, {nm(cul.ranking[1][0])}, si ferma a {eur(cul.ranking[1][1])}.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {eur(cul.values[c])} per abitante per cultura, sport e giovani nel {cul.period} '
+                  f'({ordinal(cul.rank(c))} su {total}).') for c in codes}
+    ch4 = chapter(4, 'cultura-sport', 'La spesa per cultura e sport', 'Quanto spendono i Comuni per cultura e sport?',
+        f'<p>{cul_text}</p>{bar_chart(cul, N, "Spesa per cultura, sport e giovani per abitante")}' + town_blocks(towns4),
+        'Musei, teatri, biblioteche, eventi, impianti sportivi e centri giovani dipendono in buona parte da questa spesa. '
+        'Nei Comuni turistici una parte serve anche ai visitatori, e un grande lavoro in un solo anno, come il restauro '
+        'di un teatro, può far salire molto il valore.')
+
+    # 05 — associazioni
+    ets, etsn = m['ets'], m['etsn']
+    ets_text = (
+        f'All’{period_label(ets.period)} gli enti del Terzo settore, come associazioni di volontariato e di promozione '
+        f'sociale, con sede in Versilia sono <b>{num(ets.versilia, 2)} ogni 1.000 residenti</b>: '
+        f'{span_at("ets", lambda v: num(v, 2))}. In numeri assoluti si va da {num(lo("etsn")[1])} enti a '
+        f'{nm(lo("etsn")[0])} a {num(hi("etsn")[1])} a {nm(hi("etsn")[0])}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(etsn.values[c])} enti del Terzo settore, {num(ets.values[c], 2)} ogni 1.000 '
+                  'residenti.') for c in codes}
+    ch5 = chapter(5, 'associazioni', 'Le associazioni', 'Quante associazioni ci sono?',
+        f'<p>{ets_text}</p>{bar_chart(ets, N, "Enti del Terzo settore ogni 1.000 residenti")}' + town_blocks(towns5),
+        'Associazioni, pro loco, gruppi sportivi e di volontariato sono il modo più comune per partecipare alla vita del '
+        'paese fuori dal voto. Il registro nazionale ne conta solo una parte, quelle iscritte, e dice dove hanno sede, '
+        'non quante persone coinvolgono.')
+
+    # 06 — percorsi
+    routes = m['routes']
+    route_text = (
+        f'I sentieri, i cammini e i percorsi in bicicletta pubblici che attraversano il territorio vanno '
+        f'{span_at("routes", lambda v: num(v))}. Uno stesso percorso può attraversare più Comuni, quindi i numeri non si '
+        'sommano.')
+    towns6 = {c: f'<b>{esc(nm(c))}</b>: {num(routes.values[c])} percorsi pubblici attraversano il Comune.' for c in codes}
+    ch6 = chapter(6, 'percorsi', 'Sentieri e percorsi', 'Quanti percorsi per camminare e pedalare ci sono?',
+        f'<p>{route_text}</p>{bar_chart(routes, N, "Percorsi pubblici che attraversano il Comune")}' + town_blocks(towns6),
+        'Camminare e andare in bici sono fra le attività all’aperto più diffuse e gratuite, per chi abita qui e per chi '
+        'viene in visita. Il numero dei percorsi dipende molto dalla geografia: i Comuni di montagna ne hanno di più.')
+
+    key_points = [
+        (pct(ref.versilia), f'Degli aventi diritto della Versilia ha votato {ELECTIONS["referendum"][1]} del '
+                            f'{int(ref.period.split("-")[1][6:])} {MONTHS[int(ref.period.split("-")[1][4:6]) - 1]} '
+                            f'{ref.period.split("-")[1][:4]}.', 'voto'),
+        (pct(reg.versilia), f'Ha votato alle regionali del {reg.period.split("-")[1][:4]}; a '
+                            f'{nm(lo("regionali_toscana")[0])} {pct(lo("regionali_toscana")[1])}.', 'voto'),
+        (pct(pp[1]), f'Votanti in Versilia alle politiche del {pp[0].split("-")[1][:4]}; nel '
+                     f'{pl[0].split("-")[1][:4]} {pct(pl[1])}.', 'nel-tempo'),
+        (num(hi('loans')[1], 2), f'Prestiti delle biblioteche per abitante a {nm(hi("loans")[0])}; in Toscana '
+                                 f'{num(lt, 2)}.', 'biblioteche'),
+        (eur(cul.versilia), f'Spesa per cultura, sport e giovani per abitante in Versilia nel {cul.period}.',
+         'cultura-sport'),
+        (num(ets.versilia, 2), 'Enti del Terzo settore ogni 1.000 residenti con sede in Versilia.', 'associazioni'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item(f'Votanti, {ELECTIONS["referendum"][0]} {ref.period.split("-")[1][:4]}', pct(ref.values[c]),
+                     f'Versilia {pct(ref.versilia)}'),
+        summary_item(f'Votanti, regionali {reg.period.split("-")[1][:4]}', pct(reg.values[c]),
+                     f'Versilia {pct(reg.versilia)}'),
+        summary_item('Prestiti delle biblioteche per abitante',
+                     num(loans.values[c], 2) if c in loans.values else 'non pubblicato', f'Toscana {num(lt, 2)}'),
+        summary_item('Spesa per cultura, sport e giovani', eur(cul.values[c]), f'Versilia {eur(cul.versilia)}'),
+        summary_item('Enti del Terzo settore', num(etsn.values[c]), f'{num(ets.values[c], 2)} ogni 1.000 residenti'),
+        summary_item('Percorsi pubblici', num(routes.values[c]), 'sentieri, cammini e bici'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quante persone partecipano ad assemblee, consulte, consigli comunali aperti o bilanci partecipativi.',
+        'Quante persone fanno volontariato e quante sono attive nelle associazioni.',
+        'Chi non va a votare e perché, per età o per quartiere.',
+        'Quanto si usano teatri, musei, impianti sportivi e centri giovani, e quanto ne sono soddisfatti i cittadini.',
+        'Quali gruppi, come gli anziani soli o i giovani, fanno più fatica a partecipare alla vita della comunità.',
+    ]
+    return dict(
+        slug='partecipazione', title='Partecipazione e cultura in Versilia', eyebrow='Dossier · Partecipazione',
+        unknown_topic='sulla partecipazione', theme='comunita', theme_label='Tutti i dati su comunità e welfare',
+        lead='Quanto si vota e come è cambiato nel tempo, quanto si usano le biblioteche, quanto spendono i Comuni per '
+             'cultura e sport, quante associazioni e quanti percorsi all’aperto ci sono: una lettura dei dati pubblici '
+             'sulla partecipazione e sulla vita culturale nei sette Comuni della Versilia.',
+        description='Affluenza al voto, storia della partecipazione elettorale, biblioteche, spesa per cultura e sport, '
+                    'associazioni e percorsi all’aperto nei sette Comuni della Versilia.',
+        periods=f'Elezioni dal {history["politiche_camera"][0][0].split("-")[1][:4]} al '
+                f'{ref.period.split("-")[1][:4]}; biblioteche {loans.period}; spesa {cul.period}; Terzo settore '
+                f'all’{period_label(ets.period)}; percorsi {period_label(routes.period)}.',
+        method='I dati sul voto vengono dall’archivio storico delle elezioni del Ministero dell’Interno; per la Versilia l’affluenza è calcolata sommando votanti e aventi diritto dei sette Comuni. Le '
+               'biblioteche vengono dal monitoraggio regionale, la spesa dai rendiconti dei Comuni, le associazioni dal '
+               'registro nazionale del Terzo settore e i percorsi dall’inventario dei percorsi pubblici dell’Osservatorio.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('voto', 'Quanto si vota'), ('nel-tempo', 'Il voto nel tempo'), ('biblioteche', 'Le biblioteche'),
+             ('cultura-sport', 'La spesa per cultura e sport'), ('associazioni', 'Le associazioni'),
+             ('percorsi', 'Sentieri e percorsi')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia, 'capacita': capacita, 'partecipazione': partecipazione}
 
 
 # ---------------------------------------------------------------------------
@@ -4155,7 +4386,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio, sull’energia e sul personale dei Comuni, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio, sull’energia, sul personale dei Comuni e sulla partecipazione, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -4176,7 +4407,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio, energia e personale dei Comuni.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio, energia, personale dei Comuni e partecipazione.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
