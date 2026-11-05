@@ -10,6 +10,7 @@ from urllib.parse import urljoin
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
+HISTORY_YEARS = len(json.loads((ROOT / 'data' / 'source-snapshots' / 'ars-life-expectancy-1290-2008-2022.json').read_text(encoding='utf-8'))['scope']['years'])
 
 
 def parse_left(style: str) -> float:
@@ -97,11 +98,11 @@ def main() -> None:
             assert history.locator('.ux-history-legend [data-history-select]').count() == 8
             groups = chart.locator('[data-history-town]')
             assert groups.count() == 8
-            assert chart.locator('.chart-point').count() == 120
-            assert chart.locator('.chart-point .chart-tooltip').count() == 120
+            assert chart.locator('.chart-point').count() == 8 * HISTORY_YEARS
+            assert chart.locator('.chart-point .chart-tooltip').count() == 8 * HISTORY_YEARS
             versilia_history = chart.locator('[data-history-town="versilia"]')
             assert versilia_history.count() == 1
-            assert versilia_history.locator('.chart-point').count() == 15
+            assert versilia_history.locator('.chart-point').count() == HISTORY_YEARS
             versilia_button = history.locator('[data-history-select="versilia"]')
             assert float(versilia_button.get_attribute('data-end') or 'nan') == float(expected_versilia[choice])
 
