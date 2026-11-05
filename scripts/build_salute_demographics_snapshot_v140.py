@@ -23,11 +23,11 @@ OUTPUT = ROOT / "reports" / "ars-salute-demographics-v140.json"
 # against ARS. 1274 and 2815 are deliberately excluded: the generic exports did
 # not reproduce the current Observatory slice and therefore cannot be used safely.
 SPECS = {
-    1290: {"key": "lifeExpectancy", "period": "2022", "unit": "years"},
-    1438: {"key": "mortalityAll", "period": "2013-2022", "unit": "per100k"},
-    1499: {"key": "mortalityCancer", "period": "2013-2022", "unit": "per100k"},
-    1327: {"key": "mortalityCirculatory", "period": "2013-2022", "unit": "per100k"},
-    1606: {"key": "mortalityRespiratory", "period": "2013-2022", "unit": "per100k"},
+    1290: {"key": "lifeExpectancy", "period": "2023", "unit": "years"},
+    1438: {"key": "mortalityAll", "period": "2014-2023", "unit": "per100k"},
+    1499: {"key": "mortalityCancer", "period": "2014-2023", "unit": "per100k"},
+    1327: {"key": "mortalityCirculatory", "period": "2014-2023", "unit": "per100k"},
+    1606: {"key": "mortalityRespiratory", "period": "2014-2023", "unit": "per100k"},
     255: {"key": "hypertensionPrevalence", "period": "2025", "unit": "per1000"},
     268: {"key": "copdPrevalence", "period": "2025", "unit": "per1000"},
     269: {"key": "ischemicHeartDiseasePrevalence", "period": "2025", "unit": "per1000"},

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materializza lo storico ARS 2008–2022 della speranza di vita, per sesso.
+"""Materializza lo storico ARS 2008–2023 della speranza di vita, per sesso.
 
 La sorgente è l'export ufficiale ARS dell'indicatore 1290. Il comando normale
 usa esclusivamente lo snapshot versionato; --refresh-source aggiorna lo snapshot
@@ -31,7 +31,9 @@ INDICATOR_URL = (
 EXPORT_URL = "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290"
 SNAPSHOT_REF = "data/source-snapshots/ars-life-expectancy-1290-2008-2022.json"
 PROFILE = "ars-toscana-mixed"
-YEARS = list(range(2008, 2023))
+YEARS = list(range(2008, 2024))
+LATEST = str(YEARS[-1])
+SPAN = f"{YEARS[0]}–{YEARS[-1]}"
 SEXES = ("totale", "maschi", "femmine")
 SEX_LABELS = {"totale": "Totale", "maschi": "Maschi", "femmine": "Femmine"}
 GEOGRAPHIES = {
@@ -45,7 +47,7 @@ GEOGRAPHIES = {
     "VERSILIA": {"arsCode": "202M", "name": "Versilia"},
     "TOSCANA": {"arsCode": "90", "name": "Regione Toscana"},
 }
-EXPECTED_CSV_SHA256 = "ba1d0e9580eedf4a9b495032bb0fde70afc1b8ec14aae3752c7c7da847ba51f3"
+EXPECTED_CSV_SHA256 = "3dea01fe19c61da76c3916d2c33b15dfb9a46c161cefcaf38302f6e5c1ca3b3d"
 
 
 def load(path: Path) -> dict:
@@ -66,16 +68,19 @@ def parse_number(raw: str) -> float:
     return float(text)
 
 
-def download_snapshot() -> dict:
-    request = urllib.request.Request(
-        EXPORT_URL,
-        headers={
-            "User-Agent": "OsservatorioVersilia-source-audit/1.0",
-            "Accept-Language": "it-IT,it;q=0.9,en;q=0.5",
-        },
-    )
-    with urllib.request.urlopen(request, timeout=90) as response:
-        outer = response.read()
+def download_snapshot(local_zip: Path | None = None, retrieved: str = "2026-08-28") -> dict:
+    if local_zip is not None:
+        outer = local_zip.read_bytes()
+    else:
+        request = urllib.request.Request(
+            EXPORT_URL,
+            headers={
+                "User-Agent": "OsservatorioVersilia-source-audit/1.0",
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.5",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=300) as response:
+            outer = response.read()
     zip_sha = hashlib.sha256(outer).hexdigest()
     with zipfile.ZipFile(io.BytesIO(outer)) as archive:
         csv_name = next((name for name in archive.namelist() if name.lower().endswith(".csv")), None)
@@ -131,7 +136,7 @@ def download_snapshot() -> dict:
 
     return {
         "schemaVersion": 1,
-        "retrieved": "2026-08-28",
+        "retrieved": retrieved,
         "indicator": {
             "id": 1290,
             "label": "Speranza di vita alla nascita",
@@ -211,7 +216,7 @@ def part(snapshot: dict, geo: str, sex: str) -> dict:
 
 def benchmark(snapshot: dict, sex: str) -> dict:
     return {
-        "year": "2022",
+        "year": LATEST,
         "tuscany": current_value(snapshot, "TOSCANA", sex),
         "source": "ARS Toscana — La salute dei comuni",
         "url": INDICATOR_URL,
@@ -219,10 +224,11 @@ def benchmark(snapshot: dict, sex: str) -> dict:
     }
 
 
-def apply_site(site: dict, snapshot: dict) -> None:
+def apply_site(site: dict, snapshot: dict, refreshed: bool = False) -> None:
     validate_snapshot(snapshot, site)
     metric = site["metrics"]["lifeExpectancy"]
     meta = metric["meta"]
+    meta["year"] = LATEST
     meta["compositeType"] = "sexBreakdown"
     meta["selectorLabel"] = "Sesso"
     meta["defaultSex"] = "totale"
@@ -232,23 +238,23 @@ def apply_site(site: dict, snapshot: dict) -> None:
     meta["sourceMeta"] = {
         "publisher": "ARS Toscana / ISPRO",
         "snapshot": SNAPSHOT_REF,
-        "note": "Export ufficiale ARS dell'indicatore 1290; serie 2008–2022 per Totale, Maschi e Femmine.",
+        "note": f"Export ufficiale ARS dell'indicatore 1290; serie {SPAN} per Totale, Maschi e Femmine.",
     }
 
     for row in metric["rows"]:
         code = row["code"]
         parts = [part(snapshot, code, sex) for sex in SEXES]
         total = parts[0]
-        if round(float(row["value"]), 2) != total["value"]:
-            raise RuntimeError(f"{row['town']}: il totale 2022 storico non coincide col valore corrente")
+        if not refreshed and round(float(row["value"]), 2) != total["value"]:
+            raise RuntimeError(f"{row['town']}: il totale {LATEST} storico non coincide col valore corrente")
         row["value"] = total["value"]
         row["formatted"] = total["formatted"]
         row["series"] = total["series"]
         row["parts"] = parts
 
     aggregate_parts = [part(snapshot, "VERSILIA", sex) for sex in SEXES]
-    if round(float(metric["aggregate"]["value"]), 2) != aggregate_parts[0]["value"]:
-        raise RuntimeError("Versilia: il totale 2022 storico non coincide col valore corrente")
+    if not refreshed and round(float(metric["aggregate"]["value"]), 2) != aggregate_parts[0]["value"]:
+        raise RuntimeError(f"Versilia: il totale {LATEST} storico non coincide col valore corrente")
     metric["aggregate"].update({
         "value": aggregate_parts[0]["value"],
         "formatted": aggregate_parts[0]["formatted"],
@@ -269,12 +275,12 @@ def apply_site(site: dict, snapshot: dict) -> None:
         "source": "ARS Toscana — indicatore 1290",
         "aggregateType": "official-source",
         "aggregateLabel": "Zona Versilia",
-        "note": "Serie ufficiale 2008–2022. Totale, Maschi e Femmine sono pubblicati da ARS per tutti i sette Comuni; la Zona Versilia è l'aggregato ufficiale della fonte.",
+        "note": f"Serie ufficiale {SPAN}. Totale, Maschi e Femmine sono pubblicati da ARS per tutti i sette Comuni; la Zona Versilia è l'aggregato ufficiale della fonte.",
     }
     metric["method"] = {
         "type": "Dato ufficiale ARS Toscana",
         "formula": "Valore pubblicato da ARS Toscana per l'indicatore 1290 “Speranza di vita alla nascita”, senza trasformazioni statistiche dell'Osservatorio.",
-        "caveat": "Serie 2008–2022 con distinzione Totale, Maschi e Femmine. I valori comunali, della Zona Versilia e della Toscana provengono dallo stesso export ufficiale. Nessun valore è interpolato, stimato o ricostruito da medie comunali.",
+        "caveat": f"Serie {SPAN} con distinzione Totale, Maschi e Femmine. I valori comunali, della Zona Versilia e della Toscana provengono dallo stesso export ufficiale. Nessun valore è interpolato, stimato o ricostruito da medie comunali.",
         "coverage": "7/7",
         "snapshot": SNAPSHOT_REF,
     }
@@ -308,10 +314,12 @@ def apply_history_doc() -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--refresh-source", action="store_true")
+    parser.add_argument("--zip", type=Path, help="Export ARS già scaricato (ZIP ufficiale)")
+    parser.add_argument("--retrieved", default="2026-08-28")
     args = parser.parse_args()
 
     if args.refresh_source:
-        snapshot = download_snapshot()
+        snapshot = download_snapshot(args.zip, args.retrieved)
         save(SNAPSHOT_PATH, snapshot)
     elif not SNAPSHOT_PATH.exists():
         raise RuntimeError(f"Snapshot mancante: {SNAPSHOT_PATH}; usare --refresh-source")
@@ -319,12 +327,12 @@ def main() -> None:
     site = load(SITE_PATH)
     registry = load(REGISTRY_PATH)
     snapshot = load(SNAPSHOT_PATH)
-    apply_site(site, snapshot)
+    apply_site(site, snapshot, refreshed=args.refresh_source)
     apply_registry(registry)
     save(SITE_PATH, site)
     save(REGISTRY_PATH, registry)
     apply_history_doc()
-    print("Speranza di vita ARS materializzata: 2008–2022, Totale/Maschi/Femmine, copertura 7/7, Zona Versilia ufficiale.")
+    print(f"Speranza di vita ARS materializzata: {SPAN}, Totale/Maschi/Femmine, copertura 7/7, Zona Versilia ufficiale.")
 
 
 if __name__ == "__main__":

@@ -7,10 +7,10 @@
     "prcMonitor": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave"
   },
   "rtcave": {
-    "sha256": "f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2",
-    "regionalRecordCount": 666,
-    "regionalUniqueCodiceRt": 666,
-    "regionalUniqueIdCava": 666,
+    "sha256": "51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6",
+    "regionalRecordCount": 667,
+    "regionalUniqueCodiceRt": 667,
+    "regionalUniqueIdCava": 667,
     "versiliaRecordCount": 90,
     "rawFieldNames": [
       "cod_comprensorio",
@@ -1859,7 +1859,7 @@
         "id_comprensorio": 92,
         "id_comune": 84,
         "id_giacimento": 75,
-        "id_stato": 3,
+        "id_stato": 1,
         "id_tipo_prestito": null,
         "id_tipo_prima_prod": 3,
         "id_tipologia": 1,
@@ -1872,7 +1872,7 @@
         "nome_giacimento": "ACC Ficaio",
         "nome_provincia": "Lucca",
         "sigla_provincia": "LU",
-        "stato": "Sospesa",
+        "stato": "Attiva",
         "tipo_produzione": "ORNAMENTALE",
         "tipologia": "Cava Ordinaria"
       },
@@ -2471,7 +2471,8 @@
         "tipologia": "Cava Ordinaria"
       }
     ],
-    "note": "Record pubblici conservati senza rinominare o scartare i campi dell’endpoint. I contatori sono ricalcolati dai valori originali, senza il fallback UI che assegna valori sconosciuti all’ultima categoria."
+    "note": "Record pubblici conservati senza rinominare o scartare i campi dell’endpoint. I contatori sono ricalcolati dai valori originali, senza il fallback UI che assegna valori sconosciuti all’ultima categoria.",
+    "retrievedAt": "2026-11-05T16:04:00+00:00"
   },
   "production": {
     "046028": {
@@ -2794,7 +2795,7 @@
     "expectedMetrics": 180,
     "expectedInline": 176,
     "expectedExternal": 4,
-    "expectedRtcaveRegionalRecords": 666,
+    "expectedRtcaveRegionalRecords": 667,
     "expectedRtcaveVersiliaRecords": 90
   }
 }

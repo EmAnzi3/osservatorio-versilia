@@ -4,13 +4,13 @@ Lotto v22 dopo #367 mergiata, sugli snapshot già acquisiti. Tre carrier con uni
 
 | Carrier | Universo e riferimento | Operazioni |
 |---|---|---|
-| `extractiveSites` | Record RTCave al 2 settembre 2026, distinti per `codice_rt` | Confronto/ranking del totale e 13 letture di stato/tipologia/macro-classe produttiva |
+| `extractiveSites` | Record RTCave al 5 novembre 2026, distinti per `codice_rt` | Confronto/ranking del totale e 13 letture di stato/tipologia/macro-classe produttiva |
 | `extractiveProduction` | Volumi annui comunicati tramite obblighi informativi, 2019–2025; raccordo comunale verificato per Seravezza e Stazzema | Confronto/ranking corrente e serie nativa; cinque comuni n.d., copertura 2/7 |
 | `extractivePlanning` | PRC vigente, variante 2025, geometrie EPSG:3003 intersecate per categoria | Confronto/ranking di superfici, conteggi e percentuali pubblicate; quote ricostruite separatamente dai componenti arrotondati |
 
 ## Record e applicabilità
 
-Snapshot `data/source-snapshots/attivita-estrattive-v128.json`, SHA256 `bf67bf162733219bdd6ecde59480e2d451f42f466230c02dc8bc2a8c79295be6`. L'acquisizione RTCave è attestata dal digest `f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2`, con 666 record regionali distinti e 90 record locali disponibili nel file. Si ricontrollano i 90 record locali, `codice_rt`/`id_cava` univoci, Comune, categorie originali, componenti pubblici e anagrafiche; non si ripete la scansione live né si deduplicano da capo i 666 record regionali non presenti integralmente.
+Snapshot `data/source-snapshots/attivita-estrattive-v128.json`, SHA256 `416954885b508aae14e19a3e61c132d8d88d1032c49966485007ac2774933960`. L'acquisizione RTCave è attestata dal digest `51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6` (acquisizione del 5 novembre 2026; la precedente del 2 settembre era `f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2`), con 667 record regionali distinti e 90 record locali disponibili nel file. Si ricontrollano i 90 record locali, `codice_rt`/`id_cava` univoci, Comune, categorie originali, componenti pubblici e anagrafiche; non si ripete la scansione live né si deduplicano da capo i 667 record regionali non presenti integralmente.
 
 | Comune | Record RTCave | Attivi | Chiusi | Stato n.d. | Produzione 2025 m³ |
 |---|---:|---:|---:|---:|---:|

@@ -45,7 +45,7 @@ def regressions(catalog_path):
                 trend=engine.query(request('trend',key,dimension=dimension,towns=['046018']))
                 assert trend['status']=='computed',(key,dimension,trend['reasons'])
     # Values independently transcribed from official ARS records, not generated expectations.
-    for key,dimension,expected in [('hypertensionPrevalence','total',245.595),('hypertensionPrevalence','age:65-84|total',681.808),('diabetes','total',67.033),('lifeExpectancy','total',82.2371),('mortalityAll','total',945.211)]:
+    for key,dimension,expected in [('hypertensionPrevalence','total',245.595),('hypertensionPrevalence','age:65-84|total',681.808),('diabetes','total',67.033),('lifeExpectancy','total',82.8487),('mortalityAll','total',938.166)]:
         result=engine.query(request('compare',key,dimension=dimension))
         value=next(o['value'] for o in result['observations'] if o['geography']=='046018')
         assert math.isclose(value,expected,rel_tol=0,abs_tol=1e-8)

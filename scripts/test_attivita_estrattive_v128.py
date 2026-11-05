@@ -24,9 +24,9 @@ EXPECTED_TOWNS = {
     "046033": ("Viareggio", 0),
 }
 EXPECTED_STATE = {
-    "Attiva": 15,
+    "Attiva": 16,
     "Inattiva": 2,
-    "Sospesa": 5,
+    "Sospesa": 4,
     "Scaduta": 3,
     "Ripristino": 0,
     "Chiusa": 64,
@@ -69,9 +69,9 @@ def main() -> None:
     sites = site["metrics"]["extractiveSites"]
     assert sites["aggregate"]["value"] == 90
     aggregate_parts = parts(sites["aggregate"])
-    assert aggregate_parts["state_active"] == 15
+    assert aggregate_parts["state_active"] == 16
     assert aggregate_parts["state_inactive"] == 2
-    assert aggregate_parts["state_suspended"] == 5
+    assert aggregate_parts["state_suspended"] == 4
     assert aggregate_parts["state_expired"] == 3
     assert aggregate_parts["state_restoration"] == 0
     assert aggregate_parts["state_closed"] == 64
@@ -148,9 +148,9 @@ def main() -> None:
     assert plan_agg["acc_n"] == 19 and plan_agg["acc_ha"] == 556.495 and plan_agg["acc_pct"] == 1.559
     assert next(p for p in planning["aggregate"]["parts"] if p["key"] == "g_pct")["unit"] == "%"
 
-    assert snapshot["rtcave"]["regionalRecordCount"] == 666
-    assert snapshot["rtcave"]["regionalUniqueCodiceRt"] == 666
-    assert snapshot["rtcave"]["regionalUniqueIdCava"] == 666
+    assert snapshot["rtcave"]["regionalRecordCount"] == 667
+    assert snapshot["rtcave"]["regionalUniqueCodiceRt"] == 667
+    assert snapshot["rtcave"]["regionalUniqueIdCava"] == 667
     assert snapshot["rtcave"]["versiliaRecordCount"] == 90
     assert set(snapshot["rtcave"]["rawFieldNames"]) == RAW_FIELDS
     assert len(snapshot["rtcave"]["records"]) == 90
@@ -159,7 +159,7 @@ def main() -> None:
 
     # Il contratto del lotto protegge il periodo pubblicato; una sonda successiva
     # non può certificare un giorno usando soltanto un mese osservato.
-    assert sites["meta"]["year"] == "2 settembre 2026"
+    assert sites["meta"]["year"] == "5 novembre 2026"
     assert production["meta"]["year"] == "2025"
     for key in ("extractiveSites", "extractiveProduction", "extractivePlanning"):
         operational = state["metrics"][key]
