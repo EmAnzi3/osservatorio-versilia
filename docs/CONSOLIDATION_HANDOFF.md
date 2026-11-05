@@ -1,5 +1,26 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Energia e transizione in Versilia» (5 novembre 2026)
+
+Branch `feature/dossier-energia`, quindicesimo dossier in forma di relazione (slug `energia`,
+tema ambiente), scheda `energia` di `ci/territorial-dossier-program.json`. Dossier breve
+concordato con Ema: la scheda ha tre `metricRefs` e la domanda su edifici, rinnovabili e CER è
+`not_determinable`. Quattro capitoli:
+
+1. carburanti: `fuelPrices` `fuel:benzina` e `fuel:gasolio` al 10 ottobre 2026
+   (`allowPartial`: Stazzema non ha distributori attivi), più le serie `monthly:*` per Comune
+   da gennaio 2022: il testo riporta valori pubblicati di gennaio e settembre 2026 e il mese
+   più caro della serie, senza variazioni calcolate (il motore rifiuta `relative_change`);
+   nuova unità `eurliter`, nome pubblico MIMIT in `SOURCE_NAMES`;
+2. colonnine: `evPoints` 2026, solo Comuni (pooling non rivisto);
+3. auto: `motorization` e `pollutingCars` `nativeRatio` con Toscana, Italia e Versilia;
+4. redditi bassi: `incomeDistribution` `macro:0` e `band:0to10k`, come contesto e non come
+   misura di povertà energetica.
+
+Colonnine e auto sono anche nel dossier mobilità e i redditi nel dossier redditi; qui servono
+come contesto della transizione. «Cosa non sappiamo» elenca consumi, bollette, produzione
+rinnovabile, classi energetiche, povertà energetica e dati per le CER.
+
 ## Dossier «Suolo, boschi e agricoltura in Versilia» (5 novembre 2026)
 
 Branch `feature/dossier-suolo`, quattordicesimo dossier in forma di relazione (slug `suolo`,

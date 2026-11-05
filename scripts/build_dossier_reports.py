@@ -59,6 +59,7 @@ SOURCE_NAMES = [
     ('SDMXWS', 'Istat — Censimento permanente: occupazione e disoccupazione'),
     ('censimenti/popolazione-e-abitazioni', 'Istat — Censimento permanente: occupati che lavorano fuori Comune'),
     ('aci.gov.it', 'ACI — Autoritratto, parco veicolare'),
+    ('mimit.gov.it', 'Ministero delle Imprese e del made in Italy — Osservaprezzi carburanti'),
     ('piattaformaunicanazionale.it', 'Piattaforma Unica Nazionale dei punti di ricarica (MASE)'),
     ('geo.agcom.it', 'AGCOM — Mappa della banda larga'),
     ('percorsi/metodo', 'Osservatorio Versilia — Inventario dei percorsi pubblici'),
@@ -255,7 +256,8 @@ class Measure:
                 'decile': lambda v: f'classe {num(v)} su 10',
                 'sqm': lambda v: num(v) + ' m² per abitante',
                 'hectares': lambda v: num(v, self.decimals) + ' ettari',
-                'haPerFarm': lambda v: num(v, 1) + ' ettari per azienda'}[self.unit](value)
+                'haPerFarm': lambda v: num(v, 1) + ' ettari per azienda',
+                'eurliter': lambda v: num(v, 3) + ' €/l'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
@@ -264,7 +266,8 @@ class Measure:
                 'minutes': lambda v: num(v, 1), 'per100adult': lambda v: num(v, 1),
                 'per1000young': lambda v: num(v, 1), 'per1000dec': lambda v: num(v, self.decimals),
                 'decile': lambda v: num(v), 'sqm': lambda v: num(v) + ' m²',
-                'hectares': lambda v: num(v, self.decimals) + ' ha', 'haPerFarm': lambda v: num(v, 1) + ' ha'}.get(self.unit, self.fmt)(value)
+                'hectares': lambda v: num(v, self.decimals) + ' ha', 'haPerFarm': lambda v: num(v, 1) + ' ha',
+                'eurliter': lambda v: num(v, 3) + ' €'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -3634,7 +3637,192 @@ def suolo(engine: Engine) -> dict:
              ('agricoltura', 'L’agricoltura'), ('aziende', 'Chi guida le aziende')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo}
+# ---------------------------------------------------------------------------
+# Dossier «Energia e transizione in Versilia».
+
+def energia(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'petrol': engine.measure('petrol', 'fuelPrices', 'fuel:benzina',
+                                 'Prezzo mediano della benzina self-service, euro al litro', 'eurliter', 3, partial=True),
+        'diesel': engine.measure('diesel', 'fuelPrices', 'fuel:gasolio',
+                                 'Prezzo mediano del gasolio self-service, euro al litro', 'eurliter', 3, partial=True),
+        'ev': engine.measure('ev', 'evPoints', 'total',
+                             'Punti di ricarica pubblici per auto elettriche, ogni 1.000 abitanti', 'rate1000', 2),
+        'cars': engine.measure('cars', 'motorization', 'nativeRatio', 'Automobili ogni 1.000 abitanti', 'per1000', 0,
+                               benchmarks=TI, versilia=True),
+        'old': engine.measure('old', 'pollutingCars', 'nativeRatio',
+                              'Automobili delle classi più inquinanti (Euro 0-3), %', 'percent', 1, benchmarks=TI,
+                              versilia=True),
+        'low': engine.measure('low', 'incomeDistribution', 'macro:0', 'Dichiaranti fino a 15.000 €, % dei dichiaranti',
+                              'percent', 1, versilia=True),
+        'vlow': engine.measure('vlow', 'incomeDistribution', 'band:0to10k',
+                               'Dichiaranti fino a 10.000 €, % dei dichiaranti', 'percent', 1, versilia=True),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+    litre = lambda v: num(v, 3) + ' euro al litro'
+    span_at = lambda k, f: f'da {f(lo(k)[1])} a {nm(lo(k)[0])} a {f(hi(k)[1])} a {nm(hi(k)[0])}'
+
+    # Serie mensili dei prezzi: valori pubblicati, nessuna variazione calcolata.
+    months = {}
+    for fuel in ('benzina', 'gasolio'):
+        for code in m['petrol'].values:
+            response = engine.ask({'operation': 'series', 'selectors': [
+                {'metric': 'fuelPrices', 'dimension': 'monthly:' + fuel, 'towns': [code]}]})
+            months[fuel, code] = [(o['period'], o['value']) for o in response['observations'] if o['value'] is not None]
+    priced = [c for c in codes if c in m['petrol'].values]
+    missing = [nm(c) for c in codes if c not in m['petrol'].values]
+
+    def month_label(period: str) -> str:
+        year, month = period.split('-')
+        return f'{MONTHS[int(month) - 1]} {year}'
+
+    def window(fuel: str, period: str) -> tuple[float, float]:
+        values = [dict(months[fuel, c])[period] for c in priced]
+        return min(values), max(values)
+
+    last = months['benzina', priced[0]][-1][0]
+    first = months['benzina', priced[0]][0][0]
+    january = f'{last[:4]}-01'
+    record = all(max(months[f, c], key=lambda x: x[1])[0] == last for f in ('benzina', 'gasolio') for c in priced)
+
+    # 01 — carburanti
+    petrol, diesel = m['petrol'], m['diesel']
+    pj, pl = window('benzina', january), window('benzina', last)
+    dj, dl = window('gasolio', january), window('gasolio', last)
+    fuel_text = (
+        f'A {month_label(january)} un litro di benzina self-service costava in Versilia fra {num(pj[0], 3)} e '
+        f'{num(pj[1], 3)} euro, a seconda del Comune; a {month_label(last)} <b>fra {num(pl[0], 3)} e {num(pl[1], 3)} '
+        f'euro</b>. Il gasolio è passato da {num(dj[0], 3)}-{num(dj[1], 3)} euro a {num(dl[0], 3)}-{num(dl[1], 3)} euro. '
+        + (f'In tutti i Comuni {month_label(last)} è il mese più caro da quando la serie comincia, a '
+           f'{month_label(first)}. ' if record else '')
+        + f'Al {period_label(petrol.period)} la benzina va {span_at("petrol", litre)}, il gasolio '
+        f'{span_at("diesel", litre)}. '
+        + (f'A {join_names(missing)} non risultano distributori attivi.' if missing else ''))
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: benzina {litre(petrol.values[c])} e gasolio {litre(diesel.values[c])} al '
+                  f'{period_label(petrol.period)}; a {month_label(january)} la benzina era a '
+                  f'{litre(dict(months["benzina", c])[january])}.' if c in petrol.values else
+                  f'<b>{esc(nm(c))}</b>: non risultano distributori di carburante attivi nel Comune.') for c in codes}
+    ch1 = chapter(1, 'carburanti', 'Il prezzo dei carburanti', 'Quanto costano benzina e gasolio?',
+        f'<p>{fuel_text}</p>{bar_chart(petrol, N, "Prezzo della benzina self-service")}'
+        f'{bar_chart(diesel, N, "Prezzo del gasolio self-service")}' + town_blocks(towns1),
+        'Il prezzo dei carburanti pesa di più sulle famiglie che non possono fare a meno dell’auto, come chi vive nei '
+        'paesi di collina o lavora lontano da casa. È il prezzo mediano dei distributori che comunicano i prezzi al '
+        'Ministero, non quanto spende davvero una famiglia: dipende da quanto e da dove si guida.')
+
+    # 02 — ricarica
+    ev = m['ev']
+    ev_text = (
+        f'I punti di ricarica pubblici per le auto elettriche vanno, ogni 1.000 abitanti, '
+        f'{span_at("ev", lambda v: num(v, 2))}. {nm(hi("ev")[0])} ne ha molti più degli altri Comuni: {num(hi("ev")[1], 2)} ogni 1.000 abitanti, '
+        f'contro {num(ev.ranking[1][1], 2)} di {nm(ev.ranking[1][0])}, il secondo.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {num(ev.values[c], 2)} punti di ricarica pubblici ogni 1.000 abitanti '
+                  f'({ordinal(ev.rank(c))} su {total}).') for c in codes}
+    ch2 = chapter(2, 'ricarica', 'Le colonnine di ricarica', 'Quante colonnine per auto elettriche ci sono?',
+        f'<p>{ev_text}</p>{bar_chart(ev, N, "Punti di ricarica pubblici")}' + town_blocks(towns2),
+        'Avere dove ricaricare vicino a casa o al lavoro è una delle condizioni per passare all’auto elettrica. Il '
+        'dato conta i punti pubblici, non quelli nelle case o nelle aziende, e non dice quanto sono potenti, se '
+        'funzionano o quanto vengono usati. Nei Comuni turistici una parte delle colonnine serve soprattutto i visitatori.')
+
+    # 03 — parco auto
+    cars, old = m['cars'], m['old']
+    ct, ci = cars.benchmarks['tuscany'], cars.benchmarks['italy']
+    ot, oi = old.benchmarks['tuscany'], old.benchmarks['italy']
+    old_above = above('old', 'tuscany')
+    cars_text = (
+        f'Nel {cars.period} in Versilia ci sono <b>{num(cars.versilia)} automobili ogni 1.000 abitanti</b>, contro '
+        f'{num(ct)} in Toscana e {num(ci)} in Italia: {span_at("cars", lambda v: num(v))}. Le auto più vecchie e '
+        f'inquinanti, dalle Euro 0 alle Euro 3, sono {il(pct(old.versilia))} del totale, contro {il(pct(ot))} della '
+        f'Toscana e {il(pct(oi))} dell’Italia: {span("old", pct)}. '
+        + ('Tutti i Comuni superano la quota toscana.' if len(old_above) == total else
+           f'Superano la quota toscana {join_names(old_above)}.' if old_above else
+           'Nessun Comune supera la quota toscana.'))
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: {num(cars.values[c])} automobili ogni 1.000 abitanti, di cui '
+                  f'{il(pct(old.values[c]))} Euro 0-3 ({ordinal(old.rank(c))} su {total} per quota di auto vecchie; '
+                  f'Toscana {pct(ot)}).') for c in codes}
+    ch3 = chapter(3, 'auto', 'Le auto', 'Quante auto ci sono, e quanto sono vecchie?',
+        f'<p>{cars_text}</p>{bar_chart(cars, N, "Automobili ogni 1.000 abitanti")}'
+        f'{bar_chart(old, N, "Automobili Euro 0-3")}' + town_blocks(towns3),
+        'Un’auto vecchia consuma e inquina di più, e chi la possiede potrebbe non riuscire a cambiarla quando arrivano '
+        'nuove regole o i carburanti aumentano. Il dato conta le auto iscritte al registro, non quanto vengono usate '
+        'né l’inquinamento dell’aria. Le auto delle società di noleggio iscritte in un Comune possono alzarne il valore.')
+
+    # 04 — redditi bassi
+    low, vlow = m['low'], m['vlow']
+    low_text = (
+        f'Nel {low.period.split(" ")[0]} <b>{il(pct(low.versilia))} dei dichiaranti della Versilia</b> ha dichiarato al '
+        f'massimo 15.000 euro l’anno, {span("low", pct)}; {il(pct(vlow.versilia))} non arriva a 10.000 euro. Sono le '
+        'persone per cui un aumento della bolletta o del pieno pesa di più, ma il dato non dice quante famiglie sono '
+        'in povertà energetica: un reddito basso può stare in una famiglia con altri redditi.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(low.values[c]))} dei dichiaranti è fino a 15.000 euro, '
+                  f'{il(pct(vlow.values[c]))} fino a 10.000 euro.') for c in codes}
+    ch4 = chapter(4, 'redditi-bassi', 'I redditi bassi', 'Quante persone hanno meno margine per i costi dell’energia?',
+        f'<p>{low_text}</p>{bar_chart(low, N, "Dichiaranti fino a 15.000 euro")}'
+        f'{bar_chart(vlow, N, "Dichiaranti fino a 10.000 euro")}' + town_blocks(towns4),
+        'Gli aiuti per le bollette, gli incentivi per l’efficienza e le comunità energetiche servono di più a chi ha '
+        'poco margine. Per capire chi è davvero in difficoltà servirebbero i dati sulle famiglie, sulle case e sui '
+        'consumi, che a livello comunale non sono pubblici.')
+
+    key_points = [
+        (litre(hi('petrol')[1]).replace(' euro al litro', ' €/l'),
+         f'Prezzo mediano della benzina a {nm(hi("petrol")[0])} al {period_label(petrol.period)}, il più alto della '
+         'Versilia.', 'carburanti'),
+        (f'{num(pl[0], 3)}-{num(pl[1], 3)} €/l',
+         f'Benzina a {month_label(last)}; a {month_label(january)} era a {num(pj[0], 3)}-{num(pj[1], 3)} €/l.',
+         'carburanti'),
+        (num(hi('ev')[1], 2), f'Punti di ricarica ogni 1.000 abitanti a {nm(hi("ev")[0])}; a {nm(lo("ev")[0])} '
+                              f'{num(lo("ev")[1], 2)}.', 'ricarica'),
+        (num(cars.versilia), f'Automobili ogni 1.000 abitanti in Versilia; in Toscana {num(ct)}.', 'auto'),
+        (pct(old.versilia), f'Delle automobili della Versilia è Euro 0-3; in Toscana {pct(ot)}.', 'auto'),
+        (pct(low.versilia), 'Dei dichiaranti della Versilia dichiara al massimo 15.000 euro l’anno.', 'redditi-bassi'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Benzina self-service', litre(petrol.values[c]).replace(' euro al litro', ' €/l')
+                     if c in petrol.values else 'nessun distributore', period_label(petrol.period)),
+        summary_item('Gasolio self-service', litre(diesel.values[c]).replace(' euro al litro', ' €/l')
+                     if c in diesel.values else 'nessun distributore', period_label(diesel.period)),
+        summary_item('Punti di ricarica ogni 1.000 abitanti', num(ev.values[c], 2), f'{ordinal(ev.rank(c))} su {total}'),
+        summary_item('Automobili ogni 1.000 abitanti', num(cars.values[c]), f'Toscana {num(ct)}'),
+        summary_item('Automobili Euro 0-3', pct(old.values[c]), f'Toscana {pct(ot)}'),
+        summary_item('Dichiaranti fino a 15.000 euro', pct(low.values[c]), f'Versilia {pct(low.versilia)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanta elettricità e quanto gas consumano le famiglie e le imprese di ogni Comune, e quanto pagano di bollette.',
+        'Quanta energia producono i pannelli solari e gli altri impianti rinnovabili del territorio.',
+        'In che classe energetica sono le case e quanti edifici avrebbero bisogno di lavori per consumare meno.',
+        'Quante famiglie sono in povertà energetica, cioè non riescono a scaldare o raffrescare la casa.',
+        'Dove si potrebbero fare comunità energetiche: servirebbero i dati sui consumi e sulle cabine elettriche.',
+        'Quanto vengono usate le colonnine di ricarica e quante auto elettriche circolano.',
+    ]
+    return dict(
+        slug='energia', title='Energia e transizione in Versilia', eyebrow='Dossier · Energia',
+        unknown_topic='sull’energia', theme='ambiente', theme_label='Tutti i dati sull’ambiente',
+        lead='Quanto costano i carburanti e quanto sono aumentati, quante colonnine di ricarica ci sono, quante auto e '
+             'quanto sono vecchie, quante persone hanno redditi bassi: quello che i dati pubblici dicono sulla '
+             'transizione energetica nei sette Comuni della Versilia, e quello che non dicono.',
+        description='Prezzi di benzina e gasolio, colonnine di ricarica, automobili e auto più inquinanti, redditi bassi '
+                    'nei sette Comuni della Versilia, con confronti con la Toscana e l’Italia e i dati che mancano.',
+        periods=f'Prezzi dei carburanti al {period_label(petrol.period)} e mensili da {month_label(first)} a '
+                f'{month_label(last)}; colonnine {ev.period}; automobili {cars.period}; redditi {low.period.split(" ")[0]}.',
+        method='I prezzi dei carburanti vengono dall’osservatorio del Ministero delle Imprese e del made in Italy: per '
+               'ogni Comune si usa il prezzo mediano dei distributori attivi. Le colonnine vengono dalla piattaforma '
+               'nazionale dei punti di ricarica, le automobili dall’ACI e i redditi dalle dichiarazioni pubblicate dal '
+               'Ministero dell’Economia. Il valore della Versilia è calcolato solo per automobili e redditi, sommando i '
+               'dati dei sette Comuni; per prezzi e colonnine il confronto è fra Comuni.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('carburanti', 'Il prezzo dei carburanti'), ('ricarica', 'Le colonnine di ricarica'), ('auto', 'Le auto'),
+             ('redditi-bassi', 'I redditi bassi')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia}
 
 
 # ---------------------------------------------------------------------------
@@ -3657,7 +3845,7 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni',
             'per1000young': 'ogni 1.000 residenti di 0-64 anni', 'per1000dec': 'ogni 1.000 abitanti',
             'decile': 'classe da 1 (meno fragile) a 10 (più fragile)', 'sqm': 'metri quadrati per abitante',
-            'hectares': 'ettari', 'haPerFarm': 'ettari per azienda'}
+            'hectares': 'ettari', 'haPerFarm': 'ettari per azienda', 'eurliter': 'euro al litro'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -3758,7 +3946,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare e sul territorio, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio e sull’energia, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -3779,7 +3967,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare e territorio.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio ed energia.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
