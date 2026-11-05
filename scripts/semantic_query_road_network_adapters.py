@@ -1,11 +1,12 @@
 """Frozen Iter.Net clipped lengths; public density and component ratio distinct."""
+from a6_pins import Pin as _pin
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('roadNetworkProfile',)
 SNAPSHOT = 'data/source-snapshots/territorio-v137-official.json'
-SNAPSHOT_SHA = 'a9de6f423577f7cf99b8fa020940e43e3ab6e7dc0aeed0531155066abacb25b9'
-PUBLIC_HASH = '872433466aa911e9287a78b93ea9d9c930469a0d9ea26765ed10ec5b74a20267'
+SNAPSHOT_SHA = _pin('road_network#1')
+PUBLIC_HASH = _pin('road_network#2')
 FIELDS = {'length':('graphKm',), 'density':('graphDensity',),
           'adminMunicipal':('administrativeClassKm','municipal'),
           'adminProvincial':('administrativeClassKm','provincial'),
@@ -100,4 +101,4 @@ def observation(engine,key,index,dim,period,historical):
                 value=length/area if parts else published,publishedValue=published,source=metric['sourceUrl'],
                 evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False,missingReason=None),NOTES[:]
 
-SNAPSHOT_FINGERPRINT = '341af19cb80ec6d7f4f0ed6e3d626639b8e24e1b13801a13a046cc5d3ea427c5'
+SNAPSHOT_FINGERPRINT = _pin('road_network#3')

@@ -1,4 +1,5 @@
 """AGCOM declared FTTH coverage and native counts; no household imputation."""
+from a6_pins import Pin as _pin
 import math
 
 from semantic_operations import finite
@@ -14,7 +15,7 @@ CSV = 'https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5
 LABEL = '6 luglio 2026'
 FIELDS = {DESI: 'copertura_ftth_desi_pct', NEAR: 'copertura_ftth_20m_pct', REACHED: 'famiglie_ftth'}
 FORMULAS = {DESI: 'Copertura FTTH DESI comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', NEAR: 'Copertura FTTH entro 20 metri comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', REACHED: 'Famiglie FTTH pubblicate da AGCOM nella reportistica comunale Broadband Map.', UNREACHED: 'famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI'}
-HASHES = {NATIVE: ('068d787f7fedbb09f95f7072f8a1555c9f1b6bb2ef8cc064712f5c7b1cd5e3f6', '3a798f79b2a3527b12d08bc40d52a592857276af259deef31d46e1ff7a5237c0'), BENCHMARK: ('d51797b7f47895b3aa1d75ed96928af3d4a0dca14b4eb1ff626f764872d49df2', '38b51a81d34e5ef60375882604c100eba65ad0dccb6288997eca9358d95e670b')}
+HASHES = {NATIVE: (_pin('connectivity#1'), _pin('connectivity#2')), BENCHMARK: (_pin('connectivity#3'), _pin('connectivity#4'))}
 NOTES = ['connectivity_declared_network_not_subscriptions_speed_or_civic_activation', 'connectivity_official_reference_2026_correction_not_new_acquisition', 'connectivity_no_automatic_causal_or_policy_priority_claim']
 
 

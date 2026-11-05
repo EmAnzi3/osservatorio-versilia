@@ -1,4 +1,5 @@
 """GAIA locality/parameter lookup; reported bounds are never exact amounts."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 
@@ -8,8 +9,8 @@ KEYS = ('drinkingWaterQuality',)
 NATIVE = 'data/source-snapshots/ambiente-acqua-v124-data.json'
 URL = 'https://www.gaia-spa.it/analisiweb_v2/'
 PERIOD = '2° semestre 2025'
-FILE_SHA = 'f9b7c4f02c9ec313f74700fdac21d0f31b1a5b596a43596473a7f978a48cdf66'
-STRUCTURE_SHA = '22e5533d90ff4fa8bf1a33ed5cb0199d69124c00d0c9883c63d9f343466be738'
+FILE_SHA = _pin('water_quality#1')
+STRUCTURE_SHA = _pin('water_quality#2')
 
 
 def dimensions(key):

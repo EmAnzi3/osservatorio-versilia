@@ -1,4 +1,5 @@
 """Frozen regional protections, linear network and hydraulic census; no geometry acquisition."""
+from a6_pins import Pin as _pin
 import math
 import json
 import hashlib
@@ -50,15 +51,15 @@ def native(engine,key,row):
     if len(engine._catalog['metrics'][key]['rows'])!=7 or set(towns)!={r['town'] for r in engine._catalog['metrics'][key]['rows']}:raise ValueError('territory_native_cohort_changed')
     if not any(t['name']==row['town'] and t['code']==row['code'] for t in engine._catalog['towns']):raise ValueError('territory_row_identity_changed')
     if key=='hydraulicWorksCensusElements':
-        if family.get('approval')!='DGRT 1155/2021' or s['sources']['hydraulicWorks'].get('sha256')!='532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560' or s['sources']['istatBoundaries'].get('sha256')!='b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6':raise ValueError('territory_native_reference_changed')
+        if family.get('approval')!='DGRT 1155/2021' or s['sources']['hydraulicWorks'].get('sha256')!=_pin('territory#1') or s['sources']['istatBoundaries'].get('sha256')!=_pin('territory#2'):raise ValueError('territory_native_reference_changed')
         if s['boundaries']['byTown'][row['town']]['istatCode']!=row['code']:raise ValueError('territory_row_identity_changed')
     else:
         if family.get('referenceLabel')!=LABELS[key]:raise ValueError('territory_native_reference_changed')
         source=s['sources']['regioneProtectedAreas' if key=='protectedNaturalAreas' else 'regioneHydrography']
         if source.get('page')!=URLS[key]:raise ValueError('territory_native_reference_changed')
         if key=='protectedNaturalAreas':
-            if family.get('categoryOrder')!=list(CATEGORIES[1:]) or hashlib.sha256(json.dumps(source.get('layers',{}),sort_keys=True,separators=(',',':')).encode()).hexdigest()!='aeb290eecdff230595a8b4ab9455b286218355873b8a986a184416583e6ee117' or any(len(l.get('sha256',''))!=64 for l in source['layers'].values()):raise ValueError('territory_native_reference_changed')
-        elif source.get('sourceLayer')!='reticoloDCR242025.shp' or source.get('acquisition',{}).get('sha256')!='68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122':raise ValueError('territory_native_reference_changed')
+            if family.get('categoryOrder')!=list(CATEGORIES[1:]) or hashlib.sha256(json.dumps(source.get('layers',{}),sort_keys=True,separators=(',',':')).encode()).hexdigest()!=_pin('territory#3') or any(len(l.get('sha256',''))!=64 for l in source['layers'].values()):raise ValueError('territory_native_reference_changed')
+        elif source.get('sourceLayer')!='reticoloDCR242025.shp' or source.get('acquisition',{}).get('sha256')!=_pin('territory#4'):raise ValueError('territory_native_reference_changed')
     return family,towns[row['town']],ref
 
 def observation(engine,key,index,dimension,period,historical):

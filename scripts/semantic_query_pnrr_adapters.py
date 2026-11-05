@@ -1,4 +1,5 @@
 """Frozen PNRR municipal implementing-body portfolio, amounts and ReGiS phase."""
+from a6_pins import Pin as _pin
 from decimal import Decimal
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
@@ -7,10 +8,10 @@ KEYS = ('pnrrFunding', 'pnrrConcluded')
 PERIOD = '2026-09-25'
 POPULATION_PERIOD = '2026-01-01'
 PATH = 'data/source-snapshots/pnrr-toscana-2026-09-25.json'
-HASH = '0be700265929fe6690d82081e81e598d96ac6e55f2c26a8df3743729e40454c8'
-OBJECT_HASH = '1e130c5ecd519eb183e0fbdcb579ae465f2be39568a2f888dfdb5a4606e00d86'
-PUBLIC_HASHES = {'pnrrFunding': ['0220b2e81f50901e54693415d3920cd3f033202cbc5622e328a683b15bcb03bc', 'd9eb037b5626f4a6ef4521b287da9c70dc162245f7365a0b76d7301d639dbec2'], 'pnrrConcluded': ['05834ad91083c9a25e6add31555bf8cffb99197258e09812810a0db0abe09647']}
-POPULATION_HASHES = {'b2cd8cee0508f9e673b305ae9f8e3f621f797a6eb002efd5c8013f04e198c8f0', '16958a4cc90899505ccbb62b022227321d1a18c2c4f37412bb6cebe4361a8ce7'}
+HASH = _pin('pnrr#1')
+OBJECT_HASH = _pin('pnrr#2')
+PUBLIC_HASHES = {'pnrrFunding': [_pin('pnrr#3'), _pin('pnrr#4')], 'pnrrConcluded': [_pin('pnrr#5')]}
+POPULATION_HASHES = {_pin('pnrr#6'), _pin('pnrr#7')}
 NOTES = ['pnrr_municipal_implementing_body_not_all_projects_located_in_town',
          'pnrr_funding_not_paid_spent_total_cost_or_annual_flow',
          'pnrr_regis_macro_phase_5_not_completed_testing_or_service_opening',
@@ -62,7 +63,7 @@ def validated(engine):
     if len(engine._catalog['towns']) != 7 or {t['code']:t['name'] for t in engine._catalog['towns']} != TOWNS:
         raise ValueError('pnrr_municipal_identity_changed')
     population = engine._catalog['metrics']['population']
-    if fingerprint(population) not in POPULATION_HASHES:
+    if not any(pin == fingerprint(population) for pin in sorted(POPULATION_HASHES)):
         raise ValueError('pnrr_resident_denominator_changed')
     pop = {r['code']:r for r in population['rows']}
     out = {c:dict(funding=Decimal(0),projects=0,concluded=0,indices=[]) for c in TOWNS}

@@ -1,12 +1,13 @@
 """Frozen municipal category lookup; numeric codes never become quantities."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 
 KEYS = ('territorialClassification',)
 NATIVE = 'data/source-snapshots/territorio-ucs-v136.json'
 URL = 'https://www.istat.it/comunicato-stampa/geografie-funzionali-per-lanalisi-territoriale/'
-FILE_SHA = '22211f2d42aa8a23957c05ec03f35038e6ebf58f89ba18b46e39e61a1a35697a'
-STRUCTURE_SHA = '621307d00dc707043566f4c28dcacfd8321fb936f07de4f7d8cb3aae6849d895'
+FILE_SHA = _pin('classification#1')
+STRUCTURE_SHA = _pin('classification#2')
 FIELDS = ('degurba', 'littoral', 'coastalZone')
 
 def dimensions(key):

@@ -1,4 +1,5 @@
 """Frozen pharmacy locations and accredited RSA; presence is not care access."""
+from a6_pins import Pin as _pin
 import math
 
 from semantic_operations import finite
@@ -13,7 +14,7 @@ DEMO = 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
 PATHS = {PHARMACY: PHARMACY_FILE, RSA: RSA_FILE}
 UNITS = {PHARMACY: 'per1000', RSA: 'count'}
 URLS = {PHARMACY: 'https://www.dati.salute.gov.it/', RSA: 'https://servizi.toscana.it/RT/RSA/'}
-HASHES = {'data/source-snapshots/a3-health-pharmacies-benchmark-2025.json': ('b3cd66730e3b18dffd2e4bcfd138051ad1ab4ab262f38b8dffef0ee0783be4f4', 'b6b490ed0dc132a7184959cc59b7c2e47a9828e1a095c01b77b624d61b389ec4'), 'data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json': ('db7b92da7ef9855341dac701053e703676c768eaacbc5c0aa5709f55a728d3e6', '74aad180601b2e7053ca65ec3a7a3e07927c0594b06da655ceaccbf4ab0f0025'), 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json': ('f8249dbeaf3a3c484439dcc5bff39887cc9c2885e418f5cc746a868d5125b3ae', 'a9d2c5d2c6eb464f82a3c3b62b17d147bd4e1c4dc38f068fdd6b616b60654318'), 'data/source-snapshots/istat-demography-lotto-a-2026-08.json': ('8ec47305870a84cd0da4fd0b36dc0ee33693557cec4df0796f56d04f78bb68f7', '24713ad8f1ebeb3b588790973fa4909aa2151f1005b63342691e4129ca852a07'), 'data/source-snapshots/a3-istat-demography-benchmark-2026.json': ('63a5fdefa71a4484edd65f69d1a754ce4f291fd563f9683c76332635a145f943', '82ea7b47b6f4ca16d7c4a71cd1a6806d537aa75940ffbb4aa9dc1f79776acef3')}  # Filled from the reviewed, versioned snapshots; never generated at runtime.
+HASHES = {'data/source-snapshots/a3-health-pharmacies-benchmark-2025.json': (_pin('health_facilities#1'), _pin('health_facilities#2')), 'data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json': (_pin('health_facilities#3'), _pin('health_facilities#4')), 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json': (_pin('health_facilities#5'), _pin('health_facilities#6')), 'data/source-snapshots/istat-demography-lotto-a-2026-08.json': (_pin('health_facilities#7'), _pin('health_facilities#8')), 'data/source-snapshots/a3-istat-demography-benchmark-2026.json': (_pin('health_facilities#9'), _pin('health_facilities#10'))}  # Filled from the reviewed, versioned snapshots; never generated at runtime.
 NOTES = ['health_facilities_presence_not_access_capacity_quality_or_policy_priority',
          'health_facilities_zero_is_local_presence_not_absence_of_services',
          'health_facilities_no_automatic_relation_to_resident_health_outcomes']

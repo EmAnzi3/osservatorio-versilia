@@ -1,4 +1,5 @@
 """Frozen census profiles and regional organic share; no synthetic index."""
+from a6_pins import Pin as _pin
 import hashlib,json,math
 from semantic_operations import finite
 
@@ -9,7 +10,7 @@ ORGANIC='data/source-snapshots/toscana-indicatori-v1.5.0.json'
 BENCHMARK='data/source-snapshots/a3-regione-toscana-indicators-benchmark-2024.json'
 ISTAT='https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/'
 REGION='https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali'
-HASHES={CENSUS:('b3971eeeec4a040557d8f449b75f0367c8d9425d2acb94c9b690543f4c691575','c7f882cf8dbd43acfcb6f636a3782cd4066c59c697b2c970f674875c70387a08'),ORGANIC:('fecb17aa645878d58a4f22d3897f21c7dfa4b050d47f7d095bf269423bc51c77','83eb8bf4143efd70e21e90b0dbad4a236c448d5d930cc671de505eadf742e69a'),BENCHMARK:('79756910e1a13307fb0bde0ab9253777d19df7d1e259c630b3a1de6d9c72dd87','ec6175398eb795d58e39ec9979f79fafc4f2717fea670d61b026aabed64fa301')}
+HASHES={CENSUS:(_pin('agriculture_profile#1'),_pin('agriculture_profile#2')),ORGANIC:(_pin('agriculture_profile#3'),_pin('agriculture_profile#4')),BENCHMARK:(_pin('agriculture_profile#5'),_pin('agriculture_profile#6'))}
 UNIVERSES={'youngManagers':'excludingCollectiveProperties','femaleHolders':'farmsWithHolder','connectedActivities':'generalFarms','informatization':'excludingCollectiveProperties','innovation':'excludingCollectiveProperties'}
 PUBLIC_UNIVERSES={'youngManagers':'Aziende agricole escluse le proprietà collettive','femaleHolders':'Aziende con conduttore','connectedActivities':'Aziende agricole','informatization':'Aziende agricole escluse le proprietà collettive','innovation':'Aziende agricole escluse le proprietà collettive'}
 

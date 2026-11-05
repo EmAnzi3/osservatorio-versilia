@@ -1,4 +1,5 @@
 """Frozen scheduled TPL: municipal trip memberships, GTFS access IDs and span."""
+from a6_pins import Pin as _pin
 import math
 import re
 
@@ -7,8 +8,8 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 
 TRIPS, POINTS, SPAN = KEYS = ('scheduledTplTripsPer1000', 'activeTplAccessPoints', 'tplServiceSpan')
 PATH = 'data/source-snapshots/mobilita-tpl-2026-08-26.json'
-HASH = 'f7178d3bff676b95cf27bf31669147974b0edb7276181b6af2377f77a71ed2ca'
-FINGERPRINT = '5b792e7aaecfff9c65619e7204075d26bd3e3580202b0c4b8545367942e22f3b'
+HASH = _pin('tpl#1')
+FINGERPRINT = _pin('tpl#2')
 DATE = '2026-08-26'
 LABEL = '26 agosto 2026'
 URL = 'https://dati.toscana.it/dataset/rt-oraritb'

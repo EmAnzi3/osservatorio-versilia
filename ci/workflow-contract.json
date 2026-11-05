@@ -252,6 +252,11 @@
         "label": "monthly release period probes",
         "script": "scripts/test_release_period_probes.py",
         "args": []
+      },
+      {
+        "label": "A6 pin registry",
+        "script": "scripts/test_a6_pins.py",
+        "args": []
       }
     ],
     "monitorRuntime": {

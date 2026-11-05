@@ -1,13 +1,14 @@
 """Separate frozen fuel statistics; published EV density with unresolved components."""
+from a6_pins import Pin as _pin
 import calendar
 import math
 import re
 from semantic_query_library_adapters import TOWNS,fingerprint
 
 KEYS=('fuelPrices','evPoints')
-PUBLIC_HASHES={'fuelPrices':'0a4f6ada152b6f53fc182dbf028d85406ae0244f7e4c38e47f59fc74dab2e6a4','evPoints':'56bda8706b02b0756b903de6e4216a6c547473de81d4f8e9b25576ea1af2cb0d'}
-FILES={'daily':('data/source-snapshots/fuel-history-mimit.json','7f34927e952370836c2ed1a49b73ad543b12518c831630c391cac869a78696ec','b78d6a6d597f81feb87c5c04772eccb46208b4c3a8ca5681904e04a0f3161a8c'),
-       'monthly':('data/source-snapshots/fuel-history-mimit-monthly.json','2f8eb340a8a65b5f78c9cbcd8c422483e66a24b54735514177fbe339e068ad3b','973ba78c37341c49db0d013f3065bcc7f06d2eb799a48d09d4f39a89c0fd6c0e')}
+PUBLIC_HASHES={'fuelPrices':_pin('energy#1'),'evPoints':_pin('energy#2')}
+FILES={'daily':('data/source-snapshots/fuel-history-mimit.json',_pin('energy#3'),_pin('energy#4')),
+       'monthly':('data/source-snapshots/fuel-history-mimit-monthly.json',_pin('energy#5'),_pin('energy#6'))}
 FUEL_NOTES=['fuel_snapshot_median_not_monthly_mean_of_daily_medians',
             'fuel_observed_price_not_volume_weighted_or_actual_household_spend',
             'fuel_changing_station_reporting_universe_not_fixed_station_panel',

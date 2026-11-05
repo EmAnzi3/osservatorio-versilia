@@ -1,4 +1,5 @@
 """RGS municipal employers: stock, age, net flows and published training measures."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 import math
@@ -18,9 +19,9 @@ AGE_LABELS = ('55+', '40–54', '<40')
 TRAIN_FIELDS = ('meanTotalRgs', 'totalDays', 'meanMen', 'meanWomen')
 TRAIN_LABELS = ('Media totale RGS', 'Giornate complessive', 'Media uomini', 'Media donne')
 HASHES = {
-    ADMIN: ('66faf69a8d3ba3c5aeaf3015cdc468ffd59fe0814f5c35b98592cd61c0ffa403', '331a95c8e05ee98f7e05c78a0c3cf16b4f2e8c83b91af568bf7344d76b75c457'),
-    TRAIN: ('59b9c99d5baa8c7806aa58078563b9beef0976e056ceb45fb85b4e9a0446bce3', 'fe38702d039edd611ab5670e37334a3ef04206a89b8a93d6dd2a0e07cf64bb5e'),
-    BENCH: ('7400aebb58e4288f45a2e3f9c265c6102b341a9f3203bc64e89fe40f6612d558', '815a4145f3137834dec6e4513b0e5db112d25f72975c2f9e29b9bedc5a5c7bb3'),
+    ADMIN: (_pin('rgs#1'), _pin('rgs#2')),
+    TRAIN: (_pin('rgs#3'), _pin('rgs#4')),
+    BENCH: (_pin('rgs#5'), _pin('rgs#6')),
 }
 
 

@@ -1,4 +1,5 @@
 """Frozen INVALSI school-location observations; no pooling or inferred continuity."""
+from a6_pins import Pin as _pin
 import base64
 import gzip
 import hashlib
@@ -22,13 +23,13 @@ LEVELS = {v: (('Pre-A1', 'A1') if v.startswith('g5-') else
               ('Non ancora B1', 'B1', 'B2') if v.startswith('g13-inglese') else
               tuple('Livello '+str(i) for i in range(1, 6))) for v in VIEWS[KEYS[1]]}
 DIRECTORY = 'data/source-snapshots/invalsi-v138-b64'
-PART_HASHES = ('d4581ad9dd7f7211a8efc16055a3fd5e1702a34c9773cb94bb912680b326f344',
-               '040aa9ff1a19788d8672cfee9c80efbeeda553ccf1a506bc9f69c6e8dee53c7a',
-               '1df9c03c6f8788c940d8a1ba71aa8302d38b883f32950ff662314496c1d183b3',
-               'cf6bdc1d92cf66fc415d49d0e8a329acf32e36b48c19031ecc7fe40cd0c087d7',
-               '92b832d8345e5146e3aa1cd9c0e01f1f4293e8c682ee354aa732413355ec3c15')
-PAYLOAD_SHA = 'bee5b0021704b2053277aa19df35d77ed0aa4b9e2cfc4dfa3d64c16a61c1fd65'
-FINGERPRINT = 'e3b6fbe41f8dd4090b85a5ddc74904137c1c65f4597e63e2f8a7d29924b16b46'
+PART_HASHES = (_pin('invalsi#1'),
+               _pin('invalsi#2'),
+               _pin('invalsi#3'),
+               _pin('invalsi#4'),
+               _pin('invalsi#5'))
+PAYLOAD_SHA = _pin('invalsi#6')
+FINGERPRINT = _pin('invalsi#7')
 NOTES = ['invalsi_comune_plesso_not_student_residence', 'invalsi_aggregation_totale_same_grade_subject_academic_year',
          'invalsi_missing_or_suppressed_cells_not_zero_or_absence_of_schools',
          'invalsi_2019_20_tests_not_conducted_gap_preserved',

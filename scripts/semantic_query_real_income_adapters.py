@@ -1,4 +1,5 @@
 """Cumulative taxable mean income: municipal rounding and national NIC explicit."""
+from a6_pins import Pin as _pin
 import math
 from acquire_a3_benchmark_mef_istat_real_income_annual import validate_snapshot
 from semantic_operations import finite
@@ -9,10 +10,10 @@ YEARS = list(range(2016, 2025))
 PANEL = 'data/source-snapshots/a3-mef-real-income-benchmark-2024.json'
 NIC = 'data/source-snapshots/nic-italia-2016-2024.json'
 HASHES = {
-    PANEL: ('7944f7454584d9047fc8c53087328a99f60309119f61de0f6894bf8e88806a0a', '61a9c47a7c677692d901aa3957d11c65f85a417f18ca74229514d7ebc3d4462a'),
-    NIC: ('78d9c621e60eceb09269dbeddc09a2828ffc06f909611e0ee6cb8d9898ed8b71', 'a2b3398351169f38affa270c3cb3ee93df43332cbcdebfa24b199b711e08eef3'),
+    PANEL: (_pin('real_income#1'), _pin('real_income#2')),
+    NIC: (_pin('real_income#3'), _pin('real_income#4')),
 }
-METRIC_HASH = 'c362a50dfe910b9a5bd7396c3d25c9f5347122e2fc78ca02eb9bd3a8edafc54e'
+METRIC_HASH = _pin('real_income#5')
 NOTES = ['real_income_taxable_mean_not_disposable_household_income',
          'real_income_national_nic_not_local_prices_or_individual_purchasing_power',
          'real_income_cumulative_2016_baseline_not_annual_growth',

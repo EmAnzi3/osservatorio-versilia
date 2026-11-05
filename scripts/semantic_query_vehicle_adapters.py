@@ -1,4 +1,5 @@
 """ACI registered cars: published rounding, native ratios and dated residents."""
+from a6_pins import Pin as _pin
 import math
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -13,9 +14,9 @@ URL = 'https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/'
 UNITS = {MOTOR: 'per1000', EURO: 'percent'}
 FORMULAS = {MOTOR: 'Autovetture ACI 2024 / popolazione residente al 1° gennaio 2026 × 1.000', EURO: 'autovetture Euro 0–3 / autovetture totali × 100'}
 HASHES = {
-    NATIVE: ('67834d9ef2dd5804dc5be39b05abc5afb8c9e6f6d7733aedcd059d2209e3eb9a', 'a99dde898c2f07385c27e6b0c6f424029d16907dd66e88641f263c566249ddf8'),
-    POPULATION: ('8ec47305870a84cd0da4fd0b36dc0ee33693557cec4df0796f56d04f78bb68f7', '24713ad8f1ebeb3b588790973fa4909aa2151f1005b63342691e4129ca852a07'),
-    DEMO: ('63a5fdefa71a4484edd65f69d1a754ce4f291fd563f9683c76332635a145f943', '82ea7b47b6f4ca16d7c4a71cd1a6806d537aa75940ffbb4aa9dc1f79776acef3')}
+    NATIVE: (_pin('vehicle#1'), _pin('vehicle#2')),
+    POPULATION: (_pin('vehicle#3'), _pin('vehicle#4')),
+    DEMO: (_pin('vehicle#5'), _pin('vehicle#6'))}
 NOTES = ['vehicles_registered_stock_not_traffic_actual_use_or_resident_ownership',
          'vehicles_euro_classes_not_measured_air_quality_or_emissions',
          'vehicles_no_automatic_causal_or_policy_priority_claim']

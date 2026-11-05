@@ -1,4 +1,5 @@
 """ERP Lucca cumulative accounting: public rounding and native ratios separate."""
+from a6_pins import Pin as _pin
 import math
 from materialize_erp_arrears_v125 import build_metric
 from semantic_operations import finite
@@ -6,8 +7,8 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('erpArrears',)
 PATH = 'data/source-snapshots/erp-lucca-arrears-2020-2024.json'
-HASH = 'cbaf36702a95054797ab96d259549eb76b4caee0c750187df3c91be7a008c661'
-FINGERPRINT = '5b01c3efcaf83d085e79a5cee9e21303423e0ca7d3b78982d98c67324aaaf164'
+HASH = _pin('erp#1')
+FINGERPRINT = _pin('erp#2')
 YEARS = [2020, 2021, 2022, 2023, 2024]
 NOTES = ['erp_cumulative_accounting_not_annual_unpaid_rent_or_household_share',
          'erp_snapshot_reconciled_original_balance_sheet_pdfs_not_replayed',

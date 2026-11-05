@@ -1,4 +1,5 @@
 """Frozen Istat social expenditure: nominal municipal indices and user-area shares."""
+from a6_pins import Pin as _pin
 import math
 
 from semantic_operations import finite
@@ -19,10 +20,10 @@ SELECTORS = ('Famiglie e minori', 'Disabilità', 'Dipendenze', 'Anziani', 'Immig
 # Explicit semantic selectors: source parts have labels and positional identity, no keys.
 PARTS = ('families-minors', 'disability', 'addictions', 'elderly', 'immigration', 'poverty-hardship', 'multiuser')
 HASHES = {
-    NATIVE: ('b13bdc5b1c579b9db6f6875637b68653869e44b898c59803415f829a6ef3455d',
-             'ad30ce8d8779b275860d1c2e0a083950192792c028ac1977e237ff2a3a1ba3d9'),
-    BENCHMARK: ('d48e8dd1ffdaabf45068a54e5daafabebfc9083073a1d370e6aa1e99303b66d0',
-                'b7917cb3457f0a3ab2cd2e439f5a68283c09d93f83df4b35470c751ec2da47f3'),
+    NATIVE: (_pin('social_spending#1'),
+             _pin('social_spending#2')),
+    BENCHMARK: (_pin('social_spending#3'),
+                _pin('social_spending#4')),
 }
 NOTES = ['social_municipal_arithmetic_means_not_consolidated_versilia',
          'social_spending_not_need_quality_effectiveness_or_policy_priority',
