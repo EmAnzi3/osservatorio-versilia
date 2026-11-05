@@ -93,7 +93,18 @@ SOURCE_BY_METRIC = {'publicWorks': 'Ragioneria Generale dello Stato — Monitora
                     'accreditedRsaCount': 'Regione Toscana — Elenco delle strutture accreditate del sistema sociale integrato',
                     'essentialServicesAccessibility': 'Istat — Indice di fragilità comunale, accessibilità ai servizi essenziali',
                     'municipalFragility': 'Istat — Indice composito di fragilità comunale',
-                    'disability064Per1000': 'Regione Toscana — Indicatori comunali per le politiche locali'}
+                    'disability064Per1000': 'Regione Toscana — Indicatori comunali per le politiche locali',
+                    'landUse': 'ISPRA — Consumo di suolo, dinamiche territoriali e servizi ecosistemici',
+                    'landUseChange': 'ISPRA — Consumo di suolo, dinamiche territoriali e servizi ecosistemici',
+                    'landCoverProfile': 'Regione Toscana — Uso e copertura del suolo (UCS)',
+                    'forestCoverIndex': 'PEFC Italia, Uncem, Legambiente — Foreste in Comune (Carta forestale d’Italia)',
+                    'protectedNaturalAreas': 'Regione Toscana — Aree naturali protette, Natura 2000 e zone Ramsar',
+                    'agriculturalUsedArea': 'Istat — 7° Censimento generale dell’agricoltura 2020',
+                    'agriculturalFarms': 'Istat — 7° Censimento generale dell’agricoltura 2020',
+                    'averageAgriculturalFarmSize': 'Istat — 7° Censimento generale dell’agricoltura 2020',
+                    'cropProfile': 'Istat — 7° Censimento generale dell’agricoltura 2020',
+                    'agriculturalRenewalAndLeadership': 'Istat — 7° Censimento generale dell’agricoltura 2020',
+                    'organicAgriculturalAreaShare': 'Regione Toscana — Indicatori comunali per le politiche locali'}
 MONTHS = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre',
           'novembre', 'dicembre']
 TENS = ['nessuna', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove']
@@ -241,7 +252,10 @@ class Measure:
                 'per100adult': lambda v: num(v, 1) + ' ogni 100 maggiorenni',
                 'per1000young': lambda v: num(v, 1) + ' ogni 1.000 residenti di 0-64 anni',
                 'per1000dec': lambda v: num(v, self.decimals) + ' ogni 1.000 abitanti',
-                'decile': lambda v: f'classe {num(v)} su 10'}[self.unit](value)
+                'decile': lambda v: f'classe {num(v)} su 10',
+                'sqm': lambda v: num(v) + ' m² per abitante',
+                'hectares': lambda v: num(v, self.decimals) + ' ettari',
+                'haPerFarm': lambda v: num(v, 1) + ' ettari per azienda'}[self.unit](value)
 
     def short(self, value: float) -> str:
         return {'eurm2month': lambda v: num(v, 2) + ' €', 'per1000': lambda v: num(v), 'per1000s': lambda v: signed(v, self.decimals), 'per100': lambda v: num(v, 1),
@@ -249,7 +263,8 @@ class Measure:
                 'eurm2': lambda v: num(v) + ' €', 'per100k': lambda v: num(v), 'per100res': lambda v: num(v, 1),
                 'minutes': lambda v: num(v, 1), 'per100adult': lambda v: num(v, 1),
                 'per1000young': lambda v: num(v, 1), 'per1000dec': lambda v: num(v, self.decimals),
-                'decile': lambda v: num(v)}.get(self.unit, self.fmt)(value)
+                'decile': lambda v: num(v), 'sqm': lambda v: num(v) + ' m²',
+                'hectares': lambda v: num(v, self.decimals) + ' ha', 'haPerFarm': lambda v: num(v, 1) + ' ha'}.get(self.unit, self.fmt)(value)
 
     def rank(self, code: str) -> int:
         return next(r for c, _, r in self.ranking if c == code)
@@ -3360,7 +3375,262 @@ def welfare(engine: Engine) -> dict:
              ('terzo-settore', 'Il Terzo settore')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare}
+# ---------------------------------------------------------------------------
+# Dossier «Suolo, boschi e agricoltura in Versilia».
+
+def suolo(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'used': engine.measure('used', 'landUse', 'total', 'Suolo consumato, % della superficie del Comune', 'percent', 1,
+                               benchmarks=TI, versilia=True),
+        'sqm': engine.measure('sqm', 'landUse', 'view:sqmPerResident', 'Suolo consumato per abitante, metri quadrati',
+                              'sqm', 0, versilia=True),
+        'gross': engine.measure('gross', 'landUseChange', 'view:gross', 'Nuovo suolo consumato nell’anno, ettari',
+                                'hectares', 2),
+        'net': engine.measure('net', 'landUseChange', 'view:net',
+                              'Consumo di suolo netto nell’anno, tolti i ripristini, ettari', 'hectares', 2),
+        'art': engine.measure('art', 'landCoverProfile', 'part:artificialized',
+                              'Superfici artificiali (edifici, strade, aree urbane), % del territorio', 'percent', 1,
+                              versilia=True),
+        'agri': engine.measure('agri', 'landCoverProfile', 'part:agricultural', 'Superfici agricole, % del territorio',
+                               'percent', 1, versilia=True),
+        'nat': engine.measure('nat', 'landCoverProfile', 'part:forest_seminatural_total',
+                              'Boschi e ambienti seminaturali, % del territorio', 'percent', 1, versilia=True),
+        'wet': engine.measure('wet', 'landCoverProfile', 'part:wetlands', 'Zone umide, % del territorio', 'percent', 1,
+                              versilia=True),
+        'water': engine.measure('water', 'landCoverProfile', 'part:water', 'Acque, % del territorio', 'percent', 1,
+                                versilia=True),
+        'forest': engine.measure('forest', 'forestCoverIndex', 'total', 'Superficie coperta da bosco, % del Comune',
+                                 'percent', 1, versilia=True),
+        'forest_ha': engine.measure('forest_ha', 'forestCoverIndex', 'view:hectares', 'Superficie coperta da bosco, ettari',
+                                    'hectares', 0),
+        'prot': engine.measure('prot', 'protectedNaturalAreas', 'total',
+                               'Territorio in aree naturali protette, % del Comune', 'percent', 1, versilia=True),
+        'n2k': engine.measure('n2k', 'protectedNaturalAreas', 'part:natura2000',
+                              'Territorio nei siti della rete Natura 2000, % del Comune', 'percent', 1, versilia=True),
+        'sau': engine.measure('sau', 'agriculturalUsedArea', 'view:normalized',
+                              'Superficie agricola utilizzata, % della superficie del Comune', 'percent', 1, versilia=True),
+        'sau_ha': engine.measure('sau_ha', 'agriculturalUsedArea', 'total', 'Superficie agricola utilizzata, ettari',
+                                 'hectares', 0),
+        'farms': engine.measure('farms', 'agriculturalFarms', 'total', 'Aziende agricole con centro nel Comune, numero',
+                                'count', 0),
+        'size': engine.measure('size', 'averageAgriculturalFarmSize', 'total',
+                               'Superficie agricola utilizzata media per azienda, ettari', 'haPerFarm', 1,
+                               benchmarks=TI, versilia=True),
+        'arable': engine.measure('arable', 'cropProfile', 'part:ARLAND', 'Seminativi, ettari', 'hectares', 0),
+        'olive': engine.measure('olive', 'cropProfile', 'part:OLIVOOILTR', 'Olivi per olive da olio, ettari', 'hectares', 0),
+        'meadow': engine.measure('meadow', 'cropProfile', 'part:PGRAPM', 'Prati permanenti e pascoli, ettari', 'hectares', 0),
+        'young': engine.measure('young', 'agriculturalRenewalAndLeadership', 'part:youngManagers',
+                                'Aziende agricole con capo azienda fino a 40 anni, %', 'percent', 1, versilia=True),
+        'women': engine.measure('women', 'agriculturalRenewalAndLeadership', 'part:femaleHolders',
+                                'Aziende agricole condotte da una donna, %', 'percent', 1, versilia=True),
+        'organic': engine.measure('organic', 'organicAgriculturalAreaShare', 'total',
+                                  'Superficie agricola coltivata con metodo biologico, %', 'percent', 1,
+                                  benchmarks=('tuscany',)),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    span = lambda k, f: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+    above = lambda k, scope: [nm(c) for c, v, _ in m[k].ranking if v > m[k].benchmarks[scope]]
+    ha = lambda v, d=0: num(v, d) + (' ettaro' if round(v, d) == 1 else ' ettari')
+
+    # 01 — suolo consumato
+    used, sqm = m['used'], m['sqm']
+    ut, ui = used.benchmarks['tuscany'], used.benchmarks['italy']
+    u_above = above('used', 'tuscany')
+    u_below = [nm(c) for c in codes if nm(c) not in u_above]
+    used_text = (
+        f'Nel {used.period} edifici, strade, piazzali e altre superfici impermeabilizzate coprono <b>{il(pct(used.versilia))} '
+        f'del territorio della Versilia</b>, contro {il(pct(ut))} della Toscana e {il(pct(ui))} dell’Italia: '
+        f'{span("used", pct)}. '
+        + (f'Tutti i Comuni superano la media toscana. ' if len(u_above) == total else
+           f'Solo {join_names(u_below)} {"resta" if len(u_below) == 1 else "restano"} sotto la media toscana. ' if u_above else
+           'Nessun Comune supera la media toscana. ')
+        + f'Per abitante sono {num(sqm.versilia)} metri quadrati, da {num(lo("sqm")[1])} a {nm(lo("sqm")[0])} a '
+        f'{num(hi("sqm")[1])} a {nm(hi("sqm")[0])}, perché nei '
+        'Comuni con pochi residenti strade ed edifici si dividono fra meno persone.')
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(used.values[c]))} del territorio è consumato nel {used.period} '
+                  f'({ordinal(used.rank(c))} su {total}), {num(sqm.values[c])} m² per abitante; Toscana {pct(ut)}.')
+              for c in codes}
+    ch1 = chapter(1, 'consumato', 'Il suolo consumato', 'Quanta parte del territorio è coperta da edifici e asfalto?',
+        f'<p>{used_text}</p>{bar_chart(used, N, "Suolo consumato sulla superficie del Comune")}'
+        f'{bar_chart(sqm, N, "Suolo consumato per abitante")}' + town_blocks(towns1),
+        'Il suolo coperto da cemento e asfalto non assorbe più la pioggia, non produce cibo e non ospita piante e animali, '
+        'e tornare indietro è difficile e costoso. Nei Comuni sulla costa gran parte della pianura è già costruita: il '
+        'confronto con la Toscana, dove pesano montagne e colline, va letto tenendo conto di questo.')
+
+    # 02 — consumo dell'anno
+    gross, net = m['gross'], m['net']
+    zero = [nm(c) for c, v, _ in gross.ranking if v == 0]
+    restored = [(c, v) for c, v, _ in gross.ranking if net.values[c] != v]
+    gross_text = (
+        f'Nel {gross.period} in Versilia è stato coperto nuovo suolo soprattutto a {nm(hi("gross")[0])}, '
+        f'<b>{ha(hi("gross")[1], 2)}</b>, e a {nm(gross.ranking[1][0])}, {ha(gross.ranking[1][1], 2)}. '
+        + (f'A {join_names(zero)} il consumo dell’anno è nullo. ' if zero else '')
+        + ('Il consumo netto toglie le superfici restituite alla natura nello stesso anno: '
+           + '; '.join(f'a {nm(c)} {ha(net.values[c], 2)} su {ha(v, 2)}' for c, v in restored) + '.'
+           if restored else 'Nello stesso anno non risultano superfici restituite alla natura.'))
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: {ha(gross.values[c], 2)} di nuovo suolo consumato nel {gross.period}, '
+                  f'{ha(net.values[c], 2)} al netto dei ripristini.') for c in codes}
+    ch2 = chapter(2, 'ultimo-anno', 'Il consumo dell’ultimo anno', 'Quanto suolo si è consumato nell’ultimo anno?',
+        f'<p>{gross_text}</p>{bar_chart(gross, N, "Nuovo suolo consumato nell’anno")}' + town_blocks(towns2),
+        'Un ettaro sono 10.000 metri quadrati, più o meno un campo da calcio e mezzo. I numeri annuali sono piccoli ma si '
+        'sommano anno dopo anno, e dicono dove il territorio sta ancora cambiando. Non distinguono un cantiere '
+        'temporaneo da un edificio definitivo, e il netto non certifica un vero recupero ambientale.')
+
+    # 03 — copertura
+    art, agri, nat, wet, water = m['art'], m['agri'], m['nat'], m['wet'], m['water']
+    cover_text = (
+        f'Secondo la carta regionale dell’uso del suolo del {art.period}, in Versilia boschi e ambienti seminaturali '
+        f'occupano <b>{il(pct(nat.versilia))} del territorio</b>, le superfici agricole {il(pct(agri.versilia))} e quelle '
+        f'artificiali {il(pct(art.versilia))}. Il peso cambia molto da un Comune all’altro: le superfici artificiali vanno '
+        f'{span("art", pct)}, i boschi e gli ambienti seminaturali {span("nat", pct)}. '
+        f'{nm(hi("wet")[0])}, con il lago e il padule di Massaciuccoli, ha la quota più alta di zone umide '
+        f'({pct(hi("wet")[1])}) e di acque ({pct(water.values[hi("wet")[0]])}); segue, molto più indietro, '
+        f'{nm(wet.ranking[1][0])} con {pct(wet.ranking[1][1])} di zone umide e {pct(water.values[wet.ranking[1][0]])} di '
+        'acque.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: boschi e ambienti seminaturali {pct(nat.values[c])}, superfici agricole '
+                  f'{pct(agri.values[c])}, superfici artificiali {pct(art.values[c])}, zone umide {pct(wet.values[c])}, '
+                  f'acque {pct(water.values[c])} del territorio nel {art.period}.') for c in codes}
+    ch3 = chapter(3, 'copertura', 'Com’è fatto il territorio', 'Quanta parte del territorio è bosco, campagna o città?',
+        f'<p>{cover_text}</p>{bar_chart(nat, N, "Boschi e ambienti seminaturali")}'
+        f'{bar_chart(agri, N, "Superfici agricole")}{bar_chart(art, N, "Superfici artificiali")}' + town_blocks(towns3),
+        'La carta dell’uso del suolo mostra come si divide il territorio fra città, campagna e natura. È una fonte '
+        'diversa da quella del suolo consumato: misura le superfici artificiali con un altro metodo e si ferma al '
+        f'{art.period}, per cui i due valori non coincidono e non si confrontano fra loro.')
+
+    # 04 — boschi
+    forest, fha = m['forest'], m['forest_ha']
+    forest_text = (
+        f'Il bosco copre <b>{il(pct(forest.versilia))} della Versilia</b>: {span("forest", pct)}. In ettari, il bosco più '
+        f'esteso è quello di {nm(hi("forest_ha")[0])}, con {ha(hi("forest_ha")[1])}, seguito da {nm(fha.ranking[1][0])} '
+        f'con {ha(fha.ranking[1][1])}.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {ha(fha.values[c])} di bosco, {il(pct(forest.values[c]))} del Comune '
+                  f'({ordinal(forest.rank(c))} su {total}).') for c in codes}
+    ch4 = chapter(4, 'boschi', 'I boschi', 'Quanto bosco c’è in Versilia?',
+        f'<p>{forest_text}</p>{bar_chart(forest, N, "Superficie coperta da bosco")}' + town_blocks(towns4),
+        'I boschi trattengono il terreno sui versanti, regolano l’acqua, assorbono anidride carbonica e sono una risorsa '
+        'per il legname e il turismo. Il dato misura quanta superficie è coperta, non lo stato di salute del bosco né '
+        'quanto è curato, e viene da una carta diversa da quella dell’uso del suolo.')
+
+    # 05 — aree protette
+    prot, n2k = m['prot'], m['n2k']
+    prot_text = (
+        f'Parchi, riserve, siti della rete europea Natura 2000 e zone umide di importanza internazionale coprono, '
+        f'senza contare due volte le aree sovrapposte, <b>{il(pct(prot.versilia))} del territorio della Versilia</b>: '
+        f'{span("prot", pct)}. I soli siti Natura 2000 coprono {il(pct(n2k.versilia))} della Versilia, '
+        f'{span("n2k", pct)}.')
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(prot.values[c]))} del territorio è in un’area naturale protetta '
+                  f'({ordinal(prot.rank(c))} su {total}), {il(pct(n2k.values[c]))} in un sito Natura 2000.')
+              for c in codes}
+    ch5 = chapter(5, 'aree-protette', 'Le aree protette', 'Quanta parte del territorio è protetta?',
+        f'<p>{prot_text}</p>{bar_chart(prot, N, "Territorio in aree naturali protette")}'
+        f'{bar_chart(n2k, N, "Territorio nei siti Natura 2000")}' + town_blocks(towns5),
+        'Nelle aree protette valgono regole più severe per costruire e trasformare il territorio, e ci sono fondi e '
+        'competenze dedicate. Il dato dice quanta superficie è tutelata, non in che stato sono gli habitat e le specie '
+        'che la abitano.')
+
+    # 06 — agricoltura
+    sau, sau_ha, farms, size = m['sau'], m['sau_ha'], m['farms'], m['size']
+    st_, si_ = size.benchmarks['tuscany'], size.benchmarks['italy']
+    arable, olive, meadow = m['arable'], m['olive'], m['meadow']
+    agri_text = (
+        f'Al censimento dell’agricoltura del {sau.period} i campi coltivati, i prati e i pascoli occupano '
+        f'<b>{il(pct(sau.versilia))} della superficie della Versilia</b>: {span("sau", pct)}. '
+        f'{nm(hi("sau_ha")[0])} da solo ha {ha(hi("sau_ha")[1])} di superficie agricola utilizzata. '
+        f'Le aziende sono piccole: in media {num(size.versilia, 1)} ettari ciascuna, contro {num(st_, 1)} in Toscana e '
+        f'{num(si_, 1)} in Italia. Le colture principali sono i seminativi, cioè i campi a rotazione '
+        f'({ha(arable.values[hi("arable")[0]])} a {nm(hi("arable")[0])}), gli olivi da olio '
+        f'({ha(olive.values[hi("olive")[0]])} a {nm(hi("olive")[0])}) e i prati e pascoli.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {num(farms.values[c])} aziende agricole, {ha(sau_ha.values[c])} di superficie '
+                  f'agricola utilizzata ({pct(sau.values[c])} del Comune), {num(size.values[c], 1)} ettari per azienda; '
+                  f'{ha(arable.values[c])} di seminativi, {ha(olive.values[c])} di olivi, {ha(meadow.values[c])} di prati '
+                  'e pascoli.') for c in codes}
+    ch6 = chapter(6, 'agricoltura', 'L’agricoltura', 'Quanta terra si coltiva, e come?',
+        f'<p>{agri_text}</p>{bar_chart(sau, N, "Superficie agricola utilizzata sulla superficie del Comune")}'
+        f'{bar_chart(size, N, "Superficie agricola media per azienda")}' + town_blocks(towns6),
+        'L’agricoltura tiene curato il territorio, soprattutto in collina e nella piana, e produce cibo e paesaggio. '
+        f'I dati sono di un censimento del {sau.period}: da allora molte cose possono essere cambiate. Le aziende '
+        'piccole non sono per forza meno produttive, e gli ettari di una coltura non dicono quanto rende.')
+
+    # 07 — chi guida le aziende
+    young, women, organic = m['young'], m['women'], m['organic']
+    ot = organic.benchmarks['tuscany']
+    lead_text = (
+        f'Solo <b>{il(pct(young.versilia))} delle aziende agricole della Versilia</b> ha un capo azienda di 40 anni o '
+        f'meno: {span("young", pct)}. A {nm(hi("young")[0])} il valore riguarda solo {num(farms.values[hi("young")[0]])} '
+        f'aziende, e basta una sola azienda per cambiarlo di molto. Le aziende condotte da una donna sono '
+        f'{il(pct(women.versilia))}: {span("women", pct)}. Nel {organic.period} la superficie coltivata con metodo '
+        f'biologico va {span("organic", pct)} della superficie agricola, contro {il(pct(ot))} della Toscana: '
+        + ('tutti i Comuni sono molto sotto la media regionale.' if all(v < ot for v in organic.values.values()) else
+           f'la superano {join_names(above("organic", "tuscany"))}.'))
+    towns7 = {c: (f'<b>{esc(nm(c))}</b>: capo azienda fino a 40 anni nel {pct(young.values[c])} delle aziende, '
+                  f'conduttrice donna nel {pct(women.values[c])}; biologico {il(pct(organic.values[c]))} della superficie '
+                  f'agricola nel {organic.period}.') for c in codes}
+    ch7 = chapter(7, 'aziende', 'Chi guida le aziende', 'Le aziende agricole hanno un ricambio?',
+        f'<p>{lead_text}</p>{bar_chart(young, N, "Aziende con capo azienda fino a 40 anni")}'
+        f'{bar_chart(women, N, "Aziende condotte da una donna")}'
+        f'{bar_chart(organic, N, "Superficie agricola biologica")}' + town_blocks(towns7),
+        'Senza giovani che subentrano molte aziende rischiano di chiudere, e con loro la cura dei terreni. Il capo '
+        'azienda, che gestisce l’attività ogni giorno, non è sempre il conduttore, che ne ha la responsabilità: le due '
+        'quote hanno basi diverse e non si sommano. Il biologico è un dato regionale più recente del censimento.')
+
+    key_points = [
+        (pct(used.versilia), f'Del territorio della Versilia è coperto da edifici e asfalto; in Toscana {pct(ut)}.',
+         'consumato'),
+        (pct(hi('used')[1]), f'Del territorio di {nm(hi("used")[0])} è suolo consumato, il valore più alto della Versilia.',
+         'consumato'),
+        (pct(forest.versilia), 'Della Versilia è coperto da bosco.', 'boschi'),
+        (pct(prot.versilia), 'Del territorio della Versilia è in un’area naturale protetta.', 'aree-protette'),
+        (num(size.versilia, 1) + ' ettari', f'Superficie agricola media per azienda in Versilia; in Toscana '
+                                            f'{num(st_, 1)}.', 'agricoltura'),
+        (pct(young.versilia), 'Delle aziende agricole ha un capo azienda fino a 40 anni.', 'aziende'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Suolo consumato', pct(used.values[c]), f'Toscana {pct(ut)}'),
+        summary_item('Nuovo suolo consumato nell’anno', ha(gross.values[c], 2), gross.period),
+        summary_item('Bosco', pct(forest.values[c]), f'Versilia {pct(forest.versilia)}'),
+        summary_item('Aree naturali protette', pct(prot.values[c]), f'Versilia {pct(prot.versilia)}'),
+        summary_item('Superficie agricola utilizzata', pct(sau.values[c]), f'Versilia {pct(sau.versilia)}'),
+        summary_item('Ettari per azienda agricola', num(size.values[c], 1), f'Toscana {num(st_, 1)}'),
+        summary_item('Superficie agricola biologica', pct(organic.values[c]), f'Toscana {pct(ot)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'In che stato sono gli habitat e le specie animali e vegetali, dentro e fuori dalle aree protette.',
+        'Quanto è fertile e sano il suolo che resta libero, e quanto è inquinato.',
+        'Come si usano davvero gli edifici e le aree costruite, per esempio quante case sono vuote.',
+        'Quanto rendono le aziende agricole e quante sono nate o hanno chiuso dopo il censimento del 2020.',
+        'Come cambiano nel tempo bosco e aree protette, perché le carte disponibili sono fotografie di un solo momento.',
+    ]
+    return dict(
+        slug='suolo', title='Suolo, boschi e agricoltura in Versilia', eyebrow='Dossier · Territorio',
+        unknown_topic='sul territorio', theme='ambiente', theme_label='Tutti i dati sull’ambiente',
+        lead='Quanto suolo è coperto da edifici e asfalto e quanto se ne consuma ancora, com’è diviso il territorio fra '
+             'città, campagna e natura, quanto bosco e quante aree protette ci sono, e com’è fatta l’agricoltura: una '
+             'lettura dei dati pubblici sul territorio nei sette Comuni della Versilia.',
+        description='Suolo consumato, consumo annuale, uso del suolo, boschi, aree protette, superficie agricola, '
+                    'aziende agricole, giovani agricoltori e biologico nei sette Comuni della Versilia, con confronti con '
+                    'la Toscana e l’Italia.',
+        periods=f'Suolo consumato {used.period}; uso del suolo {art.period}; bosco {forest.period.replace("-", "–")}; '
+                f'aree protette al {period_label(prot.period)}; censimento dell’agricoltura {sau.period}; biologico '
+                f'{organic.period}.',
+        method='I dati vengono dall’ISPRA (consumo di suolo), dalla Regione Toscana (carta dell’uso del suolo, aree '
+               'protette, agricoltura biologica), dal rapporto Foreste in Comune (bosco) e dal censimento Istat '
+               'dell’agricoltura. Il valore della Versilia è calcolato sommando le superfici dei sette Comuni dove sono '
+               'disponibili; per il consumo annuale e per il biologico il confronto è solo fra Comuni. Suolo consumato, '
+               'uso del suolo e bosco vengono da fonti diverse e non si confrontano fra loro.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('consumato', 'Il suolo consumato'), ('ultimo-anno', 'Il consumo dell’ultimo anno'),
+             ('copertura', 'Com’è fatto il territorio'), ('boschi', 'I boschi'), ('aree-protette', 'Le aree protette'),
+             ('agricoltura', 'L’agricoltura'), ('aziende', 'Chi guida le aziende')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo}
 
 
 # ---------------------------------------------------------------------------
@@ -3382,7 +3652,8 @@ def write_csv(dossier: dict, names: dict[str, str], path: Path) -> None:
             'kg': 'kg per abitante', 'per100k': 'ogni 100.000 abitanti', 'per100res': 'ogni 100 abitanti',
             'minutes': 'minuti', 'per100adult': 'ogni 100 residenti maggiorenni',
             'per1000young': 'ogni 1.000 residenti di 0-64 anni', 'per1000dec': 'ogni 1.000 abitanti',
-            'decile': 'classe da 1 (meno fragile) a 10 (più fragile)'}
+            'decile': 'classe da 1 (meno fragile) a 10 (più fragile)', 'sqm': 'metri quadrati per abitante',
+            'hectares': 'ettari', 'haPerFarm': 'ettari per azienda'}
     for measure in dossier['measures'].values():
         rows = [(names[c], v) for c, v, _ in measure.ranking]
         if measure.versilia is not None:
@@ -3483,7 +3754,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi e sul welfare, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare e sul territorio, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -3504,7 +3775,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi e welfare.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare e territorio.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',

@@ -1,5 +1,29 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Suolo, boschi e agricoltura in Versilia» (5 novembre 2026)
+
+Branch `feature/dossier-suolo`, quattordicesimo dossier in forma di relazione (slug `suolo`,
+tema ambiente), scheda `suolo` di `ci/territorial-dossier-program.json`, con tutti i nove
+`metricRefs` più `agriculturalFarms` e `averageAgriculturalFarmSize`. Sette capitoli:
+
+1. suolo consumato: `landUse` 2024 in % con Toscana, Italia e Versilia, e `view:sqmPerResident`
+   (nuova unità `sqm`);
+2. consumo dell’ultimo anno: `landUseChange` lordo e netto 2024 in ettari (nuova unità
+   `hectares`), solo Comuni: il motore non aggrega i flussi;
+3. com’è fatto il territorio: `landCoverProfile` UCS 2019, macroclassi artificiali, agricole,
+   boschi e seminaturali, zone umide e acque, mai sommate fra loro;
+4. boschi: `forestCoverIndex` (Foreste in Comune, CFI 2020 aggiornata 2024), % e ettari;
+5. aree protette: `protectedNaturalAreas` totale (unione geometrica) e Natura 2000;
+6. agricoltura: SAU sulla superficie (`view:normalized`), ettari, aziende, dimensione media con
+   Toscana e Italia (nuova unità `haPerFarm`), seminativi, olivi da olio, prati e pascoli
+   (`VINEY` escluso: copertura parziale);
+7. chi guida le aziende: capi azienda fino a 40 anni e conduttrici donne con Versilia
+   ponderata, biologico 2024 con Toscana (nessun aggregato Versilia).
+
+Fonti con nome pubblico per metrica in `SOURCE_BY_METRIC`, perché gli URL regionali generici
+corrisponderebbero a fonti sbagliate. Suolo consumato ISPRA, UCS e carta forestale sono fonti
+distinte e il testo non le confronta; superficie tutelata non misura lo stato della biodiversità.
+
 ## Dossier «Il welfare in Versilia» (4 novembre 2026)
 
 Branch `feature/dossier-welfare`, tredicesimo dossier in forma di relazione (slug `welfare`,
