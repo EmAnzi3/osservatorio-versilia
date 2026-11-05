@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto dati per lifeExpectancy: storico ARS 2008–2022 e sesso."""
+"""Contratto dati per lifeExpectancy: storico ARS 2008–2023 e sesso."""
 from __future__ import annotations
 
 import json
@@ -9,9 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
 SNAPSHOT = json.loads((ROOT / "data" / "source-snapshots" / "ars-life-expectancy-1290-2008-2022.json").read_text(encoding="utf-8"))
 
-YEARS = list(range(2008, 2023))
+YEARS = list(range(2008, 2024))
 SEXES = ["totale", "maschi", "femmine"]
-EXPECTED_SHA = "ba1d0e9580eedf4a9b495032bb0fde70afc1b8ec14aae3752c7c7da847ba51f3"
+EXPECTED_SHA = "3dea01fe19c61da76c3916d2c33b15dfb9a46c161cefcaf38302f6e5c1ca3b3d"
 TOWN_CODES = {"046005", "046013", "046018", "046024", "046028", "046030", "046033"}
 
 
@@ -27,17 +27,17 @@ def rounded(value: float) -> float:
 def main() -> None:
     require(SNAPSHOT["indicator"]["id"] == 1290, "Snapshot: indicatore ARS diverso da 1290")
     require(SNAPSHOT["source"]["csvSha256"] == EXPECTED_SHA, "Snapshot: hash dati.csv inatteso")
-    require(SNAPSHOT["scope"]["years"] == YEARS, "Snapshot: annualità diverse da 2008–2022")
+    require(SNAPSHOT["scope"]["years"] == YEARS, "Snapshot: annualità diverse da 2008–2023")
     require(SNAPSHOT["scope"]["sexes"] == SEXES, "Snapshot: sessi diversi da Totale/Maschi/Femmine")
     require(SNAPSHOT["scope"]["coverage"] == "7/7", "Snapshot: copertura diversa da 7/7")
-    require(SNAPSHOT["scope"]["expectedRows"] == 405, "Snapshot: numero osservazioni diverso da 405")
+    require(SNAPSHOT["scope"]["expectedRows"] == 432, "Snapshot: numero osservazioni diverso da 432")
 
     metric = SITE["metrics"]["lifeExpectancy"]
     meta = metric["meta"]
     require(meta.get("compositeType") == "sexBreakdown", "lifeExpectancy: compositeType sexBreakdown mancante")
     require(meta.get("defaultSex") == "totale", "lifeExpectancy: defaultSex deve essere totale")
     require([item["key"] for item in meta.get("sexOptions", [])] == SEXES, "lifeExpectancy: opzioni sesso incoerenti")
-    require(metric.get("history", {}).get("years") == YEARS, "lifeExpectancy: storico 2008–2022 mancante")
+    require(metric.get("history", {}).get("years") == YEARS, "lifeExpectancy: storico 2008–2023 mancante")
     require(metric.get("history", {}).get("coverage") == "7/7", "lifeExpectancy: copertura storica diversa da 7/7")
     require(metric.get("method", {}).get("coverage") == "7/7", "lifeExpectancy: metodo privo di copertura 7/7")
 
@@ -57,7 +57,7 @@ def main() -> None:
             require(len(values) == len(YEARS), f"{row['town']} {sex}: valori incompleti")
             expected = [rounded(v) for v in SNAPSHOT["series"][code][sex]]
             require(values == expected, f"{row['town']} {sex}: valori diversi dallo snapshot")
-            require(rounded(part["value"]) == expected[-1], f"{row['town']} {sex}: valore corrente non allineato al 2022")
+            require(rounded(part["value"]) == expected[-1], f"{row['town']} {sex}: valore corrente non allineato al 2023")
         require(rounded(row["value"]) == rounded(parts[0]["value"]), f"{row['town']}: totale corrente diverso dalla parte Totale")
         require(row.get("series") == parts[0]["series"], f"{row['town']}: serie base non coincide con Totale")
 
@@ -69,7 +69,7 @@ def main() -> None:
         expected = [rounded(v) for v in SNAPSHOT["series"]["VERSILIA"][sex]]
         require(part["series"]["years"] == YEARS, f"Versilia {sex}: anni incompleti")
         require(part["series"]["values"] == expected, f"Versilia {sex}: valori diversi dallo snapshot")
-        require(rounded(part["value"]) == expected[-1], f"Versilia {sex}: valore corrente non allineato al 2022")
+        require(rounded(part["value"]) == expected[-1], f"Versilia {sex}: valore corrente non allineato al 2023")
     require(rounded(aggregate["value"]) == rounded(aggregate_parts[0]["value"]), "Versilia: aggregato base diverso dal Totale ufficiale")
     require("pubblicato direttamente" in aggregate.get("note", "").lower(), "Versilia: deve essere esplicito che l'aggregato è ufficiale ARS")
 
@@ -77,10 +77,10 @@ def main() -> None:
     require(set(benchmarks) == set(SEXES), "Benchmark Toscana per sesso incompleti")
     for sex in SEXES:
         expected = rounded(SNAPSHOT["series"]["TOSCANA"][sex][-1])
-        require(rounded(benchmarks[sex]["tuscany"]) == expected, f"Toscana {sex}: benchmark 2022 incoerente")
-        require(str(benchmarks[sex]["year"]) == "2022", f"Toscana {sex}: anno benchmark incoerente")
+        require(rounded(benchmarks[sex]["tuscany"]) == expected, f"Toscana {sex}: benchmark 2023 incoerente")
+        require(str(benchmarks[sex]["year"]) == "2023", f"Toscana {sex}: anno benchmark incoerente")
 
-    print("lifeExpectancy v1.22: 2008–2022, Totale/Maschi/Femmine, 7/7, Versilia e Toscana ufficiali ARS: OK")
+    print("lifeExpectancy v1.22: 2008–2023, Totale/Maschi/Femmine, 7/7, Versilia e Toscana ufficiali ARS: OK")
 
 
 if __name__ == "__main__":

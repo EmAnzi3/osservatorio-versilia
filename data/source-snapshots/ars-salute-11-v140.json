@@ -34,13 +34,14 @@
         "2010-2019",
         "2011-2020",
         "2012-2021",
-        "2013-2022"
+        "2013-2022",
+        "2014-2023"
       ],
       "coverage": "7/7",
       "sourceFile": {
         "name": "1499-dati.csv",
-        "sha256": "bed981c6e4744de20accc3e815ff6eae7b8f3d24d8e4e09dba19ec5b9d6174ee",
-        "bytes": 1564849
+        "sha256": "83a1976b490f1788aee151f92537d1f68c840014cf4b7d4ed18a6fec5dcbb34f",
+        "bytes": 1686242
       },
       "series": {
         "Camaiore": [
@@ -175,6 +176,17 @@
             "standardized": 258.789,
             "ci95Low": 243.23,
             "ci95High": 274.348
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46005",
+            "geography": "Camaiore",
+            "den": 321672,
+            "num": 1084,
+            "raw": 336.989,
+            "standardized": 254.614,
+            "ci95Low": 239.291,
+            "ci95High": 269.938
           }
         ],
         "Forte dei Marmi": [
@@ -309,6 +321,17 @@
             "standardized": 268.041,
             "ci95Low": 238.313,
             "ci95High": 297.769
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46013",
+            "geography": "Forte dei Marmi",
+            "den": 73039,
+            "num": 324,
+            "raw": 443.599,
+            "standardized": 261.379,
+            "ci95Low": 232.092,
+            "ci95High": 290.667
           }
         ],
         "Massarosa": [
@@ -443,6 +466,17 @@
             "standardized": 274.447,
             "ci95Low": 254.294,
             "ci95High": 294.599
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46018",
+            "geography": "Massarosa",
+            "den": 222008,
+            "num": 708,
+            "raw": 318.907,
+            "standardized": 265.128,
+            "ci95Low": 245.459,
+            "ci95High": 284.797
           }
         ],
         "Pietrasanta": [
@@ -577,6 +611,17 @@
             "standardized": 258.454,
             "ci95Low": 240.979,
             "ci95High": 275.928
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46024",
+            "geography": "Pietrasanta",
+            "den": 235667,
+            "num": 860,
+            "raw": 364.922,
+            "standardized": 252.456,
+            "ci95Low": 235.296,
+            "ci95High": 269.615
           }
         ],
         "Seravezza": [
@@ -711,6 +756,17 @@
             "standardized": 265.912,
             "ci95Low": 241.419,
             "ci95High": 290.406
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46028",
+            "geography": "Seravezza",
+            "den": 128523,
+            "num": 454,
+            "raw": 353.244,
+            "standardized": 254.861,
+            "ci95Low": 231.113,
+            "ci95High": 278.609
           }
         ],
         "Stazzema": [
@@ -845,6 +901,17 @@
             "standardized": 345.361,
             "ci95Low": 288.438,
             "ci95High": 402.283
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46030",
+            "geography": "Stazzema",
+            "den": 30544,
+            "num": 137,
+            "raw": 448.533,
+            "standardized": 324.956,
+            "ci95Low": 269.648,
+            "ci95High": 380.263
           }
         ],
         "Viareggio": [
@@ -979,6 +1046,17 @@
             "standardized": 268.721,
             "ci95Low": 257.469,
             "ci95High": 279.972
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46033",
+            "geography": "Viareggio",
+            "den": 619183,
+            "num": 2222,
+            "raw": 358.86,
+            "standardized": 263.844,
+            "ci95Low": 252.734,
+            "ci95High": 274.953
           }
         ],
         "Versilia": [
@@ -1113,9 +1191,21 @@
             "standardized": 267.244,
             "ci95Low": 260.321,
             "ci95High": 274.167
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "202M",
+            "geography": "Versilia",
+            "den": 1630636,
+            "num": 5789,
+            "raw": 355.015,
+            "standardized": 260.986,
+            "ci95Low": 254.18,
+            "ci95High": 267.792
           }
         ]
-      }
+      },
+      "retrieved": "2026-11-05"
     },
     "1327": {
       "indicatorId": 1327,
@@ -1143,13 +1233,14 @@
         "2010-2019",
         "2011-2020",
         "2012-2021",
-        "2013-2022"
+        "2013-2022",
+        "2014-2023"
       ],
       "coverage": "7/7",
       "sourceFile": {
         "name": "1327-dati.csv",
-        "sha256": "982c17c547c1d39f62d62462fcd84c12e7a4418893b2be69fcb012b45e7cfb9c",
-        "bytes": 1566557
+        "sha256": "5dada5394714d5a13420cb074d928f6ba45841963df53e333e3f7ef9608cb1fa",
+        "bytes": 1688116
       },
       "series": {
         "Camaiore": [
@@ -1284,6 +1375,17 @@
             "standardized": 295.74,
             "ci95Low": 279.681,
             "ci95High": 311.799
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46005",
+            "geography": "Camaiore",
+            "den": 321672,
+            "num": 1283,
+            "raw": 398.853,
+            "standardized": 279.384,
+            "ci95Low": 263.952,
+            "ci95High": 294.815
           }
         ],
         "Forte dei Marmi": [
@@ -1418,6 +1520,17 @@
             "standardized": 254.727,
             "ci95Low": 227.773,
             "ci95High": 281.681
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46013",
+            "geography": "Forte dei Marmi",
+            "den": 73039,
+            "num": 347,
+            "raw": 475.089,
+            "standardized": 245.183,
+            "ci95Low": 218.962,
+            "ci95High": 271.405
           }
         ],
         "Massarosa": [
@@ -1552,6 +1665,17 @@
             "standardized": 284.827,
             "ci95Low": 263.841,
             "ci95High": 305.814
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46018",
+            "geography": "Massarosa",
+            "den": 222008,
+            "num": 717,
+            "raw": 322.961,
+            "standardized": 275.754,
+            "ci95Low": 255.334,
+            "ci95High": 296.174
           }
         ],
         "Pietrasanta": [
@@ -1686,6 +1810,17 @@
             "standardized": 275.972,
             "ci95Low": 258.43,
             "ci95High": 293.513
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46024",
+            "geography": "Pietrasanta",
+            "den": 235667,
+            "num": 953,
+            "raw": 404.384,
+            "standardized": 264.347,
+            "ci95Low": 247.359,
+            "ci95High": 281.336
           }
         ],
         "Seravezza": [
@@ -1820,6 +1955,17 @@
             "standardized": 288.662,
             "ci95Low": 264.072,
             "ci95High": 313.252
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46028",
+            "geography": "Seravezza",
+            "den": 128523,
+            "num": 537,
+            "raw": 417.824,
+            "standardized": 276.309,
+            "ci95Low": 252.642,
+            "ci95High": 299.975
           }
         ],
         "Stazzema": [
@@ -1954,6 +2100,17 @@
             "standardized": 333.091,
             "ci95Low": 280.784,
             "ci95High": 385.398
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46030",
+            "geography": "Stazzema",
+            "den": 30544,
+            "num": 153,
+            "raw": 500.917,
+            "standardized": 316.293,
+            "ci95Low": 265.456,
+            "ci95High": 367.129
           }
         ],
         "Viareggio": [
@@ -2088,6 +2245,17 @@
             "standardized": 264.738,
             "ci95Low": 254.042,
             "ci95High": 275.435
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46033",
+            "geography": "Viareggio",
+            "den": 619183,
+            "num": 2329,
+            "raw": 376.141,
+            "standardized": 252.542,
+            "ci95Low": 242.19,
+            "ci95High": 262.893
           }
         ],
         "Versilia": [
@@ -2222,9 +2390,21 @@
             "standardized": 277.273,
             "ci95Low": 270.459,
             "ci95High": 284.086
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "202M",
+            "geography": "Versilia",
+            "den": 1630636,
+            "num": 6319,
+            "raw": 387.517,
+            "standardized": 264.78,
+            "ci95Low": 258.19,
+            "ci95High": 271.371
           }
         ]
-      }
+      },
+      "retrieved": "2026-11-05"
     },
     "1606": {
       "indicatorId": 1606,
@@ -2252,13 +2432,14 @@
         "2010-2019",
         "2011-2020",
         "2012-2021",
-        "2013-2022"
+        "2013-2022",
+        "2014-2023"
       ],
       "coverage": "7/7",
       "sourceFile": {
         "name": "1606-dati.csv",
-        "sha256": "56045015354693fc766e06772bda154b34f9c4a2432dc42cec03172755ce8b2f",
-        "bytes": 1553095
+        "sha256": "bd9856c9a90e153eb713fd516db76f715070f13a9e0aa6426d6ba0d16505d8b3",
+        "bytes": 1673671
       },
       "series": {
         "Camaiore": [
@@ -2393,6 +2574,17 @@
             "standardized": 53.8147,
             "ci95Low": 46.9946,
             "ci95High": 60.6348
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46005",
+            "geography": "Camaiore",
+            "den": 321672,
+            "num": 252,
+            "raw": 78.3407,
+            "standardized": 54.048,
+            "ci95Low": 47.314,
+            "ci95High": 60.782
           }
         ],
         "Forte dei Marmi": [
@@ -2527,6 +2719,17 @@
             "standardized": 51.8736,
             "ci95Low": 39.7312,
             "ci95High": 64.016
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46013",
+            "geography": "Forte dei Marmi",
+            "den": 73039,
+            "num": 72,
+            "raw": 98.5775,
+            "standardized": 51.5859,
+            "ci95Low": 39.4806,
+            "ci95High": 63.6911
           }
         ],
         "Massarosa": [
@@ -2661,6 +2864,17 @@
             "standardized": 55.8165,
             "ci95Low": 46.6392,
             "ci95High": 64.9938
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46018",
+            "geography": "Massarosa",
+            "den": 222008,
+            "num": 155,
+            "raw": 69.8173,
+            "standardized": 57.9262,
+            "ci95Low": 48.7137,
+            "ci95High": 67.1386
           }
         ],
         "Pietrasanta": [
@@ -2795,6 +3009,17 @@
             "standardized": 60.376,
             "ci95Low": 52.2092,
             "ci95High": 68.5428
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46024",
+            "geography": "Pietrasanta",
+            "den": 235667,
+            "num": 224,
+            "raw": 95.0494,
+            "standardized": 61.8736,
+            "ci95Low": 53.6764,
+            "ci95High": 70.0708
           }
         ],
         "Seravezza": [
@@ -2929,6 +3154,17 @@
             "standardized": 67.1697,
             "ci95Low": 55.4896,
             "ci95High": 78.8499
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46028",
+            "geography": "Seravezza",
+            "den": 128523,
+            "num": 132,
+            "raw": 102.705,
+            "standardized": 66.0525,
+            "ci95Low": 54.6665,
+            "ci95High": 77.4385
           }
         ],
         "Stazzema": [
@@ -3063,6 +3299,17 @@
             "standardized": 67.2062,
             "ci95Low": 44.4084,
             "ci95High": 90.0041
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46030",
+            "geography": "Stazzema",
+            "den": 30544,
+            "num": 32,
+            "raw": 104.767,
+            "standardized": 62.0759,
+            "ci95Low": 40.3988,
+            "ci95High": 83.7531
           }
         ],
         "Viareggio": [
@@ -3197,6 +3444,17 @@
             "standardized": 62.653,
             "ci95Low": 57.4856,
             "ci95High": 67.8205
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "46033",
+            "geography": "Viareggio",
+            "den": 619183,
+            "num": 587,
+            "raw": 94.8023,
+            "standardized": 62.9965,
+            "ci95Low": 57.8536,
+            "ci95High": 68.1393
           }
         ],
         "Versilia": [
@@ -3331,9 +3589,21 @@
             "standardized": 59.842,
             "ci95Low": 56.695,
             "ci95High": 62.9889
+          },
+          {
+            "period": "2014-2023",
+            "geoCode": "202M",
+            "geography": "Versilia",
+            "den": 1630636,
+            "num": 1454,
+            "raw": 89.1677,
+            "standardized": 60.2501,
+            "ci95Low": 57.125,
+            "ci95High": 63.3752
           }
         ]
-      }
+      },
+      "retrieved": "2026-11-05"
     },
     "255": {
       "indicatorId": 255,

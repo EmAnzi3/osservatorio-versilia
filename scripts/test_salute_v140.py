@@ -13,9 +13,9 @@ ARS_SNAPSHOT = ROOT / "data" / "source-snapshots" / "ars-salute-11-v140.json"
 RSA_SNAPSHOT = ROOT / "data" / "source-snapshots" / "regione-toscana-rsa-accreditate-2025-v140.json"
 
 EXPECTED_ARS = {
-    1499: ("mortalityCancer", "2002-2011", "2013-2022", 12, "negative"),
-    1327: ("mortalityCirculatory", "2002-2011", "2013-2022", 12, "negative"),
-    1606: ("mortalityRespiratory", "2002-2011", "2013-2022", 12, "negative"),
+    1499: ("mortalityCancer", "2002-2011", "2014-2023", 13, "negative"),
+    1327: ("mortalityCirculatory", "2002-2011", "2014-2023", 13, "negative"),
+    1606: ("mortalityRespiratory", "2002-2011", "2014-2023", 13, "negative"),
     255: ("hypertensionPrevalence", "2015", "2025", 11, "negative"),
     268: ("copdPrevalence", "2015", "2025", 11, "negative"),
     269: ("ischemicHeartDiseasePrevalence", "2015", "2025", 11, "negative"),
