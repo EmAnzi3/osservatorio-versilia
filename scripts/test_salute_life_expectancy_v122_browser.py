@@ -106,17 +106,21 @@ def main() -> None:
             versilia_button = history.locator('[data-history-select="versilia"]')
             assert float(versilia_button.get_attribute('data-end') or 'nan') == float(expected_versilia[choice])
 
-        # Regression explicitly covering the discrepancy reported during review.
-        page.locator('select[data-composite-component]').select_option('femmine')
-        page.wait_for_function("() => document.querySelector('.comparison-bars')?.dataset.compositeChoice === 'femmine'")
-        stazzema = page.locator('.comparison-bars > .bar-row', has=page.locator('.bar-town', has_text='Stazzema'))
-        assert stazzema.count() == 1
-        assert abs(parse_left(stazzema.locator('.comparison-dot').get_attribute('style') or '') - 84.24) < 0.03
-
-        page.locator('select[data-composite-component]').select_option('maschi')
-        page.wait_for_function("() => document.querySelector('.comparison-bars')?.dataset.compositeChoice === 'maschi'")
-        stazzema = page.locator('.comparison-bars > .bar-row', has=page.locator('.bar-town', has_text='Stazzema'))
-        assert abs(parse_left(stazzema.locator('.comparison-dot').get_attribute('style') or '') - 74.22) < 0.03
+        # Regression explicitly covering the discrepancy reported during review: each dot must sit
+        # where the selected sex value puts it on the shared axis, for every town (Stazzema included).
+        for choice in ('femmine', 'maschi'):
+            page.locator('select[data-composite-component]').select_option(choice)
+            page.wait_for_function("choice => document.querySelector('.comparison-bars')?.dataset.compositeChoice === choice", arg=choice)
+            points = []
+            for town, value in expected_rows[choice].items():
+                row = page.locator('.comparison-bars > .bar-row', has=page.locator('.bar-town', has_text=town))
+                assert row.count() == 1, (choice, town)
+                points.append((float(value), parse_left(row.locator('.comparison-dot').get_attribute('style') or '')))
+            (low_v, low_x), (high_v, high_x) = min(points), max(points)
+            assert high_v > low_v and high_x > low_x, (choice, points)
+            for value, left in points:
+                expected = low_x + (value - low_v) * (high_x - low_x) / (high_v - low_v)
+                assert abs(left - expected) < 0.03, (choice, value, left, expected)
 
         browser.close()
 
