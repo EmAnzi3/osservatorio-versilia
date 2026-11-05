@@ -1,5 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo dati 2026-11: verifiche manuali RTCave e ARS (5 novembre 2026)
+
+Branch `fix/data-check-2026-11`, costruito sulla PR automatica #552 (stato del monitor e
+`reports/data-checks/2026-11.md`). La #552 da sola rompeva `test_attivita_estrattive_v128.py`:
+RTCave aveva cambiato contenuto e il controllo metteva `extractiveSites` in
+`verification_required` senza verifica registrata. Verifiche fatte su file scaricati a mano
+(impronte identiche a quelle della sonda mensile):
+
+- RTCave: 667 record regionali (erano 666), 90 in Versilia; un solo record versiliese cambiato,
+  `id_cava` 402 «La Noce del Cardoso» (Stazzema) da Sospesa ad Attiva;
+- ARS, 11 export: nessuna revisione dei valori pubblicati; periodo nuovo per `mortalityAll`,
+  `mortalityCancer`, `mortalityCirculatory`, `mortalityRespiratory` (2014–2023) e
+  `lifeExpectancy` (2023); gli altri 6 invariati per il perimetro pubblicato.
+
+In `data/source-monitor-state.json` i sei indicatori passano a `release_detected` con
+`releaseEvidence`/`verificationEvidence` (fonte, impronta, metodo, esito); il prossimo controllo
+li conserva finché il periodo pubblicato resta lo stesso. Nessun valore pubblicato cambia.
+Aggiornare i dati richiede una PR separata: per le cave la fotografia
+`attivita-estrattive-v128.json` è vincolata dall’adattatore A6
+`semantic_query_extractive_adapters.py` (SHA RTCave, 666 record, data 2 settembre 2026), che non
+va toccato senza decisione esplicita.
+
 ## Dossier «Partecipazione e cultura in Versilia» (5 novembre 2026)
 
 Branch `feature/dossier-partecipazione`, diciassettesimo dossier in forma di relazione (slug
