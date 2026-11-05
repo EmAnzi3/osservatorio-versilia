@@ -1,5 +1,26 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Partecipazione e cultura in Versilia» (5 novembre 2026)
+
+Branch `feature/dossier-partecipazione`, diciassettesimo dossier in forma di relazione (slug
+`partecipazione`, tema comunita), scheda `partecipazione` di
+`ci/territorial-dossier-program.json`, con tutti i sette `metricRefs`; completa il programma
+dei dossier. Sei capitoli:
+
+1. quanto si vota: `voterTurnout` `family:*|nativeRatio` per l’ultima elezione di ciascuna
+   famiglia (politiche Camera, europee, regionali, referendum), Versilia ponderata;
+2. il voto nel tempo: per ogni elezione politica ed europea della serie, un `weighted_ratio`
+   Versilia con `periods` esplicito (riquadro con tabella), nessuna variazione calcolata;
+3. biblioteche: prestiti per abitante, utenti ogni 100 abitanti e ore di apertura con Toscana
+   (`allowPartial`: Massarosa e Stazzema non pubblicati);
+4. spesa per cultura, sport e giovani 2025 con Versilia (nessun benchmark nel motore);
+5. associazioni: `thirdSector` come nel dossier welfare;
+6. percorsi: `slowMobilityRoutes`, solo Comuni.
+
+`period_label` legge i periodi elettorali («elezioni europee del 9 giugno 2024»). Nuove fonti
+con nome pubblico: Eligendo in `SOURCE_NAMES`, monitoraggio regionale delle biblioteche in
+`SOURCE_BY_METRIC` (l’URL di dati.toscana.it avrebbe dato un nome sbagliato).
+
 ## Dossier «Personale e servizi digitali dei Comuni» (5 novembre 2026)
 
 Branch `feature/dossier-capacita`, sedicesimo dossier in forma di relazione (slug `capacita`,
