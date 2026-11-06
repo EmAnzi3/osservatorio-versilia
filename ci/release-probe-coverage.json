@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 186,
+  "maxPending": 181,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -76,16 +76,13 @@
       "family": "v160"
     },
     "capitalPayments": {
-      "pendingLot": 3,
-      "source": "siope.it"
+      "probe": "siope_cumulative"
     },
     "cashBalancePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "siope_cumulative"
     },
     "cashReceiptsPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "siope_cumulative"
     },
     "chronicTotal": {
       "probe": "ars_export",
@@ -157,8 +154,7 @@
       "family": "v160"
     },
     "currentPayments": {
-      "pendingLot": 3,
-      "source": "siope.it"
+      "probe": "siope_cumulative"
     },
     "currentRevenueAccruedPerResident": {
       "probe": "openbdap_rendiconto",
@@ -833,8 +829,7 @@
       "source": "istat.it"
     },
     "siopePayments": {
-      "pendingLot": 3,
-      "source": "siope.it"
+      "probe": "siope_cumulative"
     },
     "slowMobilityBici": {
       "pendingLot": 6,

@@ -318,8 +318,99 @@ def openbdap_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[st
     ]}
 
 
+# ---------------------------------------------------------------- SIOPE, movimenti cumulati di dicembre
+
+SIOPE_API = "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3"
+SIOPE_DUMP = SIOPE_API + "/datastore/dump/{id}.csv"
+SIOPE_TITLE = "{year} - Toscana - SIOPE Movimenti cumulati mensili di {movement}"
+SIOPE_TOWNS = {"046005": "Camaiore", "046013": "Forte dei Marmi", "046018": "Massarosa", "046024": "Pietrasanta",
+               "046028": "Seravezza", "046030": "Stazzema", "046033": "Viareggio"}
+SIOPE_FIELDS = ("Codice istat provincia", "Codice istat comune", "Codice Tipologia Ente BDAP", "Anno/Mese calendario",
+                "Codice Titolo CG", "Importo cumulato")
+
+
+def siope_package_url(year: int, movement: str, fetch: Fetcher) -> str:
+    """URL del CSV del pacchetto ufficiale, cercato per titolo esatto sul catalogo BDAP."""
+    title = SIOPE_TITLE.format(year=year, movement=movement)
+    query = urllib.parse.quote(f'"{title}"')
+    payload = json.loads(fetch(f"{SIOPE_API}/action/package_search?q={query}&rows=5").decode("utf-8"))
+    matches = [p for p in payload.get("result", {}).get("results", []) if p.get("title") == title]
+    if not matches:
+        raise ProbeError("not_found", f"pacchetto «{title}» assente dal catalogo BDAP")
+    return SIOPE_DUMP.format(id=matches[0]["id"])
+
+
+def siope_totals(raw: bytes, year: int, movement: str) -> dict[str, dict[str, float]]:
+    text = raw.decode("cp1252")
+    reader = csv.DictReader(io.StringIO(text), delimiter=";")
+    if not set(SIOPE_FIELDS).issubset(reader.fieldnames or []):
+        raise ProbeError("structure_changed", f"colonne SIOPE cambiate: {reader.fieldnames}")
+    totals = {code: {"total": 0.0, "current": 0.0, "capital": 0.0, "rows": 0} for code in SIOPE_TOWNS}
+    for row in reader:
+        if row["Codice istat provincia"].strip() != "046" or row["Codice Tipologia Ente BDAP"].strip() != "CO":
+            continue
+        code = "046" + row["Codice istat comune"].strip().zfill(3)
+        if code not in totals or row["Anno/Mese calendario"].strip() != f"{year}/12":
+            continue
+        amount = parse_number(row["Importo cumulato"]) or 0.0
+        item = totals[code]
+        item["total"] += amount
+        item["rows"] += 1
+        title = row["Codice Titolo CG"].strip().upper()
+        if movement == "Spesa" and title.startswith("U1"):
+            item["current"] += amount
+        if movement == "Spesa" and title.startswith("U2"):
+            item["capital"] += amount
+    return totals
+
+
+SIOPE_NUMERATOR = {
+    "siopePayments": lambda e, s: s["total"],
+    "currentPayments": lambda e, s: s["current"],
+    "capitalPayments": lambda e, s: s["capital"],
+    "cashReceiptsPerResident": lambda e, s: e["total"],
+    "cashBalancePerResident": lambda e, s: e["total"] - s["total"],
+}
+
+
+def siope_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    year = int(norm_period(metric.get("meta", {}).get("year")))
+    snapshot = json.loads((ROOT / "data" / "source-snapshots" / "siope-history-v1.6.0.json").read_text(encoding="utf-8"))
+    receipts = siope_totals(fetch(siope_package_url(year, "Entrata", fetch)), year, "Entrata")
+    payments = siope_totals(fetch(siope_package_url(year, "Spesa", fetch)), year, "Spesa")
+    source = {}
+    for code, town in SIOPE_TOWNS.items():
+        population = (snapshot["raw"].get(town, {}).get(str(year)) or {}).get("population_resident")
+        if not population:
+            raise ProbeError("population_missing", f"popolazione residente {town} {year} assente dallo snapshot SIOPE")
+        if receipts[code]["rows"] and payments[code]["rows"]:
+            source[(code, str(year))] = SIOPE_NUMERATOR[metric_key](receipts[code], payments[code]) / float(population)
+    if len(source) < 7:
+        raise ProbeError("structure_changed", f"SIOPE dicembre {year}: {len(source)} Comuni su 7")
+    latest = str(year)
+    try:
+        following = siope_totals(fetch(siope_package_url(year + 1, "Spesa", fetch)), year + 1, "Spesa")
+        if all(item["rows"] for item in following.values()):
+            latest = str(year + 1)
+    except ProbeError as error:
+        if error.reason != "not_found":
+            raise
+    return evaluate(metric, source, latest, {"url": SIOPE_API, "coverage": "7/7", "december": f"{year}/12"})
+
+
+def siope_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, Any]:
+    titles = [SIOPE_TITLE.format(year=year, movement=m) for m in ("Entrata", "Spesa")] + [SIOPE_TITLE.format(year=year + 1, movement="Spesa")]
+    return {"urls": ["https://bdap-opendata.rgs.mef.gov.it/"], "steps": [
+        "Aprire il catalogo BDAP Open Data (https://bdap-opendata.rgs.mef.gov.it/) e cercare, uno alla volta, i dataset:",
+        *[f"- «{title}»" for title in titles],
+        "Da ciascuno scaricare la risorsa CSV (50–100 MB) senza aprirla; l'ultimo serve solo a capire se c'è già il dicembre dell'anno nuovo.",
+        "Avvisare Claude: con i file allegati il controllo si chiude ricalcolando i valori dei sette Comuni.",
+    ]}
+
+
 PROBES = {
     "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
+    "siope_cumulative": (siope_probe, lambda key, spec, metric: siope_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
 }
 
