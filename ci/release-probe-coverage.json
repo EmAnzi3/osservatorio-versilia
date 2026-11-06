@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 175,
+  "maxPending": 165,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -16,8 +16,8 @@
       "source": "istat.it"
     },
     "ageDistribution": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "age_20_34"
     },
     "agriculturalDiversificationAndModernization": {
       "pendingLot": 2,
@@ -170,8 +170,8 @@
       "measurement": "standardized"
     },
     "dependencyIndices": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "dependency"
     },
     "diabetes": {
       "probe": "ars_export",
@@ -305,12 +305,12 @@
       "source": "regione.toscana.it"
     },
     "foreignResidentialMobility": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "mobility_foreign"
     },
     "foreignResidents": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "foreign_share"
     },
     "foreignTourismShare": {
       "pendingLot": 4,
@@ -426,8 +426,8 @@
       "source": "regione.toscana.it"
     },
     "internalResidentialMobility": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "mobility_internal"
     },
     "invalsiAcademicExcellence": {
       "pendingLot": 5,
@@ -623,16 +623,16 @@
       "source": "istat.it"
     },
     "naturalDemographicDynamics": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "natural"
     },
     "nonOccupiedHomesPer1000": {
       "pendingLot": 2,
       "source": "istat.it"
     },
     "oldAgeIndex": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "demo_istat",
+      "measure": "old_age"
     },
     "omiResidential": {
       "pendingLot": 5,
@@ -716,16 +716,16 @@
       "source": "aci.gov.it"
     },
     "population": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "population"
     },
     "populationChange": {
       "pendingLot": 2,
       "source": "demo.istat.it"
     },
     "populationDensity": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "demo_istat",
+      "measure": "density"
     },
     "primaryFullTimeShare": {
       "pendingLot": 5,
@@ -904,8 +904,8 @@
       "source": "servizi.lavoro.gov.it"
     },
     "totalResidentialMobility": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "demo_istat",
+      "measure": "mobility_total"
     },
     "tourismArrivals": {
       "pendingLot": 4,

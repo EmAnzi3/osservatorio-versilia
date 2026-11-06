@@ -539,8 +539,147 @@ def rgs_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, An
     ]}
 
 
+# ---------------------------------------------------------------- Istat, demo.istat.it (POSAS, P2, RCS)
+
+DEMO_URL = {
+    "posas": "https://demo.istat.it/data/posas/POSAS_{year}_it_046_Lucca.zip",
+    "p2": "https://demo.istat.it/data/p2/P2_{year}_it_046_Lucca.zip",
+    "rcs": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_{year}.zip",
+}
+DEMO_DATASET = {"population": "posas", "dependency": "posas", "old_age": "posas", "age_20_34": "posas",
+                "density": "posas", "natural": "p2", "mobility_internal": "p2", "mobility_foreign": "p2",
+                "mobility_total": "p2", "foreign_share": "rcs"}
+
+
+def _demo_table(payload: bytes, titled: bool) -> tuple[list[str], list[dict[str, str]]]:
+    if not is_zip(payload):
+        raise ProbeError("structure_changed", "il file demo.istat non è uno ZIP")
+    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        members = [n for n in archive.namelist() if n.lower().endswith((".csv", ".txt"))]
+        if not members:
+            raise ProbeError("structure_changed", "ZIP demo.istat senza CSV")
+        raw = archive.read(max(members, key=lambda n: archive.getinfo(n).file_size)).decode("utf-8-sig")
+    rows = list(csv.reader(io.StringIO(raw), delimiter=";"))
+    header_index = 1 if titled else 0
+    header = [cell.strip() for cell in rows[header_index]]
+    records = [dict(zip(header, row + [""] * (len(header) - len(row)))) for row in rows[header_index + 1:] if row]
+    return header, records
+
+
+def _demo_int(value: Any) -> float:
+    text = str(value or "").strip().replace(".", "").replace(",", ".")
+    return float(text) if text else 0.0
+
+
+def demo_values(measure: str, payload: bytes, metric: dict[str, Any]) -> dict[str, float]:
+    codes = {str(r.get("code")) for r in metric.get("rows", [])}
+    rows = {str(r.get("code")): r for r in metric.get("rows", [])}
+    dataset = DEMO_DATASET[measure]
+    out: dict[str, float] = {}
+    if dataset == "posas":
+        import acquire_a3_benchmark_demography_candidates as demo
+        header, records = _demo_table(payload, titled=True)
+        try:
+            age_h = demo.pick(header, ("eta",))
+            total_h = demo.pick(header, ("totale",), ("maschi", "femmine"))
+        except Exception as exc:
+            raise ProbeError("structure_changed", f"colonne POSAS cambiate: {header}") from exc
+        bands: dict[str, dict[str, float]] = {c: {"total": 0, "young": 0, "work": 0, "old": 0, "b2034": 0, "row999": 0} for c in codes}
+        for rec in records:
+            code = demo.code_of(rec)
+            if code not in bands:
+                continue
+            age = demo.age_number(rec.get(age_h))
+            if age is None:
+                continue
+            value = _demo_int(rec.get(total_h))
+            b = bands[code]
+            if age == 999:  # riga di totale del Comune
+                b["row999"] += value
+                continue
+            b["total"] += value
+            b["young" if age <= 14 else "work" if age <= 64 else "old"] += value
+            if 20 <= age <= 34:
+                b["b2034"] += value
+        for code, b in bands.items():
+            if not b["total"]:
+                continue
+            if b["row999"] and abs(b["row999"] - b["total"]) > 0.1:
+                raise ProbeError("structure_changed", f"POSAS {code}: somma delle età {b['total']} diversa dal totale {b['row999']}")
+            out[code] = {
+                "population": b["total"],
+                "dependency": (b["young"] + b["old"]) / b["work"] * 100,
+                "old_age": round(b["old"] / b["young"] * 100, 1),
+                "age_20_34": b["b2034"] / b["total"] * 100,
+                "density": b["total"] / float(rows[code].get("surfaceKm2") or "nan"),
+            }[measure]
+    elif dataset == "p2":
+        import acquire_a3_benchmark_demography_candidates as demo
+        header, records = _demo_table(payload, titled=True)
+        h = demo.p2_mobility_headers(header) if measure.startswith("mobility") else demo.p2_natural_headers(header)
+        for rec in records:
+            code = rec.get("Codice comune", "").strip()
+            if code not in codes:
+                continue
+            mean = (_demo_int(rec[h["jan1"]]) + _demo_int(rec[h["dec31"]])) / 2
+            if measure == "natural":
+                numerator = _demo_int(rec[h["natural"]])
+            else:
+                internal = _demo_int(rec[h["internalIn"]]) - _demo_int(rec[h["internalOut"]])
+                foreign = _demo_int(rec[h["foreignIn"]]) - _demo_int(rec[h["foreignOut"]])
+                numerator = {"mobility_internal": internal, "mobility_foreign": foreign, "mobility_total": internal + foreign}[measure]
+            out[code] = numerator / mean * 1000
+    else:
+        _, records = _demo_table(payload, titled=False)
+        totals: dict[str, dict[str, float]] = {}
+        for rec in records:
+            # Solo codici comunali a 6 cifre: il file contiene anche aggregati territoriali.
+            code = re.sub(r"\D", "", str(rec.get("Codice Istat") or "").strip())
+            if code not in codes:
+                continue
+            value = _demo_int(rec.get("Totale"))
+            town = totals.setdefault(code, {"foreign": 0.0, "population": 0.0})
+            town["population"] += value
+            citizenship = str(rec.get("Codice stato di cittadinanza") or "").strip()
+            label = str(rec.get("Stato di cittadinanza") or "").strip().casefold()
+            if citizenship != "100" and label != "italia":
+                town["foreign"] += value
+        for code, town in totals.items():
+            if town["population"]:
+                out[code] = town["foreign"] / town["population"] * 100
+    return out
+
+
+def demo_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    year = int(re.findall(r"\d{4}", norm_period(metric.get("meta", {}).get("year")))[-1])
+    dataset = DEMO_DATASET[spec["measure"]]
+    url = DEMO_URL[dataset].format(year=year)
+    values = demo_values(spec["measure"], fetch(url), metric)
+    if len(values) < 7:
+        raise ProbeError("structure_changed", f"demo.istat {dataset} {year}: {len(values)} Comuni su 7")
+    source = {(code, str(year)): value for code, value in values.items()}
+    latest = str(year)
+    try:
+        if is_zip(fetch(DEMO_URL[dataset].format(year=year + 1))):
+            latest = str(year + 1)
+    except ProbeError as error:
+        if error.reason != "not_found":
+            raise
+    return evaluate(metric, source, latest, {"url": url, "nextReleaseUrl": DEMO_URL[dataset].format(year=year + 1), "coverage": "7/7"})
+
+
+def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, Any]:
+    dataset = DEMO_DATASET[spec["measure"]]
+    urls = [DEMO_URL[dataset].format(year=year), DEMO_URL[dataset].format(year=year + 1)]
+    return {"urls": urls, "steps": [
+        f"Scaricare da un browser {urls[0]} (pochi MB) senza aprirlo.",
+        f"Provare anche {urls[1]}: se risponde «Not Found» l'anno successivo non è ancora pubblicato.",
+    ]}
+
+
 PROBES = {
     "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
+    "demo_istat": (demo_probe, lambda key, spec, metric: demo_manual(key, spec, int((re.findall(r"\d{4}", norm_period(metric.get("meta", {}).get("year"))) or ["0"])[-1]))),
     "rgs_conto_annuale": (rgs_probe, lambda key, spec, metric: rgs_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "siope_cumulative": (siope_probe, lambda key, spec, metric: siope_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
@@ -661,6 +800,12 @@ def report_lines(results: dict[str, dict[str, Any]], coverage: dict[str, Any]) -
     for index, action in enumerate(actions, 1):
         lines.append(f"{index}. **`{action['metric']}`** — {REASONS.get(action['reason'], action['reason'])}: {action['detail']}")
         lines.extend(f"   - {step}" for step in action["steps"])
+    differing = {k: v for k, v in results.items() if v.get("differences")}
+    if differing:
+        lines += ["", "### Valori diversi nello stesso periodo", ""]
+        for key, item in sorted(differing.items()):
+            sample = ", ".join(f"{d['geography']} {d['period']}: {d['published']} → {d['observed']}" for d in item["differences"][:7])
+            lines.append(f"- `{key}`: {sample}.")
     revised = {k: v for k, v in results.items() if v.get("historyRevisionCount")}
     if revised:
         lines += ["", "### Revisioni dello storico", ""]
@@ -675,6 +820,8 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, required=True, help="Catalogo effettivo (dist/data/site-data.json)")
     parser.add_argument("--metric", help="Un solo indicatore")
     parser.add_argument("--file", type=Path, action="append", help="File della fonte scaricato a mano (ripetibile)")
+    parser.add_argument("--json-out", type=Path, help="Esiti completi in JSON")
+    parser.add_argument("--report-md", type=Path, help="Resoconto in Markdown")
     args = parser.parse_args()
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
     CATALOG.update(data)
@@ -687,7 +834,14 @@ def main() -> int:
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0 if result["status"] != "verification_required" or result.get("reason") != "source_unreachable" else 2
     results = run_all(data, coverage)
-    print("\n".join(report_lines(results, coverage)))
+    lines = report_lines(results, coverage)
+    if args.json_out:
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
+        args.json_out.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if args.report_md:
+        args.report_md.parent.mkdir(parents=True, exist_ok=True)
+        args.report_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("\n".join(lines))
     return 0
 
 
