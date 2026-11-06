@@ -1,4 +1,5 @@
 """Regional published observations; no inferred counts or percentile pooling."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 import math
@@ -18,9 +19,9 @@ UNITS = dict(zip(KEYS, ('percent', 'percent', 'minutes', 'per1000', 'percent', '
 TOWNS = {'046005':'Camaiore', '046013':'Forte dei Marmi', '046018':'Massarosa',
          '046024':'Pietrasanta', '046028':'Seravezza', '046030':'Stazzema', '046033':'Viareggio'}
 HASHES = {
- NATIVE: ('fecb17aa645878d58a4f22d3897f21c7dfa4b050d47f7d095bf269423bc51c77', '83eb8bf4143efd70e21e90b0dbad4a236c448d5d930cc671de505eadf742e69a'),
- SERVICES: ('321f154fc161fc9186b9ecdaf54fffaf435a52c4cdf595199fbf2a67fbe17576', '0bb6847adabcbb23b22ec32ed93cd3b93769d68772e0e4f62ab1ec96f862d441'),
- BENCHMARK: ('79756910e1a13307fb0bde0ab9253777d19df7d1e259c630b3a1de6d9c72dd87', 'ec6175398eb795d58e39ec9979f79fafc4f2717fea670d61b026aabed64fa301'),
+ NATIVE: (_pin('regional#1'), _pin('regional#2')),
+ SERVICES: (_pin('regional#3'), _pin('regional#4')),
+ BENCHMARK: (_pin('regional#5'), _pin('regional#6')),
 }
 POPULATIONS = {
  YOUTH: 'resident young people aged 15–24 in the source professional-condition classification',

@@ -1,11 +1,12 @@
 """Published top-three-month concentration; monthly panels are not frozen."""
+from a6_pins import Pin as _pin
 from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('tourismSeasonality',)
-PUBLIC_HASH = 'ce65820031c12b57bba095e0a235548408599168d7fa0845f14d79e934b86172'
+PUBLIC_HASH = _pin('seasonality#1')
 BENCHMARK = 'data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json'
 # Reviewed file bytes and parsed-object fingerprints, checked also after cache access.
-BENCHMARK_HASHES = ('f09c50bc3016cc2793eab4737c6dff1f625da67798b4c8b5c4dae16af2c8ac37', 'bc2b4f4f8a5233e7233e8ee92b5bc4a0102c36baf443efcd5a160114613cb2e8')
+BENCHMARK_HASHES = (_pin('seasonality#2'), _pin('seasonality#3'))
 NOTES = ['seasonality_top_three_months_not_fixed_summer_quarter',
          'seasonality_public_replay_not_native_monthly_panel',
          'seasonality_sum_of_local_top_three_not_regional_top_three',

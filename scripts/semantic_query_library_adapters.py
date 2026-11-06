@@ -1,4 +1,5 @@
 """Published municipal library indices, with missing observations and gaps intact."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 import math
@@ -17,10 +18,10 @@ FIELDS = dict(zip(KEYS, ('Indice di prestito Comunale', 'Indice di impatto Comun
                         'Ore medie di apertura settimanale Comunale')))
 UNITS = dict(zip(KEYS, ('decimal', 'per100', 'hours')))
 HASHES = {
-    NATIVE: ('f956dc0db8762a94742cc42af2cd52b0f8b1408b27d51d969698e5ccafe15edf',
-             '395ac8695f1b9f5af0aea03fc613057f40d35581c13f1a4f9ddbcf27d1291cbf'),
-    BENCHMARK: ('afea34efd1a38eb84cd756e77bce1f33c5a21dae1d405d958d27e74f16f78e07',
-                'a2e395af749fd4d0bfff933e83231f9af67ec3c6e9537cc217749f01e3e6e810'),
+    NATIVE: (_pin('library#1'),
+             _pin('library#2')),
+    BENCHMARK: (_pin('library#3'),
+                _pin('library#4')),
 }
 NOTES = ['library_current_coverage_5_of_7_no_imputation_or_last_value_carry',
          'library_published_rounded_indices_not_reconstructed_native_ratios',

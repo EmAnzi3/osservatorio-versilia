@@ -1,4 +1,5 @@
 """Distinct frozen Istat coastline, ISPRA protection and shoreline-change universes."""
+from a6_pins import Pin as _pin
 import math
 from semantic_operations import finite
 
@@ -62,7 +63,7 @@ def native(engine,key,row):
     identity(engine,key,row)
     if key==KEYS[0]:
         s,ref=engine.file(ISTAT);src=s['sources']['istatCoastline']
-        if s.get('schemaVersion')!=2 or src.get('referenceDate')!='2021-12-31' or src.get('page')!=URLS[key] or src.get('sha256')!='d0d2a693dfefe78ac77a113b1a3358cd8aff6f5149f2850b5650a19df727467e' or src.get('lengthField')!='SHAPE_Leng' or src.get('lengthUnit')!='metres':raise ValueError('coast_native_reference_changed')
+        if s.get('schemaVersion')!=2 or src.get('referenceDate')!='2021-12-31' or src.get('page')!=URLS[key] or src.get('sha256')!=_pin('coast#1') or src.get('lengthField')!='SHAPE_Leng' or src.get('lengthUnit')!='metres':raise ValueError('coast_native_reference_changed')
         if set(s['coastlineKm'])!={r['town'] for r in engine._catalog['metrics'][key]['rows']}:raise ValueError('coast_native_cohort_changed')
         n=s['coastlineKm'][row['town']]
         if s['classifications'][row['town']]['littoral']!=(row['code'] in COASTAL) or (n is None)!=(row['code'] in NA):raise ValueError('coast_applicability_or_history_changed')
@@ -77,7 +78,7 @@ def native(engine,key,row):
             return {'lengthKm':n},ref,[dict(br,kind='source_snapshot',recordPointer=f'/records/{matches[0][0]}/lengthKm')]
         return None,ref,[]
     s,ref=engine.file(NATIVE);source='ispraProtectedCoast' if key==KEYS[1] else 'ispraShorelineDynamics';family='rigidDefenceProtectedCoast2020' if key==KEYS[1] else 'shorelineDynamics2006_2020';src=s['sources'][source]
-    sha='9ca2b81cff7375f4af9f86af50543637d23329828d3556ccbe174a16e27d956e' if key==KEYS[1] else 'a00fb97649e293c73c923e43fd0ee53ecfa42df9568ec162a9668c2adb4c9b11'
+    sha=_pin('coast#2') if key==KEYS[1] else _pin('coast#3')
     if s.get('schemaVersion')!=1 or src.get('url')!=URLS[key] or src.get('sha256')!=sha or s['scope'].get('coastalTownCodes')!=list(COASTAL) or s['scope'].get('notApplicableTownCodes')!=list(NA):raise ValueError('coast_native_reference_changed')
     towns=s[family]['towns']
     if set(towns)!=set(COASTAL):raise ValueError('coast_native_cohort_changed')

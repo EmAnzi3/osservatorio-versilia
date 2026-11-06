@@ -1,4 +1,5 @@
 """Frozen ISPRA stock/flow and UCS cover; definitions and denominators stay separate."""
+from a6_pins import Pin as _pin
 import math
 from semantic_operations import finite
 
@@ -65,8 +66,8 @@ def native(engine,key,row):
     if not any(t['name']==row['town'] and t['code']==row['code'] for t in engine._catalog['towns']):raise ValueError('soil_row_identity_changed')
     if key=='landCoverProfile':
         s=snap['sources']['regioneToscanaUcs']
-        if s.get('page')!=UCS_URL or s.get('referenceYears')!=[2007,2010,2013,2016,2019] or s.get('crs')!='EPSG:3003' or s.get('scale')!='1:10000' or s.get('sha256')!='0cc9527546e6220b99632a9cedc2e908d775e729e4e97de00ebb417fadde8a9d' or family.get('valueOrder')!=list(CATEGORIES) or [(x['key'],x['ucs']) for x in family['categoryDefinitions']]!=list(zip(CATEGORIES,('1','2','3','4','5','31','21','22','32+33','141'))):raise ValueError('soil_native_reference_changed')
-    elif snap['sources']['ispraSoil'].get('page')!=URL or snap['sources']['ispraSoil'].get('acquisition',{}).get('sha256')!='5cf250383dbb32cfe18d0a6f7181762f5564307b641b14b66aaade0ccb12e23d':
+        if s.get('page')!=UCS_URL or s.get('referenceYears')!=[2007,2010,2013,2016,2019] or s.get('crs')!='EPSG:3003' or s.get('scale')!='1:10000' or s.get('sha256')!=_pin('soil#1') or family.get('valueOrder')!=list(CATEGORIES) or [(x['key'],x['ucs']) for x in family['categoryDefinitions']]!=list(zip(CATEGORIES,('1','2','3','4','5','31','21','22','32+33','141'))):raise ValueError('soil_native_reference_changed')
+    elif snap['sources']['ispraSoil'].get('page')!=URL or snap['sources']['ispraSoil'].get('acquisition',{}).get('sha256')!=_pin('soil#2'):
         raise ValueError('soil_native_reference_changed')
     return family,family['municipalities'][row['town']],ref
 

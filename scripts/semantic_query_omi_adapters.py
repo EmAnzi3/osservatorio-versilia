@@ -1,11 +1,12 @@
 """Reviewed published OMI municipal reference means; no transaction-price claim."""
+from a6_pins import Pin as _pin
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
 from semantic_operations import finite
 
 KEYS = ('omiResidential',)
 PERIOD = '2025-S2'
-PUBLIC_HASH = 'ef123ce68f6d9d863159b272568b1439c8c3d011e0a3542ee440e84a3a7e486a'
+PUBLIC_HASH = _pin('omi#1')
 NOTES = ['omi_reference_quotations_not_transaction_prices_or_registered_rents',
          'omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean',
          'omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted',

@@ -1,4 +1,5 @@
 """Frozen 2025 standardized municipal tax scenarios; never a personal tax calculator."""
+from a6_pins import Pin as _pin
 import math
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -12,7 +13,7 @@ SCENARIOS = (20000, 30000, 50000)
 PATHS = {TARI:COSTS, IMU:COSTS, IRPEF:RULES}
 URLS = {TARI:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/', IMU:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/', IRPEF:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/'}
 UNITS = {TARI:'currency2', IMU:'currency', IRPEF:'currency2'}
-HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': ('d8a62eb0d913ce256783ae791b8f6ba36267f9133748343e464c8ee926653f31', '75fa12173cdeb8503110081c205a80014975baa84ff683d0cdc478855c630ac1'), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': ('b1a8ccfb23e106182804e5475587ec7f1380c70e88de277e3382515a39a3af03', 'adb8d7d27c000f10202ae24227cf406bf909ba65b1433c0b3a24ae1ce6649b6d')}
+HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4'))}
 FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2025.', 'municipalImuStandard': '100.000 € × aliquota IMU 2025 della categoria «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
 NOTES = ['municipal_tax_standard_scenarios_not_personal_bill_or_revenue',
          'municipal_tax_arithmetic_mean_each_municipality_equal_weight',

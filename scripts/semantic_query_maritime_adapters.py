@@ -1,4 +1,5 @@
 """Frozen SID titles and amounts due: territorial assignment, never cash receipts."""
+from a6_pins import Pin as _pin
 import math
 from semantic_operations import finite
 
@@ -12,7 +13,7 @@ URL='https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-a
 LABEL='agosto 2026'
 PERIOD='2026-08'
 CAP_IDS={'Camaiore':('2016Q003837',),'Forte dei Marmi':('2011T000201','1963O000009'),'Pietrasanta':('2016L009133',),'Viareggio':('1959T000009','1958Q000007','1958P000006','1963G000010','1991A000749','1953K000015','1953L000016','1960E000011','2017O005580','2017A050898','1971F000010','1976O000032','2024Y002752')}
-CSV_SHA='66b492555b29147421693080555f7d29eb5f7469f2c3aa5bffe00aa5d27ad28d'
+CSV_SHA=_pin('maritime#1')
 FIELD_MAP={KEYS[0]:{'total':'totalConcessions','view:tourist':'touristRecreationalConcessions','share:tourist':'touristShare','view:minimumCount':'minimumCanoneCount','share:minimum':'minimumShare','view:expiryMissing':'expiryMissing'},KEYS[1]:{'total':'canoneDovutoEur','view:touristDue':'touristRecreationalCanoneDovutoEur','share:touristDue':'touristDueShare','view:mean':'meanDue','view:touristMean':'touristMeanDue','view:median':'medianCanoneEur'}}
 RATIOS={'touristShare':('touristRecreationalConcessions','totalConcessions',100),'minimumShare':('minimumCanoneCount','totalConcessions',100),'touristDueShare':('touristRecreationalCanoneDovutoEur','canoneDovutoEur',100),'meanDue':('canoneDovutoEur','totalConcessions',1),'touristMeanDue':('touristRecreationalCanoneDovutoEur','touristRecreationalConcessions',1)}
 BREAKDOWNS=('usageBreakdown','categoryBreakdown','titleTypeBreakdown','grantingAuthorityBreakdown','expiryYearBreakdown')
