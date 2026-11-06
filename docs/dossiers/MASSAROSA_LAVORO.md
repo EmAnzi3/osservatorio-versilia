@@ -44,7 +44,7 @@ L’Atlante Registro Imprese 2025 resta un universo distinto da ASIA: le sue 20.
 
 I valori esposti sono arrotondati per la lettura. Il JSON riproducibile conserva tutta la precisione, richieste, risultati, hash degli snapshot e puntatori. Le fonti sotto sono quelle delle osservazioni acquisite, non una verifica della loro disponibilità online oggi.
 
-Catalogo congelato `37a5ff010a54245e6c476925f22343f1e62de1aa5cebbbd2453142aa757d4cfd`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Catalogo congelato `a22aa2c631c0db189ad3153cff36fa15afe8c2a9da637da98b9b89674c7e8925`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 - `census_employment_primary`: `compare`, `employmentRate`, dimensione `total`; periodi 2024. [https://esploradati.istat.it/SDMXWS/rest](https://esploradati.istat.it/SDMXWS/rest)
 - `business_asia_cumulative`: `compare`, `localUnitsChange`, dimensione `total`; periodi 2018-2023. [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
