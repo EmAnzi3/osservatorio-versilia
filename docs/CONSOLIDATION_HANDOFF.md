@@ -1,5 +1,32 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo mensile completo, lotto 1: ARS (5 novembre 2026)
+
+Branch `feature/check-mensile-completo` (sopra `feature/aggiorna-cave-ars`). Obiettivo deciso da
+Ema: ogni mese **tutti** i 225 indicatori devono avere una verifica del periodo alla fonte; lo
+stato «fonte controllata, periodo non confermabile» non è un esito accettabile. Il merge resta
+sempre di Ema.
+
+- `ci/release-probe-coverage.json`: una voce per ognuno dei 225 indicatori, con `probe` (come si
+  legge il periodo) oppure `pendingLot` (lotto che lo introdurrà). `maxPending` può solo scendere.
+  Lotti: 1 ARS (19, fatto), 2 Istat (71), 3 OpenBDAP/RGS/SIOPE (33), 4 Regione Toscana e
+  regionali (48), 5 MEF/MIM/INVALSI (23), 6 altre fonti (31).
+- `scripts/release_period_probes.py`: per ogni indicatore coperto scarica la fonte (ARS: 300 s,
+  3 tentativi, un download per export), legge l'ultimo periodo comune ai 7 Comuni e confronta
+  periodo, valori pubblicati (Comuni + Versilia) e storico. Esiti: `current`,
+  `release_detected`, `verification_required` con motivo (`source_unreachable`,
+  `structure_changed`, `same_period_values_differ`, `history_revised`, …). Se la fonte non si
+  scarica, l'esito porta `manualAction` con link, cosa salvare, dove caricarlo e il comando
+  `--metric … --file …` che chiude il controllo.
+- `monthly_data_check_status.py` esegue i probe nel run live, applica gli esiti allo stato
+  dell'indicatore (prevalgono sulla sola raggiungibilità) e aggiunge al resoconto le sezioni
+  «Verifica dei periodi alla fonte», «Azioni manuali» e «Revisioni dello storico».
+- `scripts/test_release_period_probes.py` (quickCheck): copertura 225/225 delle voci, ratchet di
+  `maxPending` e casi sintetici per tutti gli esiti.
+
+Prossimo: lotto trasversale (adattatori A6 congelati → controlli sul contenuto; domande
+verificate rigenerate dall'aggiornatore), poi lotti 2–6.
+
 ## Aggiornamento dati RTCave e ARS (5 novembre 2026)
 
 Branch `feature/aggiorna-cave-ars`, sopra `fix/data-check-2026-11` (#555). File sorgente scaricati a
