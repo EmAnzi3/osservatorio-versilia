@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Monitor leggero senza verifiche di periodo (6 novembre 2026)
+
+Correzione del lotto 1 (#557): `run_release_probes` girava anche nel monitor leggero quotidiano
+(live, `--depth light`), scaricando ogni giorno gli export ARS. Ora `monitor_depth("light")` lo
+sostituisce come già fa per carburanti e PNRR; le verifiche restano nel controllo mensile `deep`.
+`test_source_monitor_depth.py` copre il caso.
+
 ## Controllo mensile completo, lotto 1: ARS (5 novembre 2026)
 
 Branch `feature/check-mensile-completo` (sopra `feature/aggiorna-cave-ars`). Obiettivo deciso da
