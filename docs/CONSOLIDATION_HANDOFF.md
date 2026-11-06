@@ -92,11 +92,21 @@ Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi
   1.721.163,36 → 1.751.574,45 € (139,02 → 141,47 €/ab.; Versilia 108,07 → 108,26). Unica voce
   2025 cambiata ricalcolando tutto il rendiconto con `build_bilanci_snapshot.build_year`.
 - **Ricoveri ARS 1332, 2021–2025**: ARS ha completato l'ultimo periodo (ricoveri fuori Toscana);
-  periodi precedenti identici. Applicato da `update_source_data.py ars-legacy`.
+  periodi precedenti identici. Applicato da `update_source_data.py ars-legacy`. Per 1.000:
+  Massarosa 62,64 → 63,28, Viareggio 63,98 → 64,60, Camaiore 63,34 → 63,93, Pietrasanta
+  62,66 → 63,47, Seravezza 63,41 → 64,15, Forte dei Marmi 59,67 → 61,08, Stazzema
+  62,65 → 63,12, Zona Versilia 62,63 → 63,31, Toscana 61,07 → 61,80.
 - **Mobilità residenziale 2025** (Istat P2 Comuni): anno successivo al 2024 pubblicato.
   Applicato da `update_source_data.py istat-mobility`; benchmark in
   `a3-istat-demography-mobility-benchmark-2025.json`; l'adattatore demografia legge l'anno
-  dallo snapshot invece del 2024 scritto nel codice.
+  dallo snapshot invece del 2024 scritto nel codice. Saldi 2025 per 1.000 (interno / estero /
+  totale): Versilia 3,24 / 2,36 / 5,60; Toscana 0,87 / 6,03 / 6,90; Italia 0 / 5,02 / 5,02.
+  Tassi ricontrollati sulla popolazione media P02 già congelata.
+- **Domande verificate**: i tre saldi dei trasferimenti passano al 2025 (Massarosa
+  73/63/136 eventi su media 21.794). Il rifiuto «cittadinanza vs trasferimenti» ora fissa i
+  periodi (stock 2025, eventi 2024): con la stessa etichetta 2025 il motore calcolerebbe
+  l'associazione con avvertenze, ma questo allargherebbe il perimetro A7 degli incroci e
+  richiede una revisione esplicita, non fatta qui.
 
 Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
 `test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»

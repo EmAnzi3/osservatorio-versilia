@@ -11,7 +11,7 @@ Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le 
 | Redditi e vulnerabilità economica | program_backlog | 22 richieste verificate | Contesti e calcoli separati, periodi espliciti | ISEE, reddito disponibile familiare e patrimonio; Costi essenziali e persone non dichiaranti |
 | Infanzia, scuola e giovani | ready_for_composition | 24 richieste verificate | Contesti e calcoli separati, periodi espliciti | Utenti residenti, domanda inevasa, tariffe e orari; Bacini degli alunni, capienza effettiva e tempi di percorso |
 | Invecchiamento, autonomia e assistenza | ready_for_composition | 16 richieste verificate | Contesti e calcoli separati, periodi espliciti | Non autosufficienza, caregiver e bisogni non soddisfatti; Utenti unici, intensità/ore di assistenza e attese |
-| Inclusione e servizi sociali | program_backlog | 17 richieste verificate | Contesti e calcoli separati, periodi espliciti | Platee eleggibili, utenti e domanda inevasa; Tempi, continuità, esiti e accesso per sottogruppo |
+| Inclusione e servizi sociali | program_backlog | 18 richieste verificate | Contesti e calcoli separati, periodi espliciti | Platee eleggibili, utenti e domanda inevasa; Tempi, continuità, esiti e accesso per sottogruppo |
 | Salute e accessibilità delle cure | program_backlog | 16 richieste verificate | Contesti e calcoli separati, periodi espliciti | Tempi di attesa e capacità operativa per servizio; Percorsi effettivi, rinunce e bacini di utenza |
 | Casa, affitti e ERP | exploratory_priority | 15 richieste verificate | Contesti e calcoli separati, periodi espliciti | Canoni/transazioni effettivi, redditi disponibili e nuclei; Domanda ERP, sfratti, alloggi disponibili e seconde case |
 | Mobilità quotidiana e collegamenti | ready_for_composition | 22 richieste verificate | Contesti e calcoli separati, periodi espliciti | Matrice origine-destinazione e mobilità per studio; Tempi porta a porta, frequenze per fascia, passeggeri e regolarità |
@@ -335,6 +335,7 @@ Come collegare fragilità, accesso ai servizi e risorse senza dedurre gli esiti 
 | regional_disability064Per1000_tuscany | benchmark_gap / disability064Per1000 / total | 2024 / per1000 | 046018: 8.71112201705417; tuscany: 5.73 | PASS |
 | regional_disability064Per1000_absolute_change_refused | absolute_change / disability064Per1000 / total |  /  | regional_temporal_continuity_not_reviewed | PASS |
 | demography_citizenship | compare / foreignResidents / total | 2025 / percent | 046018: 4.723470604420801; 046033: 8.291266620475767 | PASS |
+| demography_stock_flow_refused | correlation / foreignResidents / total | 2024, 2025 / per1000, percent | paired_period_mismatch | PASS |
 | runts_total_046018 | compare / thirdSector / total | 2026-10-11 / per1000 | 046005: 2.6760696407770044; 046018: 2.433201726195942 | PASS |
 | runts_pooled_subset | weighted_ratio / thirdSector / nativeRatio | 2026-10-11 / per1000 | 046005: 2.6760696407770044; 046018: 2.433201726195942 | PASS |
 | runts_total_series_refused | series / thirdSector / total |  /  | third_sector_legal_seat_history_not_frozen | PASS |

@@ -3702,16 +3702,22 @@
       "reference": "Storia normalizzata disponibile, numeratori eventi non congelati"
     },
     {
-      "id": "demography_stock_flow_same_label",
-      "question": "Come si associano cittadinanza al 1 gennaio e trasferimenti con l’estero dello stesso anno?",
+      "id": "demography_stock_flow_refused",
+      "question": "Possiamo correlare la cittadinanza 2025 con i trasferimenti del 2024?",
       "query": {
         "operation": "correlation",
         "selectors": [
           {
-            "metric": "foreignResidents"
+            "metric": "foreignResidents",
+            "periods": [
+              "2025"
+            ]
           },
           {
-            "metric": "foreignResidentialMobility"
+            "metric": "foreignResidentialMobility",
+            "periods": [
+              "2024"
+            ]
           }
         ],
         "axis": "municipalities",
@@ -3719,20 +3725,12 @@
         "purpose": "Lettura descrittiva esplicita, nessuna conclusione causale"
       },
       "expected": {
-        "status": "computed",
-        "checks": [
-          {
-            "path": "/result/n",
-            "value": 7
-          }
-        ],
-        "warnings": [
-          "association_not_causation",
-          "stock_and_flow_reference_periods_differ",
-          "citizenship_not_country_of_birth_or_residential_transfer_origin"
+        "status": "not_computable",
+        "reasons": [
+          "paired_period_mismatch"
         ]
       },
-      "reference": "Stock al 1 gennaio 2025 ed eventi del 2025: stessa etichetta, date di riferimento diverse e popolazioni distinte dichiarate come avvertenze"
+      "reference": "Stock 2025 e eventi 2024; cittadinanza e origine del trasferimento distinti"
     },
     {
       "id": "school_site_pair_refused",
