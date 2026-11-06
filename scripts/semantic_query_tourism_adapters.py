@@ -1,4 +1,5 @@
 """Frozen tourism movement and capacity, with public precision and resident dates."""
+from a6_pins import Pin as _pin
 import copy
 import hashlib
 import json
@@ -17,10 +18,10 @@ POSAS = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 MOVE_LANDING = 'https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0'
 UNITS = dict(zip(KEYS, ('number', 'number', 'nights', 'percent', 'number', 'per1000', 'per1000')))
 HASHES = {
- MOVE: ('f09c50bc3016cc2793eab4737c6dff1f625da67798b4c8b5c4dae16af2c8ac37', 'bc2b4f4f8a5233e7233e8ee92b5bc4a0102c36baf443efcd5a160114613cb2e8'),
- CAP: ('4e4dccca04b98ccf0fc51fa336cc93ce8541cb6ea06aba66e298e71c0ca0ab4f', '87ae1965473ec73c593202ff61c5b90e52671c189b35cb56cc3fbbc0435e07e7'),
- DEMO: ('63a5fdefa71a4484edd65f69d1a754ce4f291fd563f9683c76332635a145f943', '82ea7b47b6f4ca16d7c4a71cd1a6806d537aa75940ffbb4aa9dc1f79776acef3'),
- POSAS: ('8ec47305870a84cd0da4fd0b36dc0ee33693557cec4df0796f56d04f78bb68f7', '24713ad8f1ebeb3b588790973fa4909aa2151f1005b63342691e4129ca852a07'),
+ MOVE: (_pin('tourism#1'), _pin('tourism#2')),
+ CAP: (_pin('tourism#3'), _pin('tourism#4')),
+ DEMO: (_pin('tourism#5'), _pin('tourism#6')),
+ POSAS: (_pin('tourism#7'), _pin('tourism#8')),
 }
 
 

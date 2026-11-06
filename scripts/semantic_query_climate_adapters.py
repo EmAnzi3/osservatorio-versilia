@@ -1,4 +1,5 @@
 """Read-only external climate series; annual values and fitted changes are distinct."""
+from a6_pins import Pin as _pin
 import hashlib,json,math,re
 from semantic_operations import finite
 
@@ -7,8 +8,8 @@ FIELDS=('temperature','precipitation','tmin','tmax')
 ANNUAL='data/meteo-clima-poc.json'
 MINMAX='data/meteo-clima-minmax-poc.json'
 UI='assets/climate-ux-v3.js'
-UI_SHA='a40e61ecb05e2daa9f4e5647885016bdba507964c8a42e56af3cd5272edc0626'
-HASHES={ANNUAL:('2c9c340ae557c25f708f77d8f5411b71d5a409f4cfe6f55b626b614a790b62c9','cf9a11dcb95d5d23d5fed8b5bf83079b02299b32f916b0cbd2a82f87224fde0f'),MINMAX:('50be932eea3e96352e0c8403fce7a944782071c87bbf04c4a75e69143f8e23c2','446776257b92b2fe344a5395da3e9d1e2d15fc0973b08e8c9091deedad978eeb')}
+UI_SHA=_pin('climate#1')
+HASHES={ANNUAL:(_pin('climate#2'),_pin('climate#3')),MINMAX:(_pin('climate#4'),_pin('climate#5'))}
 TREND='trend:1975-2025'
 PERCENT='trend_percent:1975-2025'
 

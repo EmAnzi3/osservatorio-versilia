@@ -1,4 +1,5 @@
 """Frozen SISBON administrative proceedings; never an estimate of contamination."""
+from a6_pins import Pin as _pin
 import math
 import base64, gzip, hashlib
 from update_sisbon_public import procedures
@@ -9,7 +10,7 @@ NATIVE='data/source-snapshots/ambiente-acqua-v124-data.json'
 MANIFEST='data/source-snapshots/ambiente-acqua-v124-manifest.json'
 SUMMARY='data/source-snapshots/ambiente-acqua-bonifiche-v124.json'
 URL='https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv'
-SHA='b75c63fffa94fb2088d5bbee39d7154df295d8798e039bf563e3fc883e41bf4c'
+SHA=_pin('remediation#1')
 PERIOD='2026-10-11'
 ACTIVE=('10','40','50','60','70','120','135','140')
 CLOSED=('200','210','220','230','280')

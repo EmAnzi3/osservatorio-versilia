@@ -1,4 +1,5 @@
 """Frozen election records: exact consultations, electorate and questions explicit."""
+from a6_pins import Pin as _pin
 import base64
 import gzip
 import hashlib
@@ -10,13 +11,13 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 KEYS = ('voterTurnout',)
 FAMILIES = ('politiche_camera','europee','regionali_toscana','referendum')
 CURRENT = 'referendum-20260322-q1'
-PUBLIC_HASH = 'd6a0dc624c2960248085f0f9334d210de1e42f227d4345fb241d8726c2e370cb'
-PART_HASHES = ('97a4dece82ff4d5768592564069f53e71555343eba4f164e1f3645c5973b91bc',
-               'c4ebe9821a8811038e26e3be0fa5671fc90188d60447bff1143dfac1d9a63cb2',
-               '68d45acefdb12367159f6916ca4e5f6a29a574fc0c2f5c4530e40c38dd4a221d',
-               '5da818bbb8b9eac838a6601fb5c151f78310384749c885fd65da5cd52ab103ad')
-PAYLOAD_SHA = '686876cefec01de09b5205b332cc9f2544508d0cae070f39ca28542a354219b8'
-OBJECT_HASH = 'c43d08c7bce6b93ab8da1296f7d28b0f0a6bfda6b9c127eb68b9e30faaa93369'
+PUBLIC_HASH = _pin('turnout#1')
+PART_HASHES = (_pin('turnout#2'),
+               _pin('turnout#3'),
+               _pin('turnout#4'),
+               _pin('turnout#5'))
+PAYLOAD_SHA = _pin('turnout#6')
+OBJECT_HASH = _pin('turnout#7')
 NOTES = ['turnout_electors_not_resident_population_or_valid_votes',
          'turnout_same_consultation_question_and_electoral_universe_required',
          'turnout_normalized_archive_replay_not_original_DAIT_files',

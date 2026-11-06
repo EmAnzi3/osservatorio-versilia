@@ -1,4 +1,5 @@
 """RTCave records, reported extraction and PRC planning: distinct frozen universes."""
+from a6_pins import Pin as _pin
 from collections import Counter
 import math
 from semantic_operations import finite
@@ -39,7 +40,7 @@ def native(engine,key,row):
  if len(rows)!=7 or {r['code'] for r in rows}!=set(towns) or row['town']!=towns.get(row['code']) or row['slug']!='-'.join(row['town'].lower().split()) or row.get('notApplicable'):raise ValueError('extractive_row_identity_changed')
  if s.get('snapshotId')!='attivita-estrattive-v128' or s.get('retrievedAt')!='2026-09-02T10:49:00+00:00' or [s['sourceUrls'][f] for f in ('rtcave','prcMonitor','prc')]!=list(URLS):raise ValueError('extractive_native_reference_changed')
  rtc=s['rtcave'];records=rtc['records']
- if rtc.get('retrievedAt')!='2026-11-05T16:04:00+00:00' or rtc.get('sha256')!='51e27af42c70a34e9c93011e78c157d1a0c623b26cebc5739bbd3bdf866b01a6' or any(rtc.get(f)!=667 for f in ('regionalRecordCount','regionalUniqueCodiceRt','regionalUniqueIdCava')):raise ValueError('extractive_native_reference_changed')
+ if rtc.get('retrievedAt')!='2026-11-05T16:04:00+00:00' or rtc.get('sha256')!=_pin('extractive#1') or any(rtc.get(f)!=667 for f in ('regionalRecordCount','regionalUniqueCodiceRt','regionalUniqueIdCava')):raise ValueError('extractive_native_reference_changed')
  if len(records)!=90 or rtc.get('versiliaRecordCount')!=90 or any(not isinstance(r.get('codice_rt'),str) or not r['codice_rt'] or not count(r.get('id_cava')) for r in records) or len({r['codice_rt'] for r in records})!=90 or len({r['id_cava'] for r in records})!=90:raise ValueError('extractive_duplicate_or_invalid_records')
  for r in records:
   if r['cod_istat'] not in towns or r['nome_comune']!=towns[r['cod_istat']]:raise ValueError('extractive_native_identity_changed')

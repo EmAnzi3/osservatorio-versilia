@@ -243,3 +243,6 @@ scripts/materialize_a7_public_explorer.py
 scripts/a7_explorer_release.py
 scripts/release_period_probes.py
 scripts/test_release_period_probes.py
+scripts/a6_pins.py
+scripts/a6_repin.py
+scripts/test_a6_pins.py

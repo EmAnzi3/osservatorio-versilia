@@ -1,4 +1,5 @@
 """Istat road measures and DAIT nominal proceeds, with distinct denominators."""
+from a6_pins import Pin as _pin
 import math
 
 from semantic_operations import finite
@@ -7,10 +8,10 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 SAFETY, FINES = KEYS = ('roadSafety', 'roadFinesPerResident')
 NATIVE = 'data/source-snapshots/sicurezza-territorio-draft-2026-08.json'
 CANONICAL = 'data/site-data.json'
-HASHES = {NATIVE: ('3fa39838392f75bf4642298929123093eee189419bbaf38e422d4569fc870bcf',
-                  'f8d26ae2375505e7d2d2329724fbb24b4e72680cc19bc4ad40d60d57fdcd7db9')}
-CANONICAL_HASH = '9ea68394b81f2b83ca8289eca1e434290e26ad1effe4582100459fbb1bcdb45b'
-INJURED_HASH = '9ef9463e4e14141e57626190033d0e4dc397d0d27d132e5110ffd0102c6bc6d8'
+HASHES = {NATIVE: (_pin('road#1'),
+                  _pin('road#2'))}
+CANONICAL_HASH = _pin('road#3')
+INJURED_HASH = _pin('road#4')
 INCIDENTS, MORTALITY, INJURY, INJURED = VIEWS = ('measure:incidents', 'measure:mortality', 'measure:injury', 'measure:injured')
 # field, public selector, public label, unit, denominator universe
 SPECS = {

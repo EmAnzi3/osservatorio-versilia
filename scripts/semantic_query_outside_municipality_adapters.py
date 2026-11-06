@@ -1,8 +1,9 @@
 """Published census worker shares; distinct from work-matrix commuter margins."""
+from a6_pins import Pin as _pin
 from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('outsideMunicipality',)
-PUBLIC_HASH = '1c3ad84d4574a5e0466f498f14b7f4e51fb85729c9787efb10a75755a17af74b'
+PUBLIC_HASH = _pin('outside_municipality#1')
 NOTES = ['outside_census_resident_worker_share_not_work_matrix_commuter_universe',
          'outside_not_complement_of_matrix_self_containment',
          'outside_public_catalog_replay_not_original_census_records',

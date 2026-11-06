@@ -1,4 +1,5 @@
 """MEF native components: source-specific means and distinct income universes."""
+from a6_pins import Pin as _pin
 import hashlib
 import json
 import math
@@ -19,11 +20,11 @@ BANDS=('le0','0to10k','10to15k','15to26k','26to55k','55to75k','75to120k','over12
 MACROS=((0,1,2),(3,),(4,),(5,6,7))
 MACRO_LABELS=('Fino a 15.000 €','15.001–26.000 €','26.001–55.000 €','Oltre 55.000 €')
 HASHES={
- CURRENT:('f5ed030543cfbcac9ea630ffbfdf71d9f00bf5c1978bed2d5a670c25264032d3','9da6749489071735c25f5a75d7598c83d1950b80707e609bc393128b4c24584b'),
- HISTORY:('079d6cdff7a09f65e9384d4381d2c2f3e9742286a29959271b96f0d2503b15b2','f16cef0609fab86ac916f823a5e9444cf60f717a4d9445f461118d894be16db0'),
- DEMO:('8ec47305870a84cd0da4fd0b36dc0ee33693557cec4df0796f56d04f78bb68f7','24713ad8f1ebeb3b588790973fa4909aa2151f1005b63342691e4129ca852a07'),
- BENCH:('ad51c1eac33d05465ea6082a273a30f51a4f6fb7abded8727aa5e4c01b0794e7','d9b5aca421cf848b6a5c947fd2cb10bc6b476581451b565902262fff66104d48'),
- TAX_BENCH:('88adb57f13ab83fa7a77b5179dfbcefd7399086ac307627c21907662add34e52','bca5845084c55263508c7deef0758e432dbf3cee8bd6e45de44e3be84eb068aa')}
+ CURRENT:(_pin('mef#1'),_pin('mef#2')),
+ HISTORY:(_pin('mef#3'),_pin('mef#4')),
+ DEMO:(_pin('mef#5'),_pin('mef#6')),
+ BENCH:(_pin('mef#7'),_pin('mef#8')),
+ TAX_BENCH:(_pin('mef#9'),_pin('mef#10'))}
 
 
 def dimensions(key):

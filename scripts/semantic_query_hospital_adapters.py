@@ -1,9 +1,10 @@
 """Published hospital presence and bed rates; no invented native components."""
+from a6_pins import Pin as _pin, matches_any as _matches_any
 from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('hospitals',)
-HASHES = {'970682de2adb5f646afd3ede56aba448da426d087e84745015f0198867678c36',
-          '2c0f2d7503c6910ab2e4d8d1d8be90841df15cfba62fd86ac9505f2cc2c9d4a5'}
+HASHES = {_pin('hospital#1'),
+          _pin('hospital#2')}
 NOTES = ['hospital_local_presence_not_accessibility_or_care_quality',
          'hospital_sites_and_bed_rates_are_distinct_measures',
          'hospital_public_catalog_replay_not_original_ministerial_records',
@@ -30,7 +31,7 @@ def selection_guard(key, dim, op):
 def context(metric, key, dim):
     if key not in KEYS or dim not in dimensions(key):
         raise ValueError('hospital_dimension_not_reviewed')
-    if fingerprint(metric) not in HASHES:
+    if not _matches_any(HASHES, fingerprint(metric)):
         raise ValueError('hospital_public_definition_or_values_changed')
     normalized = dim == 'view:normalized'
     return dict(unit='per10k' if normalized else 'number',

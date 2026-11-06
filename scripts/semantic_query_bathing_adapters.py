@@ -1,4 +1,5 @@
 """Frozen ARPAT classifications/samples and FEE awards, with distinct universes."""
+from a6_pins import Pin as _pin
 import math
 from semantic_operations import finite
 
@@ -70,7 +71,7 @@ def native(engine,key,row):
     if s.get('schemaVersion')!=1 or s['scope'].get('coastalTownCodes')!=list(COASTAL) or s['scope'].get('notApplicableTownCodes')!=list(NA):raise ValueError('bathing_native_reference_changed')
     if set(towns)!=set(COASTAL):raise ValueError('bathing_native_cohort_changed')
     sources=('arpatReport2025','arpatSamples2025') if key!=KEYS[2] else ('blueFlag2026',)
-    hashes={'arpatReport2025':'c190a78c0cf0d8a3e728d84aaa5fd50c7aefc6c0918cb8efa06305d0b965e76a','arpatSamples2025':'90d25c2b47ceae7d2222c718948a46fac6d11985eb0df464a30cc6236be4f1bf','blueFlag2026':'dbfbb3f4f7ea1397015f69b93b91f0acaa2ec71f7cd2e7a2fcad8f76bbd048fc'}
+    hashes={'arpatReport2025':_pin('bathing#1'),'arpatSamples2025':_pin('bathing#2'),'blueFlag2026':_pin('bathing#3')}
     for source in sources:
         if s['sources'][source].get('url')!=URLS[key] or s['sources'][source].get('sha256')!=hashes[source]:raise ValueError('bathing_native_reference_changed')
     if key==KEYS[0]:
@@ -107,7 +108,7 @@ def native(engine,key,row):
     if key==KEYS[2]:
         if row.get('series')!={'years':data['years'],'values':n['values']} or row.get('coastDetail')!={'localities2026':n['localities2026']}:raise ValueError('bathing_public_components_changed')
         b,br=engine.file(FEE)
-        if b.get('schemaVersion')!=2 or b.get('sourceUrl')!=BLUE or b.get('sourceSha256')!='f67d97acc2dd1d202d8d045fab928a2ea690ba3e891c74787171cb83609e1603' or b.get('qualityGate',{}).get('status')!='PASS' or b['scope'].get('year')!=2026:raise ValueError('bathing_native_reference_changed')
+        if b.get('schemaVersion')!=2 or b.get('sourceUrl')!=BLUE or b.get('sourceSha256')!=_pin('bathing#4') or b.get('qualityGate',{}).get('status')!='PASS' or b['scope'].get('year')!=2026:raise ValueError('bathing_native_reference_changed')
         norm=lambda t:' '.join(t.split()).casefold()
         matches=[(i,r) for i,r in enumerate(b['records']) if r['region']=='Toscana' and norm(r['town'])==norm(row['town'])]
         if len(matches)!=1 or matches[0][1].get('revoked') is not False or [norm(v) for v in matches[0][1]['localities']]!=[norm(v) for v in n['localities2026']]:raise ValueError('bathing_fee_localities_not_reconciled')

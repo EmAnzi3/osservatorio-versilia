@@ -1,4 +1,5 @@
 """RUNTS legal-seat stock, with separately dated population components."""
+from a6_pins import Pin as _pin
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
 
@@ -6,9 +7,9 @@ KEYS = ('thirdSector',)
 PERIOD = '2026-10-11'
 POPULATION_PERIOD = '2026-01-01'
 PATH = 'data/source-snapshots/runts-public-2026-10-11.json'
-HASH = '6ced81b1212547ab366a195be0ed51d56cbc928f5955b07f61f009c9d7fcfd83'
-OBJECT_HASH = '002601d8a0dd4bba639770d55c532e14b48584167b1a48d6da66299813371a85'
-PUBLIC_HASH = 'e564b7027c414f82e906aa221290dc04359fb54168e70470ab683989adff3da9'
+HASH = _pin('third_sector#1')
+OBJECT_HASH = _pin('third_sector#2')
+PUBLIC_HASH = _pin('third_sector#3')
 NOTES = ['third_sector_legal_seat_not_activity_services_or_volunteer_count',
          'third_sector_register_20261011_population_20260101_distinct_dates',
          'third_sector_normalized_snapshot_not_original_excel_entity_replay',

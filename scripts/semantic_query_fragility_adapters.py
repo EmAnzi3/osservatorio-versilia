@@ -1,4 +1,5 @@
 """Frozen IFC ordinal classes and effective-2019 municipal accessibility."""
+from a6_pins import Pin as _pin
 import math
 import hashlib
 import json
@@ -42,7 +43,7 @@ def context(metric, key, dimension):
 
 def native(engine, key, row):
     snap,ref=engine.file(NATIVE);src=snap['sources']['istat']
-    if snap.get('schemaVersion')!=1 or src.get('referenceYear')!=2022 or src.get('availableYears')!=YEARS or src.get('officialUrl')!=URL or hashlib.sha256(json.dumps(snap['provenance']['inputs'],sort_keys=True,separators=(',',':')).encode()).hexdigest()!='6080f3414ac93254c22cfcee648df7a6b384d00f46212a1fec154a8cca9f6617':
+    if snap.get('schemaVersion')!=1 or src.get('referenceYear')!=2022 or src.get('availableYears')!=YEARS or src.get('officialUrl')!=URL or hashlib.sha256(json.dumps(snap['provenance']['inputs'],sort_keys=True,separators=(',',':')).encode()).hexdigest()!=_pin('fragility#1'):
         raise ValueError('fragility_native_reference_changed')
     rows=engine._catalog['metrics'][key]['rows']
     if len(rows)!=7 or {r['town'] for r in rows}!=set(snap['istatByTown']):raise ValueError('fragility_native_cohort_changed')
@@ -77,7 +78,7 @@ def observation(engine,key,index,dimension,period,historical):
 def benchmark(engine,key,scope,municipal):
     if key!=KEYS[2] or scope not in scopes(key):raise ValueError('fragility_benchmark_scope_not_reviewed')
     s,ref=engine.file(BENCHMARK);meta=engine._catalog['metrics'][key]['meta']['benchmark']
-    if s.get('schemaVersion')!=1 or s.get('referenceYear')!=2019 or s.get('releaseYear')!=2022 or s.get('sourceUrl')!=URL or s.get('aggregation')!='median-municipalities' or s['source'].get('csvSha256')!='ef2632be1de3466cfda3b81ee335a5247504e7b36980b8cb6259f9caf1c24f0a' or s['source'].get('structureSha256')!='85ec85c259f644de767309199a29bc57d369e7665bf2182f1a2e973d26f36d20' or s.get('qualityGate',{}).get('status')!='PASS':raise ValueError('accessibility_benchmark_reference_changed')
+    if s.get('schemaVersion')!=1 or s.get('referenceYear')!=2019 or s.get('releaseYear')!=2022 or s.get('sourceUrl')!=URL or s.get('aggregation')!='median-municipalities' or s['source'].get('csvSha256')!=_pin('fragility#2') or s['source'].get('structureSha256')!=_pin('fragility#3') or s.get('qualityGate',{}).get('status')!='PASS':raise ValueError('accessibility_benchmark_reference_changed')
     records=s['records'];codes=[r[0] for r in records];tuscany=[v for c,v in records if c[:3] in ('045','046','047','048','049','050','051','052','053','100')]
     if len(records)!=7903 or len(set(codes))!=7903 or '081025' in codes or len(tuscany)!=273 or any(not finite(v) or v<0 for c,v in records):raise ValueError('accessibility_benchmark_cohort_changed')
     for row in engine._catalog['metrics'][key]['rows']:

@@ -1,4 +1,5 @@
 """ISPRA hazard snapshots: source populations, scenario overlap and rounded history."""
+from a6_pins import Pin as _pin
 import math
 import json
 import hashlib
@@ -42,7 +43,7 @@ def correlation_guard(observations,axis):
 
 def native(engine,key,row):
     snap,ref=engine.file(NATIVE);kind,source,year,pop,scenarios,default=SPECS[key];src=snap['sources'][source]
-    if hashlib.sha256(json.dumps(snap['provenance']['inputs'],sort_keys=True,separators=(',',':')).encode()).hexdigest()!='6080f3414ac93254c22cfcee648df7a6b384d00f46212a1fec154a8cca9f6617' or snap.get('schemaVersion')!=1 or (src.get('hazardReference'),src.get('municipalLimitsReference'),src.get('populationReference'))!=(int(year),2024,pop):raise ValueError('hazard_native_reference_changed')
+    if hashlib.sha256(json.dumps(snap['provenance']['inputs'],sort_keys=True,separators=(',',':')).encode()).hexdigest()!=_pin('hazard#1') or snap.get('schemaVersion')!=1 or (src.get('hazardReference'),src.get('municipalLimitsReference'),src.get('populationReference'))!=(int(year),2024,pop):raise ValueError('hazard_native_reference_changed')
     if len(engine._catalog['metrics'][key]['rows'])!=7 or set(snap['hazardsByTown'])!={r['town'] for r in engine._catalog['metrics'][key]['rows']}:raise ValueError('hazard_native_cohort_changed')
     identity=snap['istatByTown'][row['town']]
     if identity['code']!=row['code'] or identity['slug']!=row['slug'] or not any(t['name']==row['town'] and t['code']==row['code'] for t in engine._catalog['towns']):raise ValueError('hazard_row_identity_changed')

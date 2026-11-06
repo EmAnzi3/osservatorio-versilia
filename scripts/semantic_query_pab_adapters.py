@@ -1,4 +1,5 @@
 """Approved A-1 codes, portal activity length and frozen WFS status stay distinct."""
+from a6_pins import Pin as _pin
 import hashlib,json,math
 from semantic_operations import finite
 
@@ -11,10 +12,10 @@ A1='data/source-snapshots/a3-pab-native-source-verification-2026.json'
 STATUS='data/source-snapshots/bonifica-rischio-v126-status.json'
 REGION='https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica'
 PORTAL='https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/'
-PDF_SHA='c97b4c3dc7d1ac838121c381a279a41335cc012fb3823d9d073f91d626c6c0d9'
-RECORD_SHA='11f4159a315569587cafdbebc20df96139b9fb8794bbfcc68c9caa08b87ea15c'
-WFS_SHA='81cb1aa82f7df4b4243f4372e35e5ab7bac2624e42ded67c25a6e1a911f4f322'
-EXPORT_SHA={'Camaiore': 'eff12cc8be8022c4ac2e7021e6d63ca943419366b28f176d2a38ab6c788d2632', 'Forte dei Marmi': 'f13ad60580a7cf3d9b1d27d17523c6bc56c9c5e1a6280569a8b8d72cbbfe2997', 'Massarosa': '7a8081d2f4dac3d3e7f767e1b9537d83444be835223ee23fea4c0e9f72fe9cdb', 'Pietrasanta': '5e186ae4abb2b6eb060d47a9e0f113194edc4533ca99673f2685c3e0eff73fca', 'Seravezza': '5e34973da1dbfb93f3f2a90ce68d54ee4eec6fb309e87ffd4063eed4de774ec0', 'Stazzema': '49db01bdb5073120cec5fed3a74b298e8f59d2e44d2916fbe9112d1da6f5a006', 'Viareggio': 'b45b9aa23deda61c2f6b1f66ab63f48d12e35e5c856156c26983d50f4bb4b4f1'}
+PDF_SHA=_pin('pab#1')
+RECORD_SHA=_pin('pab#2')
+WFS_SHA=_pin('pab#3')
+EXPORT_SHA={'Camaiore': _pin('pab#4'), 'Forte dei Marmi': _pin('pab#5'), 'Massarosa': _pin('pab#6'), 'Pietrasanta': _pin('pab#7'), 'Seravezza': _pin('pab#8'), 'Stazzema': _pin('pab#9'), 'Viareggio': _pin('pab#10')}
 STAMP='2026-08-31T17:19:31+02:00'
 STATES=('programmato','in_corso','completato')
 RULE={'programmato':'lavori_inizio vuoto e lavori_fine vuoto','in_corso':'lavori_inizio valorizzato e lavori_fine vuoto','completato':'lavori_fine valorizzato'}
