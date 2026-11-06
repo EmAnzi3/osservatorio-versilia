@@ -17,21 +17,25 @@ def test_runtime_switch() -> None:
     original_should_hash = base.should_hash
     original_fuel = status.run_fuel_verification
     original_pnrr = status.run_pnrr_verification
+    original_release = status.run_release_probes
 
     assert base.should_hash("https://example.test/data.csv", "text/csv", {}) is True
     with runner.monitor_depth("light"):
         assert base.should_hash("https://example.test/data.csv", "text/csv", {}) is False
         assert status.run_fuel_verification({}, {}, {}, "") == (None, "")
         assert status.run_pnrr_verification({}, {}, "") == (None, "")
+        assert status.run_release_probes({}, {}, "") == (None, "")
 
     assert base.should_hash is original_should_hash
     assert status.run_fuel_verification is original_fuel
     assert status.run_pnrr_verification is original_pnrr
+    assert status.run_release_probes is original_release
 
     with runner.monitor_depth("deep"):
         assert base.should_hash("https://example.test/data.csv", "text/csv", {}) is True
         assert status.run_fuel_verification is original_fuel
         assert status.run_pnrr_verification is original_pnrr
+        assert status.run_release_probes is original_release
 
 
 def test_output_annotation() -> None:
