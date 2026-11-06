@@ -44624,8 +44624,8 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 139.01650593651564,
-          "formatted": "139 €",
+          "value": 141.4727768354737,
+          "formatted": "141 €",
           "series": {
             "years": [
               2019,
@@ -44643,11 +44643,11 @@
               130.26937143316454,
               209.69008955223882,
               149.60430800160836,
-              139.01650593651564
+              141.4727768354737
             ]
           },
           "normalized": null,
-          "benchmarkValue": 139.01650593651564
+          "benchmarkValue": 141.4727768354737
         },
         {
           "town": "Forte dei Marmi",
@@ -44709,7 +44709,7 @@
         }
       ],
       "aggregate": {
-        "value": 108.0652087606488,
+        "value": 108.25654808793365,
         "label": "Valore pro capite Versilia",
         "note": "Somma delle parti disponibili dei sette Comuni rapportata alla popolazione complessiva."
       },

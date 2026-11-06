@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""Aggiornatori dalla fonte: rifanno i valori pubblicati da file ufficiali ricostruiti e segnalano le revisioni."""
+from __future__ import annotations
+
+import io
+import json
+import math
+import tempfile
+import zipfile
+from pathlib import Path
+
+import update_source_data as upd
+
+ROOT = Path(__file__).resolve().parents[1]
+HEADER = "id_indicatore,anno,codice_geografia,geografia,den,num,misura_grezza,misura_standardizzata,liminf,limsup,sesso,strato1,strato2"
+CODES = {v: k for k, v in upd.ars_legacy.TOWNS.items()}
+
+
+def zipped(name: str, text: str) -> bytes:
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        archive.writestr(name, text)
+    return buffer.getvalue()
+
+
+def ars_export(entry: dict, tuscany: float, override: dict | None = None) -> bytes:
+    lines = [HEADER]
+    for geo, values in entry["values"].items():
+        for period, value in zip(entry["periods"], values):
+            value = (override or {}).get((geo, period), value)
+            text = str(value).replace(".", ",")
+            lines.append(f'{entry["indicatorId"]},{period},{CODES[geo]},{geo},1,1,"{text}","{text}",0,0,totale,,')
+            lines.append(f'{entry["indicatorId"]},{period},{CODES[geo]},{geo},1,1,"9,9","9,9",0,0,maschi,,')
+    lines.append(f'{entry["indicatorId"]},{entry["periods"][-1]},090,Toscana,1,1,"{tuscany}","{tuscany}",0,0,totale,,')
+    return zipped("dati.csv", "\n".join(lines) + "\n")
+
+
+def ars_cases(tmp: Path) -> None:
+    entry = json.loads(upd.ARS_LEGACY.read_text(encoding="utf-8"))["indicators"]["hospitalizedAll"]
+    site = json.loads(upd.SITE.read_text(encoding="utf-8"))["metrics"]["hospitalizedAll"]
+    tuscany = site["meta"]["benchmark"]["tuscany"]
+    same = tmp / "same.zip"
+    same.write_bytes(ars_export(entry, tuscany))
+    assert upd.update_ars_legacy("hospitalizedAll", same, dry_run=True).lines == [], "lo stesso export non deve cambiare nulla"
+    last = entry["periods"][-1]
+    revised = tmp / "revised.zip"
+    revised.write_bytes(ars_export(entry, 61.5, {("Massarosa", last): 63.2788}))
+    lines = upd.update_ars_legacy("hospitalizedAll", revised, dry_run=True).lines
+    assert any("catalogo Massarosa" in line and "63.28" in line for line in lines), lines
+    assert any("catalogo Toscana" in line and "61.5" in line for line in lines), lines
+    newer = dict(entry, periods=entry["periods"] + ["2022-2026"], values={g: v + [1.0] for g, v in entry["values"].items()})
+    ahead = tmp / "ahead.zip"
+    ahead.write_bytes(ars_export(newer, tuscany))
+    try:
+        upd.update_ars_legacy("hospitalizedAll", ahead, dry_run=True)
+        raise AssertionError("un periodo nuovo ARS non va applicato come revisione")
+    except upd.UpdateError:
+        pass
+
+
+def p2_file(year: int) -> bytes:
+    """P2 di tutti i Comuni ricostruito dai conteggi pubblicati e dal bilancio già congelato."""
+    site = json.loads(upd.SITE.read_text(encoding="utf-8"))["metrics"]
+    lotto = json.loads((upd.SNAP / "istat-demography-lotto-a-2026-08.json").read_text(encoding="utf-8"))["p02"]["towns"]
+    head = ["Codice comune", "Comune", "Popolazione al 1° gennaio - Totale", "Popolazione al 31 dicembre - Totale",
+            "Immigrati da altro comune - Totale", "Emigrati per altro comune - Totale",
+            "Immigrati dall'estero - Totale", "Emigrati per l'estero - Totale"]
+    lines = [f"Bilancio demografico {year}", ";".join(head)]
+    for row in site[upd.MOBILITY[0]]["rows"]:
+        p02 = upd.probes_one(lotto[row["town"]], year)
+        internal = [p["count"] for p in row["parts"]]
+        foreign = [p["count"] for p in next(r for r in site[upd.MOBILITY[1]]["rows"] if r["code"] == row["code"])["parts"]]
+        lines.append(";".join(map(str, [row["code"], row["town"], p02["populationJan1"], p02["populationDec31"], internal[0], internal[1], foreign[0], foreign[1]])))
+    lines.append("048017;Firenze;360000;361000;9000;8000;7000;2000")
+    lines.append("058091;Roma;2750000;2752000;30000;31000;20000;9000")
+    return zipped(f"P2_{year}.csv", "\n".join(lines) + "\n")
+
+
+def mobility_cases(tmp: Path) -> None:
+    site = json.loads(upd.SITE.read_text(encoding="utf-8"))["metrics"]
+    year = int(site[upd.MOBILITY[0]]["meta"]["year"])
+    path = tmp / "p2.zip"
+    path.write_bytes(p2_file(year))
+    lines = upd.update_istat_mobility(year, path, dry_run=True).lines
+    towns = [line for line in lines if "benchmark" not in line]
+    bad = []
+    for line in towns:
+        label, change = line.split(": ", 1)
+        old, new = (float(x) for x in change.split(" → "))
+        if not math.isclose(old, new, rel_tol=0, abs_tol=1e-9):
+            bad.append(line)
+    assert not bad, f"i conteggi pubblicati devono ridare gli stessi tassi: {bad[:3]}"
+    text = upd.composite_flow(upd.COMPOSITE.read_text(encoding="utf-8"), "Massarosa", year + 1, 500, 400)
+    flows = json.loads(text)["raw"]["Massarosa"]["internalResidentialMobility"]
+    assert flows[-1] == {"year": year + 1, "registeredIn": 500, "registeredOut": 400} and flows[-2]["year"] == year
+    try:
+        upd.composite_flow(text, "Massarosa", year + 3, 1, 1)
+        raise AssertionError("anno non consecutivo accettato")
+    except upd.UpdateError:
+        pass
+
+
+def main() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        ars_cases(Path(tmp))
+        mobility_cases(Path(tmp))
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica PASS")
+
+
+if __name__ == "__main__":
+    main()
