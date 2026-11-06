@@ -1278,6 +1278,13 @@
           "pages": 18
         }
       ]
+    },
+    {
+      "coverage_id": "auto-1a33f9260edbbf41",
+      "url": "https://www.fondazionecarilucca.it/bandi/bando-granfest-grandi-festival-2027",
+      "reasonCode": "outside_municipal_call",
+      "reason": "GRANFEST 2027: «La partecipazione al bando è riservata a soli soggetti privati». Le richieste dei soggetti pubblici (Comuni, Unioni di Comuni) sono espressamente non ammissibili e rinviate al bando «FUORI LUOGO – Territori in scena»; il Comune compare solo come possibile cofinanziatore, che da solo non costituisce un ruolo nella candidatura.",
+      "reviewed_at": "2026-11-06"
     }
   ]
 }

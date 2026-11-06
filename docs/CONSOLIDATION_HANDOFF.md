@@ -1,5 +1,16 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: sospensione di continuità GRANFEST (6 novembre 2026)
+
+Dal 5 novembre ogni run del Radar si fermava su `continuityHold=1`: «Bando GRANFEST. Grandi Festival
+2027» (Fondazione CR Lucca, identità `rule:coverage:auto-1a33f9260edbbf41`) era nel run precedente
+ma non più qualificato. La pagina ufficiale è viva e il bando è aperto fino al 20 novembre, ma
+riserva la partecipazione ai soli soggetti privati ed esclude espressamente i Comuni (rinviati a
+«FUORI LUOGO – Territori in scena»); il Comune è citato solo come possibile cofinanziatore. La
+prima qualificazione automatica era quindi errata e la nuova rilettura la scarta correttamente.
+Risolto con una `publicationExclusions` motivata in `data/opportunity-audit-fixes-v1.json`
+(`outside_municipal_call`), che toglie la scheda anche dalla continuità.
+
 ## Controllo mensile completo, lotto 3: RGS/OpenBDAP/SIOPE (6 novembre 2026)
 
 Branch `feature/check-mensile-lotto3`. Copertura 50/225 (era 19). Nuove famiglie in
