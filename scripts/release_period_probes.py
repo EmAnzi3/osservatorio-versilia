@@ -675,6 +675,8 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, required=True, help="Catalogo effettivo (dist/data/site-data.json)")
     parser.add_argument("--metric", help="Un solo indicatore")
     parser.add_argument("--file", type=Path, action="append", help="File della fonte scaricato a mano (ripetibile)")
+    parser.add_argument("--json-out", type=Path, help="Esiti completi in JSON")
+    parser.add_argument("--report-md", type=Path, help="Resoconto in Markdown")
     args = parser.parse_args()
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
     CATALOG.update(data)
@@ -687,7 +689,14 @@ def main() -> int:
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0 if result["status"] != "verification_required" or result.get("reason") != "source_unreachable" else 2
     results = run_all(data, coverage)
-    print("\n".join(report_lines(results, coverage)))
+    lines = report_lines(results, coverage)
+    if args.json_out:
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
+        args.json_out.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if args.report_md:
+        args.report_md.parent.mkdir(parents=True, exist_ok=True)
+        args.report_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("\n".join(lines))
     return 0
 
 

@@ -1,0 +1,62 @@
+name: Verifica periodi alla fonte
+
+# Collaudo e verifica su richiesta delle verifiche di periodo del controllo mensile.
+# Non modifica dati: produce un artefatto con esiti e file scaricati dalle fonti
+# che si raggiungono solo dai runner GitHub.
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/release-period-probes.yml"
+      - "scripts/release_period_probes.py"
+      - "scripts/probe_fetch.py"
+      - "ci/release-probe-coverage.json"
+      - "ci/probe-fetch-list.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-period-probes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PYTHONUNBUFFERED: "1"
+      MONITOR_PUBLIC_DIR: /tmp/ov-public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install requests openpyxl
+      - name: Contract tests
+        run: python scripts/test_release_period_probes.py
+      - name: Fetch exploration list
+        run: python scripts/probe_fetch.py --output-dir /tmp/probe-fetch
+      - name: Materialize effective public catalog
+        run: |
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+          python scripts/materialize_source_monitor_snapshot.py --output-dir "$MONITOR_PUBLIC_DIR"
+      - name: Run release period probes
+        run: |
+          python scripts/release_period_probes.py \
+            --catalog "$MONITOR_PUBLIC_DIR/site-data.json" \
+            --json-out /tmp/probe-results/results.json \
+            --report-md /tmp/probe-results/report.md
+          cat /tmp/probe-results/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-period-probes
+          path: |
+            /tmp/probe-results
+            /tmp/probe-fetch
+          retention-days: 14

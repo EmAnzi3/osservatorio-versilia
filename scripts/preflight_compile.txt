@@ -246,3 +246,4 @@ scripts/test_release_period_probes.py
 scripts/a6_pins.py
 scripts/a6_repin.py
 scripts/test_a6_pins.py
+scripts/probe_fetch.py
