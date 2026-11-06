@@ -456,8 +456,92 @@ def siope_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, 
     ]}
 
 
+# ---------------------------------------------------------------- RGS, Conto annuale del personale
+
+RGS_EXPORT = "https://bdap-opendata.rgs.mef.gov.it/export/csv/{year}---Dipendenti-Pubblici---{name}.csv"
+RGS_FILES = {
+    "occupation": "Occupazione-e-Turnover---Dati-analitici-per-Ente",
+    "age": "Anzianita---Dati-analitici-per-Ente",
+    "hires": "Assunzioni---Dati-Analitici-per-Causale-Assunzione",
+    "cessations": "Cessazioni---Dati-analitici-per-Causale-Cessazione",
+}
+RGS_STAFF_COLUMNS = ("NumeroDipendentiDonneTempoPieno", "NumeroDipendentiUominiTempoPieno",
+                     "NumeroDipendentiDonnePartTimeInf.50%", "NumeroDipendentiUominiPartTimeInf.50%",
+                     "NumeroDipendentiDonnePartTimeSup.50%", "NumeroDipendentiUominiPartTimeSup.50%")
+RGS_FILES_BY_MEASURE = {"employeesPer1000": ("occupation",), "age55": ("occupation", "age"),
+                        "turnover": ("occupation", "hires", "cessations")}
+
+
+def rgs_url(year: int, kind: str) -> str:
+    return RGS_EXPORT.format(year=year, name=RGS_FILES[kind])
+
+
+def rgs_rows(raw: bytes, institutions: set[str]):
+    if raw[:200].lstrip().lower().startswith((b"<!doctype", b"<html")):
+        raise ProbeError("not_found", "il file del Conto annuale non è pubblicato")
+    reader = csv.reader(io.StringIO(raw.decode("cp1252")), delimiter=";")
+    header = [re.sub(r"\s+", "", h).casefold() for h in next(reader)]
+    index = {h: i for i, h in enumerate(header)}
+    if "codiceistituzione" not in index:
+        raise ProbeError("structure_changed", "colonna Codice Istituzione assente nel Conto annuale")
+    for row in reader:
+        if len(row) >= len(header) - 1 and row[index["codiceistituzione"]] in institutions:
+            yield {h: row[i] if i < len(row) else "" for h, i in index.items()}
+
+
+def rgs_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    year = int(norm_period(metric.get("meta", {}).get("year")))
+    towns = json.loads((ROOT / "data" / "source-snapshots" / f"rgs-amministrazione-{year}.json").read_text(encoding="utf-8"))["towns"]
+    institution = {item["institutionCode"]: town for town, item in towns.items()}
+    counts = {town: {"staff": 0.0, "age55": 0.0, "hires": 0.0, "cessations": 0.0} for town in towns}
+    for kind in RGS_FILES_BY_MEASURE[spec["measure"]]:
+        for row in rgs_rows(fetch(rgs_url(year, kind)), set(institution)):
+            item = counts[institution[row["codiceistituzione"]]]
+            if kind == "occupation":
+                item["staff"] += sum(parse_number(row.get(c.casefold())) or 0.0 for c in RGS_STAFF_COLUMNS)
+            elif kind == "age":
+                start = re.match(r"E(\d{3})", row.get("codicefasciaeta", ""))
+                if start and int(start.group(1)) >= 55:
+                    item["age55"] += (parse_number(row.get("numerodipendentidonne")) or 0.0) + (parse_number(row.get("numerodipendentiuomini")) or 0.0)
+            elif "passaggi" not in row.get("descrizionecausale", "").casefold():
+                item[kind] += (parse_number(row.get("donne")) or 0.0) + (parse_number(row.get("uomini")) or 0.0)
+    rows = {str(r.get("town")): r for r in metric.get("rows", [])}
+    source = {}
+    for town, item in counts.items():
+        row = rows.get(town)
+        if row is None or not item["staff"]:
+            continue
+        if spec["measure"] == "employeesPer1000":
+            value = item["staff"] / float(row["residentPopulation"]) * 1000
+        elif spec["measure"] == "age55":
+            value = item["age55"] / item["staff"] * 100
+        else:
+            value = (item["hires"] - item["cessations"]) / item["staff"] * 100
+        source[(str(row["code"]), str(year))] = value
+    if len(source) < 7:
+        raise ProbeError("structure_changed", f"Conto annuale {year}: {len(source)} Comuni su 7")
+    latest = str(year)
+    try:
+        next(iter(rgs_rows(fetch(rgs_url(year + 1, "occupation")), set(institution))), None)
+        latest = str(year + 1)
+    except ProbeError as error:
+        if error.reason != "not_found":
+            raise
+    return evaluate(metric, source, latest, {"url": rgs_url(year, "occupation"), "nextReleaseUrl": rgs_url(year + 1, "occupation"), "coverage": "7/7"})
+
+
+def rgs_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, Any]:
+    urls = [rgs_url(year, kind) for kind in RGS_FILES_BY_MEASURE[spec["measure"]]] + [rgs_url(year + 1, "occupation")]
+    return {"urls": urls, "steps": [
+        "Scaricare da un browser i CSV del Conto annuale indicati sotto, senza aprirli né rinominarli:",
+        *[f"- {url}" for url in urls],
+        f"Se l'ultimo ({year + 1}) mostra «Not Found», il nuovo Conto annuale non è ancora uscito: non serve salvarlo.",
+    ]}
+
+
 PROBES = {
     "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
+    "rgs_conto_annuale": (rgs_probe, lambda key, spec, metric: rgs_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "siope_cumulative": (siope_probe, lambda key, spec, metric: siope_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
 }

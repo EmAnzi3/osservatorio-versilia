@@ -35,6 +35,8 @@ def coverage_contract() -> None:
             assert isinstance(spec["indicatorId"], int), key
             assert spec["measurement"] in {"raw", "standardized"}, key
             assert spec["strato1"] and all(isinstance(s, str) for s in spec["strato1"]), key
+        if spec["probe"] == "rgs_conto_annuale":
+            assert spec["measure"] in probes.RGS_FILES_BY_MEASURE, key
         if spec["probe"] == "openbdap_rendiconto":
             assert spec["family"] in {"v139", "v160", "mission03", "debt_d1"}, key
 

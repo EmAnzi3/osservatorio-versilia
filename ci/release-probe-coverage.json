@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 178,
+  "maxPending": 175,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -587,8 +587,8 @@
       "source": "aci.gov.it"
     },
     "municipalEmployeesPer1000": {
-      "pendingLot": 3,
-      "source": "contoannuale.rgs.mef.gov.it"
+      "probe": "rgs_conto_annuale",
+      "measure": "employeesPer1000"
     },
     "municipalFragility": {
       "pendingLot": 2,
@@ -607,16 +607,16 @@
       "source": "regione.toscana.it"
     },
     "municipalStaffAgeStructure": {
-      "pendingLot": 3,
-      "source": "contoannuale.rgs.mef.gov.it"
+      "probe": "rgs_conto_annuale",
+      "measure": "age55"
     },
     "municipalStaffTraining": {
       "pendingLot": 3,
       "source": "contoannuale.rgs.mef.gov.it"
     },
     "municipalStaffTurnover": {
-      "pendingLot": 3,
-      "source": "contoannuale.rgs.mef.gov.it"
+      "probe": "rgs_conto_annuale",
+      "measure": "turnover"
     },
     "municipalSurface": {
       "pendingLot": 2,
