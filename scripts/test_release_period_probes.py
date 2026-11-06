@@ -120,9 +120,34 @@ def probe_cases() -> None:
     assert "### Azioni manuali" in lines and "--file" in lines
 
 
+def zipped(text: str) -> bytes:
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        archive.writestr("dati.csv", text)
+    return buffer.getvalue()
+
+
+def demo_cases() -> None:
+    metric = {"rows": [{"code": "046018", "surfaceKm2": 10.0}]}
+    posas = "Popolazione residente al 1 gennaio\nCodice comune;Comune;Età;Totale maschi;Totale femmine;Totale\n"
+    posas += "46018;Massarosa;5;3;2;5\n046018;Massarosa;40;10;10;20\n046018;Massarosa;70;4;6;10\n046018;Massarosa;999;17;18;35\n"
+    assert probes.demo_values("population", zipped(posas), metric) == {"046018": 35}, "la riga 999 (totale) non va sommata alle età"
+    assert probes.demo_values("old_age", zipped(posas), metric) == {"046018": 200.0}
+    broken = posas.replace(";999;17;18;35", ";999;17;18;36")
+    try:
+        probes.demo_values("population", zipped(broken), metric)
+        raise AssertionError("totale POSAS incoerente non segnalato")
+    except probes.ProbeError as error:
+        assert error.reason == "structure_changed"
+    rcs = "Codice Istat;Comune;Codice stato di cittadinanza;Stato di cittadinanza;Maschi;Femmine;Totale\n"
+    rcs += "046018;Massarosa;100;Italia;45;45;90\n046018;Massarosa;235;Romania;5;5;10\n046;Lucca;235;Romania;50;50;100\n"
+    assert probes.demo_values("foreign_share", zipped(rcs), metric) == {"046018": 10.0}, "gli italiani non sono stranieri"
+
+
 def main() -> None:
     coverage_contract()
     probe_cases()
+    demo_cases()
     contract = probes.load_coverage()
     covered = sum(1 for v in contract["metrics"].values() if "probe" in v)
     print(f"Verifica mensile dei periodi: {covered}/{len(contract['metrics'])} indicatori coperti, {contract['maxPending']} nei lotti successivi; casi current/new/differ/revised/structure/unreachable PASS")

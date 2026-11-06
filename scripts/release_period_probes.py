@@ -577,15 +577,26 @@ def demo_values(measure: str, payload: bytes, metric: dict[str, Any]) -> dict[st
     dataset = DEMO_DATASET[measure]
     out: dict[str, float] = {}
     if dataset == "posas":
-        _, records = _demo_table(payload, titled=True)
-        bands: dict[str, dict[str, float]] = {c: {"total": 0, "young": 0, "work": 0, "old": 0, "b2034": 0} for c in codes}
+        import acquire_a3_benchmark_demography_candidates as demo
+        header, records = _demo_table(payload, titled=True)
+        try:
+            age_h = demo.pick(header, ("eta",))
+            total_h = demo.pick(header, ("totale",), ("maschi", "femmine"))
+        except Exception as exc:
+            raise ProbeError("structure_changed", f"colonne POSAS cambiate: {header}") from exc
+        bands: dict[str, dict[str, float]] = {c: {"total": 0, "young": 0, "work": 0, "old": 0, "b2034": 0, "row999": 0} for c in codes}
         for rec in records:
-            code = rec.get("Codice comune", "").strip()
+            code = demo.code_of(rec)
             if code not in bands:
                 continue
-            age = int(re.search(r"\d+", rec.get("Età", "0")).group())
-            value = _demo_int(rec.get("Totale"))
+            age = demo.age_number(rec.get(age_h))
+            if age is None:
+                continue
+            value = _demo_int(rec.get(total_h))
             b = bands[code]
+            if age == 999:  # riga di totale del Comune
+                b["row999"] += value
+                continue
             b["total"] += value
             b["young" if age <= 14 else "work" if age <= 64 else "old"] += value
             if 20 <= age <= 34:
@@ -593,6 +604,8 @@ def demo_values(measure: str, payload: bytes, metric: dict[str, Any]) -> dict[st
         for code, b in bands.items():
             if not b["total"]:
                 continue
+            if b["row999"] and abs(b["row999"] - b["total"]) > 0.1:
+                raise ProbeError("structure_changed", f"POSAS {code}: somma delle età {b['total']} diversa dal totale {b['row999']}")
             out[code] = {
                 "population": b["total"],
                 "dependency": (b["young"] + b["old"]) / b["work"] * 100,
@@ -618,15 +631,22 @@ def demo_values(measure: str, payload: bytes, metric: dict[str, Any]) -> dict[st
             out[code] = numerator / mean * 1000
     else:
         _, records = _demo_table(payload, titled=False)
-        totals: dict[str, float] = {}
+        totals: dict[str, dict[str, float]] = {}
         for rec in records:
-            code = rec.get("Codice Istat", "").strip()
-            if code in codes:
-                totals[code] = totals.get(code, 0.0) + _demo_int(rec.get("Totale"))
-        for code, foreign in totals.items():
-            population = rows[code].get("population")
-            if population:
-                out[code] = foreign / float(population) * 100
+            # Solo codici comunali a 6 cifre: il file contiene anche aggregati territoriali.
+            code = re.sub(r"\D", "", str(rec.get("Codice Istat") or "").strip())
+            if code not in codes:
+                continue
+            value = _demo_int(rec.get("Totale"))
+            town = totals.setdefault(code, {"foreign": 0.0, "population": 0.0})
+            town["population"] += value
+            citizenship = str(rec.get("Codice stato di cittadinanza") or "").strip()
+            label = str(rec.get("Stato di cittadinanza") or "").strip().casefold()
+            if citizenship != "100" and label != "italia":
+                town["foreign"] += value
+        for code, town in totals.items():
+            if town["population"]:
+                out[code] = town["foreign"] / town["population"] * 100
     return out
 
 
@@ -780,6 +800,12 @@ def report_lines(results: dict[str, dict[str, Any]], coverage: dict[str, Any]) -
     for index, action in enumerate(actions, 1):
         lines.append(f"{index}. **`{action['metric']}`** — {REASONS.get(action['reason'], action['reason'])}: {action['detail']}")
         lines.extend(f"   - {step}" for step in action["steps"])
+    differing = {k: v for k, v in results.items() if v.get("differences")}
+    if differing:
+        lines += ["", "### Valori diversi nello stesso periodo", ""]
+        for key, item in sorted(differing.items()):
+            sample = ", ".join(f"{d['geography']} {d['period']}: {d['published']} → {d['observed']}" for d in item["differences"][:7])
+            lines.append(f"- `{key}`: {sample}.")
     revised = {k: v for k, v in results.items() if v.get("historyRevisionCount")}
     if revised:
         lines += ["", "### Revisioni dello storico", ""]
