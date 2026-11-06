@@ -45,6 +45,8 @@ ARS_LEGACY = SNAP / "ars-a3-5-legacy-history.json"
 COMPOSITE = SNAP / "composite-indicators-v1.9.0.json"
 MOBILITY = ("internalResidentialMobility", "foreignResidentialMobility", "totalResidentialMobility")
 TOWN_CODES = probes.TOWN_CODES
+# Codice ARS della Regione Toscana (par_top_geografia=090 nelle pagine «La salute dei comuni»).
+TUSCANY_ARS_CODES = {"90"}
 
 
 class UpdateError(RuntimeError):
@@ -103,6 +105,7 @@ def ars_series(indicator_id: int, raw: bytes) -> tuple[list[str], dict[str, list
     reader = csv.DictReader(io.StringIO(raw.decode("utf-8-sig")))
     by_geo: dict[str, dict[str, float]] = {}
     tuscany: dict[str, float] = {}
+    other: set[str] = set()
     for row in reader:
         if str(row.get("id_indicatore") or "").strip() != str(indicator_id):
             continue
@@ -117,14 +120,18 @@ def ars_series(indicator_id: int, raw: bytes) -> tuple[list[str], dict[str, list
         code = str(row.get("codice_geografia") or "").strip()
         if code in ars_legacy.TOWNS:
             by_geo.setdefault(ars_legacy.TOWNS[code], {})[period] = float(value)
-        elif str(row.get("geografia") or "").strip().casefold() == "toscana":
+        elif code.lstrip("0") in TUSCANY_ARS_CODES or str(row.get("geografia") or "").strip().casefold() in {"toscana", "regione toscana"}:
             tuscany[period] = float(value)
+        elif "tosc" in str(row.get("geografia") or "").casefold():
+            other.add(f"{code} {row.get('geografia')}")
     missing = [g for g in ars_legacy.TOWNS.values() if g not in by_geo]
     if missing:
         raise UpdateError(f"ARS {indicator_id}: serie assenti per {missing}")
     periods = sorted(set.intersection(*(set(v) for v in by_geo.values())), key=ars_legacy._period_key)
     values = {geo: [series[p] for p in periods] for geo, series in by_geo.items()}
-    return periods, values, tuscany.get(periods[-1])
+    if periods[-1] not in tuscany:
+        raise UpdateError(f"ARS {indicator_id}: riga Toscana {periods[-1]} assente; geografie simili: {sorted(other)[:10]}")
+    return periods, values, tuscany[periods[-1]]
 
 
 def update_ars_legacy(metric_key: str, file: Path | None, dry_run: bool) -> Changes:
@@ -163,8 +170,6 @@ def update_ars_legacy(metric_key: str, file: Path | None, dry_run: bool) -> Chan
     metric["aggregate"]["value"] = aggregate
     benchmark = metric["meta"].get("benchmark")
     if isinstance(benchmark, dict) and "tuscany" in benchmark:
-        if tuscany is None:
-            raise UpdateError(f"{metric_key}: valore Toscana {published} assente dall'export")
         new = round(tuscany + 1e-12, 2)
         changes.note(f"catalogo Toscana {published}", benchmark["tuscany"], new)
         benchmark["tuscany"] = new

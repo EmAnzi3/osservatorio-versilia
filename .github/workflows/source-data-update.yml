@@ -39,6 +39,8 @@ jobs:
       - name: Offline updater tests
         run: cd scripts && python test_update_source_data.py
       - name: Run requested updaters
+        id: updaters
+        continue-on-error: true
         run: |
           python - <<'PY'
           import json, subprocess, sys
@@ -54,10 +56,16 @@ jobs:
           PY
       - name: Commit updated data to the PR branch
         run: |
-          if git diff --quiet; then echo "Nessun dato cambiato."; exit 0; fi
+          # Ogni aggiornatore scrive solo se completo: si committano quelli riusciti.
+          if [ -z "$(git status --porcelain -- data)" ]; then echo "Nessun dato cambiato."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data
           git status --short
           git commit -m "Dati aggiornati dalla fonte (workflow Aggiorna dati dalla fonte)"
           git push origin "HEAD:${{ github.head_ref }}"
+      - name: Fail if an updater was refused
+        if: steps.updaters.outcome == 'failure'
+        run: |
+          echo "::error::Almeno un aggiornatore ha rifiutato i dati: vedere il log del passo precedente."
+          exit 1
