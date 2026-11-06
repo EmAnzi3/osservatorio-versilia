@@ -83,6 +83,28 @@ sempre di Ema.
 Prossimo: lotto trasversale (adattatori A6 congelati → controlli sul contenuto; domande
 verificate rigenerate dall'aggiornatore), poi lotti 2–6.
 
+## Aggiornamento dati dalla verifica dei periodi (6 novembre 2026)
+
+Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi alla fonte
+(lotto 2, #563):
+
+- **Seravezza, parte disponibile 2025** (voce 0502, OpenBDAP ripubblicato il 3/11):
+  1.721.163,36 → 1.751.574,45 € (139,02 → 141,47 €/ab.; Versilia 108,07 → 108,26). Unica voce
+  2025 cambiata ricalcolando tutto il rendiconto con `build_bilanci_snapshot.build_year`.
+- **Ricoveri ARS 1332, 2021–2025**: ARS ha completato l'ultimo periodo (ricoveri fuori Toscana);
+  periodi precedenti identici. Applicato da `update_source_data.py ars-legacy`.
+- **Mobilità residenziale 2025** (Istat P2 Comuni): anno successivo al 2024 pubblicato.
+  Applicato da `update_source_data.py istat-mobility`; benchmark in
+  `a3-istat-demography-mobility-benchmark-2025.json`; l'adattatore demografia legge l'anno
+  dallo snapshot invece del 2024 scritto nel codice.
+
+Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
+`test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»
+(`source-data-update.yml`): su PR verso main esegue gli aggiornatori elencati in
+`ci/source-update-request.json` sui runner GitHub e committa solo sul ramo della PR. I push del
+bot non avviano la CI: dopo il suo commit va fatto un push (impronta `road#3` con
+`a6_repin.py --allow road --write`, dossier rigenerati, preflight).
+
 ## Aggiornamento dati RTCave e ARS (5 novembre 2026)
 
 Branch `feature/aggiorna-cave-ars`, sopra `fix/data-check-2026-11` (#555). File sorgente scaricati a
