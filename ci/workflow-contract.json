@@ -613,6 +613,12 @@
       "category": "data-audit",
       "status": "active",
       "note": "Aggiornatori dalla fonte eseguiti sui runner GitHub per le fonti non raggiungibili altrove; committa i dati solo sul ramo della PR, mai su main."
+    },
+    {
+      "path": ".github/workflows/release-period-probes.yml",
+      "category": "data-audit",
+      "status": "active",
+      "note": "Collaudo delle verifiche di periodo del controllo mensile; nessuna scrittura di dati, solo artefatto."
     }
   ]
 }
