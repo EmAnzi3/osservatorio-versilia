@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 180,
+  "maxPending": 179,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -290,8 +290,8 @@
       "source": "istat.it"
     },
     "financialDebtProfile": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "debt_d1"
     },
     "fiscalRecoveryActivity": {
       "pendingLot": 3,

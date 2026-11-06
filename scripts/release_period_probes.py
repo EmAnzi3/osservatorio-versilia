@@ -270,6 +270,26 @@ def openbdap_values(year: int, family: str, archives: dict[str, bytes]) -> dict[
     if family == "v160":
         raw, _ = v160.build_year(year, populations, {f"{year}-schemi": (archives["schemi"], ""), f"{year}-indicatori": (archives["indicatori"], "")})
         return {town: v160.compute_values(values) for town, values in raw.items()}
+    if family == "debt_d1":
+        # Profilo del debito, misura principale (PDI 10.4): voce D1 Debiti da finanziamento / popolazione.
+        with zipfile.ZipFile(io.BytesIO(archives["schemi"])) as archive:
+            name = next((n for n in archive.namelist() if n.endswith("Stato Patrimoniale Passivo_TOSCANA.csv")), None)
+            if name is None:
+                raise ProbeError("structure_changed", "Stato patrimoniale passivo assente dall'archivio")
+            text = archive.read(name).decode("utf-8-sig")
+        codes = {item["code"]: town for town, item in json.loads(
+            (ROOT / "data" / "source-snapshots" / "salute-finanziaria-v129.json").read_text(encoding="utf-8"))["towns"].items()}
+        debt = {town: 0.0 for town in codes.values()}
+        for row in csv.DictReader(io.StringIO(text), delimiter=";"):
+            code = "046" + (row.get("Codice Comune") or "").strip().zfill(3)
+            if (row.get("Codice Provincia") or "").strip() != "046" or code not in codes:
+                continue
+            if row.get("Codice Tipologia Soggetto") != "ELCOMU" or row.get("Codice II Livello") != "04" or row.get("Codice III Livello") != "01":
+                continue
+            if (row.get("Codice V Livello") or "00") != "00":
+                raise ProbeError("structure_changed", "voce D1 articolata oltre il IV livello: rivedere la somma")
+            debt[codes[code]] += parse_number(row.get("Consistenza Anno Corrente")) or 0.0
+        return {town: {"financialDebtProfile": amount / populations[town][year]} for town, amount in debt.items()}
     if family == "mission03":
         import materialize_bilanci_v139 as rows_reader
         with zipfile.ZipFile(io.BytesIO(archives["schemi"])) as archive:
