@@ -54,12 +54,18 @@ def _skip_pnrr(*_args, **_kwargs):
     return None, ""
 
 
+def _skip_release_probes(*_args, **_kwargs):
+    # Le verifiche di periodo scaricano centinaia di MB: solo nel controllo mensile (deep).
+    return None, ""
+
+
 @contextmanager
 def monitor_depth(depth: str) -> Iterator[None]:
     """Applica solo per il processo corrente le differenze tra light e deep."""
     original_should_hash = base.should_hash
     original_fuel = status.run_fuel_verification
     original_pnrr = status.run_pnrr_verification
+    original_release = status.run_release_probes
     previous_depth = os.environ.get("MONITOR_CHECK_DEPTH")
 
     os.environ["MONITOR_CHECK_DEPTH"] = depth
@@ -68,11 +74,13 @@ def monitor_depth(depth: str) -> Iterator[None]:
             base.should_hash = lambda *_args, **_kwargs: False
             status.run_fuel_verification = _skip_fuel
             status.run_pnrr_verification = _skip_pnrr
+            status.run_release_probes = _skip_release_probes
         yield
     finally:
         base.should_hash = original_should_hash
         status.run_fuel_verification = original_fuel
         status.run_pnrr_verification = original_pnrr
+        status.run_release_probes = original_release
         if previous_depth is None:
             os.environ.pop("MONITOR_CHECK_DEPTH", None)
         else:
