@@ -539,8 +539,127 @@ def rgs_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, An
     ]}
 
 
+# ---------------------------------------------------------------- Istat, demo.istat.it (POSAS, P2, RCS)
+
+DEMO_URL = {
+    "posas": "https://demo.istat.it/data/posas/POSAS_{year}_it_046_Lucca.zip",
+    "p2": "https://demo.istat.it/data/p2/P2_{year}_it_046_Lucca.zip",
+    "rcs": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_{year}.zip",
+}
+DEMO_DATASET = {"population": "posas", "dependency": "posas", "old_age": "posas", "age_20_34": "posas",
+                "density": "posas", "natural": "p2", "mobility_internal": "p2", "mobility_foreign": "p2",
+                "mobility_total": "p2", "foreign_share": "rcs"}
+
+
+def _demo_table(payload: bytes, titled: bool) -> tuple[list[str], list[dict[str, str]]]:
+    if not is_zip(payload):
+        raise ProbeError("structure_changed", "il file demo.istat non è uno ZIP")
+    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        members = [n for n in archive.namelist() if n.lower().endswith((".csv", ".txt"))]
+        if not members:
+            raise ProbeError("structure_changed", "ZIP demo.istat senza CSV")
+        raw = archive.read(max(members, key=lambda n: archive.getinfo(n).file_size)).decode("utf-8-sig")
+    rows = list(csv.reader(io.StringIO(raw), delimiter=";"))
+    header_index = 1 if titled else 0
+    header = [cell.strip() for cell in rows[header_index]]
+    records = [dict(zip(header, row + [""] * (len(header) - len(row)))) for row in rows[header_index + 1:] if row]
+    return header, records
+
+
+def _demo_int(value: Any) -> float:
+    text = str(value or "").strip().replace(".", "").replace(",", ".")
+    return float(text) if text else 0.0
+
+
+def demo_values(measure: str, payload: bytes, metric: dict[str, Any]) -> dict[str, float]:
+    codes = {str(r.get("code")) for r in metric.get("rows", [])}
+    rows = {str(r.get("code")): r for r in metric.get("rows", [])}
+    dataset = DEMO_DATASET[measure]
+    out: dict[str, float] = {}
+    if dataset == "posas":
+        _, records = _demo_table(payload, titled=True)
+        bands: dict[str, dict[str, float]] = {c: {"total": 0, "young": 0, "work": 0, "old": 0, "b2034": 0} for c in codes}
+        for rec in records:
+            code = rec.get("Codice comune", "").strip()
+            if code not in bands:
+                continue
+            age = int(re.search(r"\d+", rec.get("Età", "0")).group())
+            value = _demo_int(rec.get("Totale"))
+            b = bands[code]
+            b["total"] += value
+            b["young" if age <= 14 else "work" if age <= 64 else "old"] += value
+            if 20 <= age <= 34:
+                b["b2034"] += value
+        for code, b in bands.items():
+            if not b["total"]:
+                continue
+            out[code] = {
+                "population": b["total"],
+                "dependency": (b["young"] + b["old"]) / b["work"] * 100,
+                "old_age": round(b["old"] / b["young"] * 100, 1),
+                "age_20_34": b["b2034"] / b["total"] * 100,
+                "density": b["total"] / float(rows[code].get("surfaceKm2") or "nan"),
+            }[measure]
+    elif dataset == "p2":
+        import acquire_a3_benchmark_demography_candidates as demo
+        header, records = _demo_table(payload, titled=True)
+        h = demo.p2_mobility_headers(header) if measure.startswith("mobility") else demo.p2_natural_headers(header)
+        for rec in records:
+            code = rec.get("Codice comune", "").strip()
+            if code not in codes:
+                continue
+            mean = (_demo_int(rec[h["jan1"]]) + _demo_int(rec[h["dec31"]])) / 2
+            if measure == "natural":
+                numerator = _demo_int(rec[h["natural"]])
+            else:
+                internal = _demo_int(rec[h["internalIn"]]) - _demo_int(rec[h["internalOut"]])
+                foreign = _demo_int(rec[h["foreignIn"]]) - _demo_int(rec[h["foreignOut"]])
+                numerator = {"mobility_internal": internal, "mobility_foreign": foreign, "mobility_total": internal + foreign}[measure]
+            out[code] = numerator / mean * 1000
+    else:
+        _, records = _demo_table(payload, titled=False)
+        totals: dict[str, float] = {}
+        for rec in records:
+            code = rec.get("Codice Istat", "").strip()
+            if code in codes:
+                totals[code] = totals.get(code, 0.0) + _demo_int(rec.get("Totale"))
+        for code, foreign in totals.items():
+            population = rows[code].get("population")
+            if population:
+                out[code] = foreign / float(population) * 100
+    return out
+
+
+def demo_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    year = int(re.findall(r"\d{4}", norm_period(metric.get("meta", {}).get("year")))[-1])
+    dataset = DEMO_DATASET[spec["measure"]]
+    url = DEMO_URL[dataset].format(year=year)
+    values = demo_values(spec["measure"], fetch(url), metric)
+    if len(values) < 7:
+        raise ProbeError("structure_changed", f"demo.istat {dataset} {year}: {len(values)} Comuni su 7")
+    source = {(code, str(year)): value for code, value in values.items()}
+    latest = str(year)
+    try:
+        if is_zip(fetch(DEMO_URL[dataset].format(year=year + 1))):
+            latest = str(year + 1)
+    except ProbeError as error:
+        if error.reason != "not_found":
+            raise
+    return evaluate(metric, source, latest, {"url": url, "nextReleaseUrl": DEMO_URL[dataset].format(year=year + 1), "coverage": "7/7"})
+
+
+def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, Any]:
+    dataset = DEMO_DATASET[spec["measure"]]
+    urls = [DEMO_URL[dataset].format(year=year), DEMO_URL[dataset].format(year=year + 1)]
+    return {"urls": urls, "steps": [
+        f"Scaricare da un browser {urls[0]} (pochi MB) senza aprirlo.",
+        f"Provare anche {urls[1]}: se risponde «Not Found» l'anno successivo non è ancora pubblicato.",
+    ]}
+
+
 PROBES = {
     "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
+    "demo_istat": (demo_probe, lambda key, spec, metric: demo_manual(key, spec, int((re.findall(r"\d{4}", norm_period(metric.get("meta", {}).get("year"))) or ["0"])[-1]))),
     "rgs_conto_annuale": (rgs_probe, lambda key, spec, metric: rgs_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "siope_cumulative": (siope_probe, lambda key, spec, metric: siope_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
