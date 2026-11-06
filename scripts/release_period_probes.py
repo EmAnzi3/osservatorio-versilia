@@ -384,7 +384,8 @@ def siope_totals(raw: bytes, year: int, movement: str) -> dict[str, dict[str, fl
     reader = csv.DictReader(io.StringIO(text), delimiter=";")
     if not set(SIOPE_FIELDS).issubset(reader.fieldnames or []):
         raise ProbeError("structure_changed", f"colonne SIOPE cambiate: {reader.fieldnames}")
-    totals = {code: {"total": 0.0, "current": 0.0, "capital": 0.0, "rows": 0} for code in SIOPE_TOWNS}
+    totals = {code: {"total": 0.0, "current": 0.0, "capital": 0.0, "verification": 0.0, "population": 0.0, "rows": 0}
+              for code in SIOPE_TOWNS}
     for row in reader:
         if row["Codice istat provincia"].strip() != "046" or row["Codice Tipologia Ente BDAP"].strip() != "CO":
             continue
@@ -395,6 +396,9 @@ def siope_totals(raw: bytes, year: int, movement: str) -> dict[str, dict[str, fl
         item = totals[code]
         item["total"] += amount
         item["rows"] += 1
+        item["population"] = parse_number(row.get("Popolazione ISTAT")) or item["population"]
+        if "verifica e controllo" in (row.get("Descrizione CG") or "").casefold():
+            item["verification"] += amount
         title = row["Codice Titolo CG"].strip().upper()
         if movement == "Spesa" and title.startswith("U1"):
             item["current"] += amount
@@ -409,7 +413,10 @@ SIOPE_NUMERATOR = {
     "capitalPayments": lambda e, s: s["capital"],
     "cashReceiptsPerResident": lambda e, s: e["total"],
     "cashBalancePerResident": lambda e, s: e["total"] - s["total"],
+    # Incassi tributari riscossi a seguito di verifica e controllo, sulla popolazione Istat del dataset SIOPE.
+    "fiscalRecoveryActivity": lambda e, s: e["verification"],
 }
+SIOPE_OWN_POPULATION = {"fiscalRecoveryActivity"}
 
 
 def siope_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
@@ -422,7 +429,9 @@ def siope_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], f
         population = (snapshot["raw"].get(town, {}).get(str(year)) or {}).get("population_resident")
         if not population:
             raise ProbeError("population_missing", f"popolazione residente {town} {year} assente dallo snapshot SIOPE")
-        if receipts[code]["rows"] and payments[code]["rows"]:
+        if metric_key in SIOPE_OWN_POPULATION:
+            population = receipts[code]["population"]
+        if receipts[code]["rows"] and payments[code]["rows"] and population:
             source[(code, str(year))] = SIOPE_NUMERATOR[metric_key](receipts[code], payments[code]) / float(population)
     if len(source) < 7:
         raise ProbeError("structure_changed", f"SIOPE dicembre {year}: {len(source)} Comuni su 7")
