@@ -36,7 +36,7 @@ def coverage_contract() -> None:
             assert spec["measurement"] in {"raw", "standardized"}, key
             assert spec["strato1"] and all(isinstance(s, str) for s in spec["strato1"]), key
         if spec["probe"] == "openbdap_rendiconto":
-            assert spec["family"] in {"v139", "v160"}, key
+            assert spec["family"] in {"v139", "v160", "mission03"}, key
 
 
 def payload(values: dict[str, dict[str, float]], indicator: int = 9999) -> bytes:

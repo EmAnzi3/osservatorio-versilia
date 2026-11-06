@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 181,
+  "maxPending": 180,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -813,8 +813,8 @@
       "source": "dati.istruzione.it"
     },
     "securityMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "mission03"
     },
     "selfContainment": {
       "pendingLot": 2,

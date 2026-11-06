@@ -46,6 +46,8 @@ TOLERANCE = 0.0051
 USER_AGENT = "OsservatorioVersilia-source-audit/1.0 (+https://osservatorioversilia.it)"
 
 Fetcher = Callable[[str], bytes]
+# Catalogo in verifica: alcune famiglie usano denominatori pubblicati (es. popolazione).
+CATALOG: dict[str, Any] = {}
 
 
 class ProbeError(RuntimeError):
@@ -268,6 +270,23 @@ def openbdap_values(year: int, family: str, archives: dict[str, bytes]) -> dict[
     if family == "v160":
         raw, _ = v160.build_year(year, populations, {f"{year}-schemi": (archives["schemi"], ""), f"{year}-indicatori": (archives["indicatori"], "")})
         return {town: v160.compute_values(values) for town, values in raw.items()}
+    if family == "mission03":
+        import materialize_bilanci_v139 as rows_reader
+        with zipfile.ZipFile(io.BytesIO(archives["schemi"])) as archive:
+            missions = rows_reader.rows_by_town(rows_reader.read_member(archive, rows_reader.MISSION_MEMBER))
+        population = CATALOG.get("metrics", {}).get("population", {})
+        by_town = {}
+        for row in population.get("rows", []):
+            series = row.get("series") or {}
+            values = dict(zip([int(y) for y in series.get("years", [])], series.get("values", [])))
+            values.setdefault(int(population["meta"]["year"]), row.get("value"))
+            by_town[row["town"]] = values.get(year)
+        result = {}
+        for town, rows in missions.items():
+            hits = [r for r in rows if (r.get("Codice Missione") or "").strip().zfill(2) == "03"]
+            amount = rows_reader.number(hits[0].get("Impegni")) if len(hits) == 1 else None
+            result[town] = {"securityMissionExpenditurePerResident": amount / float(by_town[town]) if amount is not None and by_town.get(town) else None}
+        return result
     if family == "v139":
         values, _ = v139.extract_year(year, archives["schemi"])
         return {town: {key: (amount / populations[town][year] if amount is not None else None) for key, amount in by_key.items()}
@@ -486,6 +505,8 @@ def run_all(data: dict[str, Any], coverage: dict[str, Any], fetch: Fetcher = htt
             raise cache[url]
         return cache[url]
 
+    CATALOG.clear()
+    CATALOG.update(data)
     results = {}
     for key, spec in coverage.get("metrics", {}).items():
         if "probe" not in spec:
@@ -543,6 +564,7 @@ def main() -> int:
     parser.add_argument("--file", type=Path, action="append", help="File della fonte scaricato a mano (ripetibile)")
     args = parser.parse_args()
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
+    CATALOG.update(data)
     coverage = load_coverage()
     if args.metric:
         spec = coverage["metrics"].get(args.metric, {})
