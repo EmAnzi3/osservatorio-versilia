@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 206,
+  "maxPending": 186,
   "metrics": {
     "accreditedRsaCount": {
       "pendingLot": 4,
@@ -40,8 +40,8 @@
       "source": "istat.it"
     },
     "availableAdministrationResultPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "averageAgriculturalFarmSize": {
       "pendingLot": 2,
@@ -72,8 +72,8 @@
       "source": "istat.it"
     },
     "capitalExpenditureCommittedPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "capitalPayments": {
       "pendingLot": 3,
@@ -97,8 +97,8 @@
       "measurement": "standardized"
     },
     "civilProtectionMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "climatePrecipitationTrend50y": {
       "pendingLot": 4,
@@ -141,28 +141,28 @@
       "source": "istat.it"
     },
     "cultureSportMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "currentCollectionCapacity": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "currentExpenditureCommittedPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "currentPaymentCapacity": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "currentPayments": {
       "pendingLot": 3,
       "source": "siope.it"
     },
     "currentRevenueAccruedPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "dementia": {
       "probe": "ars_export",
@@ -212,16 +212,16 @@
       "source": "dati.toscana.it"
     },
     "economicDevelopmentMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "economyActivityAtlas": {
       "pendingLot": 4,
       "source": "regione.toscana.it"
     },
     "educationMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "elderlyHomeCare": {
       "probe": "ars_export",
@@ -258,8 +258,8 @@
       "source": "regione.toscana.it"
     },
     "environmentMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "erpArrears": {
       "pendingLot": 4,
@@ -286,8 +286,8 @@
       "source": "cave.regione.toscana.it"
     },
     "fcdePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "femaleEmploymentRate": {
       "pendingLot": 2,
@@ -346,8 +346,8 @@
       "source": "mimit.gov.it"
     },
     "generalAdministrationMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "grossOperatingMargin": {
       "pendingLot": 2,
@@ -548,8 +548,8 @@
       "source": "istat.it"
     },
     "mobilityMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "mortalityAll": {
       "probe": "ars_export",
@@ -660,8 +660,8 @@
       "source": "istat.it"
     },
     "ownRevenueShare": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "pabCompletedOperationalGrossValue": {
       "pendingLot": 4,
@@ -769,8 +769,8 @@
       "source": "indicatoriambientali.isprambiente.it"
     },
     "rigidExpenditureShare": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "roadFinesPerResident": {
       "pendingLot": 2,
@@ -857,8 +857,8 @@
       "source": "osservatorioversilia.it"
     },
     "socialMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "socialSpendingByUserArea": {
       "pendingLot": 2,
@@ -898,8 +898,8 @@
       "source": "istat.it"
     },
     "territorialPlanningMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "tertiary": {
       "pendingLot": 2,
@@ -930,8 +930,8 @@
       "source": "istat.it"
     },
     "tourismDevelopmentMissionExpenditurePerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v160"
     },
     "tourismIntensity": {
       "pendingLot": 4,
@@ -986,8 +986,8 @@
       "source": "esploradati.istat.it"
     },
     "yearEndCashFundPerResident": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "openbdap_rendiconto",
+      "family": "v139"
     },
     "youthOtherStatus": {
       "pendingLot": 4,

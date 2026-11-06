@@ -27,6 +27,8 @@ import io
 import json
 import re
 import time
+import urllib.error
+import urllib.parse
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -88,11 +90,17 @@ def http_fetch(url: str, timeout: float = ARS_TIMEOUT, attempts: int = ARS_ATTEM
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.read()
-        except Exception as exc:  # rete, timeout, HTTP
+        except urllib.error.HTTPError as exc:
+            if exc.code in (404, 410):
+                raise ProbeError("not_found", f"{url}: HTTP {exc.code}") from exc
+            errors.append(f"tentativo {attempt}: HTTP {exc.code}")
+            if attempt < attempts:
+                time.sleep(10 * attempt)
+        except Exception as exc:  # rete, timeout
             errors.append(f"tentativo {attempt}: {type(exc).__name__}: {exc}")
             if attempt < attempts:
                 time.sleep(10 * attempt)
-    raise ProbeError("source_unreachable", f"{attempts} tentativi da {int(timeout)} secondi falliti; " + " | ".join(errors[-2:]))
+    raise ProbeError("source_unreachable", f"{url}: {attempts} tentativi da {int(timeout)} secondi falliti; " + " | ".join(errors[-2:]))
 
 
 def zip_members_sha(payload: bytes) -> str:
@@ -162,37 +170,42 @@ def published_points(metric: dict[str, Any]) -> tuple[str, dict[str, float], dic
     return period, current, history
 
 
-def compare_ars(metric: dict[str, Any], spec: dict[str, Any], payload: bytes) -> dict[str, Any]:
-    source = ars_rows(payload, spec)
+def close(published: float, observed: float) -> bool:
+    """Valori pubblicati arrotondati (es. ARS a due decimali) o non arrotondati (bilanci)."""
+    if abs(published - observed) <= 1e-6 * max(1.0, abs(observed)):
+        return True
+    return abs(round(observed + 1e-12, 2) - published) <= TOLERANCE
+
+
+def evaluate(metric: dict[str, Any], source: dict[tuple[str, str], float], latest: str,
+             extra: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Confronto generico tra fonte e indicatore pubblicato.
+
+    `source` contiene i valori alla fonte per (codice geografia, periodo); `latest` è l'ultimo
+    periodo che la fonte pubblica per tutti e sette i Comuni.
+    """
     published, current, history = published_points(metric)
-    town_periods = [{p for (c, p) in source if c == code} for code in TOWN_CODES]
-    if any(not periods for periods in town_periods):
-        missing = [c for c, periods in zip(TOWN_CODES, town_periods) if not periods]
-        raise ProbeError("structure_changed", f"l'export ARS non contiene i Comuni {missing}")
-    common = set.intersection(*town_periods)
-    latest = max(common, key=period_key)
-    result: dict[str, Any] = {
-        "publishedPeriod": published,
-        "observedLatestPeriod": latest,
-        "contentSha256": zip_members_sha(payload),
-        "contentHashMode": "zip-members",
-        "coverage": f"{sum(1 for p in town_periods if latest in p)}/7",
-    }
+    available = {p for (_, p) in source}
+    result: dict[str, Any] = {"publishedPeriod": published, "observedLatestPeriod": latest, **(extra or {})}
     differences = []
-    if published in common:
+    if published in available:
         for code, value in sorted(current.items()):
             observed = source.get((code, published))
-            if observed is None or abs(round(observed + 1e-12, 2) - value) > TOLERANCE:
+            if observed is None:
+                if code == VERSILIA_ARS:
+                    continue  # aggregato non sempre pubblicato dalla fonte
+                differences.append({"geography": code, "period": published, "published": value, "observed": None})
+            elif not close(value, observed):
                 differences.append({"geography": code, "period": published, "published": value, "observed": observed})
     revisions = []
     for (code, period), value in sorted(history.items()):
         observed = source.get((code, period))
-        if observed is not None and abs(round(observed + 1e-12, 2) - value) > TOLERANCE:
+        if observed is not None and period != published and not close(value, observed):
             revisions.append({"geography": code, "period": period, "published": value, "observed": round(observed + 1e-12, 2)})
     result["valuesMatchPublished"] = not differences
     result["historyRevisions"] = revisions[:20]
     result["historyRevisionCount"] = len(revisions)
-    if published not in common and period_key(latest) < period_key(published):
+    if published not in available and period_key(latest) < period_key(published):
         result.update(status="verification_required", reason="published_period_missing_at_source")
     elif period_key(latest) > period_key(published):
         result.update(status="release_detected", reason="new_period")
@@ -205,37 +218,166 @@ def compare_ars(metric: dict[str, Any], spec: dict[str, Any], payload: bytes) ->
     return result
 
 
-def manual_action(metric_key: str, spec: dict[str, Any], error: ProbeError) -> dict[str, Any]:
+# ---------------------------------------------------------------- ARS
+
+def ars_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
     url = ARS_EXPORT.format(id=spec["indicatorId"])
+    payload = fetch(url)
+    source = ars_rows(payload, spec)
+    town_periods = [{p for (c, p) in source if c == code} for code in TOWN_CODES]
+    if any(not periods for periods in town_periods):
+        missing = [c for c, periods in zip(TOWN_CODES, town_periods) if not periods]
+        raise ProbeError("structure_changed", f"l'export ARS non contiene i Comuni {missing}")
+    latest = max(set.intersection(*town_periods), key=period_key)
+    extra = {"url": url, "contentSha256": zip_members_sha(payload), "contentHashMode": "zip-members", "coverage": "7/7"}
+    return evaluate(metric, source, latest, extra)
+
+
+def ars_manual(metric_key: str, spec: dict[str, Any]) -> dict[str, Any]:
+    url = ARS_EXPORT.format(id=spec["indicatorId"])
+    return {"urls": [url], "steps": [
+        f"Aprire {url} da un browser: il download può richiedere oltre due minuti.",
+        f"Salvare lo ZIP così come arriva (es. `{spec['indicatorId']}-dati_indicatori.zip`), senza aprirlo né rinominarlo.",
+    ]}
+
+
+# ---------------------------------------------------------------- OpenBDAP, rendiconti dei Comuni
+
+OPENBDAP_RENDICONTO = "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/{year}/{year}_Rendiconto%20-%20{kind}_TOSCANA.zip"
+OPENBDAP_KINDS = {"schemi": "Schemi%20di%20bilancio", "indicatori": "Piano%20degli%20indicatori"}
+
+
+def openbdap_url(year: int, kind: str) -> str:
+    return OPENBDAP_RENDICONTO.format(year=year, kind=OPENBDAP_KINDS[kind])
+
+
+def is_zip(payload: bytes) -> bool:
+    return payload[:2] == b"PK"
+
+
+def openbdap_values(year: int, family: str, archives: dict[str, bytes]) -> dict[str, dict[str, float]]:
+    """Valori per Comune (nome) e indicatore, calcolati con le stesse funzioni dei materializzatori."""
+    import build_bilanci_snapshot as v160
+    import materialize_bilanci_v139 as v139
+
+    snapshot = json.loads((ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json").read_text(encoding="utf-8"))
+    populations = {town: {int(y): v["population_at_1_january"] for y, v in item["years"].items()}
+                   for town, item in snapshot["raw"].items()}
+    if any(year not in by_year for by_year in populations.values()):
+        raise ProbeError("population_missing", f"popolazione al 1° gennaio {year} assente dallo snapshot bilanci")
+    if family == "v160":
+        raw, _ = v160.build_year(year, populations, {f"{year}-schemi": (archives["schemi"], ""), f"{year}-indicatori": (archives["indicatori"], "")})
+        return {town: v160.compute_values(values) for town, values in raw.items()}
+    if family == "v139":
+        values, _ = v139.extract_year(year, archives["schemi"])
+        return {town: {key: (amount / populations[town][year] if amount is not None else None) for key, amount in by_key.items()}
+                for town, by_key in values.items()}
+    raise ValueError(f"famiglia OpenBDAP sconosciuta: {family}")
+
+
+def openbdap_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    year = int(norm_period(metric.get("meta", {}).get("year")))
+    kinds = ["schemi", "indicatori"] if spec["family"] == "v160" else ["schemi"]
+    archives = {}
+    for kind in kinds:
+        payload = fetch(openbdap_url(year, kind))
+        if not is_zip(payload):
+            raise ProbeError("published_period_missing_at_source", f"l'archivio {kind} {year} non è più uno ZIP")
+        archives[kind] = payload
+    try:
+        following = fetch(openbdap_url(year + 1, "schemi"))
+    except ProbeError as error:
+        if error.reason != "not_found":
+            raise
+        following = b""  # il rendiconto successivo non è ancora pubblicato
+    try:
+        values = openbdap_values(year, spec["family"], archives)
+    except ProbeError:
+        raise
+    except Exception as exc:
+        raise ProbeError("structure_changed", f"rendiconto {year} non leggibile: {type(exc).__name__}: {exc}") from exc
+    codes = {str(row.get("town")): str(row.get("code")) for row in metric.get("rows", [])}
+    source = {(codes[town], str(year)): by_key[metric_key] for town, by_key in values.items()
+              if town in codes and by_key.get(metric_key) is not None}
+    latest = str(year + 1) if is_zip(following) else str(year)
+    extra = {"url": openbdap_url(year, "schemi"), "nextReleaseUrl": openbdap_url(year + 1, "schemi"),
+             "contentSha256": hashlib.sha256(archives["schemi"]).hexdigest(), "coverage": f"{len(source)}/7"}
+    if len(source) < 7 and latest == str(year):
+        raise ProbeError("structure_changed", f"il rendiconto {year} copre {len(source)} Comuni su 7")
+    return evaluate(metric, source, latest, extra)
+
+
+def openbdap_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, Any]:
+    kinds = ["schemi", "indicatori"] if spec["family"] == "v160" else ["schemi"]
+    urls = [openbdap_url(year, kind) for kind in kinds] + [openbdap_url(year + 1, "schemi")]
+    return {"urls": urls, "steps": [
+        "Scaricare da un browser gli archivi del rendiconto indicati sotto (ognuno pesa 3–20 MB); "
+        f"se l'archivio {year + 1} apre una pagina invece di scaricare uno ZIP, il nuovo rendiconto non è ancora uscito: non serve salvarlo.",
+        *[f"- {url}" for url in urls],
+        "Non rinominare i file: lo script li riconosce dal nome.",
+    ]}
+
+
+PROBES = {
+    "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
+    "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
+}
+
+
+def manual_action(metric_key: str, spec: dict[str, Any], metric: dict[str, Any], error: ProbeError) -> dict[str, Any]:
+    guide = PROBES[spec["probe"]][1](metric_key, spec, metric)
+    files = " ".join("--file <file>" for _ in guide["urls"])
     return {
         "metric": metric_key,
         "reason": error.reason,
         "detail": error.detail,
-        "url": url,
+        "url": guide["urls"][0],
+        "urls": guide["urls"],
         "steps": [
-            f"Aprire {url} da un browser: il download può richiedere oltre due minuti.",
-            f"Salvare lo ZIP così come arriva (es. `{spec['indicatorId']}-dati_indicatori.zip`), senza aprirlo né rinominarlo.",
-            "Allegarlo alla conversazione con Claude oppure caricarlo nella PR del controllo mensile.",
-            f"Chiudere il controllo con: `python scripts/release_period_probes.py --catalog dist/data/site-data.json --metric {metric_key} --file <percorso dello ZIP>`.",
+            *guide["steps"],
+            "Allegare i file alla conversazione con Claude oppure caricarli nella PR del controllo mensile.",
+            f"Chiudere il controllo con: `python scripts/release_period_probes.py --catalog dist/data/site-data.json --metric {metric_key} {files}`.",
         ],
     }
 
 
+def local_fetcher(files: list[Path]) -> Fetcher:
+    """Serve i file scaricati a mano: riconosciuti dal nome del file nell'URL o, per ARS, dall'identificativo."""
+    by_name = {path.name: path for path in files}
+
+    def fetch(url: str) -> bytes:
+        name = urllib.parse.unquote(url.rsplit("/", 1)[-1])
+        if name in by_name:
+            return by_name[name].read_bytes()
+        match = re.search(r"indicatore=(\d+)", url)
+        if match:
+            for path in files:
+                if re.search(rf"(^|\D){match.group(1)}(\D|$)", path.name):
+                    return path.read_bytes()
+        if "/Datasets_FET/Rendiconto/" in url:
+            # Il rendiconto dell'anno successivo si allega solo se esiste: se manca, non è uscito.
+            return b""
+        raise ProbeError("source_unreachable", f"file non fornito per {url}")
+
+    return fetch
+
+
 def probe_metric(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher = http_fetch,
-                 local_file: Path | None = None) -> dict[str, Any]:
-    if spec.get("probe") != "ars_export":
+                 local_file: Path | list[Path] | None = None) -> dict[str, Any]:
+    if spec.get("probe") not in PROBES:
         raise ValueError(f"probe non supportato: {spec.get('probe')}")
-    url = ARS_EXPORT.format(id=spec["indicatorId"])
+    if local_file is not None:
+        fetch = local_fetcher(local_file if isinstance(local_file, list) else [local_file])
     try:
-        payload = local_file.read_bytes() if local_file else fetch(url)
-        result = compare_ars(metric, spec, payload)
+        result = PROBES[spec["probe"]][0](metric_key, metric, spec, fetch)
     except ProbeError as error:
         return {
-            "metric": metric_key, "probe": spec["probe"], "url": url, "status": "verification_required",
+            "metric": metric_key, "probe": spec["probe"], "status": "verification_required",
             "publishedPeriod": norm_period(metric.get("meta", {}).get("year")),
-            "reason": error.reason, "detail": error.detail, "manualAction": manual_action(metric_key, spec, error),
+            "reason": error.reason, "detail": error.detail,
+            "manualAction": manual_action(metric_key, spec, metric, error),
         }
-    result.update(metric=metric_key, probe=spec["probe"], url=url, acquisition="manual_file" if local_file else "automatic")
+    result.update(metric=metric_key, probe=spec["probe"], acquisition="manual_file" if local_file else "automatic")
     return result
 
 
@@ -307,7 +449,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--catalog", type=Path, required=True, help="Catalogo effettivo (dist/data/site-data.json)")
     parser.add_argument("--metric", help="Un solo indicatore")
-    parser.add_argument("--file", type=Path, help="File della fonte scaricato a mano")
+    parser.add_argument("--file", type=Path, action="append", help="File della fonte scaricato a mano (ripetibile)")
     args = parser.parse_args()
     data = json.loads(args.catalog.read_text(encoding="utf-8"))
     coverage = load_coverage()
