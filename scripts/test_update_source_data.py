@@ -44,10 +44,12 @@ def ars_cases(tmp: Path) -> None:
     assert upd.update_ars_legacy("hospitalizedAll", same, dry_run=True).lines == [], "lo stesso export non deve cambiare nulla"
     last = entry["periods"][-1]
     revised = tmp / "revised.zip"
-    revised.write_bytes(ars_export(entry, 61.5, {("Massarosa", last): 63.2788}))
+    bumped = round(entry["values"]["Massarosa"][-1] + 0.5, 4)
+    other_tuscany = round(tuscany + 0.3, 2)
+    revised.write_bytes(ars_export(entry, other_tuscany, {("Massarosa", last): bumped}))
     lines = upd.update_ars_legacy("hospitalizedAll", revised, dry_run=True).lines
-    assert any("catalogo Massarosa" in line and "63.28" in line for line in lines), lines
-    assert any("catalogo Toscana" in line and "61.5" in line for line in lines), lines
+    assert any("catalogo Massarosa" in line and str(round(bumped, 2)) in line for line in lines), lines
+    assert any("catalogo Toscana" in line and str(other_tuscany) in line for line in lines), lines
     newer = dict(entry, periods=entry["periods"] + ["2022-2026"], values={g: v + [1.0] for g, v in entry["values"].items()})
     ahead = tmp / "ahead.zip"
     ahead.write_bytes(ars_export(newer, tuscany))
