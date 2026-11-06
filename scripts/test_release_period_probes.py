@@ -30,10 +30,15 @@ def coverage_contract() -> None:
         if "pendingLot" in spec:
             assert isinstance(spec["pendingLot"], int) and 2 <= spec["pendingLot"] <= 6, key
             continue
-        assert spec["probe"] == "ars_export", key
-        assert isinstance(spec["indicatorId"], int), key
-        assert spec["measurement"] in {"raw", "standardized"}, key
-        assert spec["strato1"] and all(isinstance(s, str) for s in spec["strato1"]), key
+        assert spec["probe"] in probes.PROBES, key
+        if spec["probe"] == "ars_export":
+            assert isinstance(spec["indicatorId"], int), key
+            assert spec["measurement"] in {"raw", "standardized"}, key
+            assert spec["strato1"] and all(isinstance(s, str) for s in spec["strato1"]), key
+        if spec["probe"] == "rgs_conto_annuale":
+            assert spec["measure"] in probes.RGS_FILES_BY_MEASURE, key
+        if spec["probe"] == "openbdap_rendiconto":
+            assert spec["family"] in {"v139", "v160", "mission03", "debt_d1"}, key
 
 
 def payload(values: dict[str, dict[str, float]], indicator: int = 9999) -> bytes:
@@ -102,6 +107,13 @@ def probe_cases() -> None:
     assert metrics["a"]["status"] == "current" and "releaseEvidence" not in metrics["a"]
     assert metrics["b"]["status"] == "release_detected" and metrics["b"]["releaseEvidence"]["verdict"] == "new_period"
     assert metrics["c"]["status"] == "verification_required" and metrics["c"]["manualAction"]["metric"] == "demo"
+    local = probes.local_fetcher([])
+    assert local(probes.openbdap_url(2026, "schemi")) == b"", "rendiconto successivo non allegato = non pubblicato"
+    try:
+        local(probes.ARS_EXPORT.format(id=1))
+        raise AssertionError("file ARS mancante non segnalato")
+    except probes.ProbeError as error:
+        assert error.reason == "source_unreachable"
     lines = "\n".join(probes.report_lines({"demo": down}, probes.load_coverage()))
     assert "### Azioni manuali" in lines and "--file" in lines
 

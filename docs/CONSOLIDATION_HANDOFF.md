@@ -1,5 +1,30 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo mensile completo, lotto 3: RGS/OpenBDAP/SIOPE (6 novembre 2026)
+
+Branch `feature/check-mensile-lotto3`. Copertura 50/225 (era 19). Nuove famiglie in
+`scripts/release_period_probes.py`, tutte con confronto generico `evaluate()` (periodo, valori dei 7
+Comuni, storico) e istruzioni manuali dedicate:
+
+- `openbdap_rendiconto`: archivi Rendiconto Toscana dell'anno pubblicato, valori ricalcolati con le
+  funzioni dei materializzatori; rilascio successivo = archivio `anno+1` presente (404 = non uscito).
+  Famiglie: `v160` (14 indicatori, `build_bilanci_snapshot.build_year/compute_values`), `v139` (6,
+  `materialize_bilanci_v139.extract_year`), `mission03` (Missione 03 / popolazione del catalogo),
+  `debt_d1` (`financialDebtProfile`, misura principale PDI 10.4: voce D1 dello Stato patrimoniale
+  passivo / popolazione; le parti 6.1 e 10.3 non sono ricalcolate).
+- `siope_cumulative`: pacchetti BDAP cercati per titolo esatto (`package_search` con frase tra
+  virgolette; `datastore_search` non disponibile), dicembre cumulato, CSV cp1252; 5 indicatori di
+  cassa + `fiscalRecoveryActivity` (righe «verifica e controllo», popolazione Istat del dataset).
+  Rilascio = dicembre dell'anno successivo presente per i 7 Comuni. Nota: `build_siope_history.py`
+  nel repo non legge più il formato attuale dei dump (codice comune a 3 cifre, tipologia BDAP).
+- `rgs_conto_annuale`: CSV `export/csv/{anno}---Dipendenti-Pubblici---…`; personale per 1.000,
+  quota 55+ e turnover netto (causali «passaggi» escluse).
+
+Prova dal vivo (5–6 novembre): tutti `current` tranne `availableAdministrationResultPerResident` di
+Seravezza: OpenBDAP ha ripubblicato il Rendiconto 2025 il 3 novembre e il valore passa da 139,02 a
+141,47 € per abitante (`same_period_values_differ`). Restano nel lotto 3 `publicWorks` (BDAP-MOP,
+nessuno script di acquisizione nel repo) e `municipalStaffTraining` (pagina RGS HTML).
+
 ## Registro unico delle impronte A6 (6 novembre 2026)
 
 Branch `feature/a6-registro-impronte` (sopra il lotto 1). Approvato da Ema.
