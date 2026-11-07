@@ -260,6 +260,7 @@ def site_model(post: dict[str, Any]) -> dict[str, Any]:
             "town": row["town"],
             "value": float(row["value"]),
             "series": [float(value) for value in row["series"]["values"]] if series_available else None,
+            "parts": row.get("parts") or [],
         }
         for row in rows
     ]
@@ -629,6 +630,47 @@ def validate_slide_geometry(svg: str, post_id: str, slide_index: int) -> None:
             raise ValueError(f"Sovrapposizione riga/testo: {post_id}, tavola {slide_index}, riga {int(row) + 1}")
 
 
+def demographic_slide(
+    parts: list[str], box: dict[str, float], model: dict[str, Any],
+    theme: dict[str, str], kind: str,
+) -> None:
+    """Due serie per Comune ricavate dalle segmentazioni ufficiali età/genere."""
+    if kind == "age":
+        keys = ("15-24|total", "25-64|total")
+        labels = ("15–24 ANNI", "25–64 ANNI")
+    elif kind == "gender":
+        keys = ("15-24|women", "15-24|men")
+        labels = ("DONNE 15–24", "UOMINI 15–24")
+    else:
+        raise ValueError(f"Segmentazione sconosciuta: {kind}")
+    x, y, w = box["x"], box["y"], box["width"]
+    accents = (theme["accent"], "#58A28F")
+    for index, (label, color) in enumerate(zip(labels, accents)):
+        offset = index * 290
+        parts.extend([
+            f'<rect x="{x + 36 + offset}" y="{y + 32}" width="23" height="23" rx="6" fill="{color}"/>',
+            f'<text x="{x + 70 + offset}" y="{y + 52}" class="label">{esc(label)}</text>',
+        ])
+    parts.append(f'<text x="{x + 36}" y="{y + 119}" class="section" fill="{theme["accent"]}">COMUNE PER COMUNE · STESSO ANNO</text>')
+    for index, row in enumerate(model["rows"]):
+        cells = {part.get("key"): part for part in row.get("parts") or []}
+        if any(key not in cells or cells[key].get("value") is None for key in keys):
+            raise ValueError(f"Segmentazione mancante: {model['metric']} / {row['town']}")
+        yy = y + 165 + index * 67
+        parts.append(f'<text x="{x + 35}" y="{yy + 19}" class="label">{esc(row["town"])}</text>')
+        for subindex, (key, color) in enumerate(zip(keys, accents)):
+            value = float(cells[key]["value"])
+            if not 0 <= value <= 100:
+                raise ValueError(f"Tasso fuori intervallo: {model['metric']} / {row['town']} / {key}")
+            cy = yy - 10 + subindex * 26
+            parts.extend([
+                f'<rect x="{x + 314}" y="{cy}" width="418" height="16" rx="8" fill="#E4E7E8"/>',
+                f'<rect data-role="breakdown-bar" x="{x + 314}" y="{cy}" width="{418 * value / 100:.2f}" height="16" rx="8" fill="{color}"/>',
+                f'<text data-role="breakdown-value" x="{x + w - 36}" y="{cy + 16}" class="label" text-anchor="end">{esc(fmt_value(value, "percent"))}</text>',
+            ])
+    parts.append(f'<text x="{x + 35}" y="{y + 655}" class="small">Valori per classe sul rispettivo denominatore · barre da zero</text>')
+
+
 def context_slides(parts: list[str], box: dict[str, float], model: dict[str, Any], theme: dict[str, str], kind: str) -> None:
     x, y, w = box["x"], box["y"], box["width"]
     heading = "CHE COSA MISURA" if kind == "history" else "COME LEGGERLO"
@@ -812,6 +854,18 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         story_lines.append(history_story(history_model, history_years))
     if context_model:
         story_lines.append(context_story(context_model))
+    if post.get("demographic_breakdown"):
+        # Esempio verificabile dai valori pubblicati, senza attribuire causalità.
+        example = next((row for row in model["rows"] if row["town"] == "Massarosa"), model["rows"][0])
+        parts = {part["key"]: part for part in example["parts"]}
+        story_lines.append(
+            f"A {example['town']}, tra i 15–24 anni: {fmt_value(float(parts['15-24|total']['value']), 'percent')}; "
+            f"tra i 25–64 anni: {fmt_value(float(parts['25-64|total']['value']), 'percent')}."
+        )
+        story_lines.append(
+            f"Tra i 15–24enni, il valore femminile è {fmt_value(float(parts['15-24|women']['value']), 'percent')} "
+            f"e quello maschile è {fmt_value(float(parts['15-24|men']['value']), 'percent')}."
+        )
     copy_post = {**post}
     if story_lines:
         copy_post["story_lines"] = story_lines
@@ -827,8 +881,10 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
             f"{model['label']} nel {model['year']}. " + "; ".join(f"{row['town']} {fmt_value(row['value'], model['unit'])}" for row in model["rows"]),
         ),
         (
-            "02-andamento-storico" if history_years else "02-cosa-misura",
-            (lambda parts, box: history_slide(parts, box, history_model, history_years, history_values, history_comp, theme)) if history_years else (lambda parts, box: context_slides(parts, box, model, theme, "history")),
+            "02-andamento-storico" if history_years else "02-confronto-eta" if post.get("demographic_breakdown") else "02-cosa-misura",
+            (lambda parts, box: history_slide(parts, box, history_model, history_years, history_values, history_comp, theme)) if history_years else
+            (lambda parts, box: demographic_slide(parts, box, model, theme, "age")) if post.get("demographic_breakdown") else
+            (lambda parts, box: context_slides(parts, box, model, theme, "history")),
             (
                 f"Evoluzione {history_model['label'].lower()} nei singoli Comuni, {history_years[0]}–{history_years[-1]}: "
                 + "; ".join(
@@ -837,15 +893,22 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
                         for year, value in zip(history_years, row["series"][history_model["years"].index(history_years[0]):])
                     ) for row in history_model["rows"]
                 )
-            ) if history_years else model["description"],
+            ) if history_years else (
+                "Fasce d'età 15–24 e 25–64 per i sette Comuni, stesso anno."
+            ) if post.get("demographic_breakdown") else model["description"],
         ),
         (
-            "03-variazione" if comp else "03-chiave-di-lettura" if context_model else "03-come-leggerlo",
-            (lambda parts, box: change_slide(parts, box, model, comp, theme)) if comp else (lambda parts, box: current_slide(parts, box, context_model, theme)) if context_model else (lambda parts, box: context_slides(parts, box, model, theme, "change")),
+            "03-variazione" if comp else "03-confronto-genere" if post.get("demographic_breakdown") else "03-chiave-di-lettura" if context_model else "03-come-leggerlo",
+            (lambda parts, box: change_slide(parts, box, model, comp, theme)) if comp else
+            (lambda parts, box: demographic_slide(parts, box, model, theme, "gender")) if post.get("demographic_breakdown") else
+            (lambda parts, box: current_slide(parts, box, context_model, theme)) if context_model else
+            (lambda parts, box: context_slides(parts, box, model, theme, "change")),
             (f"{comp['label']}: " + "; ".join(f"{row['town']} {fmt_value(row['display'], comp['display_unit'], True)}" for row in comp["rows"])) if comp else (
                 f"{measure_definition(context_model)} Valori nel {context_model['year']}: "
                 + "; ".join(f"{row['town']} {fmt_value(row['value'], context_model['unit'])}" for row in context_model["rows"])
-            ) if context_model else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
+            ) if context_model else (
+                "Disaggregazione ufficiale della fascia 15–24 anni per donne e uomini, nei sette Comuni."
+            ) if post.get("demographic_breakdown") else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
         ),
         (
             "04-partecipa",
@@ -909,6 +972,10 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
             "3": context_model["metric"] if context_model else model["metric"],
             "4": model["metric"],
         },
+        "slide_dimensions": {
+            "2": ["15-24|total", "25-64|total"],
+            "3": ["15-24|women", "15-24|men"],
+        } if post.get("demographic_breakdown") else {},
         "companion_values": {
             context_model["metric"]: {row["town"]: row["value"] for row in context_model["rows"]}
         } if context_model else {},
