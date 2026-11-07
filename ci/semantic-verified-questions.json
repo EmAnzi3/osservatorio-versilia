@@ -3127,7 +3127,7 @@
     },
     {
       "id": "demography_internal",
-      "question": "Qual è il saldo dei trasferimenti interni nel 2024?",
+      "question": "Qual è il saldo dei trasferimenti interni nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -3147,18 +3147,18 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              126000,
-              43671
+              73000,
+              21794
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "Snapshot composito: 533 iscritti−470 cancellati; media P02 21835,5"
+      "reference": "Snapshot composito: 676 iscritti−603 cancellati; media P02 21794"
     },
     {
       "id": "demography_foreign_events",
-      "question": "Qual è il saldo dei trasferimenti con l’estero nel 2024?",
+      "question": "Qual è il saldo dei trasferimenti con l’estero nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -3178,18 +3178,18 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              74000,
-              43671
+              63000,
+              21794
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "Carrier congelato: 88 iscritti−51 cancellati; media P02 21835,5; non è il numero di cittadini stranieri"
+      "reference": "Istat P2 2025: 92 iscritti−29 cancellati; media P02 21794; non è il numero di cittadini stranieri"
     },
     {
       "id": "demography_total_events",
-      "question": "Qual è il saldo complessivo dei trasferimenti nel 2024?",
+      "question": "Qual è il saldo complessivo dei trasferimenti nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -3209,14 +3209,14 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              200000,
-              43671
+              136000,
+              21794
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "Conteggi pubblicati: 63+37=100 eventi; media P02 21835,5"
+      "reference": "Conteggi pubblicati: 73+63=136 eventi; media P02 21794"
     },
     {
       "id": "demography_citizenship",
@@ -3703,15 +3703,21 @@
     },
     {
       "id": "demography_stock_flow_refused",
-      "question": "Possiamo correlare cittadinanza e trasferimenti correnti?",
+      "question": "Possiamo correlare la cittadinanza 2025 con i trasferimenti del 2024?",
       "query": {
         "operation": "correlation",
         "selectors": [
           {
-            "metric": "foreignResidents"
+            "metric": "foreignResidents",
+            "periods": [
+              "2025"
+            ]
           },
           {
-            "metric": "foreignResidentialMobility"
+            "metric": "foreignResidentialMobility",
+            "periods": [
+              "2024"
+            ]
           }
         ],
         "axis": "municipalities",

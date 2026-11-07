@@ -83,6 +83,48 @@ sempre di Ema.
 Prossimo: lotto trasversale (adattatori A6 congelati → controlli sul contenuto; domande
 verificate rigenerate dall'aggiornatore), poi lotti 2–6.
 
+## Aggiornamento dati dalla verifica dei periodi (6 novembre 2026)
+
+Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi alla fonte
+(lotto 2, #563):
+
+- **Seravezza, parte disponibile 2025** (voce 0502, OpenBDAP ripubblicato il 3/11):
+  1.721.163,36 → 1.751.574,45 € (139,02 → 141,47 €/ab.; Versilia 108,07 → 108,26). Unica voce
+  2025 cambiata ricalcolando tutto il rendiconto con `build_bilanci_snapshot.build_year`.
+- **Ricoveri ARS 1332, 2021–2025**: ARS ha completato l'ultimo periodo (ricoveri fuori Toscana);
+  periodi precedenti identici. Applicato da `update_source_data.py ars-legacy`. Per 1.000:
+  Massarosa 62,64 → 63,28, Viareggio 63,98 → 64,60, Camaiore 63,34 → 63,93, Pietrasanta
+  62,66 → 63,47, Seravezza 63,41 → 64,15, Forte dei Marmi 59,67 → 61,08, Stazzema
+  62,65 → 63,12, Zona Versilia 62,63 → 63,31, Toscana 61,07 → 61,80.
+- **Mobilità residenziale 2025** (Istat P2 Comuni): anno successivo al 2024 pubblicato.
+  Applicato da `update_source_data.py istat-mobility`; benchmark in
+  `a3-istat-demography-mobility-benchmark-2025.json`; l'adattatore demografia legge l'anno
+  dallo snapshot invece del 2024 scritto nel codice. Saldi 2025 per 1.000 (interno / estero /
+  totale): Versilia 3,24 / 2,36 / 5,60; Toscana 0,87 / 6,03 / 6,90; Italia 0 / 5,02 / 5,02.
+  Tassi ricontrollati sulla popolazione media P02 già congelata.
+- **Domande verificate**: i tre saldi dei trasferimenti passano al 2025 (Massarosa
+  73/63/136 eventi su media 21.794). Il rifiuto «cittadinanza vs trasferimenti» ora fissa i
+  periodi (stock 2025, eventi 2024): con la stessa etichetta 2025 il motore calcolerebbe
+  l'associazione con avvertenze, ma questo allargherebbe il perimetro A7 degli incroci e
+  richiede una revisione esplicita, non fatta qui.
+- **Gate Salute v1.40**: `canonical-quick` (25) e `preview` (30), che eseguono entrambi il preflight
+  rapido, passano a 60 minuti. Il preflight rapido sui
+  runner GitHub ora richiede circa 40 minuti (38 in Pages, 41 nel gate Bilanci sullo stesso
+  commit), e il limite a 25 lo annullava anche su PR già fuse. Nessun controllo è cambiato.
+  Arrivato finalmente al `preview`, il gate falliva su un'asserzione rimasta a «Aggiornato 14
+  settembre 2026»: dal 25 ottobre (c9736bd) la homepage scrive «Catalogo al 14 settembre 2026».
+  L'asserzione ora controlla il testo attuale, con la stessa data esatta.
+  `canonical-full` (preflight completo) è stato annullato due volte di fila al limite di 60
+  minuti (prima finiva in 48–54). I tre job che eseguono un preflight (`canonical-quick`,
+  `canonical-full`, `preview`) passano quindi a 120 minuti. Nessun controllo è cambiato.
+
+Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
+`test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»
+(`source-data-update.yml`): su PR verso main esegue gli aggiornatori elencati in
+`ci/source-update-request.json` sui runner GitHub e committa solo sul ramo della PR. I push del
+bot non avviano la CI: dopo il suo commit va fatto un push (impronta `road#3` con
+`a6_repin.py --allow road --write`, dossier rigenerati, preflight).
+
 ## Aggiornamento dati RTCave e ARS (5 novembre 2026)
 
 Branch `feature/aggiorna-cave-ars`, sopra `fix/data-check-2026-11` (#555). File sorgente scaricati a

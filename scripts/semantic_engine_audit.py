@@ -230,6 +230,8 @@ def connections(engine, coverage):
         qs = [{'metric':left,'dimension':ld}, {'metric':right,'dimension':rd}]
         if identity=='demography_natural_transfers':
             for q in qs:q['periods']=['2024']
+        if identity=='demography_citizenship_transfers':
+            qs[0]['periods'],qs[1]['periods']=['2025'],['2024']
         results = [engine.query(dict(operation='compare',selectors=[s],**({'allowPartial':True} if identity.startswith(('coast_','bathing_','maritime_','extractive_','classification_')) else {}))) for s in qs]
         verification = 'not_verified'; reasons = []
         if all(r['status']=='computed' for r in results):

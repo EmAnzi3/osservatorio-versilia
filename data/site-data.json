@@ -4412,7 +4412,7 @@
         "shortLabel": "Mobilità residenziale interna",
         "description": "Trasferimenti di residenza tra ciascun Comune e gli altri Comuni italiani: iscritti, cancellati e saldo, rapportati alla popolazione media annua.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — bilancio demografico, trasferimenti di residenza",
         "polarity": "neutral",
         "compositeType": "mobility",
@@ -4424,12 +4424,12 @@
           "saldo migratorio interno"
         ],
         "benchmark": {
-          "year": "2024",
-          "tuscany": 0.9608859827887721,
+          "year": "2025",
+          "tuscany": 0.8714027643804007,
           "italy": 0,
           "source": "Istat — Bilancio demografico comunale P02",
-          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2025.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -4439,8 +4439,8 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.8852098646699176,
-          "formatted": "2,9 ogni 1.000",
+          "value": 3.3495457465357434,
+          "formatted": "3,3 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4448,7 +4448,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               1.6623952344669952,
@@ -4456,26 +4457,27 @@
               -2.3758395394526453,
               4.261656547141715,
               5.630965733513399,
-              2.8852098646699176
+              2.8852098646699176,
+              3.3495457465357434
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.8852098646699176,
+          "benchmarkValue": 3.3495457465357434,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 24.409791394747085,
-              "count": 533
+              "value": 31.01771129668716,
+              "count": 676
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 21.524581530077167,
-              "count": 470
+              "value": 27.668165550151418,
+              "count": 603
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 2.8852098646699176,
-              "count": 63
+              "value": 3.3495457465357434,
+              "count": 73
             }
           ],
           "componentSeries": {
@@ -4486,7 +4488,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 31.30844358246173,
@@ -4494,7 +4497,8 @@
                 22.1135834056746,
                 32.3519303471188,
                 28.429509922860344,
-                24.409791394747085
+                24.409791394747085,
+                31.01771129668716
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -4504,7 +4508,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 29.646048347994736,
@@ -4512,7 +4517,8 @@
                 24.489422945127245,
                 28.090273799977087,
                 22.798544189346945,
-                21.524581530077167
+                21.524581530077167,
+                27.668165550151418
               ]
             },
             "Saldo migratorio interno": {
@@ -4522,7 +4528,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 1.6623952344669952,
@@ -4530,7 +4537,8 @@
                 -2.3758395394526453,
                 4.261656547141715,
                 5.630965733513399,
-                2.8852098646699176
+                2.8852098646699176,
+                3.3495457465357434
               ]
             }
           }
@@ -4539,8 +4547,8 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 3.1802789747307862,
-          "formatted": "3,2 ogni 1.000",
+          "value": 5.490609902883807,
+          "formatted": "5,5 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4548,7 +4556,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.6567696550357525,
@@ -4556,26 +4565,27 @@
               4.840714332439326,
               2.4603272235207285,
               3.1731678244070842,
-              3.1802789747307862
+              3.1802789747307862,
+              5.490609902883807
             ]
           },
           "normalized": null,
-          "benchmarkValue": 3.1802789747307862,
+          "benchmarkValue": 5.490609902883807,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 21.50395887058901,
-              "count": 1305
+              "value": 25.095220036604065,
+              "count": 1522
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 18.323679895858223,
-              "count": 1112
+              "value": 19.604610133720257,
+              "count": 1189
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 3.1802789747307862,
-              "count": 193
+              "value": 5.490609902883807,
+              "count": 333
             }
           ],
           "componentSeries": {
@@ -4586,7 +4596,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 25.992040556830755,
@@ -4594,7 +4605,8 @@
                 24.268986720743115,
                 23.684750071759545,
                 22.623206872456738,
-                21.50395887058901
+                21.50395887058901,
+                25.095220036604065
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -4604,7 +4616,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 21.335270901795003,
@@ -4612,7 +4625,8 @@
                 19.42827238830379,
                 21.224422848238817,
                 19.450039048049653,
-                18.323679895858223
+                18.323679895858223,
+                19.604610133720257
               ]
             },
             "Saldo migratorio interno": {
@@ -4622,7 +4636,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.6567696550357525,
@@ -4630,7 +4645,8 @@
                 4.840714332439326,
                 2.4603272235207285,
                 3.1731678244070842,
-                3.1802789747307862
+                3.1802789747307862,
+                5.490609902883807
               ]
             }
           }
@@ -4639,8 +4655,8 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.5119316754584275,
-          "formatted": "2,5 ogni 1.000",
+          "value": 3.7109835678905574,
+          "formatted": "3,7 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4648,7 +4664,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               0.4113078006106363,
@@ -4656,26 +4673,27 @@
               5.253059041867196,
               6.370126304228442,
               3.888488193420933,
-              2.5119316754584275
+              2.5119316754584275,
+              3.7109835678905574
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.5119316754584275,
+          "benchmarkValue": 3.7109835678905574,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 24.93092187892489,
-              "count": 794
+              "value": 27.423539586445475,
+              "count": 872
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 22.418990203466464,
-              "count": 714
+              "value": 23.712556018554917,
+              "count": 754
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 2.5119316754584275,
-              "count": 80
+              "value": 3.7109835678905574,
+              "count": 118
             }
           ],
           "componentSeries": {
@@ -4686,7 +4704,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 26.671728916520337,
@@ -4694,7 +4713,8 @@
                 27.27186939699915,
                 29.214717188358044,
                 27.501646335727056,
-                24.93092187892489
+                24.93092187892489,
+                27.423539586445475
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -4704,7 +4724,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 26.2604211159097,
@@ -4712,7 +4733,8 @@
                 22.018810355131954,
                 22.8445908841296,
                 23.613158142306123,
-                22.418990203466464
+                22.418990203466464,
+                23.712556018554917
               ]
             },
             "Saldo migratorio interno": {
@@ -4722,7 +4744,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 0.4113078006106363,
@@ -4730,7 +4753,8 @@
                 5.253059041867196,
                 6.370126304228442,
                 3.888488193420933,
-                2.5119316754584275
+                2.5119316754584275,
+                3.7109835678905574
               ]
             }
           }
@@ -4739,8 +4763,8 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 4.6122422086051245,
-          "formatted": "4,6 ogni 1.000",
+          "value": 2.2896897910658067,
+          "formatted": "2,3 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4748,7 +4772,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.12415888864771,
@@ -4756,26 +4781,27 @@
               4.02710719466517,
               1.000021739603035,
               2.9745631110430644,
-              4.6122422086051245
+              4.6122422086051245,
+              2.2896897910658067
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4.6122422086051245,
+          "benchmarkValue": 2.2896897910658067,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 27.54167490281347,
-              "count": 627
+              "value": 28.31289491644834,
+              "count": 643
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 22.929432694208344,
-              "count": 522
+              "value": 26.023205125382532,
+              "count": 591
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 4.6122422086051245,
-              "count": 105
+              "value": 2.2896897910658067,
+              "count": 52
             }
           ],
           "componentSeries": {
@@ -4786,7 +4812,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 26.26438029086173,
@@ -4794,7 +4821,8 @@
                 25.72152337237751,
                 27.91365029674558,
                 28.433323855558715,
-                27.54167490281347
+                27.54167490281347,
+                28.31289491644834
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -4804,7 +4832,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 22.14022140221402,
@@ -4812,7 +4841,8 @@
                 21.69441617771234,
                 26.913628557142545,
                 25.45876074451565,
-                22.929432694208344
+                22.929432694208344,
+                26.023205125382532
               ]
             },
             "Saldo migratorio interno": {
@@ -4822,7 +4852,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.12415888864771,
@@ -4830,7 +4861,8 @@
                 4.02710719466517,
                 1.000021739603035,
                 2.9745631110430644,
-                4.6122422086051245
+                4.6122422086051245,
+                2.2896897910658067
               ]
             }
           }
@@ -4839,8 +4871,8 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1.0477111540941344,
-          "formatted": "1,0 ogni 1.000",
+          "value": 3.081289276302453,
+          "formatted": "3,1 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4848,7 +4880,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               1.4832741324797993,
@@ -4856,26 +4889,27 @@
               -3.360403248389808,
               4.348526332742786,
               8.618606524365692,
-              1.0477111540941344
+              1.0477111540941344,
+              3.081289276302453
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.0477111540941344,
+          "benchmarkValue": 3.081289276302453,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 28.932946486137975,
-              "count": 359
+              "value": 32.11027772146767,
+              "count": 396
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 27.88523533204384,
-              "count": 346
+              "value": 29.02898844516521,
+              "count": 358
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 1.0477111540941344,
-              "count": 13
+              "value": 3.081289276302453,
+              "count": 38
             }
           ],
           "componentSeries": {
@@ -4886,7 +4920,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 27.869940278699403,
@@ -4894,7 +4929,8 @@
                 25.60307236868424,
                 32.61394749557094,
                 34.07168747482884,
-                28.932946486137975
+                28.932946486137975,
+                32.11027772146767
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -4904,7 +4940,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 26.386666146219603,
@@ -4912,7 +4949,8 @@
                 28.96347561707405,
                 28.265421162828154,
                 25.45308095046315,
-                27.88523533204384
+                27.88523533204384,
+                29.02898844516521
               ]
             },
             "Saldo migratorio interno": {
@@ -4922,7 +4960,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 1.4832741324797993,
@@ -4930,7 +4969,8 @@
                 -3.360403248389808,
                 4.348526332742786,
                 8.618606524365692,
-                1.0477111540941344
+                1.0477111540941344,
+                3.081289276302453
               ]
             }
           }
@@ -4939,8 +4979,8 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": -11.604552555233212,
-          "formatted": "-11,6 ogni 1.000",
+          "value": -9.836561743341404,
+          "formatted": "-9,8 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -4948,7 +4988,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               -2.6634891708137616,
@@ -4956,26 +4997,27 @@
               0.28248587570621453,
               -7.524236724063094,
               -13.766842413591093,
-              -11.604552555233212
+              -11.604552555233212,
+              -9.836561743341404
             ]
           },
           "normalized": null,
-          "benchmarkValue": -11.604552555233212,
+          "benchmarkValue": -9.836561743341404,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 26.48218403630142,
-              "count": 178
+              "value": 30.720338983050848,
+              "count": 203
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 38.08673659153463,
-              "count": 256
+              "value": 40.55690072639225,
+              "count": 268
             },
             {
               "label": "Saldo migratorio interno",
-              "value": -11.604552555233212,
-              "count": -78
+              "value": -9.836561743341404,
+              "count": -65
             }
           ],
           "componentSeries": {
@@ -4986,7 +5028,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 31.26095184691947,
@@ -4994,7 +5037,8 @@
                 30.36723163841808,
                 33.280277817971346,
                 32.22026947861746,
-                26.48218403630142
+                26.48218403630142,
+                30.720338983050848
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -5004,7 +5048,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 33.92444101773323,
@@ -5012,7 +5057,8 @@
                 30.084745762711865,
                 40.80451454203444,
                 45.98711189220855,
-                38.08673659153463
+                38.08673659153463,
+                40.55690072639225
               ]
             },
             "Saldo migratorio interno": {
@@ -5022,7 +5068,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 -2.6634891708137616,
@@ -5030,7 +5077,8 @@
                 0.28248587570621453,
                 -7.524236724063094,
                 -13.766842413591093,
-                -11.604552555233212
+                -11.604552555233212,
+                -9.836561743341404
               ]
             }
           }
@@ -5039,8 +5087,8 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 4.831751509922345,
-          "formatted": "4,8 ogni 1.000",
+          "value": -12.334801762114537,
+          "formatted": "-12,3 ogni 1.000",
           "series": {
             "years": [
               2019,
@@ -5048,7 +5096,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               1.3493000505987567,
@@ -5056,26 +5105,27 @@
               3.800967519004839,
               6.589214496271893,
               11.418685121107266,
-              4.831751509922345
+              4.831751509922345,
+              -12.334801762114537
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4.831751509922345,
+          "benchmarkValue": -12.334801762114537,
           "parts": [
             {
               "label": "Iscritti da altri Comuni",
-              "value": 33.47713546160483,
-              "count": 97
+              "value": 21.497797356828194,
+              "count": 61
             },
             {
               "label": "Cancellati verso altri Comuni",
-              "value": 28.645383951682486,
-              "count": 83
+              "value": 33.83259911894273,
+              "count": 96
             },
             {
               "label": "Saldo migratorio interno",
-              "value": 4.831751509922345,
-              "count": 14
+              "value": -12.334801762114537,
+              "count": -35
             }
           ],
           "componentSeries": {
@@ -5086,7 +5136,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 33.39517625231911,
@@ -5094,7 +5145,8 @@
                 26.26123013130615,
                 28.784463325819317,
                 37.71626297577855,
-                33.47713546160483
+                33.47713546160483,
+                21.497797356828194
               ]
             },
             "Cancellati verso altri Comuni": {
@@ -5104,7 +5156,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 32.045876201720354,
@@ -5112,7 +5165,8 @@
                 22.46026261230131,
                 22.195248829547424,
                 26.29757785467128,
-                28.645383951682486
+                28.645383951682486,
+                33.83259911894273
               ]
             },
             "Saldo migratorio interno": {
@@ -5122,7 +5176,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 1.3493000505987567,
@@ -5130,31 +5185,32 @@
                 3.800967519004839,
                 6.589214496271893,
                 11.418685121107266,
-                4.831751509922345
+                4.831751509922345,
+                -12.334801762114537
               ]
             }
           }
         }
       ],
       "aggregate": {
-        "value": 2.4503259247624283,
+        "value": 3.2382236390325647,
         "label": "Versilia · saldo migratorio interno",
         "note": "Tasso calcolato sul totale dei trasferimenti dei sette comuni e sulla popolazione media annua complessiva.",
         "parts": [
           {
             "label": "Iscritti da altri Comuni",
-            "value": 24.45927903871829,
-            "count": 3893
+            "value": 27.550101115738144,
+            "count": 4373
           },
           {
             "label": "Cancellati verso altri Comuni",
-            "value": 22.00895311395586,
-            "count": 3503
+            "value": 24.31187747670558,
+            "count": 3859
           },
           {
             "label": "Saldo migratorio interno",
-            "value": 2.4503259247624283,
-            "count": 390
+            "value": 3.2382236390325647,
+            "count": 514
           }
         ]
       },
@@ -22339,7 +22395,7 @@
         "polarity": "neutral",
         "benchmark": {
           "year": "2021-2025",
-          "tuscany": 61.07,
+          "tuscany": 61.8,
           "source": "ARS Toscana — La salute dei comuni",
           "url": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
           "note": "Il periodo quinquennale rende più stabile il confronto. L'ultimo periodo non comprende ancora tutte le prestazioni erogate fuori Toscana ai residenti."
@@ -22351,75 +22407,75 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 62.64,
-          "formatted": "62,64 ogni 1.000",
+          "value": 63.28,
+          "formatted": "63,28 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 62.64
+          "benchmarkValue": 63.28
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 63.98,
-          "formatted": "63,98 ogni 1.000",
+          "value": 64.6,
+          "formatted": "64,60 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 63.98
+          "benchmarkValue": 64.6
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 63.34,
-          "formatted": "63,34 ogni 1.000",
+          "value": 63.93,
+          "formatted": "63,93 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 63.34
+          "benchmarkValue": 63.93
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 62.66,
-          "formatted": "62,66 ogni 1.000",
+          "value": 63.47,
+          "formatted": "63,47 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 62.66
+          "benchmarkValue": 63.47
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 63.41,
-          "formatted": "63,41 ogni 1.000",
+          "value": 64.15,
+          "formatted": "64,15 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 63.41
+          "benchmarkValue": 64.15
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 59.67,
-          "formatted": "59,67 ogni 1.000",
+          "value": 61.08,
+          "formatted": "61,08 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 59.67
+          "benchmarkValue": 61.08
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 62.65,
-          "formatted": "62,65 ogni 1.000",
+          "value": 63.12,
+          "formatted": "63,12 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 62.65
+          "benchmarkValue": 63.12
         }
       ],
       "aggregate": {
-        "value": 62.63,
+        "value": 63.31,
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
@@ -44624,8 +44680,8 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 139.01650593651564,
-          "formatted": "139 €",
+          "value": 141.4727768354737,
+          "formatted": "141 €",
           "series": {
             "years": [
               2019,
@@ -44643,11 +44699,11 @@
               130.26937143316454,
               209.69008955223882,
               149.60430800160836,
-              139.01650593651564
+              141.4727768354737
             ]
           },
           "normalized": null,
-          "benchmarkValue": 139.01650593651564
+          "benchmarkValue": 141.4727768354737
         },
         {
           "town": "Forte dei Marmi",
@@ -44709,7 +44765,7 @@
         }
       ],
       "aggregate": {
-        "value": 108.0652087606488,
+        "value": 108.25654808793365,
         "label": "Valore pro capite Versilia",
         "note": "Somma delle parti disponibili dei sette Comuni rapportata alla popolazione complessiva."
       },
@@ -49323,7 +49379,7 @@
         "shortLabel": "Mobilità con l’estero",
         "description": "Trasferimenti di residenza tra ciascun Comune e l’estero: iscritti dall’estero, cancellati per l’estero e saldo, rapportati alla popolazione media annua.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — bilancio demografico, trasferimenti di residenza",
         "polarity": "neutral",
         "compositeType": "mobility",
@@ -49337,35 +49393,35 @@
           "saldo migratorio"
         ],
         "benchmark": {
-          "year": "2024",
-          "tuscany": 5.800023666873182,
-          "italy": 4.4554243595798155,
+          "year": "2025",
+          "tuscany": 6.026017987305619,
+          "italy": 5.017699598185682,
           "source": "Istat — Bilancio demografico comunale P02",
-          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2025.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
-        "value": 2.7393387261446636,
+        "value": 2.3625172463758988,
         "label": "Versilia · saldo migratorio con l’estero",
         "note": "Tasso calcolato sul totale dei flussi dei sette comuni e sulla popolazione media annua complessiva.",
         "parts": [
           {
             "label": "Iscritti dall’estero",
-            "value": 5.2022304248802325,
-            "count": 828
+            "value": 4.693534262800118,
+            "count": 745
           },
           {
             "label": "Cancellati per l’estero",
-            "value": 2.462891698735569,
-            "count": 392
+            "value": 2.33101701642422,
+            "count": 370
           },
           {
             "label": "Saldo migratorio con l’estero",
-            "value": 2.7393387261446636,
-            "count": 436
+            "value": 2.3625172463758988,
+            "count": 375
           }
         ]
       },
@@ -49381,7 +49437,7 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1.6944883332188407,
+          "value": 2.8907038634486555,
           "formatted": null,
           "series": {
             "years": [
@@ -49390,7 +49446,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               2.5397704971023525,
@@ -49398,26 +49455,27 @@
               0.18275688765020331,
               2.520334517126819,
               2.3805708792089177,
-              1.6944883332188407
+              1.6944883332188407,
+              2.8907038634486555
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.6944883332188407,
+          "benchmarkValue": 2.8907038634486555,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 4.0301344141421085,
-              "count": 88
+              "value": 4.221345324401211,
+              "count": 92
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 2.335646080923267,
-              "count": 51
+              "value": 1.3306414609525556,
+              "count": 29
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 1.6944883332188407,
-              "count": 37
+              "value": 2.8907038634486555,
+              "count": 63
             }
           ],
           "componentSeries": {
@@ -49428,7 +49486,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.941008057999122,
@@ -49436,7 +49495,8 @@
                 2.1017042079773383,
                 4.124183755298431,
                 4.715361549202279,
-                4.0301344141421085
+                4.0301344141421085,
+                4.221345324401211
               ]
             },
             "Cancellati per l’estero": {
@@ -49446,7 +49506,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.40123756089677,
@@ -49454,7 +49515,8 @@
                 1.9189473203271348,
                 1.603849238171612,
                 2.334790669993361,
-                2.335646080923267
+                2.335646080923267,
+                1.3306414609525556
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49464,7 +49526,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.5397704971023525,
@@ -49472,7 +49535,8 @@
                 0.18275688765020331,
                 2.520334517126819,
                 2.3805708792089177,
-                1.6944883332188407
+                1.6944883332188407,
+                2.8907038634486555
               ]
             }
           }
@@ -49481,7 +49545,7 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 1.9279411401217734,
+          "value": 2.819502382561955,
           "formatted": null,
           "series": {
             "years": [
@@ -49490,7 +49554,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.6567696550357525,
@@ -49498,26 +49563,27 @@
               3.368875515143586,
               4.609012998728831,
               3.140285256278515,
-              1.9279411401217734
+              1.9279411401217734,
+              2.819502382561955
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.9279411401217734,
+          "benchmarkValue": 2.819502382561955,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 4.844570044408559,
-              "count": 294
+              "value": 4.666194001549902,
+              "count": 283
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 2.9166289042867852,
-              "count": 177
+              "value": 1.846691618987947,
+              "count": 112
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 1.9279411401217734,
-              "count": 117
+              "value": 2.819502382561955,
+              "count": 171
             }
           ],
           "componentSeries": {
@@ -49528,7 +49594,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 5.581518239014483,
@@ -49536,7 +49603,8 @@
                 4.889775626349186,
                 6.642883503505967,
                 5.047474207735624,
-                4.844570044408559
+                4.844570044408559,
+                4.666194001549902
               ]
             },
             "Cancellati per l’estero": {
@@ -49546,7 +49614,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 0.9247485839787309,
@@ -49554,7 +49623,8 @@
                 1.5209001112055995,
                 2.0338705047771355,
                 1.9071889514571085,
-                2.9166289042867852
+                2.9166289042867852,
+                1.846691618987947
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49564,7 +49634,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.6567696550357525,
@@ -49572,7 +49643,8 @@
                 3.368875515143586,
                 4.609012998728831,
                 3.140285256278515,
-                1.9279411401217734
+                1.9279411401217734,
+                2.819502382561955
               ]
             }
           }
@@ -49581,7 +49653,7 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 4.113288118563174,
+          "value": 1.7925937573708626,
           "formatted": null,
           "series": {
             "years": [
@@ -49590,7 +49662,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               2.3412905573220697,
@@ -49598,26 +49671,27 @@
               1.6671384983171338,
               3.2635129834470855,
               2.8850073693123024,
-              4.113288118563174
+              4.113288118563174,
+              1.7925937573708626
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4.113288118563174,
+          "benchmarkValue": 1.7925937573708626,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 5.620447123838231,
-              "count": 179
+              "value": 4.402861860209136,
+              "count": 140
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 1.5071590052750563,
-              "count": 48
+              "value": 2.6102681028382735,
+              "count": 83
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 4.113288118563174,
-              "count": 131
+              "value": 1.7925937573708626,
+              "count": 57
             }
           ],
           "componentSeries": {
@@ -49628,7 +49702,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.081438944520905,
@@ -49636,7 +49711,8 @@
                 3.4600987700921646,
                 4.989409272770064,
                 4.515663708488821,
-                5.620447123838231
+                5.620447123838231,
+                4.402861860209136
               ]
             },
             "Cancellati per l’estero": {
@@ -49646,7 +49722,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 1.7401483871988357,
@@ -49654,7 +49731,8 @@
                 1.7929602717750308,
                 1.725896289322978,
                 1.6306563391765188,
-                1.5071590052750563
+                1.5071590052750563,
+                2.6102681028382735
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49664,7 +49742,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.3412905573220697,
@@ -49672,7 +49751,8 @@
                 1.6671384983171338,
                 3.2635129834470855,
                 2.8850073693123024,
-                4.113288118563174
+                4.113288118563174,
+                1.7925937573708626
               ]
             }
           }
@@ -49681,7 +49761,7 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1.9766752322593395,
+          "value": 3.610664670526849,
           "formatted": null,
           "series": {
             "years": [
@@ -49690,7 +49770,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               2.214022140221402,
@@ -49698,26 +49779,27 @@
               1.1258579253902612,
               2.8696276006000128,
               1.9684608823079113,
-              1.9766752322593395
+              1.9766752322593395,
+              3.610664670526849
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.9766752322593395,
+          "benchmarkValue": 3.610664670526849,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 4.612242208605126,
-              "count": 105
+              "value": 5.1518020298980645,
+              "count": 117
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 2.6355669763457867,
-              "count": 60
+              "value": 1.5411373593712159,
+              "count": 35
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 1.9766752322593395,
-              "count": 45
+              "value": 3.610664670526849,
+              "count": 82
             }
           ],
           "componentSeries": {
@@ -49728,7 +49810,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.080746689819839,
@@ -49736,7 +49819,8 @@
                 3.4641782319700347,
                 4.260962194830322,
                 4.4181010914022005,
-                4.612242208605126
+                4.612242208605126,
+                5.1518020298980645
               ]
             },
             "Cancellati per l’estero": {
@@ -49746,7 +49830,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 1.8667245495984373,
@@ -49754,7 +49839,8 @@
                 2.3383203065797735,
                 1.3913345942303095,
                 2.449640209094289,
-                2.6355669763457867
+                2.6355669763457867,
+                1.5411373593712159
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49764,7 +49850,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.214022140221402,
@@ -49772,7 +49859,8 @@
                 1.1258579253902612,
                 2.8696276006000128,
                 1.9684608823079113,
-                1.9766752322593395
+                1.9766752322593395,
+                3.610664670526849
               ]
             }
           }
@@ -49781,7 +49869,7 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 2.981947130883301,
+          "value": 0.9730387188323535,
           "formatted": null,
           "series": {
             "years": [
@@ -49790,7 +49878,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               2.732347086147,
@@ -49798,26 +49887,27 @@
               1.1201344161299356,
               3.9458850056369776,
               3.9468385018123247,
-              2.981947130883301
+              2.981947130883301,
+              0.9730387188323535
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.981947130883301,
+          "benchmarkValue": 0.9730387188323535,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 5.883301096067053,
-              "count": 73
+              "value": 3.324548956010541,
+              "count": 41
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 2.9013539651837523,
-              "count": 36
+              "value": 2.351510237178188,
+              "count": 29
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 2.981947130883301,
-              "count": 37
+              "value": 0.9730387188323535,
+              "count": 12
             }
           ],
           "componentSeries": {
@@ -49828,7 +49918,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.9182247550646006,
@@ -49836,7 +49927,8 @@
                 3.20038404608553,
                 5.314865517796745,
                 5.5577929923479665,
-                5.883301096067053
+                5.883301096067053,
+                3.324548956010541
               ]
             },
             "Cancellati per l’estero": {
@@ -49846,7 +49938,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.1858776689176,
@@ -49854,7 +49947,8 @@
                 2.0802496299555946,
                 1.3689805121597676,
                 1.6109544905356425,
-                2.9013539651837523
+                2.9013539651837523,
+                2.351510237178188
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49864,7 +49958,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.732347086147,
@@ -49872,7 +49967,8 @@
                 1.1201344161299356,
                 3.9458850056369776,
                 3.9468385018123247,
-                2.981947130883301
+                2.981947130883301,
+                0.9730387188323535
               ]
             }
           }
@@ -49881,7 +49977,7 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 6.694934166480695,
+          "value": 3.3292978208232444,
           "formatted": null,
           "series": {
             "years": [
@@ -49890,7 +49986,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               0.0,
@@ -49898,26 +49995,27 @@
               3.672316384180791,
               9.260599045000722,
               9.958992384299943,
-              6.694934166480695
+              6.694934166480695,
+              3.3292978208232444
             ]
           },
           "normalized": null,
-          "benchmarkValue": 6.694934166480695,
+          "benchmarkValue": 3.3292978208232444,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 8.629026259019563,
-              "count": 58
+              "value": 7.415254237288136,
+              "count": 49
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 1.9340920925388676,
-              "count": 13
+              "value": 4.085956416464891,
+              "count": 27
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 6.694934166480695,
-              "count": 45
+              "value": 3.3292978208232444,
+              "count": 22
             }
           ],
           "componentSeries": {
@@ -49928,7 +50026,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.485876498212659,
@@ -49936,7 +50035,8 @@
                 5.508474576271186,
                 12.009839386485313,
                 12.741652021089633,
-                8.629026259019563
+                8.629026259019563,
+                7.415254237288136
               ]
             },
             "Cancellati per l’estero": {
@@ -49946,7 +50046,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.485876498212659,
@@ -49954,7 +50055,8 @@
                 1.8361581920903955,
                 2.7492403414845894,
                 2.7826596367896896,
-                1.9340920925388676
+                1.9340920925388676,
+                4.085956416464891
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -49964,7 +50066,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 0.0,
@@ -49972,7 +50075,8 @@
                 3.672316384180791,
                 9.260599045000722,
                 9.958992384299943,
-                6.694934166480695
+                6.694934166480695,
+                3.3292978208232444
               ]
             }
           }
@@ -49981,7 +50085,7 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 8.28300258843831,
+          "value": -11.277533039647578,
           "formatted": null,
           "series": {
             "years": [
@@ -49990,7 +50094,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               3.710575139146568,
@@ -49998,26 +50103,27 @@
               2.4187975120939877,
               0.3468007629616785,
               2.4221453287197234,
-              8.28300258843831
+              8.28300258843831,
+              -11.277533039647578
             ]
           },
           "normalized": null,
-          "benchmarkValue": 8.28300258843831,
+          "benchmarkValue": -11.277533039647578,
           "parts": [
             {
               "label": "Iscritti dall’estero",
-              "value": 10.698878343399482,
-              "count": 31
+              "value": 8.105726872246695,
+              "count": 23
             },
             {
               "label": "Cancellati per l’estero",
-              "value": 2.4158757549611733,
-              "count": 7
+              "value": 19.38325991189427,
+              "count": 55
             },
             {
               "label": "Saldo migratorio con l’estero",
-              "value": 8.28300258843831,
-              "count": 24
+              "value": -11.277533039647578,
+              "count": -32
             }
           ],
           "componentSeries": {
@@ -50028,7 +50134,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 6.409175240344072,
@@ -50036,7 +50143,8 @@
                 5.5286800276434,
                 5.202011444425177,
                 3.8062283737024227,
-                10.698878343399482
+                10.698878343399482,
+                8.105726872246695
               ]
             },
             "Cancellati per l’estero": {
@@ -50046,7 +50154,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.698600101197504,
@@ -50054,7 +50163,8 @@
                 3.1098825155494128,
                 4.8552106814634985,
                 1.384083044982699,
-                2.4158757549611733
+                2.4158757549611733,
+                19.38325991189427
               ]
             },
             "Saldo migratorio con l’estero": {
@@ -50064,7 +50174,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 3.710575139146568,
@@ -50072,7 +50183,8 @@
                 2.4187975120939877,
                 0.3468007629616785,
                 2.4221453287197234,
-                8.28300258843831
+                8.28300258843831,
+                -11.277533039647578
               ]
             }
           }
@@ -50087,7 +50199,7 @@
         "shortLabel": "Mobilità complessiva",
         "description": "Somma dei trasferimenti di residenza con gli altri Comuni italiani e con l’estero: iscritti, cancellati e saldo complessivo dei trasferimenti.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — bilancio demografico, trasferimenti di residenza",
         "polarity": "neutral",
         "compositeType": "mobility",
@@ -50101,35 +50213,35 @@
           "saldo migratorio"
         ],
         "benchmark": {
-          "year": "2024",
-          "tuscany": 6.760909649661954,
-          "italy": 4.4554243595798155,
+          "year": "2025",
+          "tuscany": 6.8974207516860195,
+          "italy": 5.017699598185682,
           "source": "Istat — Bilancio demografico comunale P02",
-          "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json",
+          "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-demography-mobility-benchmark-2025.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://demo.istat.it/",
       "aggregate": {
-        "value": 5.189664650907092,
+        "value": 5.600740885408463,
         "label": "Versilia · saldo complessivo dei trasferimenti",
         "note": "Tasso calcolato sul totale dei flussi dei sette comuni e sulla popolazione media annua complessiva.",
         "parts": [
           {
             "label": "Iscritti per trasferimento",
-            "value": 29.661509463598524,
-            "count": 4721
+            "value": 32.243635378538265,
+            "count": 5118
           },
           {
             "label": "Cancellati per trasferimento",
-            "value": 24.47184481269143,
-            "count": 3895
+            "value": 26.642894493129802,
+            "count": 4229
           },
           {
             "label": "Saldo complessivo dei trasferimenti",
-            "value": 5.189664650907092,
-            "count": 826
+            "value": 5.600740885408463,
+            "count": 889
           }
         ]
       },
@@ -50145,7 +50257,7 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 4.579698197888759,
+          "value": 6.240249609984399,
           "formatted": null,
           "series": {
             "years": [
@@ -50154,7 +50266,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.202165731569347,
@@ -50162,26 +50275,27 @@
               -2.19308265180244,
               6.7819910642685315,
               8.011536612722319,
-              4.579698197888759
+              4.579698197888759,
+              6.240249609984399
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4.579698197888759,
+          "benchmarkValue": 6.240249609984399,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 28.439925808889193,
-              "count": 621
+              "value": 35.23905662108837,
+              "count": 768
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 23.860227611000436,
-              "count": 521
+              "value": 28.998807011103974,
+              "count": 632
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 4.579698197888759,
-              "count": 100
+              "value": 6.240249609984399,
+              "count": 136
             }
           ],
           "componentSeries": {
@@ -50192,7 +50306,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 36.249451640460855,
@@ -50200,7 +50315,8 @@
                 24.21528761365194,
                 36.47611410241724,
                 33.144871472062626,
-                28.439925808889193
+                28.439925808889193,
+                35.23905662108837
               ]
             },
             "Cancellati per trasferimento": {
@@ -50210,7 +50326,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 32.0472859088915,
@@ -50218,7 +50335,8 @@
                 26.408370265454376,
                 29.694123038148707,
                 25.133334859340305,
-                23.860227611000436
+                23.860227611000436,
+                28.998807011103974
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50228,7 +50346,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.202165731569347,
@@ -50236,7 +50355,8 @@
                 -2.19308265180244,
                 6.7819910642685315,
                 8.011536612722319,
-                4.579698197888759
+                4.579698197888759,
+                6.240249609984399
               ]
             }
           }
@@ -50245,7 +50365,7 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 5.1082201148525614,
+          "value": 8.310112285445761,
           "formatted": null,
           "series": {
             "years": [
@@ -50254,7 +50374,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               9.313539310071505,
@@ -50262,26 +50383,27 @@
               8.209589847582913,
               7.0693402222495605,
               6.3134530806856,
-              5.1082201148525614
+              5.1082201148525614,
+              8.310112285445761
             ]
           },
           "normalized": null,
-          "benchmarkValue": 5.1082201148525614,
+          "benchmarkValue": 8.310112285445761,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 26.34852891499757,
-              "count": 1599
+              "value": 29.76141403815397,
+              "count": 1805
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 21.24030880014501,
-              "count": 1289
+              "value": 21.451301752708208,
+              "count": 1301
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 5.1082201148525614,
-              "count": 310
+              "value": 8.310112285445761,
+              "count": 504
             }
           ],
           "componentSeries": {
@@ -50292,7 +50414,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 31.573558795845237,
@@ -50300,7 +50423,8 @@
                 29.1587623470923,
                 30.327633575265516,
                 27.67068108019236,
-                26.34852891499757
+                26.34852891499757,
+                29.76141403815397
               ]
             },
             "Cancellati per trasferimento": {
@@ -50310,7 +50434,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 22.260019485773736,
@@ -50318,7 +50443,8 @@
                 20.949172499509388,
                 23.258293353015954,
                 21.357227999506758,
-                21.24030880014501
+                21.24030880014501,
+                21.451301752708208
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50328,7 +50454,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 9.313539310071505,
@@ -50336,7 +50463,8 @@
                 8.209589847582913,
                 7.0693402222495605,
                 6.3134530806856,
-                5.1082201148525614
+                5.1082201148525614,
+                8.310112285445761
               ]
             }
           }
@@ -50345,7 +50473,7 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 6.625219794021602,
+          "value": 5.50357732526142,
           "formatted": null,
           "series": {
             "years": [
@@ -50354,7 +50482,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               2.752598357932704,
@@ -50362,26 +50491,27 @@
               6.920197540184329,
               9.633639287675532,
               6.773495562733231,
-              6.625219794021602
+              6.625219794021602,
+              5.50357732526142
             ]
           },
           "normalized": null,
-          "benchmarkValue": 6.625219794021602,
+          "benchmarkValue": 5.50357732526142,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 30.55136900276312,
-              "count": 973
+              "value": 31.826401446654614,
+              "count": 1012
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 23.926149208741517,
-              "count": 762
+              "value": 26.322824121393193,
+              "count": 837
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 6.625219794021602,
-              "count": 211
+              "value": 5.50357732526142,
+              "count": 175
             }
           ],
           "componentSeries": {
@@ -50392,7 +50522,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 30.753167861041245,
@@ -50400,7 +50531,8 @@
                 30.731968167091313,
                 34.20412646112811,
                 32.017310044215876,
-                30.55136900276312
+                30.55136900276312,
+                31.826401446654614
               ]
             },
             "Cancellati per trasferimento": {
@@ -50410,7 +50542,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 28.000569503108537,
@@ -50418,7 +50551,8 @@
                 23.811770626906988,
                 24.570487173452577,
                 25.243814481482644,
-                23.926149208741517
+                23.926149208741517,
+                26.322824121393193
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50428,7 +50562,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 2.752598357932704,
@@ -50436,7 +50571,8 @@
                 6.920197540184329,
                 9.633639287675532,
                 6.773495562733231,
-                6.625219794021602
+                6.625219794021602,
+                5.50357732526142
               ]
             }
           }
@@ -50445,7 +50581,7 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 6.588917440864466,
+          "value": 5.900354461592656,
           "formatted": null,
           "series": {
             "years": [
@@ -50454,7 +50590,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               6.338181028869112,
@@ -50462,26 +50599,27 @@
               5.152965120055427,
               3.869649340203048,
               4.943023993350977,
-              6.588917440864466
+              6.588917440864466,
+              5.900354461592656
             ]
           },
           "normalized": null,
-          "benchmarkValue": 6.588917440864466,
+          "benchmarkValue": 5.900354461592656,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 32.15391711141859,
-              "count": 732
+              "value": 33.46469694634641,
+              "count": 760
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 25.564999670554126,
-              "count": 582
+              "value": 27.564342484753748,
+              "count": 626
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 6.588917440864466,
-              "count": 150
+              "value": 5.900354461592656,
+              "count": 134
             }
           ],
           "componentSeries": {
@@ -50492,7 +50630,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 30.34512698068157,
@@ -50500,7 +50639,8 @@
                 29.185701604347543,
                 32.1746124915759,
                 32.85142494696092,
-                32.15391711141859
+                32.15391711141859,
+                33.46469694634641
               ]
             },
             "Cancellati per trasferimento": {
@@ -50510,7 +50650,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 24.00694595181246,
@@ -50518,7 +50659,8 @@
                 24.032736484292116,
                 28.304963151372856,
                 27.908400953609938,
-                25.564999670554126
+                25.564999670554126,
+                27.564342484753748
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50528,7 +50670,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 6.338181028869112,
@@ -50536,7 +50679,8 @@
                 5.152965120055427,
                 3.869649340203048,
                 4.943023993350977,
-                6.588917440864466
+                6.588917440864466,
+                5.900354461592656
               ]
             }
           }
@@ -50545,7 +50689,7 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 4.029658284977434,
+          "value": 4.054327995134806,
           "formatted": null,
           "series": {
             "years": [
@@ -50554,7 +50698,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.215621218626801,
@@ -50562,25 +50707,26 @@
               -2.240268832259871,
               8.294411338379769,
               12.565445026178013,
-              4.029658284977434
+              4.029658284977434,
+              4.054327995134806
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4.029658284977434,
+          "benchmarkValue": 4.054327995134806,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 34.81624758220503,
-              "count": 432
+              "value": 35.434826677478206,
+              "count": 437
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 30.786589297227597,
-              "count": 382
+              "value": 31.380498682343404,
+              "count": 387
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 4.029658284977434,
+              "value": 4.054327995134806,
               "count": 50
             }
           ],
@@ -50592,7 +50738,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 32.78816503376401,
@@ -50600,7 +50747,8 @@
                 28.803456414769773,
                 37.92881301336768,
                 39.629480467176805,
-                34.81624758220503
+                34.81624758220503,
+                35.434826677478206
               ]
             },
             "Cancellati per trasferimento": {
@@ -50610,7 +50758,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 28.5725438151372,
@@ -50618,7 +50767,8 @@
                 31.043725247029645,
                 29.63440167498791,
                 27.064035440998797,
-                30.786589297227597
+                30.786589297227597,
+                31.380498682343404
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50628,7 +50778,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 4.215621218626801,
@@ -50636,7 +50787,8 @@
                 -2.240268832259871,
                 8.294411338379769,
                 12.565445026178013,
-                4.029658284977434
+                4.029658284977434,
+                4.054327995134806
               ]
             }
           }
@@ -50645,7 +50797,7 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": -4.90961838875251,
+          "value": -6.50726392251816,
           "formatted": null,
           "series": {
             "years": [
@@ -50654,7 +50806,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               -2.6634891708137665,
@@ -50662,26 +50815,27 @@
               3.9548022598870056,
               1.7363623209376353,
               -3.8078500292911546,
-              -4.90961838875251
+              -4.90961838875251,
+              -6.50726392251816
             ]
           },
           "normalized": null,
-          "benchmarkValue": -4.90961838875251,
+          "benchmarkValue": -6.50726392251816,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 35.11121029532098,
-              "count": 236
+              "value": 38.13559322033898,
+              "count": 252
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 40.020828684073486,
-              "count": 269
+              "value": 44.642857142857146,
+              "count": 295
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": -4.90961838875251,
-              "count": -33
+              "value": -6.50726392251816,
+              "count": -43
             }
           ],
           "componentSeries": {
@@ -50692,7 +50846,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 35.74682834513212,
@@ -50700,7 +50855,8 @@
                 35.87570621468927,
                 45.29011720445666,
                 44.961921499707096,
-                35.11121029532098
+                35.11121029532098,
+                38.13559322033898
               ]
             },
             "Cancellati per trasferimento": {
@@ -50710,7 +50866,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 38.4103175159459,
@@ -50718,7 +50875,8 @@
                 31.92090395480226,
                 43.55375488351902,
                 48.76977152899825,
-                40.020828684073486
+                40.020828684073486,
+                44.642857142857146
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50728,7 +50886,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 -2.6634891708137665,
@@ -50736,7 +50895,8 @@
                 3.9548022598870056,
                 1.7363623209376353,
                 -3.8078500292911546,
-                -4.90961838875251
+                -4.90961838875251,
+                -6.50726392251816
               ]
             }
           }
@@ -50745,7 +50905,7 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 13.114754098360656,
+          "value": -23.612334801762113,
           "formatted": null,
           "series": {
             "years": [
@@ -50754,7 +50914,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               5.059875189745321,
@@ -50762,26 +50923,27 @@
               6.2197650310988255,
               6.936015259233571,
               13.840830449826992,
-              13.114754098360656
+              13.114754098360656,
+              -23.612334801762113
             ]
           },
           "normalized": null,
-          "benchmarkValue": 13.114754098360656,
+          "benchmarkValue": -23.612334801762113,
           "parts": [
             {
               "label": "Iscritti per trasferimento",
-              "value": 44.17601380500432,
-              "count": 128
+              "value": 29.60352422907489,
+              "count": 84
             },
             {
               "label": "Cancellati per trasferimento",
-              "value": 31.061259706643657,
-              "count": 90
+              "value": 53.215859030837,
+              "count": 151
             },
             {
               "label": "Saldo complessivo dei trasferimenti",
-              "value": 13.114754098360656,
-              "count": 38
+              "value": -23.612334801762113,
+              "count": -67
             }
           ],
           "componentSeries": {
@@ -50792,7 +50954,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 39.80435149266319,
@@ -50800,7 +50963,8 @@
                 31.789910158949553,
                 33.9864747702445,
                 41.52249134948097,
-                44.17601380500432
+                44.17601380500432,
+                29.60352422907489
               ]
             },
             "Cancellati per trasferimento": {
@@ -50810,7 +50974,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 34.74447630291787,
@@ -50818,7 +50983,8 @@
                 25.570145127850726,
                 27.050459511010924,
                 27.681660899653984,
-                31.061259706643657
+                31.061259706643657,
+                53.215859030837
               ]
             },
             "Saldo complessivo dei trasferimenti": {
@@ -50828,7 +50994,8 @@
                 2021,
                 2022,
                 2023,
-                2024
+                2024,
+                2025
               ],
               "values": [
                 5.059875189745321,
@@ -50836,7 +51003,8 @@
                 6.2197650310988255,
                 6.936015259233571,
                 13.840830449826992,
-                13.114754098360656
+                13.114754098360656,
+                -23.612334801762113
               ]
             }
           }

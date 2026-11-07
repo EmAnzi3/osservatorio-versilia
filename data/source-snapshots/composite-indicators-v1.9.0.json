@@ -16,7 +16,7 @@
       "publisher": "Istat",
       "dataset": "Bilancio demografico — trasferimenti di residenza tra Comuni",
       "url": "https://demo.istat.it/",
-      "years": [2019, 2020, 2021, 2022, 2023, 2024]
+      "years": [2019, 2020, 2021, 2022, 2023, 2024, 2025]
     },
     "incomeDistribution": {
       "publisher": "Dipartimento delle Finanze — MEF",
@@ -49,7 +49,8 @@
         {"year": 2021, "registeredIn": 484, "registeredOut": 536},
         {"year": 2022, "registeredIn": 706, "registeredOut": 613},
         {"year": 2023, "registeredIn": 621, "registeredOut": 498},
-        {"year": 2024, "registeredIn": 533, "registeredOut": 470}
+        {"year": 2024, "registeredIn": 533, "registeredOut": 470},
+        {"year": 2025, "registeredIn": 676, "registeredOut": 603}
       ],
       "incomeBands": [5493, 5055, 4662, 724]
     },
@@ -62,7 +63,8 @@
         {"year": 2021, "registeredIn": 1484, "registeredOut": 1188},
         {"year": 2022, "registeredIn": 1444, "registeredOut": 1294},
         {"year": 2023, "registeredIn": 1376, "registeredOut": 1183},
-        {"year": 2024, "registeredIn": 1305, "registeredOut": 1112}
+        {"year": 2024, "registeredIn": 1305, "registeredOut": 1112},
+        {"year": 2025, "registeredIn": 1522, "registeredOut": 1189}
       ],
       "incomeBands": [15651, 12306, 13702, 3514]
     },
@@ -75,7 +77,8 @@
         {"year": 2021, "registeredIn": 867, "registeredOut": 700},
         {"year": 2022, "registeredIn": 931, "registeredOut": 728},
         {"year": 2023, "registeredIn": 877, "registeredOut": 753},
-        {"year": 2024, "registeredIn": 794, "registeredOut": 714}
+        {"year": 2024, "registeredIn": 794, "registeredOut": 714},
+        {"year": 2025, "registeredIn": 872, "registeredOut": 754}
       ],
       "incomeBands": [8650, 6828, 6415, 1355]
     },
@@ -88,7 +91,8 @@
         {"year": 2021, "registeredIn": 594, "registeredOut": 501},
         {"year": 2022, "registeredIn": 642, "registeredOut": 619},
         {"year": 2023, "registeredIn": 650, "registeredOut": 582},
-        {"year": 2024, "registeredIn": 627, "registeredOut": 522}
+        {"year": 2024, "registeredIn": 627, "registeredOut": 522},
+        {"year": 2025, "registeredIn": 643, "registeredOut": 591}
       ],
       "incomeBands": [6230, 4713, 4758, 1064]
     },
@@ -101,7 +105,8 @@
         {"year": 2021, "registeredIn": 320, "registeredOut": 362},
         {"year": 2022, "registeredIn": 405, "registeredOut": 351},
         {"year": 2023, "registeredIn": 423, "registeredOut": 316},
-        {"year": 2024, "registeredIn": 359, "registeredOut": 346}
+        {"year": 2024, "registeredIn": 359, "registeredOut": 346},
+        {"year": 2025, "registeredIn": 396, "registeredOut": 358}
       ],
       "incomeBands": [3393, 2802, 2540, 447]
     },
@@ -114,7 +119,8 @@
         {"year": 2021, "registeredIn": 215, "registeredOut": 213},
         {"year": 2022, "registeredIn": 230, "registeredOut": 282},
         {"year": 2023, "registeredIn": 220, "registeredOut": 314},
-        {"year": 2024, "registeredIn": 178, "registeredOut": 256}
+        {"year": 2024, "registeredIn": 178, "registeredOut": 256},
+        {"year": 2025, "registeredIn": 203, "registeredOut": 268}
       ],
       "incomeBands": [1645, 1120, 1268, 891]
     },
@@ -127,7 +133,8 @@
         {"year": 2021, "registeredIn": 76, "registeredOut": 65},
         {"year": 2022, "registeredIn": 83, "registeredOut": 64},
         {"year": 2023, "registeredIn": 109, "registeredOut": 76},
-        {"year": 2024, "registeredIn": 97, "registeredOut": 83}
+        {"year": 2024, "registeredIn": 97, "registeredOut": 83},
+        {"year": 2025, "registeredIn": 61, "registeredOut": 96}
       ],
       "incomeBands": [848, 673, 526, 47]
     }

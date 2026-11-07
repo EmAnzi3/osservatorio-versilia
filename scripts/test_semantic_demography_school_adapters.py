@@ -36,9 +36,9 @@ def regressions(path):
             (d.DEPENDENCY,'part:elderly|sex:women',3106/6863*100),
             (d.NATURAL,'total',-160/21794*1000),
             (d.NATURAL,'part:births',96/21794*1000),
-            (d.MOBILITY[0],'total',63/21835.5*1000),
-            (d.MOBILITY[1],'total',37/21835.5*1000),
-            (d.MOBILITY[2],'total',100/21835.5*1000),
+            (d.MOBILITY[0],'total',73/21794*1000),
+            (d.MOBILITY[1],'total',63/21794*1000),
+            (d.MOBILITY[2],'total',136/21794*1000),
             (d.FOREIGN,'total',1030/21806*100),(d.FOREIGN,'count',1030),
             (d.FOREIGN,'sex:men',475),(d.FOREIGN,'sex:women',555),
             (d.CHANGE,'total',86/21696*100),
@@ -65,7 +65,7 @@ def regressions(path):
     rejected(e,request('trend',d.CHANGE,towns=['046018']),'cumulative_trend_not_annual_growth')
     rejected(e,dict(request('benchmark_gap','schoolStudents',towns=['046018']),benchmark='tuscany'),'absolute_volume_not_comparable')
     rejected(e,request('weighted_ratio',d.MOBILITY[1],periods=['2023']),'ratio_components_required')
-    corr=dict(operation='correlation',selectors=[dict(metric=d.FOREIGN),dict(metric=d.MOBILITY[1])],axis='municipalities',method='spearman',purpose='Different citizenship stocks and residence events')
+    corr=dict(operation='correlation',selectors=[dict(metric=d.FOREIGN,periods=['2025']),dict(metric=d.MOBILITY[1],periods=['2024'])],axis='municipalities',method='spearman',purpose='Different citizenship stocks and residence events')
     rejected(e,corr,'paired_period_mismatch')
     corr['selectors']=[dict(metric=d.SITES),dict(metric='schoolStudents')]
     rejected(e,corr,'observation_dates_not_attested_for_pairing')
