@@ -1,5 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Aggiornatori nel giro mensile (7 novembre 2026)
+
+Il workflow «Aggiorna dati dalla fonte» ora gira anche ogni mese (giorno 6, 06:41 UTC, il
+giorno dopo il «Controllo mensile dati») e a mano (`workflow_dispatch`), su main.
+`scripts/source_update_monthly.py` esegue tutti gli aggiornatori di
+`scripts/update_source_data.py`: i 7 indicatori ARS legacy e la mobilità Istat P2 per l'anno
+pubblicato e per il successivo. Per ognuno scrive l'esito: aggiornato, invariato o rifiutato,
+con il motivo e cosa fare (periodo nuovo → PR dedicata; anno non ancora pubblicato → nessuna
+azione; fonte non raggiungibile → rilancio o `--file`; forma cambiata → verifica).
+
+- Se i dati cambiano apre (o aggiorna) la PR in bozza `data/aggiornamento-auto-AAAA-MM`. La CI
+  non parte da sola su una PR del bot: serve un commit umano, cioè il ripin A6, i dossier e le
+  domande verificate, elencati nel corpo della PR.
+- L'esito va nel riepilogo del run e, sul giro programmato, come commento nel «Registro controlli
+  dati AAAA» con menzione.
+- Il modo PR (`ci/source-update-request.json`) resta com'era.
+- Test offline `scripts/test_source_update_monthly.py` nei quickChecks.
+
 ## Radar: sospensione di continuità GRANFEST (6 novembre 2026)
 
 Dal 5 novembre ogni run del Radar si fermava su `continuityHold=1`: «Bando GRANFEST. Grandi Festival

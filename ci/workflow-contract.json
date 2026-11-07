@@ -262,6 +262,11 @@
         "label": "source data updaters",
         "script": "scripts/test_update_source_data.py",
         "args": []
+      },
+      {
+        "label": "monthly source data updaters",
+        "script": "scripts/test_source_update_monthly.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
@@ -612,7 +617,7 @@
       "path": ".github/workflows/source-data-update.yml",
       "category": "data-audit",
       "status": "active",
-      "note": "Aggiornatori dalla fonte eseguiti sui runner GitHub per le fonti non raggiungibili altrove; committa i dati solo sul ramo della PR, mai su main."
+      "note": "Aggiornatori dalla fonte eseguiti sui runner GitHub per le fonti non raggiungibili altrove; sulle PR committa i dati sul ramo della PR; ogni mese li esegue tutti su main, apre una PR in bozza se i dati cambiano e registra l'esito nel registro annuale. Mai commit su main."
     },
     {
       "path": ".github/workflows/release-period-probes.yml",
