@@ -58,6 +58,41 @@ def check_fitted_text(svg_path: Path, root: ET.Element, errors: list[str]) -> No
 
 def main() -> int:
     errors: list[str] = []
+    # Regressione: l'assenza di storico non blocca indicatori con età/genere 7/7.
+    sample_towns = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta",
+                    "Seravezza", "Stazzema", "Viareggio"]
+    part_fixture = [
+        {"key": "15-24|total", "value": 21.0},
+        {"key": "25-64|total", "value": 68.0},
+        {"key": "15-24|women", "value": 19.0},
+        {"key": "15-24|men", "value": 23.0},
+    ]
+    site_fixture = {"metrics": {"employmentRate": {
+        "meta": {"key": "employmentRate", "theme": "lavoro", "label": "Occupazione",
+                 "shortLabel": "Occupazione", "unit": "percent", "year": 2024,
+                 "description": "Quota di occupati tra i residenti della fascia selezionata.",
+                 "compositeType": "demographicBreakdown"},
+        "rows": [{"town": town, "value": 68.0, "parts": part_fixture}
+                 for town in sample_towns],
+    }}}
+    item_fixture = {"type": "ordinary", "date": "2026-11-07",
+                    "theme": "lavoro", "metric": "employmentRate"}
+    question_bank = load(KIT / "config" / "question-bank.json")
+    prepared, manual = weekly.post_from_item(item_fixture, site_fixture, question_bank)
+    assert manual is None and prepared and prepared.get("demographic_breakdown"), (
+        "Il planner non deve bloccare i dati per età/genere senza storico"
+    )
+    model_fixture = {"metric": "employmentRate", "rows": [
+        {"town": town, "parts": part_fixture} for town in sample_towns
+    ]}
+    panel_fixture = load(KIT / "config" / "design-system.json")["layout"]["panel"]
+    theme_fixture = load(KIT / "config" / "themes.json")["themes"]["lavoro"]
+    for breakdown_kind in ("age", "gender"):
+        sections: list[str] = []
+        renderer.demographic_slide(sections, panel_fixture, model_fixture, theme_fixture, breakdown_kind)
+        assert sum('data-role="breakdown-value"' in row for row in sections) == 14, (
+            "Ogni confronto deve avere due valori per Comune"
+        )
     # Ogni indicatore del catalogo deve avere un sottotitolo di copertina contenibile:
     # una descrizione allungata nel sito non deve bloccare il pacchetto settimanale.
     width, height, start, minimum, lines = weekly.COVER_SUBTITLE_BOX
