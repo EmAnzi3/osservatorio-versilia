@@ -379,6 +379,34 @@ def main() -> int:
                         errors.append(f"{post_id}: card corrente non contiene il valore canonico {town} = {expected_text}")
                     rendered_checks += 1
 
+            # Ogni valore disaggregato delle nuove card età/genere deve coincidere
+            # con le celle ufficiali pubblicate, non solo con il valore 25–64.
+            slide_dimensions = provenance.get("slide_dimensions") or {}
+            if slide_dimensions and dataset_path != "data/site-data.json":
+                errors.append(f"{post_id}: segmentazioni consentite soltanto sul dataset del sito")
+            for slide_no, keys in slide_dimensions.items():
+                index = int(slide_no) - 1
+                if index < 0 or index >= len(cards) or len(keys) != 2:
+                    errors.append(f"{post_id}: dimensioni card {slide_no} non valide")
+                    continue
+                slide_svg = post_dir / "cards" / f"{cards[index]['filename']}.svg"
+                nodes = [node for node in ET.parse(slide_svg).getroot().iter()
+                         if node.attrib.get("data-role") == "breakdown-value"]
+                ordered = sorted(metric["rows"], key=lambda row: row["town"].casefold())
+                if len(nodes) != len(ordered) * len(keys):
+                    errors.append(f"{post_id}: card {slide_no} valori disaggregati incompleti")
+                    continue
+                for town_index, row in enumerate(ordered):
+                    cell = {part["key"]: part for part in row.get("parts") or []}
+                    for key_index, key in enumerate(keys):
+                        if key not in cell or cell[key].get("value") is None:
+                            errors.append(f"{post_id}: cella {row['town']} / {key} mancante")
+                            continue
+                        expected = fmt_value(float(cell[key]["value"]), "percent")
+                        actual = nodes[town_index * len(keys) + key_index].text
+                        check_equal(errors, f"{post_id}: card {slide_no} {row['town']} {key}", actual, expected)
+                        rendered_checks += 1
+
             comparison = provenance.get("comparison")
             if comparison and len(cards) >= 3:
                 change_svg = post_dir / "cards" / f"{cards[2]['filename']}.svg"

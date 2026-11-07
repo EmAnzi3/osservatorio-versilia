@@ -24,7 +24,7 @@ Ogni uscita usa un carosello di quattro immagini PNG 1080×1350:
 3. variazione territoriale o confronto temporale metodologicamente corretto, con testi e grafici in corsie non sovrapponibili;
 4. domanda aperta, invito a commentare indicando il Comune e invito a seguire Osservatorio Versilia.
 
-Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X. Se l'indicatore principale non dispone di storico, le tavole 2 e 3 usano altri indicatori pertinenti soltanto quando la relazione è dichiarata nella configurazione editoriale e i dati hanno copertura 7/7. Servono sia una serie storica comunale sia un secondo dato di contesto; in caso contrario il pacchetto resta da gestire manualmente, senza riempitivi generici.
+Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X. Se l'indicatore principale non dispone di storico, la mancanza della serie temporale **non è un motivo sufficiente per bloccare il post**. In presenza di segmentazioni ufficiali per età e genere con copertura 7/7, la tavola 2 confronta le fasce 15–24 e 25–64 anni e la tavola 3 confronta donne e uomini fra i 15–24enni. Le misure e i denominatori devono essere esplicitati; non si interpretano i divari come cause. Negli altri casi si utilizzano indicatori complementari dichiarati e verificati, mantenendo il confronto comunale. Se mancano anche segmentazioni e confronti pertinenti, il contenuto richiede revisione manuale anziché card riempitive.
 
 La relazione tecnica fra gli indicatori non entra mai nel contenuto pubblico: sono vietate formule come “dato affine”, “indicatore di supporto” o “per completare la lettura”. Card, copy e ALT parlano esclusivamente del fenomeno osservato.
 
