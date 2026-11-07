@@ -53,6 +53,13 @@ class UpdateError(RuntimeError):
     pass
 
 
+def keep_retrieved(new: dict[str, Any], old: dict[str, Any] | None) -> dict[str, Any]:
+    """Se il contenuto non cambia, la data di acquisizione resta quella già registrata."""
+    if old is not None and {**old, "retrieved": None} == {**new, "retrieved": None}:
+        return {**new, "retrieved": old["retrieved"]}
+    return new
+
+
 def load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -303,10 +310,12 @@ def update_istat_mobility(year: int, file: Path | None, dry_run: bool) -> Change
         "components": {scope: {k: (int(v) if k != "meanPopulation" else v) for k, v in a.items()} for scope, a in scopes.items()},
         "acquisitionEvidence": {"script": "scripts/update_source_data.py istat-mobility", "sha256": None},
     }
+    target = SNAP / f"a3-istat-demography-mobility-benchmark-{year}.json"
+    benchmark_snapshot = keep_retrieved(benchmark_snapshot, load(target) if target.exists() else None)
     if not dry_run:
         save(SITE, site)
         COMPOSITE.write_text(composite_text, encoding="utf-8")
-        save(SNAP / f"a3-istat-demography-mobility-benchmark-{year}.json", benchmark_snapshot)
+        save(target, benchmark_snapshot)
     return changes
 
 

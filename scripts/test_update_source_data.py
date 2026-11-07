@@ -95,6 +95,10 @@ def mobility_cases(tmp: Path) -> None:
     text = upd.composite_flow(upd.COMPOSITE.read_text(encoding="utf-8"), "Massarosa", year + 1, 500, 400)
     flows = json.loads(text)["raw"]["Massarosa"]["internalResidentialMobility"]
     assert flows[-1] == {"year": year + 1, "registeredIn": 500, "registeredOut": 400} and flows[-2]["year"] == year
+    same = {"version": "x", "retrieved": "2026-11-07", "benchmarks": {"a": 1}}
+    assert upd.keep_retrieved(same, dict(same, retrieved="2026-11-06"))["retrieved"] == "2026-11-06", "rigiro identico: data invariata"
+    assert upd.keep_retrieved(dict(same, benchmarks={"a": 2}), dict(same, retrieved="2026-11-06"))["retrieved"] == "2026-11-07"
+    assert upd.keep_retrieved(same, None)["retrieved"] == "2026-11-07"
     try:
         upd.composite_flow(text, "Massarosa", year + 3, 1, 1)
         raise AssertionError("anno non consecutivo accettato")
@@ -106,7 +110,7 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         ars_cases(Path(tmp))
         mobility_cases(Path(tmp))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche PASS")
 
 
 if __name__ == "__main__":
