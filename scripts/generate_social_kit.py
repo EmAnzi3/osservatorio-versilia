@@ -630,6 +630,21 @@ def validate_slide_geometry(svg: str, post_id: str, slide_index: int) -> None:
             raise ValueError(f"Sovrapposizione riga/testo: {post_id}, tavola {slide_index}, riga {int(row) + 1}")
 
 
+def demographic_alt(model: dict[str, Any], kind: str) -> str:
+    """ALT con i valori di tutte le barre, non una descrizione generica."""
+    keys = ("15-24|total", "25-64|total") if kind == "age" else ("15-24|women", "15-24|men")
+    titles = ("15–24 anni", "25–64 anni") if kind == "age" else ("donne 15–24", "uomini 15–24")
+    fragments = []
+    for row in model["rows"]:
+        cells = {part["key"]: part["value"] for part in row.get("parts") or []}
+        values = ", ".join(
+            f"{label}: {fmt_value(float(cells[key]), 'percent')}"
+            for key, label in zip(keys, titles)
+        )
+        fragments.append(f"{row['town']} — {values}")
+    return "Confronto dei tassi per " + ("età" if kind == "age" else "genere") + ". " + "; ".join(fragments) + "."
+
+
 def demographic_slide(
     parts: list[str], box: dict[str, float], model: dict[str, Any],
     theme: dict[str, str], kind: str,
@@ -894,7 +909,7 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
                     ) for row in history_model["rows"]
                 )
             ) if history_years else (
-                "Fasce d'età 15–24 e 25–64 per i sette Comuni, stesso anno."
+                demographic_alt(model, "age")
             ) if post.get("demographic_breakdown") else model["description"],
         ),
         (
@@ -907,7 +922,7 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
                 f"{measure_definition(context_model)} Valori nel {context_model['year']}: "
                 + "; ".join(f"{row['town']} {fmt_value(row['value'], context_model['unit'])}" for row in context_model["rows"])
             ) if context_model else (
-                "Disaggregazione ufficiale della fascia 15–24 anni per donne e uomini, nei sette Comuni."
+                demographic_alt(model, "gender")
             ) if post.get("demographic_breakdown") else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
         ),
         (
