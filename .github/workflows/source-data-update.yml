@@ -3,26 +3,106 @@ name: Aggiorna dati dalla fonte
 # Esegue sui runner GitHub gli aggiornatori di `scripts/update_source_data.py`
 # richiesti in `ci/source-update-request.json` e committa il risultato sul ramo
 # della PR. Serve per le fonti che si scaricano solo da qui (ARS, Istat).
+# Ogni mese (il giorno dopo il «Controllo mensile dati») esegue tutti gli
+# aggiornatori su main con `scripts/source_update_monthly.py`: se i dati cambiano
+# apre una PR in bozza, e l'esito di ogni aggiornatore va nel registro annuale.
 # Non tocca mai main: la PR resta da verificare e la fusione resta manuale.
 
 on:
+  schedule:
+    - cron: "41 6 6 * *"
+  workflow_dispatch:
   pull_request:
     branches: ["main"]
     paths:
       - ".github/workflows/source-data-update.yml"
       - "ci/source-update-request.json"
       - "scripts/update_source_data.py"
+      - "scripts/source_update_monthly.py"
+      - "scripts/test_source_update_monthly.py"
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 concurrency:
-  group: source-data-update-${{ github.head_ref }}
+  group: source-data-update-${{ github.head_ref || 'monthly' }}
   cancel-in-progress: false
 
 jobs:
+  monthly:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install requests
+      - name: Offline updater tests
+        run: |
+          cd scripts
+          python test_update_source_data.py
+          python test_source_update_monthly.py
+      - name: Run every updater
+        id: run
+        run: python scripts/source_update_monthly.py --report /tmp/source-update.md
+      - name: Publish summary
+        if: always()
+        run: if [ -f /tmp/source-update.md ]; then cat /tmp/source-update.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Open or update draft PR with the new data
+        if: steps.run.outputs.changed == 'true'
+        run: |
+          STAMP="$(date -u +%Y-%m)"
+          BRANCH="data/aggiornamento-auto-$STAMP"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add data
+          git commit -m "Dati aggiornati dalla fonte $STAMP (giro mensile degli aggiornatori)"
+          git push --force origin "$BRANCH"
+          {
+            echo "## Stato"
+            echo
+            echo "**BOZZA — nessun dato viene pubblicato automaticamente.** Il giro mensile degli aggiornatori ha trovato dati cambiati alla fonte."
+            echo
+            echo "Prima della fusione:"
+            echo
+            echo "- la CI non parte da sola su una PR aperta dal bot: serve un commit umano sul ramo (anche solo quello dei passi qui sotto);"
+            echo "- ripinnare A6 se cambia il catalogo: \`python scripts/materialize_source_monitor_snapshot.py --output-dir ../ovpub-upd\` e \`python scripts/a6_repin.py --catalog ../ovpub-upd/site-data.json --allow road --write\`;"
+            echo "- rigenerare i dossier e rieseguire le domande verificate («Chiedi») sul catalogo costruito;"
+            echo "- \`python scripts/preflight.py --quick\` verde, poi fusione manuale."
+            echo
+            echo "---"
+            echo
+            cat /tmp/source-update.md
+          } > /tmp/source-update-pr.md
+          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --json number --jq '.[0].number // empty')"
+          if [ -z "$PR_NUMBER" ]; then
+            gh pr create --draft --base main --head "$BRANCH" --title "Dati aggiornati dalla fonte $STAMP" --body-file /tmp/source-update-pr.md
+          else
+            gh pr edit "$PR_NUMBER" --body-file /tmp/source-update-pr.md
+          fi
+      - name: Record the outcome in the annual register
+        if: always() && github.event_name == 'schedule'
+        run: |
+          [ -f /tmp/source-update.md ] || exit 0
+          TITLE="Registro controlli dati $(date -u +%Y)"
+          ISSUE_NUMBER="$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')"
+          if [ -z "$ISSUE_NUMBER" ]; then echo "Registro $TITLE non trovato: esito solo nel riepilogo del run."; exit 0; fi
+          { echo "@EmAnzi3"; echo; cat /tmp/source-update.md; } > /tmp/source-update-comment.md
+          gh issue comment "$ISSUE_NUMBER" --body-file /tmp/source-update-comment.md
+
   update:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
