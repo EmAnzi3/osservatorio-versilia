@@ -278,7 +278,7 @@ jobs:
 
           homepage = text('index.html')
           assert '225 indicatori' in homepage
-          assert 'Aggiornato 14 settembre 2026' in homepage
+          assert 'Catalogo al 14 settembre 2026' in homepage
 
           salute = text('confronta/salute/index.html')
           for label in (

@@ -111,6 +111,9 @@ Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi
   rapido, passano a 60 minuti. Il preflight rapido sui
   runner GitHub ora richiede circa 40 minuti (38 in Pages, 41 nel gate Bilanci sullo stesso
   commit), e il limite a 25 lo annullava anche su PR già fuse. Nessun controllo è cambiato.
+  Arrivato finalmente al `preview`, il gate falliva su un'asserzione rimasta a «Aggiornato 14
+  settembre 2026»: dal 25 ottobre (c9736bd) la homepage scrive «Catalogo al 14 settembre 2026».
+  L'asserzione ora controlla il testo attuale, con la stessa data esatta.
 
 Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
 `test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»
