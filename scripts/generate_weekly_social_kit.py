@@ -187,6 +187,18 @@ def metric_for_item(item: dict[str, Any], site: dict[str, Any]) -> tuple[str | N
     return None, "La ricorrenza non ha ancora una metrica esatta riconosciuta nel dataset corrente."
 
 
+def has_demographic_breakdown(metric: dict[str, Any]) -> bool:
+    """Usa età e genere già pubblicati nel dataset, senza richiedere uno storico."""
+    required = {"15-24|total", "25-64|total", "15-24|women", "15-24|men"}
+    if metric.get("meta", {}).get("compositeType") != "demographicBreakdown" or not complete_metric(metric):
+        return False
+    for row in metric["rows"]:
+        values = {part.get("key"): part.get("value") for part in row.get("parts") or []}
+        if any(values.get(key) is None for key in required):
+            return False
+    return True
+
+
 def post_from_item(
     item: dict[str, Any],
     site: dict[str, Any],
@@ -241,25 +253,34 @@ def post_from_item(
     }
     post.update(temporal)
     if not temporal:
-        history_metric, context_metric = companion_metrics(item, metric_key, site)
-        if not history_metric or not context_metric:
-            return None, {
-                "date": item["date"],
-                "id": item.get("id") or safe_id(item.get("title", "uscita")),
-                "title": item.get("title", metric["meta"].get("label", metric_key)),
-                "theme": item.get("theme"),
-                "reason": (
-                    "Indicatore privo di storico e senza due indicatori affini 7/7 esplicitamente dichiarati; "
-                    "il sistema non genera card riempitive."
-                ),
+        if has_demographic_breakdown(metric):
+            # Due letture autonome del dato ufficiale: fasce d'età e genere.
+            # Non sono necessari indicatori di riempimento né uno storico.
+            post["demographic_breakdown"] = True
+            post["titles"][1] = "Le differenze per età"
+            post["subtitles"][1] = "15–24 anni e 25–64 anni · stesso anno"
+            post["titles"][2] = "Giovani: donne e uomini"
+            post["subtitles"][2] = "15–24 anni · confronto per genere"
+        else:
+            history_metric, context_metric = companion_metrics(item, metric_key, site)
+            if not history_metric or not context_metric:
+                return None, {
+                    "date": item["date"],
+                    "id": item.get("id") or safe_id(item.get("title", "uscita")),
+                    "title": item.get("title", metric["meta"].get("label", metric_key)),
+                    "theme": item.get("theme"),
+                    "reason": (
+                        "Non sono disponibili storico, segmentazioni verificabili o due indicatori "
+                        "complementari 7/7 dichiarati; revisione manuale necessaria."
+                    ),
+                }
+            history_years = series_years(site["metrics"][history_metric])
+            post["history_metric"] = history_metric
+            post["history_from_by_metric"] = {history_metric: history_years[0]}
+            post["comparison_by_metric"] = {
+                history_metric: {"type": "base_year", "year": history_years[0]}
             }
-        history_years = series_years(site["metrics"][history_metric])
-        post["history_metric"] = history_metric
-        post["history_from_by_metric"] = {history_metric: history_years[0]}
-        post["comparison_by_metric"] = {
-            history_metric: {"type": "base_year", "year": history_years[0]}
-        }
-        post["context_metric"] = context_metric
+            post["context_metric"] = context_metric
     if item["type"] == "observance":
         limitation = (item.get("limitations") or "").strip()
         angle = (item.get("angle") or "").strip()
