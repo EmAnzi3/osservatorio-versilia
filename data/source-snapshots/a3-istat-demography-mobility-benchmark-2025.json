@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "a3-istat-demography-mobility-benchmark-2025-v1",
-  "retrieved": "2026-11-06",
+  "retrieved": "2026-11-07",
   "publisher": "Istat — Bilancio demografico comunale P02",
   "sourceProfileId": "istat-demography-annual",
   "candidateState": "ACQUIRED_CANDIDATE",
