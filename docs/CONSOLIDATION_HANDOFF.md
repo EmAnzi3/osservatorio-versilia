@@ -107,6 +107,9 @@ Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi
   periodi (stock 2025, eventi 2024): con la stessa etichetta 2025 il motore calcolerebbe
   l'associazione con avvertenze, ma questo allargherebbe il perimetro A7 degli incroci e
   richiede una revisione esplicita, non fatta qui.
+- **Gate Salute v1.40**: `canonical-quick` passa da 25 a 60 minuti. Il preflight rapido sui
+  runner GitHub ora richiede circa 40 minuti (38 in Pages, 41 nel gate Bilanci sullo stesso
+  commit), e il limite a 25 lo annullava anche su PR già fuse. Nessun controllo è cambiato.
 
 Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
 `test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»
