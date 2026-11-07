@@ -11,6 +11,7 @@ on:
       - ".github/workflows/release-period-probes.yml"
       - "scripts/release_period_probes.py"
       - "scripts/probe_fetch.py"
+      - "scripts/source_period_survey.py"
       - "ci/release-probe-coverage.json"
       - "ci/probe-fetch-list.json"
   workflow_dispatch:
@@ -45,6 +46,9 @@ jobs:
           python scripts/materialize_pnrr_toscana_draft.py
           python scripts/patch_pnrr_toscana_review.py
           python scripts/materialize_source_monitor_snapshot.py --output-dir "$MONITOR_PUBLIC_DIR"
+      - name: Survey sources still without a period probe
+        continue-on-error: true
+        run: python scripts/source_period_survey.py --catalog "$MONITOR_PUBLIC_DIR/site-data.json"
       - name: Run release period probes
         run: |
           python scripts/release_period_probes.py \
