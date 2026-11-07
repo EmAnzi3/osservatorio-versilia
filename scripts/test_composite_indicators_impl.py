@@ -161,9 +161,12 @@ def static_checks() -> dict:
     mobility = data["metrics"]["internalResidentialMobility"]
     assert mobility["meta"]["theme"] == "demografia"
     assert "pendolari" in mobility["method"]["caveat"].lower()
+    mobility_year = int(mobility["meta"]["year"])
+    assert mobility_year >= 2024
     for row in mobility["rows"]:
-        assert row["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024]
-        assert len(row["series"]["values"]) == 6
+        assert row["series"]["years"] == list(range(2019, mobility_year + 1))
+        assert len(row["series"]["values"]) == len(row["series"]["years"])
+        close(row["series"]["values"][-1], row["value"], f"Ultimo anno/{row['town']}")
         assert len(row["parts"]) == 3
         close(row["parts"][0]["value"] - row["parts"][1]["value"], row["parts"][2]["value"], f"Saldo/{row['town']}")
         assert row["parts"][0]["count"] - row["parts"][1]["count"] == row["parts"][2]["count"]

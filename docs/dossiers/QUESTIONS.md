@@ -384,7 +384,7 @@ Richiesta `demography_natural` — `compare`; esito `computed`.
 
 Richiesta `demography_internal` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2024: 2,9 per1000; Viareggio 2024: 3,2 per1000
+**Risultati:** Massarosa 2025: 3,3 per1000; Viareggio 2025: 5,5 per1000
 
 **Universi e definizioni:** resident population; native reference dates and components explicit — internalResidentialMobility balance residence-registration events / mean resident population * 1000
 
@@ -396,7 +396,7 @@ Richiesta `demography_internal` — `compare`; esito `computed`.
 
 Richiesta `demography_foreign_events` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2024: 1,7 per1000; Viareggio 2024: 1,9 per1000
+**Risultati:** Massarosa 2025: 2,9 per1000; Viareggio 2025: 2,8 per1000
 
 **Universi e definizioni:** resident population; native reference dates and components explicit — foreignResidentialMobility balance residence-registration events / mean resident population * 1000
 

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-demography-mobility-benchmark-2025-v1",
+  "retrieved": "2026-11-06",
+  "publisher": "Istat — Bilancio demografico comunale P02",
+  "sourceProfileId": "istat-demography-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "3 mobility metrics × 7/7 public rows + components PASS",
+    "aggregationRule": "flussi aggregati / popolazione media aggregata; nessuna media semplice dei tassi",
+    "errors": []
+  },
+  "benchmarks": {
+    "internalResidentialMobility": {
+      "year": "2025",
+      "unit": "per1000",
+      "formula": "(immigrati da altro Comune - emigrati per altro Comune) / popolazione media × 1.000",
+      "tuscany": 0.8714027643804007,
+      "italy": 0
+    },
+    "foreignResidentialMobility": {
+      "year": "2025",
+      "unit": "per1000",
+      "formula": "(immigrati dall'estero - emigrati per l'estero) / popolazione media × 1.000",
+      "tuscany": 6.026017987305619,
+      "italy": 5.017699598185682
+    },
+    "totalResidentialMobility": {
+      "year": "2025",
+      "unit": "per1000",
+      "formula": "((immigrati interni + estero) - (emigrati interni + estero)) / popolazione media × 1.000",
+      "tuscany": 6.8974207516860195,
+      "italy": 5.017699598185682
+    }
+  },
+  "components": {
+    "tuscany": {
+      "jan1": 3657716,
+      "dec31": 3659222,
+      "internalIn": 96492,
+      "internalOut": 93304,
+      "foreignIn": 32546,
+      "foreignOut": 10500,
+      "meanPopulation": 3658469.0
+    },
+    "italy": {
+      "jan1": 58943464,
+      "dec31": 58942828,
+      "internalIn": 1455406,
+      "internalOut": 1455406,
+      "foreignIn": 439916,
+      "foreignOut": 144157,
+      "meanPopulation": 58943146.0
+    }
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py istat-mobility",
+    "sha256": null
+  }
+}

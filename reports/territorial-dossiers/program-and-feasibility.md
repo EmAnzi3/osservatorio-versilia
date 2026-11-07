@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `37a5ff010a54245e6c476925f22343f1e62de1aa5cebbbd2453142aa757d4cfd`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `a8445cd558001efe3e7cb17f19e6d769e2b8a35bd8ffa1096e3bd9ba3cbc740f`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -55,8 +55,8 @@ Quali dinamiche demografiche cambiano la domanda di servizi? **Risposta parziale
 | population_current | compare / population / total | 2026 / number | 046018: 21782; 046033: 60680 | PASS |
 | mismatched_association | correlation / population / total | 2024, 2026 / currency, number | paired_period_mismatch | PASS |
 | demography_natural | compare / naturalDemographicDynamics / total | 2025 / per1000 | 046018: -7.3414701294; 046033: -7.2878365678 | PASS |
-| demography_internal | compare / internalResidentialMobility / total | 2024 / per1000 | 046018: 2.8852098646699176; 046033: 3.1802789747307862 | PASS |
-| demography_foreign_events | compare / foreignResidentialMobility / total | 2024 / per1000 | 046018: 1.6944883332188407; 046033: 1.9279411401217734 | PASS |
+| demography_internal | compare / internalResidentialMobility / total | 2025 / per1000 | 046018: 3.3495457465357434; 046033: 5.490609902883807 | PASS |
+| demography_foreign_events | compare / foreignResidentialMobility / total | 2025 / per1000 | 046018: 2.8907038634486555; 046033: 2.819502382561955 | PASS |
 | demography_historical_weight_refused | weighted_ratio / foreignResidentialMobility / total | 2023 / per1000 | ratio_components_required:0, ratio_components_required:1, ratio_components_required:2, ratio_components_required:3, ratio_components_required:4, ratio_components_required:5, ratio_components_required:6 | PASS |
 | census_single | compare / singleHouseholds / total | 2023 / percent | 046018: 29.2; 046033: 41.3 | PASS |
 | census_size | compare / householdSize / total | 2023 / decimal | 046018: 2.38; 046033: 2.08 | PASS |

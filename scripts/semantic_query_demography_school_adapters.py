@@ -21,7 +21,7 @@ INTERNAL = 'data/source-snapshots/composite-indicators-v1.9.0.json'
 LIA = 'data/source-snapshots/lia-v1.4.0.json'
 BUILDING = 'data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json'
 DEMO_BENCH = 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
-MOB_BENCH = 'data/source-snapshots/a3-istat-demography-mobility-benchmark-2024.json'
+MOB_BENCH = 'data/source-snapshots/a3-istat-demography-mobility-benchmark-2025.json'  # snapshot del periodo pubblicato
 MIM_BENCH = 'data/source-snapshots/a3-mim-benchmark-2024-25.json'
 BUILDING_BENCH = 'data/source-snapshots/a3-mim-building-benchmark-2024-25.json'
 CANONICAL = 'data/site-data.json'
@@ -395,7 +395,7 @@ def benchmark(engine, key, scope, municipal):
         raw = snap['raw'][scope]; n, d, scale = (raw['schoolStudents'], raw['classes'], 1) if key == 'studentsPerClass' else (raw['fullTimeStudents'], raw['primaryStudents'], 100)
         pointer = f'/raw/{scope}'
     elif key in MOBILITY:
-        if period != '2024': raise ValueError('demography_school_benchmark_period_not_available')
+        if period != snap['benchmarks'][key]['year']: raise ValueError('demography_school_benchmark_period_not_available')
         raw = snap['components'][scope]; d = raw['meanPopulation']; close(d, (raw['jan1'] + raw['dec31']) / 2); scale = 1000
         inbound, outbound = (raw['internalIn'], raw['internalOut']) if key == MOBILITY[0] else (raw['foreignIn'], raw['foreignOut']) if key == MOBILITY[1] else (raw['internalIn'] + raw['foreignIn'], raw['internalOut'] + raw['foreignOut'])
         n = dict(arrivals=inbound, departures=outbound, balance=inbound - outbound)[p]; pointer = f'/components/{scope}'

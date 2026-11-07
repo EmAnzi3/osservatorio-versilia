@@ -257,6 +257,11 @@
         "label": "A6 pin registry",
         "script": "scripts/test_a6_pins.py",
         "args": []
+      },
+      {
+        "label": "source data updaters",
+        "script": "scripts/test_update_source_data.py",
+        "args": []
       }
     ],
     "monitorRuntime": {
@@ -602,6 +607,12 @@
       "path": ".github/workflows/a3-benchmark-source-probes.yml",
       "category": "specialized-gate",
       "status": "active"
+    },
+    {
+      "path": ".github/workflows/source-data-update.yml",
+      "category": "data-audit",
+      "status": "active",
+      "note": "Aggiornatori dalla fonte eseguiti sui runner GitHub per le fonti non raggiungibili altrove; committa i dati solo sul ramo della PR, mai su main."
     },
     {
       "path": ".github/workflows/release-period-probes.yml",

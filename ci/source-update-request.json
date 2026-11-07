@@ -1,0 +1,5 @@
+{
+  "note": "Aggiornatori eseguiti sui runner GitHub dal workflow «Aggiorna dati dalla fonte» (scripts/update_source_data.py). Il risultato viene committato sul ramo della PR e verificato prima della fusione.",
+  "arsLegacy": ["hospitalizedAll"],
+  "istatMobility": [2025]
+}
