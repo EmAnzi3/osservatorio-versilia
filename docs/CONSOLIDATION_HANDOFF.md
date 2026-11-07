@@ -114,6 +114,9 @@ Branch `data/aggiornamento-2026-11`. Tre casi trovati dalla verifica dei periodi
   Arrivato finalmente al `preview`, il gate falliva su un'asserzione rimasta a «Aggiornato 14
   settembre 2026»: dal 25 ottobre (c9736bd) la homepage scrive «Catalogo al 14 settembre 2026».
   L'asserzione ora controlla il testo attuale, con la stessa data esatta.
+  `canonical-full` (preflight completo) è stato annullato due volte di fila al limite di 60
+  minuti (prima finiva in 48–54). I tre job che eseguono un preflight (`canonical-quick`,
+  `canonical-full`, `preview`) passano quindi a 120 minuti. Nessun controllo è cambiato.
 
 Nuovo `scripts/update_source_data.py` (aggiornatori con `--file`/`--dry-run`, test offline
 `test_update_source_data.py` nei quickChecks) e workflow «Aggiorna dati dalla fonte»
