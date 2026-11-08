@@ -274,7 +274,7 @@
       "graceDays": 45,
       "pattern": "Estrazione del (20\\d\\d-\\d\\d-\\d\\d)",
       "text": "raw",
-      "hint": "data di estrazione dei prezzi dei carburanti"
+      "hint": "data di estrazione dei prezzi dei carburanti (prima riga del CSV); il sito MIMIT non risponde ai runner GitHub: in alternativa l'ultimo trimestre in https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-archivio-prezzi"
     },
     "mit_concessioni": {
       "url": "https://dati.mit.gov.it/catalog/dataset/?q=concessioni+demaniali+marittime&sort=metadata_created+desc",

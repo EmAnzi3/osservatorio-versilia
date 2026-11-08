@@ -15,10 +15,11 @@ periodo»): un periodo uguale non garantisce valori identici alla fonte.
   (registri continui; con `kind: year` istantanea annuale, es. PUN ricarica).
 - `scripts/source_period_survey.py` resta come strumento di collaudo: scarica le pagine delle
   regole come la verifica e stampa anni e catture. Non è più nel workflow.
-- Primo giro completo (8/11): 191 correnti, 28 con periodo nuovo alla fonte (vanno pubblicati
-  con PR dedicate), 6 da verificare. Di questi, **carburanti MIMIT** non è raggiungibile dai
-  runner GitHub (timeout costanti, dal browser si apre): la verifica resta manuale, il rapporto
-  dà link e passo. ARPAT balneazione (403) e catalogo MIT concessioni (500) sono intermittenti.
+- Primo giro completo (8/11): 194 correnti, 28 con periodo nuovo alla fonte (vanno pubblicati
+  con PR dedicate), 3 da verificare. **Carburanti MIMIT** non è raggiungibile dai runner GitHub
+  (timeout costanti, dal browser si apre): la verifica resta manuale, il rapporto dà il CSV e
+  l'archivio trimestrale. Il catalogo MIT delle concessioni (HTTP 500) e ARPAT balneazione
+  (403 in un giro) sono intermittenti.
 - Taratura con riscontri manuali di Ema: ospedali dalla pagina «strutture di ricovero pubbliche
   e equiparate» (l'edizione file 2025-01 contiene dati 2022), Banca dati imprese dalle serie
   storiche RT (ultimo anno di confronto + 1), UNCEM dalla ricerca del sito (rapporto 6/6/2026).
