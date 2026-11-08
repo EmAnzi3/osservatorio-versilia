@@ -34,6 +34,9 @@
     "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
     "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/",
     "https://www.istat.it/comunicato-stampa/geografie-funzionali-per-lanalisi-territoriale/",
-    "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/"
+    "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+    "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.TOTAL?startPeriod=2018",
+    "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LUEMPDAA.0010.TOTAL?startPeriod=2018",
+    "https://cruscotto-italia.dati.gov.it/data/asia/046033.json"
   ]
 }
