@@ -22,7 +22,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime
 import hashlib
+import html
 import io
 import json
 import re
@@ -86,12 +88,33 @@ def parse_number(text: Any) -> float | None:
 
 
 def http_fetch(url: str, timeout: float = ARS_TIMEOUT, attempts: int = ARS_ATTEMPTS) -> bytes:
+    """Scarica un URL. Prefissi: `PEEK ` legge solo l'inizio (esistenza di un file),
+    `LEGACYTLS ` accetta i server con cifrari TLS datati, `QUICK ` usa attese brevi."""
+    peek = legacy = False
+    while True:
+        if url.startswith("PEEK "):
+            peek, url = True, url[5:]
+        elif url.startswith("LEGACYTLS "):
+            legacy, url = True, url[10:]
+        elif url.startswith("QUICK "):
+            timeout, attempts, url = 90, 2, url[6:]
+        else:
+            break
+    context = None
+    if legacy:
+        import ssl
+        context = ssl.create_default_context()
+        context.set_ciphers("DEFAULT:@SECLEVEL=0")
+        context.minimum_version = ssl.TLSVersion.TLSv1
     errors = []
     for attempt in range(1, attempts + 1):
-        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept-Language": "it-IT,it;q=0.9"})
+        headers = {"User-Agent": USER_AGENT, "Accept-Language": "it-IT,it;q=0.9"}
+        if peek:
+            headers["Range"] = f"bytes=0-{PEEK_BYTES - 1}"
+        request = urllib.request.Request(url, headers=headers)
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                return response.read()
+            with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
+                return response.read(PEEK_BYTES) if peek else response.read()
         except urllib.error.HTTPError as exc:
             if exc.code in (404, 410):
                 raise ProbeError("not_found", f"{url}: HTTP {exc.code}") from exc
@@ -677,29 +700,272 @@ def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, A
     ]}
 
 
+# ---------------------------------------------------------------- Verifica del solo periodo (pagina o file della fonte)
+#
+# Per le fonti senza un confronto valore per valore, il controllo legge alla fonte l'ultimo
+# periodo disponibile e lo confronta con quello pubblicato. Le regole stanno in
+# `sourceChecks` di `ci/release-probe-coverage.json`; ogni indicatore ne richiama una o più.
+#
+# Modi:
+# - `latest`: scarica `url` e prende il periodo più recente catturato da `pattern`;
+# - `next`: cerca l'edizione successiva (`url` con {next}); se esiste è uscito un periodo nuovo.
+#   Con `confirm` controlla anche che l'edizione pubblicata ({year}) sia ancora dove ce l'aspettiamo;
+# - `absent`: interroga la fonte dal periodo successivo in poi; nessun dato = nessun periodo nuovo;
+# - `snapshot`: fonti continue (registri, mappe, feed) senza data alla fonte: la fonte deve
+#   rispondere con il contenuto atteso e l'istantanea pubblicata non deve superare `maxAgeDays`.
+
+MONTHS = {name: i for i, names in enumerate((
+    (), ("gennaio", "january", "jan", "gen"), ("febbraio", "february", "feb"), ("marzo", "march", "mar"),
+    ("aprile", "april", "apr"), ("maggio", "may", "mag"), ("giugno", "june", "jun", "giu"), ("luglio", "july", "jul", "lug"),
+    ("agosto", "august", "aug", "ago"), ("settembre", "september", "sep", "set"), ("ottobre", "october", "oct", "ott"),
+    ("novembre", "november", "nov"), ("dicembre", "december", "dec", "dic"))) for name in names}
+PEEK_BYTES = 65536
+TODAY: Callable[[], Any] = lambda: datetime.date.today()
+
+
+def page_text(raw: bytes, mode: str = "auto") -> str:
+    """Testo su cui cercare il periodo: HTML ripulito, file Office/zip letti dentro, testo grezzo."""
+    if raw[:2] == b"PK" and mode != "raw":
+        parts = []
+        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+            for info in archive.infolist():
+                if mode == "names" or not info.filename.endswith((".xml", ".csv", ".txt")):
+                    parts.append(info.filename)
+                    continue
+                if info.file_size <= 40_000_000:
+                    parts.append(archive.read(info).decode("utf-8", "replace"))
+        text = "\n".join(parts)
+    else:
+        text = raw.decode("utf-8", "replace")
+        if "�" in text[:20000]:
+            text = raw.decode("cp1252", "replace")
+    if mode in ("auto", "html", "names") and re.search(r"(?i)<(html|body|div|a)\b", text[:200000]):
+        text = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", text)
+        hrefs = " ".join(urllib.parse.unquote(h) for h in re.findall(r"""(?i)href\s*=\s*["']([^"']+)""", text))
+        text = re.sub(r"<[^>]+>", " ", text) + " " + hrefs
+    return re.sub(r"[ \t\r\f\v\u00a0]+", " ", html.unescape(urllib.parse.unquote(text) if mode == "raw" else text))
+
+
+def parse_period(value: str, kind: str) -> tuple[int, ...] | None:
+    """Periodo confrontabile: anno, (anno, mese), (anno, semestre) o data come (anno, mese, giorno)."""
+    text = str(value).strip().casefold()
+    if kind == "year":
+        years = re.findall(r"(?<!\d)(19\d\d|20\d\d)(?!\d)", text)
+        return (int(years[-1]),) if years else None
+    if kind == "semester":
+        match = re.search(r"([12])\s*°?\s*semestre\s*(20\d\d)", text)
+        if match:
+            return (int(match.group(2)), int(match.group(1)))
+        date = parse_period(text, "date")
+        return (date[0], 1 if date[1] <= 6 else 2) if date else None
+    if kind == "epoch_ms":
+        stamp = datetime.datetime.fromtimestamp(int(text) / 1000, datetime.timezone.utc).date()
+        return (stamp.year, stamp.month, stamp.day)
+    if kind == "month":
+        match = re.search(r"([a-zà-ù]+)\.?\s+(20\d\d)", text)
+        if match and match.group(1) in MONTHS:
+            return (int(match.group(2)), MONTHS[match.group(1)])
+        date = parse_period(text, "date")
+        return date[:2] if date else None
+    # date
+    patterns = (
+        (r"(20\d\d)-(\d{1,2})-(\d{1,2})", (0, 1, 2)),
+        (r"(\d{1,2})[/.\-](\d{1,2})[/.\-](20\d\d)", (2, 1, 0)),
+        (r"(20\d\d)(\d\d)(\d\d)", (0, 1, 2)),
+    )
+    for pattern, order in patterns:
+        match = re.search(pattern, text)
+        if match:
+            groups = [int(g) for g in match.groups()]
+            return (groups[order[0]], groups[order[1]], groups[order[2]])
+    match = re.search(r"(\d{1,2})\s+([a-zà-ù]+)\.?\s+(20\d\d)", text) or re.search(r"([a-zà-ù]+)\.?\s+(\d{1,2}),?\s+(20\d\d)", text)
+    if match:
+        a, b, year = match.groups()
+        day, month = (a, b) if a.isdigit() else (b, a)
+        if month in MONTHS:
+            return (int(year), MONTHS[month], int(day))
+    return None
+
+
+def format_period(period: tuple[int, ...] | None, kind: str) -> str:
+    if not period:
+        return ""
+    if kind == "year":
+        return str(period[0])
+    if kind == "semester":
+        return f"{period[1]}° semestre {period[0]}"
+    if kind == "month":
+        return f"{period[0]}-{period[1]:02d}"
+    return f"{period[0]}-{period[1]:02d}-{period[2]:02d}"
+
+
+def days_between(a: tuple[int, ...], b: tuple[int, ...]) -> int:
+    return (datetime.date(*a[:3]) - datetime.date(*b[:3])).days
+
+
+def published_period(metric: dict[str, Any], check: dict[str, Any]) -> tuple[int, ...] | None:
+    raw = str(metric.get("meta", {}).get("year") or "")
+    if check.get("baseline"):
+        raw = str(check["baseline"])
+    elif check.get("publishedPattern"):
+        match = re.search(check["publishedPattern"], raw)
+        raw = match.group(1) if match else ""
+    return parse_period(raw, "date" if check.get("mode") == "snapshot" else check.get("kind", "year"))
+
+
+def check_url(template: str, year: tuple[int, ...] | None) -> str:
+    base = year[0] if year else 0
+    return template.format(year=base, next=base + 1)
+
+
+def _peek_ok(fetch: Fetcher, url: str, check: dict[str, Any]) -> bool:
+    try:
+        head = fetch("PEEK " + url)
+    except ProbeError as error:
+        if error.reason == "not_found":
+            return False
+        raise
+    if not head:
+        return False
+    looks_html = head[:400].lstrip().lower().startswith((b"<!doctype", b"<html")) or b"<html" in head[:400].lower()
+    if check.get("expect"):
+        return check["expect"].encode() in head
+    return bool(check.get("html")) or not looks_html
+
+
+def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    """Esito di una regola: periodo pubblicato, periodo alla fonte e verdetto."""
+    mode = check.get("mode", "latest")
+    kind = "date" if mode == "snapshot" else check.get("kind", "year")
+    published = published_period(metric, check)
+    if published is None:
+        raise ProbeError("structure_changed", f"periodo pubblicato non leggibile: {metric.get('meta', {}).get('year')!r}")
+    out: dict[str, Any] = {"name": check["name"], "mode": mode, "url": check_url(check["url"], published),
+                           "published": format_period(published, kind)}
+    if mode == "snapshot":
+        raw = fetch(out["url"])
+        if check.get("expect") and check["expect"].encode() not in raw[:2_000_000]:
+            raise ProbeError("structure_changed", f"{out['url']}: contenuto atteso «{check['expect']}» assente")
+        today = TODAY()
+        age = days_between((today.year, today.month, today.day), published)
+        out.update(observed=f"istantanea di {age} giorni", verdict="new_period" if age > int(check["maxAgeDays"]) else "period_match")
+        if out["verdict"] == "new_period":
+            out["detail"] = f"istantanea più vecchia di {check['maxAgeDays']} giorni: la fonte continua va riletta"
+        return out
+    if mode == "next":
+        if check.get("confirm"):
+            editions = [u.format(year=published[0], next=published[0]) for u in [check["url"], *check.get("alternatives", [])]]
+            edition = editions[0]
+            if not any(_peek_ok(fetch, u, check) for u in editions):
+                raise ProbeError("structure_changed", f"l'edizione pubblicata non è più all'indirizzo atteso: {edition}")
+        urls = [check_url(u, published) for u in [check["url"], *check.get("alternatives", [])]]
+        found = [u for u in urls if _peek_ok(fetch, u, check)]
+        out.update(url=urls[0], nextReleaseUrl=urls[0], observed=format_period((published[0] + 1,) if found else published, "year"),
+                   verdict="new_period" if found else "period_match")
+        if found:
+            out["detail"] = f"edizione successiva pubblicata: {found[0]}"
+        return out
+    try:
+        text = page_text(fetch(out["url"]), check.get("text", "auto"))
+    except ProbeError as error:
+        if mode == "absent" and error.reason == "not_found":
+            out.update(observed=out["published"], verdict="period_match")
+            return out
+        raise
+    except zipfile.BadZipFile as error:
+        raise ProbeError("structure_changed", f"{out['url']}: archivio illeggibile ({error})") from error
+    found = [parse_period(m.group(1), kind) for m in re.finditer(check["pattern"], text)]
+    found = [f for f in found if f]
+    if mode == "absent":
+        later = [f for f in found if f > published]
+        out.update(observed=format_period(max(later), kind) if later else out["published"], verdict="new_period" if later else "period_match")
+        return out
+    if not found:
+        raise ProbeError("structure_changed", f"{out['url']}: periodo non trovato (regola «{check['name']}»)")
+    latest = max(found)
+    offset = int(check.get("sourceOffset", 0))
+    if offset and kind == "year":
+        latest = (latest[0] + offset,)
+    out["observed"] = format_period(latest, kind)
+    if kind == "date":
+        gap = days_between(latest, published)
+        out["verdict"] = "new_period" if gap > int(check.get("graceDays", 0)) else "period_match"
+        if out["verdict"] == "new_period":
+            out["detail"] = f"la fonte è aggiornata al {out['observed']}, {gap} giorni dopo l'istantanea pubblicata"
+    elif latest > published:
+        out["verdict"] = "new_period"
+    elif latest < published:
+        out["verdict"] = "source_period_older"
+    else:
+        out["verdict"] = "period_match"
+    return out
+
+
+SOURCE_CHECKS: dict[str, dict[str, Any]] = {}
+
+
+def source_checks() -> dict[str, dict[str, Any]]:
+    if not SOURCE_CHECKS:
+        SOURCE_CHECKS.update(load_coverage().get("sourceChecks", {}))
+    return SOURCE_CHECKS
+
+
+def period_probe(metric_key: str, metric: dict[str, Any], spec: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    checks = [{"name": name, **source_checks()[name]} for name in spec["checks"]]
+    results = [run_check(metric, check, fetch) for check in checks]
+    verdicts = {r["verdict"] for r in results}
+    status, reason = "current", "period_match"
+    if "new_period" in verdicts:
+        status, reason = "release_detected", "new_period"
+    elif "source_period_older" in verdicts:
+        status, reason = "verification_required", "source_period_older"
+    first = next((r for r in results if r["verdict"] == reason), results[0])
+    out = {"publishedPeriod": norm_period(metric.get("meta", {}).get("year")), "observedLatestPeriod": first.get("observed"),
+           "status": status, "reason": reason, "checks": results, "scope": "period", "url": first["url"]}
+    if first.get("detail"):
+        out["detail"] = first["detail"]
+    return out
+
+
+def period_manual(metric_key: str, spec: dict[str, Any], metric: dict[str, Any]) -> dict[str, Any]:
+    urls, steps = [], []
+    for name in spec["checks"]:
+        check = source_checks()[name]
+        published = published_period(metric, {"name": name, **check})
+        url = check_url(check["url"], published)
+        urls.append(url)
+        steps.append(f"- {url}: {check.get('hint') or 'controllare qual è il periodo più recente pubblicato'}.")
+    return {"urls": urls, "steps": [
+        "Aprire da un browser le pagine della fonte indicate sotto e annotare il periodo più recente:",
+        *steps,
+        f"Se il periodo è più recente di quello pubblicato ({metric.get('meta', {}).get('year')}), aprire una PR di aggiornamento; altrimenti il controllo è chiuso.",
+    ]}
+
+
 PROBES = {
     "ars_export": (ars_probe, lambda key, spec, metric: ars_manual(key, spec)),
     "demo_istat": (demo_probe, lambda key, spec, metric: demo_manual(key, spec, int((re.findall(r"\d{4}", norm_period(metric.get("meta", {}).get("year"))) or ["0"])[-1]))),
     "rgs_conto_annuale": (rgs_probe, lambda key, spec, metric: rgs_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "siope_cumulative": (siope_probe, lambda key, spec, metric: siope_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
     "openbdap_rendiconto": (openbdap_probe, lambda key, spec, metric: openbdap_manual(key, spec, int(norm_period(metric.get("meta", {}).get("year")) or 0))),
+    "source_period": (period_probe, period_manual),
 }
 
 
 def manual_action(metric_key: str, spec: dict[str, Any], metric: dict[str, Any], error: ProbeError) -> dict[str, Any]:
     guide = PROBES[spec["probe"]][1](metric_key, spec, metric)
     files = " ".join("--file <file>" for _ in guide["urls"])
+    closing = [] if spec["probe"] == "source_period" else [
+        "Allegare i file alla conversazione con Claude oppure caricarli nella PR del controllo mensile.",
+        f"Chiudere il controllo con: `python scripts/release_period_probes.py --catalog dist/data/site-data.json --metric {metric_key} {files}`.",
+    ]
     return {
         "metric": metric_key,
         "reason": error.reason,
         "detail": error.detail,
         "url": guide["urls"][0],
         "urls": guide["urls"],
-        "steps": [
-            *guide["steps"],
-            "Allegare i file alla conversazione con Claude oppure caricarli nella PR del controllo mensile.",
-            f"Chiudere il controllo con: `python scripts/release_period_probes.py --catalog dist/data/site-data.json --metric {metric_key} {files}`.",
-        ],
+        "steps": [*guide["steps"], *closing],
     }
 
 
@@ -708,6 +974,8 @@ def local_fetcher(files: list[Path]) -> Fetcher:
     by_name = {path.name: path for path in files}
 
     def fetch(url: str) -> bytes:
+        peek = url.startswith("PEEK ")
+        url = re.sub(r"^(?:(?:PEEK|LEGACYTLS|QUICK) )+", "", url)
         name = urllib.parse.unquote(url.rsplit("/", 1)[-1])
         if name in by_name:
             return by_name[name].read_bytes()
@@ -719,6 +987,9 @@ def local_fetcher(files: list[Path]) -> Fetcher:
         if "/Datasets_FET/Rendiconto/" in url:
             # Il rendiconto dell'anno successivo si allega solo se esiste: se manca, non è uscito.
             return b""
+        if peek:
+            # Edizione successiva non allegata = non pubblicata.
+            raise ProbeError("not_found", f"file non fornito per {url}")
         raise ProbeError("source_unreachable", f"file non fornito per {url}")
 
     return fetch
@@ -781,14 +1052,20 @@ REASONS = {
     "history_revised": "la fonte ha rivisto valori già pubblicati",
     "published_period_missing_at_source": "il periodo pubblicato non compare più alla fonte",
     "metric_missing_from_catalog": "indicatore assente dal catalogo",
+    "period_match": "il periodo alla fonte è quello pubblicato (verifica del solo periodo)",
+    "source_period_older": "la fonte espone un periodo più vecchio di quello pubblicato",
+    "not_found": "pagina o file della fonte non trovato",
 }
 
 
 def report_lines(results: dict[str, dict[str, Any]], coverage: dict[str, Any]) -> list[str]:
     covered = sum(1 for v in coverage.get("metrics", {}).values() if "probe" in v)
     total = len(coverage.get("metrics", {}))
+    period_only = sum(1 for v in coverage.get("metrics", {}).values() if v.get("probe") == "source_period")
+    tail = (f"{total - period_only} confrontano anche i valori; per {period_only} la verifica riguarda il periodo pubblicato alla fonte."
+            if covered == total else "Gli altri entrano nei lotti successivi del controllo completo.")
     lines = ["", "### Verifica dei periodi alla fonte", "",
-             f"Indicatori con verifica del periodo: **{covered}/{total}**. Gli altri entrano nei lotti successivi del controllo completo.", "",
+             f"Indicatori con verifica del periodo: **{covered}/{total}**. {tail}", "",
              "| Indicatore | Pubblicato | Alla fonte | Esito | Motivo |", "|---|---|---|---|---|"]
     for key, item in sorted(results.items()):
         lines.append(f"| `{key}` | {item.get('publishedPeriod') or 'n.d.'} | {item.get('observedLatestPeriod') or 'n.d.'} | "

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Ricognizione delle pagine fonte degli indicatori ancora senza verifica di periodo.
+"""Ricognizione delle pagine fonte usate dalle verifiche del solo periodo.
 
-Strumento di collaudo, non di produzione: per ogni URL fonte degli indicatori con
-`pendingLot` in `ci/release-probe-coverage.json` scarica la pagina dai runner GitHub
-e stampa nel log, in forma compatta, stato HTTP, tipo, dimensione, gli anni citati
-più recenti con il contesto e i link che contengono un anno. Serve a scrivere le
-verifiche di periodo; non modifica nulla.
+Strumento di collaudo, non di produzione: per ogni regola `sourceChecks` di
+`ci/release-probe-coverage.json` scarica la pagina dai runner GitHub come la scarica la
+verifica e stampa nel log esito, anni citati con il contesto e periodi catturati dalla
+regola. Serve a calibrare le regole; non modifica nulla.
 
     python scripts/source_period_survey.py --catalog /tmp/ov-public/site-data.json
 """
@@ -13,84 +12,58 @@ from __future__ import annotations
 
 import argparse
 import collections
-import html
 import json
 import re
 import sys
-import urllib.error
-import urllib.request
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
-import monthly_data_check as base  # noqa: E402
+import release_period_probes as probes  # noqa: E402
 
 ROOT = SCRIPT_DIR.parent
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36"
 YEAR = re.compile(r"(?<!\d)(20[0-3]\d)(?!\d)")
-HREF = re.compile(r"""href\s*=\s*["']([^"']+)["']""", re.I)
 
 
-def fetch(url: str) -> tuple[str, str, bytes]:
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "it-IT,it;q=0.9"})
+def survey_check(name: str, check: dict, metric: dict) -> list[str]:
+    """Pagina di una regola `sourceChecks`, scaricata come la scarica la verifica."""
+    published = probes.published_period(metric, {"name": name, **check})
+    url = probes.check_url(check["url"], published)
+    out = [f"=== [{name}] {url}", f"  modo: {check.get('mode', 'latest')} · regola: {check.get('pattern', '')[:120]}"]
     try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return str(r.status), r.headers.get("Content-Type", ""), r.read(25_000_000)
-    except urllib.error.HTTPError as e:
-        return f"HTTP {e.code}", e.headers.get("Content-Type", "") if e.headers else "", b""
-    except Exception as e:  # noqa: BLE001
-        return f"ERR {type(e).__name__}: {str(e)[:80]}", "", b""
-
-
-def text_of(raw: bytes) -> str:
-    t = raw.decode("utf-8", "replace")
-    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", t)
-    t = re.sub(r"<[^>]+>", " ", t)
-    return re.sub(r"\s+", " ", html.unescape(t))
-
-
-def survey(url: str, keys: list[str], periods: list[str]) -> list[str]:
-    status, ctype, raw = fetch(url)
-    out = [f"=== {url}", f"  metriche: {' '.join(keys)[:300]}", f"  pubblicato: {sorted(set(periods))}",
-           f"  esito: {status} · {ctype[:40]} · {len(raw)} byte"]
-    if not raw:
-        return out
-    if "html" not in ctype and not raw.lstrip()[:1] in (b"<",):
-        sample = raw[:400].decode("utf-8", "replace").replace("\n", " ⏎ ")
-        years = collections.Counter(YEAR.findall(raw[:3_000_000].decode("latin-1")))
-        out.append(f"  anni: {sorted(years.items(), reverse=True)[:8]}")
-        out.append(f"  inizio: {sample[:300]}")
-        return out
-    page = raw.decode("utf-8", "replace")
-    txt = text_of(raw)
+        raw = probes.http_fetch("QUICK " + url)
+    except probes.ProbeError as error:
+        return out + [f"  esito: {error.reason}: {error.detail[:200]}"]
+    try:
+        txt = probes.page_text(raw, check.get("text", "auto"))
+    except Exception as error:  # noqa: BLE001
+        return out + [f"  esito: {len(raw)} byte, testo illeggibile: {error}"]
     years = collections.Counter(YEAR.findall(txt))
-    out.append(f"  anni nel testo: {sorted(years.items(), reverse=True)[:8]}")
-    for y in sorted(years, reverse=True)[:2]:
-        for m in list(re.finditer(rf"(?<!\d){y}(?!\d)", txt))[:2]:
-            out.append(f"  [{y}] …{txt[max(0, m.start() - 90): m.end() + 60]}…")
-    links = [h for h in HREF.findall(page) if YEAR.search(h)]
-    for h in sorted(set(links), key=lambda h: max(YEAR.findall(h)), reverse=True)[:6]:
-        out.append(f"  link: {h[:160]}")
+    out.append(f"  esito: {len(raw)} byte · anni: {sorted(years.items(), reverse=True)[:10]}")
+    if check.get("pattern"):
+        found = [m.group(1) for m in re.finditer(check["pattern"], txt)][:8]
+        out.append(f"  catturati: {found}")
+    for y in sorted(years, reverse=True)[:3]:
+        for m in list(re.finditer(rf"(?<!\d){y}(?!\d)", txt))[:3]:
+            out.append(f"  [{y}] …{txt[max(0, m.start() - 110): m.end() + 50]}…".replace("\n", " "))
+    if not years:
+        out.append(f"  inizio: {txt[:500]!r}")
     return out
 
 
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--catalog", type=Path, required=True)
-    p.add_argument("--only", help="sottostringa dell'URL")
+    p.add_argument("--only", help="nomi di regole separati da virgola")
     a = p.parse_args()
     site = json.loads(a.catalog.read_text(encoding="utf-8"))["metrics"]
-    cov = json.loads((ROOT / "ci/release-probe-coverage.json").read_text(encoding="utf-8"))["metrics"]
-    by_url: dict[str, list[tuple[str, str]]] = collections.defaultdict(list)
-    for key, spec in cov.items():
-        if "probe" in spec or key not in site:
+    cov = json.loads((ROOT / "ci/release-probe-coverage.json").read_text(encoding="utf-8"))
+    wanted = set(a.only.split(",")) if a.only else None
+    for name, check in cov.get("sourceChecks", {}).items():
+        if wanted and name not in wanted:
             continue
-        for _, url in base.iter_metric_sources(site[key]):
-            by_url[url].append((key, str(site[key]["meta"].get("year"))))
-    for url in sorted(by_url):
-        if a.only and a.only not in url:
-            continue
-        print("\n".join(survey(url, [k for k, _ in by_url[url]], [y for _, y in by_url[url]])), flush=True)
+        key = next(k for k, v in cov["metrics"].items() if name in v.get("checks", []))
+        print("\n".join(survey_check(name, check, site.get(key, {"meta": {}}))), flush=True)
     return 0
 
 

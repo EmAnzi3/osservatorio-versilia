@@ -46,7 +46,7 @@ jobs:
           python scripts/materialize_pnrr_toscana_draft.py
           python scripts/patch_pnrr_toscana_review.py
           python scripts/materialize_source_monitor_snapshot.py --output-dir "$MONITOR_PUBLIC_DIR"
-      - name: Survey sources still without a period probe
+      - name: Survey the pages behind period-only rules
         continue-on-error: true
         run: python scripts/source_period_survey.py --catalog "$MONITOR_PUBLIC_DIR/site-data.json"
       - name: Run release period probes
