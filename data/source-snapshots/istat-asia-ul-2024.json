@@ -2,247 +2,286 @@
   "schemaVersion": 1,
   "version": "istat-asia-ul-2024-v1",
   "retrieved": "2026-11-08",
-  "publisher": "Istat — ASIA Unità Locali",
-  "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+  "scope": "Sette Comuni della Versilia storica",
+  "acquisitionLayer": {
+    "name": "Istat — servizio SDMX esploradati",
+    "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/",
+    "note": "Serie comunali lette direttamente dal servizio SDMX Istat (CSV)."
+  },
   "sources": {
-    "lu": {
-      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.TOTAL?startPeriod=2018&endPeriod=2024",
-      "sha256": "b990ad4438f950ec4ba9bf1a3db2cfa37ac2d2b2474505bf001801a955b12613",
-      "bytes": 6907350
-    },
-    "emp": {
-      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LUEMPDAA.0010.TOTAL?startPeriod=2018&endPeriod=2024",
-      "sha256": "361c3f0ae584214016e91f905b1669364beb25d8092baae0d9df6107401c27d5",
-      "bytes": 6244094
-    },
-    "micro": {
-      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2024&endPeriod=2024",
-      "sha256": "d236d70865abd7c95d1607d7522a3ab7c1d64c7e3e35736c385fb36a7ab4864a",
-      "bytes": 1886028
+    "asia": {
+      "owner": "ISTAT",
+      "dataset": "Archivio Statistico Imprese Attive — Unità Locali (ASIA-UL)",
+      "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+      "license": "CC BY 3.0 IT",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sdmx": {
+        "lu": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+          "sha256": "b990ad4438f950ec4ba9bf1a3db2cfa37ac2d2b2474505bf001801a955b12613",
+          "bytes": 6907350
+        },
+        "emp": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LUEMPDAA.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+          "sha256": "361c3f0ae584214016e91f905b1669364beb25d8092baae0d9df6107401c27d5",
+          "bytes": 6244094
+        },
+        "micro": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2024&endPeriod=2024",
+          "sha256": "d236d70865abd7c95d1607d7522a3ab7c1d64c7e3e35736c385fb36a7ab4864a",
+          "bytes": 1886028
+        }
+      }
     }
   },
-  "years": [
-    2018,
-    2019,
-    2020,
-    2021,
-    2022,
-    2023,
-    2024
+  "towns": [
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "slug": "camaiore",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          3206,
+          3185,
+          3246,
+          3370,
+          3535,
+          3539,
+          3515
+        ],
+        "employeesAverageAnnual": [
+          9061.73,
+          9171.11,
+          8903.53,
+          9407.78,
+          9856.89,
+          9957.33,
+          10310.21
+        ]
+      }
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1178,
+          1147,
+          1201,
+          1256,
+          1328,
+          1298,
+          1282
+        ],
+        "employeesAverageAnnual": [
+          3987.28,
+          3965.48,
+          3546.95,
+          3824.44,
+          4345.93,
+          4328.57,
+          4421.31
+        ]
+      }
+    },
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "slug": "massarosa",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1602,
+          1550,
+          1616,
+          1649,
+          1704,
+          1714,
+          1719
+        ],
+        "employeesAverageAnnual": [
+          4359.18,
+          4377.05,
+          4396.51,
+          4630.05,
+          4758.76,
+          4938.33,
+          4958.85
+        ]
+      }
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "slug": "pietrasanta",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          2807,
+          2738,
+          2774,
+          2849,
+          2948,
+          2923,
+          2969
+        ],
+        "employeesAverageAnnual": [
+          7857.09,
+          7914.05,
+          7496.38,
+          8030.21,
+          8463.96,
+          8725.91,
+          8891.34
+        ]
+      }
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "slug": "seravezza",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1197,
+          1181,
+          1197,
+          1210,
+          1252,
+          1292,
+          1286
+        ],
+        "employeesAverageAnnual": [
+          3452.04,
+          3387.52,
+          3229.62,
+          3454.8,
+          3564.97,
+          3677.72,
+          3599.08
+        ]
+      }
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "slug": "stazzema",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          189,
+          169,
+          178,
+          180,
+          184,
+          181,
+          182
+        ],
+        "employeesAverageAnnual": [
+          420.96,
+          401.49,
+          392.8,
+          413.53,
+          416.02,
+          405.96,
+          413.57
+        ]
+      }
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "slug": "viareggio",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          6427,
+          6456,
+          6564,
+          6688,
+          6979,
+          7020,
+          7066
+        ],
+        "employeesAverageAnnual": [
+          19964.72,
+          20155.87,
+          19839.08,
+          20510.82,
+          21591.67,
+          22358.35,
+          22879.66
+        ]
+      }
+    }
   ],
-  "towns": {
-    "046005": {
-      "localUnits": [
-        3206.0,
-        3185.0,
-        3246.0,
-        3370.0,
-        3535.0,
-        3539.0,
-        3515.0
-      ],
-      "employeesAverageAnnual": [
-        9061.73,
-        9171.11,
-        8903.53,
-        9407.78,
-        9856.89,
-        9957.33,
-        10310.21
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 3341.0,
-        "TOTAL": 3515.0
-      }
-    },
-    "046013": {
-      "localUnits": [
-        1178.0,
-        1147.0,
-        1201.0,
-        1256.0,
-        1328.0,
-        1298.0,
-        1282.0
-      ],
-      "employeesAverageAnnual": [
-        3987.28,
-        3965.48,
-        3546.95,
-        3824.44,
-        4345.93,
-        4328.57,
-        4421.31
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 1199.0,
-        "TOTAL": 1282.0
-      }
-    },
-    "046018": {
-      "localUnits": [
-        1602.0,
-        1550.0,
-        1616.0,
-        1649.0,
-        1704.0,
-        1714.0,
-        1719.0
-      ],
-      "employeesAverageAnnual": [
-        4359.18,
-        4377.05,
-        4396.51,
-        4630.05,
-        4758.76,
-        4938.33,
-        4958.85
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 1635.0,
-        "TOTAL": 1719.0
-      }
-    },
-    "046024": {
-      "localUnits": [
-        2807.0,
-        2738.0,
-        2774.0,
-        2849.0,
-        2948.0,
-        2923.0,
-        2969.0
-      ],
-      "employeesAverageAnnual": [
-        7857.09,
-        7914.05,
-        7496.38,
-        8030.21,
-        8463.96,
-        8725.91,
-        8891.34
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 2821.0,
-        "TOTAL": 2969.0
-      }
-    },
-    "046028": {
-      "localUnits": [
-        1197.0,
-        1181.0,
-        1197.0,
-        1210.0,
-        1252.0,
-        1292.0,
-        1286.0
-      ],
-      "employeesAverageAnnual": [
-        3452.04,
-        3387.52,
-        3229.62,
-        3454.8,
-        3564.97,
-        3677.72,
-        3599.08
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 1232.0,
-        "TOTAL": 1286.0
-      }
-    },
-    "046030": {
-      "localUnits": [
-        189.0,
-        169.0,
-        178.0,
-        180.0,
-        184.0,
-        181.0,
-        182.0
-      ],
-      "employeesAverageAnnual": [
-        420.96,
-        401.49,
-        392.8,
-        413.53,
-        416.02,
-        405.96,
-        413.57
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 178.0,
-        "TOTAL": 182.0
-      }
-    },
-    "046033": {
-      "localUnits": [
-        6427.0,
-        6456.0,
-        6564.0,
-        6688.0,
-        6979.0,
-        7020.0,
-        7066.0
-      ],
-      "employeesAverageAnnual": [
-        19964.72,
-        20155.87,
-        19839.08,
-        20510.82,
-        21591.67,
-        22358.35,
-        22879.66
-      ],
-      "sizeClasses": {
-        "year": 2024,
-        "W0_9": 6618.0,
-        "TOTAL": 7066.0
-      }
-    }
-  },
-  "scopes": {
-    "tuscany": "somma dei Comuni con prefisso ISTAT toscano; quota micro dal totale nativo ITE1",
-    "italy": "somma di tutti i Comuni; quota micro dal totale nativo IT"
-  },
-  "benchmarks": {
-    "localUnits": {
-      "year": "2024",
-      "tuscany": 366076,
-      "italy": 5157564
-    },
-    "localEmployees": {
-      "year": "2024",
-      "tuscany": 1296423.49,
-      "italy": 18845823.94
-    },
-    "employeesPerLocalUnit": {
-      "year": "2024",
-      "tuscany": 3.5414053092800404,
-      "italy": 3.654016496935375
-    },
-    "localUnitsChange": {
-      "year": "2018–2024",
-      "tuscany": 5.061718119957859,
-      "italy": 8.357329570689709
-    },
-    "localEmployeesChange": {
-      "year": "2018–2024",
-      "tuscany": 6.839529464624072,
-      "italy": 9.011703475903143
-    },
-    "microUnits": {
-      "year": "2024",
-      "tuscany": 93.81221385723182,
-      "italy": 94.0634958674289
-    }
-  },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py istat-asia --year 2024"
   }

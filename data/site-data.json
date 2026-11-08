@@ -8306,7 +8306,7 @@
           "italy": 5157564,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -8373,7 +8373,7 @@
             ]
           },
           "normalized": {
-            "value": 116.44693473961765,
+            "value": 116.44693473961763,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
@@ -8407,7 +8407,7 @@
             ]
           },
           "normalized": {
-            "value": 110.66335043919025,
+            "value": 110.66335043919027,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
@@ -8475,7 +8475,7 @@
             ]
           },
           "normalized": {
-            "value": 104.68902637577337,
+            "value": 104.68902637577338,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
@@ -8509,7 +8509,7 @@
             ]
           },
           "normalized": {
-            "value": 195.72519083969468,
+            "value": 195.7251908396947,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
@@ -8585,7 +8585,7 @@
           "italy": 94.0634958674289,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46285,7 +46285,7 @@
           "italy": 18845823.94,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46525,7 +46525,7 @@
           "italy": 3.654016496935375,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46765,7 +46765,7 @@
           "italy": 8.357329570689709,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46872,7 +46872,7 @@
           "italy": 9.011703475903143,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/istat-asia-ul-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
