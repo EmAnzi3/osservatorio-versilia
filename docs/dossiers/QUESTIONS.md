@@ -2281,13 +2281,13 @@ Richiesta `regional_municipalOnlineServicesAdvanced_current` — `compare`; esit
 
 Richiesta `connectivity_ftthCoverageDesi_046005` — `compare`; esito `computed`.
 
-**Risultati:** Camaiore 2026-07-06: 91,3 %; Massarosa 2026-07-06: 47,0 %
+**Risultati:** Camaiore 2026-10-05: 91,2 %; Massarosa 2026-10-05: 46,3 %
 
 **Universi e definizioni:** AGCOM resident households; declared network availability, not active contracts — copertura_ftth_desi_pct
 
-**Fonti:** [https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data](https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data)
+**Fonti:** [https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data](https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data)
 
-**Avvertenze:** connectivity_declared_network_not_subscriptions_speed_or_civic_activation, connectivity_no_automatic_causal_or_policy_priority_claim, connectivity_official_reference_2026_correction_not_new_acquisition, connectivity_percentages_and_counts_independent_no_reverse_derivation, connectivity_public_aggregate_weights_rounded_percentages_not_native_count_ratio
+**Avvertenze:** connectivity_declared_network_not_subscriptions_speed_or_civic_activation, connectivity_no_automatic_causal_or_policy_priority_claim, connectivity_percentages_and_counts_independent_no_reverse_derivation, connectivity_public_aggregate_weights_rounded_percentages_not_native_count_ratio
 
 #### Controlli metodologici, separati dalle domande territoriali
 

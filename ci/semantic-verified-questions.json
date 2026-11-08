@@ -39751,7 +39751,7 @@
     },
     {
       "id": "connectivity_ftthCoverageDesi_046005",
-      "question": "Qual è il dato FTTH del Comune 046005 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046005 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39769,19 +39769,19 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 91.3
+            "value": 91.2
           },
           {
             "path": "/observations/0/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046013",
-      "question": "Qual è il dato FTTH del Comune 046013 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046013 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39803,15 +39803,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046018",
-      "question": "Qual è il dato FTTH del Comune 046018 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046018 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39829,19 +39829,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 47.0
+            "value": 46.3
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046024",
-      "question": "Qual è il dato FTTH del Comune 046024 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046024 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39859,19 +39859,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 59.3
+            "value": 58.4
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046028",
-      "question": "Qual è il dato FTTH del Comune 046028 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046028 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39889,19 +39889,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.7
+            "value": 0.6
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046030",
-      "question": "Qual è il dato FTTH del Comune 046030 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046030 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39923,15 +39923,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_046033",
-      "question": "Qual è il dato FTTH del Comune 046033 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046033 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -39953,11 +39953,11 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_rank",
@@ -39979,7 +39979,7 @@
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_series_refused",
@@ -40001,7 +40001,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_absolute_change_refused",
@@ -40023,7 +40023,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_relative_change_refused",
@@ -40045,7 +40045,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_percentage_points_refused",
@@ -40067,7 +40067,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_trend_refused",
@@ -40089,7 +40089,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_weighted_ratio_refused",
@@ -40108,7 +40108,7 @@
           "connectivity_rounded_percentages_not_native_pooling"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_anomaly_refused",
@@ -40127,7 +40127,7 @@
           "connectivity_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_2025_refused",
@@ -40149,7 +40149,7 @@
           "connectivity_reference_date_not_frozen"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_dimension_refused",
@@ -40169,7 +40169,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_pair_0_refused",
@@ -40194,7 +40194,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_pair_1_refused",
@@ -40219,7 +40219,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046005",
@@ -40242,14 +40242,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              18074683896122,
+              19211302258170,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046013",
@@ -40272,14 +40272,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -73225316103878,
+              -71988697741830,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046018",
@@ -40302,14 +40302,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -26225316103878,
+              -25688697741830,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046024",
@@ -40332,14 +40332,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -13925316103878,
+              -13588697741830,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046028",
@@ -40362,14 +40362,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -72525316103878,
+              -71388697741830,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046030",
@@ -40392,14 +40392,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              14674683896122,
+              15911302258170,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_tuscany_046033",
@@ -40422,14 +40422,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              21574683896122,
+              22811302258170,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046005",
@@ -40452,14 +40452,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              8400479225833,
+              8281577215608,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046013",
@@ -40482,14 +40482,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -82899520774167,
+              -82918422784392,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046018",
@@ -40512,14 +40512,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -35899520774167,
+              -36618422784392,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046024",
@@ -40542,14 +40542,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -23599520774167,
+              -24518422784392,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046028",
@@ -40572,14 +40572,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -82199520774167,
+              -82318422784392,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046030",
@@ -40602,14 +40602,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              5000479225833,
+              4981577215608,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_gap_italy_046033",
@@ -40632,14 +40632,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              11900479225833,
+              11881577215608,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverageDesi_scope_refused",
@@ -40662,11 +40662,11 @@
           "connectivity_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046005",
-      "question": "Qual è il dato FTTH del Comune 046005 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046005 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40684,19 +40684,19 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 80.1
+            "value": 80.6
           },
           {
             "path": "/observations/0/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046013",
-      "question": "Qual è il dato FTTH del Comune 046013 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046013 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40718,15 +40718,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046018",
-      "question": "Qual è il dato FTTH del Comune 046018 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046018 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40744,19 +40744,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 34.3
+            "value": 33.8
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046024",
-      "question": "Qual è il dato FTTH del Comune 046024 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046024 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40774,19 +40774,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 44.2
+            "value": 42.0
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046028",
-      "question": "Qual è il dato FTTH del Comune 046028 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046028 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40804,19 +40804,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.1
+            "value": 0.0
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046030",
-      "question": "Qual è il dato FTTH del Comune 046030 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046030 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40838,15 +40838,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_046033",
-      "question": "Qual è il dato FTTH del Comune 046033 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046033 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -40864,15 +40864,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 86.0
+            "value": 86.2
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_rank",
@@ -40894,7 +40894,7 @@
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_series_refused",
@@ -40916,7 +40916,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_absolute_change_refused",
@@ -40938,7 +40938,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_relative_change_refused",
@@ -40960,7 +40960,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_percentage_points_refused",
@@ -40982,7 +40982,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_trend_refused",
@@ -41004,7 +41004,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_weighted_ratio_refused",
@@ -41023,7 +41023,7 @@
           "connectivity_rounded_percentages_not_native_pooling"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_anomaly_refused",
@@ -41042,7 +41042,7 @@
           "connectivity_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_2025_refused",
@@ -41064,7 +41064,7 @@
           "connectivity_reference_date_not_frozen"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_dimension_refused",
@@ -41084,7 +41084,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_pair_0_refused",
@@ -41109,7 +41109,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_pair_1_refused",
@@ -41134,7 +41134,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046005",
@@ -41157,14 +41157,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              15513145555601,
+              16663621030634,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046013",
@@ -41187,14 +41187,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -64586854444399,
+              -63936378969366,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046018",
@@ -41217,14 +41217,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -30286854444399,
+              -30136378969366,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046024",
@@ -41247,14 +41247,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -20386854444399,
+              -21936378969366,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046028",
@@ -41277,14 +41277,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -64486854444399,
+              -63936378969366,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046030",
@@ -41307,14 +41307,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              12813145555601,
+              13463621030634,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_tuscany_046033",
@@ -41337,14 +41337,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              21413145555601,
+              22263621030634,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046005",
@@ -41367,14 +41367,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              5840399832598,
+              5925072530278,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046013",
@@ -41397,14 +41397,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -74259600167402,
+              -74674927469722,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046018",
@@ -41427,14 +41427,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -39959600167402,
+              -40874927469722,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046024",
@@ -41457,14 +41457,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -30059600167402,
+              -32674927469722,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046028",
@@ -41487,14 +41487,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -74159600167402,
+              -74674927469722,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046030",
@@ -41517,14 +41517,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              3140399832598,
+              2725072530278,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_gap_italy_046033",
@@ -41547,14 +41547,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              11740399832598,
+              11525072530278,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthCoverage20m_scope_refused",
@@ -41577,11 +41577,11 @@
           "connectivity_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046005",
-      "question": "Qual è il dato FTTH del Comune 046005 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046005 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41600,19 +41600,19 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 11978
+            "value": 11970
           },
           {
             "path": "/observations/0/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046013",
-      "question": "Qual è il dato FTTH del Comune 046013 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046013 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41636,15 +41636,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046018",
-      "question": "Qual è il dato FTTH del Comune 046018 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046018 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41663,19 +41663,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 4219
+            "value": 4156
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046024",
-      "question": "Qual è il dato FTTH del Comune 046024 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046024 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41694,19 +41694,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 5546
+            "value": 5466
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046028",
-      "question": "Qual è il dato FTTH del Comune 046028 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046028 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41725,19 +41725,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 35
+            "value": 31
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046030",
-      "question": "Qual è il dato FTTH del Comune 046030 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046030 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41760,15 +41760,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_046033",
-      "question": "Qual è il dato FTTH del Comune 046033 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046033 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -41787,15 +41787,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 23734
+            "value": 23736
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_rank",
@@ -41818,7 +41818,7 @@
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_series_refused",
@@ -41840,7 +41840,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_absolute_change_refused",
@@ -41862,7 +41862,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_relative_change_refused",
@@ -41884,7 +41884,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_percentage_points_refused",
@@ -41906,7 +41906,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_trend_refused",
@@ -41928,7 +41928,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_weighted_ratio_refused",
@@ -41947,7 +41947,7 @@
           "connectivity_rounded_percentages_not_native_pooling"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_anomaly_refused",
@@ -41966,7 +41966,7 @@
           "connectivity_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_2025_refused",
@@ -41988,7 +41988,7 @@
           "connectivity_reference_date_not_frozen"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_dimension_refused",
@@ -42008,7 +42008,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_pair_0_refused",
@@ -42033,7 +42033,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_pair_1_refused",
@@ -42058,7 +42058,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_partial_refused",
@@ -42077,7 +42077,7 @@
           "partial_coverage_requires_opt_in"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthReachedHouseholds_benchmark_refused",
@@ -42100,11 +42100,11 @@
           "connectivity_absolute_benchmarks_incomplete"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046005",
-      "question": "Qual è il dato FTTH del Comune 046005 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046005 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42123,19 +42123,19 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 1141
+            "value": 1149
           },
           {
             "path": "/observations/0/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046013",
-      "question": "Qual è il dato FTTH del Comune 046013 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046013 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42159,15 +42159,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046018",
-      "question": "Qual è il dato FTTH del Comune 046018 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046018 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42186,19 +42186,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 4763
+            "value": 4826
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046024",
-      "question": "Qual è il dato FTTH del Comune 046024 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046024 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42217,19 +42217,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 3807
+            "value": 3887
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046028",
-      "question": "Qual è il dato FTTH del Comune 046028 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046028 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42248,19 +42248,19 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 5033
+            "value": 5037
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046030",
-      "question": "Qual è il dato FTTH del Comune 046030 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046030 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42283,15 +42283,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_046033",
-      "question": "Qual è il dato FTTH del Comune 046033 al 6 luglio 2026?",
+      "question": "Qual è il dato FTTH del Comune 046033 al 5 ottobre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -42310,15 +42310,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 1305
+            "value": 1303
           },
           {
             "path": "/observations/1/period",
-            "value": "2026-07-06"
+            "value": "2026-10-05"
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_rank",
@@ -42341,7 +42341,7 @@
           }
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_series_refused",
@@ -42363,7 +42363,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_absolute_change_refused",
@@ -42385,7 +42385,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_relative_change_refused",
@@ -42407,7 +42407,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_percentage_points_refused",
@@ -42429,7 +42429,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_trend_refused",
@@ -42451,7 +42451,7 @@
           "connectivity_single_reference_no_history"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_weighted_ratio_refused",
@@ -42470,7 +42470,7 @@
           "connectivity_rounded_percentages_not_native_pooling"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_anomaly_refused",
@@ -42489,7 +42489,7 @@
           "connectivity_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_2025_refused",
@@ -42511,7 +42511,7 @@
           "connectivity_reference_date_not_frozen"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_dimension_refused",
@@ -42531,7 +42531,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_pair_0_refused",
@@ -42556,7 +42556,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_pair_1_refused",
@@ -42581,7 +42581,7 @@
           "connectivity_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_partial_refused",
@@ -42600,7 +42600,7 @@
           "partial_coverage_requires_opt_in"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "connectivity_ftthUnreachedHouseholds_benchmark_refused",
@@ -42623,7 +42623,7 @@
           "connectivity_absolute_benchmarks_incomplete"
         ]
       },
-      "reference": "AGCOM CSV primario congelato, riferimento 06/07/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
+      "reference": "AGCOM CSV primario congelato, riferimento 05/10/2026; docs/A6_CONNECTIVITY_ADAPTERS.md. Valori fissi trascritti indipendentemente, zero percentuale distinto da conteggio mancante."
     },
     {
       "id": "road_roadSafety_measure_incidents_current_046005",
