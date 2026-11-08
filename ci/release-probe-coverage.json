@@ -10,12 +10,12 @@
       "hint": "ultima edizione di Autoritratto ACI (file Autoritratto<anno>)"
     },
     "agcom_bul": {
-      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c?f=json",
+      "url": "https://geo.agcom.it/reportistica/report.js",
       "kind": "date",
       "graceDays": 30,
-      "pattern": "\"modified\"\\s*:\\s*(\\d{13})",
+      "pattern": "(?<![\\d/])(\\d{1,2}/\\d{1,2}/20\\d\\d)\\s*\\(rev\\.",
       "text": "raw",
-      "hint": "data di modifica dei dati della Broadband Map AGCOM"
+      "hint": "data dell'ultimo aggiornamento della Broadband Map nella reportistica AGCOM"
     },
     "arpat_balneazione": {
       "url": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/",
@@ -60,16 +60,18 @@
       "hint": "semestre di riferimento delle ultime analisi pubblicate da GAIA"
     },
     "idrogeo_alluvioni": {
-      "url": "https://idrogeo.isprambiente.it/api/pir/comuni/046033",
-      "pattern": "(?i)alluvion[^\\\"]{0,40}?(20\\d\\d)",
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+      "pattern": "(?i)indicatori-di-rischio-edizione-(20\\d\\d)",
       "text": "raw",
-      "hint": "anno della mosaicatura nazionale della pericolosità idraulica (IdroGEO)"
+      "baseline": "2024",
+      "hint": "edizione del rapporto ISPRA «Dissesto idrogeologico in Italia: pericolosità e indicatori di rischio» (baseline: edizione 2024, mosaicatura alluvioni pubblicata)"
     },
     "idrogeo_frane": {
-      "url": "https://idrogeo.isprambiente.it/api/pir/comuni/046033",
-      "pattern": "(?i)frane[^\\\"]{0,40}?(20\\d\\d)",
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+      "pattern": "(?i)indicatori-di-rischio-edizione-(20\\d\\d)",
       "text": "raw",
-      "hint": "anno della mosaicatura nazionale della pericolosità da frana (IdroGEO)"
+      "baseline": "2024",
+      "hint": "edizione del rapporto ISPRA «Dissesto idrogeologico in Italia: pericolosità e indicatori di rischio» (baseline: edizione 2024, mosaicatura frane pubblicata)"
     },
     "invalsi_dispersione": {
       "url": "https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/",
@@ -162,22 +164,22 @@
     },
     "istat_misura_comune_famiglie": {
       "url": "https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx",
-      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Famiglie»"
     },
     "istat_misura_comune_incidenti": {
       "url": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
-      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Incidenti stradali»"
     },
     "istat_misura_comune_sanzioni": {
       "url": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
-      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Motorizzazione e sanzioni»"
     },
     "istat_misura_comune_servizi_sociali": {
       "url": "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
-      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Servizi sociali»"
     },
     "istat_pendolarismo": {
@@ -211,26 +213,12 @@
       "text": "raw",
       "hint": "data di riferimento delle statistiche geografiche dei Comuni"
     },
-    "lamma_prec": {
-      "mode": "next",
-      "url": "https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Prec_giornaliero_{next}.zip",
-      "confirm": true,
-      "expect": "PK",
-      "hint": "griglia giornaliera LaMMA delle precipitazioni dell'anno successivo"
-    },
-    "lamma_tmax": {
-      "mode": "next",
-      "url": "https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Tmax_giornaliero_{next}.zip",
-      "confirm": true,
-      "expect": "PK",
-      "hint": "griglia giornaliera LaMMA della temperatura massima dell'anno successivo"
-    },
-    "lamma_tmin": {
-      "mode": "next",
-      "url": "https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Tmin_giornaliero_{next}.zip",
-      "confirm": true,
-      "expect": "PK",
-      "hint": "griglia giornaliera LaMMA della temperatura minima dell'anno successivo"
+    "era5_land": {
+      "url": "https://cds.climate.copernicus.eu/api/catalogue/v1/collections/reanalysis-era5-land",
+      "text": "raw",
+      "sourceOffset": -1,
+      "pattern": "\\\"interval\\\"\\s*:\\s*\\[\\s*\\[\\s*\\\"[^\\\"]*\\\"\\s*,\\s*\\\"(20\\d\\d)-",
+      "hint": "fine della copertura di ERA5-Land (Copernicus), che fornisce gli anni dal 2016: l'ultimo anno completo è quello precedente"
     },
     "mef_addizionale_irpef": {
       "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
@@ -238,10 +226,11 @@
       "hint": "ultimo anno delle delibere di addizionale comunale IRPEF"
     },
     "mef_imu": {
-      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/sceltaanno.htm",
-      "pattern": "anno=(20\\d\\d)",
+      "mode": "absent",
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/dati/download.htm?anno={next}",
+      "pattern": "tributi_locali/datizip/(20\\d\\d)/",
       "text": "raw",
-      "hint": "ultimo anno delle delibere IMU consultabili"
+      "hint": "archivi regionali delle delibere IMU dell'anno successivo"
     },
     "mef_irpef_comunale": {
       "mode": "next",
@@ -586,26 +575,25 @@
     "climatePrecipitationTrend50y": {
       "probe": "source_period",
       "checks": [
-        "lamma_prec"
+        "era5_land"
       ]
     },
     "climateTemperatureTrend50y": {
       "probe": "source_period",
       "checks": [
-        "lamma_tmax",
-        "lamma_tmin"
+        "era5_land"
       ]
     },
     "climateTmaxTrend": {
       "probe": "source_period",
       "checks": [
-        "lamma_tmax"
+        "era5_land"
       ]
     },
     "climateTminTrend": {
       "probe": "source_period",
       "checks": [
-        "lamma_tmin"
+        "era5_land"
       ]
     },
     "cohabitingHouseholds": {

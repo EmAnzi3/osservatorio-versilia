@@ -1,8 +1,6 @@
-rule rt_gtfs
-rule rt_pnrr
-rule gaia_analisi
-rule rt_biblioteche
-rule mef_tari
+rule era5_land
+rule agcom_bul
+rule idrogeo_frane
 rule mef_imu
 rule salute_ospedali
 rule rt_banca_dati_imprese
@@ -11,39 +9,21 @@ rule istat_misura_comune_servizi_sociali
 rule istat_misura_comune_incidenti
 rule istat_misura_comune_sanzioni
 rule uncem_foreste
-rule agcom_bul
-rule idrogeo_frane
 rule pun_ricarica
 rule mimit_carburanti
-rule lamma_prec
-url imu-2026 https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/dati/download.htm?anno=2026 (?i)(?:anno|nessun|non dispon|errore|\.zip|\.csv)[^<]{0,80}
-url imu-2028 https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/dati/download.htm?anno=2028 (?i)(?:anno|nessun|non dispon|errore|\.zip|\.csv)[^<]{0,80}
-url imu-regione https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/sceltaregione.htm?anno=2026 (?i)(?:option|anno)[^<]{0,60}20\d\d
-url imu-home https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/ (?i)20\d\d
-url tari-2028 https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/dati/download.htm?anno=2028 (?i)(?:anno|nessun|non dispon|errore|\.zip|\.csv)[^<]{0,80}
-url agcom-report https://geo.agcom.it/reportistica/ (?i)(?:ai_\d{6}|\d{6}_\d{6}|aggiorn|20\d\d)
-url agcom-reportjs https://geo.agcom.it/reportistica/report.js (?i)(?:ai_\d{6}[^"']*|\d{6}_\d{6}|aggiorn[^"']{0,60})
-url agcom-pjson https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c?f=pjson (?i)"(?:modified|created|title|snippet)"[^,]{0,80}
-url agcom-data PEEK https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data
-url idrogeo-api https://idrogeo.isprambiente.it/api/pir/comuni/046033 "[a-z_]*(?:\d\d|fr|al|id|ver|anno|year|data)[a-z_0-9]*"\s*:\s*[^,]{0,30}
-url idrogeo-app https://idrogeo.isprambiente.it/app/ (?i)(?:mosaicatura|versione|v\.\s*\d|20\d\d)[^<]{0,80}
-url ispra-frane https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/le-frane-1/mosaicatura-della-pericolosita-da-frana-dei-piani-di-assetto-idrogeologico-pai (?i)mosaicatur[^.<]{0,120}20\d\d
-url ispra-rischio https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio (?i)(?:mosaicatur|pericolosit|rapporto)[^.<]{0,120}20\d\d
-url pun-html https://www.piattaformaunicanazionale.it/idr x || /static/js/main\.[0-9a-f]+\.js
-url pun-js https://www.piattaformaunicanazionale.it/idr (?:https?:)?//[^"'`\s]*api[^"'`\s]*|"/api/[^"'`\s]*|/v\d/[a-z/-]+ || /static/js/main\.[0-9a-f]+\.js
-url uncem-wp https://uncem.it/wp-json/wp/v2/posts?search=foreste%20in%20comune&_fields=date,title&per_page=5 "date":"[^"]+"|"rendered":"[^"]{0,90}
-url uncem-art https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/ (?i)(?:datetime="[^"]+"|foreste in comune[^<]{0,60}20\d\d)
-url lamma-dir https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/ (?i)[A-Za-z]+_(?:giornaliero|climatologia)[^"<\s]*
-url lamma-ckan https://dati.lamma.toscana.it/dataset?tags=spazializzazione (?i)(?:giornalier|spazializz)[^"<]{0,100}
-url lamma-2025 PEEK https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Tmax_giornaliero_2025.zip
-url lamma-2024 PEEK https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Tmax_giornaliero_2024.zip
-url carb-opendata https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2026/ 20\d\d_\d+_\w+[^"<\s]*
-url carb-mimit https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti (?i)(?:aggiorn|estrazione|20\d\d-\d\d-\d\d|\d\d/\d\d/20\d\d)[^<]{0,60}
-url ospedali-salute https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie (?i)(?:aggiorn|anno|\.csv|\.xlsx|20\d\d)[^<]{0,80}
-url ospedali-salute-legacy LEGACYTLS https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie (?i)(?:aggiorn|anno|\.csv|\.xlsx|20\d\d)[^<]{0,80}
-url bdi-links https://www.regione.toscana.it/-/banca-dati-imprese-toscana (?i)(?:www301|bancadati|imprese)[^"\s<]{0,120}
-url misura-famiglie https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx <t[^>]*>[^<]{0,120}20[12]\d[^<]{0,60}</t>
-url misura-10a https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx <t[^>]*>[^<]{0,120}20[12]\d[^<]{0,60}</t>
-url misura-15a https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx <t[^>]*>[^<]{0,120}20[12]\d[^<]{0,60}</t>
-url misura-15c https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx <t[^>]*>[^<]{0,120}20[12]\d[^<]{0,60}</t>
-url misura-index https://www.istat.it/statistiche-per-temi/focus/benessere-e-sostenibilita/misura-comune/ (?i)(?:aggiorn|misura-comune/[^"]+\.xlsx)[^<"]{0,80}
+url cds-coll RAW https://cds.climate.copernicus.eu/api/catalogue/v1/collections/reanalysis-era5-land (?i)"(?:interval|temporal|updated|end_datetime|published)"[^\]}]{0,120}
+url cds-page https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=overview (?i)(?:temporal coverage|1950 to|to present|update frequency)[^<]{0,120}
+url cds-legacy RAW https://cds.climate.copernicus.eu/api/v2/resources/reanalysis-era5-land (?i)"(?:update_date|end_date|temporal)[^,]{0,80}
+url arco-meta RAW https://arco.datastores.ecmwf.int/cadl-arco-geo-007/arco/reanalysis_era5_land/sfc-2m-temperature/geoChunked.zarr/.zmetadata (?i)"time[^}]{0,200}
+url bdi-raw RAW https://www.regione.toscana.it/-/banca-dati-imprese-toscana href="[^"]*(?:www301|bancadati|BDImprese|banca-dati-imprese|serie|analisi)[^"]*"
+url salute-ricovero LEGACYTLS https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero-pubbliche-presenti-nel-territorio-della-asl/ (?i)(?:aggiornamento|files/20\d\d-\d\d/[^"<]*\.csv)[^<]{0,80}
+url salute-elenco RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/ (?i)href="[^"]*(?:ricover|struttur|ospedal)[^"]*"
+url salute-old RAW https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie (?i)(?:src|href|data-[a-z]+)="[^"]*(?:api|json|csv|ricover|\.js)[^"]*"
+url datigov-ricovero https://www.dati.gov.it/opendata/api/3/action/package_search?q=%22strutture%20di%20ricovero%22&rows=8 (?i)"(?:title|metadata_modified|url)"\s*:\s*"[^"]{0,140}
+url pun-js RAW https://www.piattaformaunicanazionale.it/idr (?:https?:)?//[a-z0-9.-]+/[^"'`\s]{0,80}|"/api/[^"'`\s]{0,80}|/v\d/[a-zA-Z/_-]{3,60} || /static/js/main\.[0-9a-f]+\.js
+url pun-src RAW https://www.piattaformaunicanazionale.it/idr (?i)<script[^>]*>
+url uncem-rest https://uncem.it/?rest_route=/wp/v2/posts&search=foreste%20in%20comune&_fields=date,title&per_page=5 "date":"[^"]+"|"rendered":"[^"]{0,90}
+url uncem-feed RAW https://uncem.it/feed/?s=foreste+in+comune (?i)<(?:title|pubDate)>[^<]{0,120}
+url uncem-search https://uncem.it/?s=foreste+in+comune (?i)foreste in comune[^<]{0,120}
+url uncem-art-raw RAW https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/ (?i)(?:datetime="[^"]+"|article:(?:published|modified)_time" content="[^"]+"|TUTTI I DATI[^<]{0,60})
+url carb-anagrafica https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv Estrazione[^\n]{0,40}

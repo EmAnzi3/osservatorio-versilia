@@ -54,9 +54,11 @@ def survey_check(name: str, check: dict, metric: dict) -> list[str]:
 def survey_url(label: str, url: str, grep: str = "", follow: str = "") -> list[str]:
     """Pagina candidata (non ancora regola): esito, anni e righe che corrispondono a `grep`."""
     out = [f"=== <{label}> {url}"]
+    mode = "raw" if url.startswith("RAW ") else "auto"
+    url = url[4:] if mode == "raw" else url
     try:
         raw = probes.http_fetch("QUICK " + url)
-        txt = probes.page_text(raw, "auto")
+        txt = probes.page_text(raw, mode)
     except Exception as error:  # noqa: BLE001
         return out + [f"  esito: {getattr(error, 'reason', type(error).__name__)}: {str(getattr(error, 'detail', error))[:200]}"]
     if follow:
@@ -64,7 +66,7 @@ def survey_url(label: str, url: str, grep: str = "", follow: str = "") -> list[s
         if not m:
             return out + [f"  follow non trovato: {follow}", f"  inizio: {txt[:400]!r}"]
         import urllib.parse
-        return out + [f"  segue: {m.group(0)}"] + survey_url(label + ">", urllib.parse.urljoin(url.split(" ")[-1], m.group(0)), grep)
+        return out + [f"  segue: {m.group(0)}"] + survey_url(label + ">", ("RAW " if mode == "raw" else "") + urllib.parse.urljoin(url.split(" ")[-1], m.group(0)), grep)
     years = collections.Counter(YEAR.findall(txt))
     out.append(f"  esito: {len(raw)} byte · anni: {sorted(years.items(), reverse=True)[:10]}")
     if grep:
@@ -93,7 +95,7 @@ def main() -> int:
             if parts[0] == "rule":
                 wanted = (wanted or set()) | {parts[1]}
             elif parts[0] == "url":
-                m = re.match(r"url (\S+) ((?:PEEK |LEGACYTLS )*\S+) ?(.*)$", line)
+                m = re.match(r"url (\S+) ((?:RAW |PEEK |LEGACYTLS )*\S+) ?(.*)$", line)
                 grep, _, follow = m.group(3).partition(" || ")
                 urls.append((m.group(1), m.group(2), grep, follow))
     for label, url, grep, follow in urls:
