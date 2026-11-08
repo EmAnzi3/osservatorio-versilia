@@ -155,7 +155,7 @@ def source_notes(report, ids):
 def render_demos(report):
     """Numbers and comparative wording use the same checked inputs; never a second catalog."""
     mass, via = '046018', '046033'
-    periods = {'census_employment_primary':'2024','business_asia_cumulative':'2018-2023','business_asia_employment':'2023','business_frame_industry_va':'2023','business_frame_industry_wages':'2023','child_weighted':'2024/25','school_class_size':'2024/25','school_full_time':'2024/25','school_students':'2024/25','invalsi_invalsiImplicitDispersion_g8_current':'2024-25'}
+    periods = {'census_employment_primary':'2024','business_asia_cumulative':'2018-2024','business_asia_employment':'2024','business_frame_industry_va':'2023','business_frame_industry_wages':'2023','child_weighted':'2024/25','school_class_size':'2024/25','school_full_time':'2024/25','school_students':'2024/25','invalsi_invalsiImplicitDispersion_g8_current':'2024-25'}
     def val(cid, geo=mass):
         return observation(report, cid, geo, periods[cid])['value']
     emp = 'census_employment_primary';growth = 'business_asia_cumulative';jobs = 'business_asia_employment'
@@ -182,15 +182,15 @@ def render_demos(report):
         raise ValueError('capacity_aggregate_not_ratio_of_sums')
     work = f'''# Massarosa: attività economiche e opportunità per i residenti
 
-A Massarosa i dati descrivono un territorio con una base di attività locali cresciuta tra 2018 e 2023 e un tasso di occupazione residente 2024 superiore a quello di Viareggio. Le due informazioni sono utili insieme, ma riguardano periodi e popolazioni differenti: non dimostrano che la crescita delle attività abbia creato lavoro per i residenti.
+A Massarosa i dati descrivono un territorio con una base di attività locali cresciuta tra 2018 e 2024 e un tasso di occupazione residente 2024 superiore a quello di Viareggio. Le due informazioni sono utili insieme, ma riguardano periodi e popolazioni differenti: non dimostrano che la crescita delle attività abbia creato lavoro per i residenti.
 
 ## Che cosa osserviamo
 
 | Misura | Periodo | Massarosa | Viareggio |
 |---|---|---:|---:|
 | Occupati fra i residenti di 25–64 anni | 2024 | {number(val(emp))}% | {number(val(emp,via))}% |
-| Crescita cumulata delle unità locali ASIA rispetto al 2018 | 2018–2023 | +{number(val(growth))}% | +{number(val(growth,via))}% |
-| Addetti medi annui nelle unità locali ASIA, sul luogo di lavoro | 2023 | {number(val(jobs),2)} | {number(val(jobs,via),2)} |
+| Crescita cumulata delle unità locali ASIA rispetto al 2018 | 2018–2024 | +{number(val(growth))}% | +{number(val(growth,via))}% |
+| Addetti medi annui nelle unità locali ASIA, sul luogo di lavoro | 2024 | {number(val(jobs),2)} | {number(val(jobs,via),2)} |
 | Valore aggiunto industriale nominale | 2023 | {number(val(va),2)} milioni € | {number(val(va,via),2)} milioni € |
 | Retribuzione lorda media per dipendente nell’industria | 2023 | {number(val(wage),0)} € | {number(val(wage,via),0)} € |
 
@@ -212,7 +212,7 @@ Il Comune può approfondire accessibilità delle aree e servizi locali; politich
 
 ## Che cosa manca e come seguire un eventuale intervento
 
-Mancano dati recenti e contemporanei, transizioni dei residenti, profili richiesti, qualità e durata dei contratti. Non possiamo descrivere la congiuntura del 2026 con il solo dato ASIA 2023.
+Mancano dati recenti e contemporanei, transizioni dei residenti, profili richiesti, qualità e durata dei contratti. Non possiamo descrivere la congiuntura del 2026 con il solo dato ASIA 2024.
 
 Per un programma specifico andrebbero definiti destinatari, accessi, completamenti e risultati occupazionali a distanza di tempo, mantenendo distinti partecipanti e popolazione residente. Una variazione comunale dopo l’intervento non ne dimostra l’effetto: servono un disegno di valutazione e un confronto appropriato.
 

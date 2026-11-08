@@ -74,10 +74,10 @@ Ogni esempio qui sotto è una richiesta realmente eseguita sul catalogo effettiv
 
 | Territorio | Periodo | Valore | Unità | Universo |
 |---|---|---:|---|---|
-| 046018 | 2023 | 4938.33 | people | ASIA active local units; annual average employment at workplace; ASIA total |
-| 046033 | 2023 | 22358.35 | people | ASIA active local units; annual average employment at workplace; ASIA total |
+| 046018 | 2024 | 4958.85 | people | ASIA active local units; annual average employment at workplace; ASIA total |
+| 046033 | 2024 | 22879.66 | people | ASIA active local units; annual average employment at workplace; ASIA total |
 
-**Fonte e metodo:** https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; Istat ASIA snapshot via AgID; explicit source formulas.
+**Fonte e metodo:** https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; Istat ASIA snapshot via Istat SDMX; explicit source formulas.
 
 **Limiti della risposta:** Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.
 
@@ -100,10 +100,10 @@ Ogni esempio qui sotto è una richiesta realmente eseguita sul catalogo effettiv
 
 | Territorio | Periodo | Valore | Unità | Universo |
 |---|---|---:|---|---|
-| 046018 | 2018-2023 | 6.991260923845188 | percent | ASIA active local units; annual average employment at workplace; ASIA total |
-| 046033 | 2018-2023 | 9.226699859965759 | percent | ASIA active local units; annual average employment at workplace; ASIA total |
+| 046018 | 2018-2024 | 7.303370786516861 | percent | ASIA active local units; annual average employment at workplace; ASIA total |
+| 046033 | 2018-2024 | 9.942430371868682 | percent | ASIA active local units; annual average employment at workplace; ASIA total |
 
-**Fonte e metodo:** https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; Istat ASIA snapshot via AgID; explicit source formulas.
+**Fonte e metodo:** https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; Istat ASIA snapshot via Istat SDMX; explicit source formulas.
 
 **Limiti della risposta:** Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.
 

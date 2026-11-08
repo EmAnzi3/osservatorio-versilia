@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `a8445cd558001efe3e7cb17f19e6d769e2b8a35bd8ffa1096e3bd9ba3cbc740f`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `d61ee4d0f3ca8005a76131192ab5b8886cc0bc4940be60f20b7f01a345c8c52d`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -75,14 +75,14 @@ La crescita economica localizzata si accompagna a opportunità per i residenti? 
 **Problema:** A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio? Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa?
 
 **Domande secondarie:**
-- A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio? — partially_supported; Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2023 e addetti localizzati 2023 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.
+- A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio? — partially_supported; Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2024 e addetti localizzati 2024 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.
 - Che cosa mostrano produzione industriale, retribuzioni e cambiamento nominale dei servizi a Massarosa? — partially_supported; Affiancare industria 2023 e variazione nominale dei servizi 2015–2023. Non dimostra passaggi di lavoratori fra settori né crescita reale.
 
 **Valore conoscitivo:** Evita di scambiare unità locali per imprese o addetti per occupati residenti.
 
 **Composizione:** Aprire con occupazione dei residenti per fascia/sesso, poi addetti e unità locali ASIA, composizione Frame e Atlante Registro Imprese. Gli storici rimangono interni a ciascuna fonte: le basi non formano una serie unica. Affiancare retribuzioni e redditi con platee esplicite, distinguendo nominale e indicatore reale autorizzato.
 
-**Interpretazione da approfondire:** Negli esempi selezionati Massarosa ha un tasso di occupazione residente 2024 superiore a Viareggio, mentre la crescita cumulata delle unità locali ASIA 2018–2023 è inferiore. Universi e intervalli differenti rendono visibili più trasformazioni; non identificano un unico giudizio di sviluppo o transizioni individuali.
+**Interpretazione da approfondire:** Negli esempi selezionati Massarosa ha un tasso di occupazione residente 2024 superiore a Viareggio, mentre la crescita cumulata delle unità locali ASIA 2018–2024 è inferiore. Universi e intervalli differenti rendono visibili più trasformazioni; non identificano un unico giudizio di sviluppo o transizioni individuali.
 
 **Competenze:** Comune: pianificazione e servizi locali; Regione: lavoro/formazione; imprese e parti sociali come interlocutori, non decisori comunali sostitutivi.
 
@@ -101,9 +101,9 @@ La crescita economica localizzata si accompagna a opportunità per i residenti? 
 | female_weighted | weighted_ratio / femaleEmploymentRate / total | 2023 / percent | 046005: 55.84045584045584; 046013: 49.36086529006883; 046018: 56.43635321100918; 046024: 53.942953020134226; 046028: 53.10186367117692; 046030: 49.941656942823805; 046033: 56.339951675596176 | PASS |
 | female_benchmark | benchmark_gap / femaleEmploymentRate / total | 2023 / percent | 046018: 56.43635321100918; tuscany: 62.20796669238763 | PASS |
 | duplicate_towns | weighted_ratio / femaleEmploymentRate / total |  /  | unknown_or_duplicate_geography | PASS |
-| business_asia_employment | compare / localEmployees / total | 2023 / people | 046018: 4938.33; 046033: 22358.35 | PASS |
+| business_asia_employment | compare / localEmployees / total | 2024 / people | 046018: 4958.85; 046033: 22879.66 | PASS |
 | atlas_pair_localEmployees_reverse | correlation / localEmployees / total |  /  | atlas_pair_not_jointly_reviewed | PASS |
-| business_asia_cumulative | compare / localUnitsChange / total | 2018-2023 / percent | 046018: 6.991260923845188; 046033: 9.226699859965759 | PASS |
+| business_asia_cumulative | compare / localUnitsChange / total | 2018-2024 / percent | 046018: 7.303370786516861; 046033: 9.942430371868682 | PASS |
 | business_endpoint_refused | compare / localUnitsChange / total |  /  | business_explicit_baseline_interval_required | PASS |
 | business_frame_industry_va | compare / businessValueAdded / sector:industry | 2023 / millionCurrency | 046018: 92.849; 046033: 524.095 | PASS |
 | business_sector_benchmark_refused | benchmark_gap / businessValueAdded / sector:industry |  /  | business_benchmark_scope_or_dimension_not_available | PASS |
@@ -120,7 +120,7 @@ La crescita economica localizzata si accompagna a opportunità per i residenti? 
 | atlas_territory_2025 | compare / economyActivityAtlas / territoryTotal | 2025 / number | 046005: 3822; 046013: 1556; 046018: 1940; 046024: 3327; 046028: 1437; 046030: 245; 046033: 7998 | PASS |
 | business_frame_services_history | absolute_change / businessValueAdded / sector:services | 2015, 2023 / millionCurrency | 046018: 94.023926; 046018: 165.941 | PASS |
 
-**Fonti effettivamente lette:** https://esploradati.istat.it/SDMXWS/rest; https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip; https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-ampliamento-del-dettaglio-di-analisi-anno-2015/; https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/; https://www.regione.toscana.it/-/banca-dati-imprese-toscana; https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php
+**Fonti effettivamente lette:** https://esploradati.istat.it/SDMXWS/rest; https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7; https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip; https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-ampliamento-del-dettaglio-di-analisi-anno-2015/; https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/; https://www.regione.toscana.it/-/banca-dati-imprese-toscana; https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php
 
 Un PASS delle richieste di contesto non rende determinabile la domanda decisionale centrale. I perimetri territoriali/temporali eseguiti restano quelli espliciti delle query.
 

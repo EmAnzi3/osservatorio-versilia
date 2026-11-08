@@ -174,7 +174,7 @@
       "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
       "composition": "Aprire con occupazione dei residenti per fascia/sesso, poi addetti e unità locali ASIA, composizione Frame e Atlante Registro Imprese. Gli storici rimangono interni a ciascuna fonte: le basi non formano una serie unica. Affiancare retribuzioni e redditi con platee esplicite, distinguendo nominale e indicatore reale autorizzato.",
       "pilotTier": "ready_for_composition",
-      "possibleInterpretation": "Negli esempi selezionati Massarosa ha un tasso di occupazione residente 2024 superiore a Viareggio, mentre la crescita cumulata delle unità locali ASIA 2018–2023 è inferiore. Universi e intervalli differenti rendono visibili più trasformazioni; non identificano un unico giudizio di sviluppo o transizioni individuali.",
+      "possibleInterpretation": "Negli esempi selezionati Massarosa ha un tasso di occupazione residente 2024 superiore a Viareggio, mentre la crescita cumulata delle unità locali ASIA 2018–2024 è inferiore. Universi e intervalli differenti rendono visibili più trasformazioni; non identificano un unico giudizio di sviluppo o transizioni individuali.",
       "methodologicalChecks": [
         {
           "question": "La composizione industria/servizi cambia nei periodi realmente confrontabili?",
@@ -198,7 +198,7 @@
             "business_asia_employment"
           ],
           "contextCaseRefs": [],
-          "answer": "Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2023 e addetti localizzati 2023 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.",
+          "answer": "Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2024 e addetti localizzati 2024 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.",
           "missingData": [
             "Serie omogenee contemporanee di occupazione e attività",
             "Transizioni dei residenti, contratti e profili richiesti"

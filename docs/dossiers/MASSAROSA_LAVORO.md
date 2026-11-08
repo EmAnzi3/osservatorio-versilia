@@ -1,14 +1,14 @@
 # Massarosa: attività economiche e opportunità per i residenti
 
-A Massarosa i dati descrivono un territorio con una base di attività locali cresciuta tra 2018 e 2023 e un tasso di occupazione residente 2024 superiore a quello di Viareggio. Le due informazioni sono utili insieme, ma riguardano periodi e popolazioni differenti: non dimostrano che la crescita delle attività abbia creato lavoro per i residenti.
+A Massarosa i dati descrivono un territorio con una base di attività locali cresciuta tra 2018 e 2024 e un tasso di occupazione residente 2024 superiore a quello di Viareggio. Le due informazioni sono utili insieme, ma riguardano periodi e popolazioni differenti: non dimostrano che la crescita delle attività abbia creato lavoro per i residenti.
 
 ## Che cosa osserviamo
 
 | Misura | Periodo | Massarosa | Viareggio |
 |---|---|---:|---:|
 | Occupati fra i residenti di 25–64 anni | 2024 | 73,4% | 71,9% |
-| Crescita cumulata delle unità locali ASIA rispetto al 2018 | 2018–2023 | +7,0% | +9,2% |
-| Addetti medi annui nelle unità locali ASIA, sul luogo di lavoro | 2023 | 4.938,33 | 22.358,35 |
+| Crescita cumulata delle unità locali ASIA rispetto al 2018 | 2018–2024 | +7,3% | +9,9% |
+| Addetti medi annui nelle unità locali ASIA, sul luogo di lavoro | 2024 | 4.958,85 | 22.879,66 |
 | Valore aggiunto industriale nominale | 2023 | 92,85 milioni € | 524,10 milioni € |
 | Retribuzione lorda media per dipendente nell’industria | 2023 | 31.226 € | 30.393 € |
 
@@ -30,7 +30,7 @@ Il Comune può approfondire accessibilità delle aree e servizi locali; politich
 
 ## Che cosa manca e come seguire un eventuale intervento
 
-Mancano dati recenti e contemporanei, transizioni dei residenti, profili richiesti, qualità e durata dei contratti. Non possiamo descrivere la congiuntura del 2026 con il solo dato ASIA 2023.
+Mancano dati recenti e contemporanei, transizioni dei residenti, profili richiesti, qualità e durata dei contratti. Non possiamo descrivere la congiuntura del 2026 con il solo dato ASIA 2024.
 
 Per un programma specifico andrebbero definiti destinatari, accessi, completamenti e risultati occupazionali a distanza di tempo, mantenendo distinti partecipanti e popolazione residente. Una variazione comunale dopo l’intervento non ne dimostra l’effetto: servono un disegno di valutazione e un confronto appropriato.
 
@@ -44,11 +44,11 @@ L’Atlante Registro Imprese 2025 resta un universo distinto da ASIA: le sue 20.
 
 I valori esposti sono arrotondati per la lettura. Il JSON riproducibile conserva tutta la precisione, richieste, risultati, hash degli snapshot e puntatori. Le fonti sotto sono quelle delle osservazioni acquisite, non una verifica della loro disponibilità online oggi.
 
-Catalogo congelato `a8445cd558001efe3e7cb17f19e6d769e2b8a35bd8ffa1096e3bd9ba3cbc740f`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Catalogo congelato `d61ee4d0f3ca8005a76131192ab5b8886cc0bc4940be60f20b7f01a345c8c52d`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 - `census_employment_primary`: `compare`, `employmentRate`, dimensione `total`; periodi 2024. [https://esploradati.istat.it/SDMXWS/rest](https://esploradati.istat.it/SDMXWS/rest)
-- `business_asia_cumulative`: `compare`, `localUnitsChange`, dimensione `total`; periodi 2018-2023. [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
-- `business_asia_employment`: `compare`, `localEmployees`, dimensione `total`; periodi 2023. [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
+- `business_asia_cumulative`: `compare`, `localUnitsChange`, dimensione `total`; periodi 2018-2024. [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
+- `business_asia_employment`: `compare`, `localEmployees`, dimensione `total`; periodi 2024. [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
 - `business_frame_industry_va`: `compare`, `businessValueAdded`, dimensione `sector:industry`; periodi 2023. [https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/](https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/)
 - `business_frame_industry_wages`: `compare`, `averageGrossRemunerationPerEmployee`, dimensione `sector:industry`; periodi 2023. [https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/](https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/)
 - `business_frame_services_history`: `absolute_change`, `businessValueAdded`, dimensione `sector:services`; periodi 2015, 2023. [https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-ampliamento-del-dettaglio-di-analisi-anno-2015/](https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-ampliamento-del-dettaglio-di-analisi-anno-2015/); [https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/](https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/)
