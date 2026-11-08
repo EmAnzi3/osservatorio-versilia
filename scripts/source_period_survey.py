@@ -51,14 +51,53 @@ def survey_check(name: str, check: dict, metric: dict) -> list[str]:
     return out
 
 
+def survey_url(label: str, url: str, grep: str = "", follow: str = "") -> list[str]:
+    """Pagina candidata (non ancora regola): esito, anni e righe che corrispondono a `grep`."""
+    out = [f"=== <{label}> {url}"]
+    try:
+        raw = probes.http_fetch("QUICK " + url)
+        txt = probes.page_text(raw, "auto")
+    except Exception as error:  # noqa: BLE001
+        return out + [f"  esito: {getattr(error, 'reason', type(error).__name__)}: {str(getattr(error, 'detail', error))[:200]}"]
+    if follow:
+        m = re.search(follow, txt)
+        if not m:
+            return out + [f"  follow non trovato: {follow}", f"  inizio: {txt[:400]!r}"]
+        import urllib.parse
+        return out + [f"  segue: {m.group(0)}"] + survey_url(label + ">", urllib.parse.urljoin(url.split(" ")[-1], m.group(0)), grep)
+    years = collections.Counter(YEAR.findall(txt))
+    out.append(f"  esito: {len(raw)} byte · anni: {sorted(years.items(), reverse=True)[:10]}")
+    if grep:
+        hits = list(re.finditer(grep, txt))
+        out.append(f"  corrispondenze: {len(hits)}")
+        for m in hits[:12]:
+            out.append(f"  ~ …{txt[max(0, m.start() - 80): m.end() + 80]}…".replace("\n", " "))
+    else:
+        out.append(f"  inizio: {txt[:600]!r}")
+    return out
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--catalog", type=Path, required=True)
     p.add_argument("--only", help="nomi di regole separati da virgola")
+    p.add_argument("--candidates", type=Path, help="file con righe `rule <nome>` o `url <etichetta> <url> [grep] [|| follow]`")
     a = p.parse_args()
     site = json.loads(a.catalog.read_text(encoding="utf-8"))["metrics"]
     cov = json.loads((ROOT / "ci/release-probe-coverage.json").read_text(encoding="utf-8"))
     wanted = set(a.only.split(",")) if a.only else None
+    urls = []
+    if a.candidates and a.candidates.exists():
+        for line in a.candidates.read_text(encoding="utf-8").splitlines():
+            parts = line.split(" ", 3)
+            if parts[0] == "rule":
+                wanted = (wanted or set()) | {parts[1]}
+            elif parts[0] == "url":
+                m = re.match(r"url (\S+) ((?:PEEK |LEGACYTLS )*\S+) ?(.*)$", line)
+                grep, _, follow = m.group(3).partition(" || ")
+                urls.append((m.group(1), m.group(2), grep, follow))
+    for label, url, grep, follow in urls:
+        print("\n".join(survey_url(label, url, grep, follow)), flush=True)
     for name, check in cov.get("sourceChecks", {}).items():
         if wanted and name not in wanted:
             continue

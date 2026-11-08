@@ -56,8 +56,8 @@
     "gaia_analisi": {
       "url": "https://www.gaia-spa.it/analisiweb_v2/campioni/49A02K17/0",
       "kind": "semester",
-      "pattern": "(\\d{2}/\\d{2}/20\\d\\d)",
-      "hint": "data dell'ultimo prelievo pubblicato da GAIA"
+      "pattern": "Periodo di riferimento:\\s*([12]°\\s*Semestre\\s*20\\d\\d)",
+      "hint": "semestre di riferimento delle ultime analisi pubblicate da GAIA"
     },
     "idrogeo_alluvioni": {
       "url": "https://idrogeo.isprambiente.it/api/pir/comuni/046033",
@@ -162,22 +162,22 @@
     },
     "istat_misura_comune_famiglie": {
       "url": "https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx",
-      "pattern": "(?i)anno\\D{0,3}(20\\d\\d)",
+      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Famiglie»"
     },
     "istat_misura_comune_incidenti": {
       "url": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
-      "pattern": "(?i)anno\\D{0,3}(20\\d\\d)",
+      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Incidenti stradali»"
     },
     "istat_misura_comune_sanzioni": {
       "url": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
-      "pattern": "(?i)anno\\D{0,3}(20\\d\\d)",
+      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Motorizzazione e sanzioni»"
     },
     "istat_misura_comune_servizi_sociali": {
       "url": "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
-      "pattern": "(?i)anno\\D{0,3}(20\\d\\d)",
+      "pattern": "<t[^>]*>[^<]*(20\\d\\d)[^<0-9]*</t>",
       "hint": "ultimo anno nel file Misura comune «Servizi sociali»"
     },
     "istat_pendolarismo": {
@@ -260,9 +260,9 @@
     },
     "mef_tari": {
       "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/sceltaanno.htm",
-      "pattern": "anno=(20\\d\\d)",
+      "pattern": "<option value=(20\\d\\d)\\s*selected",
       "text": "raw",
-      "hint": "ultimo anno delle delibere TARI consultabili"
+      "hint": "anno corrente delle delibere TARI consultabili (anno selezionato dal portale)"
     },
     "mim_anno_scolastico": {
       "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
@@ -343,7 +343,7 @@
     },
     "rt_biblioteche": {
       "url": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv",
-      "pattern": "(?m)^(20\\d\\d)\\t",
+      "pattern": "(?<![\\d.])(20\\d\\d)[\\s;,\\\"]+0\\d{5}(?!\\d)",
       "text": "raw",
       "hint": "ultimo ANNO nel CSV degli indicatori delle biblioteche"
     },
@@ -362,7 +362,7 @@
       "url": "https://dati.toscana.it/dataset/rt-oraritb",
       "kind": "date",
       "graceDays": 60,
-      "pattern": "Ultimo aggiornamento ([A-Za-zà-ù]+ \\d{1,2}, 20\\d\\d)",
+      "pattern": "Ultimo aggiornamento\\s+([A-Za-zà-ù]+ \\d{1,2}, 20\\d\\d)",
       "hint": "data di aggiornamento degli orari GTFS regionali"
     },
     "rt_indicatori_comunali": {
@@ -388,7 +388,7 @@
     },
     "rt_pnrr": {
       "url": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
-      "pattern": "Data di modifica \\d{2}-\\d{2}-(20\\d\\d)",
+      "pattern": "Data di modifica\\s+\\d{2}-\\d{2}-(20\\d\\d)",
       "hint": "anno dell'ultimo aggiornamento del dataset PNRR regionale"
     },
     "rt_prima_infanzia": {
@@ -451,8 +451,8 @@
       "hint": "anagrafe regionale dei siti da bonificare: rileggere l'elenco"
     },
     "uncem_foreste": {
-      "url": "https://uncem.it/?s=foreste+in+comune",
-      "pattern": "uploads/(20\\d\\d)/\\d\\d/[^\\\"'\\s]*[Ff]oreste-in-[Cc]omune",
+      "url": "https://uncem.it/wp-json/wp/v2/posts?search=foreste%20in%20comune&_fields=date,title&per_page=10",
+      "pattern": "\\\"date\\\":\\\"(20\\d\\d)-[^\\\"]*\\\",\\\"title\\\":\\{\\\"rendered\\\":\\\"[^\\\"]*(?i:foreste in comune)",
       "text": "raw",
       "baseline": "2026",
       "hint": "ultima presentazione del rapporto Foreste in Comune (baseline: edizione di giugno 2026)"
