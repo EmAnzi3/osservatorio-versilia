@@ -15,6 +15,9 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     # unità locali e addetti (Istat ASIA-UL, SDMX) — anno nuovo o revisione
     python scripts/update_source_data.py istat-asia --year 2024 [--dir cartella-con-lu.csv-emp.csv-micro.csv]
 
+    # copertura FTTH (AGCOM Broadband Map) — ultima edizione indicata da report.js
+    python scripts/update_source_data.py agcom-ftth [--dir cartella-con-report.js-e-comuni.csv]
+
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
 questi comandi e committa il risultato sul ramo della PR.
@@ -566,6 +569,132 @@ def update_istat_asia(year: int, folder: Path | None, dry_run: bool) -> Changes:
     return changes
 
 
+FTTH_PCT = {"ftthCoverageDesi": "copertura_ftth_desi_pct", "ftthCoverage20m": "copertura_ftth_20m_pct"}
+FTTH_COUNTS = ("ftthReachedHouseholds", "ftthUnreachedHouseholds")
+
+
+def ftth_count(key: str, record: dict[str, Any]) -> float | None:
+    reached = record["famiglie_ftth"]
+    if reached is None:
+        return None
+    return float(reached if key == "ftthReachedHouseholds" else record["famiglie_residenti"] - reached)
+
+
+def update_agcom_ftth(folder: Path | None, dry_run: bool) -> Changes:
+    """Broadband Map AGCOM: ultima edizione del CSV comunale indicata dal catalogo datato report.js."""
+    import agcom_sources
+    import acquire_a3_benchmark_agcom_quarterly as bench_acq
+    import audit_agcom_primary as ag
+
+    catalogue = fetch(ag.REPORT_SCRIPT_URL, folder / "report.js" if folder else None)
+    text = catalogue.decode("utf-8-sig")
+    candidates = ag.dated_primary_candidates(text)
+    if not candidates:
+        raise UpdateError("AGCOM: nessuna edizione «Consistenze rilevate al …» con CSV comunale in report.js")
+    csv_url, period = candidates[0]
+    heading = re.search(r"Consistenze rilevate al " + re.escape(period) + r"[^<]*", text).group(0).strip()
+    revision = re.search(r"rev\. del (\d{2}/\d{2}/\d{4})", heading)
+    native_old = load(ROOT / agcom_sources.NATIVE)
+    published = native_old["agcomAudit"]["dataPeriod"]
+    if ag.base.agcom_period(period) < ag.base.agcom_period(published):
+        raise UpdateError(f"AGCOM: edizione {period} precedente alla pubblicata {published}")
+    body = fetch(csv_url, folder / "comuni.csv" if folder else None)
+    try:
+        rows = ag.parse_csv(body)
+        ag.validate_primary_rows(rows, set(TOWN_CODES))
+    except ag.base.DataError as error:
+        raise UpdateError(str(error)) from error
+    italy, tuscany = bench_acq.scope_rows(rows, False), bench_acq.scope_rows(rows, True)
+    if not (7800 <= len(italy) <= 8000 and 270 <= len(tuscany) <= 280):
+        raise UpdateError(f"AGCOM: copertura inattesa (Italia {len(italy)}, Toscana {len(tuscany)})")
+    label = ag.base.agcom_period_label(period)
+    iso = ag.base.agcom_period(period).isoformat()
+    native_path = f"data/source-snapshots/agcom-ftth-{iso}.json"
+    bench_path = f"data/source-snapshots/a3-agcom-benchmark-{iso}.json"
+    benchmarks = {key: {"year": label, "unit": "percent", "formula": "media delle percentuali comunali AGCOM ponderata per famiglie residenti",
+                        "tuscany": bench_acq.weighted(tuscany, field), "italy": bench_acq.weighted(italy, field)}
+                  for key, field in FTTH_PCT.items()}
+
+    site = load(SITE)
+    names = {t["code"]: t["name"] for t in site["towns"]}
+    missing = [names[c] for c in TOWN_CODES if rows[c]["famiglie_ftth"] is None]
+    available = len(TOWN_CODES) - len(missing)
+    changes = Changes()
+    for key in (*FTTH_PCT, *FTTH_COUNTS):
+        metric = site["metrics"][key]
+        for row in metric["rows"]:
+            record = rows[row["code"]]
+            value = record[FTTH_PCT[key]] if key in FTTH_PCT else ftth_count(key, record)
+            changes.note(f"{key} {row['town']}", row["value"], value)
+            row["value"] = row["benchmarkValue"] = value
+            row["formatted"] = "n.d." if value is None else f"{it_number(value, 1)}%" if key in FTTH_PCT else it_number(value, 0)
+        aggregate = metric["aggregate"]
+        if key in FTTH_PCT:
+            total = math.fsum(rows[c][FTTH_PCT[key]] * rows[c]["famiglie_residenti"] for c in TOWN_CODES) / sum(rows[c]["famiglie_residenti"] for c in TOWN_CODES)
+            bench = metric["meta"]["benchmark"]
+            for scope in ("tuscany", "italy"):
+                changes.note(f"{key} benchmark {scope}", bench.get(scope), benchmarks[key][scope])
+                bench[scope] = benchmarks[key][scope]
+            bench.update(year=label, url=csv_url, sourceSnapshot=bench_path)
+        else:
+            total = sum(v for c in TOWN_CODES if (v := ftth_count(key, rows[c])) is not None)
+            caveat = re.sub(r" Dato non disponibile per .*$", "", metric["method"]["caveat"])
+            if missing:
+                aggregate["label"] = f"Totale parziale Versilia ({available}/7)"
+                aggregate["note"] = (f"Somma dei valori ufficiali disponibili per {available} Comuni; escluso {', '.join(missing)}, "
+                                     "per cui il dato AGCOM non è disponibile.")
+                caveat += f" Dato non disponibile per {', '.join(missing)}; nessuna stima effettuata."
+            else:
+                aggregate["label"] = "Totale Versilia"
+                aggregate["note"] = "Somma dei valori ufficiali dei sette Comuni."
+            metric["method"].update(caveat=caveat, coverage=f"{available}/7")
+        changes.note(f"{key} Versilia", aggregate["value"], total)
+        aggregate["value"] = total
+        metric["meta"]["year"] = label
+        metric["sourceUrl"] = ag.PUBLIC_MAP_URL
+
+    catalogue_sha = hashlib.sha256(catalogue).hexdigest()
+    csv_sha = hashlib.sha256(body).hexdigest()
+    evidence = {"script": "scripts/update_source_data.py agcom-ftth", "catalogueSha256": catalogue_sha, "csvSha256": csv_sha}
+    town_rows = {r["code"]: r for r in site["metrics"]["ftthCoverageDesi"]["rows"]}
+    native = {
+        "schemaVersion": 1,
+        "version": f"agcom-ftth-{iso}-v1",
+        "retrieved": date.today().isoformat(),
+        "scope": "Sette Comuni della Versilia storica",
+        "towns": [{"town": town_rows[c]["town"], "code": c, "slug": town_rows[c]["slug"], "agcom": {"primaryOfficialCsv": rows[c]}}
+                  for c in TOWN_CODES],
+        "agcomAudit": {
+            "sourceType": "primary_official_csv", "dataPeriod": period, "revisionDate": revision.group(1) if revision else None,
+            "officialHeading": heading, "periodEvidenceUrl": ag.REPORT_SCRIPT_URL, "publicMapUrl": ag.PUBLIC_MAP_URL,
+            "officialCsvUrl": csv_url, "rowCount": len(rows), "missingAbsoluteTowns": missing,
+            "rule": "Valori comunali letti dal CSV primario AGCOM; nessun conteggio assoluto ricostruito dalle percentuali.",
+        },
+        "acquisitionEvidence": evidence,
+    }
+    benchmark = {
+        "schemaVersion": 1,
+        "version": f"a3-agcom-benchmark-{iso}-v1",
+        "retrieved": date.today().isoformat(),
+        "publisher": "AGCOM — Broadband Map, reportistica comunale",
+        "sourceProfileId": "agcom-quarterly",
+        "candidateState": "ACQUIRED_CANDIDATE",
+        "sourceUrl": csv_url,
+        "referenceDate": period,
+        "qualityGate": {"status": "PASS", "municipalityCountItaly": len(italy), "municipalityCountTuscany": len(tuscany),
+                        "publicPercentageReconciliation": "2 metrics × 7/7 PASS", "errors": []},
+        "benchmarks": benchmarks,
+        "blocked": {key: "benchmark assoluto non pubblicato: celle ufficiali mancanti, nessuna ricostruzione dalle percentuali" for key in FTTH_COUNTS},
+        "acquisitionEvidence": evidence,
+    }
+    if not dry_run:
+        save(SITE, site)
+        for path, value in ((native_path, native), (bench_path, benchmark)):
+            target = ROOT / path
+            save(target, keep_retrieved(value, load(target) if target.exists() else None))
+    return changes
+
+
 def composite_flow(text: str, town: str, year: int, inbound: int, outbound: int) -> str:
     """Aggiunge (o sostituisce) l'anno nel flusso interno del Comune mantenendo il formato del file."""
     start = text.index(f'"{town}": {{', text.index('"raw"'))
@@ -600,11 +729,15 @@ def main() -> int:
     u = sub.add_parser("istat-asia")
     u.add_argument("--year", type=int, required=True)
     u.add_argument("--dir", type=Path, help="cartella con lu.csv, emp.csv e micro.csv già scaricati")
-    for p in (a, m, u):
+    f = sub.add_parser("agcom-ftth")
+    f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
+    for p in (a, m, u, f):
         p.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     try:
-        if args.updater == "ars-legacy":
+        if args.updater == "agcom-ftth":
+            update_agcom_ftth(args.dir, args.dry_run).report(f"AGCOM FTTH{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "ars-legacy":
             update_ars_legacy(args.metric, args.file, args.dry_run).report(f"ARS {args.metric}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-asia":
             update_istat_asia(args.year, args.dir, args.dry_run).report(f"ASIA-UL {args.year}{' (prova a secco)' if args.dry_run else ''}:")

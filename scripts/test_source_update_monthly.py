@@ -14,7 +14,7 @@ ars = json.loads(m.ARS_LEGACY.read_text(encoding="utf-8"))
 commands = m.plan(site, ars)
 year = int(site["metrics"][m.MOBILITY_KEY]["meta"]["year"])
 assert [c for c in commands if c[0] == "ars-legacy"] == [["ars-legacy", "--metric", k] for k in sorted(ars["indicators"])]
-assert commands[-2:] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
+assert commands[-3:] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)], ["agcom-ftth"]]
 assert "hospitalizedAll" in ars["indicators"]
 asia = int(site["metrics"]["localUnits"]["meta"]["year"])
 assert [c for c in commands if c[0] == "istat-asia"] == [["istat-asia", "--year", str(asia)], ["istat-asia", "--year", str(asia + 1)]]

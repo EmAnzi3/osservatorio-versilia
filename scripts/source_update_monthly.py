@@ -2,7 +2,8 @@
 """Giro mensile degli aggiornatori di `scripts/update_source_data.py`.
 
 Esegue ogni aggiornatore disponibile (tutti gli indicatori ARS legacy; ASIA-UL e
-mobilità Istat P2 per l'anno pubblicato e per quello successivo), uno alla volta, e scrive
+mobilità Istat P2 per l'anno pubblicato e per quello successivo; ultima edizione
+AGCOM FTTH), uno alla volta, e scrive
 un rapporto Markdown con l'esito di ciascuno: aggiornato, invariato o rifiutato
 con il motivo e cosa fare. Ogni aggiornatore scrive solo se il file della fonte è
 completo, quindi i riusciti restano anche se un altro viene rifiutato.
@@ -35,6 +36,7 @@ def plan(site: dict, ars: dict) -> list[list[str]]:
     commands += [["istat-asia", "--year", str(asia)], ["istat-asia", "--year", str(asia + 1)]]
     year = int(site["metrics"][MOBILITY_KEY]["meta"]["year"])
     commands += [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
+    commands.append(["agcom-ftth"])
     return commands
 
 
