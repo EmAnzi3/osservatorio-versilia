@@ -328,9 +328,10 @@
       "hint": "ultimo aggiornamento dell'elenco ufficiale delle aree protette (DOA)"
     },
     "rt_banca_dati_imprese": {
-      "url": "https://www.regione.toscana.it/-/banca-dati-imprese-toscana",
-      "pattern": "(?i)(?:dati|anno|aggiornamento)\\D{0,12}(20\\d\\d)",
-      "hint": "ultimo anno della Banca dati imprese regionale"
+      "url": "https://servizi.toscana.it/RT/statistichedinamiche/imprese_serie/",
+      "pattern": "(20\\d\\d)\\s+Ordina il grafico",
+      "sourceOffset": 1,
+      "hint": "serie storiche della Banca dati imprese regionale: l'ultimo anno di confronto offerto è quello precedente all'ultimo anno della serie"
     },
     "rt_biblioteche": {
       "url": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv",
@@ -443,7 +444,7 @@
     },
     "uncem_foreste": {
       "url": "https://uncem.it/?s=foreste+in+comune",
-      "pattern": "(?i)rapporto\\W+foreste in comune\\W[^\\n]{0,200}?\\b\\d{1,2} [a-z]+ (20\\d\\d)",
+      "pattern": "(?i)rapporto\\W+foreste in comune\\W[\\s\\S]{0,300}?\\b\\d{1,2}\\s+[a-z]+\\s+(20\\d\\d)",
       "baseline": "2026",
       "hint": "data dell'ultima presentazione del rapporto Foreste in Comune nella ricerca UNCEM (baseline: edizione di giugno 2026, dati comunali giu2026)"
     }

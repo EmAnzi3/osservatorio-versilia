@@ -1,16 +1,9 @@
 rule uncem_foreste
-rule pun_ricarica
-rule salute_ospedali
 rule rt_banca_dati_imprese
-rule istat_misura_comune_sanzioni
-url bdi-serie https://servizi.toscana.it/RT/statistichedinamiche/imprese_serie/ (?i)(?:20\d\d)[^<]{0,80}
-url bdi-serie-raw RAW https://servizi.toscana.it/RT/statistichedinamiche/imprese_serie/ (?i)(?:src|href|action|url)\s*[=:]\s*["'][^"']{2,160}["']
-url bdi-gruppi https://servizi.toscana.it/RT/statistichedinamiche/imprese/ (?i)(?:20\d\d)[^<]{0,80}
-url ricovero-gov https://www.dati.gov.it/opendata/api/3/action/package_search?q=%22presenti%20nel%20territorio%20della%20ASL%22&rows=6&fl=name,title,metadata_modified,organization,url (?i)"(?:name|title|metadata_modified|url|landingPage|access_url)"\s*:\s*"[^"]{0,160}
-url ricovero-salute-1 RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero-pubbliche/ (?i)files/20\d\d-\d\d/[^"]{0,120}
-url ricovero-salute-2 RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/elenco-delle-strutture-di-ricovero-pubbliche-presenti-nel-territorio-della-asl/ (?i)files/20\d\d-\d\d/[^"]{0,120}
-url ricovero-salute-3 RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero/ (?i)files/20\d\d-\d\d/[^"]{0,120}
-url ricovero-salute-ao RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/aziende-ospedaliere-aziende-ospedaliere-universitarie-e-irccs-pubblici-anche-costituiti/ (?i)href="/it/dataset/[^"]{0,140}"
-url carb-gov https://www.dati.gov.it/opendata/api/3/action/package_search?q=prezzi%20carburanti%20impianti&rows=6 (?i)"(?:name|title|metadata_modified|url)"\s*:\s*"[^"]{0,160}
-url carb-legacy LEGACYTLS https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv Estrazione[^\n]{0,40}
-url carb-opendata https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti (?i)(?:aggiorn|20\d\d)[^<]{0,80}
+url salute-sitemap RAW LEGACYTLS https://www.dati.salute.gov.it/sitemap.xml (?i)<loc>[^<]*(?:ricover|struttur|ospedal)[^<]*</loc>
+url salute-ao-links RAW LEGACYTLS https://www.dati.salute.gov.it/it/dataset/aziende-ospedaliere-aziende-ospedaliere-universitarie-e-irccs-pubblici-anche-costituiti/ (?i)dataset/[a-z0-9-]*(?:ricover|struttur|asl)[a-z0-9-]*
+url salute-file RAW LEGACYTLS https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv (?i)^[^\n]{0,200}
+url salute-gov-q https://www.dati.gov.it/opendata/api/3/action/package_search?q=ricovero%20ASL%20ministero%20salute&rows=6 (?i)"(?:name|title|metadata_modified)"\s*:\s*"[^"]{0,140}
+url carb-gov-q https://www.dati.gov.it/opendata/api/3/action/package_search?q=prezzo_alle_8&rows=6 (?i)"(?:name|title|metadata_modified|url)"\s*:\s*"[^"]{0,160}
+url carb-http http://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv Estrazione[^\n]{0,40}
+url carb-osservaprezzi https://carburanti.mise.gov.it/ospzSearch/home (?i)(?:aggiorn|20\d\d)[^<]{0,80}
