@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "version": "agcom-ftth-2026-10-05-v1",
+  "retrieved": "2026-11-08",
+  "scope": "Sette Comuni della Versilia storica",
+  "towns": [
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "slug": "camaiore",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Camaiore",
+          "famiglie_residenti": 13119,
+          "famiglie_ftth": 11970,
+          "famiglie_ftth_20m": 10576,
+          "copertura_ftth_desi_pct": 91.2,
+          "copertura_ftth_20m_pct": 80.6,
+          "raw": {
+            "famiglie_residenti": "13119",
+            "famiglie_ftth": "11970",
+            "famiglie_ftth_20m": "10576",
+            "copertura_ftth_desi_pct": "91,2%",
+            "copertura_ftth_20m_pct": "80,6%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Forte dei Marmi",
+          "famiglie_residenti": 2707,
+          "famiglie_ftth": null,
+          "famiglie_ftth_20m": null,
+          "copertura_ftth_desi_pct": 0.0,
+          "copertura_ftth_20m_pct": 0.0,
+          "raw": {
+            "famiglie_residenti": "2707",
+            "famiglie_ftth": "",
+            "famiglie_ftth_20m": "",
+            "copertura_ftth_desi_pct": "0,0%",
+            "copertura_ftth_20m_pct": "0,0%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "slug": "massarosa",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Massarosa",
+          "famiglie_residenti": 8982,
+          "famiglie_ftth": 4156,
+          "famiglie_ftth_20m": 3040,
+          "copertura_ftth_desi_pct": 46.3,
+          "copertura_ftth_20m_pct": 33.8,
+          "raw": {
+            "famiglie_residenti": "8982",
+            "famiglie_ftth": "4156",
+            "famiglie_ftth_20m": "3040",
+            "copertura_ftth_desi_pct": "46,3%",
+            "copertura_ftth_20m_pct": "33,8%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "slug": "pietrasanta",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Pietrasanta",
+          "famiglie_residenti": 9353,
+          "famiglie_ftth": 5466,
+          "famiglie_ftth_20m": 3926,
+          "copertura_ftth_desi_pct": 58.4,
+          "copertura_ftth_20m_pct": 42.0,
+          "raw": {
+            "famiglie_residenti": "9353",
+            "famiglie_ftth": "5466",
+            "famiglie_ftth_20m": "3926",
+            "copertura_ftth_desi_pct": "58,4%",
+            "copertura_ftth_20m_pct": "42,0%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "slug": "seravezza",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Seravezza",
+          "famiglie_residenti": 5068,
+          "famiglie_ftth": 31,
+          "famiglie_ftth_20m": 1,
+          "copertura_ftth_desi_pct": 0.6,
+          "copertura_ftth_20m_pct": 0.0,
+          "raw": {
+            "famiglie_residenti": "5068",
+            "famiglie_ftth": "31",
+            "famiglie_ftth_20m": "1",
+            "copertura_ftth_desi_pct": "0,6%",
+            "copertura_ftth_20m_pct": "0,0%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "slug": "stazzema",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Stazzema",
+          "famiglie_residenti": 1148,
+          "famiglie_ftth": 1009,
+          "famiglie_ftth_20m": 889,
+          "copertura_ftth_desi_pct": 87.9,
+          "copertura_ftth_20m_pct": 77.4,
+          "raw": {
+            "famiglie_residenti": "1148",
+            "famiglie_ftth": "1009",
+            "famiglie_ftth_20m": "889",
+            "copertura_ftth_desi_pct": "87,9%",
+            "copertura_ftth_20m_pct": "77,4%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "slug": "viareggio",
+      "agcom": {
+        "primaryOfficialCsv": {
+          "comune": "Viareggio",
+          "famiglie_residenti": 25039,
+          "famiglie_ftth": 23736,
+          "famiglie_ftth_20m": 21582,
+          "copertura_ftth_desi_pct": 94.8,
+          "copertura_ftth_20m_pct": 86.2,
+          "raw": {
+            "famiglie_residenti": "25039",
+            "famiglie_ftth": "23736",
+            "famiglie_ftth_20m": "21582",
+            "copertura_ftth_desi_pct": "94,8%",
+            "copertura_ftth_20m_pct": "86,2%"
+          }
+        }
+      }
+    }
+  ],
+  "agcomAudit": {
+    "sourceType": "primary_official_csv",
+    "dataPeriod": "05/10/2026",
+    "revisionDate": "12/10/2026",
+    "officialHeading": "Consistenze rilevate al 05/10/2026 (rev. del 12/10/2026)",
+    "periodEvidenceUrl": "https://geo.agcom.it/reportistica/report.js",
+    "publicMapUrl": "https://maps.agcom.it/",
+    "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data",
+    "rowCount": 7896,
+    "missingAbsoluteTowns": [
+      "Forte dei Marmi"
+    ],
+    "rule": "Valori comunali letti dal CSV primario AGCOM; nessun conteggio assoluto ricostruito dalle percentuali."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py agcom-ftth",
+    "catalogueSha256": "aad13bf8700ff9ba77b7ca437587a680e7128762a12030403295f4246d4a06ce",
+    "csvSha256": "bb23081d4a8de2db4798a9bba9c5fc27845a153e91f948c48ebf07af9dd5ed6e"
+  }
+}
