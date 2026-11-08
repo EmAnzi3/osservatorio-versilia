@@ -7,8 +7,10 @@ import json
 import math
 import tempfile
 import zipfile
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
+import agcom_sources
 import update_source_data as upd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -169,7 +171,7 @@ AGCOM_CSV = "https://geo.agcom.it/arcgis/sharing/rest/content/items/" + "a" * 32
 
 def agcom_files(tmp: Path, period: str, revision: str = "14/07/2026", drop: str | None = None) -> None:
     """report.js con un'edizione datata e CSV comunale: i 7 Comuni dai record pubblicati, più 7889 Comuni di riempimento."""
-    native = json.loads((ROOT / "data/source-snapshots/agid-asia-agcom-2026-08.json").read_text(encoding="utf-8"))
+    native = json.loads((ROOT / agcom_sources.NATIVE).read_text(encoding="utf-8"))
     (tmp / "report.js").write_text(f'<h2>Consistenze rilevate al {period} (rev. del {revision})</h2><p>Dati Comunali <a href="{AGCOM_CSV}" target="_blank"><u>CSV</u></a></p>')
     header = ["c0", "c1", "comune", "pro_com"] + [f"c{i}" for i in range(4, 19)]
     lines = [";".join(header)]
@@ -190,14 +192,16 @@ def agcom_files(tmp: Path, period: str, revision: str = "14/07/2026", drop: str 
 
 
 def agcom_cases(tmp: Path) -> None:
-    agcom_files(tmp, "06/07/2026")
+    published = json.loads((ROOT / agcom_sources.NATIVE).read_text(encoding="utf-8"))["agcomAudit"]["dataPeriod"]
+    agcom_files(tmp, published)
     lines = upd.update_agcom_ftth(tmp, dry_run=True).lines
     towns = [line for line in lines if "benchmark" not in line and "Versilia" not in line]
     assert not towns, f"il CSV pubblicato deve ridare gli stessi valori comunali: {towns[:3]}"
     totals = [line for line in lines if "Versilia" in line]
     bad = [line for line in totals if not math.isclose(*(float(x) for x in line.split(": ", 1)[1].split(" → ")), rel_tol=1e-12)]
     assert not bad, f"aggregati Versilia diversi: {bad}"
-    agcom_files(tmp, "05/10/2026", "13/10/2026")
+    newer = min(datetime.strptime(published, "%d/%m/%Y").date() + timedelta(days=1), date.today()).strftime("%d/%m/%Y")
+    agcom_files(tmp, newer, newer)
     assert upd.update_agcom_ftth(tmp, dry_run=True).lines, "edizione nuova: benchmark aggiornati"
     agcom_files(tmp, "31/03/2026")
     try:
@@ -205,7 +209,7 @@ def agcom_cases(tmp: Path) -> None:
         raise AssertionError("edizione precedente alla pubblicata accettata")
     except upd.UpdateError:
         pass
-    agcom_files(tmp, "05/10/2026", drop="046030")
+    agcom_files(tmp, newer, drop="046030")
     try:
         upd.update_agcom_ftth(tmp, dry_run=True)
         raise AssertionError("CSV senza un Comune della Versilia accettato")

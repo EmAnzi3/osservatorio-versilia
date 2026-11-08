@@ -588,7 +588,10 @@ def update_agcom_ftth(folder: Path | None, dry_run: bool) -> Changes:
 
     catalogue = fetch(ag.REPORT_SCRIPT_URL, folder / "report.js" if folder else None)
     text = catalogue.decode("utf-8-sig")
-    candidates = ag.dated_primary_candidates(text)
+    try:
+        candidates = ag.dated_primary_candidates(text)
+    except ag.base.DataError as error:
+        raise UpdateError(str(error)) from error
     if not candidates:
         raise UpdateError("AGCOM: nessuna edizione «Consistenze rilevate al …» con CSV comunale in report.js")
     csv_url, period = candidates[0]
