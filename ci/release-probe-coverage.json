@@ -299,9 +299,11 @@
       "hint": "data del dataset Percorsi Versilia (fonte interna)"
     },
     "pun_ricarica": {
+      "mode": "snapshot",
+      "kind": "year",
       "url": "https://www.piattaformaunicanazionale.it/idr",
-      "pattern": "(?i)(?:aggiornat\\w+ al|dati al)\\s*\\d{0,2}[/ ]?\\w*[/ ]?(20\\d\\d)",
-      "hint": "data di aggiornamento della Piattaforma Unica Nazionale dei punti di ricarica"
+      "expect": "Piattaforma Unica Nazionale",
+      "hint": "registro continuo PUN dei punti di ricarica (API pubblica con token, nessuna data alla fonte): l'istantanea pubblicata deve essere dell'anno in corso"
     },
     "rgs_conto_annuale_successivo": {
       "mode": "next",
@@ -440,11 +442,10 @@
       "hint": "anagrafe regionale dei siti da bonificare: rileggere l'elenco"
     },
     "uncem_foreste": {
-      "url": "https://uncem.it/wp-json/wp/v2/posts?search=foreste%20in%20comune&_fields=date,title&per_page=10",
-      "pattern": "\\\"date\\\":\\\"(20\\d\\d)-[^\\\"]*\\\",\\\"title\\\":\\{\\\"rendered\\\":\\\"[^\\\"]*(?i:foreste in comune)",
-      "text": "raw",
+      "url": "https://uncem.it/?s=foreste+in+comune",
+      "pattern": "(?i)rapporto\\W+foreste in comune\\W[^\\n]{0,200}?\\b\\d{1,2} [a-z]+ (20\\d\\d)",
       "baseline": "2026",
-      "hint": "ultima presentazione del rapporto Foreste in Comune (baseline: edizione di giugno 2026)"
+      "hint": "data dell'ultima presentazione del rapporto Foreste in Comune nella ricerca UNCEM (baseline: edizione di giugno 2026, dati comunali giu2026)"
     }
   },
   "metrics": {

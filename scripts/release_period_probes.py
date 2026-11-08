@@ -712,7 +712,8 @@ def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, A
 #   Con `confirm` controlla anche che l'edizione pubblicata ({year}) sia ancora dove ce l'aspettiamo;
 # - `absent`: interroga la fonte dal periodo successivo in poi; nessun dato = nessun periodo nuovo;
 # - `snapshot`: fonti continue (registri, mappe, feed) senza data alla fonte: la fonte deve
-#   rispondere con il contenuto atteso e l'istantanea pubblicata non deve superare `maxAgeDays`.
+#   rispondere con il contenuto atteso e l'istantanea pubblicata non deve superare `maxAgeDays`;
+#   con `kind: year` l'istantanea è annuale e alla fonte il periodo è l'anno in corso.
 
 MONTHS = {name: i for i, names in enumerate((
     (), ("gennaio", "january", "jan", "gen"), ("febbraio", "february", "feb"), ("marzo", "march", "mar"),
@@ -803,6 +804,13 @@ def days_between(a: tuple[int, ...], b: tuple[int, ...]) -> int:
     return (datetime.date(*a[:3]) - datetime.date(*b[:3])).days
 
 
+def snapshot_kind(check: dict[str, Any]) -> str:
+    """Tipo di periodo: le istantanee sono datate, tranne quelle annuali (`kind: year`)."""
+    if check.get("mode") == "snapshot":
+        return "year" if check.get("kind") == "year" else "date"
+    return check.get("kind", "year")
+
+
 def published_period(metric: dict[str, Any], check: dict[str, Any]) -> tuple[int, ...] | None:
     raw = str(metric.get("meta", {}).get("year") or "")
     if check.get("baseline"):
@@ -810,7 +818,7 @@ def published_period(metric: dict[str, Any], check: dict[str, Any]) -> tuple[int
     elif check.get("publishedPattern"):
         match = re.search(check["publishedPattern"], raw)
         raw = match.group(1) if match else ""
-    return parse_period(raw, "date" if check.get("mode") == "snapshot" else check.get("kind", "year"))
+    return parse_period(raw, snapshot_kind(check))
 
 
 def check_url(template: str, year: tuple[int, ...] | None) -> str:
@@ -836,7 +844,7 @@ def _peek_ok(fetch: Fetcher, url: str, check: dict[str, Any]) -> bool:
 def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
     """Esito di una regola: periodo pubblicato, periodo alla fonte e verdetto."""
     mode = check.get("mode", "latest")
-    kind = "date" if mode == "snapshot" else check.get("kind", "year")
+    kind = snapshot_kind(check)
     published = published_period(metric, check)
     if published is None:
         raise ProbeError("structure_changed", f"periodo pubblicato non leggibile: {metric.get('meta', {}).get('year')!r}")
@@ -847,6 +855,11 @@ def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> 
         if check.get("expect") and check["expect"].encode() not in raw[:2_000_000]:
             raise ProbeError("structure_changed", f"{out['url']}: contenuto atteso «{check['expect']}» assente")
         today = TODAY()
+        if kind == "year":
+            out.update(observed=str(today.year), verdict="new_period" if today.year > published[0] else "period_match")
+            if out["verdict"] == "new_period":
+                out["detail"] = f"istantanea annuale del {published[0]}: la fonte continua va riletta per il {today.year}"
+            return out
         age = days_between((today.year, today.month, today.day), published)
         out.update(observed=f"istantanea di {age} giorni", verdict="new_period" if age > int(check["maxAgeDays"]) else "period_match")
         if out["verdict"] == "new_period":

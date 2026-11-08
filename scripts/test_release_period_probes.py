@@ -57,7 +57,7 @@ def coverage_contract() -> None:
         if mode == "next":
             assert "{next}" in check["url"] and all("{next}" in u for u in check.get("alternatives", [])), name
         if mode == "snapshot":
-            assert check["expect"] and 0 < int(check["maxAgeDays"]) <= 92, name
+            assert check["expect"] and (check.get("kind") == "year" or 0 < int(check["maxAgeDays"]) <= 92), name
         if check.get("kind") == "date" and mode == "latest":
             assert 0 <= int(check.get("graceDays", 0)) <= 92, name
 
@@ -146,6 +146,7 @@ def period_cases() -> None:
         "page": {"url": "https://x.test/p", "pattern": r"Periodo di riferimento: Anno (20\d\d)", "hint": "h"},
         "next": {"mode": "next", "url": "https://x.test/anno-{next}/", "confirm": True, "html": True, "hint": "h"},
         "feed": {"mode": "snapshot", "url": "https://x.test/api", "expect": "cod_istat", "maxAgeDays": 60, "hint": "h"},
+        "register": {"mode": "snapshot", "kind": "year", "url": "https://x.test/api", "expect": "cod_istat", "hint": "h"},
         "daily": {"url": "https://x.test/d", "kind": "date", "graceDays": 30, "pattern": r"Elenco del (\d\d/\d\d/20\d\d)", "hint": "h"},
         "semester": {"url": "https://x.test/s", "kind": "semester", "pattern": r"(\d\d/\d\d/20\d\d)", "hint": "h"},
         "absent": {"mode": "absent", "url": "https://x.test/sdmx?startPeriod={next}", "pattern": r'TIME_PERIOD="(20\d\d)', "text": "raw", "hint": "h"},
@@ -183,6 +184,9 @@ def period_cases() -> None:
     assert run("feed", "5 novembre 2026", feed)["status"] == "current"
     assert run("feed", "2026-08-01", feed)["status"] == "release_detected"
     assert run("feed", "5 novembre 2026", {"https://x.test/api": b"{}"})["reason"] == "structure_changed"
+    assert run("register", "2026", feed)["status"] == "current", "registro continuo: istantanea dell'anno in corso"
+    assert run("register", "2025", feed)["status"] == "release_detected"
+    assert run("register", "2026", {"https://x.test/api": b"{}"})["reason"] == "structure_changed"
     assert run("daily", "2026-10-11", {"https://x.test/d": page("Elenco del 08/11/2026")})["status"] == "current", "entro la tolleranza"
     assert run("daily", "2026-09-01", {"https://x.test/d": page("Elenco del 08/11/2026")})["status"] == "release_detected"
     assert run("semester", "2° semestre 2025", {"https://x.test/s": page("prelievo del 12/12/2025")})["status"] == "current"
