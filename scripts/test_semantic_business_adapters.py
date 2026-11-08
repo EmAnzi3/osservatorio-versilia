@@ -39,10 +39,10 @@ def regressions(catalog_path):
     assert 'workplace' in ratio['policy']['disjointPopulationEvidence']['method']
    else:rejected(e,request('weighted_ratio',key,dimension=dimension),'verified_ratio_adapter_required')
  # Independent transcriptions and arithmetic, including differences in units/universes.
- expected=[('localEmployees','total',4938.33),('businessValueAdded','sector:industry',92.849),('labourProductivity','total',53005),('averageGrossRemunerationPerEmployee','sector:industry',31226),('microUnits','total',95.45)]
+ expected=[('localEmployees','total',4958.85),('businessValueAdded','sector:industry',92.849),('labourProductivity','total',53005),('averageGrossRemunerationPerEmployee','sector:industry',31226),('microUnits','total',95.11)]
  for key,dimension,value in expected:
   q=e.query(request('compare',key,dimension=dimension,towns=['046018','046033']));assert q['status']=='computed',q['reasons'];assert math.isclose(q['observations'][0]['value'],value,rel_tol=0,abs_tol=1e-8)
- weighted=e.query(request('weighted_ratio','employeesPerLocalUnit'));assert math.isclose(weighted['result']['value'],54392.17/17967,rel_tol=0,abs_tol=1e-10)
+ weighted=e.query(request('weighted_ratio','employeesPerLocalUnit'));assert math.isclose(weighted['result']['value'],55474.02/18019,rel_tol=0,abs_tol=1e-10)
  industry=e.query(request('weighted_ratio','turnoverPerPersonEmployed',dimension='sector:industry'));assert math.isclose(industry['result']['value'],3270358000/16477,rel_tol=0,abs_tol=1e-8)
  rejected(e,request('compare','localUnitsChange',periods=['2023']),'business_explicit_baseline_interval_required')
  rejected(e,request('series','microUnits',towns=['046018']),'business_series_not_available')
@@ -77,7 +77,7 @@ def regressions(catalog_path):
   shutil.copyfile(ROOT/'data/source-snapshots'/part.name,part)
   snap=json.loads((root/b.MICRO).read_text());snap['sources']['046018']['csv']+='corrupt';(root/b.MICRO).write_text(json.dumps(snap))
   rejected(changed(original),request('compare','microUnits'),'business_csv_hash_mismatch')
-  snap=json.loads((root/b.ASIA_BENCH).read_text());snap['evidence']['LU']['tuscany']['2023']+=1;(root/b.ASIA_BENCH).write_text(json.dumps(snap))
+  snap=json.loads((root/b.ASIA_BENCH).read_text());snap['evidence']['LU']['tuscany'][b.ASIA_BENCH[-9:-5]]+=1;(root/b.ASIA_BENCH).write_text(json.dumps(snap))
   rejected(changed(original),dict(request('benchmark_gap','localUnits',towns=['046018']),benchmark='tuscany'),'business_catalog_source_mismatch')
  print('A6 business: 16 adapters, reviewed sectors, all seven municipal histories/benchmarks, independent arithmetic and refusals PASS')
 
