@@ -1,75 +1,552 @@
 {
   "schemaVersion": 1,
-  "description": "Ogni indicatore pubblicato deve avere una verifica mensile del periodo alla fonte. pendingLot indica il lotto che la introdurrà; maxPending può solo diminuire.",
-  "maxPending": 165,
+  "description": "Ogni indicatore pubblicato ha una verifica mensile del periodo alla fonte. probe indica il tipo: i probe dedicati confrontano anche i valori, source_period confronta il periodo pubblicato con quello esposto dalla fonte secondo le regole in sourceChecks. maxPending può solo diminuire ed è a zero.",
+  "maxPending": 0,
+  "sourceChecks": {
+    "aci_autoritratto": {
+      "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+      "pattern": "Autoritratto[_ -]?(20\\d\\d)",
+      "text": "raw",
+      "hint": "ultima edizione di Autoritratto ACI (file Autoritratto<anno>)"
+    },
+    "agcom_bul": {
+      "url": "https://geo.agcom.it/reportistica/report.js",
+      "kind": "date",
+      "graceDays": 30,
+      "pattern": "(?<![\\d/])(\\d{1,2}/\\d{1,2}/20\\d\\d)\\s*\\(rev\\.",
+      "text": "raw",
+      "hint": "data dell'ultimo aggiornamento della Broadband Map nella reportistica AGCOM"
+    },
+    "arpat_balneazione": {
+      "url": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/",
+      "pattern": "stagioni \\d{4}-(20\\d\\d)",
+      "hint": "ultima stagione balneare con dati ARPAT"
+    },
+    "bandiera_blu": {
+      "url": "https://www.bandierablu.org/common/blueflag.asp?anno={year}&tipo=bb",
+      "pattern": "Spiagge Bandiere Blu (20\\d\\d)",
+      "hint": "ultimo anno delle Bandiere Blu"
+    },
+    "demo_posas_residenti": {
+      "mode": "next",
+      "url": "https://demo.istat.it/data/posas/POSAS_{next}_it_046_Lucca.zip",
+      "confirm": true,
+      "expect": "PK",
+      "publishedPattern": "1\\.1\\.(20\\d\\d)",
+      "hint": "POSAS al 1° gennaio dell'anno successivo"
+    },
+    "demo_posas_serie": {
+      "mode": "next",
+      "url": "https://demo.istat.it/data/posas/POSAS_{next}_it_046_Lucca.zip",
+      "confirm": true,
+      "expect": "PK",
+      "hint": "POSAS al 1° gennaio dell'anno successivo"
+    },
+    "eligendo_consultazioni": {
+      "url": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "pattern": "(?i)(?:elezioni|referendum|consultazion\\w*)[^<]{0,60}?(20\\d\\d)",
+      "text": "raw",
+      "hint": "ultima consultazione con dati comunali su Eligendo"
+    },
+    "erp_bilancio": {
+      "url": "https://at.erplucca.it/default?path=75&t=1",
+      "pattern": "chiuso al 31[./]12[./](20\\d\\d)",
+      "hint": "ultimo bilancio di esercizio di ERP Lucca"
+    },
+    "gaia_analisi": {
+      "url": "https://www.gaia-spa.it/analisiweb_v2/campioni/49A02K17/0",
+      "kind": "semester",
+      "pattern": "Periodo di riferimento:\\s*([12]°\\s*Semestre\\s*20\\d\\d)",
+      "hint": "semestre di riferimento delle ultime analisi pubblicate da GAIA"
+    },
+    "idrogeo_alluvioni": {
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+      "pattern": "(?i)indicatori-di-rischio-edizione-(20\\d\\d)",
+      "text": "raw",
+      "baseline": "2024",
+      "hint": "edizione del rapporto ISPRA «Dissesto idrogeologico in Italia: pericolosità e indicatori di rischio» (baseline: edizione 2024, mosaicatura alluvioni pubblicata)"
+    },
+    "idrogeo_frane": {
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+      "pattern": "(?i)indicatori-di-rischio-edizione-(20\\d\\d)",
+      "text": "raw",
+      "baseline": "2024",
+      "hint": "edizione del rapporto ISPRA «Dissesto idrogeologico in Italia: pericolosità e indicatori di rischio» (baseline: edizione 2024, mosaicatura frane pubblicata)"
+    },
+    "invalsi_dispersione": {
+      "url": "https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/",
+      "pattern": "Report_generale_unito_dispersione_e_eccellenti_agg_(20\\d\\d)",
+      "sourceOffset": -1,
+      "hint": "ultimo report INVALSI su dispersione ed eccellenza"
+    },
+    "invalsi_report": {
+      "url": "https://serviziostatistico.invalsi.it/invalsi_ss_data/punteggi-e-percentuale-di-studenti-nei-livelli-di-competenza-per-ripartizioni-territoriali-e-caratteristiche-di-contesto/",
+      "pattern": "Report_generale_agg_(20\\d\\d)",
+      "sourceOffset": -1,
+      "hint": "ultimo report INVALSI (agg_<anno> = a.s. che termina in quell'anno)"
+    },
+    "ispra_consumo_suolo": {
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "pattern": "consumo_suolo_(20\\d\\d)_dati",
+      "text": "raw",
+      "sourceOffset": -1,
+      "hint": "ultimo rapporto ISPRA sul consumo di suolo (rapporto <anno> = dati anno − 1)"
+    },
+    "ispra_costa_protetta": {
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+      "pattern": "CProtetta(20\\d\\d)",
+      "text": "raw",
+      "hint": "ultimo anno dell'indicatore ISPRA costa protetta"
+    },
+    "ispra_dinamica_litoranea": {
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea",
+      "pattern": "nei periodi [^\\\"<]*?e \\d{4}-(20\\d\\d)",
+      "text": "raw",
+      "hint": "ultimo periodo dell'indicatore ISPRA dinamica litoranea"
+    },
+    "ispra_rifiuti_costi": {
+      "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
+      "pattern": "rifiuti urbani: \\d{4}-(20\\d\\d)",
+      "hint": "ultimo anno dei costi comunali di gestione dei rifiuti"
+    },
+    "ispra_rifiuti_produzione": {
+      "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
+      "pattern": "dettaglio comunale: \\d{4}-(20\\d\\d)",
+      "hint": "ultimo anno della produzione comunale di rifiuti urbani"
+    },
+    "istat_acqua_comuni": {
+      "mode": "absent",
+      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,12_60_DF_DCCV_CONSACQUA_2,1.0/all?startPeriod={next}",
+      "pattern": "(?:TIME_PERIOD=\\\"|ObsDimension[^>]*value=\\\"|TIME_PERIOD,)(20\\d\\d)",
+      "text": "raw",
+      "hint": "Censimento delle acque per uso civile (Istat): dati comunali successivi al 2018"
+    },
+    "istat_asia_ul": {
+      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A.046033.LU.0010.TOTAL",
+      "pattern": "(?:TIME_PERIOD=\\\"|ObsDimension[^>]*value=\\\"|TIME_PERIOD,)(20\\d\\d)",
+      "text": "raw",
+      "hint": "registro ASIA unità locali (Istat, esploradati): ultimo anno disponibile per i Comuni"
+    },
+    "istat_capacita_ricettiva": {
+      "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+      "pattern": "Periodo di riferimento: Anno (20\\d\\d)",
+      "hint": "ultimo anno della capacità degli esercizi ricettivi"
+    },
+    "istat_censimento_agricoltura": {
+      "url": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "pattern": "(?i)Censimento (?:generale |permanente )?dell.Agricoltura (20\\d\\d)",
+      "hint": "ultimo censimento dell'agricoltura con dati comunali"
+    },
+    "istat_censimento_popolazione": {
+      "url": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "pattern": "riferiti agli anni [\\d, e]*?(20\\d\\d) e alla serie",
+      "hint": "ultimo anno dei risultati del censimento permanente della popolazione"
+    },
+    "istat_fragilita_comuni": {
+      "mode": "next",
+      "html": true,
+      "url": "https://www.istat.it/comunicato-stampa/la-fragilita-dei-comuni-italiani-anno-{next}/",
+      "confirm": true,
+      "hint": "comunicato Istat sulla fragilità dei Comuni dell'anno successivo"
+    },
+    "istat_fragilita_comuni_edizione": {
+      "mode": "next",
+      "html": true,
+      "url": "https://www.istat.it/comunicato-stampa/la-fragilita-dei-comuni-italiani-anno-{next}/",
+      "confirm": true,
+      "baseline": "2022",
+      "hint": "comunicato Istat sulla fragilità dei Comuni successivo all'edizione 2022 (che riporta l'accessibilità 2019)"
+    },
+    "istat_geografie_funzionali": {
+      "url": "https://www.istat.it/comunicato-stampa/geografie-funzionali-per-lanalisi-territoriale/",
+      "pattern": "Periodo di riferimento: (20\\d\\d)",
+      "hint": "periodo di riferimento delle geografie funzionali Istat"
+    },
+    "istat_misura_comune_famiglie": {
+      "url": "https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
+      "hint": "ultimo anno nel file Misura comune «Famiglie»"
+    },
+    "istat_misura_comune_incidenti": {
+      "url": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
+      "hint": "ultimo anno nel file Misura comune «Incidenti stradali»"
+    },
+    "istat_misura_comune_sanzioni": {
+      "url": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
+      "hint": "ultimo anno nel file Misura comune «Motorizzazione e sanzioni»"
+    },
+    "istat_misura_comune_servizi_sociali": {
+      "url": "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
+      "pattern": "<t[^>]*>Tavola [^<]*?(20\\d\\d)[^<0-9]*</t>",
+      "hint": "ultimo anno nel file Misura comune «Servizi sociali»"
+    },
+    "istat_pendolarismo": {
+      "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "pattern": "Periodo di riferimento: Censimento (20\\d\\d)",
+      "hint": "ultimo censimento della matrice del pendolarismo"
+    },
+    "istat_risultati_imprese_territoriali": {
+      "mode": "next",
+      "html": true,
+      "url": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-{next}/",
+      "confirm": true,
+      "hint": "tavole Istat dei risultati economici delle imprese a livello territoriale dell'anno successivo"
+    },
+    "istat_sezioni_censimento": {
+      "url": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+      "pattern": "SUBCOM/Comuni_(20\\d\\d)",
+      "text": "raw",
+      "hint": "ultimo anno dei dati per sezioni di censimento"
+    },
+    "istat_spesa_sociale_comuni": {
+      "mode": "next",
+      "html": true,
+      "url": "https://www.istat.it/comunicato-stampa/la-spesa-dei-comuni-per-i-servizi-sociali-anno-{next}/",
+      "confirm": true,
+      "hint": "comunicato Istat sulla spesa dei Comuni per i servizi sociali dell'anno successivo"
+    },
+    "istat_statistiche_geografiche": {
+      "url": "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/",
+      "pattern": "al[-_ ]31[-_ ](?:12|dicembre)[-_ ](20\\d\\d)",
+      "text": "raw",
+      "hint": "data di riferimento delle statistiche geografiche dei Comuni"
+    },
+    "era5_land": {
+      "url": "https://cds.climate.copernicus.eu/api/catalogue/v1/collections/reanalysis-era5-land",
+      "text": "raw",
+      "sourceOffset": -1,
+      "pattern": "\\\"interval\\\"\\s*:\\s*\\[\\s*\\[\\s*\\\"[^\\\"]*\\\"\\s*,\\s*\\\"(20\\d\\d)-",
+      "hint": "fine della copertura di ERA5-Land (Copernicus), che fornisce gli anni dal 2016: l'ultimo anno completo è quello precedente"
+    },
+    "mef_addizionale_irpef": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
+      "pattern": "(?i)anno\\D{0,8}(20\\d\\d)",
+      "hint": "ultimo anno delle delibere di addizionale comunale IRPEF"
+    },
+    "mef_imu": {
+      "mode": "absent",
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/dati/download.htm?anno={next}",
+      "pattern": "tributi_locali/datizip/(20\\d\\d)/",
+      "text": "raw",
+      "hint": "archivi regionali delle delibere IMU dell'anno successivo"
+    },
+    "mef_irpef_comunale": {
+      "mode": "next",
+      "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_{next}.zip",
+      "confirm": true,
+      "expect": "PK",
+      "hint": "file IRPEF comunale dell'anno d'imposta successivo (Analisi statistiche, Dichiarazioni fiscali)"
+    },
+    "mef_irpef_comunale_ai": {
+      "mode": "next",
+      "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_{next}.zip",
+      "confirm": true,
+      "expect": "PK",
+      "publishedPattern": "a\\.i\\.\\s*(20\\d\\d)",
+      "hint": "file IRPEF comunale dell'anno d'imposta successivo"
+    },
+    "mef_tari": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/sceltaanno.htm",
+      "pattern": "<option value=(20\\d\\d)\\s*selected",
+      "text": "raw",
+      "hint": "anno corrente delle delibere TARI consultabili (anno selezionato dal portale)"
+    },
+    "mim_anno_scolastico": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
+      "pattern": "ANNOSCOLASTICO\\s*(20\\d\\d)\\d\\d",
+      "hint": "ultimo anno scolastico pubblicato nel catalogo Studenti"
+    },
+    "mim_edilizia": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021",
+      "pattern": "ANNOSCOLASTICO\\s*(20\\d\\d)\\d\\d",
+      "hint": "ultimo anno scolastico pubblicato per l'edilizia scolastica"
+    },
+    "mim_scuole": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole",
+      "pattern": "ANNOSCOLASTICO\\s*(20\\d\\d)\\d\\d",
+      "hint": "ultimo anno scolastico pubblicato nel catalogo Scuole"
+    },
+    "mimit_carburanti": {
+      "url": "QUICK https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
+      "kind": "date",
+      "graceDays": 45,
+      "pattern": "Estrazione del (20\\d\\d-\\d\\d-\\d\\d)",
+      "text": "raw",
+      "hint": "data di estrazione dei prezzi dei carburanti (prima riga del CSV); il sito MIMIT non risponde ai runner GitHub: in alternativa l'ultimo trimestre in https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-archivio-prezzi"
+    },
+    "mit_concessioni": {
+      "url": "https://dati.mit.gov.it/catalog/dataset/?q=concessioni+demaniali+marittime&sort=metadata_created+desc",
+      "kind": "month",
+      "pattern": "(?i)Concessioni Demaniali Marittime (?:a|al|di) ([a-z]+ 20\\d\\d)",
+      "hint": "ultimo mese delle concessioni demaniali marittime"
+    },
+    "omi_quotazioni": {
+      "url": "https://www.agenziaentrate.gov.it/portale/web/guest/schede/fabbricatiterreni/omi/banche-dati/quotazioni-immobiliari",
+      "kind": "semester",
+      "pattern": "([12]\\s*°?\\s*semestre\\s*20\\d\\d)",
+      "hint": "ultimo semestre delle quotazioni OMI"
+    },
+    "openbdap_osservazione": {
+      "url": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "pattern": "Data di osservazione [a-zà-ù]+\\)? ?(20\\d\\d)",
+      "hint": "anno di osservazione dei dati OpenBDAP"
+    },
+    "percorsi_versilia": {
+      "url": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "pattern": "Dataset aggiornato al \\d{1,2} [a-zà-ù]+ (20\\d\\d)",
+      "hint": "data del dataset Percorsi Versilia (fonte interna)"
+    },
+    "pun_ricarica": {
+      "mode": "snapshot",
+      "kind": "year",
+      "url": "https://www.piattaformaunicanazionale.it/idr",
+      "expect": "Piattaforma Unica Nazionale",
+      "hint": "registro continuo PUN dei punti di ricarica (API pubblica con token, nessuna data alla fonte): l'istantanea pubblicata deve essere dell'anno in corso"
+    },
+    "rgs_conto_annuale_successivo": {
+      "mode": "next",
+      "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/{next}---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+      "confirm": true,
+      "hint": "Conto annuale del personale dell'anno successivo (CSV per ente)"
+    },
+    "rsa_accreditate": {
+      "mode": "next",
+      "url": "https://www.regione.toscana.it/documents/d/guest/elenco-strutture-del-sistema-sociale-integrato-accreditate-al-31-dicembre-{next}",
+      "alternatives": [
+        "https://www.regione.toscana.it/documents/d/guest/elenco-strutture-del-sistema-sociale-integrato-accreditate-al-30-giugno-{next}"
+      ],
+      "confirm": true,
+      "expect": "%PDF",
+      "hint": "elenco regionale delle strutture accreditate al 30 giugno o al 31 dicembre dell'anno successivo"
+    },
+    "rt_aree_protette": {
+      "url": "https://www.regione.toscana.it/sistema-aree-naturali-protette",
+      "pattern": "DOA (20\\d\\d)",
+      "baseline": "2022",
+      "hint": "ultimo aggiornamento dell'elenco ufficiale delle aree protette (DOA)"
+    },
+    "rt_banca_dati_imprese": {
+      "url": "https://servizi.toscana.it/RT/statistichedinamiche/imprese_serie/",
+      "pattern": "(20\\d\\d)\\s+Ordina il grafico",
+      "sourceOffset": 1,
+      "hint": "serie storiche della Banca dati imprese regionale: l'ultimo anno di confronto offerto è quello precedente all'ultimo anno della serie"
+    },
+    "rt_biblioteche": {
+      "url": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv",
+      "pattern": "(?<![\\d.])(20\\d\\d)[\\s;,\\\"]+0\\d{5}(?!\\d)",
+      "text": "raw",
+      "hint": "ultimo ANNO nel CSV degli indicatori delle biblioteche"
+    },
+    "rt_cave_monitoraggio": {
+      "url": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "pattern": "Decisione \\d+ dell?'?\\s*\\d{1,2}-\\d{1,2}-(20\\d\\d)",
+      "sourceOffset": -1,
+      "hint": "ultima decisione di monitoraggio del Piano cave (decisione <anno> = dati anno − 1)"
+    },
+    "rt_grafo_stradale": {
+      "url": "https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/",
+      "pattern": "v\\. [\\d.]+ di [A-Za-z]+ (20\\d\\d)",
+      "hint": "versione del grafo stradale regionale"
+    },
+    "rt_gtfs": {
+      "url": "https://dati.toscana.it/dataset/rt-oraritb",
+      "kind": "date",
+      "graceDays": 60,
+      "pattern": "Ultimo aggiornamento\\s+([A-Za-zà-ù]+ \\d{1,2}, 20\\d\\d)",
+      "hint": "data di aggiornamento degli orari GTFS regionali"
+    },
+    "rt_indicatori_comunali": {
+      "url": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "pattern": "Indicatori (20\\d\\d) \\(file",
+      "hint": "ultimo anno degli indicatori comunali per le politiche locali"
+    },
+    "rt_opere_idrauliche": {
+      "url": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "pattern": "delibera di Giunta \\d+ dell?.{0,4}\\d{1,2} [a-zà-ù]+ (20\\d\\d)",
+      "hint": "anno della delibera di ricognizione delle opere idrauliche"
+    },
+    "rt_pab_annualita": {
+      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "pattern": "annualit[àa]\\s+(20\\d\\d)",
+      "hint": "ultima annualità dei Piani delle attività di bonifica approvata"
+    },
+    "rt_piano_cave": {
+      "url": "https://www.regione.toscana.it/piano-regionale-cave",
+      "pattern": "(?i)(?:Delibera|Deliberazione) (?:\\d+ del )?\\d{1,2} [a-zà-ù]+ (20\\d\\d)",
+      "publishedPattern": "variante (20\\d\\d)",
+      "hint": "ultima delibera di variante del Piano regionale cave"
+    },
+    "rt_pnrr": {
+      "url": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+      "pattern": "Data di modifica\\s+\\d{2}-\\d{2}-(20\\d\\d)",
+      "hint": "anno dell'ultimo aggiornamento del dataset PNRR regionale"
+    },
+    "rt_prima_infanzia": {
+      "url": "https://dati.toscana.it/dataset/serviziprimainfanzia",
+      "pattern": "anno (20\\d\\d)/\\d\\d",
+      "hint": "ultimo anno educativo dei servizi per la prima infanzia"
+    },
+    "rt_reticolo": {
+      "url": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "pattern": "delibera di Consiglio Regionale numero \\d+/(20\\d\\d)",
+      "publishedPattern": "DCRT \\d+/(20\\d\\d)",
+      "hint": "anno della delibera del Consiglio regionale che approva il reticolo"
+    },
+    "rt_turismo_annuale": {
+      "mode": "next",
+      "html": true,
+      "url": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-{next}",
+      "alternatives": [
+        "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-{next}%C2%A0"
+      ],
+      "hint": "pagina regionale «Arrivi e presenze … dati» dell'anno successivo"
+    },
+    "rt_uso_suolo": {
+      "url": "https://www502.regione.toscana.it/geonetwork/srv/api/records/r_toscan:0d4d6640-9a1c-47a4-9a5d-a85cdb36927c",
+      "pattern": "(?s)<gmd:title>\\s*<gco:CharacterString>[^<]*?(20\\d\\d)[^<0-9]*</gco:CharacterString>",
+      "text": "raw",
+      "hint": "ultimo anno nel titolo della carta regionale di uso e copertura del suolo"
+    },
+    "rtcave_api": {
+      "mode": "snapshot",
+      "url": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "expect": "cod_istat",
+      "maxAgeDays": 62,
+      "hint": "registro RTCave: rileggere l'elenco dei siti"
+    },
+    "runts_elenco": {
+      "url": "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti",
+      "kind": "date",
+      "graceDays": 45,
+      "pattern": "Elenco enti iscritti (\\d{2}/\\d{2}/20\\d\\d)",
+      "hint": "data dell'elenco degli enti iscritti al RUNTS"
+    },
+    "salute_farmacie": {
+      "url": "LEGACYTLS https://www.dati.salute.gov.it/it/dataset/farmacie/",
+      "pattern": "FRM_FARMA_\\d+_(20\\d\\d)\\d{4}",
+      "text": "raw",
+      "hint": "data dell'ultimo file delle farmacie (FRM_FARMA_…_AAAAMMGG)"
+    },
+    "salute_ospedali": {
+      "url": "LEGACYTLS https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero-pubbliche-e-equiparate-presenti-nel-territorio-della-asl/",
+      "pattern": "files/(20\\d\\d)-\\d\\d/Strutture_di_ricovero",
+      "text": "raw",
+      "hint": "edizione (anno di caricamento) dell'ultimo file delle strutture di ricovero: l'edizione 2025-01 contiene i dati 2022"
+    },
+    "sisbon_api": {
+      "mode": "snapshot",
+      "url": "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv",
+      "expect": "codice_regionale",
+      "maxAgeDays": 62,
+      "hint": "anagrafe regionale dei siti da bonificare: rileggere l'elenco"
+    },
+    "uncem_foreste": {
+      "url": "https://uncem.it/?s=foreste+in+comune",
+      "pattern": "(?i)rapporto\\W+foreste in comune\\W[\\s\\S]{0,300}?\\b\\d{1,2}\\s+[a-z]+\\s+(20\\d\\d)",
+      "baseline": "2026",
+      "hint": "data dell'ultima presentazione del rapporto Foreste in Comune nella ricerca UNCEM (baseline: edizione di giugno 2026, dati comunali giu2026)"
+    }
+  },
   "metrics": {
     "accreditedRsaCount": {
-      "pendingLot": 4,
-      "source": "servizi.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rsa_accreditate"
+      ]
     },
     "activeTplAccessPoints": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_gtfs"
+      ]
     },
     "activityRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_popolazione"
+      ]
     },
     "ageDistribution": {
       "probe": "demo_istat",
       "measure": "age_20_34"
     },
     "agriculturalDiversificationAndModernization": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "agriculturalFarms": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "agriculturalRenewalAndLeadership": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "agriculturalUsedArea": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "altitudeProfile": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_statistiche_geografiche"
+      ]
     },
     "availableAdministrationResultPerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "averageAgriculturalFarmSize": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "averageGrossRemunerationPerEmployee": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "bathingNonCompliantSamples": {
-      "pendingLot": 4,
-      "source": "arpat.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "arpat_balneazione"
+      ]
     },
     "bathingWaterQuality": {
-      "pendingLot": 4,
-      "source": "arpat.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "arpat_balneazione"
+      ]
     },
     "blueFlagBeaches": {
-      "pendingLot": 6,
-      "source": "bandierablu.org"
+      "probe": "source_period",
+      "checks": [
+        "bandiera_blu"
+      ]
     },
     "businessTurnover": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "businessValueAdded": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "capitalExpenditureCommittedPerResident": {
       "probe": "openbdap_rendiconto",
@@ -98,32 +575,46 @@
       "family": "v139"
     },
     "climatePrecipitationTrend50y": {
-      "pendingLot": 4,
-      "source": "dati.lamma.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "era5_land"
+      ]
     },
     "climateTemperatureTrend50y": {
-      "pendingLot": 4,
-      "source": "dati.lamma.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "era5_land"
+      ]
     },
     "climateTmaxTrend": {
-      "pendingLot": 4,
-      "source": "dati.lamma.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "era5_land"
+      ]
     },
     "climateTminTrend": {
-      "pendingLot": 4,
-      "source": "dati.lamma.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "era5_land"
+      ]
     },
     "cohabitingHouseholds": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "commuterBalance": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "commuterBalanceRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "copdPrevalence": {
       "probe": "ars_export",
@@ -134,8 +625,10 @@
       "measurement": "standardized"
     },
     "cropProfile": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "cultureSportMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
@@ -192,28 +685,38 @@
       "measurement": "standardized"
     },
     "diplomaPlus": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_popolazione"
+      ]
     },
     "disability064Per1000": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "drinkingWaterQuality": {
-      "pendingLot": 4,
-      "source": "gaia-spa.it"
+      "probe": "source_period",
+      "checks": [
+        "gaia_analisi"
+      ]
     },
     "earlyChildhoodPotentialCapacityRate": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_prima_infanzia"
+      ]
     },
     "economicDevelopmentMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v139"
     },
     "economyActivityAtlas": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_banca_dati_imprese"
+      ]
     },
     "educationMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
@@ -238,56 +741,78 @@
       "measurement": "standardized"
     },
     "employeesPerLocalUnit": {
-      "pendingLot": 2,
-      "source": "esploradati.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "employmentGenderGap": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "employmentRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_popolazione"
+      ]
     },
     "emsResponseTimeP75": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "environmentMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "erpArrears": {
-      "pendingLot": 4,
-      "source": "at.erplucca.it"
+      "probe": "source_period",
+      "checks": [
+        "erp_bilancio"
+      ]
     },
     "essentialServicesAccessibility": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_fragilita_comuni_edizione"
+      ]
     },
     "evPoints": {
-      "pendingLot": 6,
-      "source": "piattaformaunicanazionale.it"
+      "probe": "source_period",
+      "checks": [
+        "pun_ricarica"
+      ]
     },
     "extractivePlanning": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_piano_cave"
+      ]
     },
     "extractiveProduction": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_cave_monitoraggio"
+      ]
     },
     "extractiveSites": {
-      "pendingLot": 4,
-      "source": "cave.regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rtcave_api"
+      ]
     },
     "fcdePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v139"
     },
     "femaleEmploymentRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "financialDebtProfile": {
       "probe": "openbdap_rendiconto",
@@ -297,12 +822,16 @@
       "probe": "siope_cumulative"
     },
     "floodExposure": {
-      "pendingLot": 6,
-      "source": "idrogeo.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "idrogeo_alluvioni"
+      ]
     },
     "foreignBornSoleProprietorShare": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "foreignResidentialMobility": {
       "probe": "demo_istat",
@@ -313,40 +842,56 @@
       "measure": "foreign_share"
     },
     "foreignTourismShare": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "forestCoverIndex": {
-      "pendingLot": 6,
-      "source": "uncem.it"
+      "probe": "source_period",
+      "checks": [
+        "uncem_foreste"
+      ]
     },
     "ftthCoverage20m": {
-      "pendingLot": 6,
-      "source": "maps.agcom.it"
+      "probe": "source_period",
+      "checks": [
+        "agcom_bul"
+      ]
     },
     "ftthCoverageDesi": {
-      "pendingLot": 6,
-      "source": "maps.agcom.it"
+      "probe": "source_period",
+      "checks": [
+        "agcom_bul"
+      ]
     },
     "ftthReachedHouseholds": {
-      "pendingLot": 6,
-      "source": "maps.agcom.it"
+      "probe": "source_period",
+      "checks": [
+        "agcom_bul"
+      ]
     },
     "ftthUnreachedHouseholds": {
-      "pendingLot": 6,
-      "source": "maps.agcom.it"
+      "probe": "source_period",
+      "checks": [
+        "agcom_bul"
+      ]
     },
     "fuelPrices": {
-      "pendingLot": 6,
-      "source": "mimit.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mimit_carburanti"
+      ]
     },
     "generalAdministrationMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v139"
     },
     "grossOperatingMargin": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "heartFailurePrevalence": {
       "probe": "ars_export",
@@ -366,20 +911,28 @@
       "measurement": "standardized"
     },
     "hospitals": {
-      "pendingLot": 6,
-      "source": "salute.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "salute_ospedali"
+      ]
     },
     "householdSize": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_misura_comune_famiglie"
+      ]
     },
     "housingStockPer1000": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "hydraulicWorksCensusElements": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_opere_idrauliche"
+      ]
     },
     "hypertensionPrevalence": {
       "probe": "ars_export",
@@ -390,64 +943,92 @@
       "measurement": "standardized"
     },
     "inboundCommuters": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "inboundCommutersRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "income": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale"
+      ]
     },
     "incomeDistribution": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale"
+      ]
     },
     "incomeSourceProfile": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale"
+      ]
     },
     "incomeVsInflation": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale"
+      ]
     },
     "industryValueAddedShare": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "industryWorkerShare": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "innovationBusinessShare": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "internalResidentialMobility": {
       "probe": "demo_istat",
       "measure": "mobility_internal"
     },
     "invalsiAcademicExcellence": {
-      "pendingLot": 5,
-      "source": "serviziostatistico.invalsi.it"
+      "probe": "source_period",
+      "checks": [
+        "invalsi_dispersione"
+      ]
     },
     "invalsiCompetence": {
-      "pendingLot": 5,
-      "source": "serviziostatistico.invalsi.it"
+      "probe": "source_period",
+      "checks": [
+        "invalsi_report"
+      ]
     },
     "invalsiImplicitDispersion": {
-      "pendingLot": 5,
-      "source": "serviziostatistico.invalsi.it"
+      "probe": "source_period",
+      "checks": [
+        "invalsi_dispersione"
+      ]
     },
     "invalsiResults": {
-      "pendingLot": 5,
-      "source": "serviziostatistico.invalsi.it"
+      "probe": "source_period",
+      "checks": [
+        "invalsi_report"
+      ]
     },
     "irrigatedAgriculturalArea": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_agricoltura"
+      ]
     },
     "ischemicHeartDiseasePrevalence": {
       "probe": "ars_export",
@@ -458,40 +1039,58 @@
       "measurement": "standardized"
     },
     "labourCost": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "labourProductivity": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "landCoverProfile": {
-      "pendingLot": 4,
-      "source": "www502.regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_uso_suolo"
+      ]
     },
     "landUse": {
-      "pendingLot": 6,
-      "source": "isprambiente.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_consumo_suolo"
+      ]
     },
     "landUseChange": {
-      "pendingLot": 6,
-      "source": "isprambiente.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_consumo_suolo"
+      ]
     },
     "landslideExposure": {
-      "pendingLot": 6,
-      "source": "idrogeo.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "idrogeo_frane"
+      ]
     },
     "libraryActiveBorrowersPer100": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_biblioteche"
+      ]
     },
     "libraryLoansPerResident": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_biblioteche"
+      ]
     },
     "libraryWeeklyOpeningHours": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_biblioteche"
+      ]
     },
     "lifeExpectancy": {
       "probe": "ars_export",
@@ -503,44 +1102,64 @@
       "measurement": "raw"
     },
     "localEmployees": {
-      "pendingLot": 2,
-      "source": "esploradati.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "localEmployeesChange": {
-      "pendingLot": 2,
-      "source": "esploradati.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "localUnits": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "localUnitsChange": {
-      "pendingLot": 2,
-      "source": "esploradati.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "lowProductivityEmployment": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_fragilita_comuni"
+      ]
     },
     "maleEmploymentRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "managedReticulumLength": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_reticolo"
+      ]
     },
     "maritimeConcessionFeesDue": {
-      "pendingLot": 6,
-      "source": "dati.mit.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mit_concessioni"
+      ]
     },
     "maritimeConcessions": {
-      "pendingLot": 6,
-      "source": "dati.mit.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mit_concessioni"
+      ]
     },
     "microUnits": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_asia_ul"
+      ]
     },
     "mobilityMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
@@ -583,112 +1202,154 @@
       "measurement": "standardized"
     },
     "motorization": {
-      "pendingLot": 6,
-      "source": "aci.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "aci_autoritratto"
+      ]
     },
     "municipalEmployeesPer1000": {
       "probe": "rgs_conto_annuale",
       "measure": "employeesPer1000"
     },
     "municipalFragility": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_fragilita_comuni"
+      ]
     },
     "municipalImuStandard": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_imu"
+      ]
     },
     "municipalIrpef": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_addizionale_irpef"
+      ]
     },
     "municipalOnlineServicesAdvanced": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "municipalStaffAgeStructure": {
       "probe": "rgs_conto_annuale",
       "measure": "age55"
     },
     "municipalStaffTraining": {
-      "pendingLot": 3,
-      "source": "contoannuale.rgs.mef.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "rgs_conto_annuale_successivo"
+      ]
     },
     "municipalStaffTurnover": {
       "probe": "rgs_conto_annuale",
       "measure": "turnover"
     },
     "municipalSurface": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_statistiche_geografiche"
+      ]
     },
     "naturalDemographicDynamics": {
       "probe": "demo_istat",
       "measure": "natural"
     },
     "nonOccupiedHomesPer1000": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "oldAgeIndex": {
       "probe": "demo_istat",
       "measure": "old_age"
     },
     "omiResidential": {
-      "pendingLot": 5,
-      "source": "www1.agenziaentrate.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "omi_quotazioni"
+      ]
     },
     "organicAgriculturalAreaShare": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     },
     "outboundCommuters": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "outboundCommutersRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "outsideMunicipality": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "ownRevenueShare": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "pabCompletedOperationalGrossValue": {
-      "pendingLot": 4,
-      "source": "cbtoscananord.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabInProgressOperationalGrossValue": {
-      "pendingLot": 4,
-      "source": "cbtoscananord.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabInterventionsCompleted": {
-      "pendingLot": 4,
-      "source": "cbtoscananord.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabInterventionsInProgress": {
-      "pendingLot": 4,
-      "source": "cbtoscananord.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabProgrammedInterventionLength": {
-      "pendingLot": 4,
-      "source": "cbtoscananord.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabProgrammedInterventions": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pabProgrammedMaintenanceValue": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pab_annualita"
+      ]
     },
     "pensionIncomeShare": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale"
+      ]
     },
     "permanentRsaAssisted": {
       "probe": "ars_export",
@@ -700,36 +1361,48 @@
       "measurement": "standardized"
     },
     "pharmaciesPer1000": {
-      "pendingLot": 6,
-      "source": "dati.salute.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "salute_farmacie"
+      ]
     },
     "pnrrConcluded": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pnrr"
+      ]
     },
     "pnrrFunding": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_pnrr"
+      ]
     },
     "pollutingCars": {
-      "pendingLot": 6,
-      "source": "aci.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "aci_autoritratto"
+      ]
     },
     "population": {
       "probe": "demo_istat",
       "measure": "population"
     },
     "populationChange": {
-      "pendingLot": 2,
-      "source": "demo.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "demo_posas_serie"
+      ]
     },
     "populationDensity": {
       "probe": "demo_istat",
       "measure": "density"
     },
     "primaryFullTimeShare": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_anno_scolastico"
+      ]
     },
     "priorStrokePrevalence": {
       "probe": "ars_export",
@@ -740,127 +1413,182 @@
       "measurement": "standardized"
     },
     "protectedNaturalAreas": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_aree_protette"
+      ]
     },
     "publicWorks": {
-      "pendingLot": 3,
-      "source": "openbdap.rgs.mef.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "openbdap_osservazione"
+      ]
     },
     "recycling": {
-      "pendingLot": 6,
-      "source": "catasto-rifiuti.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_rifiuti_produzione"
+      ]
     },
     "remediationProceedings": {
-      "pendingLot": 4,
-      "source": "sisbon.regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "sisbon_api"
+      ]
     },
     "residualWaste": {
-      "pendingLot": 6,
-      "source": "catasto-rifiuti.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_rifiuti_produzione"
+      ]
     },
     "rigidDefenceProtectedCoast": {
-      "pendingLot": 6,
-      "source": "indicatoriambientali.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_costa_protetta"
+      ]
     },
     "rigidExpenditureShare": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "roadFinesPerResident": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_misura_comune_sanzioni"
+      ]
     },
     "roadNetworkProfile": {
-      "pendingLot": 4,
-      "source": "www502.regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_grafo_stradale"
+      ]
     },
     "roadSafety": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_misura_comune_incidenti"
+      ]
     },
     "scheduledTplTripsPer1000": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_gtfs"
+      ]
     },
     "schoolBuildingAccessibility": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_edilizia"
+      ]
     },
     "schoolBuildingAge": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_edilizia"
+      ]
     },
     "schoolBuildingFacilities": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_edilizia"
+      ]
     },
     "schoolBuildingSafetyDocs": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_edilizia"
+      ]
     },
     "schoolBuildingTransport": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_edilizia"
+      ]
     },
     "schoolSites": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_scuole"
+      ]
     },
     "schoolStudents": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_anno_scolastico"
+      ]
     },
     "securityMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "mission03"
     },
     "selfContainment": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_pendolarismo"
+      ]
     },
     "shorelineDynamics": {
-      "pendingLot": 6,
-      "source": "indicatoriambientali.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_dinamica_litoranea"
+      ]
     },
     "singleHouseholds": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "siopePayments": {
       "probe": "siope_cumulative"
     },
     "slowMobilityBici": {
-      "pendingLot": 6,
-      "source": "osservatorioversilia.it"
+      "probe": "source_period",
+      "checks": [
+        "percorsi_versilia"
+      ]
     },
     "slowMobilityCammini": {
-      "pendingLot": 6,
-      "source": "osservatorioversilia.it"
+      "probe": "source_period",
+      "checks": [
+        "percorsi_versilia"
+      ]
     },
     "slowMobilityMtb": {
-      "pendingLot": 6,
-      "source": "osservatorioversilia.it"
+      "probe": "source_period",
+      "checks": [
+        "percorsi_versilia"
+      ]
     },
     "slowMobilityRoutes": {
-      "pendingLot": 6,
-      "source": "osservatorioversilia.it"
+      "probe": "source_period",
+      "checks": [
+        "percorsi_versilia"
+      ]
     },
     "slowMobilityTrekking": {
-      "pendingLot": 6,
-      "source": "osservatorioversilia.it"
+      "probe": "source_period",
+      "checks": [
+        "percorsi_versilia"
+      ]
     },
     "socialMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "socialSpendingByUserArea": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_spesa_sociale_comuni",
+        "istat_misura_comune_servizi_sociali"
+      ]
     },
     "socialSpendingPerResident": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_spesa_sociale_comuni"
+      ]
     },
     "specialistVisits7Psr": {
       "probe": "ars_export",
@@ -872,120 +1600,171 @@
       "measurement": "standardized"
     },
     "statisticalCoastlineLength": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_statistiche_geografiche"
+      ]
     },
     "studentsPerClass": {
-      "pendingLot": 5,
-      "source": "dati.istruzione.it"
+      "probe": "source_period",
+      "checks": [
+        "mim_anno_scolastico"
+      ]
     },
     "tariStandardHousehold": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_tari"
+      ]
     },
     "taxpayersAdultPopulationRate": {
-      "pendingLot": 5,
-      "source": "www1.finanze.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "mef_irpef_comunale_ai",
+        "demo_posas_residenti"
+      ]
     },
     "territorialClassification": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_geografie_funzionali"
+      ]
     },
     "territorialPlanningMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v139"
     },
     "tertiary": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_popolazione"
+      ]
     },
     "thirdSector": {
-      "pendingLot": 6,
-      "source": "servizi.lavoro.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "runts_elenco"
+      ]
     },
     "totalResidentialMobility": {
       "probe": "demo_istat",
       "measure": "mobility_total"
     },
     "tourismArrivals": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "tourismAverageStay": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "tourismBeds": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_capacita_ricettiva"
+      ]
     },
     "tourismBedsPer1000": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_capacita_ricettiva"
+      ]
     },
     "tourismDevelopmentMissionExpenditurePerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v160"
     },
     "tourismIntensity": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "tourismPresences": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "tourismSeasonality": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_turismo_annuale"
+      ]
     },
     "tourismStructuresPer1000": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_capacita_ricettiva"
+      ]
     },
     "tplServiceSpan": {
-      "pendingLot": 4,
-      "source": "dati.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_gtfs"
+      ]
     },
     "turnoverPerPersonEmployed": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "unemploymentRate": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_censimento_popolazione"
+      ]
     },
     "vacantHomes": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_sezioni_censimento"
+      ]
     },
     "valueAddedTurnoverShare": {
-      "pendingLot": 2,
-      "source": "istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_risultati_imprese_territoriali"
+      ]
     },
     "voterTurnout": {
-      "pendingLot": 6,
-      "source": "elezionistorico.interno.gov.it"
+      "probe": "source_period",
+      "checks": [
+        "eligendo_consultazioni"
+      ]
     },
     "wastePerResident": {
-      "pendingLot": 6,
-      "source": "catasto-rifiuti.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_rifiuti_produzione"
+      ]
     },
     "wasteServiceCost": {
-      "pendingLot": 6,
-      "source": "catasto-rifiuti.isprambiente.it"
+      "probe": "source_period",
+      "checks": [
+        "ispra_rifiuti_costi"
+      ]
     },
     "waterNetworkLosses": {
-      "pendingLot": 2,
-      "source": "esploradati.istat.it"
+      "probe": "source_period",
+      "checks": [
+        "istat_acqua_comuni"
+      ]
     },
     "yearEndCashFundPerResident": {
       "probe": "openbdap_rendiconto",
       "family": "v139"
     },
     "youthOtherStatus": {
-      "pendingLot": 4,
-      "source": "regione.toscana.it"
+      "probe": "source_period",
+      "checks": [
+        "rt_indicatori_comunali"
+      ]
     }
   }
 }

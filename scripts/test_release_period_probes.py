@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Contratto: ogni indicatore ha (o avrà, in un lotto dichiarato) una verifica mensile del periodo."""
+"""Contratto: ogni indicatore ha una verifica mensile del periodo alla fonte."""
 from __future__ import annotations
 
 import copy
+import datetime
+import re
 import io
 import json
 import zipfile
@@ -41,6 +43,23 @@ def coverage_contract() -> None:
             assert spec["measure"] in probes.RGS_FILES_BY_MEASURE, key
         if spec["probe"] == "openbdap_rendiconto":
             assert spec["family"] in {"v139", "v160", "mission03", "debt_d1"}, key
+        if spec["probe"] == "source_period":
+            assert spec["checks"] and all(name in contract["sourceChecks"] for name in spec["checks"]), key
+    used = {name for spec in metrics.values() for name in spec.get("checks", [])}
+    assert used == set(contract["sourceChecks"]), f"regole non usate: {sorted(set(contract['sourceChecks']) - used)}"
+    for name, check in contract["sourceChecks"].items():
+        mode = check.get("mode", "latest")
+        assert mode in {"latest", "next", "absent", "snapshot"}, name
+        assert check["url"].split(" ")[-1].startswith("https://") and check.get("hint"), name
+        assert check.get("kind", "year") in {"year", "month", "semester", "date"}, name
+        if mode in {"latest", "absent"}:
+            assert re.compile(check["pattern"]).groups >= 1, name
+        if mode == "next":
+            assert "{next}" in check["url"] and all("{next}" in u for u in check.get("alternatives", [])), name
+        if mode == "snapshot":
+            assert check["expect"] and (check.get("kind") == "year" or 0 < int(check["maxAgeDays"]) <= 92), name
+        if check.get("kind") == "date" and mode == "latest":
+            assert 0 <= int(check.get("graceDays", 0)) <= 92, name
 
 
 def payload(values: dict[str, dict[str, float]], indicator: int = 9999) -> bytes:
@@ -120,6 +139,66 @@ def probe_cases() -> None:
     assert "### Azioni manuali" in lines and "--file" in lines
 
 
+def period_cases() -> None:
+    """Verifica del solo periodo: pagine, edizioni successive, istantanee di fonti continue."""
+    probes.SOURCE_CHECKS.clear()
+    probes.SOURCE_CHECKS.update({
+        "page": {"url": "https://x.test/p", "pattern": r"Periodo di riferimento: Anno (20\d\d)", "hint": "h"},
+        "next": {"mode": "next", "url": "https://x.test/anno-{next}/", "confirm": True, "html": True, "hint": "h"},
+        "feed": {"mode": "snapshot", "url": "https://x.test/api", "expect": "cod_istat", "maxAgeDays": 60, "hint": "h"},
+        "register": {"mode": "snapshot", "kind": "year", "url": "https://x.test/api", "expect": "cod_istat", "hint": "h"},
+        "daily": {"url": "https://x.test/d", "kind": "date", "graceDays": 30, "pattern": r"Elenco del (\d\d/\d\d/20\d\d)", "hint": "h"},
+        "semester": {"url": "https://x.test/s", "kind": "semester", "pattern": r"(\d\d/\d\d/20\d\d)", "hint": "h"},
+        "absent": {"mode": "absent", "url": "https://x.test/sdmx?startPeriod={next}", "pattern": r'TIME_PERIOD="(20\d\d)', "text": "raw", "hint": "h"},
+    })
+
+    def site(pages):
+        def fetch(url):
+            url = url.replace("PEEK ", "")
+            if url not in pages:
+                raise probes.ProbeError("not_found", url)
+            if isinstance(pages[url], Exception):
+                raise pages[url]
+            return pages[url]
+        return fetch
+
+    def run(check, year, pages):
+        return probes.probe_metric("m", {"meta": {"year": year}}, {"probe": "source_period", "checks": [check]}, fetch=site(pages))
+
+    page = lambda text: f"<html><body><p>{text}</p></body></html>".encode()
+    assert run("page", "2024", {"https://x.test/p": page("Periodo di riferimento: Anno 2024")})["status"] == "current"
+    new = run("page", "2024", {"https://x.test/p": page("Periodo di riferimento: Anno 2025 · Anno 2024")})
+    assert new["status"] == "release_detected" and new["observedLatestPeriod"] == "2025" and new["scope"] == "period", new
+    assert run("page", "2024", {"https://x.test/p": page("Periodo di riferimento: Anno 2023")})["reason"] == "source_period_older"
+    moved = run("page", "2024", {"https://x.test/p": page("pagina rifatta")})
+    assert moved["reason"] == "structure_changed" and moved["manualAction"]["urls"] == ["https://x.test/p"], moved
+    assert not any("--file" in step for step in moved["manualAction"]["steps"]), "nessun file da allegare per una verifica di periodo"
+    down = run("page", "2024", {"https://x.test/p": probes.ProbeError("source_unreachable", "timeout")})
+    assert down["status"] == "verification_required" and down["reason"] == "source_unreachable"
+    edition = {"https://x.test/anno-2022/": page("edizione 2022")}
+    assert run("next", "2022", edition)["status"] == "current"
+    assert run("next", "2022", {**edition, "https://x.test/anno-2023/": page("edizione 2023")})["status"] == "release_detected"
+    assert run("next", "2022", {})["reason"] == "structure_changed", "edizione pubblicata sparita = indirizzo da rivedere"
+    probes.TODAY = lambda: datetime.date(2026, 11, 8)
+    feed = {"https://x.test/api": b'{"data":[{"cod_istat":"046033"}]}'}
+    assert run("feed", "5 novembre 2026", feed)["status"] == "current"
+    assert run("feed", "2026-08-01", feed)["status"] == "release_detected"
+    assert run("feed", "5 novembre 2026", {"https://x.test/api": b"{}"})["reason"] == "structure_changed"
+    assert run("register", "2026", feed)["status"] == "current", "registro continuo: istantanea dell'anno in corso"
+    assert run("register", "2025", feed)["status"] == "release_detected"
+    assert run("register", "2026", {"https://x.test/api": b"{}"})["reason"] == "structure_changed"
+    assert run("daily", "2026-10-11", {"https://x.test/d": page("Elenco del 08/11/2026")})["status"] == "current", "entro la tolleranza"
+    assert run("daily", "2026-09-01", {"https://x.test/d": page("Elenco del 08/11/2026")})["status"] == "release_detected"
+    assert run("semester", "2° semestre 2025", {"https://x.test/s": page("prelievo del 12/12/2025")})["status"] == "current"
+    assert run("semester", "2° semestre 2025", {"https://x.test/s": page("prelievo del 03/02/2026")})["status"] == "release_detected"
+    assert run("absent", "2018", {})["status"] == "current", "nessun dato dopo il periodo pubblicato"
+    assert run("absent", "2018", {"https://x.test/sdmx?startPeriod=2019": b'<Obs TIME_PERIOD="2020"/>'})["status"] == "release_detected"
+    probes.SOURCE_CHECKS.clear()
+    assert probes.parse_period("settembre 8, 2026", "date") == (2026, 9, 8)
+    assert probes.parse_period("agosto 2026", "month") == (2026, 8)
+    assert probes.parse_period("a.s. 2024/25", "year") == (2024,)
+
+
 def zipped(text: str) -> bytes:
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as archive:
@@ -147,10 +226,11 @@ def demo_cases() -> None:
 def main() -> None:
     coverage_contract()
     probe_cases()
+    period_cases()
     demo_cases()
     contract = probes.load_coverage()
     covered = sum(1 for v in contract["metrics"].values() if "probe" in v)
-    print(f"Verifica mensile dei periodi: {covered}/{len(contract['metrics'])} indicatori coperti, {contract['maxPending']} nei lotti successivi; casi current/new/differ/revised/structure/unreachable PASS")
+    print(f"Verifica mensile dei periodi: {covered}/{len(contract['metrics'])} indicatori coperti, {contract['maxPending']} nei lotti successivi; casi current/new/differ/revised/structure/unreachable e verifiche di periodo PASS")
 
 
 if __name__ == "__main__":
