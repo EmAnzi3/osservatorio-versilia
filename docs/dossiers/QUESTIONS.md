@@ -473,7 +473,7 @@ Associazione descrittiva e contesto non provano causalità o effetto di politica
 
 A Massarosa la crescita delle attività locali si accompagna a maggiore occupazione dei residenti rispetto a Viareggio?
 
-**Risposta oggi e interpretazione consentita:** Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2023 e addetti localizzati 2023 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.
+**Risposta oggi e interpretazione consentita:** Confrontare occupazione residente 2024, crescita cumulata ASIA 2018–2024 e addetti localizzati 2024 separatamente. Non è una verifica di accompagnamento nel tempo o di causa.
 
 **Informazioni mancanti:** Serie omogenee contemporanee di occupazione e attività; Transizioni dei residenti, contratti e profili richiesti
 
@@ -497,11 +497,11 @@ Richiesta `census_employment_primary` — `compare`; esito `computed`.
 
 Richiesta `business_asia_cumulative` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2018-2023: 7,0 %; Viareggio 2018-2023: 9,2 %
+**Risultati:** Massarosa 2018-2024: 7,3 %; Viareggio 2018-2024: 9,9 %
 
 **Universi e definizioni:** ASIA active local units; annual average employment at workplace; ASIA total — localUnitsChange; ASIA published measure; cumulative change from fixed 2018 baseline
 
-**Fonti:** [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
+**Fonti:** [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
 
 **Avvertenze:** cumulative_baseline_change_not_year_on_year, workplace_activity_not_resident_employment
 
@@ -509,11 +509,11 @@ Richiesta `business_asia_cumulative` — `compare`; esito `computed`.
 
 Richiesta `business_asia_employment` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2023: 4.938,3 persone/addetti secondo definizione; Viareggio 2023: 22.358,3 persone/addetti secondo definizione
+**Risultati:** Massarosa 2024: 4.958,9 persone/addetti secondo definizione; Viareggio 2024: 22.879,7 persone/addetti secondo definizione
 
 **Universi e definizioni:** ASIA active local units; annual average employment at workplace; ASIA total — localEmployees; ASIA published measure
 
-**Fonti:** [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
+**Fonti:** [https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7](https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7)
 
 **Avvertenze:** workplace_activity_not_resident_employment
 

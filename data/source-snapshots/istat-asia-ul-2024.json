@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "version": "istat-asia-ul-2024-v1",
+  "retrieved": "2026-11-08",
+  "scope": "Sette Comuni della Versilia storica",
+  "acquisitionLayer": {
+    "name": "Istat — servizio SDMX esploradati",
+    "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/",
+    "note": "Serie comunali lette direttamente dal servizio SDMX Istat (CSV)."
+  },
+  "sources": {
+    "asia": {
+      "owner": "ISTAT",
+      "dataset": "Archivio Statistico Imprese Attive — Unità Locali (ASIA-UL)",
+      "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+      "license": "CC BY 3.0 IT",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "sdmx": {
+        "lu": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+          "sha256": "b990ad4438f950ec4ba9bf1a3db2cfa37ac2d2b2474505bf001801a955b12613",
+          "bytes": 6907350
+        },
+        "emp": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LUEMPDAA.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+          "sha256": "361c3f0ae584214016e91f905b1669364beb25d8092baae0d9df6107401c27d5",
+          "bytes": 6244094
+        },
+        "micro": {
+          "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2024&endPeriod=2024",
+          "sha256": "d236d70865abd7c95d1607d7522a3ab7c1d64c7e3e35736c385fb36a7ab4864a",
+          "bytes": 1886028
+        }
+      }
+    }
+  },
+  "towns": [
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "slug": "camaiore",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          3206,
+          3185,
+          3246,
+          3370,
+          3535,
+          3539,
+          3515
+        ],
+        "employeesAverageAnnual": [
+          9061.73,
+          9171.11,
+          8903.53,
+          9407.78,
+          9856.89,
+          9957.33,
+          10310.21
+        ]
+      }
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1178,
+          1147,
+          1201,
+          1256,
+          1328,
+          1298,
+          1282
+        ],
+        "employeesAverageAnnual": [
+          3987.28,
+          3965.48,
+          3546.95,
+          3824.44,
+          4345.93,
+          4328.57,
+          4421.31
+        ]
+      }
+    },
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "slug": "massarosa",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1602,
+          1550,
+          1616,
+          1649,
+          1704,
+          1714,
+          1719
+        ],
+        "employeesAverageAnnual": [
+          4359.18,
+          4377.05,
+          4396.51,
+          4630.05,
+          4758.76,
+          4938.33,
+          4958.85
+        ]
+      }
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "slug": "pietrasanta",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          2807,
+          2738,
+          2774,
+          2849,
+          2948,
+          2923,
+          2969
+        ],
+        "employeesAverageAnnual": [
+          7857.09,
+          7914.05,
+          7496.38,
+          8030.21,
+          8463.96,
+          8725.91,
+          8891.34
+        ]
+      }
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "slug": "seravezza",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          1197,
+          1181,
+          1197,
+          1210,
+          1252,
+          1292,
+          1286
+        ],
+        "employeesAverageAnnual": [
+          3452.04,
+          3387.52,
+          3229.62,
+          3454.8,
+          3564.97,
+          3677.72,
+          3599.08
+        ]
+      }
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "slug": "stazzema",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          189,
+          169,
+          178,
+          180,
+          184,
+          181,
+          182
+        ],
+        "employeesAverageAnnual": [
+          420.96,
+          401.49,
+          392.8,
+          413.53,
+          416.02,
+          405.96,
+          413.57
+        ]
+      }
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "slug": "viareggio",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "localUnits": [
+          6427,
+          6456,
+          6564,
+          6688,
+          6979,
+          7020,
+          7066
+        ],
+        "employeesAverageAnnual": [
+          19964.72,
+          20155.87,
+          19839.08,
+          20510.82,
+          21591.67,
+          22358.35,
+          22879.66
+        ]
+      }
+    }
+  ],
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py istat-asia --year 2024"
+  }
+}

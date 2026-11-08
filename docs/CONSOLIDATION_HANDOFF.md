@@ -1,5 +1,30 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## ASIA-UL 2024 (8 novembre 2026)
+
+Primo periodo nuovo segnalato dal controllo mensile completo. I 6 indicatori ASIA
+(`localUnits`, `localEmployees`, `employeesPerLocalUnit`, `localUnitsChange`,
+`localEmployeesChange`, `microUnits`) passano al 2024 (variazioni 2018–2024). Storico
+2018–2023 invariato alla fonte (verificato 7/7).
+
+- Nuovo aggiornatore `update_source_data.py istat-asia --year AAAA`: legge il servizio SDMX
+  Istat (CSV), non più Cruscotto Italia (fermo al 2023). Scrive catalogo e tre snapshot per
+  anno: `istat-asia-ul-AAAA.json` (serie comunali), `a3-istat-business-benchmark-AAAA.json`
+  (Toscana e Italia come somme comunali) e `a3-istat-micro-units-benchmark-AAAA.json`
+  (classi dimensionali, query per area e pannello nazionale). Test offline ricostruiti dalle
+  serie pubblicate. Nel giro mensile per l'anno pubblicato e il successivo; richiedibile in PR
+  con `istatAsia` in `ci/source-update-request.json`.
+- `scripts/asia_sources.py` sceglie lo snapshot più recente di ogni famiglia: fan-in dei
+  benchmark, companion A3.5 e adattatore A6 imprese non hanno più anni scritti nel codice;
+  il validatore delle micro unità prende l'anno dallo snapshot.
+- Valori 2024 Versilia: 18.019 unità locali, 55.474,02 addetti, 3,08 addetti/UL,
+  +8,5% unità locali e +13,0% addetti sul 2018, 94,5% micro unità. Toscana 366.076 UL.
+- Domande verificate ASIA al 2024; l'associazione addetti/occupazione femminile fissa i
+  periodi al 2023. Dossier Massarosa lavoro rigenerato; impronta `road#3` ripinnata.
+- Il workflow «Aggiorna imprese, ATECO e banda larga» (`update_agid_indicators.py`) valida
+  ancora la serie ASIA 2018–2023 di Cruscotto Italia: con il catalogo al 2024 si ferma senza
+  scrivere. Va adattato con il lotto AGCOM FTTH.
+
 ## Controllo mensile completo: 225/225 (8 novembre 2026)
 
 Il «Controllo mensile dati» ora verifica alla fonte tutti i 225 indicatori. 60 hanno un

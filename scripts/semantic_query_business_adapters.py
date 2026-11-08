@@ -7,12 +7,14 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 from semantic_operations import finite
+import asia_sources
 
-ASIA='data/source-snapshots/agid-asia-agcom-2026-08.json'
+ASIA=asia_sources.TOWNS
 FRAME='data/source-snapshots/economia-prodotta-frame-sbs-v134.json'
-ASIA_BENCH='data/source-snapshots/a3-istat-business-benchmark-2023.json'
+ASIA_BENCH=asia_sources.BUSINESS
 FRAME_BENCH='data/source-snapshots/a3-frame-sbs-benchmark-2023.json'
-MICRO='data/source-snapshots/a3-istat-micro-units-benchmark-2023.json'
+MICRO=asia_sources.MICRO
+MICRO_YEAR=MICRO[-9:-5]
 # These are adapter formula rules. Catalog IDs/availability remain canonical.
 FRAME_FIELDS={
  'businessTurnover':('turnoverThousandEuro',.001,'millionCurrency'),
@@ -54,7 +56,7 @@ def context(metric,key,dimension):
  unit=FRAME_FIELDS[key][2] if key in FRAME_FIELDS else 'percent' if key in SHARES else ASIA_UNITS[key]
  if metric['meta']['unit']!=unit:raise ValueError('business_unit_changed')
  current=token(key,metric['meta']['year'])
- if key=='microUnits' and current!='2023':raise ValueError('business_micro_reference_year_changed')
+ if key=='microUnits' and current!=MICRO_YEAR:raise ValueError('business_micro_reference_year_changed')
  if urlparse(metric.get('sourceUrl','')).hostname not in ('www.istat.it','esploradati.istat.it'):raise ValueError('business_source_changed')
  frame=key in FRAME_FIELDS or key in SHARES
  if key in FRAME_FIELDS and not all(isinstance(r.get('economicScopes'),dict) for r in metric['rows']):raise ValueError('business_sector_carrier_not_materialized')
@@ -64,7 +66,7 @@ def context(metric,key,dimension):
  if key in SHARES:definition+= '; industry divided by total industry and services'
  if key in CHANGES:definition+='; cumulative change from fixed 2018 baseline'
  return dict(unit=unit,population=universe+'; '+scope,definition=definition,
-  method='Istat Frame SBS published measures and explicit formulas' if frame else 'Istat ASIA snapshot via AgID; explicit source formulas',
+  method='Istat Frame SBS published measures and explicit formulas' if frame else ('Istat ASIA snapshot via AgID' if 'agid' in ASIA else 'Istat ASIA snapshot via Istat SDMX')+'; explicit source formulas',
   frequency='cumulative_from_2018' if key in CHANGES else 'annual',
   periodBasis='full baseline-to-end interval; not year-on-year' if key in CHANGES else 'calendar reference year; workplace economic activity',
   adapter='istat-business/'+('frame-sbs' if frame else 'asia')+'/v1')
@@ -154,7 +156,7 @@ def observation(engine,key,row_index,dimension,period,historical):
   snap,ref=engine.file(MICRO);record=snap['records'][str(row['code'])];csv_source=snap['sources'][str(row['code'])]
   if hashlib.sha256(csv_source['csv'].encode()).hexdigest()!=csv_source['sha256']:raise ValueError('business_csv_hash_mismatch')
   csv_rows=list(csv.DictReader(io.StringIO(csv_source['csv'])))
-  if len(csv_rows)!=2 or any(r['REF_AREA']!=str(row['code']) or r['TIME_PERIOD']!='2023' or r['DATA_TYPE']!='LU' or r['ECON_ACTIVITY_NACE_2007']!='0010' for r in csv_rows):raise ValueError('business_micro_csv_context_changed')
+  if len(csv_rows)!=2 or any(r['REF_AREA']!=str(row['code']) or r['TIME_PERIOD']!=year or r['DATA_TYPE']!='LU' or r['ECON_ACTIVITY_NACE_2007']!='0010' for r in csv_rows):raise ValueError('business_micro_csv_context_changed')
   if set(r['PERS_EMPL_SIZE_CLASS'] for r in csv_rows)!={'TOTAL','W0_9'}:raise ValueError('business_micro_classes_changed')
   for r in csv_rows:close(record[r['PERS_EMPL_SIZE_CLASS']],float(r['OBS_VALUE']))
   expected=record['W0_9']/record['TOTAL']*100
@@ -207,7 +209,8 @@ def benchmark(engine,key,scope,municipal):
   geo='ITE1' if scope=='tuscany' else 'IT';r=snap['records'][geo];value=r['W0_9']/r['TOTAL']*100;record_pointer='/records/'+geo
  else:
   raw=snap['evidence'];u=raw['LU'][scope];e=raw['LUEMPDAA'][scope]
-  formulas={'localUnits':u['2023'],'localEmployees':e['2023'],'employeesPerLocalUnit':e['2023']/u['2023'],'localUnitsChange':(u['2023']/u['2018']-1)*100,'localEmployeesChange':(e['2023']/e['2018']-1)*100}
+  end=period[-4:]
+  formulas={'localUnits':u[end],'localEmployees':e[end],'employeesPerLocalUnit':e[end]/u[end],'localUnitsChange':(u[end]/u['2018']-1)*100,'localEmployeesChange':(e[end]/e['2018']-1)*100}
   value=formulas[key];record_pointer='/evidence'
  if key!='labourProductivity':
   b=snap['benchmarks'][key]

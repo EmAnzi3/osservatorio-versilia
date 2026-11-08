@@ -8292,7 +8292,7 @@
         "shortLabel": "Unità locali",
         "description": "Luoghi fisici nei quali imprese e istituzioni esercitano attività economiche.",
         "unit": "number",
-        "year": "2023",
+        "year": "2024",
         "source": "Istat — ASIA unità locali",
         "polarity": "neutral",
         "normalized": {
@@ -8301,12 +8301,12 @@
           "unit": "per1000"
         },
         "benchmark": {
-          "year": "2023",
-          "tuscany": 366636,
-          "italy": 5144482,
+          "year": "2024",
+          "tuscany": 366076,
+          "italy": 5157564,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -8316,8 +8316,8 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1714,
-          "formatted": "1.714",
+          "value": 1719,
+          "formatted": "1.719",
           "series": {
             "years": [
               2018,
@@ -8325,7 +8325,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               1602,
@@ -8333,23 +8334,24 @@
               1616,
               1649,
               1704,
-              1714
+              1714,
+              1719
             ]
           },
           "normalized": {
-            "value": 78.68882563584611,
+            "value": 78.9183729685061,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 1714
+          "benchmarkValue": 1719
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 7020,
-          "formatted": "7.020",
+          "value": 7066,
+          "formatted": "7.066",
           "series": {
             "years": [
               2018,
@@ -8357,7 +8359,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               6427,
@@ -8365,23 +8368,24 @@
               6564,
               6688,
               6979,
-              7020
+              7020,
+              7066
             ]
           },
           "normalized": {
-            "value": 115.68885959129861,
+            "value": 116.44693473961763,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 7020
+          "benchmarkValue": 7066
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 3539,
-          "formatted": "3.539",
+          "value": 3515,
+          "formatted": "3.515",
           "series": {
             "years": [
               2018,
@@ -8389,7 +8393,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               3206,
@@ -8397,23 +8402,24 @@
               3246,
               3370,
               3535,
-              3539
+              3539,
+              3515
             ]
           },
           "normalized": {
-            "value": 111.4189465730567,
+            "value": 110.66335043919027,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 3539
+          "benchmarkValue": 3515
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2923,
-          "formatted": "2.923",
+          "value": 2969,
+          "formatted": "2.969",
           "series": {
             "years": [
               2018,
@@ -8421,7 +8427,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2807,
@@ -8429,23 +8436,24 @@
               2774,
               2849,
               2948,
-              2923
+              2923,
+              2969
             ]
           },
           "normalized": {
-            "value": 128.89143663462386,
+            "value": 130.91983420054677,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 2923
+          "benchmarkValue": 2969
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1292,
-          "formatted": "1.292",
+          "value": 1286,
+          "formatted": "1.286",
           "series": {
             "years": [
               2018,
@@ -8453,7 +8461,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               1197,
@@ -8461,23 +8470,24 @@
               1197,
               1210,
               1252,
-              1292
+              1292,
+              1286
             ]
           },
           "normalized": {
-            "value": 105.17746662324976,
+            "value": 104.68902637577338,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 1292
+          "benchmarkValue": 1286
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 1298,
-          "formatted": "1.298",
+          "value": 1282,
+          "formatted": "1.282",
           "series": {
             "years": [
               2018,
@@ -8485,7 +8495,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               1178,
@@ -8493,23 +8504,24 @@
               1201,
               1256,
               1328,
-              1298
+              1298,
+              1282
             ]
           },
           "normalized": {
-            "value": 198.16793893129773,
+            "value": 195.7251908396947,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 1298
+          "benchmarkValue": 1282
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 181,
-          "formatted": "181",
+          "value": 182,
+          "formatted": "182",
           "series": {
             "years": [
               2018,
@@ -8517,7 +8529,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               189,
@@ -8525,31 +8538,32 @@
               178,
               180,
               184,
-              181
+              181,
+              182
             ]
           },
           "normalized": {
-            "value": 65.03772906934962,
+            "value": 65.39705353934602,
             "label": "Unità locali ogni 1.000 residenti",
             "description": "Unità locali attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 181
+          "benchmarkValue": 182
         }
       ],
       "aggregate": {
-        "value": 17967,
+        "value": 18019,
         "label": "Totale Versilia",
         "note": "Somma delle unità locali attive nei sette Comuni."
       },
       "normalizedAggregate": {
-        "value": 113.34216502649508,
+        "value": 113.67019934393137,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
       },
       "method": {
         "type": "Dato ufficiale",
-        "formula": "Stock di unità locali attive pubblicato da ISTAT ASIA-UL; serie 2018–2023 acquisita tramite Cruscotto Italia (AgID).",
+        "formula": "Stock di unità locali attive pubblicato da ISTAT ASIA-UL; serie 2018–2024 dal servizio SDMX Istat.",
         "caveat": "Le unità locali sono sedi operative, stabilimenti, uffici o negozi: non coincidono con il numero di imprese giuridiche. Un’impresa con più sedi può comparire in più Comuni.",
         "coverage": "7/7"
       }
@@ -8562,16 +8576,16 @@
         "shortLabel": "Micro unità locali",
         "description": "Quota delle unità locali appartenenti alla classe dimensionale da 0 a 9 addetti.",
         "unit": "percent",
-        "year": "2023",
+        "year": "2024",
         "source": "Istat — ASIA unità locali",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2023",
-          "tuscany": 93.96622262952901,
-          "italy": 94.22052599270442,
+          "year": "2024",
+          "tuscany": 93.81221385723182,
+          "italy": 94.0634958674289,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-micro-units-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -8581,11 +8595,11 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 95.45,
-          "formatted": "95,5%",
+          "value": 95.11,
+          "formatted": "95,1%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 95.45
+          "benchmarkValue": 95.11
         },
         {
           "town": "Viareggio",
@@ -8601,55 +8615,55 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 95.08,
-          "formatted": "95,1%",
+          "value": 95.05,
+          "formatted": "95,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 95.08
+          "benchmarkValue": 95.05
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 95.35,
-          "formatted": "95,4%",
+          "value": 95.02,
+          "formatted": "95,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 95.35
+          "benchmarkValue": 95.02
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 95.51,
-          "formatted": "95,5%",
+          "value": 95.8,
+          "formatted": "95,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 95.51
+          "benchmarkValue": 95.8
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 93.84,
-          "formatted": "93,8%",
+          "value": 93.53,
+          "formatted": "93,5%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 93.84
+          "benchmarkValue": 93.53
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 98.34,
-          "formatted": "98,3%",
+          "value": 97.8,
+          "formatted": "97,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 98.34
+          "benchmarkValue": 97.8
         }
       ],
       "aggregate": {
-        "value": 94.5785857405243,
+        "value": 94.47805094622343,
         "label": "Quota ponderata Versilia",
         "note": "Ponderata sul numero delle unità locali."
       },
@@ -46262,16 +46276,16 @@
         "shortLabel": "Addetti nelle unità locali",
         "description": "Addetti medi annui impiegati nelle unità locali attive presenti nel Comune.",
         "unit": "people",
-        "year": "2023",
+        "year": "2024",
         "source": "ISTAT — ASIA unità locali",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2023",
-          "tuscany": 1283739.83,
-          "italy": 18644421.78,
+          "year": "2024",
+          "tuscany": 1296423.49,
+          "italy": 18845823.94,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46281,8 +46295,8 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 4938.33,
-          "formatted": "4.938,3",
+          "value": 4958.85,
+          "formatted": "4.958,9",
           "series": {
             "years": [
               2018,
@@ -46290,7 +46304,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               4359.18,
@@ -46298,18 +46313,19 @@
               4396.51,
               4630.05,
               4758.76,
-              4938.33
+              4938.33,
+              4958.85
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4938.33
+          "benchmarkValue": 4958.85
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 22358.35,
-          "formatted": "22.358,3",
+          "value": 22879.66,
+          "formatted": "22.879,7",
           "series": {
             "years": [
               2018,
@@ -46317,7 +46333,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               19964.72,
@@ -46325,18 +46342,19 @@
               19839.08,
               20510.82,
               21591.67,
-              22358.35
+              22358.35,
+              22879.66
             ]
           },
           "normalized": null,
-          "benchmarkValue": 22358.35
+          "benchmarkValue": 22879.66
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 9957.33,
-          "formatted": "9.957,3",
+          "value": 10310.21,
+          "formatted": "10.310,2",
           "series": {
             "years": [
               2018,
@@ -46344,7 +46362,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               9061.73,
@@ -46352,18 +46371,19 @@
               8903.53,
               9407.78,
               9856.89,
-              9957.33
+              9957.33,
+              10310.21
             ]
           },
           "normalized": null,
-          "benchmarkValue": 9957.33
+          "benchmarkValue": 10310.21
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 8725.91,
-          "formatted": "8.725,9",
+          "value": 8891.34,
+          "formatted": "8.891,3",
           "series": {
             "years": [
               2018,
@@ -46371,7 +46391,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               7857.09,
@@ -46379,18 +46400,19 @@
               7496.38,
               8030.21,
               8463.96,
-              8725.91
+              8725.91,
+              8891.34
             ]
           },
           "normalized": null,
-          "benchmarkValue": 8725.91
+          "benchmarkValue": 8891.34
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 3677.72,
-          "formatted": "3.677,7",
+          "value": 3599.08,
+          "formatted": "3.599,1",
           "series": {
             "years": [
               2018,
@@ -46398,7 +46420,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               3452.04,
@@ -46406,18 +46429,19 @@
               3229.62,
               3454.8,
               3564.97,
-              3677.72
+              3677.72,
+              3599.08
             ]
           },
           "normalized": null,
-          "benchmarkValue": 3677.72
+          "benchmarkValue": 3599.08
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 4328.57,
-          "formatted": "4.328,6",
+          "value": 4421.31,
+          "formatted": "4.421,3",
           "series": {
             "years": [
               2018,
@@ -46425,7 +46449,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               3987.28,
@@ -46433,18 +46458,19 @@
               3546.95,
               3824.44,
               4345.93,
-              4328.57
+              4328.57,
+              4421.31
             ]
           },
           "normalized": null,
-          "benchmarkValue": 4328.57
+          "benchmarkValue": 4421.31
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 405.96,
-          "formatted": "406",
+          "value": 413.57,
+          "formatted": "413,6",
           "series": {
             "years": [
               2018,
@@ -46452,7 +46478,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               420.96,
@@ -46460,22 +46487,23 @@
               392.8,
               413.53,
               416.02,
-              405.96
+              405.96,
+              413.57
             ]
           },
           "normalized": null,
-          "benchmarkValue": 405.96
+          "benchmarkValue": 413.57
         }
       ],
       "aggregate": {
-        "value": 54392.17,
+        "value": 55474.02,
         "label": "Totale Versilia",
         "note": "Somma degli addetti medi annui delle unità locali nei sette Comuni."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Dato ufficiale",
-        "formula": "Addetti delle unità locali, media annua, misura LUEMPDAA del registro ISTAT ASIA-UL; acquisizione tramite Cruscotto Italia (AgID).",
+        "formula": "Addetti delle unità locali, media annua, misura LUEMPDAA del registro ISTAT ASIA-UL; servizio SDMX Istat.",
         "caveat": "Gli addetti sono riferiti al luogo di lavoro e non alla residenza. Il valore è una media annua e può contenere decimali.",
         "coverage": "7/7"
       }
@@ -46488,16 +46516,16 @@
         "shortLabel": "Dimensione media delle unità locali",
         "description": "Rapporto tra addetti medi annui e unità locali attive presenti nel Comune.",
         "unit": "decimal",
-        "year": "2023",
+        "year": "2024",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2023",
-          "tuscany": 3.5014014717594564,
-          "italy": 3.624159202034335,
+          "year": "2024",
+          "tuscany": 3.5414053092800404,
+          "italy": 3.654016496935375,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46507,7 +46535,7 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.8811726954492416,
+          "value": 2.884729493891798,
           "formatted": "2,88 addetti/UL",
           "series": {
             "years": [
@@ -46516,7 +46544,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2.721086142322098,
@@ -46524,18 +46553,19 @@
               2.7206126237623764,
               2.8077926015767134,
               2.792699530516432,
-              2.8811726954492416
+              2.8811726954492416,
+              2.884729493891798
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.8811726954492416
+          "benchmarkValue": 2.884729493891798
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 3.184950142450142,
-          "formatted": "3,18 addetti/UL",
+          "value": 3.237993206906312,
+          "formatted": "3,24 addetti/UL",
           "series": {
             "years": [
               2018,
@@ -46543,7 +46573,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               3.1063824490430996,
@@ -46551,18 +46582,19 @@
               3.0224070688604514,
               3.0668092105263156,
               3.093805702822754,
-              3.184950142450142
+              3.184950142450142,
+              3.237993206906312
             ]
           },
           "normalized": null,
-          "benchmarkValue": 3.184950142450142
+          "benchmarkValue": 3.237993206906312
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2.8135998869737215,
-          "formatted": "2,81 addetti/UL",
+          "value": 2.9332034139402556,
+          "formatted": "2,93 addetti/UL",
           "series": {
             "years": [
               2018,
@@ -46570,7 +46602,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2.8264909544603865,
@@ -46578,17 +46611,18 @@
               2.7429235982748,
               2.7916261127596442,
               2.788370579915134,
-              2.8135998869737215
+              2.8135998869737215,
+              2.9332034139402556
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.8135998869737215
+          "benchmarkValue": 2.9332034139402556
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2.9852582962709544,
+          "value": 2.9947254968002697,
           "formatted": "2,99 addetti/UL",
           "series": {
             "years": [
@@ -46597,7 +46631,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2.7991058069112933,
@@ -46605,18 +46640,19 @@
               2.7023720259552992,
               2.8186065286065287,
               2.8710854816824964,
-              2.9852582962709544
+              2.9852582962709544,
+              2.9947254968002697
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.9852582962709544
+          "benchmarkValue": 2.9947254968002697
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 2.846532507739938,
-          "formatted": "2,85 addetti/UL",
+          "value": 2.7986625194401245,
+          "formatted": "2,80 addetti/UL",
           "series": {
             "years": [
               2018,
@@ -46624,7 +46660,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2.88390977443609,
@@ -46632,18 +46669,19 @@
               2.698095238095238,
               2.855206611570248,
               2.847420127795527,
-              2.846532507739938
+              2.846532507739938,
+              2.7986625194401245
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.846532507739938
+          "benchmarkValue": 2.7986625194401245
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 3.33479969183359,
-          "formatted": "3,33 addetti/UL",
+          "value": 3.448759750390016,
+          "formatted": "3,45 addetti/UL",
           "series": {
             "years": [
               2018,
@@ -46651,7 +46689,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               3.3847877758913416,
@@ -46659,18 +46698,19 @@
               2.953330557868443,
               3.044936305732484,
               3.27253765060241,
-              3.33479969183359
+              3.33479969183359,
+              3.448759750390016
             ]
           },
           "normalized": null,
-          "benchmarkValue": 3.33479969183359
+          "benchmarkValue": 3.448759750390016
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 2.2428729281767956,
-          "formatted": "2,24 addetti/UL",
+          "value": 2.272362637362637,
+          "formatted": "2,27 addetti/UL",
           "series": {
             "years": [
               2018,
@@ -46678,7 +46718,8 @@
               2020,
               2021,
               2022,
-              2023
+              2023,
+              2024
             ],
             "values": [
               2.227301587301587,
@@ -46686,15 +46727,16 @@
               2.206741573033708,
               2.297388888888889,
               2.260978260869565,
-              2.2428729281767956
+              2.2428729281767956,
+              2.272362637362637
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.2428729281767956
+          "benchmarkValue": 2.272362637362637
         }
       ],
       "aggregate": {
-        "value": 3.027337340680136,
+        "value": 3.078640324102336,
         "label": "Rapporto Versilia",
         "note": "Totale degli addetti medi annui diviso per il totale delle unità locali dei sette Comuni."
       },
@@ -46710,20 +46752,20 @@
       "meta": {
         "key": "localUnitsChange",
         "theme": "economia",
-        "label": "Variazione delle unità locali 2018–2023",
+        "label": "Variazione delle unità locali 2018–2024",
         "shortLabel": "Variazione unità locali",
-        "description": "Variazione percentuale dello stock di unità locali attive tra il 2018 e il 2023.",
+        "description": "Variazione percentuale dello stock di unità locali attive tra il 2018 e il 2024.",
         "unit": "percent",
-        "year": "2018–2023",
+        "year": "2018–2024",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2018–2023",
-          "tuscany": 5.22243491687211,
-          "italy": 8.082484588553985,
+          "year": "2018–2024",
+          "tuscany": 5.061718119957859,
+          "italy": 8.357329570689709,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46733,82 +46775,82 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 6.991260923845188,
-          "formatted": "7,0%",
+          "value": 7.303370786516861,
+          "formatted": "7,3%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 6.991260923845188
+          "benchmarkValue": 7.303370786516861
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 9.226699859965759,
-          "formatted": "9,2%",
+          "value": 9.942430371868682,
+          "formatted": "9,9%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 9.226699859965759
+          "benchmarkValue": 9.942430371868682
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 10.38677479725514,
-          "formatted": "10,4%",
+          "value": 9.638178415470989,
+          "formatted": "9,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 10.38677479725514
+          "benchmarkValue": 9.638178415470989
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 4.132525828286426,
-          "formatted": "4,1%",
+          "value": 5.77128607053794,
+          "formatted": "5,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 4.132525828286426
+          "benchmarkValue": 5.77128607053794
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 7.9365079365079305,
-          "formatted": "7,9%",
+          "value": 7.4352548036758614,
+          "formatted": "7,4%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 7.9365079365079305
+          "benchmarkValue": 7.4352548036758614
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 10.186757215619702,
-          "formatted": "10,2%",
+          "value": 8.82852292020373,
+          "formatted": "8,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 10.186757215619702
+          "benchmarkValue": 8.82852292020373
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": -4.232804232804233,
-          "formatted": "-4,2%",
+          "value": -3.703703703703709,
+          "formatted": "-3,7%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": -4.232804232804233
+          "benchmarkValue": -3.703703703703709
         }
       ],
       "aggregate": {
-        "value": 8.195832831506689,
+        "value": 8.50897266048416,
         "label": "Variazione Versilia",
         "note": "Variazione calcolata sulla somma delle unità locali dei sette Comuni."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su dati ufficiali",
-        "formula": "((unità locali 2023 / unità locali 2018) − 1) × 100",
+        "formula": "((unità locali 2024 / unità locali 2018) − 1) × 100",
         "caveat": "Dal 2019 il regolamento europeo EBS ha modificato il criterio di attività delle imprese; il confronto con il 2018 va interpretato con cautela.",
         "coverage": "7/7"
       }
@@ -46817,20 +46859,20 @@
       "meta": {
         "key": "localEmployeesChange",
         "theme": "economia",
-        "label": "Variazione degli addetti 2018–2023",
+        "label": "Variazione degli addetti 2018–2024",
         "shortLabel": "Variazione addetti",
-        "description": "Variazione percentuale degli addetti medi annui nelle unità locali tra il 2018 e il 2023.",
+        "description": "Variazione percentuale degli addetti medi annui nelle unità locali tra il 2018 e il 2024.",
         "unit": "percent",
-        "year": "2018–2023",
+        "year": "2018–2024",
         "source": "Elaborazione Osservatorio su dati ISTAT ASIA-UL",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2018–2023",
-          "tuscany": 5.794256622268157,
-          "italy": 7.846713682131012,
+          "year": "2018–2024",
+          "tuscany": 6.839529464624072,
+          "italy": 9.011703475903143,
           "source": "Istat — ASIA Unità Locali",
           "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2023.json",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-business-benchmark-2024.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46840,82 +46882,82 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 13.285755577883895,
-          "formatted": "13,3%",
+          "value": 13.756486311645766,
+          "formatted": "13,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 13.285755577883895
+          "benchmarkValue": 13.756486311645766
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 11.989299123654117,
-          "formatted": "12,0%",
+          "value": 14.600455202978036,
+          "formatted": "14,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 11.989299123654117
+          "benchmarkValue": 14.600455202978036
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 9.883322500228985,
-          "formatted": "9,9%",
+          "value": 13.777501647036484,
+          "formatted": "13,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 9.883322500228985
+          "benchmarkValue": 13.777501647036484
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 11.05778347963431,
-          "formatted": "11,1%",
+          "value": 13.163270371091595,
+          "formatted": "13,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 11.05778347963431
+          "benchmarkValue": 13.163270371091595
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 6.537583573770878,
-          "formatted": "6,5%",
+          "value": 4.259510318536286,
+          "formatted": "4,3%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 6.537583573770878
+          "benchmarkValue": 4.259510318536286
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 8.559469111775432,
-          "formatted": "8,6%",
+          "value": 10.885365462169695,
+          "formatted": "10,9%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 8.559469111775432
+          "benchmarkValue": 10.885365462169695
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": -3.5632839224629453,
-          "formatted": "-3,6%",
+          "value": -1.7555112124667427,
+          "formatted": "-1,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": -3.5632839224629453
+          "benchmarkValue": -1.7555112124667427
         }
       ],
       "aggregate": {
-        "value": 10.771582184387917,
+        "value": 12.974808056534215,
         "label": "Variazione Versilia",
         "note": "Variazione calcolata sulla somma degli addetti medi annui dei sette Comuni."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su dati ufficiali",
-        "formula": "((addetti medi annui 2023 / addetti medi annui 2018) − 1) × 100",
+        "formula": "((addetti medi annui 2024 / addetti medi annui 2018) − 1) × 100",
         "caveat": "Il dato misura gli addetti nei luoghi di lavoro presenti sul territorio, non il tasso di occupazione dei residenti.",
         "coverage": "7/7"
       }

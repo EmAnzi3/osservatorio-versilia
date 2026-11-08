@@ -1,9 +1,9 @@
 {
   "schemaVersion": 3,
   "status": "PASS",
-  "catalogSha256": "a8445cd558001efe3e7cb17f19e6d769e2b8a35bd8ffa1096e3bd9ba3cbc740f",
+  "catalogSha256": "d61ee4d0f3ca8005a76131192ab5b8886cc0bc4940be60f20b7f01a345c8c52d",
   "engineSha256": "93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe",
-  "programSha256": "08d1f0d842c67e421ebdc317d3b9b4bc634dd34d6aa1dcc002a1e2302825d03b",
+  "programSha256": "9c27a323d619bb245f5eb6e7ca54a7bac6a6cce1c8ec8dd421b136747b2a80c2",
   "limits": [
     "No new acquisitions, adapters, political rankings or causal evaluation.",
     "Periods and units belong to each selected observation; no automatic cross-period joining.",
@@ -17,7 +17,7 @@
   "expectedRefusals": 94,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "be5a7b2a05be28251dab06e5fcbe0f9e5589f02678db045781b05808e28846be",
+  "evidenceSha256": "be1ca435dcee384ff79096aec560b477f70e8c75063f79c32bb9fb41ffbc0de7",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,
@@ -26,7 +26,7 @@
   "editorialInterpretationStatus": "Reviewed as bounded descriptive interpretation; not automatically certified by numeric PASS",
   "originalRequestsPreserved": 294,
   "addedPurposefulRequest": "business_frame_services_history: independent frozen Frame expectation for the labour demonstration",
-  "editorialGeneratorSha256": "7cf4b58d8fc0eab1d3d1b5edc59824ab5019820fced25f24bde1fe8938eee30f",
+  "editorialGeneratorSha256": "0a1487ad0879f8112a5fc969f55143f2af5a4a64f5ee4c97d66af5db71d85516",
   "evidenceBuilderSha256": "fb9b94fbaf3b676cc8adfe2f0d279123ffcaa6bc3753000a6cee95e9d4de5724",
   "reproduce": "python scripts/build_territorial_dossier_evidence.py --catalog dist/data/site-data.json --output-dir /tmp/territorial-dossiers"
 }

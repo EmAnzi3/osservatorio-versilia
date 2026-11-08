@@ -6,6 +6,8 @@ import math
 from pathlib import Path
 from typing import Any
 
+import asia_sources
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
@@ -15,7 +17,7 @@ SNAPSHOTS = (
     ROOT / "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-mef-taxable-income-benchmark-2024.json",
-    ROOT / "data/source-snapshots/a3-istat-micro-units-benchmark-2023.json",
+    ROOT / asia_sources.MICRO,
     ROOT / "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-agriculture-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-tourism-benchmark-2025.json",
@@ -26,7 +28,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-istat-demography-mobility-benchmark-2025.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-soil-benchmark-2024.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-libraries-benchmark-2024.json",
-    ROOT / "data" / "source-snapshots" / "a3-istat-business-benchmark-2023.json",
+    ROOT / asia_sources.BUSINESS,
     ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-coast-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-fee-blue-flag-benchmark-2026.json",

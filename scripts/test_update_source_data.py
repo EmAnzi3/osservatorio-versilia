@@ -106,11 +106,71 @@ def mobility_cases(tmp: Path) -> None:
         pass
 
 
+ASIA_HEAD = "DATAFLOW,FREQ,REF_AREA,DATA_TYPE,ECON_ACTIVITY_NACE_2007,PERS_EMPL_SIZE_CLASS,TIME_PERIOD,OBS_VALUE"
+
+
+def asia_files(tmp: Path, extra_year: bool = False) -> int:
+    """CSV SDMX ricostruiti dalle serie pubblicate (7 Comuni) più 7800 Comuni di riempimento."""
+    site = json.loads(upd.SITE.read_text(encoding="utf-8"))["metrics"]
+    years = site["localUnits"]["rows"][0]["series"]["years"]
+    emp = {r["code"]: r["series"]["values"] for r in site["localEmployees"]["rows"]}
+    micro = {r["code"]: r["value"] for r in site["microUnits"]["rows"]}
+    year = years[-1] + (1 if extra_year else 0)
+    lu_lines, emp_lines = [ASIA_HEAD], [ASIA_HEAD]
+    micro_counts: dict[str, dict[str, int]] = {}
+    totals = {"ITE1": 0, "IT": 0}
+    for row in site["localUnits"]["rows"]:
+        values = row["series"]["values"] + ([row["series"]["values"][-1] + 10] if extra_year else [])
+        e = emp[row["code"]] + ([emp[row["code"]][-1] + 5] if extra_year else [])
+        for y, v, w in zip(range(years[0], year + 1), values, e):
+            lu_lines.append(f"x,A,{row['code']},LU,0010,TOTAL,{y},{v}")
+            emp_lines.append(f"x,A,{row['code']},LUEMPDAA,0010,TOTAL,{y},{w}")
+        total = values[-1]
+        micro_counts[row["code"]] = {"TOTAL": total, "W0_9": round(micro[row["code"]] * total / 100)}
+        totals["ITE1"] += total
+    for i in range(7800):
+        code = f"{900000 + i}"
+        for y in range(years[0], year + 1):
+            lu_lines.append(f"x,A,{code},LU,0010,TOTAL,{y},10")
+            emp_lines.append(f"x,A,{code},LUEMPDAA,0010,TOTAL,{y},30")
+    totals["IT"] = totals["ITE1"] + 7800 * 10
+    for area, total in totals.items():
+        micro_counts[area] = {"TOTAL": total, "W0_9": round(total * 0.94)}
+    head = "DATAFLOW,FREQ,REF_AREA,DATA_TYPE,ECON_ACTIVITY_NACE_2007,PERS_EMPL_SIZE_CLASS,TIME_PERIOD,OBS_VALUE,OBS_STATUS"
+    flow = "IT1:183_1163_DF_DICA_ASIAULP_TERRIFDATA_7(1.0)"
+    line = lambda area, size: f"{flow},A,{area},LU,0010,{size},{year},{micro_counts[area][size]},"
+    micro_lines = [head] + [line(a, s) for a in micro_counts for s in ("TOTAL", "W0_9")]
+    for area in micro_counts:
+        (tmp / f"micro-{area}.csv").write_text("\n".join([head, line(area, "TOTAL"), line(area, "W0_9")]) + "\n", encoding="utf-8")
+    for name, lines in (("lu", lu_lines), ("emp", emp_lines), ("micro", micro_lines)):
+        (tmp / f"{name}.csv").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return year
+
+
+def asia_cases(tmp: Path) -> None:
+    year = asia_files(tmp)
+    lines = upd.update_istat_asia(year, tmp, dry_run=True).lines
+    towns = [line for line in lines if "benchmark" not in line and "Versilia" not in line]
+    bad = [line for line in towns if not math.isclose(*(float(x) for x in line.split(": ", 1)[1].split(" → ")), rel_tol=0, abs_tol=0.006)]
+    assert not bad, f"le serie pubblicate devono ridare gli stessi valori: {bad[:3]}"
+    year = asia_files(tmp, extra_year=True)
+    lines = upd.update_istat_asia(year, tmp, dry_run=True).lines
+    assert any(line.startswith("  localUnits Massarosa:") for line in lines), "anno nuovo: valori comunali aggiornati"
+    (tmp / "lu.csv").write_text("\n".join(l for l in (tmp / "lu.csv").read_text().splitlines() if ",046030," not in l or f",{year}," not in l) + "\n")
+    try:
+        upd.update_istat_asia(year, tmp, dry_run=True)
+        raise AssertionError("Comune senza l'anno nuovo accettato")
+    except upd.UpdateError:
+        pass
+
+
 def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         ars_cases(Path(tmp))
         mobility_cases(Path(tmp))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche PASS")
+    with tempfile.TemporaryDirectory() as tmp:
+        asia_cases(Path(tmp))
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato PASS")
 
 
 if __name__ == "__main__":
