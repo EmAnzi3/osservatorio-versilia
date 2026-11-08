@@ -12,6 +12,9 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     # mobilità residenziale (Istat P2, tutti i Comuni) — anno nuovo
     python scripts/update_source_data.py istat-mobility --year 2025 [--file P2_2025_it_Comuni.zip]
 
+    # unità locali e addetti (Istat ASIA-UL, SDMX) — anno nuovo o revisione
+    python scripts/update_source_data.py istat-asia --year 2024 [--dir cartella-con-lu.csv-emp.csv-micro.csv]
+
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
 questi comandi e committa il risultato sul ramo della PR.
@@ -319,6 +322,194 @@ def update_istat_mobility(year: int, file: Path | None, dry_run: bool) -> Change
     return changes
 
 
+# ------------------------------------------------------------------ Istat ASIA-UL: unità locali e addetti
+
+ASIA_SDMX = "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/"
+ASIA_PAGE = ("https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/"
+             "DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7")
+ASIA_QUERIES = {
+    "lu": "A..LU.0010.TOTAL?startPeriod={first}&endPeriod={year}",
+    "emp": "A..LUEMPDAA.0010.TOTAL?startPeriod={first}&endPeriod={year}",
+    "micro": "A..LU.0010.W0_9+TOTAL?startPeriod={year}&endPeriod={year}",
+}
+ASIA_FIRST = 2018
+ASIA_METRICS = ("localUnits", "localEmployees", "employeesPerLocalUnit", "localUnitsChange", "localEmployeesChange", "microUnits")
+TUSCANY_PREFIXES = ("045", "046", "047", "048", "049", "050", "051", "052", "053", "100")
+SDMX_CSV = "application/vnd.sdmx.data+csv;version=1.0.0"
+
+
+def sdmx_csv(url: str, file: Path | None) -> bytes:
+    """CSV SDMX Istat (l'intestazione Accept sceglie il CSV invece dell'XML)."""
+    if file is not None:
+        return file.read_bytes()
+    import time
+    import urllib.request
+    errors = []
+    for attempt in range(1, 4):
+        request = urllib.request.Request(url, headers={"User-Agent": probes.USER_AGENT, "Accept": SDMX_CSV})
+        try:
+            with urllib.request.urlopen(request, timeout=600) as response:
+                return response.read()
+        except Exception as error:  # noqa: BLE001
+            errors.append(f"tentativo {attempt}: {error}")
+            time.sleep(30 * attempt)
+    raise UpdateError(f"{url}: " + " | ".join(errors))
+
+
+def asia_panel(raw: bytes, data_type: str) -> dict[tuple[str, str], dict[int, float]]:
+    """{(area, classe dimensionale): {anno: valore}} per i Comuni (6 cifre), Toscana (ITE1) e Italia (IT)."""
+    reader = csv.DictReader(io.StringIO(raw.decode("utf-8-sig")))
+    if not {"REF_AREA", "DATA_TYPE", "TIME_PERIOD", "OBS_VALUE"} <= set(reader.fieldnames or []):
+        raise UpdateError(f"ASIA-UL {data_type}: schema CSV inatteso {reader.fieldnames}")
+    out: dict[tuple[str, str], dict[int, float]] = {}
+    for row in reader:
+        if (row.get("DATA_TYPE") or "").strip() != data_type or not (row.get("OBS_VALUE") or "").strip():
+            continue
+        area = (row.get("REF_AREA") or "").strip()
+        if not (re.fullmatch(r"\d{6}", area) or area in {"IT", "ITE1"}):
+            continue
+        key = (area, (row.get("PERS_EMPL_SIZE_CLASS") or "TOTAL").strip())
+        year = int(str(row["TIME_PERIOD"])[:4])
+        value = float(row["OBS_VALUE"].replace(",", "."))
+        old = out.setdefault(key, {}).get(year)
+        if old is not None and not math.isclose(old, value, rel_tol=0, abs_tol=1e-9):
+            raise UpdateError(f"ASIA-UL {data_type}: {key} {year} duplicato ({old} ≠ {value})")
+        out[key][year] = value
+    return out
+
+
+def asia_scopes(panel: dict[tuple[str, str], dict[int, float]], year: int, size: str = "TOTAL") -> dict[str, float]:
+    """Toscana e Italia come somma delle osservazioni comunali ufficiali dello stesso anno."""
+    towns = {a: v[year] for (a, s), v in panel.items() if s == size and len(a) == 6 and year in v}
+    if len(towns) < 7800:
+        raise UpdateError(f"ASIA-UL {year}: copertura comunale insufficiente ({len(towns)})")
+    return {"tuscany": sum(v for a, v in towns.items() if a[:3] in TUSCANY_PREFIXES), "italy": sum(towns.values())}
+
+
+def pct_change(first: float, last: float) -> float:
+    if not first:
+        raise UpdateError("variazione percentuale da base zero")
+    return (last / first - 1) * 100
+
+
+def update_istat_asia(year: int, folder: Path | None, dry_run: bool) -> Changes:
+    years = list(range(ASIA_FIRST, year + 1))
+    raws = {name: sdmx_csv(ASIA_SDMX + q.format(first=ASIA_FIRST, year=year), folder / f"{name}.csv" if folder else None)
+            for name, q in ASIA_QUERIES.items()}
+    lu, emp, micro = asia_panel(raws["lu"], "LU"), asia_panel(raws["emp"], "LUEMPDAA"), asia_panel(raws["micro"], "LU")
+    series: dict[str, dict[str, list[float]]] = {}
+    for code in TOWN_CODES:
+        got = {"lu": lu.get((code, "TOTAL"), {}), "emp": emp.get((code, "TOTAL"), {})}
+        missing = [f"{k} {y}" for k, v in got.items() for y in years if y not in v]
+        if missing:
+            raise UpdateError(f"ASIA-UL {code}: anni assenti {missing}")
+        series[code] = {k: [v[y] for y in years] for k, v in got.items()}
+        series[code]["micro"] = [micro.get((code, s), {}).get(year) for s in ("W0_9", "TOTAL")]
+        if None in series[code]["micro"] or series[code]["micro"][1] != series[code]["lu"][-1]:
+            raise UpdateError(f"ASIA-UL {code}: classi dimensionali {year} assenti o incoerenti con il totale")
+    scopes = {name: {y: asia_scopes(panel, y) for y in (ASIA_FIRST, year)} for name, panel in (("lu", lu), ("emp", emp))}
+    native = {}
+    for scope, area in (("tuscany", "ITE1"), ("italy", "IT")):
+        w, t = (micro.get((area, s), {}).get(year) for s in ("W0_9", "TOTAL"))
+        if w is None or t is None or not math.isclose(t, scopes["lu"][year][scope], rel_tol=0, abs_tol=0.5):
+            raise UpdateError(f"ASIA-UL {area} {year}: totale nativo {t} ≠ somma comunale {scopes['lu'][year][scope]}")
+        native[scope] = w / t * 100
+
+    site = load(SITE)
+    m = {k: site["metrics"][k] for k in ASIA_METRICS}
+    published = int(m["localUnits"]["meta"]["year"])
+    if year < published:
+        raise UpdateError(f"ASIA-UL: anno {year} precedente al pubblicato {published}")
+    changes = Changes()
+    span, old_span = f"{ASIA_FIRST}–{year}", f"{ASIA_FIRST}–{published}"
+    snapshot_path = f"data/source-snapshots/istat-asia-ul-{year}.json"
+    benchmarks = {
+        "localUnits": {scope: scopes["lu"][year][scope] for scope in ("tuscany", "italy")},
+        "localEmployees": {scope: round(scopes["emp"][year][scope], 2) for scope in ("tuscany", "italy")},
+        "employeesPerLocalUnit": {scope: scopes["emp"][year][scope] / scopes["lu"][year][scope] for scope in ("tuscany", "italy")},
+        "localUnitsChange": {scope: pct_change(scopes["lu"][ASIA_FIRST][scope], scopes["lu"][year][scope]) for scope in ("tuscany", "italy")},
+        "localEmployeesChange": {scope: pct_change(scopes["emp"][ASIA_FIRST][scope], scopes["emp"][year][scope]) for scope in ("tuscany", "italy")},
+        "microUnits": native,
+    }
+    benchmarks["localUnits"] = {k: int(round(v)) for k, v in benchmarks["localUnits"].items()}
+
+    def town_values(code: str) -> dict[str, Any]:
+        s = series[code]
+        ratio = [e / u for e, u in zip(s["emp"], s["lu"])]
+        return {
+            "localUnits": (int(round(s["lu"][-1])), it_number(s["lu"][-1], 0), [int(round(v)) for v in s["lu"]]),
+            "localEmployees": (round(s["emp"][-1], 2), it_number(s["emp"][-1], 0) if abs(s["emp"][-1] - round(s["emp"][-1])) < 0.05 else it_number(s["emp"][-1], 1), [round(v, 2) for v in s["emp"]]),
+            "employeesPerLocalUnit": (ratio[-1], f"{it_number(ratio[-1], 2)} addetti/UL", ratio),
+            "localUnitsChange": (pct_change(s["lu"][0], s["lu"][-1]), None, None),
+            "localEmployeesChange": (pct_change(s["emp"][0], s["emp"][-1]), None, None),
+            "microUnits": (round(s["micro"][0] / s["micro"][1] * 100, 2), None, None),
+        }
+
+    totals = {k: [sum(series[c][k][i] for c in TOWN_CODES) for i in range(len(years))] for k in ("lu", "emp")}
+    aggregates = {
+        "localUnits": int(round(totals["lu"][-1])),
+        "localEmployees": round(totals["emp"][-1], 2),
+        "employeesPerLocalUnit": totals["emp"][-1] / totals["lu"][-1],
+        "localUnitsChange": pct_change(totals["lu"][0], totals["lu"][-1]),
+        "localEmployeesChange": pct_change(totals["emp"][0], totals["emp"][-1]),
+        "microUnits": sum(series[c]["micro"][0] for c in TOWN_CODES) / sum(series[c]["micro"][1] for c in TOWN_CODES) * 100,
+    }
+    population = 0.0
+    for key, metric in m.items():
+        for row in metric["rows"]:
+            value, formatted, values = town_values(row["code"])[key]
+            changes.note(f"{key} {row['town']}", row["value"], value)
+            if key == "localUnits" and row.get("normalized"):
+                pop = row["value"] / row["normalized"]["value"] * 1000
+                population += pop
+                row["normalized"]["value"] = value / pop * 1000
+            row["value"] = row["benchmarkValue"] = value
+            row["formatted"] = formatted or f"{it_number(value, 1)}%"
+            if values is not None:
+                row["series"] = {"years": years, "values": values}
+        changes.note(f"{key} Versilia", metric["aggregate"]["value"], aggregates[key])
+        metric["aggregate"]["value"] = aggregates[key]
+        if key == "localUnits" and metric.get("normalizedAggregate"):
+            metric["normalizedAggregate"]["value"] = aggregates[key] / population * 1000
+        meta = metric["meta"]
+        if key.endswith("Change"):
+            for field in ("label", "description", "year"):
+                meta[field] = meta[field].replace(old_span, span).replace(f"e il {published}", f"e il {year}")
+            metric["method"]["formula"] = metric["method"]["formula"].replace(str(published), str(year))
+        else:
+            meta["year"] = str(year)
+        bench = meta["benchmark"]
+        for scope, value in benchmarks[key].items():
+            changes.note(f"{key} benchmark {scope}", bench.get(scope), value)
+            bench[scope] = value
+        bench.update(year=meta["year"], sourceSnapshot=snapshot_path, url=ASIA_PAGE)
+        metric["method"]["formula"] = re.sub(r"serie 2018–\d{4} acquisita tramite Cruscotto Italia \(AgID\)",
+                                             f"serie {span} dal servizio SDMX Istat", metric["method"]["formula"])
+        metric["method"]["formula"] = metric["method"]["formula"].replace("; acquisizione tramite Cruscotto Italia (AgID)", "; servizio SDMX Istat")
+    snapshot = {
+        "schemaVersion": 1,
+        "version": f"istat-asia-ul-{year}-v1",
+        "retrieved": date.today().isoformat(),
+        "publisher": "Istat — ASIA Unità Locali",
+        "sourceUrl": ASIA_PAGE,
+        "sources": {name: {"url": ASIA_SDMX + q.format(first=ASIA_FIRST, year=year), "sha256": hashlib.sha256(raws[name]).hexdigest(), "bytes": len(raws[name])}
+                    for name, q in ASIA_QUERIES.items()},
+        "years": years,
+        "towns": {code: {"localUnits": series[code]["lu"], "employeesAverageAnnual": series[code]["emp"],
+                         "sizeClasses": {"year": year, "W0_9": series[code]["micro"][0], "TOTAL": series[code]["micro"][1]}} for code in TOWN_CODES},
+        "scopes": {"tuscany": "somma dei Comuni con prefisso ISTAT toscano; quota micro dal totale nativo ITE1",
+                   "italy": "somma di tutti i Comuni; quota micro dal totale nativo IT"},
+        "benchmarks": {k: {"year": span if k.endswith("Change") else str(year), **v} for k, v in benchmarks.items()},
+        "acquisitionEvidence": {"script": f"scripts/update_source_data.py istat-asia --year {year}"},
+    }
+    target = ROOT / snapshot_path
+    snapshot = keep_retrieved(snapshot, load(target) if target.exists() else None)
+    if not dry_run:
+        save(SITE, site)
+        save(target, snapshot)
+    return changes
+
+
 def composite_flow(text: str, town: str, year: int, inbound: int, outbound: int) -> str:
     """Aggiunge (o sostituisce) l'anno nel flusso interno del Comune mantenendo il formato del file."""
     start = text.index(f'"{town}": {{', text.index('"raw"'))
@@ -350,11 +541,17 @@ def main() -> int:
     m.add_argument("--year", type=int, required=True)
     for p in (a, m):
         p.add_argument("--file", type=Path)
+    u = sub.add_parser("istat-asia")
+    u.add_argument("--year", type=int, required=True)
+    u.add_argument("--dir", type=Path, help="cartella con lu.csv, emp.csv e micro.csv già scaricati")
+    for p in (a, m, u):
         p.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     try:
         if args.updater == "ars-legacy":
             update_ars_legacy(args.metric, args.file, args.dry_run).report(f"ARS {args.metric}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "istat-asia":
+            update_istat_asia(args.year, args.dir, args.dry_run).report(f"ASIA-UL {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         else:
             update_istat_mobility(args.year, args.file, args.dry_run).report(f"Mobilità residenziale {args.year}{' (prova a secco)' if args.dry_run else ''}:")
     except (UpdateError, probes.ProbeError) as error:

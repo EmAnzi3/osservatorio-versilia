@@ -127,6 +127,7 @@ jobs:
           request = json.load(open("ci/source-update-request.json", encoding="utf-8"))
           commands = [["ars-legacy", "--metric", m] for m in request.get("arsLegacy", [])]
           commands += [["istat-mobility", "--year", str(int(y))] for y in request.get("istatMobility", [])]
+          commands += [["istat-asia", "--year", str(int(y))] for y in request.get("istatAsia", [])]
           failed = 0
           for args in commands:
               print("::group::" + " ".join(args))

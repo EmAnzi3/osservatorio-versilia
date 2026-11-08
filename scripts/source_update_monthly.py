@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Giro mensile degli aggiornatori di `scripts/update_source_data.py`.
 
-Esegue ogni aggiornatore disponibile (tutti gli indicatori ARS legacy; mobilità
-Istat P2 per l'anno pubblicato e per quello successivo), uno alla volta, e scrive
+Esegue ogni aggiornatore disponibile (tutti gli indicatori ARS legacy; ASIA-UL e
+mobilità Istat P2 per l'anno pubblicato e per quello successivo), uno alla volta, e scrive
 un rapporto Markdown con l'esito di ciascuno: aggiornato, invariato o rifiutato
 con il motivo e cosa fare. Ogni aggiornatore scrive solo se il file della fonte è
 completo, quindi i riusciti restano anche se un altro viene rifiutato.
@@ -31,6 +31,8 @@ MOBILITY_KEY = "internalResidentialMobility"
 
 def plan(site: dict, ars: dict) -> list[list[str]]:
     commands = [["ars-legacy", "--metric", key] for key in sorted(ars["indicators"])]
+    asia = int(site["metrics"]["localUnits"]["meta"]["year"])
+    commands += [["istat-asia", "--year", str(asia)], ["istat-asia", "--year", str(asia + 1)]]
     year = int(site["metrics"][MOBILITY_KEY]["meta"]["year"])
     commands += [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
     return commands
@@ -41,6 +43,8 @@ def advice(args: list[str], message: str) -> str:
     text = message.casefold()
     if "la fonte pubblica" in text:
         return "Periodo nuovo alla fonte: va pubblicato con una PR dedicata (etichette, domande verificate, test)."
+    if args[0] == "istat-asia" and "anni assenti" in text:
+        return "Anno non ancora pubblicato da Istat per tutti i Comuni: nessuna azione, si riprova il mese prossimo."
     if args[0] == "istat-mobility" and any(k in text for k in ("404", "not found", "non è uno zip")):
         return "Anno non ancora pubblicato da Istat: nessuna azione, si riprova il mese prossimo."
     if any(k in text for k in ("tentativi", "timeout", "timed out", "connection", "http", "ssl", "urlopen")):

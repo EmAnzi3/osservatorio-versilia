@@ -16,6 +16,9 @@ year = int(site["metrics"][m.MOBILITY_KEY]["meta"]["year"])
 assert [c for c in commands if c[0] == "ars-legacy"] == [["ars-legacy", "--metric", k] for k in sorted(ars["indicators"])]
 assert commands[-2:] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
 assert "hospitalizedAll" in ars["indicators"]
+asia = int(site["metrics"]["localUnits"]["meta"]["year"])
+assert [c for c in commands if c[0] == "istat-asia"] == [["istat-asia", "--year", str(asia)], ["istat-asia", "--year", str(asia + 1)]]
+assert "non ancora pubblicato" in m.advice(["istat-asia", "--year", str(asia + 1)], "ASIA-UL 046005: anni assenti ['lu 2026']")
 
 mob = ["istat-mobility", "--year", str(year + 1)]
 assert "PR dedicata" in m.advice(["ars-legacy"], "hospitalizedAll: la fonte pubblica 2026 (pubblicato 2025); …")
@@ -35,4 +38,4 @@ text = m.report(
 assert "1 aggiornati · 1 invariati · 1 rifiutati" in text
 assert "HTTP 404 / x<br>**Cosa fare:** Anno non ancora pubblicato" in text
 assert "Massarosa 63,28 → 63,40" in text and "- `data/site-data.json`" in text
-print("Giro mensile aggiornatori: piano 7 ARS + mobilità", year, "e", year + 1, "· consigli e rapporto PASS")
+print("Giro mensile aggiornatori: piano 7 ARS + ASIA-UL + mobilità", year, "e", year + 1, "· consigli e rapporto PASS")
