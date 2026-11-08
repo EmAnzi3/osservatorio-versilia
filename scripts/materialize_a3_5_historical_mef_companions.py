@@ -11,11 +11,12 @@ import json
 import math
 from pathlib import Path
 from typing import Any
+import asia_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 FRAME_MANIFEST_PATH = ROOT / "data" / "source-snapshots" / "economia-prodotta-frame-sbs-v134.json"
-ASIA_PATH = ROOT / "data" / "source-snapshots" / "agid-asia-agcom-2026-08.json"
+ASIA_PATH = ROOT / asia_sources.TOWNS
 DEMOGRAPHY_PATH = ROOT / "data" / "source-snapshots" / "istat-demography-lotto-a-2026-08.json"
 BILANCI_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
 MEF_INCOME_PATH = ROOT / "data" / "source-snapshots" / "mef-income-lotto-a-2024.json"
@@ -228,7 +229,7 @@ def _apply_business(
                 metric_id=metric_id,
                 points=points,
                 source="Istat — ASIA unità locali",
-                source_snapshot="data/source-snapshots/agid-asia-agcom-2026-08.json",
+                source_snapshot=asia_sources.TOWNS,
                 note=f"Variazione cumulata rispetto al {int(raw_years[0])}, coerente con la definizione del valore pubblico.",
                 tolerance=1e-10,
             )

@@ -14,13 +14,14 @@ from pathlib import Path
 from typing import Any
 
 import materialize_a3_5_openbdap_ratio_components as openbdap
+import asia_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 LIA_PATH = ROOT / "data" / "source-snapshots" / "lia-v1.4.0.json"
 DEMOGRAPHY_PATH = ROOT / "data" / "source-snapshots" / "istat-demography-lotto-a-2026-08.json"
 AGRICULTURE_PATH = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
-ASIA_PATH = ROOT / "data" / "source-snapshots" / "agid-asia-agcom-2026-08.json"
+ASIA_PATH = ROOT / asia_sources.TOWNS
 FRAME_PATH = ROOT / "data" / "source-snapshots" / "economia-prodotta-frame-sbs-v134-2021-2023.json"
 
 OPENBDAP_TARGETS = tuple(openbdap.TARGET_METRICS)
@@ -355,24 +356,26 @@ def _apply_business(metrics: dict[str, Any], asia: dict[str, Any], frame: dict[s
                 raise RuntimeError(f"{metric_id}/{town}: ASIA mancante")
             units = raw.get("localUnits")
             employees = raw.get("employeesAverageAnnual")
-            if not isinstance(units, list) or not isinstance(employees, list) or len(units) != 6 or len(employees) != 6:
+            years = raw.get("years")
+            if not isinstance(units, list) or not isinstance(employees, list) or not isinstance(years, list) or len(years) < 2 or not len(units) == len(employees) == len(years):
                 raise RuntimeError(f"{metric_id}/{town}: serie ASIA inattesa")
+            first, last = years[0], years[-1]
 
             if metric_id == "employeesPerLocalUnit":
-                numerator = _num(employees[-1], f"{metric_id}/{town}: employees 2023")
-                denominator = _num(units[-1], f"{metric_id}/{town}: units 2023")
+                numerator = _num(employees[-1], f"{metric_id}/{town}: employees {last}")
+                denominator = _num(units[-1], f"{metric_id}/{town}: units {last}")
                 scale, transform = 1.0, "ratio"
-                formula = "addetti medi annui 2023 / unità locali attive 2023"
+                formula = f"addetti medi annui {last} / unità locali attive {last}"
             elif metric_id == "localEmployeesChange":
-                numerator = _num(employees[-1], f"{metric_id}/{town}: employees 2023")
-                denominator = _num(employees[0], f"{metric_id}/{town}: employees 2018")
+                numerator = _num(employees[-1], f"{metric_id}/{town}: employees {last}")
+                denominator = _num(employees[0], f"{metric_id}/{town}: employees {first}")
                 scale, transform = 100.0, "pct_change"
-                formula = "((addetti 2023 / addetti 2018) − 1) × 100"
+                formula = f"((addetti {last} / addetti {first}) − 1) × 100"
             else:
-                numerator = _num(units[-1], f"{metric_id}/{town}: units 2023")
-                denominator = _num(units[0], f"{metric_id}/{town}: units 2018")
+                numerator = _num(units[-1], f"{metric_id}/{town}: units {last}")
+                denominator = _num(units[0], f"{metric_id}/{town}: units {first}")
                 scale, transform = 100.0, "pct_change"
-                formula = "((unità locali 2023 / unità locali 2018) − 1) × 100"
+                formula = f"((unità locali {last} / unità locali {first}) − 1) × 100"
 
             normalized = _num(row["value"], f"{metric_id}/{town}: value")
             absolute = numerator if transform == "ratio" else numerator - denominator
@@ -387,8 +390,8 @@ def _apply_business(metrics: dict[str, Any], asia: dict[str, Any], frame: dict[s
                 transform=transform,
                 formula=formula,
                 source="Istat — ASIA unità locali",
-                source_snapshot="data/source-snapshots/agid-asia-agcom-2026-08.json",
-                reference_year="2018–2023" if transform == "pct_change" else "2023",
+                source_snapshot=asia_sources.TOWNS,
+                reference_year=f"{first}–{last}" if transform == "pct_change" else str(last),
             )
             rows_enriched += 1
 

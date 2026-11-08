@@ -422,7 +422,9 @@ def update_istat_asia(year: int, folder: Path | None, dry_run: bool) -> Changes:
         raise UpdateError(f"ASIA-UL: anno {year} precedente al pubblicato {published}")
     changes = Changes()
     span, old_span = f"{ASIA_FIRST}–{year}", f"{ASIA_FIRST}–{published}"
-    snapshot_path = f"data/source-snapshots/istat-asia-ul-{year}.json"
+    towns_path = f"data/source-snapshots/istat-asia-ul-{year}.json"
+    business_path = f"data/source-snapshots/a3-istat-business-benchmark-{year}.json"
+    micro_path = f"data/source-snapshots/a3-istat-micro-units-benchmark-{year}.json"
     benchmarks = {
         "localUnits": {scope: scopes["lu"][year][scope] for scope in ("tuscany", "italy")},
         "localEmployees": {scope: round(scopes["emp"][year][scope], 2) for scope in ("tuscany", "italy")},
@@ -482,31 +484,85 @@ def update_istat_asia(year: int, folder: Path | None, dry_run: bool) -> Changes:
         for scope, value in benchmarks[key].items():
             changes.note(f"{key} benchmark {scope}", bench.get(scope), value)
             bench[scope] = value
-        bench.update(year=meta["year"], sourceSnapshot=snapshot_path, url=ASIA_PAGE)
+        bench.update(year=meta["year"], sourceSnapshot=micro_path if key == "microUnits" else business_path, url=ASIA_PAGE)
         metric["method"]["formula"] = re.sub(r"serie 2018–\d{4} acquisita tramite Cruscotto Italia \(AgID\)",
                                              f"serie {span} dal servizio SDMX Istat", metric["method"]["formula"])
         metric["method"]["formula"] = metric["method"]["formula"].replace("; acquisizione tramite Cruscotto Italia (AgID)", "; servizio SDMX Istat")
-    snapshot = {
+    sources = {name: {"url": ASIA_SDMX + q.format(first=ASIA_FIRST, year=year), "sha256": hashlib.sha256(raws[name]).hexdigest(), "bytes": len(raws[name])}
+               for name, q in ASIA_QUERIES.items()}
+    rows = {r["code"]: r for r in m["localUnits"]["rows"]}
+    towns_snapshot = {
         "schemaVersion": 1,
         "version": f"istat-asia-ul-{year}-v1",
         "retrieved": date.today().isoformat(),
-        "publisher": "Istat — ASIA Unità Locali",
-        "sourceUrl": ASIA_PAGE,
-        "sources": {name: {"url": ASIA_SDMX + q.format(first=ASIA_FIRST, year=year), "sha256": hashlib.sha256(raws[name]).hexdigest(), "bytes": len(raws[name])}
-                    for name, q in ASIA_QUERIES.items()},
-        "years": years,
-        "towns": {code: {"localUnits": series[code]["lu"], "employeesAverageAnnual": series[code]["emp"],
-                         "sizeClasses": {"year": year, "W0_9": series[code]["micro"][0], "TOTAL": series[code]["micro"][1]}} for code in TOWN_CODES},
-        "scopes": {"tuscany": "somma dei Comuni con prefisso ISTAT toscano; quota micro dal totale nativo ITE1",
-                   "italy": "somma di tutti i Comuni; quota micro dal totale nativo IT"},
-        "benchmarks": {k: {"year": span if k.endswith("Change") else str(year), **v} for k, v in benchmarks.items()},
+        "scope": "Sette Comuni della Versilia storica",
+        "acquisitionLayer": {"name": "Istat — servizio SDMX esploradati", "url": ASIA_SDMX,
+                             "note": "Serie comunali lette direttamente dal servizio SDMX Istat (CSV)."},
+        "sources": {"asia": {"owner": "ISTAT", "dataset": "Archivio Statistico Imprese Attive — Unità Locali (ASIA-UL)",
+                             "url": ASIA_PAGE, "license": "CC BY 3.0 IT", "years": years, "sdmx": sources}},
+        "towns": [{"town": rows[c]["town"], "code": c, "slug": rows[c]["slug"],
+                   "asia": {"years": years, "localUnits": [int(round(v)) for v in series[c]["lu"]],
+                            "employeesAverageAnnual": [round(v, 2) for v in series[c]["emp"]]}} for c in TOWN_CODES],
         "acquisitionEvidence": {"script": f"scripts/update_source_data.py istat-asia --year {year}"},
     }
-    target = ROOT / snapshot_path
-    snapshot = keep_retrieved(snapshot, load(target) if target.exists() else None)
+    def bench_entry(key: str, unit: str, formula: str) -> dict[str, Any]:
+        return {"year": span if key.endswith("Change") else str(year), "unit": unit, "formula": formula, **benchmarks[key]}
+    business = {
+        "schemaVersion": 1,
+        "version": f"a3-istat-business-benchmark-{year}-v1",
+        "retrieved": date.today().isoformat(),
+        "publisher": "Istat — ASIA Unità Locali",
+        "sourceProfileId": "istat-business-annual",
+        "candidateState": "ACQUIRED_CANDIDATE",
+        "sourceUrl": ASIA_PAGE,
+        "retrieval": "Istat SEP SDMX ufficiale",
+        "qualityGate": {"status": "PASS", "errors": [], "candidateMetrics": sorted(k for k in benchmarks if k != "microUnits"),
+                        "publicSnapshotReconciliation": f"metric-level 7/7 × {ASIA_FIRST}/{year}; Toscana e Italia aggregati dalle stesse osservazioni comunali ufficiali"},
+        "benchmarks": {
+            "localUnits": bench_entry("localUnits", "number", "unità locali attive"),
+            "localUnitsChange": bench_entry("localUnitsChange", "percent", f"((UL {year} / UL {ASIA_FIRST})-1)×100"),
+            "localEmployees": bench_entry("localEmployees", "number", "addetti medi annui"),
+            "localEmployeesChange": bench_entry("localEmployeesChange", "percent", f"((addetti {year} / addetti {ASIA_FIRST})-1)×100"),
+            "employeesPerLocalUnit": bench_entry("employeesPerLocalUnit", "decimal", "addetti medi annui / unità locali"),
+        },
+        "evidence": {
+            "LU": {scope: {str(y): int(round(scopes["lu"][y][scope])) for y in (ASIA_FIRST, year)} for scope in ("tuscany", "italy")},
+            "LUEMPDAA": {scope: {str(y): round(scopes["emp"][y][scope], 2) for y in (ASIA_FIRST, year)} for scope in ("tuscany", "italy")},
+            "historicalTuscanyMunicipalityCount": {str(y): sum(1 for (a, s), v in lu.items() if s == "TOTAL" and len(a) == 6 and a[:3] in TUSCANY_PREFIXES and y in v)
+                                                   for y in (ASIA_FIRST, year)},
+        },
+        "blocked": {"microUnits": "richiede distribuzione per classe dimensionale ASIA-UL; non inferita dal totale"},
+        "acquisitionEvidence": {"script": f"scripts/update_source_data.py istat-asia --year {year}", "sources": sources},
+    }
+    import acquire_a3_benchmark_istat_business_micro_units as micro_acq
+    micro_sources, micro_records = {}, {}
+    for area in sorted(micro_acq.AREAS):
+        text = sdmx_csv(micro_acq.source_url(area, year), folder / f"micro-{area}.csv" if folder else None).decode("utf-8-sig")
+        micro_sources[area] = {"url": micro_acq.source_url(area, year), "csv": text, "sha256": hashlib.sha256(text.encode()).hexdigest()}
+        micro_records[area] = micro_acq.parse_csv(text, area, year)
+    panel, geographies = micro_acq.parse_panel(raws["micro"], year)
+    micro_snapshot = {
+        "schemaVersion": 1, "publisher": "Istat — ASIA Unità Locali", "sourceProfileId": "istat-business-annual",
+        "status": "ACQUIRED_CANDIDATE", "sourceUrl": ASIA_PAGE, "sources": micro_sources, "records": micro_records,
+        "benchmarks": {"microUnits": {"year": str(year), "unit": "percent", "formula": "unità locali con 0–9 addetti / unità locali totali × 100",
+                                      "tuscany": micro_records["ITE1"]["W0_9"] / micro_records["ITE1"]["TOTAL"] * 100,
+                                      "italy": micro_records["IT"]["W0_9"] / micro_records["IT"]["TOTAL"] * 100}},
+        "qualityGate": {"status": "PASS", "errors": [], "candidateMetrics": ["microUnits"],
+                        "publicSnapshotReconciliation": f"7/7, native LU W0_9 and TOTAL {year}; public rounding at two decimals"},
+        "scope": {"note": f"Rapporto tra conteggi ufficiali ASIA-UL {year} W0_9 e TOTAL; aggregati nativi Toscana e Italia, stessa attività economica 0010. Non media delle quote comunali."},
+        "municipalPanel": panel,
+        "panelSource": {"url": micro_acq.panel_url(year), "sha256": hashlib.sha256(raws["micro"]).hexdigest(), "bytes": len(raws["micro"]),
+                        "nativeGeographies": geographies, "municipalities": len(panel),
+                        "tuscanyMunicipalities": sum(1 for r in panel if r[0][:3] in TUSCANY_PREFIXES)},
+    }
+    for scope in ("tuscany", "italy"):
+        if micro_snapshot["benchmarks"]["microUnits"][scope] != benchmarks["microUnits"][scope]:
+            raise UpdateError(f"ASIA-UL {scope}: quota micro della query per area ≠ pannello")
     if not dry_run:
         save(SITE, site)
-        save(target, snapshot)
+        for path, value in ((towns_path, towns_snapshot), (business_path, business), (micro_path, micro_snapshot)):
+            target = ROOT / path
+            save(target, keep_retrieved(value, load(target) if target.exists() else None) if "retrieved" in value else value)
     return changes
 
 

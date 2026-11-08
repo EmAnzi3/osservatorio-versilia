@@ -116,7 +116,8 @@ def asia_files(tmp: Path, extra_year: bool = False) -> int:
     emp = {r["code"]: r["series"]["values"] for r in site["localEmployees"]["rows"]}
     micro = {r["code"]: r["value"] for r in site["microUnits"]["rows"]}
     year = years[-1] + (1 if extra_year else 0)
-    lu_lines, emp_lines, micro_lines = [ASIA_HEAD], [ASIA_HEAD], [ASIA_HEAD]
+    lu_lines, emp_lines = [ASIA_HEAD], [ASIA_HEAD]
+    micro_counts: dict[str, dict[str, int]] = {}
     totals = {"ITE1": 0, "IT": 0}
     for row in site["localUnits"]["rows"]:
         values = row["series"]["values"] + ([row["series"]["values"][-1] + 10] if extra_year else [])
@@ -125,7 +126,7 @@ def asia_files(tmp: Path, extra_year: bool = False) -> int:
             lu_lines.append(f"x,A,{row['code']},LU,0010,TOTAL,{y},{v}")
             emp_lines.append(f"x,A,{row['code']},LUEMPDAA,0010,TOTAL,{y},{w}")
         total = values[-1]
-        micro_lines += [f"x,A,{row['code']},LU,0010,TOTAL,{year},{total}", f"x,A,{row['code']},LU,0010,W0_9,{year},{round(micro[row['code']] * total / 100)}"]
+        micro_counts[row["code"]] = {"TOTAL": total, "W0_9": round(micro[row["code"]] * total / 100)}
         totals["ITE1"] += total
     for i in range(7800):
         code = f"{900000 + i}"
@@ -134,7 +135,13 @@ def asia_files(tmp: Path, extra_year: bool = False) -> int:
             emp_lines.append(f"x,A,{code},LUEMPDAA,0010,TOTAL,{y},30")
     totals["IT"] = totals["ITE1"] + 7800 * 10
     for area, total in totals.items():
-        micro_lines += [f"x,A,{area},LU,0010,TOTAL,{year},{total}", f"x,A,{area},LU,0010,W0_9,{year},{round(total * 0.94)}"]
+        micro_counts[area] = {"TOTAL": total, "W0_9": round(total * 0.94)}
+    head = "DATAFLOW,FREQ,REF_AREA,DATA_TYPE,ECON_ACTIVITY_NACE_2007,PERS_EMPL_SIZE_CLASS,TIME_PERIOD,OBS_VALUE,OBS_STATUS"
+    flow = "IT1:183_1163_DF_DICA_ASIAULP_TERRIFDATA_7(1.0)"
+    line = lambda area, size: f"{flow},A,{area},LU,0010,{size},{year},{micro_counts[area][size]},"
+    micro_lines = [head] + [line(a, s) for a in micro_counts for s in ("TOTAL", "W0_9")]
+    for area in micro_counts:
+        (tmp / f"micro-{area}.csv").write_text("\n".join([head, line(area, "TOTAL"), line(area, "W0_9")]) + "\n", encoding="utf-8")
     for name, lines in (("lu", lu_lines), ("emp", emp_lines), ("micro", micro_lines)):
         (tmp / f"{name}.csv").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return year

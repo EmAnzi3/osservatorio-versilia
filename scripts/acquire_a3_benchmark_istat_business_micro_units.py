@@ -20,14 +20,19 @@ TOWNS = {"046018", "046033", "046005", "046024", "046028", "046013", "046030"}
 AREAS = TOWNS | {"IT", "ITE1"}
 CLASSES = {"W0_9", "TOTAL"}
 TUSCANY_PREFIXES = {"045", "046", "047", "048", "049", "050", "051", "052", "053", "100"}
-PANEL_URL = f"{BASE}/IT1,{FLOW},1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2023&endPeriod=2023"
+YEAR = 2023  # anno dell'acquisizione originale; gli anni successivi passano `year`
+PANEL_URL = f"{BASE}/IT1,{FLOW},1.0/A..LU.0010.W0_9+TOTAL?startPeriod={YEAR}&endPeriod={YEAR}"
 
 
-def source_url(area):
-    return f"{BASE}/IT1,{FLOW},1.0/A.{area}.LU.0010.W0_9+TOTAL?startPeriod=2023&endPeriod=2023"
+def panel_url(year=YEAR):
+    return f"{BASE}/IT1,{FLOW},1.0/A..LU.0010.W0_9+TOTAL?startPeriod={year}&endPeriod={year}"
 
 
-def parse_csv(text, area):
+def source_url(area, year=YEAR):
+    return f"{BASE}/IT1,{FLOW},1.0/A.{area}.LU.0010.W0_9+TOTAL?startPeriod={year}&endPeriod={year}"
+
+
+def parse_csv(text, area, year=YEAR):
     reader = csv.DictReader(io.StringIO(text))
     required = {"DATAFLOW", "FREQ", "REF_AREA", "DATA_TYPE", "ECON_ACTIVITY_NACE_2007",
                 "PERS_EMPL_SIZE_CLASS", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"}
@@ -36,7 +41,7 @@ def parse_csv(text, area):
     values = {}
     for row in reader:
         expected = {"DATAFLOW": f"IT1:{FLOW}(1.0)", "FREQ": "A", "REF_AREA": area,
-                    "DATA_TYPE": "LU", "ECON_ACTIVITY_NACE_2007": "0010", "TIME_PERIOD": "2023"}
+                    "DATA_TYPE": "LU", "ECON_ACTIVITY_NACE_2007": "0010", "TIME_PERIOD": str(year)}
         if any(row.get(k) != v for k, v in expected.items()):
             raise RuntimeError("ASIA-UL: source period, area or measure mismatch")
         size = row.get("PERS_EMPL_SIZE_CLASS")
@@ -51,7 +56,7 @@ def parse_csv(text, area):
     return values
 
 
-def parse_panel(body):
+def parse_panel(body, year=YEAR):
     reader = csv.DictReader(io.StringIO(body.decode("utf-8-sig")))
     grouped = {}
     for row in reader:
@@ -66,7 +71,7 @@ def parse_panel(body):
         writer = csv.DictWriter(text, fieldnames=reader.fieldnames)
         writer.writeheader()
         writer.writerows(rows.values())
-        values = parse_csv(text.getvalue(), area)
+        values = parse_csv(text.getvalue(), area, year)
         if re.fullmatch(r"\d{6}", area):
             records.append([area, values["W0_9"], values["TOTAL"]])
     return records, len(grouped)
@@ -74,7 +79,8 @@ def parse_panel(body):
 
 def validate_panel(snapshot):
     panel = snapshot.get("municipalPanel", [])
-    if not isinstance(panel, list) or len(panel) != 7900:
+    expected = snapshot.get("panelSource", {}).get("municipalities", 7900)
+    if not isinstance(panel, list) or len(panel) != expected or len(panel) < 7800:
         raise RuntimeError("ASIA-UL: incomplete national municipal panel")
     seen = set()
     for row in panel:
@@ -87,7 +93,7 @@ def validate_panel(snapshot):
             raise RuntimeError("ASIA-UL: invalid municipal panel components")
         seen.add(area)
     tuscany = [r for r in panel if r[0][:3] in TUSCANY_PREFIXES]
-    if len(tuscany) != 273:
+    if len(tuscany) != snapshot.get("panelSource", {}).get("tuscanyMunicipalities", 273):
         raise RuntimeError("ASIA-UL: incomplete Tuscany panel")
     for rows, area in ((panel, "IT"), (tuscany, "ITE1")):
         native = snapshot["records"][area]
@@ -99,7 +105,8 @@ def validate_panel(snapshot):
 
 
 def validate_snapshot(metric, snapshot, local_units):
-    if metric["meta"].get("year") != "2023" or metric["meta"].get("unit") != "percent":
+    year = int(snapshot.get("benchmarks", {}).get("microUnits", {}).get("year") or YEAR)
+    if metric["meta"].get("year") != str(year) or metric["meta"].get("unit") != "percent":
         raise RuntimeError("ASIA-UL: public period/unit mismatch")
     sources = snapshot.get("sources", {})
     records = snapshot.get("records", {})
@@ -109,9 +116,9 @@ def validate_snapshot(metric, snapshot, local_units):
     for area in AREAS:
         source = sources[area]
         text = source.get("csv", "")
-        if source.get("url") != source_url(area) or hashlib.sha256(text.encode()).hexdigest() != source.get("sha256"):
+        if source.get("url") != source_url(area, year) or hashlib.sha256(text.encode()).hexdigest() != source.get("sha256"):
             raise RuntimeError("ASIA-UL: source lineage mismatch")
-        native = parse_csv(text, area)
+        native = parse_csv(text, area, year)
         record = records[area]
         if any(isinstance(v, bool) or not isinstance(v, int) for v in record.values()) or record != native:
             raise RuntimeError("ASIA-UL: frozen component mismatch")
@@ -128,9 +135,9 @@ def validate_snapshot(metric, snapshot, local_units):
         if units[row["code"]] != record["TOTAL"] or not math.isclose(expected, public, rel_tol=0, abs_tol=.005000001):
             raise RuntimeError("ASIA-UL: municipal numerator/denominator reconciliation mismatch")
     benchmark = snapshot["benchmarks"]["microUnits"]
-    if benchmark.get("year") != "2023" or benchmark.get("unit") != "percent":
+    if benchmark.get("unit") != "percent":
         raise RuntimeError("ASIA-UL: benchmark period/unit mismatch")
-    prior = json.loads((ROOT / "data/source-snapshots/a3-istat-business-benchmark-2023.json").read_text())
+    prior = json.loads((ROOT / f"data/source-snapshots/a3-istat-business-benchmark-{year}.json").read_text())
     for scope, area in (("tuscany", "ITE1"), ("italy", "IT")):
         record = records[area]
         if record["TOTAL"] != prior["benchmarks"]["localUnits"][scope]:
