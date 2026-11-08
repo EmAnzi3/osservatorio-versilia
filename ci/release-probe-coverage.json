@@ -430,10 +430,10 @@
       "hint": "data dell'ultimo file delle farmacie (FRM_FARMA_…_AAAAMMGG)"
     },
     "salute_ospedali": {
-      "url": "LEGACYTLS https://www.dati.salute.gov.it/it/dataset/aziende-ospedaliere-aziende-ospedaliere-universitarie-e-irccs-pubblici-anche-costituiti/",
-      "pattern": "(?i)(?:anno|aggiornamento|_)\\s*(20\\d\\d)",
+      "url": "LEGACYTLS https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero-pubbliche-e-equiparate-presenti-nel-territorio-della-asl/",
+      "pattern": "files/(20\\d\\d)-\\d\\d/Strutture_di_ricovero",
       "text": "raw",
-      "hint": "ultimo anno dell'elenco delle strutture di ricovero"
+      "hint": "edizione (anno di caricamento) dell'ultimo file delle strutture di ricovero: l'edizione 2025-01 contiene i dati 2022"
     },
     "sisbon_api": {
       "mode": "snapshot",

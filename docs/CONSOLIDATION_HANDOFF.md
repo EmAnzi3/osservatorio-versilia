@@ -1,5 +1,28 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo mensile completo: 225/225 (8 novembre 2026)
+
+Il «Controllo mensile dati» ora verifica alla fonte tutti i 225 indicatori. 60 hanno un
+probe dedicato che confronta periodo e valori (OpenBDAP, ARS, demografia Istat, SIOPE, RGS);
+i restanti 165 hanno una verifica **del solo periodo**: `source_period` in
+`scripts/release_period_probes.py`, con 73 regole in `sourceChecks` di
+`ci/release-probe-coverage.json`. Il rapporto lo dichiara riga per riga («verifica del solo
+periodo»): un periodo uguale non garantisce valori identici alla fonte.
+
+- Modi: `latest` (periodo più recente nella pagina o nel file, con `sourceOffset`, `graceDays`
+  per le date, `baseline` quando il periodo pubblicato non è confrontabile), `next` (esiste
+  l'edizione successiva?), `absent` (la fonte ha dati dopo il periodo pubblicato?), `snapshot`
+  (registri continui; con `kind: year` istantanea annuale, es. PUN ricarica).
+- `scripts/source_period_survey.py` resta come strumento di collaudo: scarica le pagine delle
+  regole come la verifica e stampa anni e catture. Non è più nel workflow.
+- Primo giro completo (8/11): 191 correnti, 28 con periodo nuovo alla fonte (vanno pubblicati
+  con PR dedicate), 6 da verificare. Di questi, **carburanti MIMIT** non è raggiungibile dai
+  runner GitHub (timeout costanti, dal browser si apre): la verifica resta manuale, il rapporto
+  dà link e passo. ARPAT balneazione (403) e catalogo MIT concessioni (500) sono intermittenti.
+- Taratura con riscontri manuali di Ema: ospedali dalla pagina «strutture di ricovero pubbliche
+  e equiparate» (l'edizione file 2025-01 contiene dati 2022), Banca dati imprese dalle serie
+  storiche RT (ultimo anno di confronto + 1), UNCEM dalla ricerca del sito (rapporto 6/6/2026).
+
 ## Aggiornatori nel giro mensile (7 novembre 2026)
 
 Il workflow «Aggiorna dati dalla fonte» ora gira anche ogni mese (giorno 6, 06:41 UTC, il
