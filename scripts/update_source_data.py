@@ -18,6 +18,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     # copertura FTTH (AGCOM Broadband Map) — ultima edizione indicata da report.js
     python scripts/update_source_data.py agcom-ftth [--dir cartella-con-report.js-e-comuni.csv]
     python scripts/update_source_data.py istat-tourism --year 2025 [--file archivio.zip]
+    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
@@ -809,9 +810,17 @@ def main() -> int:
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
+    g = sub.add_parser("source-probe", help="sonda della struttura di una pagina o di un file (non modifica il catalogo)")
+    g.add_argument("--name", required=True)
+    g.add_argument("--url", required=True)
+    g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     args = parser.parse_args()
     try:
-        if args.updater == "mef-fiscal-probe":
+        if args.updater == "source-probe":
+            import probe_source_files
+
+            probe_source_files.run(args.name, args.url, args.follow)
+        elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 
             probe_mef_fiscal.run(args.year)

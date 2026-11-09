@@ -131,6 +131,7 @@ jobs:
           commands += [["agcom-ftth"]] if request.get("agcomFtth") else []
           commands += [["istat-tourism", "--year", str(int(y))] for y in request.get("istatTourism", [])]
           commands += [["mef-fiscal-probe", "--year", str(int(y))] for y in request.get("mefFiscalProbe", [])]
+          commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) for p in request.get("sourceProbe", [])]
           failed = 0
           for args in commands:
               print("::group::" + " ".join(args))
