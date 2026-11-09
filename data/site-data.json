@@ -23175,17 +23175,17 @@
         "shortLabel": "Motorizzazione",
         "description": "Autovetture iscritte al PRA rapportate alla popolazione residente.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "ACI / Istat — parco veicolare",
         "polarity": "neutral",
         "benchmark": {
-          "year": "2024",
-          "tuscany": 744.1215646386034,
-          "italy": 701.366347742935,
-          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "year": "2025",
+          "tuscany": 753.6760546367507,
+          "italy": 709.0932589797014,
+          "source": "ACI / Istat — Autoritratto 2025 e popolazione 2026",
           "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
-          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
-          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2025.json",
+          "note": "Parco autovetture ACI 2025: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2025 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Entrambe le metriche riconciliate 7/7 al decimale pubblico."
         }
       },
       "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
@@ -23194,83 +23194,83 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 742.4,
-          "formatted": "742,40 ogni 1.000",
+          "value": 758.2,
+          "formatted": "758,20 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 742.4
+          "benchmarkValue": 758.2
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 650.1,
-          "formatted": "650,10 ogni 1.000",
+          "value": 657.5,
+          "formatted": "657,50 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 650.1
+          "benchmarkValue": 657.5
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 713.1,
-          "formatted": "713,10 ogni 1.000",
+          "value": 720.7,
+          "formatted": "720,70 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 713.1
+          "benchmarkValue": 720.7
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 728.3,
-          "formatted": "728,30 ogni 1.000",
+          "value": 735.6,
+          "formatted": "735,60 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 728.3
+          "benchmarkValue": 735.6
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 700.7,
-          "formatted": "700,70 ogni 1.000",
+          "value": 709.3,
+          "formatted": "709,30 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 700.7
+          "benchmarkValue": 709.3
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 738.8,
-          "formatted": "738,80 ogni 1.000",
+          "value": 736.5,
+          "formatted": "736,50 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 738.8
+          "benchmarkValue": 736.5
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 740.2,
-          "formatted": "740,20 ogni 1.000",
+          "value": 738.8,
+          "formatted": "738,80 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 740.2
+          "benchmarkValue": 738.8
         }
       ],
       "aggregate": {
-        "value": 695.7355538733283,
+        "value": 703.8859449911683,
         "label": "Tasso Versilia",
         "note": "Autovetture complessive ogni 1.000 residenti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "Autovetture ACI 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
-        "caveat": "Autovetture 2024 rapportate ai residenti al 1° gennaio 2026: il numeratore e il denominatore hanno periodi distinti, dichiarati e applicati anche ai benchmark.",
+        "formula": "Autovetture ACI 2025 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Autovetture 2025 rapportate ai residenti al 1° gennaio 2026: il numeratore e il denominatore hanno periodi distinti, dichiarati e applicati anche ai benchmark.",
         "coverage": "7/7",
         "note": "Parco autovetture 2024 ACI Autoritratto. Il rapporto conserva la popolazione pubblica Istat al 1° gennaio 2026; stessa annualità del denominatore per Comuni, Toscana e Italia. Valori comunali riconciliati al decimale senza modificarli."
       }
@@ -23283,17 +23283,17 @@
         "shortLabel": "Auto Euro 0–3",
         "description": "Quota delle autovetture nelle classi emissive Euro 0, 1, 2 e 3.",
         "unit": "percent",
-        "year": "2024",
+        "year": "2025",
         "source": "ACI / Istat — parco veicolare",
         "polarity": "negative",
         "benchmark": {
-          "year": "2024",
-          "tuscany": 17.166108561955497,
-          "italy": 23.822150647563276,
-          "source": "ACI / Istat — Autoritratto 2024 e popolazione 2026",
+          "year": "2025",
+          "tuscany": 16.21252358706073,
+          "italy": 22.58771074583712,
+          "source": "ACI / Istat — Autoritratto 2025 e popolazione 2026",
           "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
-          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
-          "note": "Parco autovetture ACI 2024: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2024 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Non è un tasso su popolazione 2024. Entrambe le metriche riconciliate 7/7 al decimale pubblico, valori comunali invariati."
+          "sourceSnapshot": "data/source-snapshots/a3-aci-vehicle-benchmark-2025.json",
+          "note": "Parco autovetture ACI 2025: pannello nativo integrale di 7.997 righe di localizzazione, incluse le righe non definite/estere pubblicate; totali provinciali/regionali/nazionale esclusi dalla somma e riconciliati per ogni classe Euro. Celle vuote conservate null; nessun valore imputato. Quota inquinante = somma Euro 0–3 / totale autovetture × 100. Motorizzazione = autovetture 2025 / popolazione pubblica al 1° gennaio 2026 × 1.000, stesso denominatore temporale per Comuni/Toscana/Italia. Entrambe le metriche riconciliate 7/7 al decimale pubblico."
         }
       },
       "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
@@ -23302,16 +23302,6 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 18.9,
-          "formatted": "18,9%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 18.9
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
           "value": 18.1,
           "formatted": "18,1%",
           "series": null,
@@ -23319,29 +23309,19 @@
           "benchmarkValue": 18.1
         },
         {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 17.3,
+          "formatted": "17,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.3
+        },
+        {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 19.4,
-          "formatted": "19,4%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 19.4
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 20,
-          "formatted": "20,0%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 20
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
           "value": 18.4,
           "formatted": "18,4%",
           "series": null,
@@ -23349,28 +23329,48 @@
           "benchmarkValue": 18.4
         },
         {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 19.3,
+          "formatted": "19,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.3
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 17.5,
+          "formatted": "17,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.5
+        },
+        {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 19.4,
-          "formatted": "19,4%",
+          "value": 18.8,
+          "formatted": "18,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 19.4
+          "benchmarkValue": 18.8
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 24.7,
-          "formatted": "24,7%",
+          "value": 24.8,
+          "formatted": "24,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 24.7
+          "benchmarkValue": 24.8
         }
       ],
       "aggregate": {
-        "value": 18.972535543304804,
+        "value": 18.161793332138377,
         "label": "Quota ponderata Versilia",
         "note": "Ponderata sul numero delle autovetture."
       },
@@ -23378,7 +23378,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "autovetture Euro 0–3 / autovetture totali × 100",
-        "caveat": "Quota Euro 0–3 sul totale delle autovetture ACI 2024, incluse nel denominatore le classi non contemplate e non definite.",
+        "caveat": "Quota Euro 0–3 sul totale delle autovetture ACI 2025, incluse nel denominatore le classi non contemplate e non definite.",
         "coverage": "7/7"
       }
     },
