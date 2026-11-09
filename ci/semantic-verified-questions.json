@@ -52465,7 +52465,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_total_046005",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52485,22 +52485,22 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              21147,
-              50
+              42743,
+              100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 422.94; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 427.43; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046005_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
+      "id": "tax_tariStandardHousehold_total_046005_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52512,7 +52512,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52523,22 +52523,22 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              21147,
-              50
+              42743,
+              100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 422.94; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 427.43; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046013",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52558,22 +52558,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              47573,
+              48013,
               100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 475.73; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 480.13; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046013_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
+      "id": "tax_tariStandardHousehold_total_046013_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52585,7 +52585,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52596,22 +52596,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              47573,
+              48013,
               100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 475.73; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 480.13; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046018",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52631,22 +52631,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              54251,
-              100
+              10897,
+              20
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 542.51; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 544.85; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046018_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
+      "id": "tax_tariStandardHousehold_total_046018_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52658,7 +52658,7 @@
               "046018"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52669,22 +52669,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              54251,
-              100
+              10897,
+              20
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 542.51; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 544.85; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046024",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52704,22 +52704,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              35611,
+              35743,
               100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 356.11; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 357.43; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046024_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
+      "id": "tax_tariStandardHousehold_total_046024_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52731,7 +52731,7 @@
               "046024"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52742,22 +52742,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              35611,
+              35743,
               100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 356.11; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 357.43; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046028",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52777,22 +52777,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              25111,
-              50
+              51561,
+              100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 502.22; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 515.61; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046028_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
+      "id": "tax_tariStandardHousehold_total_046028_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52804,7 +52804,7 @@
               "046028"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52815,22 +52815,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              25111,
-              50
+              51561,
+              100
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 502.22; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 515.61; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046030",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52850,22 +52850,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              36531,
-              100
+              18441,
+              50
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 365.31; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 368.82; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046030_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
+      "id": "tax_tariStandardHousehold_total_046030_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52877,7 +52877,7 @@
               "046030"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52888,22 +52888,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              36531,
-              100
+              18441,
+              50
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 365.31; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 368.82; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_tariStandardHousehold_total_046033",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52923,22 +52923,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              20893,
-              50
+              10754,
+              25
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 417.86; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 430.16; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_tariStandardHousehold_total_046033_2025",
-      "question": "Qual è il valore 2025 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
+      "id": "tax_tariStandardHousehold_total_046033_2026",
+      "question": "Qual è il valore 2026 di tariStandardHousehold, lettura total, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52950,7 +52950,7 @@
               "046033"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52961,22 +52961,22 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              20893,
-              50
+              10754,
+              25
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 417.86; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 430.16; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046005",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53003,15 +53003,15 @@
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046005_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
+      "id": "tax_municipalImuStandard_total_046005_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53023,7 +53023,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53041,15 +53041,15 @@
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046013",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53076,15 +53076,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046013_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
+      "id": "tax_municipalImuStandard_total_046013_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53096,7 +53096,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53114,15 +53114,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046018",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53149,15 +53149,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046018_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
+      "id": "tax_municipalImuStandard_total_046018_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53169,7 +53169,7 @@
               "046018"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53187,15 +53187,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046024",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53222,15 +53222,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046024_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
+      "id": "tax_municipalImuStandard_total_046024_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53242,7 +53242,7 @@
               "046024"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53260,15 +53260,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046028",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53295,15 +53295,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046028_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
+      "id": "tax_municipalImuStandard_total_046028_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53315,7 +53315,7 @@
               "046028"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53333,15 +53333,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046030",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53368,15 +53368,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046030_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
+      "id": "tax_municipalImuStandard_total_046030_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53388,7 +53388,7 @@
               "046030"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53406,15 +53406,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 1060; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046033",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53441,15 +53441,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_total_046033_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
+      "id": "tax_municipalImuStandard_total_046033_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura total, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53461,7 +53461,7 @@
               "046033"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53479,15 +53479,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 1140; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046005",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53514,15 +53514,15 @@
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046005_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
+      "id": "tax_municipalImuStandard_ratePercent_046005_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Camaiore?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53534,7 +53534,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53552,15 +53552,15 @@
           },
           {
             "path": "/observations/0/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Camaiore: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046013",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53587,15 +53587,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046013_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
+      "id": "tax_municipalImuStandard_ratePercent_046013_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53607,7 +53607,7 @@
               "046013"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53625,15 +53625,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Forte dei Marmi: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046018",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53660,15 +53660,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046018_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
+      "id": "tax_municipalImuStandard_ratePercent_046018_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Massarosa?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53680,7 +53680,7 @@
               "046018"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53698,15 +53698,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Massarosa: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046024",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53733,15 +53733,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046024_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
+      "id": "tax_municipalImuStandard_ratePercent_046024_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Pietrasanta?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53753,7 +53753,7 @@
               "046024"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53771,15 +53771,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046028",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53806,15 +53806,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046028_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
+      "id": "tax_municipalImuStandard_ratePercent_046028_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Seravezza?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53826,7 +53826,7 @@
               "046028"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53844,15 +53844,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Seravezza: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046030",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53879,15 +53879,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046030_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
+      "id": "tax_municipalImuStandard_ratePercent_046030_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Stazzema?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53899,7 +53899,7 @@
               "046030"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53917,15 +53917,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Stazzema: 1.06; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046033",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53952,15 +53952,15 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
-      "id": "tax_municipalImuStandard_ratePercent_046033_2025",
-      "question": "Qual è il valore 2025 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
+      "id": "tax_municipalImuStandard_ratePercent_046033_2026",
+      "question": "Qual è il valore 2026 di municipalImuStandard, lettura ratePercent, nello scenario standard per Viareggio?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -53972,7 +53972,7 @@
               "046033"
             ],
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -53990,11 +53990,11 @@
           },
           {
             "path": "/observations/1/period",
-            "value": "2025"
+            "value": "2026"
           }
         ]
       },
-      "reference": "Scenario congelato 2025, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalIrpef_total_046005",
@@ -56553,7 +56553,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_series_refused",
-      "question": "Posso applicare series a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare series a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "series",
         "selectors": [
@@ -56575,7 +56575,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_absolute_change_refused",
-      "question": "Posso applicare absolute_change a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare absolute_change a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "absolute_change",
         "selectors": [
@@ -56597,7 +56597,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_relative_change_refused",
-      "question": "Posso applicare relative_change a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare relative_change a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "relative_change",
         "selectors": [
@@ -56619,7 +56619,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_percentage_points_refused",
-      "question": "Posso applicare percentage_points a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare percentage_points a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "percentage_points",
         "selectors": [
@@ -56641,7 +56641,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_trend_refused",
-      "question": "Posso applicare trend a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare trend a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "trend",
         "selectors": [
@@ -56663,7 +56663,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_weighted_ratio_refused",
-      "question": "Posso applicare weighted_ratio a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare weighted_ratio a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "weighted_ratio",
         "selectors": [
@@ -56685,7 +56685,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_anomaly_refused",
-      "question": "Posso applicare anomaly a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare anomaly a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "anomaly",
         "selectors": [
@@ -56707,7 +56707,7 @@
     },
     {
       "id": "tax_tariStandardHousehold_benchmark_gap_refused",
-      "question": "Posso applicare benchmark_gap a tariStandardHousehold nel lotto 2025?",
+      "question": "Posso applicare benchmark_gap a tariStandardHousehold nel lotto 2026?",
       "query": {
         "operation": "benchmark_gap",
         "selectors": [
@@ -56748,18 +56748,18 @@
           "municipal_tax_period_not_frozen"
         ]
       },
-      "reference": "Snapshot esclusivamente 2025."
+      "reference": "Snapshot esclusivamente 2026."
     },
     {
-      "id": "tax_tariStandardHousehold_2026_refused",
-      "question": "tariStandardHousehold nel 2026?",
+      "id": "tax_tariStandardHousehold_2025_refused",
+      "question": "tariStandardHousehold nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
           {
             "metric": "tariStandardHousehold",
             "periods": [
-              "2026"
+              "2025"
             ]
           }
         ]
@@ -56770,7 +56770,7 @@
           "municipal_tax_period_not_frozen"
         ]
       },
-      "reference": "Snapshot esclusivamente 2025."
+      "reference": "Snapshot esclusivamente 2026."
     },
     {
       "id": "tax_tariStandardHousehold_normalized_refused",
@@ -56904,7 +56904,7 @@
     },
     {
       "id": "tax_municipalImuStandard_series_refused",
-      "question": "Posso applicare series a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare series a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "series",
         "selectors": [
@@ -56926,7 +56926,7 @@
     },
     {
       "id": "tax_municipalImuStandard_absolute_change_refused",
-      "question": "Posso applicare absolute_change a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare absolute_change a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "absolute_change",
         "selectors": [
@@ -56948,7 +56948,7 @@
     },
     {
       "id": "tax_municipalImuStandard_relative_change_refused",
-      "question": "Posso applicare relative_change a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare relative_change a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "relative_change",
         "selectors": [
@@ -56970,7 +56970,7 @@
     },
     {
       "id": "tax_municipalImuStandard_percentage_points_refused",
-      "question": "Posso applicare percentage_points a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare percentage_points a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "percentage_points",
         "selectors": [
@@ -56992,7 +56992,7 @@
     },
     {
       "id": "tax_municipalImuStandard_trend_refused",
-      "question": "Posso applicare trend a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare trend a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "trend",
         "selectors": [
@@ -57014,7 +57014,7 @@
     },
     {
       "id": "tax_municipalImuStandard_weighted_ratio_refused",
-      "question": "Posso applicare weighted_ratio a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare weighted_ratio a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "weighted_ratio",
         "selectors": [
@@ -57036,7 +57036,7 @@
     },
     {
       "id": "tax_municipalImuStandard_anomaly_refused",
-      "question": "Posso applicare anomaly a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare anomaly a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "anomaly",
         "selectors": [
@@ -57058,7 +57058,7 @@
     },
     {
       "id": "tax_municipalImuStandard_benchmark_gap_refused",
-      "question": "Posso applicare benchmark_gap a municipalImuStandard nel lotto 2025?",
+      "question": "Posso applicare benchmark_gap a municipalImuStandard nel lotto 2026?",
       "query": {
         "operation": "benchmark_gap",
         "selectors": [
@@ -57099,18 +57099,18 @@
           "municipal_tax_period_not_frozen"
         ]
       },
-      "reference": "Snapshot esclusivamente 2025."
+      "reference": "Snapshot esclusivamente 2026."
     },
     {
-      "id": "tax_municipalImuStandard_2026_refused",
-      "question": "municipalImuStandard nel 2026?",
+      "id": "tax_municipalImuStandard_2025_refused",
+      "question": "municipalImuStandard nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
           {
             "metric": "municipalImuStandard",
             "periods": [
-              "2026"
+              "2025"
             ]
           }
         ]
@@ -57121,7 +57121,7 @@
           "municipal_tax_period_not_frozen"
         ]
       },
-      "reference": "Snapshot esclusivamente 2025."
+      "reference": "Snapshot esclusivamente 2026."
     },
     {
       "id": "tax_municipalImuStandard_normalized_refused",
