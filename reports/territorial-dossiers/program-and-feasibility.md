@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `d61ee4d0f3ca8005a76131192ab5b8886cc0bc4940be60f20b7f01a345c8c52d`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `451105cf9eee85b265071d1b5b0f07622b75f927a0307b40f864dc3fc51cf7bd`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -875,11 +875,11 @@ Quali condizioni organizzative aiutano a rendere accessibili i servizi pubblici?
 | regional_municipalOnlineServicesAdvanced_history | series / municipalOnlineServicesAdvanced / total | 2018, 2022 / percent | 046018: 0.0; 046018: 33.333333333 | PASS |
 | regional_municipalOnlineServicesAdvanced_tuscany | benchmark_gap / municipalOnlineServicesAdvanced / total | 2022 / percent | 046018: 33.333333333; tuscany: 33.6538461538462 | PASS |
 | regional_municipalOnlineServicesAdvanced_absolute_change_refused | absolute_change / municipalOnlineServicesAdvanced / total |  /  | regional_temporal_continuity_not_reviewed | PASS |
-| connectivity_ftthCoverageDesi_046005 | compare / ftthCoverageDesi / total | 2026-07-06 / percent | 046005: 91.3; 046018: 47.0 | PASS |
-| connectivity_ftthCoverageDesi_gap_tuscany_046018 | benchmark_gap / ftthCoverageDesi / total | 2026-07-06 / percent | 046018: 47.0; tuscany: 73.22531610387755 | PASS |
+| connectivity_ftthCoverageDesi_046005 | compare / ftthCoverageDesi / total | 2026-10-05 / percent | 046005: 91.2; 046018: 46.3 | PASS |
+| connectivity_ftthCoverageDesi_gap_tuscany_046018 | benchmark_gap / ftthCoverageDesi / total | 2026-10-05 / percent | 046018: 46.3; tuscany: 71.98869774182955 | PASS |
 | connectivity_ftthCoverageDesi_series_refused | series / ftthCoverageDesi / total |  /  | connectivity_single_reference_no_history | PASS |
 
-**Fonti effettivamente lette:** https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv; https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv; https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc; https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI/formazione; https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data; https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali
+**Fonti effettivamente lette:** https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv; https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv; https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc; https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI/formazione; https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data; https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali
 
 Un PASS delle richieste di contesto non rende determinabile la domanda decisionale centrale. I perimetri territoriali/temporali eseguiti restano quelli espliciti delle query.
 

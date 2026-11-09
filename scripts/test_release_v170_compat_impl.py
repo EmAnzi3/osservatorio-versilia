@@ -9,6 +9,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import agcom_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "site-data.json"
@@ -272,10 +276,14 @@ def main() -> None:
         require(len(economy.get("topSectorsByUnits", [])) <= 10, f"{town['name']}: Top ATECO unità locali invalido")
         require(len(economy.get("topSectors", [])) <= 10, f"{town['name']}: Top ATECO addetti invalido")
 
+    # Edizione AGCOM in uso: il valore pubblicato deve coincidere con il record del CSV primario.
+    agcom = json.loads((ROOT / agcom_sources.NATIVE).read_text(encoding="utf-8"))
+    primary = next(t for t in agcom["towns"] if t["town"] == "Massarosa")["agcom"]["primaryOfficialCsv"]
+    require(primary["raw"]["famiglie_ftth"] == str(primary["famiglie_ftth"]), "Massarosa: record AGCOM primario incoerente")
     massarosa_ftth = next(row for row in source["metrics"]["ftthReachedHouseholds"]["rows"] if row["town"] == "Massarosa")
-    require(massarosa_ftth["value"] == 4219, "Massarosa: conteggio FTTH non allineato al CSV primario AGCOM")
+    require(massarosa_ftth["value"] == primary["famiglie_ftth"], "Massarosa: conteggio FTTH non allineato al CSV primario AGCOM")
     massarosa_desi = next(row for row in source["metrics"]["ftthCoverageDesi"]["rows"] if row["town"] == "Massarosa")
-    require(float(massarosa_desi["value"]) == 47.0, "Massarosa: copertura FTTH DESI inattesa")
+    require(float(massarosa_desi["value"]) == primary["copertura_ftth_desi_pct"], "Massarosa: copertura FTTH DESI inattesa")
 
     print("Controlli di retrocompatibilità v1.7 superati.")
 

@@ -1,5 +1,32 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## AGCOM FTTH al 5 ottobre 2026 (8 novembre 2026)
+
+I 4 indicatori FTTH (`ftthCoverageDesi`, `ftthCoverage20m`, `ftthReachedHouseholds`,
+`ftthUnreachedHouseholds`) passano all'edizione «Consistenze rilevate al 05/10/2026 (rev. del
+12/10/2026)» della Broadband Map.
+
+- Nuovo aggiornatore `update_source_data.py agcom-ftth`: legge il catalogo datato
+  `geo.agcom.it/reportistica/report.js`, prende l'edizione più recente con CSV comunale e
+  valida il CSV (≥ 7.000 Comuni, 7/7 Versilia, 273 Toscana). Scrive catalogo e due snapshot per
+  edizione: `agcom-ftth-AAAA-MM-GG.json` (record comunali del CSV primario) e
+  `a3-agcom-benchmark-AAAA-MM-GG.json` (Toscana e Italia, media delle percentuali comunali
+  ponderata per famiglie). Rifiuta un'edizione più vecchia di quella pubblicata. I conteggi
+  mancanti restano mancanti (Forte dei Marmi, 6/7). Nel giro mensile; in PR con
+  `"agcomFtth": true` in `ci/source-update-request.json`.
+- `scripts/agcom_sources.py` sceglie l'edizione più recente; fan-in dei benchmark e adattatore
+  A6 connettività ricavano periodo, etichetta, URL del CSV e copertura dei conteggi dallo snapshot.
+- Valori Versilia: copertura DESI 70,9% (era 71,1%), entro 20 m 61,2% (61,4%), 46.368
+  famiglie raggiunte (46.521) e 16.341 non raggiunte (16.188). Toscana 72,0% e 63,9%;
+  Italia 82,9% e 74,7%. Famiglie residenti AGCOM invariate; la copertura DESI cala alla fonte a
+  Camaiore, Massarosa, Pietrasanta e Seravezza.
+- Domande verificate FTTH (56) al 5/10/2026; dossier rigenerati; impronte `connectivity#1–4` e
+  `road#3` ripinnate.
+- Ritirato il workflow «Aggiorna imprese, ATECO e banda larga» (`refresh-agid-indicators.yml`):
+  rileggeva ASIA da Cruscotto Italia (fermo al 2023) e FTTH dagli shard AgID. Gli script
+  `update_agid_indicators*.py` e i loro test offline restano. Il dettaglio ATECO a 2 cifre
+  resta quello pubblicato (2023): un suo aggiornamento va fatto con una fonte Istat diretta.
+
 ## ASIA-UL 2024 (8 novembre 2026)
 
 Primo periodo nuovo segnalato dal controllo mensile completo. I 6 indicatori ASIA
@@ -21,9 +48,8 @@ Primo periodo nuovo segnalato dal controllo mensile completo. I 6 indicatori ASI
   +8,5% unità locali e +13,0% addetti sul 2018, 94,5% micro unità. Toscana 366.076 UL.
 - Domande verificate ASIA al 2024; l'associazione addetti/occupazione femminile fissa i
   periodi al 2023. Dossier Massarosa lavoro rigenerato; impronta `road#3` ripinnata.
-- Il workflow «Aggiorna imprese, ATECO e banda larga» (`update_agid_indicators.py`) valida
-  ancora la serie ASIA 2018–2023 di Cruscotto Italia: con il catalogo al 2024 si ferma senza
-  scrivere. Va adattato con il lotto AGCOM FTTH.
+- Il workflow «Aggiorna imprese, ATECO e banda larga» rileggeva ASIA da Cruscotto Italia
+  (2018–2023): ritirato con il lotto AGCOM FTTH (sezione sopra).
 
 ## Controllo mensile completo: 225/225 (8 novembre 2026)
 

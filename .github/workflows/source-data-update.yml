@@ -128,6 +128,7 @@ jobs:
           commands = [["ars-legacy", "--metric", m] for m in request.get("arsLegacy", [])]
           commands += [["istat-mobility", "--year", str(int(y))] for y in request.get("istatMobility", [])]
           commands += [["istat-asia", "--year", str(int(y))] for y in request.get("istatAsia", [])]
+          commands += [["agcom-ftth"]] if request.get("agcomFtth") else []
           failed = 0
           for args in commands:
               print("::group::" + " ".join(args))

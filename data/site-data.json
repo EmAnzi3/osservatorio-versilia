@@ -46970,16 +46970,16 @@
         "shortLabel": "Copertura FTTH",
         "description": "Quota delle famiglie residenti raggiunte da una rete fissa in fibra fino all’edificio secondo la metrica europea DESI.",
         "unit": "percent",
-        "year": "6 luglio 2026",
+        "year": "5 ottobre 2026",
         "source": "AGCOM — Broadband Map, reportistica comunale",
         "polarity": "neutral",
         "benchmark": {
-          "year": "6 luglio 2026",
-          "tuscany": 73.22531610387755,
-          "italy": 82.89952077416727,
+          "year": "5 ottobre 2026",
+          "tuscany": 71.98869774182955,
+          "italy": 82.91842278439191,
           "source": "AGCOM — Broadband Map, reportistica comunale",
-          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2026-10-05.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -46989,11 +46989,11 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 47.0,
-          "formatted": "47,0%",
+          "value": 46.3,
+          "formatted": "46,3%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 47.0
+          "benchmarkValue": 46.3
         },
         {
           "town": "Viareggio",
@@ -47009,31 +47009,31 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 91.3,
-          "formatted": "91,3%",
+          "value": 91.2,
+          "formatted": "91,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 91.3
+          "benchmarkValue": 91.2
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 59.3,
-          "formatted": "59,3%",
+          "value": 58.4,
+          "formatted": "58,4%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 59.3
+          "benchmarkValue": 58.4
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 0.7,
-          "formatted": "0,7%",
+          "value": 0.6,
+          "formatted": "0,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.7
+          "benchmarkValue": 0.6
         },
         {
           "town": "Forte dei Marmi",
@@ -47057,7 +47057,7 @@
         }
       ],
       "aggregate": {
-        "value": 71.12488687782805,
+        "value": 70.8722911825853,
         "label": "Media ponderata Versilia",
         "note": "Media delle percentuali comunali AGCOM, ponderata per le famiglie residenti del CSV primario."
       },
@@ -47077,7 +47077,7 @@
         "shortLabel": "Famiglie raggiunte da FTTH",
         "description": "Numero di famiglie residenti considerate raggiunte dalla rete FTTH secondo la metrica DESI.",
         "unit": "number",
-        "year": "6 luglio 2026",
+        "year": "5 ottobre 2026",
         "source": "AGCOM — Broadband Map",
         "polarity": "neutral"
       },
@@ -47087,51 +47087,51 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 4219.0,
-          "formatted": "4.219",
+          "value": 4156.0,
+          "formatted": "4.156",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 4219.0
+          "benchmarkValue": 4156.0
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 23734.0,
-          "formatted": "23.734",
+          "value": 23736.0,
+          "formatted": "23.736",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 23734.0
+          "benchmarkValue": 23736.0
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 11978.0,
-          "formatted": "11.978",
+          "value": 11970.0,
+          "formatted": "11.970",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 11978.0
+          "benchmarkValue": 11970.0
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 5546.0,
-          "formatted": "5.546",
+          "value": 5466.0,
+          "formatted": "5.466",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 5546.0
+          "benchmarkValue": 5466.0
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 35.0,
-          "formatted": "35",
+          "value": 31.0,
+          "formatted": "31",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 35.0
+          "benchmarkValue": 31.0
         },
         {
           "town": "Forte dei Marmi",
@@ -47155,7 +47155,7 @@
         }
       ],
       "aggregate": {
-        "value": 46521.0,
+        "value": 46368.0,
         "label": "Totale parziale Versilia (6/7)",
         "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
       },
@@ -47175,7 +47175,7 @@
         "shortLabel": "Famiglie non raggiunte",
         "description": "Differenza tra famiglie residenti e famiglie raggiunte da FTTH secondo la metrica DESI.",
         "unit": "number",
-        "year": "6 luglio 2026",
+        "year": "5 ottobre 2026",
         "source": "Elaborazione Osservatorio su dati AGCOM Broadband Map",
         "polarity": "neutral"
       },
@@ -47185,51 +47185,51 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 4763.0,
-          "formatted": "4.763",
+          "value": 4826.0,
+          "formatted": "4.826",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 4763.0
+          "benchmarkValue": 4826.0
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 1305.0,
-          "formatted": "1.305",
+          "value": 1303.0,
+          "formatted": "1.303",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1305.0
+          "benchmarkValue": 1303.0
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 1141.0,
-          "formatted": "1.141",
+          "value": 1149.0,
+          "formatted": "1.149",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1141.0
+          "benchmarkValue": 1149.0
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 3807.0,
-          "formatted": "3.807",
+          "value": 3887.0,
+          "formatted": "3.887",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 3807.0
+          "benchmarkValue": 3887.0
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 5033.0,
-          "formatted": "5.033",
+          "value": 5037.0,
+          "formatted": "5.037",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 5033.0
+          "benchmarkValue": 5037.0
         },
         {
           "town": "Forte dei Marmi",
@@ -47253,7 +47253,7 @@
         }
       ],
       "aggregate": {
-        "value": 16188.0,
+        "value": 16341.0,
         "label": "Totale parziale Versilia (6/7)",
         "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
       },
@@ -47261,7 +47261,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su dati ufficiali",
         "formula": "famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI",
-        "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata.",
+        "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata. Dato non disponibile per Forte dei Marmi; nessuna stima effettuata.",
         "coverage": "6/7"
       }
     },
@@ -47273,16 +47273,16 @@
         "shortLabel": "FTTH entro 20 metri",
         "description": "Quota delle famiglie residenti con infrastruttura FTTH dichiarata entro 20 metri dall’abitazione.",
         "unit": "percent",
-        "year": "6 luglio 2026",
+        "year": "5 ottobre 2026",
         "source": "AGCOM — Broadband Map, reportistica comunale",
         "polarity": "neutral",
         "benchmark": {
-          "year": "6 luglio 2026",
-          "tuscany": 64.58685444439853,
-          "italy": 74.25960016740227,
+          "year": "5 ottobre 2026",
+          "tuscany": 63.936378969366,
+          "italy": 74.67492746972177,
           "source": "AGCOM — Broadband Map, reportistica comunale",
-          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2025.json",
+          "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data",
+          "sourceSnapshot": "data/source-snapshots/a3-agcom-benchmark-2026-10-05.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -47292,51 +47292,51 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 34.3,
-          "formatted": "34,3%",
+          "value": 33.8,
+          "formatted": "33,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 34.3
+          "benchmarkValue": 33.8
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 86.0,
-          "formatted": "86,0%",
+          "value": 86.2,
+          "formatted": "86,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 86.0
+          "benchmarkValue": 86.2
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 80.1,
-          "formatted": "80,1%",
+          "value": 80.6,
+          "formatted": "80,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 80.1
+          "benchmarkValue": 80.6
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 44.2,
-          "formatted": "44,2%",
+          "value": 42.0,
+          "formatted": "42,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 44.2
+          "benchmarkValue": 42.0
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 0.1,
-          "formatted": "0,1%",
+          "value": 0.0,
+          "formatted": "0,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.1
+          "benchmarkValue": 0.0
         },
         {
           "town": "Forte dei Marmi",
@@ -47360,7 +47360,7 @@
         }
       ],
       "aggregate": {
-        "value": 61.37692766295708,
+        "value": 61.162804206921855,
         "label": "Media ponderata Versilia",
         "note": "Media delle percentuali comunali AGCOM, ponderata per le famiglie residenti del CSV primario."
       },
