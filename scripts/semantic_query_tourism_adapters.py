@@ -12,7 +12,11 @@ ARRIVALS, PRESENCES, STAY, FOREIGN = MOVEMENT = ('tourismArrivals', 'tourismPres
 BEDS, BED_RATE, STRUCTURE_RATE = CAPACITY = ('tourismBeds', 'tourismBedsPer1000', 'tourismStructuresPer1000')
 KEYS = (*MOVEMENT, *CAPACITY)
 MOVE = 'data/source-snapshots/a3-regione-toscana-tourism-benchmark-2025.json'
-CAP = 'data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json'
+CAP = capacity.latest_snapshot()
+CAP_YEAR = int(CAP[-9:-5])
+# From 2025 the Istat scope includes private non-business accommodation: no history across the break.
+CAP_HISTORY = CAP_YEAR == 2024
+CAP_RECORDS = len(json.loads((capacity.ROOT / CAP).read_text(encoding='utf-8'))['records'])
 DEMO = 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
 POSAS = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 MOVE_LANDING = 'https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0'
@@ -42,7 +46,7 @@ def close(actual, expected):
 def dimensions(key): return ['total', 'nativeRatio'] if key == FOREIGN else ['total']
 def weighted(key, dim): return key in (STAY, BED_RATE, STRUCTURE_RATE) or key == FOREIGN and dim == 'nativeRatio'
 def scopes(key, dim): return [] if dim == 'nativeRatio' else ['tuscany'] if key in MOVEMENT else ['tuscany', 'italy']
-def history_available(key): return key in MOVEMENT or key == BEDS
+def history_available(key): return key in MOVEMENT or key == BEDS and CAP_HISTORY
 def operations(key, dim): return [*(['absolute_change', 'relative_change', 'trend', 'correlation', 'anomaly'] if key == PRESENCES else []), 'compare', 'rank', *(['series'] if history_available(key) else []), *(['weighted_ratio'] if weighted(key, dim) else []), *(['benchmark_gap'] if scopes(key, dim) else [])]
 
 
@@ -56,10 +60,10 @@ def selection_guard(key, dim, op):
 
 
 def context(metric, key, dim):
-    year = '2025' if key in MOVEMENT else '2024'
+    year = '2025' if key in MOVEMENT else str(CAP_YEAR)
     if dim not in dimensions(key) or metric['meta'].get('year') != year or metric['meta'].get('unit') != UNITS[key] or metric.get('sourceUrl') != (MOVE_LANDING if key in MOVEMENT else capacity.LANDING): raise ValueError('tourism_definition_changed')
-    definitions = {ARRIVALS: 'registered accommodation arrivals, not unique tourists', PRESENCES: 'registered accommodation nights', STAY: 'registered nights / registered arrivals', FOREIGN: 'foreign-resident nights / all registered nights × 100; ' + ('native unrounded ratio distinct from public rounded percentage' if dim == 'nativeRatio' else 'public municipal percentage rounded to one decimal'), BEDS: 'hotel + non-hotel beds, Istat 2024 scope', BED_RATE: 'Istat beds 2024 / Istat estimated residents 1 January 2026 × 1000', STRUCTURE_RATE: 'Istat accommodation structures 2024 / Istat estimated residents 1 January 2026 × 1000'}
-    return dict(unit=UNITS[key], population='registered accommodation movement net of rentals; foreign means residence abroad, not citizenship' if key in MOVEMENT else 'Istat hotel and non-hotel capacity 2024; private non-business accommodation expansion 2025 excluded', definition=definitions[key], method='frozen source extraction and public reconciliation; numerical rank is not destination quality', frequency='annual', periodBasis='regional reference year; provisional until Istat publication' if key in MOVEMENT else 'capacity reference 2024; resident denominator estimated 1 January 2026' if key != BEDS else 'Istat capacity annual reference; 2025 scope excluded', adapter='tourism/' + key + '/' + dim + '/v1')
+    definitions = {ARRIVALS: 'registered accommodation arrivals, not unique tourists', PRESENCES: 'registered accommodation nights', STAY: 'registered nights / registered arrivals', FOREIGN: 'foreign-resident nights / all registered nights × 100; ' + ('native unrounded ratio distinct from public rounded percentage' if dim == 'nativeRatio' else 'public municipal percentage rounded to one decimal'), BEDS: f'hotel + non-hotel beds, Istat {CAP_YEAR} scope', BED_RATE: f'Istat beds {CAP_YEAR} / Istat estimated residents 1 January 2026 × 1000', STRUCTURE_RATE: f'Istat accommodation structures {CAP_YEAR} / Istat estimated residents 1 January 2026 × 1000'}
+    return dict(unit=UNITS[key], population='registered accommodation movement net of rentals; foreign means residence abroad, not citizenship' if key in MOVEMENT else ('Istat hotel and non-hotel capacity 2024; private non-business accommodation expansion 2025 excluded' if CAP_HISTORY else f'Istat hotel, non-hotel and private non-business accommodation capacity {CAP_YEAR}; not comparable with 2024 and earlier'), definition=definitions[key], method='frozen source extraction and public reconciliation; numerical rank is not destination quality', frequency='annual', periodBasis='regional reference year; provisional until Istat publication' if key in MOVEMENT else f'capacity reference {CAP_YEAR}; resident denominator estimated 1 January 2026' if key != BEDS else ('Istat capacity annual reference; 2025 scope excluded' if CAP_HISTORY else f'Istat capacity reference {CAP_YEAR}; widened scope, no series'), adapter='tourism/' + key + '/' + dim + '/v1')
 
 
 def identity(engine, metric):
@@ -144,7 +148,10 @@ def observation(engine, key, index, dim, period, historical):
     else:
         source = s['source']['archiveUrl']; record_index = next(i for i, n in enumerate(s['records']) if n[0] == code); n = s['records'][record_index]
         base = f'/records/{record_index}'; extra.update(recordPointer=base, archiveMember=s['source']['archiveMember'], archiveSha256=s['source']['archiveSha256'], workbookSha256=s['source']['workbookSha256'])
-        if key == BEDS:
+        if key == BEDS and not CAP_HISTORY:
+            if period != str(CAP_YEAR): raise ValueError('tourism_period_not_frozen')
+            value = n[4]; extra.update(valuePointer=base + '/4')
+        elif key == BEDS:
             h = s['municipalBedsHistory']
             if int(period) not in h['years']: raise ValueError('tourism_period_not_frozen')
             value = h['valuesByCode'][code][h['years'].index(int(period))]; extra.update(valuePointer='/municipalBedsHistory/valuesByCode/' + code + '/' + str(h['years'].index(int(period))))
@@ -156,8 +163,8 @@ def observation(engine, key, index, dim, period, historical):
             extra.update(numeratorPointer=base + ('/5' if key == STRUCTURE_RATE else '/4'), denominatorSnapshot=POSAS, denominatorPointer='/posas/towns/' + row['town'])
             sm = metric['meta'].get('sourceMeta', {})
             if sm.get('snapshot') != CAP or sm.get('populationSnapshot') != DEMO: raise ValueError('tourism_resident_basis_changed')
-            warnings += ['tourism_capacity_2024_residents_2026_distinct', 'tourism_posas_2026_estimate']
-        warnings += ['tourism_capacity_2025_scope_expansion_excluded', 'tourism_native_7899_municipal_records_not_new_workbook_replay']
+            warnings += [f'tourism_capacity_{CAP_YEAR}_residents_2026_distinct', 'tourism_posas_2026_estimate']
+        warnings += ['tourism_capacity_2025_scope_expansion_excluded' if CAP_HISTORY else f'tourism_capacity_{CAP_YEAR}_scope_includes_private_non_business_not_comparable', f'tourism_native_{CAP_RECORDS}_municipal_records_not_new_workbook_replay']
     if dim == 'total' and period == metric['meta']['year']: close(row['value'], value)
     elif dim == 'nativeRatio':
         # The catalog has no unrounded cell: point explicitly to the source components.
@@ -173,10 +180,10 @@ def observation(engine, key, index, dim, period, historical):
 
 
 def benchmark(engine, key, scope, municipal):
-    if scope not in scopes(key, municipal['dimension']) or municipal['period'] != ('2025' if key in MOVEMENT else '2024'): raise ValueError('tourism_benchmark_scope_or_period_not_reviewed')
+    if scope not in scopes(key, municipal['dimension']) or municipal['period'] != ('2025' if key in MOVEMENT else str(CAP_YEAR)): raise ValueError('tourism_benchmark_scope_or_period_not_reviewed')
     s, ref = validated(engine, key); b = s['benchmarks'][key]; meta = engine._catalog['metrics'][key]['meta']['benchmark']; path = MOVE if key in MOVEMENT else CAP
     if meta.get('sourceSnapshot') != path or meta.get('year') != b['year'] or meta.get('url') != s['sourceUrl'] or b['unit'] != municipal['unit']: raise ValueError('tourism_benchmark_definition_changed')
-    close(meta[scope], b[scope]); ev = [dict(ref, kind='benchmark_snapshot', valuePointer='/benchmarks/' + key + '/' + scope, method='frozen published regional benchmark; native regional components not embedded' if key in MOVEMENT else 'native 7899 municipality panel, province/national totals excluded from sums; Tuscany 273; ratios use population 2026')]
+    close(meta[scope], b[scope]); ev = [dict(ref, kind='benchmark_snapshot', valuePointer='/benchmarks/' + key + '/' + scope, method='frozen published regional benchmark; native regional components not embedded' if key in MOVEMENT else f'native {CAP_RECORDS} municipality panel, province/national totals excluded from sums; Tuscany 273; ratios use population 2026')]
     if key in (BED_RATE, STRUCTURE_RATE):
         _, dref = frozen(engine, DEMO); ev.append(dict(dref, kind='denominator_snapshot', valuePointer='/benchmarks/population/' + scope, period='2026-01-01'))
     return dict({k: municipal[k] for k in ('metric', 'dimension', 'unit', 'population', 'definition', 'method', 'frequency', 'periodBasis', 'adapter', 'period')}, geography=scope, value=b[scope], source=s['sourceUrl'], evidence=ev, provenance=ev, notApplicable=False, dataUnavailable=False)

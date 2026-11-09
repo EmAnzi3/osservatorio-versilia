@@ -1,5 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Capacità ricettiva Istat 2025 (9 novembre 2026)
+
+`tourismBeds`, `tourismBedsPer1000` e `tourismStructuresPer1000` passano al 2025, su decisione di Ema
+(9/11/2026) nonostante il cambio di perimetro.
+
+- Nuovo aggiornatore `update_source_data.py istat-tourism --year AAAA`: scarica l'archivio Istat
+  «Capacità comunale», ricostruisce il pannello nativo dell'anno (province e Italia riconciliate,
+  273 Comuni toscani) e scrive catalogo e `a3-istat-tourism-capacity-benchmark-AAAA.json`.
+  Rifiuta un anno precedente al pubblicato. In PR con `"istatTourism": [AAAA]`. Il 2024 resta
+  vincolato ai suoi conteggi (7.899 Comuni, Italia 5.498.773 posti letto).
+- Dal 2025 Istat include gli alloggi privati non imprenditoriali: valori non confrontabili con il
+  2024. Niente serie né variazioni; la serie storica dei posti letto 2002–2024 non è più esposta.
+- Versilia 2025: 69.031 posti letto (34.703 nel 2024), 435,5 ogni 1.000 residenti (218,9), 42,9
+  strutture ogni 1.000 residenti (5,7). Toscana 937.066 posti letto; Italia 7.687.036.
+- Adattatore A6 turismo e fan-in dei benchmark sullo snapshot più recente; impronte `tourism#3–4` e
+  `road#3` ripinnate; 41 domande verificate aggiornate (la serie posti letto ora è un rifiuto
+  atteso); dossier rigenerati.
+
 ## TARI e IMU 2026 (9 novembre 2026)
 
 Terzo lotto dei periodi nuovi del controllo mensile. `tariStandardHousehold` e

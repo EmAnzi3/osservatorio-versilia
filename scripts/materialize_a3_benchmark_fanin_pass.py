@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import agcom_sources
+import acquire_a3_benchmark_istat_tourism_annual
 import asia_sources
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,7 +38,7 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-toscana-early-childhood-benchmark-2024-25.json",
     ROOT / "data" / "source-snapshots" / "a3-toscana-hydraulic-features-benchmark-2021.json",
     ROOT / "data" / "source-snapshots" / "a3-mef-real-income-benchmark-2024.json",
-    ROOT / "data" / "source-snapshots" / "a3-istat-tourism-capacity-benchmark-2024.json",
+    ROOT / acquire_a3_benchmark_istat_tourism_annual.latest_snapshot(),
 )
 
 def load(path: Path) -> dict[str, Any]:

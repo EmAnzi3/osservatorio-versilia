@@ -25059,15 +25059,15 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 7052
+            "value": 14835
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_rank",
@@ -25090,7 +25090,7 @@
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_trend_refused",
@@ -25113,7 +25113,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_absolute_change_refused",
@@ -25136,7 +25136,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_relative_change_refused",
@@ -25159,7 +25159,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_percentage_points_refused",
@@ -25182,7 +25182,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_anomaly_refused",
@@ -25202,7 +25202,7 @@
           "tourism_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_pair_0_refused",
@@ -25227,7 +25227,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_pair_1_refused",
@@ -25252,7 +25252,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_tuscany",
@@ -25275,11 +25275,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 617143
+            "value": 937066
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_italy",
@@ -25302,11 +25302,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 5498773
+            "value": 7687036
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBeds_missing_year_refused",
@@ -25329,7 +25329,7 @@
           "tourism_period_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_current",
@@ -25352,15 +25352,15 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 222.01933066775808
+            "value": 467.0528602461984
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_rank",
@@ -25383,7 +25383,7 @@
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_trend_refused",
@@ -25406,7 +25406,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_absolute_change_refused",
@@ -25429,7 +25429,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_relative_change_refused",
@@ -25452,7 +25452,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_percentage_points_refused",
@@ -25475,7 +25475,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_anomaly_refused",
@@ -25495,7 +25495,7 @@
           "tourism_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_pair_0_refused",
@@ -25520,7 +25520,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_pair_1_refused",
@@ -25545,7 +25545,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_tuscany",
@@ -25568,11 +25568,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 168.65415653928622
+            "value": 256.08339696252375
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_italy",
@@ -25595,11 +25595,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 93.28994190777546
+            "value": 130.4151202246353
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_missing_year_refused",
@@ -25622,7 +25622,7 @@
           "tourism_period_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_current",
@@ -25645,15 +25645,15 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 8.406006989264238
+            "value": 55.473349494695086
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_rank",
@@ -25676,7 +25676,7 @@
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_trend_refused",
@@ -25699,7 +25699,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_absolute_change_refused",
@@ -25722,7 +25722,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_relative_change_refused",
@@ -25745,7 +25745,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_percentage_points_refused",
@@ -25768,7 +25768,7 @@
           "tourism_temporal_continuity_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_anomaly_refused",
@@ -25788,7 +25788,7 @@
           "tourism_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_pair_0_refused",
@@ -25813,7 +25813,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_pair_1_refused",
@@ -25838,7 +25838,7 @@
           "tourism_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_tuscany",
@@ -25861,11 +25861,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 6.115780895501831
+            "value": 23.538610119856077
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_italy",
@@ -25888,11 +25888,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 4.50129403360151
+            "value": 12.533348416876096
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_missing_year_refused",
@@ -25915,7 +25915,7 @@
           "tourism_period_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismAverageStay_pooled",
@@ -25987,13 +25987,13 @@
           {
             "path": "/result/value",
             "fraction": [
-              34703000,
+              69031000,
               158520
             ]
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_pooled",
@@ -26013,13 +26013,13 @@
           {
             "path": "/result/value",
             "fraction": [
-              904000,
+              6804000,
               158520
             ]
           }
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_foreign_native_current",
@@ -26172,8 +26172,8 @@
       "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
-      "id": "tourism_tourismBeds_history",
-      "question": "Turismo: tourismBeds history",
+      "id": "tourism_tourismBeds_history_refused",
+      "question": "Turismo: tourismBeds history refused",
       "query": {
         "operation": "series",
         "selectors": [
@@ -26187,19 +26187,12 @@
         ]
       },
       "expected": {
-        "status": "computed",
-        "checks": [
-          {
-            "path": "/observations/0/value",
-            "value": 5841
-          },
-          {
-            "path": "/observations/0/period",
-            "value": "2002"
-          }
+        "status": "not_computable",
+        "reasons": [
+          "tourism_historical_resident_ratio_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismBedsPer1000_history_refused",
@@ -26222,7 +26215,7 @@
           "tourism_historical_resident_ratio_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_tourismStructuresPer1000_history_refused",
@@ -26245,7 +26238,7 @@
           "tourism_historical_resident_ratio_not_frozen"
         ]
       },
-      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2024 and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
+      "reference": "Fixed frozen tourism transcription: regional movement 2025 net of rentals, municipal foreign percentage one decimal; Istat capacity 2025 (widened scope incl. private non-business accommodation, not comparable with 2024) and estimated POSAS residents 1 January 2026 distinct. Native pooled foreign ratio distinct from published weighted rounded shares. Historical fixed cells and extraction replay are separate; no new live acquisition."
     },
     {
       "id": "tourism_rounded_foreign_pooling_refused",
