@@ -24328,16 +24328,17 @@
         "shortLabel": "Consumo di suolo",
         "description": "Superficie artificiale sul totale della superficie comunale.",
         "unit": "percent",
-        "year": "2024",
+        "year": "2025",
         "source": "ISPRA — Consumo di suolo",
         "polarity": "negative",
         "benchmark": {
-          "year": 2024,
-          "tuscany": 6.2,
-          "italy": 7.17,
-          "source": "ISPRA/SNPA — Consumo di suolo 2024",
+          "year": "2025",
+          "tuscany": 6.215466599619729,
+          "italy": 7.192601468470344,
+          "source": "ISPRA — Consumo di suolo",
           "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
-          "note": "Stessa definizione territoriale per comune, Toscana e Italia."
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-soil-benchmark-2025.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
       "sourceUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
@@ -24356,51 +24357,51 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 38.5,
-          "formatted": "38,5%",
+          "value": 38.57,
+          "formatted": "38,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 38.5
+          "benchmarkValue": 38.57
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 14.2,
+          "value": 14.23,
           "formatted": "14,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 14.2
+          "benchmarkValue": 14.23
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 24.75,
+          "value": 24.83,
           "formatted": "24,8%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 24.75
+          "benchmarkValue": 24.83
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 12.24,
+          "value": 12.21,
           "formatted": "12,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 12.24
+          "benchmarkValue": 12.21
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 46.17,
-          "formatted": "46,2%",
+          "value": 46.4,
+          "formatted": "46,4%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 46.17
+          "benchmarkValue": 46.4
         },
         {
           "town": "Stazzema",
@@ -24434,16 +24435,16 @@
         "shortLabel": "Nuovo suolo consumato",
         "description": "Incremento netto della superficie artificiale rilevato nell’ultimo intervallo annuale.",
         "unit": "hectares",
-        "year": "2024",
+        "year": "2025",
         "source": "ISPRA — Consumo di suolo",
         "polarity": "negative",
         "benchmark": {
-          "year": "2024",
-          "tuscany": 264.72,
-          "italy": 7850.369999999999,
+          "year": "2025",
+          "tuscany": 467.76,
+          "italy": 9496.95,
           "source": "ISPRA — Consumo di suolo",
           "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
-          "sourceSnapshot": "data/source-snapshots/a3-ispra-soil-benchmark-2024.json",
+          "sourceSnapshot": "data/source-snapshots/a3-ispra-soil-benchmark-2025.json",
           "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
         }
       },
@@ -24453,8 +24454,8 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 0,
-          "formatted": "0,00 ha",
+          "value": -0.19,
+          "formatted": "-0,19 ha",
           "series": {
             "years": [
               2012,
@@ -24467,7 +24468,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               0.78,
@@ -24480,18 +24482,19 @@
               3.84,
               1.59,
               0.36,
-              0
+              0.0,
+              -0.19
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0
+          "benchmarkValue": -0.19
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 0.56,
-          "formatted": "0,56 ha",
+          "value": 1.43,
+          "formatted": "1,43 ha",
           "series": {
             "years": [
               2012,
@@ -24504,12 +24507,13 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               8.78,
               0.49,
-              0,
+              0.0,
               0.06,
               3.48,
               0.78,
@@ -24517,18 +24521,19 @@
               0.42,
               0.76,
               2.06,
-              0.56
+              0.56,
+              1.43
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0.56
+          "benchmarkValue": 1.43
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 1.1,
-          "formatted": "1,10 ha",
+          "value": 0.66,
+          "formatted": "0,66 ha",
           "series": {
             "years": [
               2012,
@@ -24541,10 +24546,11 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
-              11,
+              11.0,
               1.36,
               0.12,
               0.14,
@@ -24554,18 +24560,19 @@
               0.14,
               1.31,
               0.33,
-              1.1
+              1.1,
+              0.66
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.1
+          "benchmarkValue": 0.66
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 0.29,
-          "formatted": "0,29 ha",
+          "value": 1.11,
+          "formatted": "1,11 ha",
           "series": {
             "years": [
               2012,
@@ -24578,7 +24585,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               14.73,
@@ -24591,18 +24599,19 @@
               0.43,
               2.83,
               0.31,
-              0.29
+              0.29,
+              1.11
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0.29
+          "benchmarkValue": 1.11
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 0.15,
-          "formatted": "0,15 ha",
+          "value": 0.77,
+          "formatted": "0,77 ha",
           "series": {
             "years": [
               2012,
@@ -24615,7 +24624,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               0.67,
@@ -24628,18 +24638,19 @@
               0.84,
               1.57,
               0.67,
-              0.15
+              0.15,
+              0.77
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0.15
+          "benchmarkValue": 0.77
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 0.14,
-          "formatted": "0,14 ha",
+          "value": 1.53,
+          "formatted": "1,53 ha",
           "series": {
             "years": [
               2012,
@@ -24652,7 +24663,8 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               4.12,
@@ -24665,17 +24677,18 @@
               0.36,
               0.4,
               -0.19,
-              0.14
+              0.14,
+              1.53
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0.14
+          "benchmarkValue": 1.53
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 0,
+          "value": 0.0,
           "formatted": "0,00 ha",
           "series": {
             "years": [
@@ -24689,24 +24702,26 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               0.08,
-              0,
+              0.0,
               0.47,
-              0,
+              0.0,
               0.05,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
             ]
           },
           "normalized": null,
-          "benchmarkValue": 0
+          "benchmarkValue": 0.0
         }
       ],
       "aggregate": {
