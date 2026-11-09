@@ -8,12 +8,13 @@ import semantic_query_vehicle_adapters as v
 
 # Independently transcribed seven municipality records; total cars, Euro 0–3,
 # POSAS residents 2026, published motorization, published Euro share.
-FIXED = {'046005':(22650,4384,31763,713.1,19.4), '046013':(4839,939,6550,738.8,19.4),
-         '046018':(16170,3062,21782,742.4,18.9), '046024':(16516,3308,22678,728.3,20.),
-         '046028':(8607,1585,12284,700.7,18.4), '046030':(2060,509,2783,740.2,24.7),
-         '046033':(39446,7158,60680,650.1,18.1)}
-BENCHMARKS = {v.MOTOR:{'tuscany':744.1215646386034,'italy':701.366347742935},
-              v.EURO:{'tuscany':17.166108561955497,'italy':23.822150647563276}}
+# Autoritratto 2025 (Circolante_Copert_2025.xlsx, foglio «4 AV per Comune »).
+FIXED = {'046005':(22893,4221,31763,720.7,18.4), '046013':(4824,907,6550,736.5,18.8),
+         '046018':(16515,2990,21782,758.2,18.1), '046024':(16683,3212,22678,735.6,19.3),
+         '046028':(8713,1523,12284,709.3,17.5), '046030':(2056,510,2783,738.8,24.8),
+         '046033':(39896,6906,60680,657.5,17.3)}
+BENCHMARKS = {v.MOTOR:{'tuscany':753.6760546367507,'italy':709.0932589797014},
+              v.EURO:{'tuscany':16.21252358706073,'italy':22.58771074583712}}
 
 
 def query(key, dim='total', op='compare', **selection):
@@ -27,7 +28,7 @@ def replay_workbook(snapshot):
     from xml.etree import ElementTree as ET
     ns='{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
     body=base64.b64decode(snapshot['source']['workbookBase64'],validate=True)
-    assert hashlib.sha256(body).hexdigest() == '700e7fbc0a1f3d68502aec979a11fc6d25f4c07ecc563fc356ee9d610b77dabc'
+    assert hashlib.sha256(body).hexdigest() == '36172b651272ba8060b989c8980283937f1f8434d8452e1fb04943bd175919c2'
     wanted={r[0]:r[1:] for r in snapshot['records']};checked=0;region=province=None
     with zipfile.ZipFile(io.BytesIO(body)) as archive:
         strings=[''.join(t.text or '' for t in si.iter(ns+'t')) for si in ET.fromstring(archive.read('xl/sharedStrings.xml'))]
@@ -75,12 +76,12 @@ def regressions(path):
             for o in r['observations']:
                 code=o['geography'];x=FIXED[code];want=x[j] if dim=='total' else native[code]
                 assert math.isclose(o['value'],want,rel_tol=0,abs_tol=1e-12)
-                assert o['period']=='2024' and o['unit']==v.UNITS[key]
+                assert o['period']==v.Y and o['unit']==v.UNITS[key]
                 assert pointer(catalog,o['provenance'][0]['valuePointer'])==x[j]
                 record=pointer(snap,o['provenance'][1]['recordPointer']);assert record[-1]==x[0] and sum(record[4:8])==x[1]
                 if dim=='nativeRatio':
                     assert o['numerator']==(x[0] if key==v.MOTOR else x[1]) and o['denominator']==(x[2] if key==v.MOTOR else x[0])
-                    assert o['scale']==scale and o['denominatorPeriod']==('2026-01-01' if key==v.MOTOR else '2024')
+                    assert o['scale']==scale and o['denominatorPeriod']==('2026-01-01' if key==v.MOTOR else v.Y)
                 else:assert 'numerator' not in o
                 if key==v.MOTOR:
                     pop,_=e.file(v.POPULATION);assert pointer(pop,o['provenance'][2]['recordPointer'])==x[2]
@@ -95,7 +96,7 @@ def regressions(path):
             for op in ('series','absolute_change','relative_change','percentage_points','trend'):
                 rejected(e,query(key,dim,op,towns=['046018']),'vehicles_single_snapshot_no_history')
             rejected(e,query(key,dim,'anomaly'),'vehicles_peer_anomaly_not_reviewed')
-            rejected(e,query(key,dim,periods=['2025']),'vehicles_period_not_frozen')
+            rejected(e,query(key,dim,periods=[str(int(v.Y)+1)]),'vehicles_period_not_frozen')
             for order in ([key,'population'],['population',key]):
                 rejected(e,dict(operation='correlation',selectors=[dict(metric=k,dimension=dim if k==key else 'total') for k in order],axis='municipalities',method='pearson',purpose='descriptive'),'vehicles_pair_not_jointly_reviewed')
         for order in ([key,'roadSafety'],['roadSafety',key]):
@@ -113,7 +114,7 @@ def regressions(path):
         changes=[lambda m:m['meta'].update(year='2026'),lambda m:m['meta'].update(theme='economia'),lambda m:m['meta'].update(unit='number'),lambda m:m['meta'].update(polarity='positive'),lambda m:m.update(sourceUrl='https://example.invalid'),lambda m:m['method'].update(formula='Other'),lambda m:m['method'].update(coverage='6/7'),lambda m:m['rows'][0].update(value=999),lambda m:m['rows'][0].update(value=False),lambda m:m['rows'][0].update(benchmarkValue=999),lambda m:m['rows'][0].update(town='Unknown'),lambda m:m['rows'][0].update(code='046005'),lambda m:m['rows'][0].update(slug='unknown'),lambda m:m['rows'][0].update(series={'years':[2024],'values':[1]}),lambda m:m['rows'][0].update(ratioComponents={'numerator':1}),lambda m:m['rows'][0].update(notApplicable=True),lambda m:m['rows'][0].update(dataUnavailable=True),lambda m:m['aggregate'].update(value=999),lambda m:m['aggregate'].update(label='Mean'),lambda m:m['meta']['benchmark'].update(tuscany=999),lambda m:m['meta']['benchmark'].update(sourceSnapshot=v.DEMO)]
         for change in changes:
             g=QueryEngine(path,layer='effective');change(g._catalog['metrics'][key]);assert g.query(query(key))['status']=='not_computable'
-        for mutate in [lambda m:m['meta'].update(year='2024'),lambda m:m['rows'][0].update(value=0),lambda m:m['rows'][0].update(code='999999')]:
+        for mutate in [lambda m:m['meta'].update(year=str(int(v.Y)-1)),lambda m:m['rows'][0].update(value=0),lambda m:m['rows'][0].update(code='999999')]:
             g=QueryEngine(path,layer='effective');mutate(g._catalog['metrics']['population']);assert g.query(query(key))['status']=='not_computable'
     for path in v.HASHES:
         for field in ('sha256','path'):
