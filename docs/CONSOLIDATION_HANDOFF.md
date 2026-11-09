@@ -1,5 +1,29 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## TARI e IMU 2026 (9 novembre 2026)
+
+Terzo lotto dei periodi nuovi del controllo mensile. `tariStandardHousehold` e
+`municipalImuStandard` passano al 2026; `municipalIrpef` resta al 2025.
+
+- Nuova sonda `update_source_data.py mef-fiscal-probe --year AAAA` (`scripts/probe_mef_fiscal.py`):
+  sui runner GitHub scarica pagine, elenco atti e testo dei PDF IMU/TARI e il file aliquote
+  IRPEF dal Portale del federalismo fiscale, in `data/source-probes/mef-fiscal-AAAA.json`. Non
+  tocca il catalogo. In PR con `"mefFiscalProbe": [AAAA]` in `ci/source-update-request.json`.
+- `data/source-snapshots/costi-fiscalita-2026.json`: tariffe TARI e aliquote IMU 2026 trascritte
+  dai documenti, con atto e PDF per Comune; `scripts/materialize_local_taxes_2026.py` le porta nel
+  catalogo (serie 2025–2026).
+- TARI 2026 (3 persone, 100 m², TEFA 5%, ARERA 7,60 €): Camaiore 427,43 €, Forte dei Marmi
+  480,13 €, Massarosa 544,85 €, Pietrasanta 357,43 €, Seravezza 515,61 €, Stazzema 368,82 €,
+  Viareggio 430,16 €. Media 446,35 € (440,38 € nel 2025).
+- IMU 2026: aliquote invariate (1,06% Forte dei Marmi, Massarosa, Pietrasanta, Stazzema; 1,14%
+  Camaiore, Seravezza, Viareggio). Prospetti 2026 per 4/7; Camaiore, Massarosa e Viareggio senza
+  prospetto 2026 entro il 28 ottobre: aliquote 2025 per legge (art. 1, c. 767, L. 160/2019).
+- IRPEF 2026 non aggiornata: il file MEF 2026 ha la sola riga di Forte dei Marmi (conferma); le
+  delibere possono essere pubblicate fino al 20 dicembre. Da rifare con la sonda dopo quella data.
+- Adattatore A6 fiscalità: periodo per indicatore (2026 TARI/IMU, 2025 IRPEF); impronte
+  `municipal_tax#5–6` nuove e `road#3` ripinnata; 74 domande verificate TARI/IMU al 2026;
+  dossier rigenerati.
+
 ## AGCOM FTTH al 5 ottobre 2026 (8 novembre 2026)
 
 I 4 indicatori FTTH (`ftthCoverageDesi`, `ftthCoverage20m`, `ftthReachedHouseholds`,

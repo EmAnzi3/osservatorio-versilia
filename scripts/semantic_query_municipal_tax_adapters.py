@@ -1,4 +1,4 @@
-"""Frozen 2025 standardized municipal tax scenarios; never a personal tax calculator."""
+"""Frozen standardized municipal tax scenarios (TARI/IMU 2026, IRPEF 2025); never a personal tax calculator."""
 from a6_pins import Pin as _pin
 import math
 from decimal import Decimal, ROUND_HALF_UP
@@ -8,16 +8,19 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 
 TARI, IMU, IRPEF = KEYS = ('tariStandardHousehold', 'municipalImuStandard', 'municipalIrpef')
 COSTS = 'data/source-snapshots/costi-fiscalita-validated-2026-08.json'
+COSTS_2026 = 'data/source-snapshots/costi-fiscalita-2026.json'
 RULES = 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json'
 SCENARIOS = (20000, 30000, 50000)
-PATHS = {TARI:COSTS, IMU:COSTS, IRPEF:RULES}
+PATHS = {TARI:COSTS_2026, IMU:COSTS_2026, IRPEF:RULES}
+YEARS = {TARI:2026, IMU:2026, IRPEF:2025}
+PRIOR = COSTS  # 2025 value kept as the first point of the TARI/IMU catalogue series
 URLS = {TARI:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/', IMU:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/', IRPEF:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/'}
 UNITS = {TARI:'currency2', IMU:'currency', IRPEF:'currency2'}
-HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4'))}
-FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2025.', 'municipalImuStandard': '100.000 € × aliquota IMU 2025 della categoria «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
+HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4')), 'data/source-snapshots/costi-fiscalita-2026.json': (_pin('municipal_tax#5'), _pin('municipal_tax#6'))}
+FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.', 'municipalImuStandard': '100.000 € × aliquota IMU 2026 della categoria «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
 NOTES = ['municipal_tax_standard_scenarios_not_personal_bill_or_revenue',
          'municipal_tax_arithmetic_mean_each_municipality_equal_weight',
-         'municipal_tax_single_2025_snapshot_not_current_tax_advice',
+         'municipal_tax_single_{year}_snapshot_not_current_tax_advice',
          'municipal_tax_not_service_quality_or_household_burden']
 
 
@@ -73,7 +76,7 @@ def selection_guard(key, dim, op):
 
 def context(metric, key, dim):
     meta = metric['meta']
-    if (dim not in dimensions(key) or meta.get('key') != key or meta.get('year') != '2025'
+    if (dim not in dimensions(key) or meta.get('key') != key or meta.get('year') != str(YEARS[key])
             or meta.get('unit') != UNITS[key] or meta.get('polarity') != 'neutral'
             or metric.get('sourceUrl') != URLS[key] or metric.get('method',{}).get('formula') != FORMULAS[key]
             or meta.get('benchmark') is not None):
@@ -85,7 +88,7 @@ def context(metric, key, dim):
                   'municipal IRPEF only, same theoretical taxable individual income; total aliases 20000 euro, state/regional IRPEF excluded')
     unit = 'percent' if dim in ('ratePercent','effectiveRate:20000') else UNITS[key]
     return dict(unit=unit,population='one identical theoretical tax scenario per municipality',definition=definition,
-                method=FORMULAS[key]+('; '+dim if dim != 'total' else ''),frequency='annual_snapshot',periodBasis='2025 tax rules and fixed scenarios only',
+                method=FORMULAS[key]+('; '+dim if dim != 'total' else ''),frequency='annual_snapshot',periodBasis=f'{YEARS[key]} tax rules and fixed scenarios only',
                 nativeComponentsAvailable=False,adapter='municipal-tax/'+key+'/'+dim+'/v1')
 
 
@@ -95,10 +98,13 @@ def validated(engine, key):
     rows = metric['rows']
     if (len(rows) != 7 or {r.get('code') for r in rows} != set(TOWNS)
             or {t['code']:t['name'] for t in engine._catalog['towns']} != TOWNS
-            or set(raw['towns']) != set(TOWNS.values()) or raw['year'] != 2025):
+            or set(raw['towns']) != set(TOWNS.values()) or raw['year'] != YEARS[key]):
         raise ValueError('municipal_tax_identity_or_period_changed')
     if key == IRPEF and (raw['scenarios'] != list(SCENARIOS) or metric['meta'].get('compositeType') != 'securityMeasures'):
         raise ValueError('municipal_tax_scenarios_changed')
+    prior = frozen(engine,PRIOR)[0]['tari' if key == TARI else 'imu'] if key != IRPEF else None
+    if prior is not None and (prior['year'] != 2025 or set(prior['towns']) != set(TOWNS.values())):
+        raise ValueError('municipal_tax_identity_or_period_changed')
     values = []; scenario_values = [[],[],[]]
     for row in rows:
         code = row['code']; name = TOWNS[code]; native = raw['towns'][name]
@@ -110,7 +116,7 @@ def validated(engine, key):
             base = native.get('officialBase100sqm3people')
             if base is None: base = money(Decimal(str(native['fixedPerSqm']))*100+Decimal(str(native['variablePerYear'])))
             equal(native['baseCharge'],base); equal(native['tefa5Percent'],money(Decimal(str(base))*Decimal('.05')))
-            value = money(Decimal(str(base))+Decimal(str(native['tefa5Percent']))+Decimal(str(native['equalization2025'])))
+            value = money(Decimal(str(base))+Decimal(str(native['tefa5Percent']))+Decimal(str(native['equalization'+str(YEARS[key])])))
             equal(native['annualCost'],value)
             if row.get('tariffDetail') != native: raise ValueError('municipal_tax_tariff_detail_changed')
         elif key == IMU:
@@ -130,7 +136,11 @@ def validated(engine, key):
                 for field,wanted in [('scenarioIncome',20000),('absolute',value),('normalized',value/20000*100)]: equal(companion.get(field),wanted)
         equal(row.get('value'),value); equal(row.get('benchmarkValue'),value);values.append(value)
         history = row.get('series')
-        if history != dict(years=['2025'] if key == IMU else [2025],values=[value]) or not finite(history['values'][0]):
+        if key == IRPEF: wanted = dict(years=[2025],values=[value])
+        else:
+            before = prior['towns'][name]['annualCost' if key == TARI else 'annualTax']
+            wanted = dict(years=['2025','2026'] if key == IMU else [2025,2026],values=[before,value])
+        if history != wanted or not all(finite(v) for v in history['values']):
             raise ValueError('municipal_tax_history_changed')
     aggregate = metric.get('aggregate') or {};equal(aggregate.get('value'),math.fsum(values)/7)
     if aggregate.get('label') != 'Media semplice dei 7 comuni' or metric.get('normalizedAggregate') is not None:
@@ -148,13 +158,14 @@ def validated(engine, key):
 def observation(engine, key, index, dim, period, historical):
     metric = engine._catalog['metrics'][key]; ctx = context(metric,key,dim)
     raw,ref = validated(engine,key); row=metric['rows'][index]; native=raw['towns'][row['town']]
-    if period != '2025': raise ValueError('municipal_tax_period_not_frozen')
+    if period != str(YEARS[key]): raise ValueError('municipal_tax_period_not_frozen')
     field = 'value'; record = '/'+('municipalIrpef' if key == IRPEF else 'tari' if key == TARI else 'imu')+'/towns/'+row['town']
-    value = row['value']; notes=NOTES[:]
+    value = row['value']; notes=[n.format(year=YEARS[key]) for n in NOTES]
     if key == IMU:
         field = 'ratePercent' if dim == 'ratePercent' else 'value';value=row[field]
         record += '/ratePercent' if dim == 'ratePercent' else '/annualTax'
-        extra = dict(standardTaxableBaseEuro=100000,ratePercent=native['ratePercent'],sourcePage=native['sourcePage'])
+        extra = dict(standardTaxableBaseEuro=100000,ratePercent=native['ratePercent'],sourcePage=native['sourcePage'],rateBasis=native['basis'])
+        if native['basis'] != 'prospetto 2026': notes += ['municipal_tax_imu_2025_rate_extended_no_2026_prospetto']
     elif key == TARI:
         record += '/annualCost';extra=dict(tariffComponents=native,standardPersons=3,standardSquareMetres=100,rounding='base and TEFA rounded separately to cents; ARERA added')
         notes += ['municipal_tax_tari_stazzema_official_base_not_reconstructed_fixed_variable','municipal_tax_source_normalized_snapshot_not_raw_document_replay']

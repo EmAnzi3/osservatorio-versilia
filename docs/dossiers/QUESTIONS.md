@@ -2053,13 +2053,13 @@ Richiesta `environment_cost_current` — `compare`; esito `computed`.
 
 Richiesta `tax_tariStandardHousehold_total_046018` — `compare`; esito `computed`.
 
-**Risultati:** Camaiore 2025: 422,9 currency2; Massarosa 2025: 542,5 currency2
+**Risultati:** Camaiore 2026: 427,4 currency2; Massarosa 2026: 544,9 currency2
 
 **Universi e definizioni:** one identical theoretical tax scenario per municipality — resident domestic user, 3 people / 100 square metres, no personal concessions; TEFA 5% and ARERA 7.60 euro included
 
 **Fonti:** [https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/)
 
-**Avvertenze:** municipal_tax_arithmetic_mean_each_municipality_equal_weight, municipal_tax_not_service_quality_or_household_burden, municipal_tax_single_2025_snapshot_not_current_tax_advice, municipal_tax_source_normalized_snapshot_not_raw_document_replay, municipal_tax_standard_scenarios_not_personal_bill_or_revenue, municipal_tax_tari_stazzema_official_base_not_reconstructed_fixed_variable
+**Avvertenze:** municipal_tax_arithmetic_mean_each_municipality_equal_weight, municipal_tax_not_service_quality_or_household_burden, municipal_tax_single_2026_snapshot_not_current_tax_advice, municipal_tax_source_normalized_snapshot_not_raw_document_replay, municipal_tax_standard_scenarios_not_personal_bill_or_revenue, municipal_tax_tari_stazzema_official_base_not_reconstructed_fixed_variable
 
 #### Controlli metodologici, separati dalle domande territoriali
 

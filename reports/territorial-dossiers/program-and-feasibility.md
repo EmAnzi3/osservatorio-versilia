@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `451105cf9eee85b265071d1b5b0f07622b75f927a0307b40f864dc3fc51cf7bd`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `d02d0b5f420106a04ff89de6734aa02f9b49a69a3bc9629df55ba472c62187d9`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -771,7 +771,7 @@ Le risorse comunali sono sostenibili e quali risultati dei servizi possiamo veri
 | environment_cost_weighting_refused | weighted_ratio / wasteServiceCost / total | 2024 / eurPerResident | verified_ratio_adapter_required | PASS |
 | tax_municipalIrpef_total_046018 | compare / municipalIrpef / total | 2025 / currency2 | 046005: 82.5; 046018: 160.0 | PASS |
 | tax_municipalIrpef_series_refused | series / municipalIrpef / total |  /  | municipal_tax_single_snapshot_no_history | PASS |
-| tax_tariStandardHousehold_total_046018 | compare / tariStandardHousehold / total | 2025 / currency2 | 046005: 422.94; 046018: 542.51 | PASS |
+| tax_tariStandardHousehold_total_046018 | compare / tariStandardHousehold / total | 2026 / currency2 | 046005: 427.43; 046018: 544.85 | PASS |
 | tax_tariStandardHousehold_series_refused | series / tariStandardHousehold / total |  /  | municipal_tax_single_snapshot_no_history | PASS |
 | dossier_primary_capitalExpenditureCommittedPerResident | compare / capitalExpenditureCommittedPerResident / total | 2025 / currency | 046005: 755.7527648278462; 046013: 1958.4869021902189; 046018: 207.712042098505; 046024: 696.0845697577276; 046028: 611.0339512155722; 046030: 261.31397302904566; 046033: 370.77184120228316 | PASS |
 

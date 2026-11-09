@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-11-09",
+  "status": "validated",
+  "probe": "data/source-probes/mef-fiscal-2026.json",
+  "tari": {
+    "year": 2026,
+    "coverage": "7/7",
+    "standard": "Utenza domestica residente, 3 componenti, 100 m², senza agevolazioni personali",
+    "tefaPercent": 5.0,
+    "equalizationPerUser": 7.6,
+    "equalizationNote": "Componenti perequative ARERA 2026: UR1 0,10 € + UR2 1,50 € (delibera 386/2023/R/rif) + UR3 6,00 € (delibera 133/2025/R/rif) per utenza, come riportate nella delibera TARI 2026 di Seravezza.",
+    "source": "Comuni - delibere tariffarie TARI 2026 depositate nel Portale del federalismo fiscale (Dipartimento delle Finanze - MEF) / ARERA",
+    "towns": {
+      "Camaiore": {
+        "fixedPerSqm": 1.032,
+        "variablePerYear": 296.644,
+        "baseCharge": 399.84,
+        "tefa5Percent": 19.99,
+        "equalization2026": 7.6,
+        "annualCost": 427.43,
+        "act": "Delibera di Consiglio comunale n. 51 del 17/06/2026, allegato B",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c3757d&nome=403107_DIMUNIC-16lu26b455d-at1.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c37476&nome=403107_DIMUNIC-16lu26b455d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=B455&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Forte dei Marmi": {
+        "fixedPerSqm": 1.45,
+        "variablePerYear": 305.03,
+        "baseCharge": 450.03,
+        "tefa5Percent": 22.5,
+        "equalization2026": 7.6,
+        "annualCost": 480.13,
+        "act": "Delibera di Consiglio comunale n. 27 del 20/07/2026, allegato B",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c7d375&nome=432869_DIMUNIC-16lu26d730d-at2.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c7d6ae&nome=432869_DIMUNIC-16lu26d730d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=D730&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Massarosa": {
+        "fixedPerSqm": 1.395118,
+        "variablePerYear": 372.16,
+        "baseCharge": 511.67,
+        "tefa5Percent": 25.58,
+        "equalization2026": 7.6,
+        "annualCost": 544.85,
+        "act": "Delibera di Consiglio comunale n. 46 del 27/06/2026, allegato tariffe",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c9e7e8&nome=442024_DIMUNIC-16lu26f035d-at2.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c9e7e9&nome=442024_DIMUNIC-16lu26f035d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=F035&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Pietrasanta": {
+        "fixedPerSqm": 1.24,
+        "variablePerYear": 209.17,
+        "baseCharge": 333.17,
+        "tefa5Percent": 16.66,
+        "equalization2026": 7.6,
+        "annualCost": 357.43,
+        "act": "Delibera di Consiglio comunale n. 12 del 25/06/2026, dispositivo",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c538a5&nome=404097_DIMUNIC-16lu26g628d.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c538a5&nome=404097_DIMUNIC-16lu26g628d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=G628&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Seravezza": {
+        "fixedPerSqm": 1.13512,
+        "variablePerYear": 370.30951,
+        "baseCharge": 483.82,
+        "tefa5Percent": 24.19,
+        "equalization2026": 7.6,
+        "annualCost": 515.61,
+        "act": "Delibera di Consiglio comunale n. 33 del 23/06/2026, piano tariffario",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c64443&nome=405522_DIMUNIC-16lu26i622d-at1.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6446c&nome=405522_DIMUNIC-16lu26i622d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=I622&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Stazzema": {
+        "officialBase100sqm3people": 344.02,
+        "baseCharge": 344.02,
+        "tefa5Percent": 17.2,
+        "equalization2026": 7.6,
+        "annualCost": 368.82,
+        "act": "Delibera di Consiglio comunale n. 39 del 30/07/2026, allegato (tabella di confronto, superficie di riferimento 100 m²)",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6bc25&nome=408166_DIMUNIC-16lu26i942d-at1.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6bd3a&nome=408166_DIMUNIC-16lu26i942d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=I942&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      },
+      "Viareggio": {
+        "fixedPerSqm": 1.0965,
+        "variablePerYear": 292.7912,
+        "baseCharge": 402.44,
+        "tefa5Percent": 20.12,
+        "equalization2026": 7.6,
+        "annualCost": 430.16,
+        "act": "Delibera di Consiglio comunale n. 27 del 30/07/2026, allegato tariffe",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6df84&nome=409742_DIMUNIC-16lu26l833d-at3.pdf",
+        "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6df4c&nome=409742_DIMUNIC-16lu26l833d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=L833&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
+      }
+    }
+  },
+  "imu": {
+    "year": 2026,
+    "source": "Dipartimento delle Finanze - MEF",
+    "category": "Altri fabbricati",
+    "standard": "Seconda abitazione A/2; base imponibile IMU standardizzata EUR 100.000",
+    "coverage": "7/7",
+    "publishedProspetti": "4/7",
+    "rule": "Senza prospetto 2026 pubblicato entro il 28/10/2026 valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).",
+    "towns": {
+      "Camaiore": {
+        "ratePercent": 1.14,
+        "annualTax": 1140.0,
+        "basis": "aliquote 2025 prorogate",
+        "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=B455&cm=O&lista=1&pagina=&pr=&r=2",
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=B455&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Forte dei Marmi": {
+        "ratePercent": 1.06,
+        "annualTax": 1060.0,
+        "basis": "prospetto 2026",
+        "act": "Delibera n. 65 del 22/12/2025, prospetto pubblicato il 13/01/2026",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080ada17e&nome=16668_DIMUNIC-16lu26d730d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=D730&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Massarosa": {
+        "ratePercent": 1.06,
+        "annualTax": 1060.0,
+        "basis": "aliquote 2025 prorogate",
+        "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=F035&cm=O&lista=1&pagina=&pr=&r=2",
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=F035&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Pietrasanta": {
+        "ratePercent": 1.06,
+        "annualTax": 1060.0,
+        "basis": "prospetto 2026",
+        "act": "Delibera n. 15 del 21/07/2026 (autotutela), prospetto pubblicato il 19/08/2026; invariata rispetto alla delibera n. 59 del 09/12/2025",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080c6e7dc&nome=19705_DIMUNIC-16lu26g628d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=G628&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Seravezza": {
+        "ratePercent": 1.14,
+        "annualTax": 1140.0,
+        "basis": "prospetto 2026",
+        "act": "Delibera n. 73 del 27/11/2025, prospetto pubblicato il 02/01/2026",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080acf1c0&nome=13352_DIMUNIC-16lu26i622d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I622&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Stazzema": {
+        "ratePercent": 1.06,
+        "annualTax": 1060.0,
+        "basis": "prospetto 2026",
+        "act": "Delibera n. 58 del 23/12/2025, prospetto pubblicato il 19/06/2026",
+        "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080bd1913&nome=15742_DIMUNIC-16lu26i942d.pdf",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I942&cm=O&lista=1&pagina=&pr=&r=2"
+      },
+      "Viareggio": {
+        "ratePercent": 1.14,
+        "annualTax": 1140.0,
+        "basis": "aliquote 2025 prorogate",
+        "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=L833&cm=O&lista=1&pagina=&pr=&r=2",
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=L833&cm=O&lista=1&pagina=&pr=&r=2"
+      }
+    }
+  },
+  "irpef": {
+    "year": 2026,
+    "status": "not_updated",
+    "note": "Al 9/11/2026 il MEF pubblica la riga 2026 solo per Forte dei Marmi (delibera n. 63 del 22/12/2025, conferma); gli altri sei Comuni risultano «Non ci sono dati». Le delibere IRPEF 2026 possono ancora essere pubblicate entro il 20 dicembre: l'indicatore resta al 2025.",
+    "sourceFile": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2026"
+  }
+}

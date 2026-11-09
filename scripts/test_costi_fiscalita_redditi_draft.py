@@ -15,6 +15,7 @@ DATA=json.loads((ROOT/'data/site-data.json').read_text(encoding='utf-8'))
 REG=json.loads((ROOT/'data/source-registry.json').read_text(encoding='utf-8'))
 AUDIT=json.loads((ROOT/'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json').read_text(encoding='utf-8'))
 VAL=json.loads((ROOT/'data/source-snapshots/costi-fiscalita-validated-2026-08.json').read_text(encoding='utf-8'))
+NEW=json.loads((ROOT/'data/source-snapshots/costi-fiscalita-2026.json').read_text(encoding='utf-8'))
 APP00=(ROOT/'assets/app-parts/00.txt').read_text(encoding='utf-8')
 APP02=(ROOT/'assets/app-parts/02.txt').read_text(encoding='utf-8')
 APP03=(ROOT/'assets/app-parts/03.txt').read_text(encoding='utf-8')
@@ -47,14 +48,23 @@ def main():
 
     tr=rows('tariStandardHousehold')
     assert DATA['metrics']['tariStandardHousehold']['method']['coverage']=='7/7'
-    for town,v in VAL['tari']['towns'].items(): assert close(tr[town]['value'],v['annualCost'])
-    assert close(tr['Forte dei Marmi']['value'],475.73) and close(tr['Pietrasanta']['value'],356.11)
+    assert DATA['metrics']['tariStandardHousehold']['meta']['year']=='2026' and NEW['tari']['year']==2026
+    for town,v in NEW['tari']['towns'].items():
+        assert close(tr[town]['value'],v['annualCost']) and tr[town]['tariffDetail']==v
+        assert tr[town]['series']=={'years':[2025,2026],'values':[VAL['tari']['towns'][town]['annualCost'],v['annualCost']]}
+    # Celle trascritte dalle delibere TARI 2026 (Forte dei Marmi n. 27/2026, Pietrasanta n. 12/2026).
+    assert close(tr['Forte dei Marmi']['value'],480.13) and close(tr['Pietrasanta']['value'],357.43)
 
     im=rows('municipalImuStandard')
     imu_metric=DATA['metrics']['municipalImuStandard']
     assert imu_metric['method']['coverage']=='7/7' and 'compositeType' not in imu_metric['meta']
-    for town,v in VAL['imu']['towns'].items():
+    assert imu_metric['meta']['year']=='2026' and NEW['imu']['year']==2026
+    for town,v in NEW['imu']['towns'].items():
         assert close(im[town]['value'],v['annualTax']) and close(im[town]['ratePercent'],v['ratePercent'])
+        assert im[town]['series']=={'years':['2025','2026'],'values':[VAL['imu']['towns'][town]['annualTax'],v['annualTax']]}
+        # Senza prospetto 2026 si applica l'aliquota 2025 (art. 1, c. 767, L. 160/2019), mai un'altra.
+        if v['basis']!='prospetto 2026': assert v['ratePercent']==VAL['imu']['towns'][town]['ratePercent'] and 'sourcePdf' not in v
+        else: assert '16lu26' in v['sourcePdf']
 
     fu=rows('fuelPrices')
     assert DATA['metrics']['fuelPrices']['method']['coverage']=='6/7'

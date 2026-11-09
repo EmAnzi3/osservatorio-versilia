@@ -54898,9 +54898,9 @@
         "theme": "economia",
         "label": "TARI standardizzata · 3 persone, 100 m²",
         "shortLabel": "TARI · 3 persone / 100 m²",
-        "description": "Spesa annua TARI per una stessa utenza domestica teorica residente di 3 componenti e 100 m², senza agevolazioni personali. Include TEFA e componenti perequative 2025.",
+        "description": "Spesa annua TARI per una stessa utenza domestica teorica residente di 3 componenti e 100 m², senza agevolazioni personali. Include TEFA e componenti perequative 2026.",
         "unit": "currency2",
-        "year": "2025",
+        "year": "2026",
         "source": "Comuni / MEF / ARERA",
         "polarity": "neutral",
         "searchTerms": [
@@ -54917,189 +54917,229 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 542.51,
+          "value": 544.85,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              542.51
+              542.51,
+              544.85
             ]
           },
           "normalized": null,
-          "benchmarkValue": 542.51,
+          "benchmarkValue": 544.85,
           "tariffDetail": {
-            "fixedPerSqm": 1.297705857,
-            "variablePerYear": 379.6698985,
-            "baseCharge": 509.44,
-            "tefa5Percent": 25.47,
-            "equalization2025": 7.6,
-            "annualCost": 542.51
+            "fixedPerSqm": 1.395118,
+            "variablePerYear": 372.16,
+            "baseCharge": 511.67,
+            "tefa5Percent": 25.58,
+            "equalization2026": 7.6,
+            "annualCost": 544.85,
+            "act": "Delibera di Consiglio comunale n. 46 del 27/06/2026, allegato tariffe",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c9e7e8&nome=442024_DIMUNIC-16lu26f035d-at2.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c9e7e9&nome=442024_DIMUNIC-16lu26f035d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=F035&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 417.86,
+          "value": 430.16,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              417.86
+              417.86,
+              430.16
             ]
           },
           "normalized": null,
-          "benchmarkValue": 417.86,
+          "benchmarkValue": 430.16,
           "tariffDetail": {
-            "fixedPerSqm": 1.0646,
-            "variablePerYear": 284.2633,
-            "baseCharge": 390.72,
-            "tefa5Percent": 19.54,
-            "equalization2025": 7.6,
-            "annualCost": 417.86
+            "fixedPerSqm": 1.0965,
+            "variablePerYear": 292.7912,
+            "baseCharge": 402.44,
+            "tefa5Percent": 20.12,
+            "equalization2026": 7.6,
+            "annualCost": 430.16,
+            "act": "Delibera di Consiglio comunale n. 27 del 30/07/2026, allegato tariffe",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6df84&nome=409742_DIMUNIC-16lu26l833d-at3.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6df4c&nome=409742_DIMUNIC-16lu26l833d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=L833&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 422.94,
+          "value": 427.43,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              422.94
+              422.94,
+              427.43
             ]
           },
           "normalized": null,
-          "benchmarkValue": 422.94,
+          "benchmarkValue": 427.43,
           "tariffDetail": {
-            "fixedPerSqm": 0.969,
-            "variablePerYear": 298.664,
-            "baseCharge": 395.56,
-            "tefa5Percent": 19.78,
-            "equalization2025": 7.6,
-            "annualCost": 422.94
+            "fixedPerSqm": 1.032,
+            "variablePerYear": 296.644,
+            "baseCharge": 399.84,
+            "tefa5Percent": 19.99,
+            "equalization2026": 7.6,
+            "annualCost": 427.43,
+            "act": "Delibera di Consiglio comunale n. 51 del 17/06/2026, allegato B",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c3757d&nome=403107_DIMUNIC-16lu26b455d-at1.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c37476&nome=403107_DIMUNIC-16lu26b455d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=B455&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 356.11,
+          "value": 357.43,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              356.11
+              356.11,
+              357.43
             ]
           },
           "normalized": null,
-          "benchmarkValue": 356.11,
+          "benchmarkValue": 357.43,
           "tariffDetail": {
-            "fixedPerSqm": 1.25,
-            "variablePerYear": 206.91,
-            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f2308082d4af&nome=373612_DIMUNIC-16lu25g628d.pdf",
-            "baseCharge": 331.91,
-            "tefa5Percent": 16.6,
-            "equalization2025": 7.6,
-            "annualCost": 356.11
+            "fixedPerSqm": 1.24,
+            "variablePerYear": 209.17,
+            "baseCharge": 333.17,
+            "tefa5Percent": 16.66,
+            "equalization2026": 7.6,
+            "annualCost": 357.43,
+            "act": "Delibera di Consiglio comunale n. 12 del 25/06/2026, dispositivo",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c538a5&nome=404097_DIMUNIC-16lu26g628d.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c538a5&nome=404097_DIMUNIC-16lu26g628d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=G628&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 502.22,
+          "value": 515.61,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              502.22
+              502.22,
+              515.61
             ]
           },
           "normalized": null,
-          "benchmarkValue": 502.22,
+          "benchmarkValue": 515.61,
           "tariffDetail": {
-            "fixedPerSqm": 1.14427,
-            "variablePerYear": 356.63966,
-            "baseCharge": 471.07,
-            "tefa5Percent": 23.55,
-            "equalization2025": 7.6,
-            "annualCost": 502.22
+            "fixedPerSqm": 1.13512,
+            "variablePerYear": 370.30951,
+            "baseCharge": 483.82,
+            "tefa5Percent": 24.19,
+            "equalization2026": 7.6,
+            "annualCost": 515.61,
+            "act": "Delibera di Consiglio comunale n. 33 del 23/06/2026, piano tariffario",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c64443&nome=405522_DIMUNIC-16lu26i622d-at1.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6446c&nome=405522_DIMUNIC-16lu26i622d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=I622&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 475.73,
+          "value": 480.13,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              475.73
+              475.73,
+              480.13
             ]
           },
           "normalized": null,
-          "benchmarkValue": 475.73,
+          "benchmarkValue": 480.13,
           "tariffDetail": {
-            "fixedPerSqm": 1.39,
-            "variablePerYear": 306.84,
-            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f230808daf3a&nome=376342_DIMUNIC-16lu25d730d.pdf",
-            "baseCharge": 445.84,
-            "tefa5Percent": 22.29,
-            "equalization2025": 7.6,
-            "annualCost": 475.73
+            "fixedPerSqm": 1.45,
+            "variablePerYear": 305.03,
+            "baseCharge": 450.03,
+            "tefa5Percent": 22.5,
+            "equalization2026": 7.6,
+            "annualCost": 480.13,
+            "act": "Delibera di Consiglio comunale n. 27 del 20/07/2026, allegato B",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c7d375&nome=432869_DIMUNIC-16lu26d730d-at2.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c7d6ae&nome=432869_DIMUNIC-16lu26d730d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=D730&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 365.31,
+          "value": 368.82,
           "formatted": "",
           "series": {
             "years": [
-              2025
+              2025,
+              2026
             ],
             "values": [
-              365.31
+              365.31,
+              368.82
             ]
           },
           "normalized": null,
-          "benchmarkValue": 365.31,
+          "benchmarkValue": 368.82,
           "tariffDetail": {
-            "officialBase100sqm3people": 340.68,
-            "baseCharge": 340.68,
-            "tefa5Percent": 17.03,
-            "equalization2025": 7.6,
-            "annualCost": 365.31
+            "officialBase100sqm3people": 344.02,
+            "baseCharge": 344.02,
+            "tefa5Percent": 17.2,
+            "equalization2026": 7.6,
+            "annualCost": 368.82,
+            "act": "Delibera di Consiglio comunale n. 39 del 30/07/2026, allegato (tabella di confronto, superficie di riferimento 100 m²)",
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6bc25&nome=408166_DIMUNIC-16lu26i942d-at1.pdf",
+            "actPdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f23080c6bd3a&nome=408166_DIMUNIC-16lu26i942d.pdf",
+            "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/risultato.htm?DOWNLOAD=Procedi&annosel=2026&cc=I942&lista=1&pagina=sceltaregione.htm&r=2&tipo_trib=tutti"
           }
         }
       ],
       "aggregate": {
-        "value": 440.3828571428572,
+        "value": 446.3471428571429,
         "label": "Media semplice dei 7 comuni",
         "note": "Confronto standardizzato della stessa utenza teorica; ogni Comune pesa allo stesso modo."
       },
       "normalizedAggregate": null,
       "method": {
-        "type": "Elaborazione Osservatorio su tariffe ufficiali 2025",
-        "formula": "100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2025.",
-        "caveat": "Nessuna riduzione personale. Stazzema usa l’importo ufficiale pubblicato per 3 componenti / 100 m² come base.",
+        "type": "Elaborazione Osservatorio su tariffe ufficiali 2026",
+        "formula": "100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.",
+        "caveat": "Nessuna riduzione personale. Tariffe dalle delibere comunali TARI 2026 depositate nel Portale del federalismo fiscale; Stazzema usa l’importo ufficiale pubblicato per 3 componenti / 100 m² come base.",
         "coverage": "7/7"
       }
     },
@@ -55109,9 +55149,9 @@
         "theme": "economia",
         "label": "IMU seconda abitazione standardizzata",
         "shortLabel": "IMU seconda abitazione",
-        "description": "Imposta annua teorica su una seconda abitazione A/2 con base imponibile IMU identica di 100.000 €, usando l’aliquota 2025 «Altri fabbricati». Aliquote applicate: 1,06%: Massarosa, Pietrasanta, Forte dei Marmi, Stazzema; 1,14%: Viareggio, Camaiore, Seravezza.",
+        "description": "Imposta annua teorica su una seconda abitazione A/2 con base imponibile IMU identica di 100.000 €, usando l’aliquota 2026 «Altri fabbricati». Aliquote applicate: 1,06%: Forte dei Marmi, Massarosa, Pietrasanta, Stazzema; 1,14%: Camaiore, Seravezza, Viareggio.",
         "unit": "currency",
-        "year": "2025",
+        "year": "2026",
         "source": "Dipartimento delle Finanze — MEF",
         "polarity": "neutral",
         "searchTerms": [
@@ -55131,9 +55171,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1060.0,
               1060.0
             ]
           },
@@ -55149,9 +55191,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1140.0,
               1140.0
             ]
           },
@@ -55167,9 +55211,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1140.0,
               1140.0
             ]
           },
@@ -55185,9 +55231,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1060.0,
               1060.0
             ]
           },
@@ -55203,9 +55251,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1140.0,
               1140.0
             ]
           },
@@ -55221,9 +55271,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1060.0,
               1060.0
             ]
           },
@@ -55239,9 +55291,11 @@
           "formatted": "",
           "series": {
             "years": [
-              "2025"
+              "2025",
+              "2026"
             ],
             "values": [
+              1060.0,
               1060.0
             ]
           },
@@ -55258,8 +55312,8 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su prospetti ufficiali MEF",
-        "formula": "100.000 € × aliquota IMU 2025 della categoria «Altri fabbricati».",
-        "caveat": "La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. 1,06%: Massarosa, Pietrasanta, Forte dei Marmi, Stazzema; 1,14%: Viareggio, Camaiore, Seravezza.",
+        "formula": "100.000 € × aliquota IMU 2026 della categoria «Altri fabbricati».",
+        "caveat": "La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. 1,06%: Forte dei Marmi, Massarosa, Pietrasanta, Stazzema; 1,14%: Camaiore, Seravezza, Viareggio. Camaiore, Massarosa, Viareggio: nessun prospetto 2026 pubblicato entro il 28 ottobre, quindi valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).",
         "coverage": "7/7"
       }
     },

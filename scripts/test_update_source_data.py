@@ -217,6 +217,21 @@ def agcom_cases(tmp: Path) -> None:
         pass
 
 
+def mef_probe_cases() -> None:
+    """Sonda MEF: solo atti comunali DIMUNIC, link con la riga della tabella, testo PDF separato."""
+    import probe_mef_fiscal as probe
+
+    page = ('<table><tr><td>46 27-06-2026 TARI</td><td><a href="download_lib.php?key=1&amp;nome=442024_DIMUNIC-16lu26f035d-at2.pdf">'
+            'tariffe</a></td></tr><tr><td><a href="download_lib.php?key=2&amp;nome=403132_CIMUNIC-16lu26i622d.pdf">regolamento</a></td></tr></table>'
+            '<a href="/export/legenda-note_IMU_TARI.pdf">legenda</a>')
+    found = probe.links(page, probe.BASE + "nuova_at/risultato.htm")
+    docs = [l for l in found if probe.is_doc(l)]
+    assert len(found) == 3 and len(docs) == 1, found
+    assert docs[0]["url"].endswith("key=1&nome=442024_DIMUNIC-16lu26f035d-at2.pdf") and docs[0]["row"].startswith("46 27-06-2026 TARI")
+    ctx = probe.context("Aree fabbricabili 1,06% Altri fabbricati (fabbricati diversi) 1,14%", r"Altri\s+fabbricati", 0, 60)
+    assert ctx and "1,14%" in ctx[0]
+
+
 def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         ars_cases(Path(tmp))
@@ -225,7 +240,8 @@ def main() -> None:
         asia_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         agcom_cases(Path(tmp))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati PASS")
+    mef_probe_cases()
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC PASS")
 
 
 if __name__ == "__main__":
