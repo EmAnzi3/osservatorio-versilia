@@ -34,8 +34,8 @@ TOWNS = {
     "Seravezza": "I622", "Stazzema": "I942", "Viareggio": "L833",
 }
 UA = {"User-Agent": "OsservatorioVersilia-data-audit/1.0"}
-MAX_DOCS = 14
-TEXT_CAP = 24000
+MAX_DOCS = 12
+TEXT_CAP = 60000
 
 
 def fetch(url: str, tries: int = 3) -> bytes:
@@ -81,8 +81,9 @@ def pdf_text(data: bytes) -> tuple[str, int]:
 
 
 def is_doc(link: dict[str, str]) -> bool:
-    u = link["url"].lower()
-    return ".pdf" in u or "download_lib" in u or "download.php" in u
+    """Atti comunali depositati (DIMUNIC: delibere e allegati); esclusi regolamenti e pagine di servizio."""
+    u = link["url"]
+    return "download_lib" in u and "DIMUNIC" in u.upper()
 
 
 def context(text: str, pattern: str, before: int = 300, after: int = 2500) -> list[str]:
@@ -108,8 +109,8 @@ def documents(page_url: str, keep: re.Pattern[str]) -> dict[str, Any]:
             doc["pages"] = pages
             doc["head"] = re.sub(r"\s+", " ", text[:1500])
             if keep.search(text):
-                doc["text"] = text[:TEXT_CAP]
-                doc["textTruncated"] = len(text) > TEXT_CAP
+                doc["pdfText"] = text[:TEXT_CAP]
+                doc["pdfTextTruncated"] = len(text) > TEXT_CAP
         except Exception as exc:  # noqa: BLE001
             doc["error"] = f"{type(exc).__name__}: {exc}"
         result["documents"].append(doc)
@@ -121,8 +122,8 @@ def imu(year: int) -> dict[str, Any]:
     for town, code in TOWNS.items():
         r = documents(IMU_RESULT.format(year=year, code=code), re.compile(r"Altri\s+fabbricati", re.I))
         for doc in r["documents"]:
-            if "text" in doc:
-                doc["altriFabbricati"] = context(doc["text"], r"Altri\s+fabbricati")
+            if "pdfText" in doc:
+                doc["altriFabbricati"] = context(doc["pdfText"], r"Altri\s+fabbricati")
         out[town] = r
         print(f"IMU {town}: {len(r['documents'])} documenti, errore pagina: {r.get('pageError', '-')}")
     return out
@@ -135,7 +136,7 @@ def tari(year: int) -> dict[str, Any]:
         r = documents(TARI_RESULT.format(year=year, code=code), keep)
         out[town] = r
         print(f"TARI {town}: {len(r['documents'])} documenti, con tariffe domestiche: "
-              f"{sum('text' in d for d in r['documents'])}")
+              f"{sum('pdfText' in d for d in r['documents'])}")
     return out
 
 
