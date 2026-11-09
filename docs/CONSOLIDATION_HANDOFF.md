@@ -12,6 +12,7 @@
   vincolato ai suoi conteggi (7.899 Comuni, Italia 5.498.773 posti letto).
 - Dal 2025 Istat include gli alloggi privati non imprenditoriali: valori non confrontabili con il
   2024. Niente serie né variazioni; la serie storica dei posti letto 2002–2024 non è più esposta.
+  Nell'audit A3 la coppia `tourismBeds`/`serie_storica` passa da ACQUIRED ad AVAILABLE_MISSING.
 - Versilia 2025: 69.031 posti letto (34.703 nel 2024), 435,5 ogni 1.000 residenti (218,9), 42,9
   strutture ogni 1.000 residenti (5,7). Toscana 937.066 posti letto; Italia 7.687.036.
 - Adattatore A6 turismo e fan-in dei benchmark sullo snapshot più recente; impronte `tourism#3–4` e
