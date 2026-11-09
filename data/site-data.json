@@ -8141,7 +8141,7 @@
         "shortLabel": "Posti letto turistici",
         "description": "Posti letto disponibili nelle strutture alberghiere ed extralberghiere del comune.",
         "unit": "number",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — capacità degli esercizi ricettivi",
         "polarity": "neutral",
         "normalized": {
@@ -8150,13 +8150,13 @@
           "unit": "per1000"
         },
         "benchmark": {
-          "year": "2024",
-          "tuscany": 617143,
-          "italy": 5498773,
+          "year": "2025",
+          "tuscany": 937066,
+          "italy": 7687036,
           "source": "Istat — Capacità degli esercizi ricettivi",
           "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
-          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025."
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2025 nel perimetro nativo Istat: 7.896 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione include anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024 e gli anni precedenti, quindi non si pubblicano serie né variazioni. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
         }
       },
       "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
@@ -8165,110 +8165,110 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 868,
-          "formatted": "868",
+          "value": 2734,
+          "formatted": "2.734",
           "series": null,
           "normalized": {
-            "value": 39.84941694977504,
+            "value": 125.51648149848499,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 868
+          "benchmarkValue": 2734
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 15283,
-          "formatted": "15.283",
+          "value": 23501,
+          "formatted": "23.501",
           "series": null,
           "normalized": {
-            "value": 251.8622280817403,
+            "value": 387.29400131839157,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 15283
+          "benchmarkValue": 23501
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 7052,
-          "formatted": "7.052",
+          "value": 14835,
+          "formatted": "14.835",
           "series": null,
           "normalized": {
-            "value": 222.01933066775808,
+            "value": 467.0528602461984,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 7052
+          "benchmarkValue": 14835
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 6381,
-          "formatted": "6.381",
+          "value": 12842,
+          "formatted": "12.842",
           "series": null,
           "normalized": {
-            "value": 281.37401887291645,
+            "value": 566.2756856865685,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 6381
+          "benchmarkValue": 12842
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 584,
-          "formatted": "584",
+          "value": 1539,
+          "formatted": "1.539",
           "series": null,
           "normalized": {
-            "value": 47.54151742103549,
+            "value": 125.28492347769458,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 584
+          "benchmarkValue": 1539
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 4279,
-          "formatted": "4.279",
+          "value": 12826,
+          "formatted": "12.826",
           "series": null,
           "normalized": {
-            "value": 653.2824427480915,
+            "value": 1958.1679389312978,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 4279
+          "benchmarkValue": 12826
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 256,
-          "formatted": "256",
+          "value": 754,
+          "formatted": "754",
           "series": null,
           "normalized": {
-            "value": 91.98706431908013,
+            "value": 270.9306503772907,
             "label": "Posti letto ogni 1.000 residenti",
             "description": "Capacità ricettiva rapportata alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 256
+          "benchmarkValue": 754
         }
       ],
       "aggregate": {
-        "value": 34703,
+        "value": 69031,
         "label": "Totale Versilia",
         "note": "Somma dei valori dei sette comuni."
       },
@@ -8280,7 +8280,7 @@
       "method": {
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte. Dal 2025 il perimetro Istat include anche gli alloggi privati non imprenditoriali: valori non confrontabili con il 2024 e gli anni precedenti.",
         "coverage": "7/7"
       }
     },
@@ -41394,24 +41394,24 @@
         "theme": "economia",
         "label": "Posti letto turistici ogni 1.000 residenti",
         "shortLabel": "Posti letto / residenti",
-        "description": "Posti letto Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
+        "description": "Posti letto Istat 2025 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
         "polarity": "neutral",
         "sourceMeta": {
-          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json",
           "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
-          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+          "note": "Conteggi Istat 2025 riconciliati 7/7 sul pannello comunale nativo; popolazione al 1° gennaio 2026."
         },
         "benchmark": {
-          "year": "2024",
-          "tuscany": 168.65415653928622,
-          "italy": 93.28994190777546,
+          "year": "2025",
+          "tuscany": 256.08339696252375,
+          "italy": 130.4151202246353,
           "source": "Istat — Capacità degli esercizi ricettivi",
           "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
-          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2025 nel perimetro nativo Istat: 7.896 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione include anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024 e gli anni precedenti, quindi non si pubblicano serie né variazioni. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
         }
       },
       "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
@@ -41420,83 +41420,83 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 39.84941694977504,
+          "value": 125.51648149848499,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 39.84941694977504
+          "benchmarkValue": 125.51648149848499
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 251.8622280817403,
+          "value": 387.29400131839157,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 251.8622280817403
+          "benchmarkValue": 387.29400131839157
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 222.01933066775808,
+          "value": 467.0528602461984,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 222.01933066775808
+          "benchmarkValue": 467.0528602461984
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 281.37401887291645,
+          "value": 566.2756856865685,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 281.37401887291645
+          "benchmarkValue": 566.2756856865685
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 47.54151742103549,
+          "value": 125.28492347769458,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 47.54151742103549
+          "benchmarkValue": 125.28492347769458
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 653.2824427480915,
+          "value": 1958.1679389312978,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 653.2824427480915
+          "benchmarkValue": 1958.1679389312978
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 91.98706431908013,
+          "value": 270.9306503772907,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 91.98706431908013
+          "benchmarkValue": 270.9306503772907
         }
       ],
       "aggregate": {
-        "value": 218.91874842291193,
+        "value": 435.4718647489276,
         "label": "Dotazione Versilia",
         "note": "Posti letto complessivi rapportati ai residenti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "posti letto Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
-        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
+        "formula": "posti letto Istat 2025 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2025 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Dal 2025 il perimetro Istat include anche gli alloggi privati non imprenditoriali: valori non confrontabili con il 2024 e gli anni precedenti. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },
@@ -41506,24 +41506,24 @@
         "theme": "economia",
         "label": "Strutture ricettive ogni 1.000 residenti",
         "shortLabel": "Strutture ricettive",
-        "description": "Strutture ricettive Istat 2024 ogni 1.000 residenti al 1° gennaio 2026.",
+        "description": "Strutture ricettive Istat 2025 ogni 1.000 residenti al 1° gennaio 2026.",
         "unit": "per1000",
-        "year": "2024",
+        "year": "2025",
         "source": "Istat — capacità degli esercizi ricettivi / popolazione residente",
         "polarity": "neutral",
         "sourceMeta": {
-          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
+          "snapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json",
           "populationSnapshot": "data/source-snapshots/a3-istat-demography-benchmark-2026.json",
-          "note": "Anno e fonte corretti dopo riconciliazione esatta 7/7 dei conteggi Istat 2024; valori numerici pubblici invariati."
+          "note": "Conteggi Istat 2025 riconciliati 7/7 sul pannello comunale nativo; popolazione al 1° gennaio 2026."
         },
         "benchmark": {
-          "year": "2024",
-          "tuscany": 6.115780895501831,
-          "italy": 4.50129403360151,
+          "year": "2025",
+          "tuscany": 23.538610119856077,
+          "italy": 12.533348416876096,
           "source": "Istat — Capacità degli esercizi ricettivi",
           "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
-          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json",
-          "note": "Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
+          "sourceSnapshot": "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json",
+          "note": "Posti letto alberghieri ed extralberghieri 2025 nel perimetro nativo Istat: 7.896 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione include anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024 e gli anni precedenti, quindi non si pubblicano serie né variazioni. Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia."
         }
       },
       "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
@@ -41532,83 +41532,83 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 2.3872922596639428,
+          "value": 16.711045817647598,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2.3872922596639428
+          "benchmarkValue": 16.711045817647598
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 3.3783783783783785,
+          "value": 25.906394199077127,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 3.3783783783783785
+          "benchmarkValue": 25.906394199077127
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 8.406006989264238,
+          "value": 55.473349494695086,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 8.406006989264238
+          "benchmarkValue": 55.473349494695086
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 9.171884645912337,
+          "value": 60.10230179028133,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 9.171884645912337
+          "benchmarkValue": 60.10230179028133
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1.3025073266037122,
+          "value": 16.851188537935524,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1.3025073266037122
+          "benchmarkValue": 16.851188537935524
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 20.916030534351144,
+          "value": 217.40458015267174,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 20.916030534351144
+          "benchmarkValue": 217.40458015267174
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 6.827164929931728,
+          "value": 40.24434063959756,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 6.827164929931728
+          "benchmarkValue": 40.24434063959756
         }
       ],
       "aggregate": {
-        "value": 5.702750441584658,
+        "value": 42.9220287660863,
         "label": "Dotazione Versilia",
         "note": "Strutture complessive rapportate ai residenti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "strutture ricettive Istat 2024 / popolazione residente al 1° gennaio 2026 × 1.000",
-        "caveat": "Capacità ricettiva 2024 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025. Indicatore di struttura, non di performance.",
+        "formula": "strutture ricettive Istat 2025 / popolazione residente al 1° gennaio 2026 × 1.000",
+        "caveat": "Capacità ricettiva 2025 rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati. Dal 2025 il perimetro Istat include anche gli alloggi privati non imprenditoriali: valori non confrontabili con il 2024 e gli anni precedenti. Indicatore di struttura, non di performance.",
         "coverage": "7/7"
       }
     },

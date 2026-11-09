@@ -1479,13 +1479,13 @@ Richiesta `seasonality_compare_046005` — `compare`; esito `computed`.
 
 Richiesta `tourism_tourismBedsPer1000_current` — `compare`; esito `computed`.
 
-**Risultati:** Camaiore 2024: 222,0 per1000; Massarosa 2024: 39,8 per1000
+**Risultati:** Camaiore 2025: 467,1 per1000; Massarosa 2025: 125,5 per1000
 
-**Universi e definizioni:** Istat hotel and non-hotel capacity 2024; private non-business accommodation expansion 2025 excluded — Istat beds 2024 / Istat estimated residents 1 January 2026 × 1000
+**Universi e definizioni:** Istat hotel, non-hotel and private non-business accommodation capacity 2025; not comparable with 2024 and earlier — Istat beds 2025 / Istat estimated residents 1 January 2026 × 1000
 
 **Fonti:** [https://esploradati.istat.it/databrowser/DWL/Servizi/DCSC%20Capacity%20of%20tourist%20accommodation%20municipal.zip](https://esploradati.istat.it/databrowser/DWL/Servizi/DCSC%20Capacity%20of%20tourist%20accommodation%20municipal.zip)
 
-**Avvertenze:** tourism_capacity_2024_residents_2026_distinct, tourism_capacity_2025_scope_expansion_excluded, tourism_frozen_extraction_not_new_live_acquisition, tourism_native_7899_municipal_records_not_new_workbook_replay, tourism_numerical_rank_not_destination_quality, tourism_posas_2026_estimate
+**Avvertenze:** tourism_capacity_2025_residents_2026_distinct, tourism_capacity_2025_scope_includes_private_non_business_not_comparable, tourism_frozen_extraction_not_new_live_acquisition, tourism_native_7896_municipal_records_not_new_workbook_replay, tourism_numerical_rank_not_destination_quality, tourism_posas_2026_estimate
 
 #### turismo-2 — partially_supported
 

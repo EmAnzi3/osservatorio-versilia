@@ -40,3 +40,11 @@ Ogni accesso verifica SHA del file e impronta strutturale dello snapshot, anche 
 Suite generale: 960 domande, 449 consultazioni/calcoli e 511 rifiuti attesi. I 88 casi aggiunti non riscrivono le aspettative con le risposte del motore. Collegamenti 58 tipizzati e 29 companion invariati. Benchmark descrittivo: 81 carichi, con rapporto estero nativo, storico posti letto e rifiuto dello storico normalizzato; nessuna promessa di latenza o completezza.
 
 Report riproducibili in `reports/a6-tourism/`. Quick locale canonico prima del push; Full locale canonico su checkout isolato e Quick→Full CI sul candidato prima del merge manuale. Nessuna modifica a valori pubblicati, rendering, golden, workflow, Radar, Camaiore, 35 letture o due riepiloghi. A6.4 rimane parziale, A6.5–A6.6 aperte e A7 non avviata.
+
+## Aggiornamento 9 novembre 2026: capacità ricettiva 2025
+
+`tourismBeds`, `tourismBedsPer1000` e `tourismStructuresPer1000` passano all'anno 2025 con `a3-istat-tourism-capacity-benchmark-2025.json` (impronte `tourism#3–4`). L'adattatore usa lo snapshot più recente (`latest_snapshot()`); il pannello nativo 2025 ha 7.896 record comunali, 273 toscani, con province e totale Italia riconciliati.
+
+Dal 2025 Istat conta anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024. Per questo la serie storica dei posti letto (2002–2024) non è più disponibile e la richiesta di serie viene rifiutata (`tourism_historical_resident_ratio_not_frozen`), come per i due rapporti; il 2024 non è più un periodo selezionabile. Nota esposta: `tourism_capacity_2025_scope_includes_private_non_business_not_comparable`. Lo snapshot 2024, con la sua serie, resta nel repository.
+
+Versilia 2025: 69.031 posti letto (34.703 nel 2024, perimetro diverso), 435,5 ogni 1.000 residenti, 42,9 strutture ogni 1.000 residenti. Toscana 937.066 posti letto, Italia 7.687.036. Fixture di `test_semantic_tourism_adapters.py` trascritte dal pannello 2025.

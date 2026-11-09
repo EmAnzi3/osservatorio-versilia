@@ -217,6 +217,76 @@ def agcom_cases(tmp: Path) -> None:
         pass
 
 
+def tourism_zip(tmp: Path, years: dict[int, int]) -> Path:
+    """Archivio Istat sintetico dal pannello pubblicato più recente; `years` = anno → posti letto extra aggiunti a ogni Comune."""
+    import zipfile
+    from openpyxl import Workbook
+    import acquire_a3_benchmark_istat_tourism_annual as capacity
+
+    snap = upd.load(capacity.ROOT / capacity.latest_snapshot())
+    wb = Workbook(); ws = wb.active; ws.title = "Capacità ricettiva"
+    head = [[None] * 56 for _ in range(6)]
+    head[2][54] = "TOTALE"; head[4][32] = "totale alberghi"; head[4][52] = "totale extra-alberghieri"
+    head[5][0] = "Anno/Year"; head[5][7] = "Cod. Istat"
+    for i in (33, 53, 55):
+        head[5][i] = "Beds"
+    for row in head:
+        ws.append(row)
+    for year, extra in sorted(years.items(), reverse=True):
+        def line(code, region, province, label, hotel, other, structures):
+            row = [None] * 56
+            row[0], row[2], row[4], row[5], row[7] = year, region, province, label, code
+            row[33], row[53], row[55], row[54] = hotel, other, hotel + other, structures
+            ws.append(row)
+        for code, region, hotel, other, _total, structures in snap["records"]:
+            line(code, region, None, None, hotel, other + extra, structures)
+        for province, region, hotel, other, _total, structures in snap["provinceTotals"]:
+            n = sum(1 for r in snap["records"] if r[0][:3] == province)
+            line(None, region, province, "TOTALE", hotel, other + extra * n, structures)
+        nat = snap["officialNational"]
+        line(None, None, None, None, nat["hotelBeds"], nat["otherBeds"] + extra * len(snap["records"]), nat["structures"])
+    xlsx = tmp / "c.xlsx"; wb.save(xlsx)
+    archive = tmp / "capacity.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.write(xlsx, "Capacità comunale 2002-2025.xlsx")
+    return archive
+
+
+def tourism_cases(tmp: Path) -> None:
+    """Capacità ricettiva: anno pubblicato ricostruito identico; anno nuovo accettato con perimetro dichiarato; anno precedente rifiutato."""
+    import acquire_a3_benchmark_istat_tourism_annual as capacity
+
+    pub = int(capacity.latest_snapshot()[-9:-5]); new = pub + 1
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    try:
+        archive = tourism_zip(tmp, {new: 10, pub: 0, pub - 1: 0})
+        changes = upd.update_istat_tourism(pub, archive, dry_run=True)
+        assert changes.lines == [], changes.lines
+        upd.update_istat_tourism(new, archive, dry_run=False)
+        site = upd.load(upd.SITE)
+        snap = upd.load(tmp / f"data/source-snapshots/a3-istat-tourism-capacity-benchmark-{new}.json")
+        old = upd.load(real_root / capacity.latest_snapshot())
+        beds = site["metrics"]["tourismBeds"]
+        by_old = {r[0]: r for r in old["records"]}
+        for row in beds["rows"]:
+            assert row["value"] == by_old[row["code"]][4] + 10
+        assert beds["meta"]["year"] == str(new) and beds["aggregate"]["value"] == sum(r["value"] for r in beds["rows"])
+        assert beds["meta"]["benchmark"]["italy"] == old["officialNational"]["beds"] + 10 * len(old["records"])
+        assert "non sono confrontabili" in snap["scope"]["note"] and "municipalBedsHistory" not in snap
+        rate = site["metrics"]["tourismBedsPer1000"]
+        assert rate["meta"]["sourceMeta"]["snapshot"].endswith(f"-{new}.json") and str(new) in rate["method"]["formula"]
+        try:
+            upd.update_istat_tourism(pub - 1, archive, dry_run=True)
+            raise AssertionError("anno precedente al pubblicato accettato")
+        except upd.UpdateError:
+            pass
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def mef_probe_cases() -> None:
     """Sonda MEF: solo atti comunali DIMUNIC, link con la riga della tabella, testo PDF separato."""
     import probe_mef_fiscal as probe
@@ -241,7 +311,9 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         agcom_cases(Path(tmp))
     mef_probe_cases()
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC PASS")
+    with tempfile.TemporaryDirectory() as tmp:
+        tourism_cases(Path(tmp))
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato PASS")
 
 
 if __name__ == "__main__":

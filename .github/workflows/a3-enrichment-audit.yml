@@ -680,6 +680,8 @@ jobs:
               ('publicWorks', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
           }
           available_missing_expected = {
+              # Capacità 2025: perimetro Istat ampliato, nessuna serie confrontabile.
+              ('tourismBeds', 'serie_storica'),
               ('evPoints', 'numeratore_denominatore'),
               ('pharmaciesPer1000', 'assoluto_normalizzato'),
               ('pharmaciesPer1000', 'numeratore_denominatore'),
@@ -885,7 +887,6 @@ jobs:
               ('foreignResidents', 'categorie_specifiche'),
           }
           a3_acquired_expected = {
-              ('tourismBeds', 'serie_storica'): 'structured:rows.0.series',
               ('tourismBeds', 'benchmark_toscana_italia'): 'structured:meta.benchmark',
               ('tourismBeds', 'dettaglio_territoriale'): 'structured:meta.benchmark.italy',
               ('incomeVsInflation', 'benchmark_toscana_italia'): 'structured:meta.benchmark',

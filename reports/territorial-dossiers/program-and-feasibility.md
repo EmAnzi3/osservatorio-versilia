@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `d02d0b5f420106a04ff89de6734aa02f9b49a69a3bc9629df55ba472c62187d9`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `571225c888615f1c11e47a065a3616a6d838afe5458d58c22a67e7d51908563b`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -544,9 +544,9 @@ Come cambia l’uso del territorio turistico e quali carichi dei servizi restano
 | tourism_tourismAverageStay_pooled | weighted_ratio / tourismAverageStay / total | 2025 / nights | 046005: 3.416579935743699; 046013: 3.2360326428123036; 046018: 3.8142109500805152; 046024: 3.3863869463869465; 046028: 2.9519852262234534; 046030: 2.086782376502003; 046033: 3.8306275366843585 | PASS |
 | tourism_tourismAverageStay_tuscany | benchmark_gap / tourismAverageStay / total | 2025 / nights | 046005: 3.416579935743699; tuscany: 3.022751195486534 | PASS |
 | tourism_tourismAverageStay_trend_refused | trend / tourismAverageStay / total |  /  | tourism_temporal_continuity_not_reviewed | PASS |
-| tourism_tourismBedsPer1000_current | compare / tourismBedsPer1000 / total | 2024 / per1000 | 046005: 222.01933066775808; 046018: 39.84941694977504 | PASS |
-| tourism_tourismBedsPer1000_pooled | weighted_ratio / tourismBedsPer1000 / total | 2024 / per1000 | 046005: 222.01933066775808; 046013: 653.2824427480915; 046018: 39.84941694977504; 046024: 281.37401887291645; 046028: 47.54151742103549; 046030: 91.98706431908013; 046033: 251.8622280817403 | PASS |
-| tourism_tourismBedsPer1000_tuscany | benchmark_gap / tourismBedsPer1000 / total | 2024 / per1000 | 046005: 222.01933066775808; tuscany: 168.65415653928622 | PASS |
+| tourism_tourismBedsPer1000_current | compare / tourismBedsPer1000 / total | 2025 / per1000 | 046005: 467.0528602461984; 046018: 125.51648149848499 | PASS |
+| tourism_tourismBedsPer1000_pooled | weighted_ratio / tourismBedsPer1000 / total | 2025 / per1000 | 046005: 467.0528602461984; 046013: 1958.1679389312978; 046018: 125.51648149848499; 046024: 566.2756856865685; 046028: 125.28492347769458; 046030: 270.9306503772907; 046033: 387.29400131839157 | PASS |
+| tourism_tourismBedsPer1000_tuscany | benchmark_gap / tourismBedsPer1000 / total | 2025 / per1000 | 046005: 467.0528602461984; tuscany: 256.08339696252375 | PASS |
 | tourism_tourismBedsPer1000_trend_refused | trend / tourismBedsPer1000 / total |  /  | tourism_temporal_continuity_not_reviewed | PASS |
 | tour_weighted | weighted_ratio / tourismIntensity / total | 2025 / decimal | 046005: 16.639517677801216; 046013: 53.5175572519084; 046018: 1.7398769626296942; 046024: 19.218096833935974; 046028: 0.7807717355910126; 046030: 1.6848724398131514; 046033: 14.154004614370468 | PASS |
 | environment_waste_current | compare / wastePerResident / total | 2024 / kg | 046018: 603; 046033: 707 | PASS |

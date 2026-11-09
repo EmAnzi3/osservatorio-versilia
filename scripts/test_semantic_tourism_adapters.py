@@ -5,17 +5,17 @@ from test_semantic_query_engine import rejected
 import semantic_query_tourism_adapters as t
 
 # Independent fixed transcription: arrivals, nights, foreign nights (2025),
-# hotel beds, other beds, structures (2024), estimated residents (1 January 2026).
+# hotel beds, other beds, structures (2025, widened Istat scope), estimated residents (1 January 2026).
 FIXED = {
- '046005': (154693,528521,244191,4666,2386,267,31763),
- '046013': (108324,350540,216264,3453,826,137,6550),
- '046018': (9936,37898,18130,141,727,52,21782),
- '046024': (128700,435828,190648,5446,935,208,22678),
- '046028': (3249,9591,1683,482,102,16,12284),
- '046030': (2247,4689,1336,78,178,19,2783),
- '046033': (224210,858865,346270,4096,11187,205,60680),
+ '046005': (154693,528521,244191,4670,10165,1762,31763),
+ '046013': (108324,350540,216264,3745,9081,1424,6550),
+ '046018': (9936,37898,18130,166,2568,364,21782),
+ '046024': (128700,435828,190648,5743,7099,1363,22678),
+ '046028': (3249,9591,1683,482,1057,207,12284),
+ '046030': (2247,4689,1336,78,676,112,2783),
+ '046033': (224210,858865,346270,4035,19466,1572,60680),
 }
-BENCH = {t.ARRIVALS:(15141534,None),t.PRESENCES:(45769090,None),t.STAY:(45769090/15141534,None),t.FOREIGN:(57.948436379224496,None),t.BEDS:(617143,5498773),t.BED_RATE:(617143/3659222*1000,5498773/58942828*1000),t.STRUCTURE_RATE:(22379/3659222*1000,265319/58942828*1000)}
+BENCH = {t.ARRIVALS:(15141534,None),t.PRESENCES:(45769090,None),t.STAY:(45769090/15141534,None),t.FOREIGN:(57.948436379224496,None),t.BEDS:(937066,7687036),t.BED_RATE:(937066/3659222*1000,7687036/58942828*1000),t.STRUCTURE_RATE:(86133/3659222*1000,738751/58942828*1000)}
 
 
 def query(key, dim='total', op='compare', **selection):
@@ -33,8 +33,8 @@ def regressions(path):
         q=e.query(query(key)); assert q['status']=='computed',q
         for o in q['observations']:
             assert math.isclose(o['value'],values(FIXED[o['geography']])[key],rel_tol=0,abs_tol=1e-9)
-            assert o['source'] and o['provenance'] and o['period']==('2025' if key in t.MOVEMENT else '2024');checked+=1
-            if key in (t.BED_RATE,t.STRUCTURE_RATE): assert o['denominatorPeriod']=='2026-01-01' and o['numeratorPeriod']=='2024'
+            assert o['source'] and o['provenance'] and o['period']==('2025' if key in t.MOVEMENT else str(t.CAP_YEAR));checked+=1
+            if key in (t.BED_RATE,t.STRUCTURE_RATE): assert o['denominatorPeriod']=='2026-01-01' and o['numeratorPeriod']==str(t.CAP_YEAR)
         for scope,value in zip(('tuscany','italy'),BENCH[key]):
             if value is None: continue
             gap=e.query(dict(query(key,op='benchmark_gap',towns=['046005']),benchmark=scope)); assert gap['status']=='computed',gap
@@ -50,7 +50,8 @@ def regressions(path):
     assert not math.isclose(totals[2]/totals[1]*100,e._catalog['metrics'][t.FOREIGN]['aggregate']['value'],rel_tol=0,abs_tol=1e-9)
     # This is replay of frozen extraction, not another independent acquisition or fixed transcription.
     move,_=e.file(t.MOVE);cap,_=e.file(t.CAP)
-    for key in (*t.MOVEMENT,t.BEDS):
+    assert t.CAP_YEAR==2025 and not t.CAP_HISTORY
+    for key in t.MOVEMENT:
         for code in FIXED:
             q=e.query(query(key,op='series',towns=[code]));assert q['status']=='computed',q
             for o in q['observations']:
@@ -65,7 +66,9 @@ def regressions(path):
         if key != t.PRESENCES: rejected(e,query(key,op='anomaly'),'tourism_peer_anomaly_not_reviewed')
         for pair in (() if key == t.PRESENCES else ([{'metric':key},{'metric':'population'}],[{'metric':'population'},{'metric':key}])): rejected(e,dict(operation='correlation',selectors=pair,axis='municipalities',method='pearson',purpose='descriptive'),'tourism_pair_not_jointly_reviewed')
         rejected(e,query(key,periods=['2027']),'tourism_period_not_frozen')
-    for key in (t.BED_RATE,t.STRUCTURE_RATE): rejected(e,query(key,op='series',towns=['046005']),'tourism_historical_resident_ratio_not_frozen')
+    # The 2025 scope change breaks continuity: no capacity series, and 2024 is no longer a selectable period.
+    for key in t.CAPACITY: rejected(e,query(key,op='series',towns=['046005']),'tourism_historical_resident_ratio_not_frozen')
+    for key in t.CAPACITY: rejected(e,query(key,periods=['2024']),'tourism_period_not_frozen')
     rejected(e,query(t.FOREIGN,op='weighted_ratio'),'tourism_native_ratio_dimension_required')
     rejected(e,dict(query(t.FOREIGN,'nativeRatio','benchmark_gap',towns=['046005']),benchmark='tuscany'),'tourism_benchmark_dimension_not_reviewed')
     rejected(e,dict(query(t.ARRIVALS,op='benchmark_gap',towns=['046005']),benchmark='italy'),'tourism_benchmark_scope_or_period_not_reviewed')
@@ -77,7 +80,7 @@ def regressions(path):
      (t.FOREIGN,lambda g,m:m['rows'][0].update(value=18130/37898*100)),
      (t.FOREIGN,lambda g,m:m['aggregate'].update(value=totals[2]/totals[1]*100)),
      (t.ARRIVALS,lambda g,m:m['rows'].append(dict(m['rows'][0]))),
-     (t.BEDS,lambda g,m:m['meta'].update(year='2025')),
+     (t.BEDS,lambda g,m:m['meta'].update(year='2024')),
      (t.BED_RATE,lambda g,m:g._catalog['metrics']['population']['meta'].update(year='2024')),
      (t.BED_RATE,lambda g,m:g._catalog['metrics']['population']['rows'][0].update(value=21865)),
      (t.STRUCTURE_RATE,lambda g,m:m['meta']['sourceMeta'].update(populationSnapshot='different.json')),
@@ -92,7 +95,7 @@ def regressions(path):
     g=QueryEngine(path,layer='effective');series=g._catalog['metrics'][t.ARRIVALS]['rows'][0].get('series')
     if series:
         series['years'][0]=2022;assert g.query(query(t.ARRIVALS))['status']=='not_computable'
-    g=QueryEngine(path,layer='effective');m=g._catalog['metrics'][t.BEDS];m['meta']['benchmark']['year']='2025';rejected(g,dict(query(t.BEDS,op='benchmark_gap',towns=['046005']),benchmark='italy'),'tourism_benchmark_definition_changed')
+    g=QueryEngine(path,layer='effective');m=g._catalog['metrics'][t.BEDS];m['meta']['benchmark']['year']='2024';rejected(g,dict(query(t.BEDS,op='benchmark_gap',towns=['046005']),benchmark='italy'),'tourism_benchmark_definition_changed')
     print(f'Tourism adapters PASS: {checked} fixed current observations, four native pooled ratios, ten official benchmarks; {replay} frozen historical cells replayed separately; precision/date/identity/cache and methodology guards')
 
 
