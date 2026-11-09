@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Acquire the native Istat 2024 capacity panel, excluding aggregate rows."""
+"""Acquire the native Istat capacity panel for one reference year, excluding aggregate rows.
+
+The 2024 panel keeps its pinned scope (7.899 Comuni, Italy 5.498.773 beds). From 2025 Istat
+widens the scope to private non-business accommodation: values are not comparable with 2024.
+"""
 from __future__ import annotations
 import argparse, hashlib, io, json, math, re, urllib.request, zipfile
 from pathlib import Path
@@ -12,6 +16,20 @@ URL='https://esploradati.istat.it/databrowser/DWL/Servizi/DCSC%20Capacity%20of%2
 STRUCTURE='https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/DF_BULK_DCSC_CAPACOFTUR/1.0?references=all'
 LANDING='https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/'
 REGIONS={f'{i:02}0' for i in range(1,21)}-{'040'}|{'041','042'}
+SNAPSHOT_PREFIX='a3-istat-tourism-capacity-benchmark-'
+PINNED_2024=(7899,5498773)
+
+def latest_snapshot():
+    """Relative path of the newest capacity snapshot (`...-AAAA.json`)."""
+    years=sorted(int(m.group(1)) for f in (ROOT/'data/source-snapshots').glob(SNAPSHOT_PREFIX+'*.json') if (m:=re.fullmatch(re.escape(SNAPSHOT_PREFIX)+r'(\d{4})\.json',f.name)))
+    return f'data/source-snapshots/{SNAPSHOT_PREFIX}{years[-1]}.json'
+
+def scope_note(year,count):
+    count_it=f'{count:,}'.replace(',','.')
+    base=f'Posti letto alberghieri ed extralberghieri {year} nel perimetro nativo Istat: {count_it} record comunali, 273 in Toscana.'
+    base+=' Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF.'
+    if year==2024: return base+' Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025.'
+    return base+' Dal 2025 la rilevazione include anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024 e gli anni precedenti, quindi non si pubblicano serie né variazioni.'
 
 def numeric(value):
     if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value<0 or value!=int(value): raise RuntimeError('Capacity missing/noninteger observation')
@@ -87,7 +105,7 @@ def parse_capacity_history(body, codes):
             'valuesByCode': {code: [values[code][year] for year in years] for code in sorted(codes)},
             'archiveSha256': hashlib.sha256(body).hexdigest()}
 
-def parse_archive(body):
+def parse_archive(body,year=2024):
     from openpyxl import load_workbook
     with zipfile.ZipFile(io.BytesIO(body)) as z:
         names=[n for n in z.namelist() if n.endswith('.xlsx')]
@@ -95,18 +113,19 @@ def parse_archive(body):
         xlsx=z.read(names[0])
     workbook=load_workbook(io.BytesIO(xlsx),read_only=True,data_only=True)
     if workbook.sheetnames!=['Capacità ricettiva']: raise RuntimeError('Capacity worksheet mismatch')
+    reference=year
     rows=workbook.active.iter_rows(max_col=56,values_only=True)
     headers=[next(rows) for _ in range(6)]
     if 'TOTALE' not in str(headers[2][54]) or 'totale alberghi' not in str(headers[4][32]) or 'totale extra-alberghieri' not in str(headers[4][52]): raise RuntimeError('Capacity total/component column mismatch')
     if headers[5][0]!='Anno/Year' or headers[5][7]!='Cod. Istat' or any('Beds' not in str(headers[5][i]) for i in (33,53,55)): raise RuntimeError('Capacity year/code/unit mismatch')
-    records=[]; provinces=[]; national=[]; previous=2026
+    records=[]; provinces=[]; national=[]; previous=reference+2
     for row in rows:
         year=row[0]
         if not isinstance(year,int): continue
         if year>previous: raise RuntimeError('Capacity year order changed')
         previous=year
-        if year<2024: break
-        if year!=2024: continue
+        if year<reference: break
+        if year!=reference: continue
         hotel,other,total=[numeric(row[i]) for i in (33,53,55)]
         structures=numeric(row[54])
         if hotel+other!=total: raise RuntimeError('Capacity hotel/other total mismatch')
@@ -122,8 +141,8 @@ def parse_archive(body):
     if len(national)!=1 or len(provinces)!=107: raise RuntimeError('Capacity aggregate scope mismatch')
     return sorted(records),sorted(provinces),national[0],{'archiveMember':names[0],'archiveSha256':hashlib.sha256(body).hexdigest(),'workbookSha256':hashlib.sha256(xlsx).hexdigest(),'dataflowStructureUrl':STRUCTURE}
 
-def verify_panel(records,provinces,national):
-    if len(records)!=7899 or len(provinces)!=107: raise RuntimeError('Capacity incomplete native panel')
+def verify_panel(records,provinces,national,year=2024):
+    if (len(records)!=PINNED_2024[0] if year==2024 else len(records)<7800) or len(provinces)!=107: raise RuntimeError('Capacity incomplete native panel')
     seen=set();regions=set();by_province={}
     for code,region,hotel,other,total,structures in records:
         if not isinstance(code,str) or not re.fullmatch(r'\d{6}',code) or code in seen or code.endswith('000') or region not in REGIONS: raise RuntimeError('Capacity invalid/duplicate municipality')
@@ -141,20 +160,23 @@ def verify_panel(records,provinces,national):
     if seen_prov!=set(by_province):raise RuntimeError('Capacity province coverage mismatch')
     expected={'hotelBeds':sum(r[2] for r in records),'otherBeds':sum(r[3] for r in records),'beds':sum(r[4] for r in records),'structures':sum(r[5] for r in records)}
     for value in national.values(): numeric(value)
-    if national!=expected or national['beds']!=5498773:raise RuntimeError('Capacity official national total mismatch')
+    if national!=expected or (year==2024 and national['beds']!=PINNED_2024[1]):raise RuntimeError('Capacity official national total mismatch')
 
 def validate_snapshot(metric,snapshot,population=None):
     mid=metric['meta']['key'];unit='number' if mid==METRIC else 'per1000'
     if mid not in METRICS:raise RuntimeError('Capacity metric mismatch')
     if snapshot.get('qualityGate')!={'status':'PASS','errors':[],'publicReconciliation':'3 metrics × 7/7 PASS'}:raise RuntimeError('Capacity gate not PASS')
-    if metric['meta'].get('year')!='2024' or metric['meta'].get('unit')!=unit:raise RuntimeError('Capacity public year/unit mismatch')
-    if snapshot.get('referenceYear')!=2024 or snapshot.get('sourceUrl')!=LANDING or snapshot['source']['archiveUrl']!=URL:raise RuntimeError('Capacity source/reference mismatch')
-    records=snapshot['records'];verify_panel(records,snapshot['provinceTotals'],snapshot['officialNational'])
+    year=snapshot.get('referenceYear')
+    if not isinstance(year,int) or isinstance(year,bool) or year<2024:raise RuntimeError('Capacity source/reference mismatch')
+    if metric['meta'].get('year')!=str(year) or metric['meta'].get('unit')!=unit:raise RuntimeError('Capacity public year/unit mismatch')
+    if snapshot.get('sourceUrl')!=LANDING or snapshot['source']['archiveUrl']!=URL:raise RuntimeError('Capacity source/reference mismatch')
+    if year>2024 and 'municipalBedsHistory' in snapshot:raise RuntimeError('Capacity history across scope change')
+    records=snapshot['records'];verify_panel(records,snapshot['provinceTotals'],snapshot['officialNational'],year)
     demo_bytes=DEMO.read_bytes();demo=json.loads(demo_bytes)['benchmarks']['population']
     if snapshot['population']['sha256']!=hashlib.sha256(demo_bytes).hexdigest() or snapshot['population']['year']!='2026' or demo['year']!='2026':raise RuntimeError('Capacity population provenance mismatch')
     for target in METRICS:
         benchmark=snapshot['benchmarks'][target];target_unit='number' if target==METRIC else 'per1000'
-        if benchmark.get('year')!='2024' or benchmark.get('unit')!=target_unit:raise RuntimeError('Capacity benchmark year/unit mismatch')
+        if benchmark.get('year')!=str(year) or benchmark.get('unit')!=target_unit:raise RuntimeError('Capacity benchmark year/unit mismatch')
         column=5 if target=='tourismStructuresPer1000' else 4
         for scope in ('tuscany','italy'):
             total=sum(r[column] for r in records if scope=='italy' or r[1]=='090')
@@ -174,25 +196,35 @@ def validate_snapshot(metric,snapshot,population=None):
             expected=record[5 if mid=='tourismStructuresPer1000' else 4]/pop_rows[0]['value']*1000
         if isinstance(row['value'],bool) or not math.isclose(row['value'],expected,rel_tol=0,abs_tol=1e-9):raise RuntimeError('Capacity public value mismatch')
 
-def main():
-    p=argparse.ArgumentParser();p.add_argument('--input-zip',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--include-history',action='store_true');args=p.parse_args()
-    body=args.input_zip.read_bytes() if args.input_zip else fetch();records,provinces,national,source=parse_archive(body)
-    site=json.loads((ROOT/'data/site-data.json').read_text());metric=site['metrics'][METRIC];source['archiveUrl']=URL
-    by_code={r[0]:r for r in records};proof={r['code']:{'hotelBeds':by_code[r['code']][2],'otherBeds':by_code[r['code']][3],'beds':by_code[r['code']][4],'structures':by_code[r['code']][5]} for r in metric['rows']}
+def build_snapshot(body,site,year=2024):
+    """Native panel, 7/7 proof and Tuscany/Italy benchmarks for `year`; validation is up to the caller."""
+    records,provinces,national,source=parse_archive(body,year)
+    verify_panel(records,provinces,national,year)
+    metric=site['metrics'][METRIC];source['archiveUrl']=URL
+    by_code={r[0]:r for r in records}
+    if any(r['code'] not in by_code for r in metric['rows']):raise RuntimeError('Capacity public scope not 7/7')
+    proof={r['code']:{'hotelBeds':by_code[r['code']][2],'otherBeds':by_code[r['code']][3],'beds':by_code[r['code']][4],'structures':by_code[r['code']][5]} for r in metric['rows']}
     demo_bytes=DEMO.read_bytes();demo=json.loads(demo_bytes)['benchmarks']['population'];benchmarks={}
     for target in METRICS:
         column=5 if target=='tourismStructuresPer1000' else 4
         values={scope:sum(r[column] for r in records if scope=='italy' or r[1]=='090') for scope in ('tuscany','italy')}
-        benchmarks[target]={'year':'2024','unit':'number' if target==METRIC else 'per1000',**{scope:total if target==METRIC else total/demo[scope]*1000 for scope,total in values.items()}}
-    snapshot={'schemaVersion':1,'profileId':'istat-tourism-annual','referenceYear':2024,'publisher':'Istat — Capacità degli esercizi ricettivi','sourceUrl':LANDING,'source':source,'records':records,'provinceTotals':provinces,'officialNational':national,'municipalReconciliation':proof,'benchmarks':benchmarks,'population':{'sourceSnapshot':str(DEMO.relative_to(ROOT)),'sha256':hashlib.sha256(demo_bytes).hexdigest(),'year':'2026'},
-        'scope':{'note':'Posti letto alberghieri ed extralberghieri 2024 nel perimetro nativo Istat: 7.899 record comunali, 273 in Toscana. Totali provinciali e nazionale esclusi dalla somma comunale e usati soltanto per riconciliazione (107/107 province e totale Italia). Il perimetro conserva le ripartizioni comunali pubblicate nella rilevazione, senza conversione alla geografia delle dichiarazioni MEF. Dal 2025 la rilevazione amplia il perimetro agli alloggi privati non imprenditoriali: non vengono sostituiti i dati 2024 con quelli 2025.'},
+        benchmarks[target]={'year':str(year),'unit':'number' if target==METRIC else 'per1000',**{scope:total if target==METRIC else total/demo[scope]*1000 for scope,total in values.items()}}
+    snapshot={'schemaVersion':1,'profileId':'istat-tourism-annual','referenceYear':year,'publisher':'Istat — Capacità degli esercizi ricettivi','sourceUrl':LANDING,'source':source,'records':records,'provinceTotals':provinces,'officialNational':national,'municipalReconciliation':proof,'benchmarks':benchmarks,'population':{'sourceSnapshot':str(DEMO.relative_to(ROOT)),'sha256':hashlib.sha256(demo_bytes).hexdigest(),'year':'2026'},
+        'scope':{'note':scope_note(year,len(records))},
         'qualityGate':{'status':'PASS','errors':[],'publicReconciliation':'3 metrics × 7/7 PASS'}}
     snapshot['scope']['note']+=' Per i rapporti ogni 1.000 residenti si conserva e si dichiara la popolazione pubblica al 1° gennaio 2026, applicando lo stesso denominatore temporale anche a Toscana/Italia.'
+    return snapshot
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--input-zip',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--include-history',action='store_true');args=p.parse_args()
+    body=args.input_zip.read_bytes() if args.input_zip else fetch()
+    site=json.loads((ROOT/'data/site-data.json').read_text());metric=site['metrics'][METRIC]
+    snapshot=build_snapshot(body,site,2024);proof=snapshot['municipalReconciliation'];benchmarks=snapshot['benchmarks']
     for target in METRICS:validate_snapshot(site['metrics'][target],snapshot,site['metrics']['population'])
     if args.include_history:
         snapshot['municipalBedsHistory'] = parse_capacity_history(body, set(proof))
         apply_capacity_history(metric, snapshot)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(snapshot,ensure_ascii=False,separators=(',',':'))+'\n')
-    print(f'Capacity candidates PASS: {benchmarks}; 7899 records; 107 provinces and 3 metrics × 7/7 public. Not ACQUIRED before publication gate.')
+    print(f'Capacity candidates PASS: {benchmarks}; {len(snapshot["records"])} records; 107 provinces and 3 metrics × 7/7 public. Not ACQUIRED before publication gate.')
 
 if __name__=='__main__':main()

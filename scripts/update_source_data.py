@@ -17,6 +17,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
 
     # copertura FTTH (AGCOM Broadband Map) — ultima edizione indicata da report.js
     python scripts/update_source_data.py agcom-ftth [--dir cartella-con-report.js-e-comuni.csv]
+    python scripts/update_source_data.py istat-tourism --year 2025 [--file archivio.zip]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
@@ -720,6 +721,73 @@ def probes_one(items: list[dict[str, Any]], year: int) -> dict[str, Any] | None:
     return hits[0] if len(hits) == 1 else None
 
 
+TOURISM_RATES = {"tourismBedsPer1000": (4, "Posti letto"), "tourismStructuresPer1000": (5, "Strutture ricettive")}
+
+
+def update_istat_tourism(year: int, file: Path | None, dry_run: bool) -> Changes:
+    """Capacità ricettiva Istat (posti letto, strutture) per un anno di riferimento, 7/7 dal pannello nativo."""
+    import acquire_a3_benchmark_istat_tourism_annual as capacity
+
+    site = load(SITE)
+    published = int(site["metrics"][capacity.METRIC]["meta"]["year"])
+    if year < published:
+        raise UpdateError(f"Capacità ricettiva: anno {year} precedente al pubblicato {published}")
+    body = fetch(capacity.URL, file)
+    try:
+        snapshot = capacity.build_snapshot(body, site, year)
+    except RuntimeError as error:
+        raise UpdateError(f"Capacità ricettiva {year}: {error}") from error
+    path = f"data/source-snapshots/{capacity.SNAPSHOT_PREFIX}{year}.json"
+    by_code = {r[0]: r for r in snapshot["records"]}
+    population = {r["code"]: r["value"] for r in site["metrics"]["population"]["rows"]}
+    if site["metrics"]["population"]["meta"]["year"] != "2026":
+        raise UpdateError("Capacità ricettiva: popolazione pubblica non al 1° gennaio 2026")
+    changes = Changes()
+    scope = (f" Dal {year} il perimetro Istat include anche gli alloggi privati non imprenditoriali: valori non confrontabili con il 2024 e gli anni precedenti."
+             if year > 2024 else "")
+
+    def bench(key: str) -> dict[str, Any]:
+        b = snapshot["benchmarks"][key]
+        return {"year": str(year), "tuscany": b["tuscany"], "italy": b["italy"], "source": snapshot["publisher"],
+                "url": snapshot["sourceUrl"], "sourceSnapshot": path, "note": snapshot["scope"]["note"]}
+
+    beds = site["metrics"][capacity.METRIC]
+    for row in beds["rows"]:
+        value = by_code[row["code"]][4]
+        changes.note(f"{capacity.METRIC} {row['town']}", row["value"], value)
+        if row.get("series") not in (None, {}):
+            raise UpdateError(f"Capacità ricettiva {row['town']}: serie pubblicata da rivedere prima del cambio di perimetro")
+        row.update(value=value, formatted=it_number(value, 0), benchmarkValue=value)
+        row["normalized"]["value"] = value / population[row["code"]] * 1000
+    beds["aggregate"]["value"] = sum(r["value"] for r in beds["rows"])
+    beds["meta"].update(year=str(year), benchmark=bench(capacity.METRIC))
+    if scope:
+        beds["method"]["caveat"] = "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte." + scope
+    for key, (column, label) in TOURISM_RATES.items():
+        metric = site["metrics"][key]
+        for row in metric["rows"]:
+            value = by_code[row["code"]][column] / population[row["code"]] * 1000
+            changes.note(f"{key} {row['town']}", round(row["value"], 4), round(value, 4))
+            row.update(value=value, benchmarkValue=value)
+        total = sum(by_code[c][column] for c in population)
+        metric["aggregate"]["value"] = total / sum(population.values()) * 1000
+        noun = label.lower()
+        metric["meta"].update(year=str(year), description=f"{label} Istat {year} ogni 1.000 residenti al 1° gennaio 2026.", benchmark=bench(key))
+        metric["meta"]["sourceMeta"].update(snapshot=path, note=f"Conteggi Istat {year} riconciliati 7/7 sul pannello comunale nativo; popolazione al 1° gennaio 2026.")
+        metric["method"].update(formula=f"{noun} Istat {year} / popolazione residente al 1° gennaio 2026 × 1.000",
+                                caveat=f"Capacità ricettiva {year} rapportata alla popolazione al 1° gennaio 2026, come nei valori comunali pubblicati.{scope or ' Il perimetro Istat 2024 non include gli alloggi privati non imprenditoriali aggiunti nel 2025.'} Indicatore di struttura, non di performance.")
+    try:
+        for key in capacity.METRICS:
+            capacity.validate_snapshot(site["metrics"][key], snapshot, site["metrics"]["population"])
+    except RuntimeError as error:
+        raise UpdateError(f"Capacità ricettiva {year}: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py istat-tourism --year {year}", "archiveUrl": capacity.URL}
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot, compact=True)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -732,9 +800,12 @@ def main() -> int:
     u = sub.add_parser("istat-asia")
     u.add_argument("--year", type=int, required=True)
     u.add_argument("--dir", type=Path, help="cartella con lu.csv, emp.csv e micro.csv già scaricati")
+    t = sub.add_parser("istat-tourism")
+    t.add_argument("--year", type=int, required=True)
+    t.add_argument("--file", type=Path, help="archivio zip Istat già scaricato")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f):
+    for p in (a, m, u, f, t):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
@@ -744,6 +815,8 @@ def main() -> int:
             import probe_mef_fiscal
 
             probe_mef_fiscal.run(args.year)
+        elif args.updater == "istat-tourism":
+            update_istat_tourism(args.year, args.file, args.dry_run).report(f"Capacità ricettiva {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "agcom-ftth":
             update_agcom_ftth(args.dir, args.dry_run).report(f"AGCOM FTTH{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "ars-legacy":

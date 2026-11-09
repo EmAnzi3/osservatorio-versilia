@@ -46,7 +46,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install requests pypdf
+        run: python -m pip install requests pypdf openpyxl
       - name: Offline updater tests
         run: |
           cd scripts
@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install requests pypdf
+        run: python -m pip install requests pypdf openpyxl
       - name: Offline updater tests
         run: cd scripts && python test_update_source_data.py
       - name: Run requested updaters
@@ -129,6 +129,7 @@ jobs:
           commands += [["istat-mobility", "--year", str(int(y))] for y in request.get("istatMobility", [])]
           commands += [["istat-asia", "--year", str(int(y))] for y in request.get("istatAsia", [])]
           commands += [["agcom-ftth"]] if request.get("agcomFtth") else []
+          commands += [["istat-tourism", "--year", str(int(y))] for y in request.get("istatTourism", [])]
           commands += [["mef-fiscal-probe", "--year", str(int(y))] for y in request.get("mefFiscalProbe", [])]
           failed = 0
           for args in commands:
