@@ -736,9 +736,15 @@ def main() -> int:
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
     for p in (a, m, u, f):
         p.add_argument("--dry-run", action="store_true")
+    s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
+    s.add_argument("--year", type=int, required=True)
     args = parser.parse_args()
     try:
-        if args.updater == "agcom-ftth":
+        if args.updater == "mef-fiscal-probe":
+            import probe_mef_fiscal
+
+            probe_mef_fiscal.run(args.year)
+        elif args.updater == "agcom-ftth":
             update_agcom_ftth(args.dir, args.dry_run).report(f"AGCOM FTTH{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "ars-legacy":
             update_ars_legacy(args.metric, args.file, args.dry_run).report(f"ARS {args.metric}{' (prova a secco)' if args.dry_run else ''}:")
