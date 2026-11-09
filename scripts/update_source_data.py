@@ -858,8 +858,8 @@ def update_ispra_soil(year: int, file: Path | None, dry_run: bool) -> Changes:
     site = load(SITE)
     snapshot = load(soil.SNAPSHOT)
     published = snapshot["landUse"]["years"][-1]
-    if year <= published:
-        raise UpdateError(f"Consumo di suolo: anno {year} non successivo al pubblicato {published}")
+    if year < published:
+        raise UpdateError(f"Consumo di suolo: anno {year} precedente al pubblicato {published}")
     url = None if file else soil.edition_url(year)
     body = file.read_bytes() if file else soil.fetch(url)
     try:

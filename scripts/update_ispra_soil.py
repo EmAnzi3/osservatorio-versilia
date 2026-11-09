@@ -14,6 +14,8 @@ completo «Com_Prov_Reg_Naz» dell'edizione AAAA+1 dalla libreria ISPRA e:
 - aggiorna nel catalogo valori correnti, serie e benchmark dei due indicatori.
 
 Il m² per residente usa la popolazione canonica del catalogo dello stesso anno.
+Quando ISPRA rivede i confini, la superficie comunale di un anno può differire
+da quella dell'ultimo anno: la riga di quell'anno porta allora `municipalAreaHa`.
 """
 from __future__ import annotations
 
@@ -127,6 +129,9 @@ def build(wb, year: int, pops: dict[str, dict[int, float]]) -> tuple[dict, dict,
             rows[str(y)] = {"consumedHa": round(consumed, 6), "consumedPct": round(pct, 6),
                             "sqmPerResident": round(consumed * 10_000 / pop, 6) if pop else None,
                             "population": int(round(pop)) if pop else None}
+            year_area = round(consumed + finite(r["csuolo2"], f"{town} {y}"), 6)
+            if not math.isclose(year_area, round(area, 6), rel_tol=0, abs_tol=1e-9):
+                rows[str(y)]["municipalAreaHa"] = year_area  # superficie ISPRA di quell'anno, se diversa dall'ultima
             if y in cyears:
                 crow[str(y)] = {"grossHa": round(float(r["csuolo10"] or 0), 6), "netHa": round(float(r["csuolo8"] or 0), 6)}
         land[town] = {"municipalAreaHa": round(area, 6), "rows": rows}

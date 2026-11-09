@@ -66,27 +66,30 @@ def parse_panel(ws):
         raise RuntimeError('ACI: municipal sheet headers mismatch')
     records, provinces, regions, national = [], {}, {}, None
     region = province = None
+    total = lambda v: isinstance(v, str) and v.strip().casefold() in ('totale', 'totale italia', 'italia', 'totale generale')
+    labels = []
     for n, raw in enumerate(rows[3:], start=4):
         r = list(raw[:19]) + [None] * (19 - len(raw[:19]))
         if all(v is None for v in r):
             continue
+        labels.append(r[:3])
         counts = r[3:19]
-        if r[0] == 'TOTALE':
+        if total(r[0]):
             national = counts
             continue
         if r[0] is not None:
             region = r[0]
-        if r[1] == 'Totale':
+        if total(r[1]):
             regions[region] = counts
             continue
         if r[1] is not None:
             province = r[1]
-        if r[2] == 'Totale':
+        if total(r[2]):
             provinces[f'{region}|{province}'] = counts
             continue
         records.append([n, region, province, r[2], *counts])
     if national is None:
-        raise RuntimeError('ACI: national total missing')
+        raise RuntimeError(f'ACI: national total missing; last rows {labels[-3:]}')
     return records, provinces, regions, national
 
 

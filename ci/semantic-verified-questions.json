@@ -5821,7 +5821,7 @@
     },
     {
       "id": "soil_stock_current",
-      "question": "Quanto suolo risulta consumato a Massarosa nel 2024?",
+      "question": "Quanto suolo risulta consumato a Massarosa nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5837,18 +5837,18 @@
           {
             "path": "/observations/2/value",
             "fraction": [
-              4553450,
-              340541
+              4554450,
+              340537
             ],
             "tolerance": 1e-08
           },
           {
             "path": "/observations/2/publishedValue",
-            "value": 13.371
+            "value": 13.374
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_hectares",
@@ -5867,15 +5867,15 @@
         "checks": [
           {
             "path": "/observations/2/value",
-            "value": 910.69
+            "value": 910.89
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_resident",
-      "question": "Quanti metri quadrati per residente, usando il denominatore ISPRA 2024?",
+      "question": "Quanti metri quadrati per residente, usando il denominatore ISPRA 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5891,14 +5891,14 @@
           {
             "path": "/observations/2/value",
             "fraction": [
-              1821380,
-              4373
+              4554450,
+              10903
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_pooled",
@@ -5922,14 +5922,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              3518800,
-              254381
+              2113750,
+              152629
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_series_endpoint",
@@ -5955,7 +5955,7 @@
           },
           {
             "path": "/observations/0/value",
-            "value": 894.09
+            "value": 894.03
           },
           {
             "path": "/observations/1/period",
@@ -5963,11 +5963,11 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_gross",
-      "question": "Qual è il consumo lordo 2024 a Forte dei Marmi?",
+      "question": "Qual è il consumo lordo 2025 a Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5982,15 +5982,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.19
+            "value": 1.53
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_net",
-      "question": "Qual è il consumo netto 2024 a Forte dei Marmi?",
+      "question": "Qual è il consumo netto 2025 a Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -6005,11 +6005,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.14
+            "value": 1.53
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_negative",
@@ -6035,7 +6035,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_forest",
@@ -6062,7 +6062,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_hectares",
@@ -6085,7 +6085,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_pooled",
@@ -6116,7 +6116,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_trend_refused",
@@ -6139,7 +6139,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_trend_refused",
@@ -6162,7 +6162,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_change_refused",
@@ -6185,7 +6185,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_missing_population_refused",
@@ -6211,7 +6211,7 @@
           "soil_period_not_frozen"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_weight_refused",
@@ -6234,7 +6234,7 @@
           "verified_ratio_adapter_required"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_mixed_edition_refused",
@@ -6259,7 +6259,7 @@
           "paired_period_mismatch"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "territory_protected_union",

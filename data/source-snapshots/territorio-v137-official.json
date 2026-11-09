@@ -229,73 +229,85 @@
             "consumedHa": 414.3,
             "consumedPct": 45.186,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2012": {
             "consumedHa": 418.42,
             "consumedPct": 45.635,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2015": {
             "consumedHa": 419.69,
             "consumedPct": 45.774,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2016": {
             "consumedHa": 419.7,
             "consumedPct": 45.775,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2017": {
             "consumedHa": 422.78,
             "consumedPct": 46.111,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2018": {
             "consumedHa": 423.48,
             "consumedPct": 46.187,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 916.88
           },
           "2019": {
             "consumedHa": 424.87,
             "consumedPct": 46.339,
             "sqmPerResident": 593.725545,
-            "population": 7156
+            "population": 7156,
+            "municipalAreaHa": 916.88
           },
           "2020": {
             "consumedHa": 422.57,
             "consumedPct": 46.088,
             "sqmPerResident": 594.248348,
-            "population": 7111
+            "population": 7111,
+            "municipalAreaHa": 916.88
           },
           "2021": {
             "consumedHa": 422.93,
             "consumedPct": 46.127,
             "sqmPerResident": 586.019122,
-            "population": 7217
+            "population": 7217,
+            "municipalAreaHa": 916.88
           },
           "2022": {
             "consumedHa": 423.33,
             "consumedPct": 46.171,
             "sqmPerResident": 609.722022,
-            "population": 6943
+            "population": 6943,
+            "municipalAreaHa": 916.88
           },
           "2023": {
             "consumedHa": 423.14,
             "consumedPct": 46.15,
             "sqmPerResident": 615.118477,
-            "population": 6879
+            "population": 6879,
+            "municipalAreaHa": 916.88
           },
           "2024": {
             "consumedHa": 423.3,
             "consumedPct": 46.167,
             "sqmPerResident": 624.61266,
-            "population": 6777
+            "population": 6777,
+            "municipalAreaHa": 916.88
           },
           "2025": {
             "consumedHa": 425.39,
@@ -395,73 +407,85 @@
             "consumedHa": 1021.07,
             "consumedPct": 24.204,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2012": {
             "consumedHa": 1035.8,
             "consumedPct": 24.553,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2015": {
             "consumedHa": 1035.9,
             "consumedPct": 24.555,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2016": {
             "consumedHa": 1036.35,
             "consumedPct": 24.566,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2017": {
             "consumedHa": 1036.44,
             "consumedPct": 24.568,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2018": {
             "consumedHa": 1037.21,
             "consumedPct": 24.586,
             "sqmPerResident": null,
-            "population": null
+            "population": null,
+            "municipalAreaHa": 4218.62
           },
           "2019": {
             "consumedHa": 1038.09,
             "consumedPct": 24.607,
             "sqmPerResident": 449.915486,
-            "population": 23073
+            "population": 23073,
+            "municipalAreaHa": 4218.62
           },
           "2020": {
             "consumedHa": 1040.15,
             "consumedPct": 24.656,
             "sqmPerResident": 452.298126,
-            "population": 22997
+            "population": 22997,
+            "municipalAreaHa": 4218.62
           },
           "2021": {
             "consumedHa": 1040.58,
             "consumedPct": 24.666,
             "sqmPerResident": 450.058388,
-            "population": 23121
+            "population": 23121,
+            "municipalAreaHa": 4218.62
           },
           "2022": {
             "consumedHa": 1043.41,
             "consumedPct": 24.733,
             "sqmPerResident": 452.35845,
-            "population": 23066
+            "population": 23066,
+            "municipalAreaHa": 4218.62
           },
           "2023": {
             "consumedHa": 1043.72,
             "consumedPct": 24.741,
             "sqmPerResident": 455.11708,
-            "population": 22933
+            "population": 22933,
+            "municipalAreaHa": 4218.62
           },
           "2024": {
             "consumedHa": 1043.95,
             "consumedPct": 24.746,
             "sqmPerResident": 458.11392,
-            "population": 22788
+            "population": 22788,
+            "municipalAreaHa": 4218.62
           },
           "2025": {
             "consumedHa": 1047.53,

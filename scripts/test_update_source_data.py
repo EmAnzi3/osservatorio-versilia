@@ -328,8 +328,8 @@ def soil_cases(tmp: Path) -> None:
     try:
         book = soil_workbook(tmp, new, 1.0)
         try:
-            upd.update_ispra_soil(pub, book, dry_run=True)
-            raise AssertionError("anno già pubblicato accettato")
+            upd.update_ispra_soil(pub - 1, book, dry_run=True)
+            raise AssertionError("anno precedente al pubblicato accettato")
         except upd.UpdateError:
             pass
         upd.update_ispra_soil(new, book, dry_run=False)
@@ -432,7 +432,7 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         aci_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno pubblicato rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; sonda generica dei fogli PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; sonda generica dei fogli PASS")
 
 
 if __name__ == "__main__":

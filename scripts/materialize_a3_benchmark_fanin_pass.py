@@ -7,15 +7,17 @@ from pathlib import Path
 from typing import Any
 
 import agcom_sources
+import acquire_a3_benchmark_aci_istat_annual
 import acquire_a3_benchmark_istat_tourism_annual
 import asia_sources
+import update_ispra_soil
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 AGRICULTURE_PUBLIC_SOURCE = ROOT / "data" / "source-snapshots" / "istat-agricoltura-territorio-2020.json"
 SNAPSHOTS = (
     ROOT / "data/source-snapshots/a3-rgs-staff-benchmark-2024.json",
-    ROOT / "data/source-snapshots/a3-aci-vehicle-benchmark-2024.json",
+    ROOT / acquire_a3_benchmark_aci_istat_annual.latest_snapshot(),
     ROOT / "data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-health-pharmacies-benchmark-2025.json",
     ROOT / "data/source-snapshots/a3-mef-taxable-income-benchmark-2024.json",
@@ -28,7 +30,7 @@ SNAPSHOTS = (
     ROOT / agcom_sources.BENCHMARK,
     ROOT / "data" / "source-snapshots" / "a3-ispra-environment-benchmark-2024-v2.json",
     ROOT / "data" / "source-snapshots" / "a3-istat-demography-mobility-benchmark-2025.json",
-    ROOT / "data" / "source-snapshots" / "a3-ispra-soil-benchmark-2024.json",
+    ROOT / update_ispra_soil.latest_benchmark().relative_to(ROOT),
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-libraries-benchmark-2024.json",
     ROOT / asia_sources.BUSINESS,
     ROOT / "data" / "source-snapshots" / "a3-istat-social-services-benchmark-2022.json",
