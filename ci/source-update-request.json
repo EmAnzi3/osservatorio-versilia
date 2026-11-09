@@ -8,18 +8,13 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "ispra-suolo-2026",
-      "url": "https://www.snpambiente.it/wp-content/uploads/2026/10/consumo_suolo_2026_dati_principali-1.xlsx"
+      "name": "aci-parco-2025",
+      "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip"
     },
     {
-      "name": "ispra-suolo-pagina-2026",
-      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
-      "follow": "estratto|anni_2006|2006_2025|dati_principali"
-    },
-    {
-      "name": "aci-autoritratto-2025",
-      "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
-      "follow": "Autoritratto-2025"
+      "name": "ispra-suolo-libreria-2026",
+      "url": "https://groupware.sinanet.isprambiente.it/uso-copertura-e-consumo-di-suolo/library/consumo-di-suolo/indicatori",
+      "follow": "2026"
     }
   ]
 }
