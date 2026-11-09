@@ -218,12 +218,12 @@ def agcom_cases(tmp: Path) -> None:
 
 
 def tourism_zip(tmp: Path, years: dict[int, int]) -> Path:
-    """Archivio Istat sintetico dal pannello 2024 pubblicato; `years` = anno → posti letto extra aggiunti a ogni Comune."""
+    """Archivio Istat sintetico dal pannello pubblicato più recente; `years` = anno → posti letto extra aggiunti a ogni Comune."""
     import zipfile
     from openpyxl import Workbook
     import acquire_a3_benchmark_istat_tourism_annual as capacity
 
-    snap = upd.load(capacity.ROOT / "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json")
+    snap = upd.load(capacity.ROOT / capacity.latest_snapshot())
     wb = Workbook(); ws = wb.active; ws.title = "Capacità ricettiva"
     head = [[None] * 56 for _ in range(6)]
     head[2][54] = "TOTALE"; head[4][32] = "totale alberghi"; head[4][52] = "totale extra-alberghieri"
@@ -253,30 +253,33 @@ def tourism_zip(tmp: Path, years: dict[int, int]) -> Path:
 
 
 def tourism_cases(tmp: Path) -> None:
-    """Capacità ricettiva: 2024 ricostruito identico; 2025 accettato con perimetro dichiarato; anno precedente rifiutato."""
+    """Capacità ricettiva: anno pubblicato ricostruito identico; anno nuovo accettato con perimetro dichiarato; anno precedente rifiutato."""
+    import acquire_a3_benchmark_istat_tourism_annual as capacity
+
+    pub = int(capacity.latest_snapshot()[-9:-5]); new = pub + 1
     real_site, real_root = upd.SITE, upd.ROOT
     (tmp / "data/source-snapshots").mkdir(parents=True)
     upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
     upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
     try:
-        archive = tourism_zip(tmp, {2025: 10, 2024: 0})
-        changes = upd.update_istat_tourism(2024, archive, dry_run=True)
+        archive = tourism_zip(tmp, {new: 10, pub: 0, pub - 1: 0})
+        changes = upd.update_istat_tourism(pub, archive, dry_run=True)
         assert changes.lines == [], changes.lines
-        upd.update_istat_tourism(2025, archive, dry_run=False)
+        upd.update_istat_tourism(new, archive, dry_run=False)
         site = upd.load(upd.SITE)
-        snap = upd.load(tmp / "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2025.json")
-        old = upd.load(real_root / "data/source-snapshots/a3-istat-tourism-capacity-benchmark-2024.json")
+        snap = upd.load(tmp / f"data/source-snapshots/a3-istat-tourism-capacity-benchmark-{new}.json")
+        old = upd.load(real_root / capacity.latest_snapshot())
         beds = site["metrics"]["tourismBeds"]
         by_old = {r[0]: r for r in old["records"]}
         for row in beds["rows"]:
             assert row["value"] == by_old[row["code"]][4] + 10
-        assert beds["meta"]["year"] == "2025" and beds["aggregate"]["value"] == sum(r["value"] for r in beds["rows"])
+        assert beds["meta"]["year"] == str(new) and beds["aggregate"]["value"] == sum(r["value"] for r in beds["rows"])
         assert beds["meta"]["benchmark"]["italy"] == old["officialNational"]["beds"] + 10 * len(old["records"])
         assert "non sono confrontabili" in snap["scope"]["note"] and "municipalBedsHistory" not in snap
         rate = site["metrics"]["tourismBedsPer1000"]
-        assert rate["meta"]["sourceMeta"]["snapshot"].endswith("-2025.json") and "2025" in rate["method"]["formula"]
+        assert rate["meta"]["sourceMeta"]["snapshot"].endswith(f"-{new}.json") and str(new) in rate["method"]["formula"]
         try:
-            upd.update_istat_tourism(2024, archive, dry_run=True)
+            upd.update_istat_tourism(pub - 1, archive, dry_run=True)
             raise AssertionError("anno precedente al pubblicato accettato")
         except upd.UpdateError:
             pass
@@ -310,7 +313,7 @@ def main() -> None:
     mef_probe_cases()
     with tempfile.TemporaryDirectory() as tmp:
         tourism_cases(Path(tmp))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva 2024 ricostruita identica, 2025 accettato con perimetro dichiarato, anno precedente rifiutato PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato PASS")
 
 
 if __name__ == "__main__":
