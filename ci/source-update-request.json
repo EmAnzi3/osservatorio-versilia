@@ -6,15 +6,11 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [
-    {
-      "name": "aci-parco-2025",
-      "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip"
-    },
-    {
-      "name": "ispra-suolo-libreria-2026",
-      "url": "https://groupware.sinanet.isprambiente.it/uso-copertura-e-consumo-di-suolo/library/consumo-di-suolo/indicatori",
-      "follow": "2026"
-    }
+  "sourceProbe": [],
+  "ispraSoil": [
+    2025
+  ],
+  "aciVehicles": [
+    2025
   ]
 }

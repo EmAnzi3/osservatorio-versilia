@@ -287,6 +287,120 @@ def tourism_cases(tmp: Path) -> None:
         upd.SITE, upd.ROOT = real_site, real_root
 
 
+def soil_workbook(tmp: Path, new: int, extra: float) -> Path:
+    """Edizione ISPRA sintetica: anni pubblicati dallo snapshot corrente più l'anno `new` (+`extra` ha a ogni Comune)."""
+    from openpyxl import Workbook
+    import update_ispra_soil as soil
+
+    snap = upd.load(soil.SNAPSHOT)
+    wb = Workbook(); wb.remove(wb.active)
+    head = ["pro_com", "nome_comune", "csuolo1", "csuolo2", "csuolo4", "csuolo8", "csuolo10"]
+    for y in soil.stock_years(new):
+        ws = wb.create_sheet(f"Comuni_{y}"); ws.append(head)
+        ws.append([1001, "Agliè", 100, 900, 10, 0, 0])
+        for town, code in soil.CODES.items():
+            item = snap["landUse"]["municipalities"][town]
+            area = item["municipalAreaHa"]
+            r = item["rows"].get(str(y)) or item["rows"][str(new - 1)]
+            c = snap["landUseChange"]["municipalities"][town]["rows"].get(str(y)) or {"netHa": 0, "grossHa": 0}
+            ha = r["consumedHa"] + (extra if y == new else 0)
+            ws.append([int(code), town, ha, area - ha, r["consumedPct"] if y != new else ha / area * 100,
+                       extra if y == new else c["netHa"], extra if y == new else c["grossHa"]])
+    ws = wb.create_sheet(f"Regioni_{new}"); ws.append(["cod_reg", "nome_regione", "csuolo1", "csuolo2", "csuolo4", "csuolo8"])
+    for code in range(1, 21):
+        ws.append([code, "Toscana" if code == 9 else f"R{code}", 1, 9, 6.5 if code == 9 else 5, 300 if code == 9 else 1])
+    ws = wb.create_sheet(f"Nazionale_{new}"); ws.append(["cod_naz", "nome_nazione", "csuolo1", "csuolo2", "csuolo4", "csuolo8"])
+    ws.append([0, "Italia", 1, 9, 7.25, 9000])
+    path = tmp / "soil.xlsx"; wb.save(path)
+    return path
+
+
+def soil_cases(tmp: Path) -> None:
+    """Consumo di suolo: anno nuovo accettato con serie, benchmark ufficiali e snapshot; anno già pubblicato rifiutato."""
+    import update_ispra_soil as soil
+
+    real_site, real_root, real_snap = upd.SITE, upd.ROOT, soil.SNAPSHOT
+    pub = upd.load(real_snap)["landUse"]["years"][-1]; new = pub + 1
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT, soil.SNAPSHOT = tmp / "data/site-data.json", tmp, tmp / "data/source-snapshots/territorio.json"
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    soil.SNAPSHOT.write_text(real_snap.read_text(encoding="utf-8"), encoding="utf-8")
+    try:
+        book = soil_workbook(tmp, new, 1.0)
+        try:
+            upd.update_ispra_soil(pub, book, dry_run=True)
+            raise AssertionError("anno già pubblicato accettato")
+        except upd.UpdateError:
+            pass
+        upd.update_ispra_soil(new, book, dry_run=False)
+        snap, site = upd.load(soil.SNAPSHOT), upd.load(upd.SITE)
+        old = upd.load(real_snap)
+        assert snap["landUse"]["years"] == soil.stock_years(new) and snap["landUseChange"]["years"] == soil.change_years(new)
+        for town in soil.TOWNS:
+            a, b = old["landUse"]["municipalities"][town], snap["landUse"]["municipalities"][town]
+            assert math.isclose(b["rows"][str(new)]["consumedHa"], a["rows"][str(pub)]["consumedHa"] + 1, abs_tol=1e-6)
+            assert snap["landUseChange"]["municipalities"][town]["rows"][str(new)]["netHa"] == 1.0
+        for key in ("protectedNaturalAreas", "reticulum", "roadNetworkProfile"):
+            assert snap[key] == old[key], key
+        bench = upd.load(tmp / f"data/source-snapshots/a3-ispra-soil-benchmark-{new}.json")
+        assert bench["benchmarks"]["landUse"]["tuscany"] == 6.5 and bench["benchmarks"]["landUseChange"]["italy"] == 9000
+        change = site["metrics"]["landUseChange"]
+        assert change["meta"]["year"] == str(new) and all(r["value"] == 1.0 for r in change["rows"])
+        assert change["meta"]["benchmark"]["sourceSnapshot"].endswith(f"-{new}.json")
+        assert all(r["series"]["years"][-1] == new for r in change["rows"] if r.get("series"))
+    finally:
+        upd.SITE, upd.ROOT, soil.SNAPSHOT = real_site, real_root, real_snap
+
+
+def aci_cases(tmp: Path) -> None:
+    """Parco ACI: il foglio dell'edizione pubblicata, rietichettato come anno nuovo, ridà 7/7 gli stessi valori; anno pubblicato rifiutato."""
+    import base64
+    import acquire_a3_benchmark_aci_istat_annual as aci
+
+    real_site, real_root = upd.SITE, upd.ROOT
+    old = upd.load(aci.ROOT / aci.latest_snapshot())
+    pub = old["referenceYear"]; new = pub + 1
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    archive = tmp / f"Autoritratto{new}_Parco_veicolare.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr(f"Circolante_Copert_{new}.xlsx", base64.b64decode(old["source"]["workbookBase64"]))
+    try:
+        try:
+            upd.update_aci_vehicles(pub, archive, dry_run=True)
+            raise AssertionError("anno già pubblicato accettato")
+        except upd.UpdateError:
+            pass
+        before = upd.load(upd.SITE)["metrics"]
+        changes = upd.update_aci_vehicles(new, archive, dry_run=False)
+        assert changes.lines == [], changes.lines
+        site = upd.load(upd.SITE)["metrics"]
+        snap = upd.load(tmp / f"data/source-snapshots/{aci.SNAPSHOT_PREFIX}{new}.json")
+        assert snap["panelSha256"] == old["panelSha256"] and snap["benchmarks"]["motorization"]["italy"] == old["benchmarks"]["motorization"]["italy"]
+        for key in ("motorization", "pollutingCars"):
+            m = site[key]
+            assert m["meta"]["year"] == str(new) and m["meta"]["benchmark"]["sourceSnapshot"].endswith(f"-{new}.json")
+            assert math.isclose(m["aggregate"]["value"], before[key]["aggregate"]["value"], rel_tol=1e-12)
+        assert str(new) in site["motorization"]["method"]["formula"] and "1° gennaio 2026" in site["motorization"]["method"]["formula"]
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
+def source_probe_cases(tmp: Path) -> None:
+    """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
+    import io as _io
+    from openpyxl import Workbook
+    import probe_source_files as probe
+
+    wb = Workbook(); ws = wb.active
+    for row in (["PRO_COM", "Nome"], [1001, "Agliè"], ["046018", "Massarosa"]):
+        ws.append(row)
+    buf = _io.BytesIO(); wb.save(buf)
+    sheets = probe.workbook(buf.getvalue())["sheets"]
+    assert sheets[0]["head"][2] == ["046018", "Massarosa"] and sheets[0]["rows"] == 3
+
+
 def mef_probe_cases() -> None:
     """Sonda MEF: solo atti comunali DIMUNIC, link con la riga della tabella, testo PDF separato."""
     import probe_mef_fiscal as probe
@@ -313,7 +427,12 @@ def main() -> None:
     mef_probe_cases()
     with tempfile.TemporaryDirectory() as tmp:
         tourism_cases(Path(tmp))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato PASS")
+    with tempfile.TemporaryDirectory() as tmp:
+        soil_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        aci_cases(Path(tmp))
+    source_probe_cases(Path("."))
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno pubblicato rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; sonda generica dei fogli PASS")
 
 
 if __name__ == "__main__":
