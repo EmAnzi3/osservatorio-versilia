@@ -387,6 +387,58 @@ def aci_cases(tmp: Path) -> None:
         upd.SITE, upd.ROOT = real_site, real_root
 
 
+def omi_cases(tmp: Path) -> None:
+    """OMI: riga «Abitazioni civili NORMALE» al punto medio; semestre pubblicato rigiocato identico, altrimenti rifiuto."""
+    import copy
+    import update_omi as omi
+
+    page = ("<p>Risultato interrogazione: Anno 2025 - Semestre 2 Provincia: LUCCA Comune: CAMAIORE Codice di zona: B2 "
+            "Tipologia prevalente: Abitazioni civili Destinazione: Residenziale</p><table><tr><td>Abitazioni civili</td><td>NORMALE</td>"
+            "<td>1550</td><td>2300</td><td>L</td><td>5,7</td><td>8</td><td>L</td></tr><tr><td>Box</td><td>NORMALE</td><td>700</td>"
+            "<td>1050</td><td>L</td></tr></table>")
+    z = omi.parse_result(page, "2025-S2")
+    assert (z["sale"], z["rent"], z["saleMin"], z["rentMax"]) == (1925.0, 6.9, 1550.0, 8.0), z
+    for bad in ("2026-S1",):
+        try:
+            omi.parse_result(page, bad)
+            raise AssertionError("semestre diverso accettato")
+        except omi.OmiError:
+            pass
+    assert omi.label_semester("2° semestre 2025") == "2025-S2" and omi.semester_label("2026-S1") == "1° semestre 2026"
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    base = {r["town"]: [dict(code=z["code"], sale=z["sale"], rent=z["rent"]) for z in r["zones"]]
+            for r in upd.load(upd.SITE)["metrics"]["omiResidential"]["rows"]}
+    bumped = {t: [dict(z, sale=z["sale"] + 100, rent=round(z["rent"] + 0.5, 1)) for z in zs] for t, zs in base.items()}
+    try:
+        for sem in ("2025-S2", "2025-S1"):
+            try:
+                upd.update_omi_residential(sem, True, lambda p: base)
+                raise AssertionError("semestre non successivo accettato")
+            except upd.UpdateError:
+                pass
+        broken = copy.deepcopy(base); broken["Viareggio"][0]["sale"] += 1
+        try:
+            upd.update_omi_residential("2026-S1", True, lambda p: broken if p == "2025-S2" else bumped)
+            raise AssertionError("replay diverso accettato")
+        except upd.UpdateError as error:
+            assert "Viareggio" in str(error)
+        before = upd.load(upd.SITE)["metrics"]["omiResidential"]
+        changes = upd.update_omi_residential("2026-S1", False, lambda p: base if p == "2025-S2" else bumped)
+        m = upd.load(upd.SITE)["metrics"]["omiResidential"]
+        assert m["meta"]["year"] == "1° semestre 2026" and changes.lines
+        assert math.isclose(m["aggregate"]["saleMean"], before["aggregate"]["saleMean"] + 100, abs_tol=1e-9)
+        for r in m["rows"]:
+            assert math.isclose(r["saleMean"], math.fsum(z["sale"] for z in r["zones"]) / len(r["zones"]), abs_tol=1e-12)
+            assert r["value"] == r["saleMean"] == r["benchmarkValue"]
+        snap = upd.load(tmp / f"data/source-snapshots/{omi.SNAPSHOT_PREFIX}2026-S1.json")
+        assert snap["publishedReplayed"] == "2025-S2" and set(snap["zones"]) == set(omi.TOWNS.values())
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def source_probe_cases(tmp: Path) -> None:
     """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
     import io as _io
@@ -431,8 +483,10 @@ def main() -> None:
         soil_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         aci_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        omi_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; sonda generica dei fogli PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli PASS")
 
 
 if __name__ == "__main__":
