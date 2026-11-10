@@ -1,0 +1,17 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-10T06:52:00Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": "geopoi_omi/.*\\.(php|js)",
+ "result": {
+  "url": "https://wwwt.agenziaentrate.gov.it/geopoi_omi/index.php",
+  "contentType": "text/html; charset=UTF-8",
+  "bytes": 105,
+  "sha256": "2e1751c79be6b036ad3ccc8a6396464cef1e7ac1e04e9a5e0a74fce80175fb63",
+  "forms": [],
+  "scripts": [],
+  "inlineScript": "",
+  "links": [],
+  "followed": []
+ }
+}

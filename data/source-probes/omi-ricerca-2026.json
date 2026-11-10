@@ -1,0 +1,247 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-10T06:51:58Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": "Consultazione/.*\\.(php|js)",
+ "result": {
+  "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
+  "contentType": "text/html; charset=UTF-8",
+  "bytes": 36337,
+  "sha256": "4c4979944f62c411660864e7d1e98b22c7112e204ae0ec0d190df7e2c821c851",
+  "forms": [
+   {
+    "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "level",
+      "type": "hidden",
+      "value": "1",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "lingua",
+      "type": "hidden",
+      "value": "IT",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "pr",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "AG",
+        "AGRIGENTO"
+       ],
+       [
+        "AL",
+        "ALESSANDRIA"
+       ],
+       [
+        "AN",
+        "ANCONA"
+       ],
+       [
+        "AO",
+        "AOSTA"
+       ],
+       [
+        "AR",
+        "AREZZO"
+       ],
+       [
+        "AP",
+        "ASCOLI PICENO"
+       ],
+       [
+        "AT",
+        "ASTI"
+       ],
+       [
+        "AV",
+        "AVELLINO"
+       ],
+       [
+        "BA",
+        "BARI"
+       ],
+       [
+        "BL",
+        "BELLUNO"
+       ],
+       [
+        "BN",
+        "BENEVENTO"
+       ],
+       [
+        "BG",
+        "BERGAMO"
+       ],
+       [
+        "BI",
+        "BIELLA"
+       ],
+       [
+        "BO",
+        "BOLOGNA"
+       ],
+       [
+        "BZ",
+        "BOLZANO .BOZEN"
+       ],
+       [
+        "BS",
+        "BRESCIA"
+       ],
+       [
+        "BR",
+        "BRINDISI"
+       ],
+       [
+        "CA",
+        "CAGLIARI"
+       ],
+       [
+        "CL",
+        "CALTANISSETTA"
+       ],
+       [
+        "CB",
+        "CAMPOBASSO"
+       ],
+       [
+        "CE",
+        "CASERTA"
+       ],
+       [
+        "CT",
+        "CATANIA"
+       ],
+       [
+        "CZ",
+        "CATANZARO"
+       ],
+       [
+        "CH",
+        "CHIETI"
+       ],
+       [
+        "CO",
+        "COMO"
+       ],
+       [
+        "CS",
+        "COSENZA"
+       ],
+       [
+        "CR",
+        "CREMONA"
+       ],
+       [
+        "KR",
+        "CROTONE"
+       ],
+       [
+        "CN",
+        "CUNEO"
+       ],
+       [
+        "EN",
+        "ENNA"
+       ],
+       [
+        "FE",
+        "FERRARA"
+       ],
+       [
+        "FI",
+        "FIRENZE"
+       ],
+       [
+        "FG",
+        "FOGGIA"
+       ],
+       [
+        "FO",
+        "FORLI`"
+       ],
+       [
+        "FR",
+        "FROSINONE"
+       ],
+       [
+        "GE",
+        "GENOVA"
+       ],
+       [
+        "GO",
+        "GORIZIA"
+       ],
+       [
+        "GR",
+        "GROSSETO"
+       ],
+       [
+        "IM",
+        "IMPERIA"
+       ],
+       [
+        "IS",
+        "ISERNIA"
+       ]
+      ]
+     },
+     {
+      "tag": "input",
+      "name": "",
+      "type": "submit",
+      "value": "Cerca comuni",
+      "options": []
+     }
+    ]
+   }
+  ],
+  "scripts": [
+   "https://www1.agenziaentrate.gov.it/piec/resources/js/jquery.min.js",
+   "https://www1.agenziaentrate.gov.it/piec/resources/js/bootstrap.min.js"
+  ],
+  "inlineScript": "\n\n\n\t\t\twindow.onload = (event) => {\n\t\t\t\tconst form = document.querySelector('#openk9-form-trigger');\n\t\t\t\tconst formMobile = document.querySelector('#openk9-form-trigger-mobile');\n\t\t\t\t\n\t\t\t\tconst goToOpenk9Page = (event) => {\n\t\t\t\t\tevent.preventDefault();\n\n\t\t\t\t\tconst input = document.querySelector('#openk9-input-trigger');\n\t\t\t\t\tconst inputMobile = document.querySelector('#openk9-input-trigger-mobile');\n\t\t\t\t\tconst inputValue = input?.value ? input?.value : inputMobile?.value ? inputMobile?.value : \"\";\n\n\t\t\t\t\tvar openk9Server = 'https://www.agenziaentrate.gov.it';\n\t\t\t\t\tvar openk9URL = '/ricerca' || '/ricerca';\n\t\t\t\t\tif (inputValue) {\n\t\t\t\t\t\topenk9URL += '?keywords=' + inputValue;\n\t\t\t\t\t}\n\t\t\t\t\twindow.location.href = openk9Server + '/portale' + openk9URL;\n\t\t\t\t};\n\t\t\t\tform?.addEventListener('submit', goToOpenk9Page);\n\t\t\t\tformMobile?.addEventListener('submit', goToOpenk9Page);\n\t\t\t};\n\t\t\n\n\t  var _paq = window._paq || [];\n\t  /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n\t  _paq.push([\"setCookieDomain\", \"*.www.agenziaentrate.gov.it\"]);\n\t  _paq.push(['trackPageView']);\n\t  _paq.push(['enableLinkTracking']);\n\t  (function() {\n\t\tvar u=\"https://aews-analytics.sogei.it/piwik/\";\n\t\t_paq.push(['setTrackerUrl', u+'matomo.php']);\n\t\t_paq.push(['setSiteId', '3']);\n\t\tvar d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n\t\tg.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n\t  })();\n\t\n\n<!--\nfunction indietro(level){\n document.IlForm1.level.value=level;\n\n document.IlForm1.action=\"ricerca.php\";\n \n document.IlForm1.submit();\n}\n//-->\n",
+  "links": [
+   {
+    "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/errata_corrige.csv",
+    "text": "Errata corrige"
+   }
+  ],
+  "followed": []
+ }
+}
