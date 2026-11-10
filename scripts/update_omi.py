@@ -6,7 +6,8 @@ consultazione pubblica dell'Agenzia delle Entrate (provincia → Comune e
 semestre → zona → destinazione residenziale) e legge, per ogni zona, l'intervallo
 min/max di compravendita e locazione delle «Abitazioni civili» in stato
 «NORMALE». Il valore di zona pubblicato è il punto medio dell'intervallo
-(compravendita in €/m², locazione in €/m² al mese arrotondata al decimo).
+(compravendita in €/m², locazione in €/m² al mese). Le zone senza
+quella riga sono escluse, come nel catalogo.
 
 Prima di scrivere il semestre nuovo rilegge dalla fonte il semestre pubblicato e
 verifica che la stessa regola riproduca esattamente tutti i valori di zona del
@@ -121,7 +122,8 @@ def parse_result(page: str, semester: str) -> dict[str, Any]:
     return {"prevalentType": prevalent.group(1).strip() if prevalent else None, "rectified": bool(m.group(1)),
             "saleMin": float(smin), "saleMax": float(smax), "saleSurface": m.group(4),
             "rentMin": float(rmin), "rentMax": float(rmax), "rentSurface": m.group(7),
-            "sale": float((smin + smax) / 2), "rent": float(((rmin + rmax) / 2).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))}
+            "sale": float((smin + smax) / 2), "rent": float((rmin + rmax) / 2),
+            "rentRounded": float(((rmin + rmax) / 2).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))}
 
 
 def town_codes(session: Session) -> dict[str, str]:
@@ -149,13 +151,17 @@ def read_semester(session: Session, semester: str, codes: dict[str, str]) -> dic
             dest = session.post(SEARCH, {**base, "level": "4", "linkzonastrada": link})
             fields = hidden(dest, "risultato.php")
             result = session.post(RESULT, {**fields, "utilizzo": "Residenziale", "bt1": "Mostra valori"})
+            zone = {"code": fields.get("codzona") or label.split("/")[0], "linkzona": link,
+                    "band": fields.get("fasciazona", ""), "sourceLabel": label}
             try:
-                values = parse_result(result, semester)
+                zone.update(parse_result(result, semester), residential=True)
             except OmiError as error:
-                raise OmiError(f"{town} {fields.get('codzona')}: {error}") from error
-            zones.append({"code": fields.get("codzona") or label.split("/")[0], "linkzona": link,
-                          "band": fields.get("fasciazona", ""), "sourceLabel": label, **values})
-        if not zones or len({z["code"] for z in zones}) != len(zones):
+                if "assente" not in str(error):
+                    raise OmiError(f"{town} {zone['code']}: {error}") from error
+                # Zona senza quotazione «Abitazioni civili NORMALE»: esclusa, come nel catalogo.
+                zone.update(residential=False, reason=str(error))
+            zones.append(zone)
+        if not any(z["residential"] for z in zones) or len({z["code"] for z in zones}) != len(zones):
             raise OmiError(f"{town}: zone OMI assenti o duplicate")
         out[town] = zones
     return out

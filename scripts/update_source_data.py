@@ -925,7 +925,8 @@ def update_omi_residential(semester: str, dry_run: bool, reader: Any = None) -> 
                 raise UpdateError(f"OMI: semestre {semester} o {published} non presente nella consultazione")
             codes = omi.town_codes(session)
             reader = lambda period: omi.read_semester(session, period, codes)  # noqa: E731
-        replay, fresh = reader(published), reader(semester)
+        raw_replay, raw_fresh = reader(published), reader(semester)
+        replay, fresh = ({t: [z for z in zs if z.get("residential", True)] for t, zs in d.items()} for d in (raw_replay, raw_fresh))
     except omi.OmiError as error:
         raise UpdateError(f"OMI {semester}: {error}") from error
     rows = {r["town"]: r for r in metric["rows"]}
@@ -938,8 +939,12 @@ def update_omi_residential(semester: str, dry_run: bool, reader: Any = None) -> 
         if set(current) != set(source):
             mismatch.append(f"{town}: zone {sorted(current)} ≠ fonte {sorted(source)}")
             continue
-        mismatch += [f"{town} {c} {f}: {current[c][f]} ≠ {source[c][f]}" for c in current for f in ("sale", "rent")
-                     if not math.isclose(current[c][f], source[c][f], rel_tol=0, abs_tol=1e-9)]
+        same = lambda a, b: math.isclose(a, b, rel_tol=0, abs_tol=1e-9)  # noqa: E731
+        mismatch += [f"{town} {c} sale: {current[c]['sale']} ≠ {source[c]['sale']}" for c in current
+                     if not same(current[c]["sale"], source[c]["sale"])]
+        # Il catalogo riporta la locazione al punto medio esatto o arrotondata al decimo: entrambe ammesse.
+        mismatch += [f"{town} {c} rent: {current[c]['rent']} ≠ {source[c]['rent']} ({source[c].get('rentRounded')})" for c in current
+                     if not (same(current[c]["rent"], source[c]["rent"]) or same(current[c]["rent"], source[c].get("rentRounded", source[c]["rent"])))]
         if {z["code"] for z in fresh[town]} != set(current):
             mismatch.append(f"{town}: zonizzazione {semester} {sorted(z['code'] for z in fresh[town])} diversa da {sorted(current)}")
     if mismatch:
@@ -964,11 +969,12 @@ def update_omi_residential(semester: str, dry_run: bool, reader: Any = None) -> 
     snapshot = {"schemaVersion": 1, "metric": "omiResidential", "semester": semester, "publishedReplayed": published,
                 "source": metric["meta"]["source"], "sourceUrl": omi.BASE + "ricerca.htm", "province": omi.PROVINCE,
                 "selection": {"type": omi.TYPE, "state": omi.STATE, "destination": "Residenziale",
-                              "zoneValue": "punto medio min/max; locazione arrotondata al decimo"},
+                              "zoneValue": "punto medio min/max di compravendita e locazione",
+                              "excludedZones": "zone senza la riga Abitazioni civili NORMALE"},
                 "retrievedAt": date.today().isoformat(),
                 "acquisitionEvidence": {"script": f"scripts/update_source_data.py omi-residential --semester {semester}"},
-                "zones": {omi.TOWNS[t]: fresh[t] for t in sorted(fresh)},
-                "replay": {omi.TOWNS[t]: replay[t] for t in sorted(replay)}}
+                "zones": {omi.TOWNS[t]: raw_fresh[t] for t in sorted(raw_fresh)},
+                "replay": {omi.TOWNS[t]: raw_replay[t] for t in sorted(raw_replay)}}
     if not dry_run:
         save(SITE, site)
         save(ROOT / path, snapshot)

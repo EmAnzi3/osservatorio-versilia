@@ -397,7 +397,12 @@ def omi_cases(tmp: Path) -> None:
             "<td>1550</td><td>2300</td><td>L</td><td>5,7</td><td>8</td><td>L</td></tr><tr><td>Box</td><td>NORMALE</td><td>700</td>"
             "<td>1050</td><td>L</td></tr></table>")
     z = omi.parse_result(page, "2025-S2")
-    assert (z["sale"], z["rent"], z["saleMin"], z["rentMax"]) == (1925.0, 6.9, 1550.0, 8.0), z
+    assert (z["sale"], z["rent"], z["rentRounded"], z["saleMin"], z["rentMax"]) == (1925.0, 6.85, 6.9, 1550.0, 8.0), z
+    try:
+        omi.parse_result(page.replace("Abitazioni civili</td>", "Ville</td>"), "2025-S2")
+        raise AssertionError("zona senza abitazioni civili accettata")
+    except omi.OmiError as error:
+        assert "assente" in str(error)
     for bad in ("2026-S1",):
         try:
             omi.parse_result(page, bad)
@@ -412,6 +417,10 @@ def omi_cases(tmp: Path) -> None:
     base = {r["town"]: [dict(code=z["code"], sale=z["sale"], rent=z["rent"]) for z in r["zones"]]
             for r in upd.load(upd.SITE)["metrics"]["omiResidential"]["rows"]}
     bumped = {t: [dict(z, sale=z["sale"] + 100, rent=round(z["rent"] + 0.5, 1)) for z in zs] for t, zs in base.items()}
+    # Locazione del catalogo arrotondata al decimo, zona fonte senza abitazioni civili: replay ammesso.
+    base["Camaiore"][0].update(rent=base["Camaiore"][0]["rent"] - 0.05, rentRounded=base["Camaiore"][0]["rent"])
+    base["Viareggio"].append(dict(code="R3", residential=False))
+    bumped["Viareggio"].append(dict(code="R3", residential=False))
     try:
         for sem in ("2025-S2", "2025-S1"):
             try:
@@ -419,12 +428,12 @@ def omi_cases(tmp: Path) -> None:
                 raise AssertionError("semestre non successivo accettato")
             except upd.UpdateError:
                 pass
-        broken = copy.deepcopy(base); broken["Viareggio"][0]["sale"] += 1
+        broken = copy.deepcopy(base); broken["Viareggio"][0]["sale"] += 1; broken["Seravezza"][0]["rent"] += 0.05
         try:
             upd.update_omi_residential("2026-S1", True, lambda p: broken if p == "2025-S2" else bumped)
             raise AssertionError("replay diverso accettato")
         except upd.UpdateError as error:
-            assert "Viareggio" in str(error)
+            assert "Viareggio" in str(error) and "Seravezza" in str(error) and "Camaiore" not in str(error)
         before = upd.load(upd.SITE)["metrics"]["omiResidential"]
         changes = upd.update_omi_residential("2026-S1", False, lambda p: base if p == "2025-S2" else bumped)
         m = upd.load(upd.SITE)["metrics"]["omiResidential"]
@@ -435,6 +444,8 @@ def omi_cases(tmp: Path) -> None:
             assert r["value"] == r["saleMean"] == r["benchmarkValue"]
         snap = upd.load(tmp / f"data/source-snapshots/{omi.SNAPSHOT_PREFIX}2026-S1.json")
         assert snap["publishedReplayed"] == "2025-S2" and set(snap["zones"]) == set(omi.TOWNS.values())
+        assert any(z["code"] == "R3" and not z["residential"] for z in snap["zones"]["046033"])
+        assert all(z["code"] != "R3" for r in m["rows"] for z in r["zones"] if r["town"] == "Viareggio")
     finally:
         upd.SITE, upd.ROOT = real_site, real_root
 
