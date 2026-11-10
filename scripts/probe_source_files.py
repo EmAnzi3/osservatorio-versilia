@@ -84,6 +84,23 @@ def links(page: str, url: str) -> list[dict[str, str]]:
     return out
 
 
+def forms(page: str, url: str) -> list[dict[str, Any]]:
+    out = []
+    for m in re.finditer(r"<form\b([^>]*)>(.*?)</form>", page, flags=re.I | re.S):
+        attrs, body = m.group(1), m.group(2)
+        def attr(name: str, text: str) -> str:
+            found = re.search(rf"\b{name}\s*=\s*(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))", text, re.I)
+            return next((g for g in found.groups() if g is not None), "") if found else ""
+        fields = []
+        for f in re.finditer(r"<(input|select|textarea)\b([^>]*)>(.*?)(?=<(?:input|select|textarea)\b|</form>|$)", body, flags=re.I | re.S):
+            options = [[attr("value", o.group(1)), re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", o.group(2))).strip()[:60]]
+                       for o in re.finditer(r"<option\b([^>]*)>([^<]*)", f.group(3), flags=re.I)][:40]
+            fields.append({"tag": f.group(1).lower(), "name": attr("name", f.group(2)), "type": attr("type", f.group(2)),
+                           "value": attr("value", f.group(2))[:120], "options": options})
+        out.append({"action": urllib.parse.urljoin(url, attr("action", attrs)), "method": attr("method", attrs) or "get", "fields": fields[:40]})
+    return out[:10]
+
+
 def analyse(url: str, follow: str | None, depth: int = 0) -> dict[str, Any]:
     item: dict[str, Any] = {"url": url}
     try:
@@ -102,6 +119,9 @@ def analyse(url: str, follow: str | None, depth: int = 0) -> dict[str, Any]:
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)
+            item["forms"] = forms(page, url)
+            item["scripts"] = [urllib.parse.urljoin(url, s) for s in re.findall(r"<script\b[^>]*src=[\"']([^\"']+)", page, flags=re.I)][:20]
+            item["inlineScript"] = "\n".join(re.findall(r"<script\b[^>]*>(.*?)</script>", page, flags=re.I | re.S))[:6000]
             item["links"] = [l for l in ls if re.search(r"\.(xlsx?|zip|csv|ods|pdf)\b", l["url"], re.I) or (follow and re.search(follow, l["url"] + " " + l["text"], re.I))]
             if follow and depth == 0:
                 targets = [l["url"] for l in ls if re.search(follow, l["url"] + " " + l["text"], re.I)][:MAX_FOLLOW]
