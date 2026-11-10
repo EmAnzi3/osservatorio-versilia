@@ -4,8 +4,8 @@
 Usato da `update_source_data.py omi-residential --semester AAAA-SN`. Percorre la
 consultazione pubblica dell'Agenzia delle Entrate (provincia → Comune e
 semestre → zona → destinazione residenziale) e legge, per ogni zona, l'intervallo
-min/max di compravendita e locazione delle «Abitazioni civili» in stato
-«NORMALE». Il valore di zona pubblicato è il punto medio dell'intervallo
+min/max di compravendita e locazione della tipologia prevalente della zona in
+stato «NORMALE» («Abitazioni civili» se la prevalente non è un'abitazione). Il valore di zona pubblicato è il punto medio dell'intervallo
 (compravendita in €/m², locazione in €/m² al mese). Le zone senza
 quella riga sono escluse, come nel catalogo.
 
@@ -106,22 +106,43 @@ def text_of(page: str) -> str:
     return re.sub(r"\s+", " ", htmllib.unescape(re.sub(r"<(script|style)\b.*?</\1>|<[^>]+>", " ", page, flags=re.I | re.S)))
 
 
+DWELLINGS = ("Abitazioni civili", "Abitazioni di tipo economico", "Abitazioni signorili",
+             "Abitazioni tipiche dei luoghi", "Ville e Villini")
+OTHER_TYPES = ("Box", "Posti auto coperti", "Posti auto scoperti", "Autorimesse", "Magazzini", "Laboratori")
+
+
+def parse_rows(text: str) -> list[dict[str, Any]]:
+    """Tutte le righe della tabella: tipologia, stato, compravendita e (se c'è) locazione."""
+    num = r"(\d[\d.]*(?:,\d+)?)"
+    types = "|".join(re.escape(t) for t in DWELLINGS + OTHER_TYPES)
+    rows = []
+    for m in re.finditer(rf"({types})\s*(\*?)\s*(NORMALE|OTTIMO|SCADENTE)\s+{num}\s+{num}\s+([LN])(?:\s+{num}\s+{num}\s+([LN]))?", text, re.I):
+        row = {"type": next(t for t in DWELLINGS + OTHER_TYPES if t.lower() == m.group(1).lower()),
+               "rectified": bool(m.group(2)), "state": m.group(3).upper(),
+               "saleMin": float(number(m.group(4))), "saleMax": float(number(m.group(5))), "saleSurface": m.group(6)}
+        if m.group(7):
+            row.update(rentMin=float(number(m.group(7))), rentMax=float(number(m.group(8))), rentSurface=m.group(9))
+        rows.append(row)
+    return rows
+
+
 def parse_result(page: str, semester: str) -> dict[str, Any]:
+    """Valore di zona: tipologia prevalente della zona in stato NORMALE (se non è un'abitazione, abitazioni civili)."""
     text = text_of(page)
     year, half = semester.split("-S")
     if f"Anno {year} - Semestre {half}" not in text:
         raise OmiError(f"risultato OMI non relativo al semestre {semester}")
-    prevalent = re.search(r"Tipologia prevalente:\s*(.+?)\s+Destinazione:", text)
-    num = r"(\d[\d.]*(?:,\d+)?)"
-    m = re.search(rf"{TYPE}\s*(\*?)\s*{STATE}\s+{num}\s+{num}\s+([LN])\s+{num}\s+{num}\s+([LN])", text)
-    if not m:
-        raise OmiError(f"riga «{TYPE} {STATE}» con compravendita e locazione assente")
-    smin, smax, rmin, rmax = (number(m.group(i)) for i in (2, 3, 5, 6))
+    found = re.search(r"Tipologia prevalente:\s*(.+?)\s+Destinazione:", text)
+    prevalent = found.group(1).strip() if found else None
+    rows = parse_rows(text)
+    wanted = next((t for t in DWELLINGS if prevalent and t.lower() == prevalent.lower()), TYPE)
+    pick = next((r for r in rows if r["type"] == wanted and r["state"] == STATE and "rentMin" in r), None)
+    if pick is None:
+        raise OmiError(f"riga «{wanted} {STATE}» con compravendita e locazione assente")
+    smin, smax, rmin, rmax = (Decimal(str(pick[k])) for k in ("saleMin", "saleMax", "rentMin", "rentMax"))
     if not (0 < smin <= smax and 0 < rmin <= rmax):
         raise OmiError("intervallo OMI non valido")
-    return {"prevalentType": prevalent.group(1).strip() if prevalent else None, "rectified": bool(m.group(1)),
-            "saleMin": float(smin), "saleMax": float(smax), "saleSurface": m.group(4),
-            "rentMin": float(rmin), "rentMax": float(rmax), "rentSurface": m.group(7),
+    return {"prevalentType": prevalent, "selectedType": wanted, "rows": rows, **{k: pick[k] for k in pick if k not in ("type", "state")},
             "sale": float((smin + smax) / 2), "rent": float((rmin + rmax) / 2),
             "rentRounded": float(((rmin + rmax) / 2).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))}
 
@@ -158,8 +179,11 @@ def read_semester(session: Session, semester: str, codes: dict[str, str]) -> dic
             except OmiError as error:
                 if "assente" not in str(error):
                     raise OmiError(f"{town} {zone['code']}: {error}") from error
-                # Zona senza quotazione «Abitazioni civili NORMALE»: esclusa, come nel catalogo.
-                zone.update(residential=False, reason=str(error))
+                # Zona senza quotazione residenziale in stato NORMALE: esclusa, come nel catalogo.
+                text = text_of(result)
+                found = re.search(r"Tipologia prevalente:\s*(.+?)\s+Destinazione:", text)
+                zone.update(residential=False, reason=str(error), rows=parse_rows(text),
+                            prevalentType=found.group(1).strip() if found else None)
             zones.append(zone)
         if not any(z["residential"] for z in zones) or len({z["code"] for z in zones}) != len(zones):
             raise OmiError(f"{town}: zone OMI assenti o duplicate")

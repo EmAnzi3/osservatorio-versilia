@@ -948,6 +948,13 @@ def update_omi_residential(semester: str, dry_run: bool, reader: Any = None) -> 
         if {z["code"] for z in fresh[town]} != set(current):
             mismatch.append(f"{town}: zonizzazione {semester} {sorted(z['code'] for z in fresh[town])} diversa da {sorted(current)}")
     if mismatch:
+        # Diagnostica: tutte le righe lette dalla fonte per le zone in disaccordo.
+        for town, zones in raw_replay.items():
+            for z in zones:
+                if any(m.startswith(f"{town} {z['code']} ") or m.startswith(f"{town}: zone") for m in mismatch):
+                    rows = "; ".join(f"{r['type']} {r['state']} {r['saleMin']}-{r['saleMax']}"
+                                     + (f" / {r['rentMin']}-{r['rentMax']}" if "rentMin" in r else "") for r in z.get("rows", []))
+                    mismatch.append(f"  fonte {town} {z['code']} ({z['sourceLabel'] if 'sourceLabel' in z else ''}; prevalente {z.get('prevalentType')}): {rows or z.get('reason')}")
         raise UpdateError("OMI: la regola non riproduce il semestre pubblicato o le zone sono cambiate:\n  " + "\n  ".join(mismatch))
     changes = Changes()
     for town, row in rows.items():
