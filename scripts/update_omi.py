@@ -28,6 +28,9 @@ SEARCH, RESULT = BASE + "ricerca.php", BASE + "risultato.php"
 PROVINCE = "LU"
 TOWNS = {"Camaiore": "046005", "Forte dei Marmi": "046013", "Massarosa": "046018", "Pietrasanta": "046024",
          "Seravezza": "046028", "Stazzema": "046030", "Viareggio": "046033"}
+# Codici catastali usati dalla consultazione (l'etichetta del Comune può differire: «FORTE DE MARMI»).
+CADASTRAL = {"Camaiore": "B455", "Forte dei Marmi": "D730", "Massarosa": "F035", "Pietrasanta": "G628",
+             "Seravezza": "I622", "Stazzema": "I942", "Viareggio": "L833"}
 UA = {"User-Agent": "Mozilla/5.0 (compatible; OsservatorioVersilia-data-audit/1.0)"}
 TYPE, STATE = "Abitazioni civili", "NORMALE"
 SNAPSHOT_PREFIX = "omi-residential-"
@@ -123,10 +126,11 @@ def parse_result(page: str, semester: str) -> dict[str, Any]:
 
 def town_codes(session: Session) -> dict[str, str]:
     page = session.post(SEARCH, {"level": "1", "lingua": "IT", "pr": PROVINCE})
-    names = {t.upper(): v for v, t in options(page, "co")}
-    if any(t.upper() not in names for t in TOWNS):
-        raise OmiError("Comuni della Versilia non tutti presenti nella provincia di Lucca")
-    return {t: names[t.upper()] for t in TOWNS}
+    available = {v for v, _ in options(page, "co")}
+    missing = [t for t, c in CADASTRAL.items() if c not in available]
+    if missing:
+        raise OmiError(f"Comuni assenti nella provincia di Lucca: {', '.join(missing)}")
+    return dict(CADASTRAL)
 
 
 def semesters(session: Session) -> list[str]:
