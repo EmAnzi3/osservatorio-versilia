@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `c74efff78e11ec26fbc6a13825de0678adb6d3903ce4601758ba02eaf6623907`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `6708cadebf2fb916ebecd65a12a1f9e0353ed499dce39e4cd9f18a9140711719`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -411,7 +411,7 @@ Chi incontra difficoltà abitative e quali segnali possiamo osservare oggi? **Ri
 
 **Composizione:** Mostrare vendita e affitto OMI con unità distinte e media semplice di zone; affiancare abitazioni non occupate e morosità ERP nei propri universi. Nessun rapporto OMI/MEF diventa onere dei nuclei: costo effettivo, redditi disponibili e domanda ERP restano fabbisogni istruttori.
 
-**Interpretazione da approfondire:** Le medie semplici OMI 2025-S2 di Massarosa sono inferiori a quelle di Viareggio sia per vendita sia per affitto. Il confronto orienta l’approfondimento dei mercati locali; non dimostra che le famiglie di Massarosa possano sostenere il costo della casa.
+**Interpretazione da approfondire:** Le medie semplici OMI 2026-S1 di Massarosa sono inferiori a quelle di Viareggio sia per vendita sia per affitto. Il confronto orienta l’approfondimento dei mercati locali; non dimostra che le famiglie di Massarosa possano sostenere il costo della casa.
 
 **Competenze:** Comune: politiche abitative locali e urbanistica; Regione e gestore ERP secondo atti/accordi da verificare; mercato privato non controllato dai conteggi.
 
@@ -425,7 +425,7 @@ Chi incontra difficoltà abitative e quali segnali possiamo osservare oggi? **Ri
 
 | Richiesta | Operazione / vista | Periodi / unità | Risposta | Verifica |
 |---|---|---|---|---|
-| omi_total_046018 | compare / omiResidential / total | 2025-S2 / eurm2 | 046018: 1535.7142857142858; 046033: 2200.0 | PASS |
+| omi_total_046018 | compare / omiResidential / total | 2026-S1 / eurm2 | 046018: 1539.2857142857142; 046033: 2265.625 | PASS |
 | omi_total_series_refused | series / omiResidential / total |  /  | omi_single_semester_no_comparable_history_frozen | PASS |
 | census_vacancy | compare / vacantHomes / total | 2023 / percent | 046018: 17.9; 046033: 27 | PASS |
 | census_rounded_weighting_refused | weighted_ratio / vacantHomes / total | 2023 / percent | verified_ratio_adapter_required | PASS |
@@ -439,7 +439,7 @@ Chi incontra difficoltà abitative e quali segnali possiamo osservare oggi? **Ri
 | erp_pooled_2020 | weighted_ratio / erpArrears / nativeRatio | 2020 / percent | 046005: 6.895828853180236; 046013: 5.848185311672545; 046018: 3.8004507020241105; 046024: 7.696561148695478; 046028: 5.248715026425228; 046030: 3.5005199750202562; 046033: 11.510622360320367 | PASS |
 | erp_total_absolute_change_refused | absolute_change / erpArrears / total |  /  | erp_accounting_continuity_not_attested_for_temporal_analysis | PASS |
 | dossier_primary_territorialPlanningMissionExpenditurePerResident | compare / territorialPlanningMissionExpenditurePerResident / total | 2025 / currency | 046005: 61.693765079165615; 046013: 277.8279777977798; 046018: 97.95091672016876; 046024: 104.30770874554808; 046028: 65.09314110330345; 046030: 86.96942600276624; 046033: 39.95002243558019 | PASS |
-| omi_rentMean_046018 | compare / omiResidential / rentMean | 2025-S2 / eurm2month | 046018: 5.2; 046033: 7.2375 | PASS |
+| omi_rentMean_046018 | compare / omiResidential / rentMean | 2026-S1 / eurm2month | 046018: 5.185714285714285; 046033: 7.45 | PASS |
 
 **Fonti effettivamente lette:** https://at.erplucca.it/default?path=75&t=1; https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip; https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip; https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800
 

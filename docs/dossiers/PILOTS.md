@@ -508,10 +508,10 @@ Ogni esempio qui sotto è una richiesta realmente eseguita sul catalogo effettiv
 
 | Territorio | Periodo | Valore | Unità | Universo |
 |---|---|---:|---|---|
-| 046018 | 2025-S2 | 1535.7142857142858 | eurm2 | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
-| 046033 | 2025-S2 | 2200.0 | eurm2 | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
+| 046018 | 2026-S1 | 1539.2857142857142 | eurm2 | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
+| 046033 | 2026-S1 | 2265.625 | eurm2 | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
 
-**Fonte e metodo:** https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm; arithmetic mean of published zone reference values; original OMI min/max ranges and selection records not replayed.
+**Fonte e metodo:** https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm; arithmetic mean of zone midpoints of the OMI min/max ranges (civil dwellings, normal state); ranges and source rows frozen in data/source-snapshots/omi-residential-2026-S1.json, not replayed by the engine.
 
 **Limiti della risposta:** Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.
 
@@ -535,10 +535,10 @@ Ogni esempio qui sotto è una richiesta realmente eseguita sul catalogo effettiv
 
 | Territorio | Periodo | Valore | Unità | Universo |
 |---|---|---:|---|---|
-| 046018 | 2025-S2 | 5.2 | eurm2month | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
-| 046033 | 2025-S2 | 7.2375 | eurm2month | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
+| 046018 | 2026-S1 | 5.185714285714285 | eurm2month | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
+| 046033 | 2026-S1 | 7.45 | eurm2month | displayed residential OMI zones; civil dwellings, normal state, public reference selection |
 
-**Fonte e metodo:** https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm; arithmetic mean of published zone reference values; original OMI min/max ranges and selection records not replayed.
+**Fonte e metodo:** https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm; arithmetic mean of zone midpoints of the OMI min/max ranges (civil dwellings, normal state); ranges and source rows frozen in data/source-snapshots/omi-residential-2026-S1.json, not replayed by the engine.
 
 **Limiti della risposta:** Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.
 

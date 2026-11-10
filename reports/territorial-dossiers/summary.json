@@ -1,9 +1,9 @@
 {
   "schemaVersion": 3,
   "status": "PASS",
-  "catalogSha256": "c74efff78e11ec26fbc6a13825de0678adb6d3903ce4601758ba02eaf6623907",
+  "catalogSha256": "6708cadebf2fb916ebecd65a12a1f9e0353ed499dce39e4cd9f18a9140711719",
   "engineSha256": "93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe",
-  "programSha256": "9c27a323d619bb245f5eb6e7ca54a7bac6a6cce1c8ec8dd421b136747b2a80c2",
+  "programSha256": "c37e0defcade0ebdcb768631ba0f99d4413e5718b869e4c3ca7c66b196a2a109",
   "limits": [
     "No new acquisitions, adapters, political rankings or causal evaluation.",
     "Periods and units belong to each selected observation; no automatic cross-period joining.",
@@ -17,7 +17,7 @@
   "expectedRefusals": 94,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "37ea0775c2ea15398a2000a75a1aeb15fcb688eeca9ad61d8dfc4680c481c9b8",
+  "evidenceSha256": "d224a95fc82b3e3d3a8763b4719e687f89c73c2a02902eaebb6d3b0b05294fd6",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,

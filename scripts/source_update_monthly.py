@@ -3,7 +3,8 @@
 
 Esegue ogni aggiornatore disponibile (tutti gli indicatori ARS legacy; ASIA-UL e
 mobilità Istat P2 per l'anno pubblicato e per quello successivo; ultima edizione
-AGCOM FTTH), uno alla volta, e scrive
+AGCOM FTTH; anno successivo di capacità ricettiva Istat, parco ACI e consumo di
+suolo ISPRA; semestre successivo delle quotazioni OMI), uno alla volta, e scrive
 un rapporto Markdown con l'esito di ciascuno: aggiornato, invariato o rifiutato
 con il motivo e cosa fare. Ogni aggiornatore scrive solo se il file della fonte è
 completo, quindi i riusciti restano anche se un altro viene rifiutato.
@@ -28,6 +29,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "data" / "site-data.json"
 ARS_LEGACY = ROOT / "data" / "source-snapshots" / "ars-a3-5-legacy-history.json"
 MOBILITY_KEY = "internalResidentialMobility"
+# Aggiornatori di un'edizione annuale nuova: comando e indicatore che ne porta l'anno pubblicato.
+NEXT_YEAR = [("istat-tourism", "tourismBeds"), ("aci-vehicles", "motorization"), ("ispra-soil", "landUse")]
+NEW_PERIOD = {"istat-tourism", "aci-vehicles", "ispra-soil", "omi-residential"}
 
 
 def plan(site: dict, ars: dict) -> list[list[str]]:
@@ -37,7 +41,16 @@ def plan(site: dict, ars: dict) -> list[list[str]]:
     year = int(site["metrics"][MOBILITY_KEY]["meta"]["year"])
     commands += [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
     commands.append(["agcom-ftth"])
+    commands += [[name, "--year", str(int(site["metrics"][key]["meta"]["year"]) + 1)]
+                 for name, key in NEXT_YEAR]
+    commands.append(["omi-residential", "--semester", next_semester(site["metrics"]["omiResidential"]["meta"]["year"])])
     return commands
+
+
+def next_semester(label: str) -> str:
+    """«2° semestre 2025» → «2026-S1»; «1° semestre 2026» → «2026-S2»."""
+    half, year = label.split("° semestre ")
+    return f"{int(year) + 1}-S1" if half.strip() == "2" else f"{year.strip()}-S2"
 
 
 def advice(args: list[str], message: str) -> str:
@@ -49,6 +62,8 @@ def advice(args: list[str], message: str) -> str:
         return "Anno non ancora pubblicato da Istat per tutti i Comuni: nessuna azione, si riprova il mese prossimo."
     if args[0] == "istat-mobility" and any(k in text for k in ("404", "not found", "non è uno zip")):
         return "Anno non ancora pubblicato da Istat: nessuna azione, si riprova il mese prossimo."
+    if args[0] in NEW_PERIOD and any(k in text for k in ("non trovat", "non presente", "404", "not found")):
+        return "Periodo non ancora pubblicato dalla fonte: nessuna azione, si riprova il mese prossimo."
     if any(k in text for k in ("tentativi", "timeout", "timed out", "connection", "http", "ssl", "urlopen")):
         return "Fonte non raggiungibile da GitHub: rilanciare il workflow a mano; se persiste, scaricare il file e usare `--file`."
     return "Forma del file cambiata o controllo non superato: verificare il file della fonte e l'aggiornatore prima di pubblicare."

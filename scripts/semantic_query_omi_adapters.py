@@ -5,20 +5,20 @@ from semantic_query_library_adapters import TOWNS, fingerprint
 from semantic_operations import finite
 
 KEYS = ('omiResidential',)
-PERIOD = '2025-S2'
+PERIOD = '2026-S1'
 PUBLIC_HASH = _pin('omi#1')
 NOTES = ['omi_reference_quotations_not_transaction_prices_or_registered_rents',
          'omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean',
          'omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted',
          'omi_zone_codes_are_local_to_each_municipality_not_comparable_neighbourhoods',
-         'omi_public_zone_values_replayed_original_omi_ranges_and_files_not_frozen',
+         'omi_zone_values_midpoints_of_source_ranges_frozen_in_semester_snapshot',
          'omi_sale_euro_per_m2_and_rent_euro_per_m2_per_month_are_distinct',
-         'omi_second_semester_2025_not_current_2026_or_full_year_average',
+         'omi_first_semester_2026_not_current_market_or_full_year_average',
          'omi_numerical_rank_not_affordability_or_policy_priority']
 
 
 def token(key, period):
-    if str(period) in (PERIOD, '2° semestre 2025'): return PERIOD
+    if str(period) in (PERIOD, '1° semestre 2026'): return PERIOD
     raise ValueError('omi_exact_semester_required')
 
 
@@ -43,8 +43,8 @@ def context(metric, key, dim):
     return dict(unit='eurm2month' if rent else 'eurm2',
                 population='displayed residential OMI zones; civil dwellings, normal state, public reference selection',
                 definition='unweighted municipal mean of displayed residential zone '+('rental' if rent else 'sale')+' reference quotations',
-                method='arithmetic mean of published zone reference values; original OMI min/max ranges and selection records not replayed',
-                frequency='semester', periodBasis='second semester 2025; neither annual average nor current 2026 market',
+                method='arithmetic mean of zone midpoints of the OMI min/max ranges (civil dwellings, normal state); ranges and source rows frozen in data/source-snapshots/omi-residential-2026-S1.json, not replayed by the engine',
+                frequency='semester', periodBasis='first semester 2026; neither annual average nor current market',
                 nativeComponentsAvailable=False, nativeRecordReplayAvailable=False,
                 adapter='omi/'+dim+'/v1')
 
@@ -83,7 +83,7 @@ def observation(engine, key, index, dim, period, historical):
                      valuePointer=f'/metrics/{key}/rows/{index}/{field}',
                      periodPointer=f'/metrics/{key}/meta/year',
                      zoneValuePointers=[f'/metrics/{key}/rows/{index}/zones/{i}/{zonefield}' for i in range(len(row['zones']))],
-                     replayScope='published zone reference values only; original OMI quotation ranges and source files not frozen')]
+                     replayScope='published zone reference values; OMI ranges frozen in the semester snapshot, not replayed here')]
     return dict(ctx, metric=key, dimension=dim, geography=row['code'], period=period, value=row[field],
                 source=metric['sourceUrl'], evidence=evidence, provenance=evidence,
                 notApplicable=False, dataUnavailable=False, missingReason=None), NOTES[:]

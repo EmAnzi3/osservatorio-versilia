@@ -1,0 +1,4521 @@
+{
+  "schemaVersion": 1,
+  "metric": "omiResidential",
+  "semester": "2026-S1",
+  "publishedReplayed": "2025-S2",
+  "source": "Agenzia delle Entrate — Osservatorio del Mercato Immobiliare (OMI)",
+  "sourceUrl": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
+  "province": "LU",
+  "selection": {
+    "type": "Abitazioni civili",
+    "state": "NORMALE",
+    "destination": "Residenziale",
+    "zoneValue": "punto medio min/max di compravendita e locazione",
+    "excludedZones": "zone senza la riga Abitazioni civili NORMALE"
+  },
+  "catalogCorrections": {
+    "Seravezza E3": [
+      "Seravezza E3 sale: 1450.0 ≠ 1125.0",
+      "Seravezza E3 rent: 4.6 ≠ 3.45"
+    ],
+    "Stazzema": [
+      "Stazzema: zone ['B1', 'B2', 'D1', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'R1', 'R2'] ≠ fonte ['B1', 'E7', 'R2']"
+    ],
+    "Viareggio D2": [
+      "Viareggio D2 sale: 1750.0 ≠ 2025.0",
+      "Viareggio D2 rent: 5.5 ≠ 7.15"
+    ]
+  },
+  "retrievedAt": "2026-11-10",
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py omi-residential --semester 2026-S1 --correction 'Seravezza E3' --correction 'Stazzema' --correction 'Viareggio D2'"
+  },
+  "zones": {
+    "046005": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000045",
+        "band": "Centrale/CAPOLUOGO CENTRO",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO CENTRO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1350.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 6.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1900.0,
+            "saleMax": 2800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2200.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 8.0,
+        "rentSurface": "L",
+        "sale": 1850.0,
+        "rent": 6.85,
+        "rentRounded": 6.9,
+        "residential": true
+      },
+      {
+        "code": "D5",
+        "linkzona": "LU00012305",
+        "band": "Periferica/BADIA - MISCIANO - SILERCHIE - PORTA LOMBRICESE - VADO - GELLO - PIEVE DI CAMAIORE - ACQUAVIVA - NOCCHI",
+        "sourceLabel": "D5/Periferica/BADIA - MISCIANO - SILERCHIE - PORTA LOMBRICESE - VADO - GELLO - PIEVE D...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1750.0,
+            "saleSurface": "L",
+            "rentMin": 4.3,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 500.0,
+            "saleMax": 750.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1250.0,
+        "saleMax": 1750.0,
+        "saleSurface": "L",
+        "rentMin": 4.3,
+        "rentMax": 6.1,
+        "rentSurface": "L",
+        "sale": 1500.0,
+        "rent": 5.2,
+        "rentRounded": 5.2,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00010739",
+        "band": "Suburbana/LIDO DI CAMAIORE - FOSSA DELL'ABATE",
+        "sourceLabel": "E3/Suburbana/LIDO DI CAMAIORE - FOSSA DELL'ABATE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3600.0,
+            "saleMax": 4400.0,
+            "saleSurface": "L",
+            "rentMin": 9.5,
+            "rentMax": 12.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2750.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L",
+            "rentMin": 7.7,
+            "rentMax": 11.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3200.0,
+            "saleMax": 4800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3600.0,
+        "saleMax": 4400.0,
+        "saleSurface": "L",
+        "rentMin": 9.5,
+        "rentMax": 12.3,
+        "rentSurface": "L",
+        "sale": 4000.0,
+        "rent": 10.9,
+        "rentRounded": 10.9,
+        "residential": true
+      },
+      {
+        "code": "E4",
+        "linkzona": "LU00010741",
+        "band": "Suburbana/SECCO - ENTROTERRA LIDO",
+        "sourceLabel": "E4/Suburbana/SECCO - ENTROTERRA LIDO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2150.0,
+            "saleMax": 2900.0,
+            "saleSurface": "L",
+            "rentMin": 7.4,
+            "rentMax": 9.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1850.0,
+            "saleMax": 2550.0,
+            "saleSurface": "L",
+            "rentMin": 6.0,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2350.0,
+            "saleMax": 3500.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2150.0,
+        "saleMax": 2900.0,
+        "saleSurface": "L",
+        "rentMin": 7.4,
+        "rentMax": 9.8,
+        "rentSurface": "L",
+        "sale": 2525.0,
+        "rent": 8.6,
+        "rentRounded": 8.6,
+        "residential": true
+      },
+      {
+        "code": "E5",
+        "linkzona": "LU00010750",
+        "band": "Suburbana/CAPEZZANO - FRATI - ARGINVECCHIO - PADULETTO - TREBBIANO - CAPANNE - LE BOCCHETTE - BUCINE",
+        "sourceLabel": "E5/Suburbana/CAPEZZANO - FRATI - ARGINVECCHIO - PADULETTO - TREBBIANO - CAPANNE - LE B...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2150.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 7.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 5.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1750.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1700.0,
+        "saleMax": 2150.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 7.2,
+        "rentSurface": "L",
+        "sale": 1925.0,
+        "rent": 6.45,
+        "rentRounded": 6.5,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000424",
+        "band": "Extraurbana/PEDONA,PONTEMAZZORI,NOCCHI,MONTEMAGNO,GREPPOLUNGO,CASOLI,METATO,ANTICIANA,CASCIANA,FIBBIALLA,GOMBITELLI,TORCIGLIANA,LICETRO,MONTEG",
+        "sourceLabel": "R1/Extraurbana/PEDONA,PONTEMAZZORI,NOCCHI,MONTEMAGNO,GREPPOLUNGO,CASOLI,METATO,ANTICIA...",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1650.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L",
+            "rentMin": 2.5,
+            "rentMax": 3.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2050.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1650.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.6,
+        "rentSurface": "L",
+        "sale": 1375.0,
+        "rent": 3.85,
+        "rentRounded": 3.9,
+        "residential": true
+      }
+    ],
+    "046013": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000075",
+        "band": "Centrale/CAPOLUOGO - ROMA IMPERIALE",
+        "sourceLabel": "B1/Centrale/CAPOLUOGO - ROMA IMPERIALE",
+        "prevalentType": "Ville e Villini",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 7400.0,
+            "saleMax": 11100.0,
+            "saleSurface": "L",
+            "rentMin": 20.0,
+            "rentMax": 29.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4800.0,
+            "saleMax": 7000.0,
+            "saleSurface": "L",
+            "rentMin": 12.3,
+            "rentMax": 18.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2300.0,
+            "saleMax": 3400.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 11400.0,
+            "saleMax": 17100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 7400.0,
+        "saleMax": 11100.0,
+        "saleSurface": "L",
+        "rentMin": 20.0,
+        "rentMax": 29.0,
+        "rentSurface": "L",
+        "sale": 9250.0,
+        "rent": 24.5,
+        "rentRounded": 24.5,
+        "residential": true
+      },
+      {
+        "code": "B2",
+        "linkzona": "LU00000076",
+        "band": "Centrale/CAPOLUOGO - VITTORIA APUANA -",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO - VITTORIA APUANA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 5100.0,
+            "saleMax": 7600.0,
+            "saleSurface": "L",
+            "rentMin": 13.9,
+            "rentMax": 20.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3700.0,
+            "saleMax": 5500.0,
+            "saleSurface": "L",
+            "rentMin": 10.9,
+            "rentMax": 15.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 8600.0,
+            "saleMax": 12800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 5100.0,
+        "saleMax": 7600.0,
+        "saleSurface": "L",
+        "rentMin": 13.9,
+        "rentMax": 20.4,
+        "rentSurface": "L",
+        "sale": 6350.0,
+        "rent": 17.15,
+        "rentRounded": 17.2,
+        "residential": true
+      },
+      {
+        "code": "C1",
+        "linkzona": "LU00000167",
+        "band": "Semicentrale/LUNGOMARE FINO AL CONFINE CON CINQUALE, ED ENTROTERRA CAPOLUOGO FINO A CAVALLO DELLA S.P. DELLA MARINA",
+        "sourceLabel": "C1/Semicentrale/LUNGOMARE FINO AL CONFINE CON CINQUALE, ED ENTROTERRA CAPOLUOGO FINO A...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4100.0,
+            "saleMax": 6000.0,
+            "saleSurface": "L",
+            "rentMin": 12.0,
+            "rentMax": 18.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2850.0,
+            "saleMax": 4200.0,
+            "saleSurface": "L",
+            "rentMin": 8.0,
+            "rentMax": 12.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 6700.0,
+            "saleMax": 10000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 4100.0,
+        "saleMax": 6000.0,
+        "saleSurface": "L",
+        "rentMin": 12.0,
+        "rentMax": 18.0,
+        "rentSurface": "L",
+        "sale": 5050.0,
+        "rent": 15.0,
+        "rentRounded": 15.0,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000168",
+        "band": "Periferica/POLVERIFICIO - BARBIERA - VAIANA -",
+        "sourceLabel": "D1/Periferica/POLVERIFICIO - BARBIERA - VAIANA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2800.0,
+            "saleMax": 4000.0,
+            "saleSurface": "L",
+            "rentMin": 7.8,
+            "rentMax": 11.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 3000.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 8.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4100.0,
+            "saleMax": 6000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2800.0,
+        "saleMax": 4000.0,
+        "saleSurface": "L",
+        "rentMin": 7.8,
+        "rentMax": 11.6,
+        "rentSurface": "L",
+        "sale": 3400.0,
+        "rent": 9.7,
+        "rentRounded": 9.7,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000568",
+        "band": "Periferica/CARANNA -",
+        "sourceLabel": "D2/Periferica/CARANNA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3100.0,
+            "saleMax": 4600.0,
+            "saleSurface": "L",
+            "rentMin": 8.2,
+            "rentMax": 12.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2200.0,
+            "saleMax": 3200.0,
+            "saleSurface": "L",
+            "rentMin": 5.5,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1150.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4300.0,
+            "saleMax": 6400.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3100.0,
+        "saleMax": 4600.0,
+        "saleSurface": "L",
+        "rentMin": 8.2,
+        "rentMax": 12.2,
+        "rentSurface": "L",
+        "sale": 3850.0,
+        "rent": 10.2,
+        "rentRounded": 10.2,
+        "residential": true
+      }
+    ],
+    "046018": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000084",
+        "band": "Centrale/MASSAROSA CAPOLUOGO - STERPETI -",
+        "sourceLabel": "B1/Centrale/MASSAROSA CAPOLUOGO - STERPETI -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1350.0,
+            "saleMax": 1900.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1150.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1600.0,
+            "saleMax": 2400.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1350.0,
+        "saleMax": 1900.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1625.0,
+        "rent": 6.0,
+        "rentRounded": 6.0,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000085",
+        "band": "Periferica/MASSACIUCCOLI  -  PIETRA A PADULE, AL SASSO",
+        "sourceLabel": "D1/Periferica/MASSACIUCCOLI - PIETRA A PADULE, AL SASSO",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 6.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1400.0,
+            "saleSurface": "L",
+            "rentMin": 3.3,
+            "rentMax": 4.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 480.0,
+            "saleMax": 720.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2500.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1250.0,
+        "saleMax": 1800.0,
+        "saleSurface": "L",
+        "rentMin": 4.5,
+        "rentMax": 6.5,
+        "rentSurface": "L",
+        "sale": 1525.0,
+        "rent": 5.5,
+        "rentRounded": 5.5,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000623",
+        "band": "Periferica/STIAVA - PIAN DEL QUERCIONE - LUCIANO - MONTIGNANO - MIGLIANELLO,GUALDO,MONTRAMITO,SAN ROCCHINO,GUALDO,PIEVE A ELICI,CASELLA,PIOPP",
+        "sourceLabel": "D2/Periferica/STIAVA - PIAN DEL QUERCIONE - LUCIANO - MONTIGNANO - MIGLIANELLO,GUALDO,...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L",
+            "rentMin": 5.2,
+            "rentMax": 7.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1150.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2550.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2000.0,
+        "saleSurface": "L",
+        "rentMin": 5.2,
+        "rentMax": 7.2,
+        "rentSurface": "L",
+        "sale": 1750.0,
+        "rent": 6.2,
+        "rentRounded": 6.2,
+        "residential": true
+      },
+      {
+        "code": "D3",
+        "linkzona": "LU00000624",
+        "band": "Periferica/CASESI - CORSANICO - PIANO DI MOMMIO - MOMMIO  CASTELLO- PIAN DI CONCA,SASSAIA,BOTRICI",
+        "sourceLabel": "D3/Periferica/CASESI - CORSANICO - PIANO DI MOMMIO - MOMMIO CASTELLO- PIAN DI CONCA,S...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L",
+            "rentMin": 4.9,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 5.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 640.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2650.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1450.0,
+        "saleMax": 2000.0,
+        "saleSurface": "L",
+        "rentMin": 4.9,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1725.0,
+        "rent": 5.95,
+        "rentRounded": 6.0,
+        "residential": true
+      },
+      {
+        "code": "D4",
+        "linkzona": "LU00000821",
+        "band": "Periferica/QUIESA - MACELLARINO - COLLE - BOZZANO EST",
+        "sourceLabel": "D4/Periferica/QUIESA - MACELLARINO - COLLE - BOZZANO EST",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 6.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L",
+            "rentMin": 3.7,
+            "rentMax": 5.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 550.0,
+            "saleMax": 820.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1300.0,
+        "saleMax": 1600.0,
+        "saleSurface": "L",
+        "rentMin": 4.5,
+        "rentMax": 6.4,
+        "rentSurface": "L",
+        "sale": 1450.0,
+        "rent": 5.45,
+        "rentRounded": 5.5,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000437",
+        "band": "Extraurbana/ZONA AGRICOLA, PADULE",
+        "sourceLabel": "R1/Extraurbana/ZONA AGRICOLA, PADULE",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 850.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1600.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1350.0,
+        "rent": 3.6,
+        "rentRounded": 3.6,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00000625",
+        "band": "Extraurbana/PADULE DI MASSACIUCCOLI -",
+        "sourceLabel": "R2/Extraurbana/PADULE DI MASSACIUCCOLI -",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 850.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1600.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1350.0,
+        "rent": 3.6,
+        "rentRounded": 3.6,
+        "residential": true
+      }
+    ],
+    "046024": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000107",
+        "band": "Centrale/PIETRASANTA CAPOLUOGO -",
+        "sourceLabel": "B2/Centrale/PIETRASANTA CAPOLUOGO -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2950.0,
+            "saleMax": 4400.0,
+            "saleSurface": "L",
+            "rentMin": 8.5,
+            "rentMax": 11.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2450.0,
+            "saleMax": 3400.0,
+            "saleSurface": "L",
+            "rentMin": 7.2,
+            "rentMax": 9.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3300.0,
+            "saleMax": 4900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2950.0,
+        "saleMax": 4400.0,
+        "saleSurface": "L",
+        "rentMin": 8.5,
+        "rentMax": 11.1,
+        "rentSurface": "L",
+        "sale": 3675.0,
+        "rent": 9.8,
+        "rentRounded": 9.8,
+        "residential": true
+      },
+      {
+        "code": "D6",
+        "linkzona": "LU00010715",
+        "band": "Periferica/INTERNO MARINA - VIGNONE - SAPONIERA - POZZODONICO",
+        "sourceLabel": "D6/Periferica/INTERNO MARINA - VIGNONE - SAPONIERA - POZZODONICO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1950.0,
+            "saleMax": 2650.0,
+            "saleSurface": "L",
+            "rentMin": 6.3,
+            "rentMax": 8.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1600.0,
+            "saleMax": 2400.0,
+            "saleSurface": "L",
+            "rentMin": 4.9,
+            "rentMax": 7.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 800.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2750.0,
+            "saleMax": 4100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1950.0,
+        "saleMax": 2650.0,
+        "saleSurface": "L",
+        "rentMin": 6.3,
+        "rentMax": 8.6,
+        "rentSurface": "L",
+        "sale": 2300.0,
+        "rent": 7.45,
+        "rentRounded": 7.5,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00010755",
+        "band": "Suburbana/MARINA DI PIETRASANTA - FIUMETTO - TONFANO - MOTRONE - FOCETTE",
+        "sourceLabel": "E3/Suburbana/MARINA DI PIETRASANTA - FIUMETTO - TONFANO - MOTRONE - FOCETTE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3800.0,
+            "saleMax": 4800.0,
+            "saleSurface": "L",
+            "rentMin": 11.7,
+            "rentMax": 15.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3300.0,
+            "saleMax": 4400.0,
+            "saleSurface": "L",
+            "rentMin": 9.8,
+            "rentMax": 12.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1650.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4100.0,
+            "saleMax": 6100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3800.0,
+        "saleMax": 4800.0,
+        "saleSurface": "L",
+        "rentMin": 11.7,
+        "rentMax": 15.4,
+        "rentSurface": "L",
+        "sale": 4300.0,
+        "rent": 13.55,
+        "rentRounded": 13.6,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00010670",
+        "band": "Extraurbana/STRETTOIA - CANTINA - MONTISCENDI",
+        "sourceLabel": "R2/Extraurbana/STRETTOIA - CANTINA - MONTISCENDI",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1550.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2100.0,
+            "saleMax": 3100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1550.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 4.7,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1925.0,
+        "rent": 5.85,
+        "rentRounded": 5.9,
+        "residential": true
+      },
+      {
+        "code": "R3",
+        "linkzona": "LU00010677",
+        "band": "Extraurbana/CAPEZZANO - CAPRIGLIA -SOLAIO -VALLECCHIA- VALDICASTELLO",
+        "sourceLabel": "R3/Extraurbana/CAPEZZANO - CAPRIGLIA -SOLAIO -VALLECCHIA- VALDICASTELLO",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1850.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2250.0,
+            "saleMax": 3300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2250.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.3,
+        "rentSurface": "L",
+        "sale": 1875.0,
+        "rent": 6.15,
+        "rentRounded": 6.2,
+        "residential": true
+      }
+    ],
+    "046028": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000120",
+        "band": "Centrale/SERAVEZZA CAPOLUOGO - CORVAIA - MIGNANO -",
+        "sourceLabel": "B2/Centrale/SERAVEZZA CAPOLUOGO - CORVAIA - MIGNANO -",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.6,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.6,
+            "rentMax": 5.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1650.0,
+            "saleMax": 2450.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1400.0,
+        "saleMax": 1950.0,
+        "saleSurface": "L",
+        "rentMin": 4.6,
+        "rentMax": 6.1,
+        "rentSurface": "L",
+        "sale": 1675.0,
+        "rent": 5.35,
+        "rentRounded": 5.4,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000840",
+        "band": "Periferica/RIPA,POZZI, QUERCETA, MARZOCCHINO, PONTEROSSO, MADONNINA, PONTE DI TAVOLE, RANOCCHIAIO, CIOCCHE, PUNTONE",
+        "sourceLabel": "D1/Periferica/RIPA,POZZI, QUERCETA, MARZOCCHINO, PONTEROSSO, MADONNINA, PONTE DI TAVOL...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2500.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 8.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 4.6,
+            "rentMax": 6.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 720.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2200.0,
+            "saleMax": 3200.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2500.0,
+        "saleSurface": "L",
+        "rentMin": 5.8,
+        "rentMax": 8.3,
+        "rentSurface": "L",
+        "sale": 2150.0,
+        "rent": 7.05,
+        "rentRounded": 7.1,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00000619",
+        "band": "Suburbana/BASATI - CERRETA - RUOSINA , S. ANTONIO",
+        "sourceLabel": "E3/Suburbana/BASATI - CERRETA - RUOSINA , S. ANTONIO",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L",
+            "rentMin": 2.8,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 350.0,
+            "saleMax": 520.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 950.0,
+        "saleMax": 1350.0,
+        "saleSurface": "L",
+        "rentMin": 2.8,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1150.0,
+        "rent": 3.45,
+        "rentRounded": 3.5,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000447",
+        "band": "Extraurbana/FABIANO, MINAZZANA, GIUSTAGNANA, RIOMAGNO,AZZANO",
+        "sourceLabel": "R1/Extraurbana/FABIANO, MINAZZANA, GIUSTAGNANA, RIOMAGNO,AZZANO",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1300.0,
+            "saleSurface": "L",
+            "rentMin": 2.8,
+            "rentMax": 3.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 350.0,
+            "saleMax": 520.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 900.0,
+        "saleMax": 1300.0,
+        "saleSurface": "L",
+        "rentMin": 2.8,
+        "rentMax": 3.9,
+        "rentSurface": "L",
+        "sale": 1100.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      }
+    ],
+    "046030": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000125",
+        "band": "Centrale/STAZZEMA",
+        "sourceLabel": "B1/Centrale/STAZZEMA",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.7,
+            "rentMax": 4.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 570.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 1.9,
+            "rentMax": 2.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 280.0,
+            "saleMax": 420.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 700.0,
+        "saleMax": 1050.0,
+        "saleSurface": "L",
+        "rentMin": 2.7,
+        "rentMax": 4.0,
+        "rentSurface": "L",
+        "sale": 875.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      },
+      {
+        "code": "E7",
+        "linkzona": "LU00000864",
+        "band": "Suburbana/PONTE STAZZEMESE",
+        "sourceLabel": "E7/Suburbana/PONTE STAZZEMESE",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L",
+            "rentMin": 2.7,
+            "rentMax": 4.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 1.9,
+            "rentMax": 2.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 300.0,
+            "saleMax": 450.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 750.0,
+        "saleMax": 1100.0,
+        "saleSurface": "L",
+        "rentMin": 2.7,
+        "rentMax": 4.0,
+        "rentSurface": "L",
+        "sale": 925.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00012028",
+        "band": "Extraurbana/PRUNO,CARDOSO,VOLEGNO,VALIVENTRI,RETIGNANO,RUOSINA,LEVIGLIANI,TERRINCA,FARNOCCHIA,POMEZZANA,FABBRICACCIA,CAMPAGRINA,PALAGNANA",
+        "sourceLabel": "R2/Extraurbana/PRUNO,CARDOSO,VOLEGNO,VALIVENTRI,RETIGNANO,RUOSINA,LEVIGLIANI,TERRINCA,...",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 570.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 2.0,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 450.0,
+            "saleMax": 650.0,
+            "saleSurface": "L",
+            "rentMin": 1.5,
+            "rentMax": 2.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 250.0,
+            "saleMax": 375.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 570.0,
+        "saleMax": 850.0,
+        "saleSurface": "L",
+        "rentMin": 2.0,
+        "rentMax": 3.0,
+        "rentSurface": "L",
+        "sale": 710.0,
+        "rent": 2.5,
+        "rentRounded": 2.5,
+        "residential": true
+      }
+    ],
+    "046033": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000131",
+        "band": "Centrale/CAPOLUOGO LUNGOMARE A NORD DEL MOLO, CITTA` GIARDINO",
+        "sourceLabel": "B1/Centrale/CAPOLUOGO LUNGOMARE A NORD DEL MOLO, CITTA` GIARDINO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3000.0,
+            "saleMax": 4500.0,
+            "saleSurface": "L",
+            "rentMin": 9.3,
+            "rentMax": 13.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2650.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L",
+            "rentMin": 7.8,
+            "rentMax": 11.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2150.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3200.0,
+            "saleMax": 4700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3000.0,
+        "saleMax": 4500.0,
+        "saleSurface": "L",
+        "rentMin": 9.3,
+        "rentMax": 13.8,
+        "rentSurface": "L",
+        "sale": 3750.0,
+        "rent": 11.55,
+        "rentRounded": 11.6,
+        "residential": true
+      },
+      {
+        "code": "B2",
+        "linkzona": "LU00000132",
+        "band": "Centrale/CAPOLUOGO ZONA NORD, DON BOSCO, MARCO POLO",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO ZONA NORD, DON BOSCO, MARCO POLO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2400.0,
+            "saleMax": 2950.0,
+            "saleSurface": "L",
+            "rentMin": 7.7,
+            "rentMax": 9.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L",
+            "rentMin": 6.5,
+            "rentMax": 8.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2650.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2400.0,
+        "saleMax": 2950.0,
+        "saleSurface": "L",
+        "rentMin": 7.7,
+        "rentMax": 9.8,
+        "rentSurface": "L",
+        "sale": 2675.0,
+        "rent": 8.75,
+        "rentRounded": 8.8,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000163",
+        "band": "Periferica/PERIFERIA AD EST DELLA FERROVIA, MIGLIARINA, TERMINETTO, VARIGNANO, COTONE",
+        "sourceLabel": "D2/Periferica/PERIFERIA AD EST DELLA FERROVIA, MIGLIARINA, TERMINETTO, VARIGNANO, COTO...",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 6.2,
+            "rentMax": 8.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2050.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 6.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2200.0,
+            "saleMax": 3300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 6.2,
+        "rentMax": 8.4,
+        "rentSurface": "L",
+        "sale": 2050.0,
+        "rent": 7.3,
+        "rentRounded": 7.3,
+        "residential": true
+      },
+      {
+        "code": "D5",
+        "linkzona": "LU00010654",
+        "band": "Periferica/DARSENA - ZONA INTERNA FINO ALLA FERROVIA - EX CAMPO DI AVIAZIONE.",
+        "sourceLabel": "D5/Periferica/DARSENA - ZONA INTERNA FINO ALLA FERROVIA - EX CAMPO DI AVIAZIONE.",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 5.9,
+            "rentMax": 7.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1550.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 5.1,
+            "rentMax": 6.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 800.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 2850.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 5.9,
+        "rentMax": 7.7,
+        "rentSurface": "L",
+        "sale": 2050.0,
+        "rent": 6.8,
+        "rentRounded": 6.8,
+        "residential": true
+      },
+      {
+        "code": "D6",
+        "linkzona": "LU00012304",
+        "band": "Periferica/ZONA A NORD DI TORRE DEL LAGO FINO ALLA ZONA LACUSTRE",
+        "sourceLabel": "D6/Periferica/ZONA A NORD DI TORRE DEL LAGO FINO ALLA ZONA LACUSTRE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 970.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1900.0,
+            "saleMax": 2800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2100.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.1,
+        "rentSurface": "L",
+        "sale": 1800.0,
+        "rent": 6.05,
+        "rentRounded": 6.1,
+        "residential": true
+      },
+      {
+        "code": "E1",
+        "linkzona": "LU00000860",
+        "band": "Suburbana/TORRE DEL LAGO",
+        "sourceLabel": "E1/Suburbana/TORRE DEL LAGO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1750.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 7.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 6.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1750.0,
+        "saleMax": 2200.0,
+        "saleSurface": "L",
+        "rentMin": 5.8,
+        "rentMax": 7.1,
+        "rentSurface": "L",
+        "sale": 1975.0,
+        "rent": 6.45,
+        "rentRounded": 6.5,
+        "residential": true
+      },
+      {
+        "code": "E2",
+        "linkzona": "LU00010638",
+        "band": "Suburbana/MARINA DI TORRE DEL LAGO",
+        "sourceLabel": "E2/Suburbana/MARINA DI TORRE DEL LAGO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2500.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 6.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2500.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 8.0,
+        "rentSurface": "L",
+        "sale": 2150.0,
+        "rent": 6.85,
+        "rentRounded": 6.9,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00010632",
+        "band": "Extraurbana/LAGO-SAN ROCCHINO_FOSSO LEGNAME",
+        "sourceLabel": "R2/Extraurbana/LAGO-SAN ROCCHINO_FOSSO LEGNAME",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1350.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1350.0,
+        "saleMax": 2000.0,
+        "saleSurface": "L",
+        "rentMin": 4.7,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1675.0,
+        "rent": 5.85,
+        "rentRounded": 5.9,
+        "residential": true
+      },
+      {
+        "code": "R3",
+        "linkzona": "LU00010637",
+        "band": "Extraurbana/PINETA DI LEVANTE",
+        "sourceLabel": "R3/Extraurbana/PINETA DI LEVANTE",
+        "residential": false,
+        "reason": "riga «Abitazioni civili NORMALE» con compravendita e locazione assente",
+        "rows": [],
+        "prevalentType": null
+      }
+    ]
+  },
+  "replay": {
+    "046005": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000045",
+        "band": "Centrale/CAPOLUOGO CENTRO",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO CENTRO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1550.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1350.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 6.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1900.0,
+            "saleMax": 2800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1550.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 8.0,
+        "rentSurface": "L",
+        "sale": 1925.0,
+        "rent": 6.85,
+        "rentRounded": 6.9,
+        "residential": true
+      },
+      {
+        "code": "D5",
+        "linkzona": "LU00012305",
+        "band": "Periferica/BADIA - MISCIANO - SILERCHIE - PORTA LOMBRICESE - VADO - GELLO - PIEVE DI CAMAIORE - ACQUAVIVA - NOCCHI",
+        "sourceLabel": "D5/Periferica/BADIA - MISCIANO - SILERCHIE - PORTA LOMBRICESE - VADO - GELLO - PIEVE D...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.3,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 500.0,
+            "saleMax": 750.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1250.0,
+        "saleMax": 1800.0,
+        "saleSurface": "L",
+        "rentMin": 4.3,
+        "rentMax": 6.1,
+        "rentSurface": "L",
+        "sale": 1525.0,
+        "rent": 5.2,
+        "rentRounded": 5.2,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00010739",
+        "band": "Suburbana/LIDO DI CAMAIORE - FOSSA DELL'ABATE",
+        "sourceLabel": "E3/Suburbana/LIDO DI CAMAIORE - FOSSA DELL'ABATE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3500.0,
+            "saleMax": 4400.0,
+            "saleSurface": "L",
+            "rentMin": 9.5,
+            "rentMax": 12.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2750.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L",
+            "rentMin": 7.7,
+            "rentMax": 11.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3200.0,
+            "saleMax": 4800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3500.0,
+        "saleMax": 4400.0,
+        "saleSurface": "L",
+        "rentMin": 9.5,
+        "rentMax": 12.1,
+        "rentSurface": "L",
+        "sale": 3950.0,
+        "rent": 10.8,
+        "rentRounded": 10.8,
+        "residential": true
+      },
+      {
+        "code": "E4",
+        "linkzona": "LU00010741",
+        "band": "Suburbana/SECCO - ENTROTERRA LIDO",
+        "sourceLabel": "E4/Suburbana/SECCO - ENTROTERRA LIDO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2100.0,
+            "saleMax": 2900.0,
+            "saleSurface": "L",
+            "rentMin": 7.4,
+            "rentMax": 9.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1850.0,
+            "saleMax": 2550.0,
+            "saleSurface": "L",
+            "rentMin": 6.0,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2350.0,
+            "saleMax": 3500.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2100.0,
+        "saleMax": 2900.0,
+        "saleSurface": "L",
+        "rentMin": 7.4,
+        "rentMax": 9.8,
+        "rentSurface": "L",
+        "sale": 2500.0,
+        "rent": 8.6,
+        "rentRounded": 8.6,
+        "residential": true
+      },
+      {
+        "code": "E5",
+        "linkzona": "LU00010750",
+        "band": "Suburbana/CAPEZZANO - FRATI - ARGINVECCHIO - PADULETTO - TREBBIANO - CAPANNE - LE BOCCHETTE - BUCINE",
+        "sourceLabel": "E5/Suburbana/CAPEZZANO - FRATI - ARGINVECCHIO - PADULETTO - TREBBIANO - CAPANNE - LE B...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1650.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 7.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 5.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1750.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1650.0,
+        "saleMax": 2200.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 7.5,
+        "rentSurface": "L",
+        "sale": 1925.0,
+        "rent": 6.6,
+        "rentRounded": 6.6,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000424",
+        "band": "Extraurbana/PEDONA,PONTEMAZZORI,NOCCHI,MONTEMAGNO,GREPPOLUNGO,CASOLI,METATO,ANTICIANA,CASCIANA,FIBBIALLA,GOMBITELLI,TORCIGLIANA,LICETRO,MONTEG",
+        "sourceLabel": "R1/Extraurbana/PEDONA,PONTEMAZZORI,NOCCHI,MONTEMAGNO,GREPPOLUNGO,CASOLI,METATO,ANTICIA...",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1650.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L",
+            "rentMin": 2.5,
+            "rentMax": 3.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2050.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1650.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.6,
+        "rentSurface": "L",
+        "sale": 1375.0,
+        "rent": 3.85,
+        "rentRounded": 3.9,
+        "residential": true
+      }
+    ],
+    "046013": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000075",
+        "band": "Centrale/CAPOLUOGO - ROMA IMPERIALE",
+        "sourceLabel": "B1/Centrale/CAPOLUOGO - ROMA IMPERIALE",
+        "prevalentType": "Ville e Villini",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 7400.0,
+            "saleMax": 11000.0,
+            "saleSurface": "L",
+            "rentMin": 20.0,
+            "rentMax": 29.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4800.0,
+            "saleMax": 7000.0,
+            "saleSurface": "L",
+            "rentMin": 12.3,
+            "rentMax": 18.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2300.0,
+            "saleMax": 3400.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 11500.0,
+            "saleMax": 17000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 7400.0,
+        "saleMax": 11000.0,
+        "saleSurface": "L",
+        "rentMin": 20.0,
+        "rentMax": 29.0,
+        "rentSurface": "L",
+        "sale": 9200.0,
+        "rent": 24.5,
+        "rentRounded": 24.5,
+        "residential": true
+      },
+      {
+        "code": "B2",
+        "linkzona": "LU00000076",
+        "band": "Centrale/CAPOLUOGO - VITTORIA APUANA -",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO - VITTORIA APUANA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 5000.0,
+            "saleMax": 7500.0,
+            "saleSurface": "L",
+            "rentMin": 13.9,
+            "rentMax": 20.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3700.0,
+            "saleMax": 5500.0,
+            "saleSurface": "L",
+            "rentMin": 10.9,
+            "rentMax": 15.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 8600.0,
+            "saleMax": 12900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 5000.0,
+        "saleMax": 7500.0,
+        "saleSurface": "L",
+        "rentMin": 13.9,
+        "rentMax": 20.4,
+        "rentSurface": "L",
+        "sale": 6250.0,
+        "rent": 17.15,
+        "rentRounded": 17.2,
+        "residential": true
+      },
+      {
+        "code": "C1",
+        "linkzona": "LU00000167",
+        "band": "Semicentrale/LUNGOMARE FINO AL CONFINE CON CINQUALE, ED ENTROTERRA CAPOLUOGO FINO A CAVALLO DELLA S.P. DELLA MARINA",
+        "sourceLabel": "C1/Semicentrale/LUNGOMARE FINO AL CONFINE CON CINQUALE, ED ENTROTERRA CAPOLUOGO FINO A...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4000.0,
+            "saleMax": 6000.0,
+            "saleSurface": "L",
+            "rentMin": 12.0,
+            "rentMax": 18.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2850.0,
+            "saleMax": 4200.0,
+            "saleSurface": "L",
+            "rentMin": 8.0,
+            "rentMax": 12.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 6500.0,
+            "saleMax": 9700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 4000.0,
+        "saleMax": 6000.0,
+        "saleSurface": "L",
+        "rentMin": 12.0,
+        "rentMax": 18.0,
+        "rentSurface": "L",
+        "sale": 5000.0,
+        "rent": 15.0,
+        "rentRounded": 15.0,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000168",
+        "band": "Periferica/POLVERIFICIO - BARBIERA - VAIANA -",
+        "sourceLabel": "D1/Periferica/POLVERIFICIO - BARBIERA - VAIANA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2800.0,
+            "saleMax": 4000.0,
+            "saleSurface": "L",
+            "rentMin": 7.8,
+            "rentMax": 11.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 3000.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 8.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4000.0,
+            "saleMax": 5900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2800.0,
+        "saleMax": 4000.0,
+        "saleSurface": "L",
+        "rentMin": 7.8,
+        "rentMax": 11.6,
+        "rentSurface": "L",
+        "sale": 3400.0,
+        "rent": 9.7,
+        "rentRounded": 9.7,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000568",
+        "band": "Periferica/CARANNA -",
+        "sourceLabel": "D2/Periferica/CARANNA -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3000.0,
+            "saleMax": 4500.0,
+            "saleSurface": "L",
+            "rentMin": 8.0,
+            "rentMax": 12.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 3000.0,
+            "saleSurface": "L",
+            "rentMin": 5.3,
+            "rentMax": 7.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1150.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4200.0,
+            "saleMax": 6300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3000.0,
+        "saleMax": 4500.0,
+        "saleSurface": "L",
+        "rentMin": 8.0,
+        "rentMax": 12.0,
+        "rentSurface": "L",
+        "sale": 3750.0,
+        "rent": 10.0,
+        "rentRounded": 10.0,
+        "residential": true
+      }
+    ],
+    "046018": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000084",
+        "band": "Centrale/MASSAROSA CAPOLUOGO - STERPETI -",
+        "sourceLabel": "B1/Centrale/MASSAROSA CAPOLUOGO - STERPETI -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1850.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1150.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1600.0,
+            "saleMax": 2400.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1300.0,
+        "saleMax": 1850.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1575.0,
+        "rent": 6.0,
+        "rentRounded": 6.0,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000085",
+        "band": "Periferica/MASSACIUCCOLI  -  PIETRA A PADULE, AL SASSO",
+        "sourceLabel": "D1/Periferica/MASSACIUCCOLI - PIETRA A PADULE, AL SASSO",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.4,
+            "rentMax": 6.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1400.0,
+            "saleSurface": "L",
+            "rentMin": 3.3,
+            "rentMax": 4.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 480.0,
+            "saleMax": 720.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2550.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1200.0,
+        "saleMax": 1800.0,
+        "saleSurface": "L",
+        "rentMin": 4.4,
+        "rentMax": 6.5,
+        "rentSurface": "L",
+        "sale": 1500.0,
+        "rent": 5.45,
+        "rentRounded": 5.5,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000623",
+        "band": "Periferica/STIAVA - PIAN DEL QUERCIONE - LUCIANO - MONTIGNANO - MIGLIANELLO,GUALDO,MONTRAMITO,SAN ROCCHINO,GUALDO,PIEVE A ELICI,CASELLA,PIOPP",
+        "sourceLabel": "D2/Periferica/STIAVA - PIAN DEL QUERCIONE - LUCIANO - MONTIGNANO - MIGLIANELLO,GUALDO,...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2050.0,
+            "saleSurface": "L",
+            "rentMin": 5.2,
+            "rentMax": 7.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1700.0,
+            "saleSurface": "L",
+            "rentMin": 4.2,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 640.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2550.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2050.0,
+        "saleSurface": "L",
+        "rentMin": 5.2,
+        "rentMax": 7.2,
+        "rentSurface": "L",
+        "sale": 1775.0,
+        "rent": 6.2,
+        "rentRounded": 6.2,
+        "residential": true
+      },
+      {
+        "code": "D3",
+        "linkzona": "LU00000624",
+        "band": "Periferica/CASESI - CORSANICO - PIANO DI MOMMIO - MOMMIO  CASTELLO- PIAN DI CONCA,SASSAIA,BOTRICI",
+        "sourceLabel": "D3/Periferica/CASESI - CORSANICO - PIANO DI MOMMIO - MOMMIO CASTELLO- PIAN DI CONCA,S...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L",
+            "rentMin": 4.9,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 5.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 640.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1400.0,
+        "saleMax": 2000.0,
+        "saleSurface": "L",
+        "rentMin": 4.9,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1700.0,
+        "rent": 5.95,
+        "rentRounded": 6.0,
+        "residential": true
+      },
+      {
+        "code": "D4",
+        "linkzona": "LU00000821",
+        "band": "Periferica/QUIESA - MACELLARINO - COLLE - BOZZANO EST",
+        "sourceLabel": "D4/Periferica/QUIESA - MACELLARINO - COLLE - BOZZANO EST",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1750.0,
+            "saleSurface": "L",
+            "rentMin": 4.5,
+            "rentMax": 6.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L",
+            "rentMin": 3.7,
+            "rentMax": 5.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 550.0,
+            "saleMax": 820.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1250.0,
+        "saleMax": 1750.0,
+        "saleSurface": "L",
+        "rentMin": 4.5,
+        "rentMax": 6.4,
+        "rentSurface": "L",
+        "sale": 1500.0,
+        "rent": 5.45,
+        "rentRounded": 5.5,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000437",
+        "band": "Extraurbana/ZONA AGRICOLA, PADULE",
+        "sourceLabel": "R1/Extraurbana/ZONA AGRICOLA, PADULE",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 850.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1600.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1350.0,
+        "rent": 3.6,
+        "rentRounded": 3.6,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00000625",
+        "band": "Extraurbana/PADULE DI MASSACIUCCOLI -",
+        "sourceLabel": "R2/Extraurbana/PADULE DI MASSACIUCCOLI -",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.1,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 850.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 400.0,
+            "saleMax": 600.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1100.0,
+        "saleMax": 1600.0,
+        "saleSurface": "L",
+        "rentMin": 3.1,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1350.0,
+        "rent": 3.6,
+        "rentRounded": 3.6,
+        "residential": true
+      }
+    ],
+    "046024": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000107",
+        "band": "Centrale/PIETRASANTA CAPOLUOGO -",
+        "sourceLabel": "B2/Centrale/PIETRASANTA CAPOLUOGO -",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2800.0,
+            "saleMax": 4200.0,
+            "saleSurface": "L",
+            "rentMin": 8.0,
+            "rentMax": 11.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2450.0,
+            "saleMax": 3400.0,
+            "saleSurface": "L",
+            "rentMin": 7.2,
+            "rentMax": 9.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3300.0,
+            "saleMax": 4900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2800.0,
+        "saleMax": 4200.0,
+        "saleSurface": "L",
+        "rentMin": 8.0,
+        "rentMax": 11.1,
+        "rentSurface": "L",
+        "sale": 3500.0,
+        "rent": 9.55,
+        "rentRounded": 9.6,
+        "residential": true
+      },
+      {
+        "code": "D6",
+        "linkzona": "LU00010715",
+        "band": "Periferica/INTERNO MARINA - VIGNONE - SAPONIERA - POZZODONICO",
+        "sourceLabel": "D6/Periferica/INTERNO MARINA - VIGNONE - SAPONIERA - POZZODONICO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1850.0,
+            "saleMax": 2650.0,
+            "saleSurface": "L",
+            "rentMin": 6.0,
+            "rentMax": 8.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1600.0,
+            "saleMax": 2400.0,
+            "saleSurface": "L",
+            "rentMin": 4.9,
+            "rentMax": 7.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 800.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2750.0,
+            "saleMax": 4100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1850.0,
+        "saleMax": 2650.0,
+        "saleSurface": "L",
+        "rentMin": 6.0,
+        "rentMax": 8.6,
+        "rentSurface": "L",
+        "sale": 2250.0,
+        "rent": 7.3,
+        "rentRounded": 7.3,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00010755",
+        "band": "Suburbana/MARINA DI PIETRASANTA - FIUMETTO - TONFANO - MOTRONE - FOCETTE",
+        "sourceLabel": "E3/Suburbana/MARINA DI PIETRASANTA - FIUMETTO - TONFANO - MOTRONE - FOCETTE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3700.0,
+            "saleMax": 4700.0,
+            "saleSurface": "L",
+            "rentMin": 11.3,
+            "rentMax": 15.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3300.0,
+            "saleMax": 4400.0,
+            "saleSurface": "L",
+            "rentMin": 9.8,
+            "rentMax": 12.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1650.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 4000.0,
+            "saleMax": 6000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3700.0,
+        "saleMax": 4700.0,
+        "saleSurface": "L",
+        "rentMin": 11.3,
+        "rentMax": 15.4,
+        "rentSurface": "L",
+        "sale": 4200.0,
+        "rent": 13.35,
+        "rentRounded": 13.4,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00010670",
+        "band": "Extraurbana/STRETTOIA - CANTINA - MONTISCENDI",
+        "sourceLabel": "R2/Extraurbana/STRETTOIA - CANTINA - MONTISCENDI",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1550.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2100.0,
+            "saleMax": 3100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1550.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 4.7,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1925.0,
+        "rent": 5.85,
+        "rentRounded": 5.9,
+        "residential": true
+      },
+      {
+        "code": "R3",
+        "linkzona": "LU00010677",
+        "band": "Extraurbana/CAPEZZANO - CAPRIGLIA -SOLAIO -VALLECCHIA- VALDICASTELLO",
+        "sourceLabel": "R3/Extraurbana/CAPEZZANO - CAPRIGLIA -SOLAIO -VALLECCHIA- VALDICASTELLO",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2250.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1250.0,
+            "saleMax": 1850.0,
+            "saleSurface": "L",
+            "rentMin": 4.1,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 950.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2250.0,
+            "saleMax": 3300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1500.0,
+        "saleMax": 2250.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.3,
+        "rentSurface": "L",
+        "sale": 1875.0,
+        "rent": 6.15,
+        "rentRounded": 6.2,
+        "residential": true
+      }
+    ],
+    "046028": [
+      {
+        "code": "B2",
+        "linkzona": "LU00000120",
+        "band": "Centrale/SERAVEZZA CAPOLUOGO - CORVAIA - MIGNANO -",
+        "sourceLabel": "B2/Centrale/SERAVEZZA CAPOLUOGO - CORVAIA - MIGNANO -",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1400.0,
+            "saleMax": 1900.0,
+            "saleSurface": "L",
+            "rentMin": 4.6,
+            "rentMax": 6.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1100.0,
+            "saleMax": 1600.0,
+            "saleSurface": "L",
+            "rentMin": 3.6,
+            "rentMax": 5.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1650.0,
+            "saleMax": 2450.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1400.0,
+        "saleMax": 1900.0,
+        "saleSurface": "L",
+        "rentMin": 4.6,
+        "rentMax": 6.1,
+        "rentSurface": "L",
+        "sale": 1650.0,
+        "rent": 5.35,
+        "rentRounded": 5.4,
+        "residential": true
+      },
+      {
+        "code": "D1",
+        "linkzona": "LU00000840",
+        "band": "Periferica/RIPA,POZZI, QUERCETA, MARZOCCHINO, PONTEROSSO, MADONNINA, PONTE DI TAVOLE, RANOCCHIAIO, CIOCCHE, PUNTONE",
+        "sourceLabel": "D1/Periferica/RIPA,POZZI, QUERCETA, MARZOCCHINO, PONTEROSSO, MADONNINA, PONTE DI TAVOL...",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2450.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 7.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 4.6,
+            "rentMax": 6.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 720.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 3000.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2450.0,
+        "saleSurface": "L",
+        "rentMin": 5.8,
+        "rentMax": 7.9,
+        "rentSurface": "L",
+        "sale": 2125.0,
+        "rent": 6.85,
+        "rentRounded": 6.9,
+        "residential": true
+      },
+      {
+        "code": "E3",
+        "linkzona": "LU00000619",
+        "band": "Suburbana/BASATI - CERRETA - RUOSINA , S. ANTONIO",
+        "sourceLabel": "E3/Suburbana/BASATI - CERRETA - RUOSINA , S. ANTONIO",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L",
+            "rentMin": 2.8,
+            "rentMax": 4.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 350.0,
+            "saleMax": 520.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 900.0,
+        "saleMax": 1350.0,
+        "saleSurface": "L",
+        "rentMin": 2.8,
+        "rentMax": 4.1,
+        "rentSurface": "L",
+        "sale": 1125.0,
+        "rent": 3.45,
+        "rentRounded": 3.5,
+        "residential": true
+      },
+      {
+        "code": "R1",
+        "linkzona": "LU00000447",
+        "band": "Extraurbana/FABIANO, MINAZZANA, GIUSTAGNANA, RIOMAGNO,AZZANO",
+        "sourceLabel": "R1/Extraurbana/FABIANO, MINAZZANA, GIUSTAGNANA, RIOMAGNO,AZZANO",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1300.0,
+            "saleSurface": "L",
+            "rentMin": 2.8,
+            "rentMax": 3.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.3,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 350.0,
+            "saleMax": 520.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 900.0,
+        "saleMax": 1300.0,
+        "saleSurface": "L",
+        "rentMin": 2.8,
+        "rentMax": 3.9,
+        "rentSurface": "L",
+        "sale": 1100.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      }
+    ],
+    "046030": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000125",
+        "band": "Centrale/STAZZEMA",
+        "sourceLabel": "B1/Centrale/STAZZEMA",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L",
+            "rentMin": 2.7,
+            "rentMax": 4.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 570.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 1.9,
+            "rentMax": 2.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 280.0,
+            "saleMax": 420.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 700.0,
+        "saleMax": 1050.0,
+        "saleSurface": "L",
+        "rentMin": 2.7,
+        "rentMax": 4.0,
+        "rentSurface": "L",
+        "sale": 875.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      },
+      {
+        "code": "E7",
+        "linkzona": "LU00000864",
+        "band": "Suburbana/PONTE STAZZEMESE",
+        "sourceLabel": "E7/Suburbana/PONTE STAZZEMESE",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L",
+            "rentMin": 2.7,
+            "rentMax": 4.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 1.9,
+            "rentMax": 2.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 300.0,
+            "saleMax": 450.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 950.0,
+            "saleMax": 1350.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 750.0,
+        "saleMax": 1100.0,
+        "saleSurface": "L",
+        "rentMin": 2.7,
+        "rentMax": 4.0,
+        "rentSurface": "L",
+        "sale": 925.0,
+        "rent": 3.35,
+        "rentRounded": 3.4,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00012028",
+        "band": "Extraurbana/PRUNO,CARDOSO,VOLEGNO,VALIVENTRI,RETIGNANO,RUOSINA,LEVIGLIANI,TERRINCA,FARNOCCHIA,POMEZZANA,FABBRICACCIA,CAMPAGRINA,PALAGNANA",
+        "sourceLabel": "R2/Extraurbana/PRUNO,CARDOSO,VOLEGNO,VALIVENTRI,RETIGNANO,RUOSINA,LEVIGLIANI,TERRINCA,...",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 570.0,
+            "saleMax": 850.0,
+            "saleSurface": "L",
+            "rentMin": 2.0,
+            "rentMax": 3.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 450.0,
+            "saleMax": 650.0,
+            "saleSurface": "L",
+            "rentMin": 1.5,
+            "rentMax": 2.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 250.0,
+            "saleMax": 375.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 900.0,
+            "saleMax": 1300.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 570.0,
+        "saleMax": 850.0,
+        "saleSurface": "L",
+        "rentMin": 2.0,
+        "rentMax": 3.0,
+        "rentSurface": "L",
+        "sale": 710.0,
+        "rent": 2.5,
+        "rentRounded": 2.5,
+        "residential": true
+      }
+    ],
+    "046033": [
+      {
+        "code": "B1",
+        "linkzona": "LU00000131",
+        "band": "Centrale/CAPOLUOGO LUNGOMARE A NORD DEL MOLO, CITTA` GIARDINO",
+        "sourceLabel": "B1/Centrale/CAPOLUOGO LUNGOMARE A NORD DEL MOLO, CITTA` GIARDINO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3000.0,
+            "saleMax": 4500.0,
+            "saleSurface": "L",
+            "rentMin": 9.3,
+            "rentMax": 13.8,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2650.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L",
+            "rentMin": 7.8,
+            "rentMax": 11.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2150.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 3200.0,
+            "saleMax": 4700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 3000.0,
+        "saleMax": 4500.0,
+        "saleSurface": "L",
+        "rentMin": 9.3,
+        "rentMax": 13.8,
+        "rentSurface": "L",
+        "sale": 3750.0,
+        "rent": 11.55,
+        "rentRounded": 11.6,
+        "residential": true
+      },
+      {
+        "code": "B2",
+        "linkzona": "LU00000132",
+        "band": "Centrale/CAPOLUOGO ZONA NORD, DON BOSCO, MARCO POLO",
+        "sourceLabel": "B2/Centrale/CAPOLUOGO ZONA NORD, DON BOSCO, MARCO POLO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2350.0,
+            "saleMax": 2900.0,
+            "saleSurface": "L",
+            "rentMin": 7.7,
+            "rentMax": 9.4,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2000.0,
+            "saleMax": 2600.0,
+            "saleSurface": "L",
+            "rentMin": 6.5,
+            "rentMax": 8.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1000.0,
+            "saleMax": 1500.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2650.0,
+            "saleMax": 3900.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 2350.0,
+        "saleMax": 2900.0,
+        "saleSurface": "L",
+        "rentMin": 7.7,
+        "rentMax": 9.4,
+        "rentSurface": "L",
+        "sale": 2625.0,
+        "rent": 8.55,
+        "rentRounded": 8.6,
+        "residential": true
+      },
+      {
+        "code": "D2",
+        "linkzona": "LU00000163",
+        "band": "Periferica/PERIFERIA AD EST DELLA FERROVIA, MIGLIARINA, TERMINETTO, VARIGNANO, COTONE",
+        "sourceLabel": "D2/Periferica/PERIFERIA AD EST DELLA FERROVIA, MIGLIARINA, TERMINETTO, VARIGNANO, COTO...",
+        "prevalentType": "Abitazioni di tipo economico",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1750.0,
+            "saleMax": 2300.0,
+            "saleSurface": "L",
+            "rentMin": 6.1,
+            "rentMax": 8.2,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2050.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 6.3,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 700.0,
+            "saleMax": 1050.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2150.0,
+            "saleMax": 3200.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1750.0,
+        "saleMax": 2300.0,
+        "saleSurface": "L",
+        "rentMin": 6.1,
+        "rentMax": 8.2,
+        "rentSurface": "L",
+        "sale": 2025.0,
+        "rent": 7.15,
+        "rentRounded": 7.2,
+        "residential": true
+      },
+      {
+        "code": "D5",
+        "linkzona": "LU00010654",
+        "band": "Periferica/DARSENA - ZONA INTERNA FINO ALLA FERROVIA - EX CAMPO DI AVIAZIONE.",
+        "sourceLabel": "D5/Periferica/DARSENA - ZONA INTERNA FINO ALLA FERROVIA - EX CAMPO DI AVIAZIONE.",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2350.0,
+            "saleSurface": "L",
+            "rentMin": 5.9,
+            "rentMax": 7.7,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1550.0,
+            "saleMax": 2200.0,
+            "saleSurface": "L",
+            "rentMin": 5.1,
+            "rentMax": 6.9,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 800.0,
+            "saleMax": 1200.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 2050.0,
+            "saleMax": 2950.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1800.0,
+        "saleMax": 2350.0,
+        "saleSurface": "L",
+        "rentMin": 5.9,
+        "rentMax": 7.7,
+        "rentSurface": "L",
+        "sale": 2075.0,
+        "rent": 6.8,
+        "rentRounded": 6.8,
+        "residential": true
+      },
+      {
+        "code": "D6",
+        "linkzona": "LU00012304",
+        "band": "Periferica/ZONA A NORD DI TORRE DEL LAGO FINO ALLA ZONA LACUSTRE",
+        "sourceLabel": "D6/Periferica/ZONA A NORD DI TORRE DEL LAGO FINO ALLA ZONA LACUSTRE",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1450.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 7.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1300.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 650.0,
+            "saleMax": 970.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1900.0,
+            "saleMax": 2800.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1450.0,
+        "saleMax": 2100.0,
+        "saleSurface": "L",
+        "rentMin": 5.0,
+        "rentMax": 7.1,
+        "rentSurface": "L",
+        "sale": 1775.0,
+        "rent": 6.05,
+        "rentRounded": 6.1,
+        "residential": true
+      },
+      {
+        "code": "E1",
+        "linkzona": "LU00000860",
+        "band": "Suburbana/TORRE DEL LAGO",
+        "sourceLabel": "E1/Suburbana/TORRE DEL LAGO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 5.8,
+            "rentMax": 7.1,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 1950.0,
+            "saleSurface": "L",
+            "rentMin": 5.0,
+            "rentMax": 6.5,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1850.0,
+            "saleMax": 2750.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1700.0,
+        "saleMax": 2100.0,
+        "saleSurface": "L",
+        "rentMin": 5.8,
+        "rentMax": 7.1,
+        "rentSurface": "L",
+        "sale": 1900.0,
+        "rent": 6.45,
+        "rentRounded": 6.5,
+        "residential": true
+      },
+      {
+        "code": "E2",
+        "linkzona": "LU00010638",
+        "band": "Suburbana/MARINA DI TORRE DEL LAGO",
+        "sourceLabel": "E2/Suburbana/MARINA DI TORRE DEL LAGO",
+        "prevalentType": "Abitazioni civili",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1700.0,
+            "saleMax": 2400.0,
+            "saleSurface": "L",
+            "rentMin": 5.7,
+            "rentMax": 8.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1500.0,
+            "saleMax": 2100.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 6.6,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 750.0,
+            "saleMax": 1100.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1700.0,
+        "saleMax": 2400.0,
+        "saleSurface": "L",
+        "rentMin": 5.7,
+        "rentMax": 8.0,
+        "rentSurface": "L",
+        "sale": 2050.0,
+        "rent": 6.85,
+        "rentRounded": 6.9,
+        "residential": true
+      },
+      {
+        "code": "R2",
+        "linkzona": "LU00010632",
+        "band": "Extraurbana/LAGO-SAN ROCCHINO_FOSSO LEGNAME",
+        "sourceLabel": "R2/Extraurbana/LAGO-SAN ROCCHINO_FOSSO LEGNAME",
+        "prevalentType": "Non presente",
+        "selectedType": "Abitazioni civili",
+        "rows": [
+          {
+            "type": "Abitazioni civili",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1350.0,
+            "saleMax": 2000.0,
+            "saleSurface": "L",
+            "rentMin": 4.7,
+            "rentMax": 7.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Abitazioni di tipo economico",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1200.0,
+            "saleMax": 1800.0,
+            "saleSurface": "L",
+            "rentMin": 4.0,
+            "rentMax": 6.0,
+            "rentSurface": "L"
+          },
+          {
+            "type": "Box",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 600.0,
+            "saleMax": 900.0,
+            "saleSurface": "L"
+          },
+          {
+            "type": "Ville e Villini",
+            "rectified": false,
+            "state": "NORMALE",
+            "saleMin": 1800.0,
+            "saleMax": 2700.0,
+            "saleSurface": "L"
+          }
+        ],
+        "rectified": false,
+        "saleMin": 1350.0,
+        "saleMax": 2000.0,
+        "saleSurface": "L",
+        "rentMin": 4.7,
+        "rentMax": 7.0,
+        "rentSurface": "L",
+        "sale": 1675.0,
+        "rent": 5.85,
+        "rentRounded": 5.9,
+        "residential": true
+      },
+      {
+        "code": "R3",
+        "linkzona": "LU00010637",
+        "band": "Extraurbana/PINETA DI LEVANTE",
+        "sourceLabel": "R3/Extraurbana/PINETA DI LEVANTE",
+        "residential": false,
+        "reason": "riga «Abitazioni civili NORMALE» con compravendita e locazione assente",
+        "rows": [],
+        "prevalentType": null
+      }
+    ]
+  }
+}

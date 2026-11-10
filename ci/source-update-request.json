@@ -8,5 +8,7 @@
   "mefFiscalProbe": [],
   "sourceProbe": [],
   "ispraSoil": [],
-  "aciVehicles": []
+  "aciVehicles": [],
+  "omiResidential": [],
+  "omiResidentialCorrections": []
 }

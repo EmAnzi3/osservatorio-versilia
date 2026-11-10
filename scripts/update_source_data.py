@@ -20,7 +20,8 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     python scripts/update_source_data.py istat-tourism --year 2025 [--file archivio.zip]
     python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
     python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
-    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX]
+    python scripts/update_source_data.py omi-residential --semester 2026-S1
+    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX] [--post URL::CAMPI ...]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
@@ -906,6 +907,106 @@ def update_ispra_soil(year: int, file: Path | None, dry_run: bool) -> Changes:
     return changes
 
 
+def update_omi_residential(semester: str, dry_run: bool, reader: Any = None, corrections: list[str] | None = None) -> Changes:
+    """Quotazioni residenziali OMI di un semestre nuovo; il semestre pubblicato deve riprodursi identico dalla fonte.
+
+    `corrections`: differenze del catalogo dalla fonte già riviste, come «Viareggio D2» (valori di una zona)
+    o «Stazzema» (zonizzazione del Comune). Devono coincidere esattamente con quelle trovate: la fonte prevale
+    e ogni correzione resta registrata nella fotografia.
+    """
+    import update_omi as omi
+
+    site = load(SITE)
+    metric = site["metrics"]["omiResidential"]
+    try:
+        published = omi.label_semester(metric["meta"]["year"])
+        omi.semester_code(semester)
+        if semester <= published:
+            raise UpdateError(f"OMI: semestre {semester} non successivo al pubblicato {published}")
+        if reader is None:
+            session = omi.Session()
+            available = omi.semesters(session)
+            if semester not in available or published not in available:
+                raise UpdateError(f"OMI: semestre {semester} o {published} non presente nella consultazione")
+            codes = omi.town_codes(session)
+            reader = lambda period: omi.read_semester(session, period, codes)  # noqa: E731
+        raw_replay, raw_fresh = reader(published), reader(semester)
+        replay, fresh = ({t: [z for z in zs if z.get("residential", True)] for t, zs in d.items()} for d in (raw_replay, raw_fresh))
+    except omi.OmiError as error:
+        raise UpdateError(f"OMI {semester}: {error}") from error
+    rows = {r["town"]: r for r in metric["rows"]}
+    if set(rows) != set(omi.TOWNS) or set(replay) != set(rows) or set(fresh) != set(rows):
+        raise UpdateError("OMI: copertura dei Comuni non 7/7")
+    same = lambda a, b: math.isclose(a, b, rel_tol=0, abs_tol=1e-9)  # noqa: E731
+    found: dict[str, list[str]] = {}
+    for town, row in rows.items():
+        current = {z["code"]: z for z in row["zones"]}
+        source = {z["code"]: z for z in replay[town]}
+        if set(current) != set(source):
+            found.setdefault(town, []).append(f"{town}: zone {sorted(current)} ≠ fonte {sorted(source)}")
+        else:
+            for c in current:
+                if not same(current[c]["sale"], source[c]["sale"]):
+                    found.setdefault(f"{town} {c}", []).append(f"{town} {c} sale: {current[c]['sale']} ≠ {source[c]['sale']}")
+                # Il catalogo riporta la locazione al punto medio esatto o arrotondata al decimo: entrambe ammesse.
+                if not (same(current[c]["rent"], source[c]["rent"]) or same(current[c]["rent"], source[c].get("rentRounded", source[c]["rent"]))):
+                    found.setdefault(f"{town} {c}", []).append(f"{town} {c} rent: {current[c]['rent']} ≠ {source[c]['rent']}")
+        # La zonizzazione del semestre nuovo deve coincidere con quella della fonte nel semestre pubblicato.
+        if {z["code"] for z in fresh[town]} != set(source):
+            found.setdefault(f"{town} zonizzazione {semester}", []).append(
+                f"{town}: zonizzazione {semester} {sorted(z['code'] for z in fresh[town])} diversa da {sorted(source)}")
+    accepted = set(corrections or [])
+    unresolved = {k: v for k, v in found.items() if k not in accepted}
+    unused = sorted(accepted - set(found))
+    if unresolved or unused:
+        lines = [m for v in unresolved.values() for m in v] + [f"correzione non trovata nella fonte: {k}" for k in unused]
+        # Diagnostica: tutte le righe lette dalla fonte per le zone in disaccordo.
+        for town, zones in raw_replay.items():
+            for z in zones:
+                if f"{town} {z['code']}" in unresolved or town in unresolved:
+                    rows_text = "; ".join(f"{r['type']} {r['state']} {r['saleMin']}-{r['saleMax']}"
+                                          + (f" / {r['rentMin']}-{r['rentMax']}" if "rentMin" in r else "") for r in z.get("rows", []))
+                    lines.append(f"  fonte {town} {z['code']} ({z.get('sourceLabel', '')}): {rows_text or z.get('reason')}")
+        raise UpdateError("OMI: la regola non riproduce il semestre pubblicato o le zone sono cambiate:\n  " + "\n  ".join(lines))
+    changes = Changes()
+    for town, row in rows.items():
+        source = {z["code"]: z for z in fresh[town]}
+        if town in accepted:  # zonizzazione corretta: zone ricostruite dalla fonte
+            labels = {z["code"]: z.get("label") for z in row["zones"]}
+            changes.note(f"{town} zone", sorted(labels), sorted(source))
+            row["zones"] = [{"code": z["code"], "label": omi.zone_label(z), "sale": z["sale"], "rent": z["rent"]} for z in fresh[town]]
+        else:
+            for zone in row["zones"]:
+                for field in ("sale", "rent"):
+                    changes.note(f"{town} {zone['code']} {field}", zone[field], source[zone["code"]][field])
+                    zone[field] = source[zone["code"]][field]
+        for field in ("sale", "rent"):
+            row[field + "Mean"] = math.fsum(z[field] for z in row["zones"]) / len(row["zones"])
+        changes.note(f"{town} media vendita", row["value"], row["saleMean"])
+        row.update(value=row["saleMean"], benchmarkValue=row["saleMean"])
+    agg = metric["aggregate"]
+    for field in ("saleMean", "rentMean"):
+        agg[field] = math.fsum(r[field] for r in metric["rows"]) / len(metric["rows"])
+    agg["value"] = agg["saleMean"]
+    metric["meta"]["year"] = omi.semester_label(semester)
+    path = f"data/source-snapshots/{omi.SNAPSHOT_PREFIX}{semester}.json"
+    snapshot = {"schemaVersion": 1, "metric": "omiResidential", "semester": semester, "publishedReplayed": published,
+                "source": metric["meta"]["source"], "sourceUrl": omi.BASE + "ricerca.htm", "province": omi.PROVINCE,
+                "selection": {"type": omi.TYPE, "state": omi.STATE, "destination": "Residenziale",
+                              "zoneValue": "punto medio min/max di compravendita e locazione",
+                              "excludedZones": "zone senza la riga Abitazioni civili NORMALE"},
+                "catalogCorrections": {k: found[k] for k in sorted(accepted)},
+                "retrievedAt": date.today().isoformat(),
+                "acquisitionEvidence": {"script": f"scripts/update_source_data.py omi-residential --semester {semester}"
+                                        + "".join(f" --correction '{k}'" for k in sorted(accepted))},
+                "zones": {omi.TOWNS[t]: raw_fresh[t] for t in sorted(raw_fresh)},
+                "replay": {omi.TOWNS[t]: raw_replay[t] for t in sorted(raw_replay)}}
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -927,9 +1028,13 @@ def main() -> int:
     o = sub.add_parser("ispra-soil")
     o.add_argument("--year", type=int, required=True)
     o.add_argument("--file", type=Path, help="foglio ISPRA Com_Prov_Reg_Naz già scaricato")
+    q = sub.add_parser("omi-residential")
+    q.add_argument("--semester", required=True, help="semestre nuovo, es. 2026-S1")
+    q.add_argument("--correction", action="append", default=[],
+                   help="differenza del catalogo dalla fonte già rivista: «Comune ZONA» o «Comune» (zonizzazione)")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f, t, o, v):
+    for p in (a, m, u, f, t, o, v, q):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
@@ -937,18 +1042,21 @@ def main() -> int:
     g.add_argument("--name", required=True)
     g.add_argument("--url", required=True)
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
+    g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
     args = parser.parse_args()
     try:
         if args.updater == "source-probe":
             import probe_source_files
 
-            probe_source_files.run(args.name, args.url, args.follow)
+            probe_source_files.run(args.name, args.url, args.follow, args.post)
         elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 
             probe_mef_fiscal.run(args.year)
         elif args.updater == "aci-vehicles":
             update_aci_vehicles(args.year, args.file, args.dry_run).report(f"Parco veicolare {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "omi-residential":
+            update_omi_residential(args.semester, args.dry_run, corrections=args.correction).report(f"Quotazioni OMI {args.semester}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "ispra-soil":
             update_ispra_soil(args.year, args.file, args.dry_run).report(f"Consumo di suolo {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-tourism":
