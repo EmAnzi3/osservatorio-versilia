@@ -26,6 +26,7 @@ import opportunity_document_promotion as document_promotion
 import opportunity_qualifier as auto_qualifier
 import opportunity_independent_audit_recovery as independent_recovery
 import opportunity_review_actions as review_actions
+import opportunity_official_recheck as official_recheck
 from opportunity_discovery_noise import clean_review_queues
 
 
@@ -218,7 +219,20 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     previous = core._load(previous_path) if previous_path and previous_path.exists() else {}
     review_actions.retain_pending_discovery(result, previous, today.isoformat())
     clean_review_queues(result, today.isoformat())
-    audit_promotions.apply_complete_promotions(result, today)
+    live = kwargs.get("payloads") is None
+
+    def _recheck(opportunities: list[dict[str, Any]], day: date) -> None:
+        summary = official_recheck.apply(opportunities, day, previous=previous)
+        result["officialRecheck"] = summary
+        counts = result.setdefault("counts", {})
+        for key in ("checked", "updated", "confirmed", "unconfirmed", "unreachable", "stale"):
+            counts["officialRecheck" + key.capitalize()] = summary[key]
+
+    audit_promotions.PRE_EXPIRY_HOOK = _recheck if live else None
+    try:
+        audit_promotions.apply_complete_promotions(result, today)
+    finally:
+        audit_promotions.PRE_EXPIRY_HOOK = None
     document_promotion.apply_promotions(result, today, previous=previous, live=kwargs.get("payloads") is None)
     # Qualificazione automatica delle segnalazioni (Radar 2.0): pubblica con
     # «Requisiti da confermare» ciò che i documenti ufficiali giustificano.
@@ -405,6 +419,22 @@ def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, A
                  f"Nuove schede verificate: **{promotion.get('added', 0)}** · "
                  f"schede riconfermate dal PDF: **{promotion.get('revalidated', 0)}**.\n"
                  "I conteggi distinguono le schede pubblicabili dalle segnalazioni ancora in discovery.\n")
+    rechecked = result.get("officialRecheck") or {}
+    if rechecked:
+        text += (
+            "\n## Rilettura delle pagine ufficiali\n\n"
+            f"Schede rilette: **{rechecked.get('checked', 0)}** · confermate: **{rechecked.get('confirmed', 0)}** · "
+            f"aggiornate dalla fonte: **{rechecked.get('updated', 0)}** · non confermate: "
+            f"**{rechecked.get('unconfirmed', 0)}** · pagina non raggiungibile oggi: "
+            f"**{rechecked.get('unreachable', 0)}** (di cui senza lettura riuscita da oltre "
+            f"{official_recheck.STALE_AFTER_DAYS} giorni: **{rechecked.get('stale', 0)}**).\n"
+        )
+        for row in rechecked.get("changes") or []:
+            before, after = row.get("before") or {}, row.get("after") or {}
+            diff = ", ".join(f"{k} {before.get(k)} → {after.get(k)}" for k in after if after.get(k) != before.get(k))
+            text += f"- {row.get('title')}: {diff} · {row.get('url')}\n"
+        for row in rechecked.get("unreachableItems") or []:
+            text += f"- non raggiungibile: {row.get('title')} · ultima lettura {row.get('last_ok_at') or 'mai'} · {row.get('url')}\n"
     recovery = result.get("auditRecovery") or {}
     if recovery:
         pending = recovery.get("pending") or []

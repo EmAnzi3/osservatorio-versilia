@@ -1,5 +1,33 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: rilettura quotidiana delle pagine ufficiali e `verified_at` onesto (10 novembre 2026)
+
+Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora statici).
+
+- Nuovo `scripts/opportunity_official_recheck.py`, eseguito in ogni refresh live prima
+  dell'archiviazione delle scadute (hook `PRE_EXPIRY_HOOK` in `opportunity_matrix_promotions.py`,
+  impostato da `opportunity_daily_refresh_audit_fixed.py`): rilegge la pagina ufficiale di ogni
+  scheda pubblica, più le pagine equivalenti già registrate (`_OFFICIAL_ALTERNATE_URLS`,
+  `_OFFICIAL_EVIDENCE_SETS`) e un eventuale `official_urls`.
+- Regola unica, senza correzioni per bando: il ruolo di ogni data è deciso dalla parola chiave più
+  vicina che la precede (proroga, scadenza, apertura) o da un intervallo «dal … al …»/«from … to …».
+  Una proroga successiva sostituisce la scadenza; una scadenza ritrovata è confermata; senza
+  scadenza ritrovata vale l'unica scadenza futura della pagina, altrimenti la scheda resta invariata
+  e «non confermata». Apertura passata con scadenza futura → aperta; apertura futura → in arrivo.
+  Sulle pagine reali: SAI prorogato al 10/12 ore 18:00, EUCF 8ª call aperta 26/10–21/12 ore 17:00,
+  C3 entro il 13/11.
+- `verified_at` è la data dell'ultima lettura riuscita della fonte ufficiale. Se oggi la pagina non
+  risponde restano i fatti e la data dell'ultima lettura (campo `official_recheck` nello snapshot);
+  una scheda dei corpora statici mai riletta ha `verified_at` nullo. Il rapporto del run ha la
+  sezione «Rilettura delle pagine ufficiali» con modifiche e pagine non raggiungibili.
+- Le icone delle fonti nuove non bloccano più la build: un dominio senza icona registrata riceve un
+  badge tipografico locale (`local-source-mark-auto`). Il run delle 14:50 del 10/11 era fallito
+  per `dait.interno.gov.it`.
+- Pages: un secondo tentativo di deploy dopo 90 secondi se il primo fallisce.
+- Budget: scan 38 minuti (prima 30), job 113 (prima 105).
+- Resta da fare (PR successiva): promozione automatica dei lead in revisione e fonti mancate
+  (famiglia.governo.it «avvisi-e-bandi», ANCI, MUSE DHC, «L'Italia delle donne»).
+
 ## Quotazioni OMI 1° semestre 2026 (10 novembre 2026)
 
 `omiResidential` passa dal 2° semestre 2025 al 1° semestre 2026.

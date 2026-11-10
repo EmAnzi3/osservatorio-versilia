@@ -219,6 +219,11 @@
         "args": []
       },
       {
+        "label": "Radar daily re-read of official pages and honest verification date",
+        "script": "scripts/test_opportunity_official_recheck.py",
+        "args": []
+      },
+      {
         "label": "Radar structured EU calls, silent sources and detection lag",
         "script": "scripts/test_opportunity_eu_calls.py",
         "args": []
@@ -387,8 +392,8 @@
       "status": "active",
       "note": "Primary shadow candidate pipeline: one scheduled scan, semantic comparison, complete public-site build and browser gates; verified-opportunities-v1 separates degraded discovery from unsafe content. Reports remain in run artifacts; successful publication notifies the owner only for public-content changes or human checks. Blocked publication still notifies with the complete actionable review inbox and direct document links.",
       "executionBudgetMinutes": {
-        "job": 105,
-        "scan": 30,
+        "job": 113,
+        "scan": 38,
         "build": 60,
         "overhead": 15
       }

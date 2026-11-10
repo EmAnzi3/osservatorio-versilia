@@ -42,9 +42,10 @@ jobs:
     # della release. Il Radar pubblica ogni giorno: un cambio d'immagine va
     # provato su PR, non scoperto da un run schedulato.
     runs-on: ubuntu-24.04
-    # Scan 30 + complete build/browser 60 + setup/report/evidence margin 15.
+    # Scan 38 (di cui fino a 8 per la rilettura delle pagine ufficiali) + complete
+    # build/browser 60 + setup/report/evidence margin 15.
     # The A7 package exceeded the former 20-minute build budget (#465/#467).
-    timeout-minutes: 105
+    timeout-minutes: 113
     outputs:
       content_changed: ${{ steps.run_report.outputs.content_changed }}
       reference_date: ${{ steps.run_report.outputs.reference_date }}
@@ -90,6 +91,7 @@ jobs:
           python scripts/test_opportunity_prefecture_noise.py
           python scripts/test_opportunity_document_promotion.py
           python scripts/test_opportunity_qualifier.py
+          python scripts/test_opportunity_official_recheck.py
           python scripts/test_opportunity_eu_calls.py
           python scripts/test_opportunity_runtime_snapshot.py
           python scripts/test_opportunity_automation_workflow.py
@@ -130,7 +132,7 @@ jobs:
         env:
           OPPORTUNITY_DISCOVERY_POLICY: verified-opportunities-v1
         id: live_scan
-        timeout-minutes: 30
+        timeout-minutes: 38
         continue-on-error: true
         shell: bash
         run: |
@@ -411,7 +413,7 @@ jobs:
       pull-requests: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout notification helper
@@ -419,6 +421,18 @@ jobs:
 
       - name: Deploy verified Radar
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      # Il servizio Pages ha errori transitori (timeout, deployment in coda):
+      # un secondo tentativo dopo una pausa evita di perdere un Radar già verificato.
+      - name: Wait before retrying Pages deploy
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 90
+
+      - name: Retry Pages deploy
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
       - name: Download readable run report

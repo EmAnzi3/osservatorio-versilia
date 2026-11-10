@@ -54,6 +54,10 @@ def main() -> int:
     assert daily.count("python scripts/opportunity_owner_notification.py") == 2
     assert daily.index("Checkout notification helper") < daily.index("Deploy verified Radar")
     assert daily.index("Deploy verified Radar") < daily.index("Notify owner after successful publication")
+    # Un errore transitorio di Pages viene ritentato una volta prima di notificare.
+    assert daily.index("Deploy verified Radar") < daily.index("Retry Pages deploy") < daily.index("Notify owner after successful publication")
+    assert "if: steps.deployment.outcome == 'failure'" in daily
+    assert "steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url" in daily
     publish_section = daily.split("  publish:", 1)[1]
     report_download = publish_section.split("- name: Download readable run report", 1)[1].split(
         "- name: Notify owner after successful publication", 1

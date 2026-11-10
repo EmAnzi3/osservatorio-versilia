@@ -120,7 +120,44 @@ def _resolve_icon_key(item: dict[str, Any], provenance: dict[str, dict[str, Any]
     # l'identità web della Commissione europea: riusiamo il favicon EC ufficiale.
     if host == "europa.eu" or host.endswith(".europa.eu"):
         return "eu-neb" if "new-european-bauhaus" in host else "eu-cerv"
-    return None
+    key = _generated_key(host)
+    return key if key in provenance else None
+
+
+_GENERIC_HOST_LABELS = {"www", "it", "eu", "gov", "governo", "com", "org", "net", "int", "info", "gv", "pcm"}
+
+
+def auto_mark_label(host: str) -> str:
+    """Badge tipografico dal dominio ufficiale: prima etichetta significativa, max 4 lettere."""
+    labels = [x for x in host.lower().split(".") if x and x not in _GENERIC_HOST_LABELS]
+    word = re.sub(r"[^a-z0-9]", "", labels[0] if labels else host.split(".")[0]) or "SRC"
+    return word[:4].upper()
+
+
+def _materialize_auto_marks(items: list[dict[str, Any]], provenance: dict[str, dict[str, Any]],
+                            target: Path) -> list[str]:
+    """Una nuova fonte non blocca più la build: riceve un source-mark locale dal dominio."""
+    added: list[str] = []
+    for item in items:
+        if _resolve_icon_key(item, provenance):
+            continue
+        host = _host(item)
+        if not host:
+            continue
+        label = auto_mark_label(host)
+        name = f"source-{_safe_host(host)}.svg"
+        content = _source_mark_svg(label)
+        (target / name).write_text(content, encoding="utf-8")
+        provenance[_generated_key(host)] = {
+            "page": f"https://{host}/",
+            "icon": None,
+            "local": f"../assets/source-favicons/{name}",
+            "method": "local-source-mark-auto",
+            "contentType": "image/svg+xml",
+            "bytes": len(content.encode("utf-8")),
+        }
+        added.append(host)
+    return added
 
 
 def _source_mark_svg(label: str) -> str:
@@ -191,6 +228,9 @@ def materialize(payload: dict[str, Any], dist: Path) -> dict[str, dict[str, Any]
         raise RuntimeError(f"Hash mic-dgcc inatteso: {digest}")
 
     public_items = _items(payload)
+    auto = _materialize_auto_marks(public_items, provenance, target)
+    if auto:
+        print("Icone Radar: source-mark automatico per nuove fonti: " + ", ".join(sorted(set(auto))))
     unresolved = [item for item in public_items if not _resolve_icon_key(item, provenance)]
     covered = len(public_items) - len(unresolved)
     (target / "provenance.json").write_text(
