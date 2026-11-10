@@ -127,7 +127,7 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
             item["scripts"] = [urllib.parse.urljoin(url, s) for s in re.findall(r"<script\b[^>]*src=[\"']([^\"']+)", page, flags=re.I)][:20]
             item["inlineScript"] = "\n".join(re.findall(r"<script\b[^>]*>(.*?)</script>", page, flags=re.I | re.S))[:6000]
             item["links"] = [l for l in ls if re.search(r"\.(xlsx?|zip|csv|ods|pdf)\b", l["url"], re.I) or (follow and re.search(follow, l["url"] + " " + l["text"], re.I))]
-            item["text"] = re.sub(r"\s+", " ", htmllib.unescape(re.sub(r"<(script|style)\b.*?</\1>|<[^>]+>", " ", page, flags=re.I | re.S))).strip()[:4000]
+            item["text"] = re.sub(r"\s+", " ", htmllib.unescape(re.sub(r"<(script|style)\b.*?</\1>|<[^>]+>", " ", page, flags=re.I | re.S))).strip()[:15000]
             if follow and depth == 0:
                 targets = [l["url"] for l in ls if re.search(follow, l["url"] + " " + l["text"], re.I)][:MAX_FOLLOW]
                 item["followed"] = [analyse(t, follow, depth + 1) for t in targets]

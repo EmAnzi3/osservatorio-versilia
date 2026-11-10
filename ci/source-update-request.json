@@ -8,11 +8,11 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "omi-consultazione-lucca",
+      "name": "omi-consultazione-camaiore",
       "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
       "post": [
         "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=1&lingua=IT&pr=LU",
-        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm::level=1&lingua=IT&pr=LU"
+        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=2&lingua=IT&pr=LU&anno_semestre=20261&co=B455"
       ]
     }
   ],
