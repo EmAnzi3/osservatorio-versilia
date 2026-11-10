@@ -1717,7 +1717,7 @@ Associazione descrittiva e contesto non provano causalità o effetto di politica
 
 Richiesta `soil_stock_current` — `compare`; esito `computed`.
 
-**Risultati:** Camaiore 2024: 14,2 %; Forte dei Marmi 2024: 46,2 %; Massarosa 2024: 13,4 %; Pietrasanta 2024: 24,7 %; Seravezza 2024: 12,2 %; Stazzema 2024: 3,0 %; Viareggio 2024: 38,5 %
+**Risultati:** Camaiore 2025: 14,2 %; Forte dei Marmi 2025: 46,4 %; Massarosa 2025: 13,4 %; Pietrasanta 2025: 24,8 %; Seravezza 2025: 12,2 %; Stazzema 2025: 3,0 %; Viareggio 2025: 38,6 %
 
 **Universi e definizioni:** municipal cartographic territory; UCS and ISPRA surfaces are not interchangeable — ISPRA frozen percent soil consumption stock
 
@@ -1729,7 +1729,7 @@ Richiesta `soil_stock_current` — `compare`; esito `computed`.
 
 Richiesta `soil_flow_gross` — `compare`; esito `computed`.
 
-**Risultati:** Camaiore 2024: 1,1 hectares; Forte dei Marmi 2024: 0,2 hectares; Massarosa 2024: 0,0 hectares; Pietrasanta 2024: 0,3 hectares; Seravezza 2024: 0,1 hectares; Stazzema 2024: 0,0 hectares; Viareggio 2024: 0,6 hectares
+**Risultati:** Camaiore 2025: 0,7 hectares; Forte dei Marmi 2025: 1,5 hectares; Massarosa 2025: 0,1 hectares; Pietrasanta 2025: 1,3 hectares; Seravezza 2025: 0,8 hectares; Stazzema 2025: 0,0 hectares; Viareggio 2025: 1,4 hectares
 
 **Universi e definizioni:** municipal cartographic territory; UCS and ISPRA surfaces are not interchangeable — ISPRA frozen gross soil consumption increment; endpoint labels do not attest equal observation intervals
 

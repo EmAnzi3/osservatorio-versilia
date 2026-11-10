@@ -5821,7 +5821,7 @@
     },
     {
       "id": "soil_stock_current",
-      "question": "Quanto suolo risulta consumato a Massarosa nel 2024?",
+      "question": "Quanto suolo risulta consumato a Massarosa nel 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5837,18 +5837,18 @@
           {
             "path": "/observations/2/value",
             "fraction": [
-              4553450,
-              340541
+              4554450,
+              340537
             ],
             "tolerance": 1e-08
           },
           {
             "path": "/observations/2/publishedValue",
-            "value": 13.371
+            "value": 13.374
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_hectares",
@@ -5867,15 +5867,15 @@
         "checks": [
           {
             "path": "/observations/2/value",
-            "value": 910.69
+            "value": 910.89
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_resident",
-      "question": "Quanti metri quadrati per residente, usando il denominatore ISPRA 2024?",
+      "question": "Quanti metri quadrati per residente, usando il denominatore ISPRA 2025?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5891,14 +5891,14 @@
           {
             "path": "/observations/2/value",
             "fraction": [
-              1821380,
-              4373
+              4554450,
+              10903
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_pooled",
@@ -5922,14 +5922,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              3518800,
-              254381
+              2113750,
+              152629
             ],
             "tolerance": 1e-08
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_series_endpoint",
@@ -5955,7 +5955,7 @@
           },
           {
             "path": "/observations/0/value",
-            "value": 894.09
+            "value": 894.03
           },
           {
             "path": "/observations/1/period",
@@ -5963,11 +5963,11 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_gross",
-      "question": "Qual è il consumo lordo 2024 a Forte dei Marmi?",
+      "question": "Qual è il consumo lordo 2025 a Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -5982,15 +5982,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.19
+            "value": 1.53
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_net",
-      "question": "Qual è il consumo netto 2024 a Forte dei Marmi?",
+      "question": "Qual è il consumo netto 2025 a Forte dei Marmi?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -6005,11 +6005,11 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 0.14
+            "value": 1.53
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_negative",
@@ -6035,7 +6035,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_forest",
@@ -6062,7 +6062,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_hectares",
@@ -6085,7 +6085,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_pooled",
@@ -6116,7 +6116,7 @@
           }
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_stock_trend_refused",
@@ -6139,7 +6139,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_trend_refused",
@@ -6162,7 +6162,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_ucs_change_refused",
@@ -6185,7 +6185,7 @@
           "soil_historical_comparability_not_attested"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_missing_population_refused",
@@ -6211,7 +6211,7 @@
           "soil_period_not_frozen"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_flow_weight_refused",
@@ -6234,7 +6234,7 @@
           "verified_ratio_adapter_required"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "soil_mixed_edition_refused",
@@ -6259,7 +6259,7 @@
           "paired_period_mismatch"
         ]
       },
-      "reference": "ISPRA edizione 2025, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
+      "reference": "ISPRA edizione 2026, territorio-v137-official.json; UCS 2007–2019 territorio-ucs-v136.json. Input nativi congelati, date e ambiti distinti."
     },
     {
       "id": "territory_protected_union",
@@ -48411,15 +48411,15 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 713.1
+            "value": 720.7
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046013",
@@ -48442,15 +48442,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 738.8
+            "value": 736.5
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046018",
@@ -48473,15 +48473,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 742.4
+            "value": 758.2
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046024",
@@ -48504,15 +48504,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 728.3
+            "value": 735.6
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046028",
@@ -48535,15 +48535,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 700.7
+            "value": 709.3
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046030",
@@ -48566,15 +48566,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 740.2
+            "value": 738.8
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_current_046033",
@@ -48597,15 +48597,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 650.1
+            "value": 657.5
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_rank",
@@ -48628,7 +48628,7 @@
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046005",
@@ -48652,14 +48652,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -31021564638603,
+              -32976054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046013",
@@ -48683,14 +48683,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5321564638603,
+              -17176054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046018",
@@ -48714,14 +48714,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -1721564638603,
+              4523945363249,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046024",
@@ -48745,14 +48745,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -15821564638603,
+              -18076054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046028",
@@ -48776,14 +48776,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -43421564638603,
+              -44376054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046030",
@@ -48807,14 +48807,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -3921564638603,
+              -14876054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_tuscany_046033",
@@ -48838,14 +48838,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -94021564638603,
+              -96176054636751,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046005",
@@ -48869,14 +48869,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              11733652257065,
+              11606741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046013",
@@ -48900,14 +48900,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              37433652257065,
+              27406741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046018",
@@ -48931,14 +48931,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              41033652257065,
+              49106741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046024",
@@ -48962,14 +48962,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              26933652257065,
+              26506741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046028",
@@ -48993,14 +48993,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -666347742935,
+              206741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046030",
@@ -49024,14 +49024,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              38833652257065,
+              29706741020299,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_gap_italy_046033",
@@ -49055,14 +49055,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -51266347742935,
+              -51593258979701,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_series_refused",
@@ -49085,7 +49085,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_absolute_change_refused",
@@ -49108,7 +49108,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_relative_change_refused",
@@ -49131,7 +49131,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_percentage_points_refused",
@@ -49154,7 +49154,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_trend_refused",
@@ -49177,11 +49177,11 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_total_2025_refused",
-      "question": "Esiste il parco ACI 2025 congelato?",
+      "id": "vehicles_motorization_total_2026_refused",
+      "question": "Esiste il parco ACI 2026 congelato?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -49189,7 +49189,7 @@
             "metric": "motorization",
             "dimension": "total",
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -49200,7 +49200,7 @@
           "vehicles_period_not_frozen"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_anomaly_refused",
@@ -49220,7 +49220,7 @@
           "vehicles_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_benchmark_refused",
@@ -49244,7 +49244,7 @@
           "vehicles_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_pair_0_refused",
@@ -49271,7 +49271,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_pair_1_refused",
@@ -49298,7 +49298,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_pooling_refused",
@@ -49318,7 +49318,7 @@
           "vehicles_native_ratio_dimension_required"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_sex_refused",
@@ -49338,7 +49338,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046005",
@@ -49362,18 +49362,18 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              22650000,
+              22893000,
               31763
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046013",
@@ -49397,18 +49397,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              4839000,
-              6550
+              96480,
+              131
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046018",
@@ -49432,18 +49432,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              16170000,
-              21782
+              8257500,
+              10891
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046024",
@@ -49467,18 +49467,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              16516000,
-              22678
+              8341500,
+              11339
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046028",
@@ -49502,18 +49502,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              8607000,
-              12284
+              2178250,
+              3071
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046030",
@@ -49537,18 +49537,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              2060000,
+              2056000,
               2783
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_current_046033",
@@ -49572,18 +49572,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              39446000,
-              60680
+              997400,
+              1517
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_rank",
@@ -49606,7 +49606,7 @@
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046005",
@@ -49630,14 +49630,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -31027713302143,
-              1000000000000
+              -8232948111223,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046013",
@@ -49661,14 +49661,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5342938684405,
-              1000000000000
+              -1718750501843,
+              100000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046018",
@@ -49692,14 +49692,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -1765490816181,
+              4518785139211,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046024",
@@ -49723,14 +49723,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -15838647273756,
-              1000000000000
+              -9014586097809,
+              500000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046028",
@@ -49754,14 +49754,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -43454029633719,
+              -44379408593117,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046030",
@@ -49785,14 +49785,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -3913156446005,
-              1000000000000
+              -7452472162069,
+              500000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_tuscany_046033",
@@ -49816,14 +49816,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -94055645060489,
-              1000000000000
+              -24048545630183,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046005",
@@ -49847,14 +49847,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              11727503593526,
+              11651003212157,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046013",
@@ -49878,14 +49878,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              37412278211264,
+              27395290638619,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046018",
@@ -49909,14 +49909,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              40989726079487,
-              1000000000000
+              2455079039813,
+              50000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046024",
@@ -49940,14 +49940,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              26916569621912,
+              26553623461431,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046028",
@@ -49971,14 +49971,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -698812738050,
-              1000000000000
+              50846765983,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046030",
@@ -50002,14 +50002,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              38842060449663,
+              29677851332911,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_gap_italy_046033",
@@ -50033,14 +50033,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -51300428164820,
+              -51611386863683,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_series_refused",
@@ -50063,7 +50063,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_absolute_change_refused",
@@ -50086,7 +50086,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_relative_change_refused",
@@ -50109,7 +50109,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_percentage_points_refused",
@@ -50132,7 +50132,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_trend_refused",
@@ -50155,11 +50155,11 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_nativeRatio_2025_refused",
-      "question": "Esiste il parco ACI 2025 congelato?",
+      "id": "vehicles_motorization_nativeRatio_2026_refused",
+      "question": "Esiste il parco ACI 2026 congelato?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -50167,7 +50167,7 @@
             "metric": "motorization",
             "dimension": "nativeRatio",
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -50178,7 +50178,7 @@
           "vehicles_period_not_frozen"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_anomaly_refused",
@@ -50198,7 +50198,7 @@
           "vehicles_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_benchmark_refused",
@@ -50222,7 +50222,7 @@
           "vehicles_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_pair_0_refused",
@@ -50249,7 +50249,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_pair_1_refused",
@@ -50276,7 +50276,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_pooled_all",
@@ -50305,22 +50305,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              110288000,
-              158520
+              2789500,
+              3963
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 110288
+            "value": 111580.0
           },
           {
             "path": "/result/denominator",
-            "value": 158520
+            "value": 158520.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_pooled_coastal",
@@ -50346,22 +50346,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              83451000,
+              84296000,
               121671
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 83451
+            "value": 84296.0
           },
           {
             "path": "/result/denominator",
-            "value": 121671
+            "value": 121671.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_pooled_inland",
@@ -50386,22 +50386,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              26837000,
+              27284000,
               36849
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 26837
+            "value": 27284.0
           },
           {
             "path": "/result/denominator",
-            "value": 36849
+            "value": 36849.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_nativeRatio_sex_refused",
@@ -50421,7 +50421,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046005",
@@ -50444,15 +50444,15 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 19.4
+            "value": 18.4
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046013",
@@ -50475,15 +50475,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 19.4
+            "value": 18.8
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046018",
@@ -50506,15 +50506,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 18.9
+            "value": 18.1
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046024",
@@ -50537,15 +50537,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 20.0
+            "value": 19.3
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046028",
@@ -50568,15 +50568,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 18.4
+            "value": 17.5
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046030",
@@ -50599,15 +50599,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 24.7
+            "value": 24.8
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_current_046033",
@@ -50630,15 +50630,15 @@
         "checks": [
           {
             "path": "/observations/1/value",
-            "value": 18.1
+            "value": 17.3
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_rank",
@@ -50661,7 +50661,7 @@
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046005",
@@ -50685,14 +50685,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2233891438045,
+              2187476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046013",
@@ -50716,14 +50716,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2233891438045,
+              2587476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046018",
@@ -50747,14 +50747,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              1733891438045,
+              1887476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046024",
@@ -50778,14 +50778,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2833891438045,
+              3087476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046028",
@@ -50809,14 +50809,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              1233891438045,
+              1287476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046030",
@@ -50840,14 +50840,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              7533891438045,
+              8587476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_tuscany_046033",
@@ -50871,14 +50871,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              933891438045,
+              1087476412939,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046005",
@@ -50902,14 +50902,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4422150647563,
+              -4187710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046013",
@@ -50933,14 +50933,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4422150647563,
+              -3787710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046018",
@@ -50964,14 +50964,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4922150647563,
+              -4487710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046024",
@@ -50995,14 +50995,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -3822150647563,
+              -3287710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046028",
@@ -51026,14 +51026,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5422150647563,
+              -5087710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046030",
@@ -51057,14 +51057,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              877849352437,
+              2212289254163,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_gap_italy_046033",
@@ -51088,14 +51088,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5722150647563,
+              -5287710745837,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_series_refused",
@@ -51118,7 +51118,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_absolute_change_refused",
@@ -51141,7 +51141,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_relative_change_refused",
@@ -51164,7 +51164,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_percentage_points_refused",
@@ -51187,7 +51187,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_trend_refused",
@@ -51210,11 +51210,11 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_2025_refused",
-      "question": "Esiste il parco ACI 2025 congelato?",
+      "id": "vehicles_pollutingCars_total_2026_refused",
+      "question": "Esiste il parco ACI 2026 congelato?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -51222,7 +51222,7 @@
             "metric": "pollutingCars",
             "dimension": "total",
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -51233,7 +51233,7 @@
           "vehicles_period_not_frozen"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_anomaly_refused",
@@ -51253,7 +51253,7 @@
           "vehicles_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_benchmark_refused",
@@ -51277,7 +51277,7 @@
           "vehicles_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_pair_0_refused",
@@ -51304,7 +51304,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_pair_1_refused",
@@ -51331,7 +51331,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_pooling_refused",
@@ -51351,7 +51351,7 @@
           "vehicles_native_ratio_dimension_required"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_sex_refused",
@@ -51371,7 +51371,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046005",
@@ -51395,18 +51395,18 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              438400,
-              22650
+              140700,
+              7631
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046013",
@@ -51430,18 +51430,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              93900,
-              4839
+              22675,
+              1206
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046018",
@@ -51465,18 +51465,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              306200,
-              16170
+              59800,
+              3303
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046024",
@@ -51500,18 +51500,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              330800,
-              16516
+              321200,
+              16683
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046028",
@@ -51535,18 +51535,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              158500,
-              8607
+              152300,
+              8713
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046030",
@@ -51570,18 +51570,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              50900,
-              2060
+              6375,
+              257
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_current_046033",
@@ -51605,18 +51605,18 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              715800,
-              39446
+              86325,
+              4987
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/observations/0/period",
-            "value": "2024"
+            "value": "2025"
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_rank",
@@ -51639,7 +51639,7 @@
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046005",
@@ -51663,14 +51663,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2189299826565,
+              2225426878147,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046013",
@@ -51694,14 +51694,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2238727147902,
+              2589300625211,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046018",
@@ -51725,14 +51725,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              1770193231489,
-              1000000000000
+              473057416889,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046024",
@@ -51756,14 +51756,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              2862954165097,
+              3040608343647,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046028",
@@ -51787,14 +51787,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              1249134844574,
-              1000000000000
+              316776138699,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046030",
@@ -51818,14 +51818,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              7542629302122,
-              1000000000000
+              2148230970939,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_tuscany_046033",
@@ -51849,14 +51849,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              980218061783,
-              1000000000000
+              54874121429,
+              50000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046005",
@@ -51880,14 +51880,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4466742259042,
+              -4149760280629,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046013",
@@ -51911,14 +51911,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4417314937706,
-              1000000000000
+              -757177306713,
+              200000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046018",
@@ -51942,14 +51942,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -4885848854119,
-              1000000000000
+              -224147874561,
+              50000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046024",
@@ -51973,14 +51973,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -3793087920511,
+              -3334578815129,
               1000000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046028",
@@ -52004,14 +52004,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5406907241034,
-              1000000000000
+              -255404130199,
+              50000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046030",
@@ -52035,14 +52035,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              886587216514,
-              1000000000000
+              110886836249,
+              50000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_gap_italy_046033",
@@ -52066,14 +52066,14 @@
           {
             "path": "/result/value",
             "fraction": [
-              -5675824023824,
-              1000000000000
+              -1319426182549,
+              250000000000
             ],
             "tolerance": 1e-09
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_series_refused",
@@ -52096,7 +52096,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_absolute_change_refused",
@@ -52119,7 +52119,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_relative_change_refused",
@@ -52142,7 +52142,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_percentage_points_refused",
@@ -52165,7 +52165,7 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_trend_refused",
@@ -52188,11 +52188,11 @@
           "vehicles_single_snapshot_no_history"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_nativeRatio_2025_refused",
-      "question": "Esiste il parco ACI 2025 congelato?",
+      "id": "vehicles_pollutingCars_nativeRatio_2026_refused",
+      "question": "Esiste il parco ACI 2026 congelato?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -52200,7 +52200,7 @@
             "metric": "pollutingCars",
             "dimension": "nativeRatio",
             "periods": [
-              "2025"
+              "2026"
             ]
           }
         ]
@@ -52211,7 +52211,7 @@
           "vehicles_period_not_frozen"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_anomaly_refused",
@@ -52231,7 +52231,7 @@
           "vehicles_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_benchmark_refused",
@@ -52255,7 +52255,7 @@
           "vehicles_benchmark_scope_not_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_pair_0_refused",
@@ -52282,7 +52282,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_pair_1_refused",
@@ -52309,7 +52309,7 @@
           "vehicles_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_pooled_all",
@@ -52338,22 +52338,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              2094500,
-              110288
+              101345,
+              5579
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 20945
+            "value": 20269.0
           },
           {
             "path": "/result/denominator",
-            "value": 110288
+            "value": 111580.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_pooled_coastal",
@@ -52379,22 +52379,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              1578900,
-              83451
+              190575,
+              10537
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 15789
+            "value": 15246.0
           },
           {
             "path": "/result/denominator",
-            "value": 83451
+            "value": 84296.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_pooled_inland",
@@ -52419,22 +52419,22 @@
           {
             "path": "/result/value",
             "fraction": [
-              515600,
-              26837
+              125575,
+              6821
             ],
             "tolerance": 1e-09
           },
           {
             "path": "/result/numerator",
-            "value": 5156
+            "value": 5023.0
           },
           {
             "path": "/result/denominator",
-            "value": 26837
+            "value": 27284.0
           }
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_nativeRatio_sex_refused",
@@ -52454,7 +52454,7 @@
           "dimension_adapter_not_implemented"
         ]
       },
-      "reference": "ACI Autoritratto 2024 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "tax_tariStandardHousehold_total_046005",

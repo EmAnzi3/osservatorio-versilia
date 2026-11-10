@@ -18,6 +18,9 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     # copertura FTTH (AGCOM Broadband Map) — ultima edizione indicata da report.js
     python scripts/update_source_data.py agcom-ftth [--dir cartella-con-report.js-e-comuni.csv]
     python scripts/update_source_data.py istat-tourism --year 2025 [--file archivio.zip]
+    python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
+    python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
+    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
@@ -788,6 +791,121 @@ def update_istat_tourism(year: int, file: Path | None, dry_run: bool) -> Changes
     return changes
 
 
+def aci_archive_url(year: int) -> str:
+    page = probes.http_fetch("https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/").decode("utf-8", errors="replace")
+    found = sorted(set(re.findall(rf"href=[\"']([^\"']*Autoritratto[-_]?{year}[-_]Parco[-_]veicolare\.zip)[\"']", page, flags=re.I)))
+    if len(found) != 1:
+        raise UpdateError(f"Parco veicolare ACI {year}: archivio non trovato una sola volta ({found})")
+    return found[0]
+
+
+def update_aci_vehicles(year: int, file: Path | None, dry_run: bool) -> Changes:
+    """Parco autovetture ACI (motorizzazione, quota Euro 0–3) per un'edizione dell'Autoritratto, 7/7 dal pannello nativo."""
+    from decimal import Decimal, ROUND_HALF_UP
+    import acquire_a3_benchmark_aci_istat_annual as aci
+
+    site = load(SITE)
+    published = int(site["metrics"]["motorization"]["meta"]["year"])
+    if year <= published:
+        raise UpdateError(f"Parco veicolare: anno {year} non successivo al pubblicato {published}")
+    url = str(file) if file else aci_archive_url(year)
+    body = file.read_bytes() if file else probes.http_fetch(url)
+    try:
+        snapshot = aci.build_snapshot(body, site, year, url if not file else "https://aci.gov.it/" + file.name)
+    except (RuntimeError, KeyError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Parco veicolare {year}: {error}") from error
+    path = f"data/source-snapshots/{aci.SNAPSHOT_PREFIX}{year}.json"
+    rec = {r[0]: r for r in snapshot["records"]}
+    proof = snapshot["municipalReconciliation"]
+    pop = {r["code"]: r["value"] for r in site["metrics"]["population"]["rows"]}
+    changes = Changes()
+    weights = {}
+    for key in ("motorization", "pollutingCars"):
+        metric = site["metrics"][key]
+        for row in metric["rows"]:
+            counts = rec[proof[row["code"]]["nativeRow"]][4:]
+            weights[row["code"]] = counts[-1]
+            raw = Decimal(counts[-1]) / Decimal(pop[row["code"]]) * 1000 if key == "motorization" else Decimal(sum(counts[:4])) / Decimal(counts[-1]) * 100
+            value = float(raw.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+            changes.note(f"{key} {row['town']}", row["value"], value)
+            row.update(value=value, benchmarkValue=value,
+                       formatted=f"{it_number(value, 2)} ogni 1.000" if key == "motorization" else f"{it_number(value, 1)}%")
+        b = snapshot["benchmarks"][key]
+        metric["meta"].update(year=str(year), benchmark={"year": str(year), "tuscany": b["tuscany"], "italy": b["italy"],
+                              "source": snapshot["publisher"], "url": snapshot["sourceUrl"], "sourceSnapshot": path, "note": snapshot["scope"]["note"]})
+        for field in ("formula", "caveat"):
+            metric["method"][field] = re.sub(rf"\b{published}\b", str(year), metric["method"][field])
+    cars = sum(weights.values())
+    site["metrics"]["motorization"]["aggregate"]["value"] = cars / sum(pop.values()) * 1000
+    site["metrics"]["pollutingCars"]["aggregate"]["value"] = sum(r["value"] * weights[r["code"]] for r in site["metrics"]["pollutingCars"]["rows"]) / cars
+    try:
+        for key in ("motorization", "pollutingCars"):
+            aci.validate_snapshot(site["metrics"][key], snapshot, site["metrics"]["population"])
+    except RuntimeError as error:
+        raise UpdateError(f"Parco veicolare {year}: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py aci-vehicles --year {year}"}
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot, compact=True)
+    return changes
+
+
+def update_ispra_soil(year: int, file: Path | None, dry_run: bool) -> Changes:
+    """Consumo di suolo ISPRA (stock e flusso annuale) dall'edizione completa dell'anno successivo."""
+    import update_ispra_soil as soil
+    from openpyxl import load_workbook
+
+    site = load(SITE)
+    snapshot = load(soil.SNAPSHOT)
+    published = snapshot["landUse"]["years"][-1]
+    if year < published:
+        raise UpdateError(f"Consumo di suolo: anno {year} precedente al pubblicato {published}")
+    url = None if file else soil.edition_url(year)
+    body = file.read_bytes() if file else soil.fetch(url)
+    try:
+        wb = load_workbook(io.BytesIO(body), read_only=True, data_only=True)
+        land, change, bench = soil.build(wb, year, soil.populations(site))
+    except (soil.SoilError, KeyError, ValueError) as error:
+        raise UpdateError(f"Consumo di suolo {year}: {error}") from error
+    changes = Changes()
+    edition = f"Consumo di suolo, ecosistemi urbani e stato del territorio · edizione {year + 1} · dati comunali 2006–{year}"
+    snapshot["landUse"], snapshot["landUseChange"] = land, change
+    snapshot["sources"]["ispraSoil"].update(reference=edition, acquisition={
+        "url": url or str(file), "sizeBytes": len(body), "sha256": hashlib.sha256(body).hexdigest()})
+    path = f"{soil.BENCH_PREFIX}{year}.json"
+    bench_snapshot = {
+        "schemaVersion": 2, "version": f"a3-ispra-soil-benchmark-{year}-v1", "retrieved": date.today().isoformat(),
+        "publisher": "ISPRA — Consumo di suolo", "sourceProfileId": "ispra-consumo-suolo-2024", "candidateState": "ACQUIRED_CANDIDATE",
+        "sourceUrl": soil.PAGE, "dataUrl": url or str(file),
+        "qualityGate": {"status": "PASS", "publicReconciliation": "2 metrics × 7/7 PASS", "municipalSheet": f"Comuni_{year}",
+                        "regionalSheet": f"Regioni_{year}", "italyAggregation": "official-row", "errors": []},
+        "benchmarks": bench,
+        "acquisitionEvidence": {"script": f"scripts/update_source_data.py ispra-soil --year {year}", "edition": edition},
+    }
+    for key, family, field, digits in (("landUse", land, "consumedPct", 2), ("landUseChange", change, "netHa", 2)):
+        metric = site["metrics"][key]
+        years = family["years"]
+        for row in metric["rows"]:
+            rows = family["municipalities"][row["town"]]["rows"]
+            value = round(rows[str(year)][field], digits)
+            changes.note(f"{key} {row['town']}", row["value"], value)
+            row.update(value=value, benchmarkValue=value,
+                       formatted=soil.fmt(value, 1, "%") if key == "landUse" else soil.fmt(value, 2, " ha"))
+            if row.get("series"):
+                row["series"] = {"years": years, "values": [rows[str(y)][field] for y in years]}
+        b = bench[key]
+        metric["meta"].update(year=str(year), benchmark={
+            "year": str(year), "tuscany": b["tuscany"], "italy": b["italy"], "source": bench_snapshot["publisher"],
+            "url": soil.PAGE, "sourceSnapshot": path,
+            "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."})
+        changes.note(f"{key} Toscana", None, b["tuscany"])
+    if not dry_run:
+        save(soil.SNAPSHOT, snapshot)
+        save(SITE, site)
+        save(ROOT / path, bench_snapshot)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -803,18 +921,36 @@ def main() -> int:
     t = sub.add_parser("istat-tourism")
     t.add_argument("--year", type=int, required=True)
     t.add_argument("--file", type=Path, help="archivio zip Istat già scaricato")
+    v = sub.add_parser("aci-vehicles")
+    v.add_argument("--year", type=int, required=True)
+    v.add_argument("--file", type=Path, help="archivio ACI «Parco veicolare» già scaricato")
+    o = sub.add_parser("ispra-soil")
+    o.add_argument("--year", type=int, required=True)
+    o.add_argument("--file", type=Path, help="foglio ISPRA Com_Prov_Reg_Naz già scaricato")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f, t):
+    for p in (a, m, u, f, t, o, v):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
+    g = sub.add_parser("source-probe", help="sonda della struttura di una pagina o di un file (non modifica il catalogo)")
+    g.add_argument("--name", required=True)
+    g.add_argument("--url", required=True)
+    g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     args = parser.parse_args()
     try:
-        if args.updater == "mef-fiscal-probe":
+        if args.updater == "source-probe":
+            import probe_source_files
+
+            probe_source_files.run(args.name, args.url, args.follow)
+        elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 
             probe_mef_fiscal.run(args.year)
+        elif args.updater == "aci-vehicles":
+            update_aci_vehicles(args.year, args.file, args.dry_run).report(f"Parco veicolare {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "ispra-soil":
+            update_ispra_soil(args.year, args.file, args.dry_run).report(f"Consumo di suolo {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-tourism":
             update_istat_tourism(args.year, args.file, args.dry_run).report(f"Capacità ricettiva {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "agcom-ftth":

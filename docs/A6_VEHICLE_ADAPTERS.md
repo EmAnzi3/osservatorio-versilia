@@ -23,3 +23,8 @@ Residenti comunali da POSAS `istat-demography-lotto-a-2026-08.json`; benchmark d
 Fixture indipendenti: 14 celle pubbliche e 14 rapporti nativi distinti, 21 componenti fisse, 56 gap e due rapporti aggregati; 7.997 righe workbook rigiocate. Suite estesa di 140 domande, tutte le 1.710 precedenti invariate. Report derivati in `reports/a6-vehicles/`; microbenchmark descrittivo, senza promessa di latenza o punteggio di qualità.
 
 A6.4 resta parziale, A6.5–A6.6 richiedono revisione metodologica; A7 non avviata. Nessun nuovo legame causale o nuova priorità politica.
+
+
+## Aggiornamento Autoritratto 2025
+
+L'adattatore segue lo snapshot ACI più recente (`latest_snapshot()`): `a3-aci-vehicle-benchmark-2025.json`, SHA-256 `f1bf358b1c8899c998f0fa099b99c13e98830d1da7a4f70983668cff9fbe5588`, archivio `Autoritratto2025_Parco_veicolare.zip` (SHA-256 `8f81c97e…98e6e3`), 7.997 righe di localizzazione, workbook congelato e riletto dal test. Il denominatore della motorizzazione resta la popolazione al 1° gennaio 2026. Codice di avvertenza `vehicles_2025_stock_2026_residents_hybrid_explicit`. Aggiornamento con `update_source_data.py aci-vehicles --year AAAA`.

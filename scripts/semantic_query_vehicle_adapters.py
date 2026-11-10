@@ -5,14 +5,16 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from semantic_operations import finite
 from semantic_query_library_adapters import TOWNS, fingerprint
+from acquire_a3_benchmark_aci_istat_annual import latest_snapshot
 
 MOTOR, EURO = KEYS = ('motorization', 'pollutingCars')
-NATIVE = 'data/source-snapshots/a3-aci-vehicle-benchmark-2024.json'
+NATIVE = latest_snapshot()
+Y = NATIVE[-9:-5]
 POPULATION = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 DEMO = 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
 URL = 'https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/'
 UNITS = {MOTOR: 'per1000', EURO: 'percent'}
-FORMULAS = {MOTOR: 'Autovetture ACI 2024 / popolazione residente al 1° gennaio 2026 × 1.000', EURO: 'autovetture Euro 0–3 / autovetture totali × 100'}
+FORMULAS = {MOTOR: f'Autovetture ACI {Y} / popolazione residente al 1° gennaio 2026 × 1.000', EURO: 'autovetture Euro 0–3 / autovetture totali × 100'}
 HASHES = {
     NATIVE: (_pin('vehicle#1'), _pin('vehicle#2')),
     POPULATION: (_pin('vehicle#3'), _pin('vehicle#4')),
@@ -51,14 +53,14 @@ def selection_guard(key, dim, op):
 def context(metric, key, dim):
     meta = metric['meta']
     if (dim not in dimensions(key) or meta.get('key') != key or meta.get('theme') != 'mobilita'
-            or meta.get('year') != '2024' or meta.get('unit') != UNITS[key]
+            or meta.get('year') != Y or meta.get('unit') != UNITS[key]
             or meta.get('polarity') != ('neutral' if key == MOTOR else 'negative')
             or metric.get('sourceUrl') != URL or metric.get('method', {}).get('formula') != FORMULAS[key]
             or metric['method'].get('coverage') != '7/7'):
         raise ValueError('vehicles_definition_changed')
-    return dict(unit=UNITS[key], population='ACI PRA registered municipal car stock 2024; administrative location, not vehicle use',
+    return dict(unit=UNITS[key], population=f'ACI PRA registered municipal car stock {Y}; administrative location, not vehicle use',
                 definition=FORMULAS[key], method='published one-decimal rate retained' if dim == 'total' else 'native integer components; no reverse derivation from public rounded rates',
-                frequency='annual_snapshot', periodBasis='car stock 2024; resident denominator 1 January 2026' if key == MOTOR else 'Euro 0–3 and all registered cars, both 2024',
+                frequency='annual_snapshot', periodBasis=f'car stock {Y}; resident denominator 1 January 2026' if key == MOTOR else f'Euro 0–3 and all registered cars, both {Y}',
                 nativeComponentsAvailable=dim == 'nativeRatio', adapter='vehicles/'+key+'/'+dim+'/v1')
 
 
@@ -99,7 +101,7 @@ def validated(engine, key):
     if metric['aggregate'].get('label') != ('Tasso Versilia' if key == MOTOR else 'Quota ponderata Versilia') or metric.get('normalizedAggregate') is not None:
         raise ValueError('vehicles_aggregate_definition_changed')
     meta = metric['meta'].get('benchmark') or {}
-    if meta.get('year') != '2024' or meta.get('sourceSnapshot') != NATIVE or meta.get('url') != URL:
+    if meta.get('year') != Y or meta.get('sourceSnapshot') != NATIVE or meta.get('url') != URL:
         raise ValueError('vehicles_benchmark_definition_changed')
     for scope, counts in [('tuscany',snap['regionTotals']['TOSCANA']),('italy',snap['officialNational'])]:
         population = demo['benchmarks']['population'][scope]
@@ -111,7 +113,7 @@ def validated(engine, key):
 
 def observation(engine, key, index, dim, period, historical):
     metric = engine._catalog['metrics'][key]; ctx = context(metric,key,dim)
-    if period != '2024': raise ValueError('vehicles_period_not_frozen')
+    if period != Y: raise ValueError('vehicles_period_not_frozen')
     snap, ref, selected, populations = validated(engine,key); row = metric['rows'][index];code = row['code']
     j,record,num,den,scale = selected[code]
     evidence = [dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/rows/{index}/value',publishedPrecision='one decimal',nativeRatioDistinct=dim == 'nativeRatio'),
@@ -120,18 +122,18 @@ def observation(engine, key, index, dim, period, historical):
         posas,pref = frozen(engine,POPULATION);k=next(i for i,r in enumerate(posas['posas']['towns'][row['town']]) if r['year'] == 2026)
         evidence.append(dict(pref,kind='denominator_snapshot',recordPointer=f'/posas/towns/{row["town"]}/{k}/population',denominatorDate='2026-01-01',nativeDenominator=den))
     else: evidence[1]['denominatorPointer'] = f'/records/{j}/19'
-    notes = NOTES + ['vehicles_public_one_decimal_native_ratio_distinct', 'vehicles_public_euro_aggregate_weights_rounded_rates_native_pooling_distinct', 'vehicles_2024_stock_2026_residents_hybrid_explicit' if key == MOTOR else 'vehicles_total_includes_undefined_and_not_contemplated_classes_no_imputation']
+    notes = NOTES + ['vehicles_public_one_decimal_native_ratio_distinct', 'vehicles_public_euro_aggregate_weights_rounded_rates_native_pooling_distinct', f'vehicles_{Y}_stock_2026_residents_hybrid_explicit' if key == MOTOR else 'vehicles_total_includes_undefined_and_not_contemplated_classes_no_imputation']
     out = dict(ctx,metric=key,dimension=dim,geography=code,period=period,value=row['value'] if dim == 'total' else num/den*scale,source=URL,evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False,missingReason=None)
-    if dim == 'nativeRatio': out.update(numerator=num,denominator=den,scale=scale,numeratorPeriod='2024',denominatorPeriod='2026-01-01' if key == MOTOR else '2024')
+    if dim == 'nativeRatio': out.update(numerator=num,denominator=den,scale=scale,numeratorPeriod=Y,denominatorPeriod='2026-01-01' if key == MOTOR else Y)
     return out, notes
 
 
 def benchmark(engine,key,scope,municipal):
-    if scope not in scopes(key,municipal['dimension']) or municipal['period'] != '2024':
+    if scope not in scopes(key,municipal['dimension']) or municipal['period'] != Y:
         raise ValueError('vehicles_benchmark_scope_not_reviewed')
     snap,ref,_,_ = validated(engine,key)
     pointer = '/regionTotals/TOSCANA' if scope == 'tuscany' else '/officialNational'
-    ev = [dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{key}/{scope}',nativeCountsPointer=pointer,nativePanelRows=7997,workbookSha256=snap['source']['workbookSha256']),dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/{scope}')]
+    ev = [dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{key}/{scope}',nativeCountsPointer=pointer,nativePanelRows=len(snap['records']),workbookSha256=snap['source']['workbookSha256']),dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/{scope}')]
     if key == MOTOR:
         _,dref = frozen(engine,DEMO);ev.append(dict(dref,kind='denominator_snapshot',recordPointer=f'/benchmarks/population/{scope}',denominatorDate='2026-01-01'))
-    return dict(municipal,geography=scope,value=snap['benchmarks'][key][scope],evidence=ev,provenance=ev,benchmarkAggregation='native ACI 2024 count ratio; original workbook and full localization panel frozen, provincial/regional total rows excluded from sums; undefined/foreign locations retained',nativeComponentsAvailable=False,**({'numerator':None,'denominator':None,'scale':None} if 'numerator' in municipal else {}))
+    return dict(municipal,geography=scope,value=snap['benchmarks'][key][scope],evidence=ev,provenance=ev,benchmarkAggregation=f'native ACI {Y} count ratio; original workbook and full localization panel frozen, provincial/regional total rows excluded from sums; undefined/foreign locations retained',nativeComponentsAvailable=False,**({'numerator':None,'denominator':None,'scale':None} if 'numerator' in municipal else {}))

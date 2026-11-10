@@ -39,3 +39,8 @@ python scripts/preflight.py --full
 ```
 
 Report in `reports/a6-soil/`. Gate locali e CI sul candidato; merge/pubblicazione con approvazione esplicita del proprietario.
+
+
+## Aggiornamento edizione 2026 (dati 2025)
+
+L'adattatore segue l'ultimo anno dello snapshot (`SOIL_LATEST`): periodi 2006, 2012, 2015–2025, benchmark da `a3-ispra-soil-benchmark-2025.json`. L'edizione 2026 rivede anche gli anni precedenti. Quando ISPRA ha cambiato la superficie comunale di un anno, la riga di quell'anno porta `municipalAreaHa` e il controllo quota/stock usa quella superficie. Il flusso 2025 è misurato sulla carta 2024 rivista: non è la differenza tra gli stock pubblicati. Aggiornamento con `update_source_data.py ispra-soil --year AAAA`.

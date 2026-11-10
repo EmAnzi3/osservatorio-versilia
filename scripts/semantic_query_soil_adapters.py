@@ -1,24 +1,27 @@
 """Frozen ISPRA stock/flow and UCS cover; definitions and denominators stay separate."""
 from a6_pins import Pin as _pin
+import json
 import math
+from pathlib import Path
 from semantic_operations import finite
 
 KEYS = ('landUse', 'landUseChange', 'landCoverProfile')
 SOIL = 'data/source-snapshots/territorio-v137-official.json'
 UCS = 'data/source-snapshots/territorio-ucs-v136.json'
-BENCHMARK = 'data/source-snapshots/a3-ispra-soil-benchmark-2024.json'
+SOIL_LATEST = json.loads((Path(__file__).resolve().parents[1] / SOIL).read_text(encoding='utf-8'))['landUse']['years'][-1]
+BENCHMARK = f'data/source-snapshots/a3-ispra-soil-benchmark-{SOIL_LATEST}.json'
 URL = 'https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo'
 UCS_URL = 'https://dati.toscana.it/dataset/ucs'
 UCS_PUBLIC_URL = 'https://www502.regione.toscana.it/geonetwork/srv/api/records/r_toscan:0d4d6640-9a1c-47a4-9a5d-a85cdb36927c'
 CATEGORIES = ('artificialized','agricultural','forest_seminatural_total','wetlands','water','forest','seminativi','permanent_crops','seminatural_nonforest','urban_green_cartographic')
-YEARS = {'landUse':'2006, 2012, 2015–2024','landUseChange':'2012, 2015–2024','landCoverProfile':'2007–2019'}
+YEARS = {'landUse':f'2006, 2012, 2015–{SOIL_LATEST}','landUseChange':f'2012, 2015–{SOIL_LATEST}','landCoverProfile':'2007–2019'}
 
 def close(actual, expected, tolerance=1e-8):
     if not finite(actual) or not finite(expected) or not math.isclose(actual,expected,rel_tol=0,abs_tol=tolerance):
         raise ValueError('soil_catalog_source_mismatch')
 
 def token(key, period):
-    return ('2019' if key=='landCoverProfile' else '2024') if str(period)==YEARS[key] else str(period)
+    return ('2019' if key=='landCoverProfile' else str(SOIL_LATEST)) if str(period)==YEARS[key] else str(period)
 
 def dimensions(key):
     if key=='landUse':return ['total','view:percent','view:hectares','view:sqmPerResident']
@@ -74,7 +77,7 @@ def native(engine,key,row):
 def available_periods(engine,key,dimension,row):
     family,n,ref=native(engine,key,row);v=view(key,dimension)
     years=[str(y) for y in family['years']]
-    expected=[2007,2010,2013,2016,2019] if key=='landCoverProfile' else [2006,2012,*range(2015,2025)] if key=='landUse' else [2012,*range(2015,2025)]
+    expected=[2007,2010,2013,2016,2019] if key=='landCoverProfile' else [2006,2012,*range(2015,SOIL_LATEST+1)] if key=='landUse' else [2012,*range(2015,SOIL_LATEST+1)]
     if years!=list(map(str,expected)):raise ValueError('soil_native_periods_changed')
     if set(n['rows'])!=set(years):raise ValueError('soil_native_periods_changed')
     if key=='landUse' and v=='sqmPerResident':years=[y for y in years if n['rows'][y]['sqmPerResident'] is not None]
@@ -102,9 +105,9 @@ def observation(engine,key,index,dimension,period,historical):
         r=n['rows'][period];series=row['seriesByView'][v];value=series['values'][i]
         pointer=f'/metrics/{key}/rows/{index}/seriesByView/{v}/values/{i}'
         if key=='landUse':
-            d=n['municipalAreaHa'];h=r['consumedHa']
+            d=r.get('municipalAreaHa',n['municipalAreaHa']);h=r['consumedHa']
             if not finite(d) or d<=0 or not finite(h) or not 0<=h<=d:raise ValueError('soil_invalid_native_components')
-            close(row['municipalAreaHa'],d);close(r['consumedPct'],h/d*100,.00050001)
+            close(row['municipalAreaHa'],n['municipalAreaHa']);close(r['consumedPct'],h/d*100,.00050001)
             expected=r[{'percent':'consumedPct','hectares':'consumedHa','sqmPerResident':'sqmPerResident'}[v]]
             if v=='percent':parts=dict(numerator=h,denominator=d,scale=100)
             if v=='sqmPerResident':
@@ -128,11 +131,11 @@ def observation(engine,key,index,dimension,period,historical):
     return dict(ctx,**parts,metric=key,dimension=dimension,geography=row['code'],period=period,value=value,publishedValue=published,source=metric['sourceUrl'],provenance=provenance,evidence=provenance,notApplicable=bool(row.get('notApplicable')),dataUnavailable=value is None or bool(row.get('dataUnavailable'))),notes
 
 def benchmark(engine,key,scope,municipal):
-    if scope not in scopes(key,municipal['dimension']) or municipal['period']!='2024':raise ValueError('soil_benchmark_dimension_or_scope_not_reviewed')
+    if scope not in scopes(key,municipal['dimension']) or municipal['period']!=str(SOIL_LATEST):raise ValueError('soil_benchmark_dimension_or_scope_not_reviewed')
     snap,ref=engine.file(BENCHMARK);b=snap['benchmarks'][key];gate=snap.get('qualityGate',{})
-    if snap.get('schemaVersion')!=2 or snap.get('sourceProfileId')!='ispra-consumo-suolo-2024' or snap.get('sourceUrl')!=URL or gate.get('status')!='PASS' or gate.get('errors') or gate.get('publicReconciliation')!='2 metrics × 7/7 PASS' or b.get('unit')!='percent' or b.get('year')!='2024' or b.get('formula')!='suolo consumato / superficie territoriale × 100':raise ValueError('soil_benchmark_gate_changed')
+    if snap.get('schemaVersion')!=2 or snap.get('sourceProfileId')!='ispra-consumo-suolo-2024' or snap.get('sourceUrl')!=URL or gate.get('status')!='PASS' or gate.get('errors') or gate.get('publicReconciliation')!='2 metrics × 7/7 PASS' or b.get('unit')!='percent' or b.get('year')!=str(SOIL_LATEST) or b.get('formula')!='suolo consumato / superficie territoriale × 100':raise ValueError('soil_benchmark_gate_changed')
     meta=engine._catalog['metrics'][key]['meta']['benchmark']
-    if meta.get('sourceSnapshot')!=BENCHMARK or str(meta.get('year'))!='2024' or meta.get('url')!=URL:raise ValueError('soil_benchmark_reference_changed')
+    if meta.get('sourceSnapshot')!=BENCHMARK or str(meta.get('year'))!=str(SOIL_LATEST) or meta.get('url')!=URL:raise ValueError('soil_benchmark_reference_changed')
     value=b[scope];close(meta[scope],value)
     if not 0<=value<=100:raise ValueError('soil_invalid_native_components')
     evidence=[dict(ref,kind='benchmark_snapshot',valuePointer=f'/benchmarks/{key}/{scope}')]

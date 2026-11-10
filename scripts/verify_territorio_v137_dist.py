@@ -95,7 +95,7 @@ if abs(float(hydro_parts["managed"]["value"]) - 745.041751) > 1e-6:
     raise SystemExit("reticolo gestito: regressione aggregato")
 land = metrics["landUse"]
 cam = next(r for r in land["rows"] if r["town"] == "Camaiore")
-if cam["seriesByView"]["sqmPerResident"]["years"] != [2019, 2020, 2021, 2022, 2023, 2024]:
+if cam["seriesByView"]["sqmPerResident"]["years"] != list(range(2019, land["years"][-1] + 1)) or land["years"][-1] < 2024:
     raise SystemExit("landUse: anni pro capite inattesi")
 for row in land["rows"]:
     parts = {p["key"]: p for p in row["parts"]}

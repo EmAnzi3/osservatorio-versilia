@@ -91,7 +91,7 @@ def validate_snapshot(snapshot: dict) -> None:
 
     soil = snapshot.get("landUse", {})
     years = soil.get("years")
-    if years != [2006, 2012, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]:
+    if not isinstance(years, list) or not years or years[-1] < 2024 or years != [2006, 2012, *range(2015, years[-1] + 1)]:
         raise RuntimeError("v1.37: annualita' ISPRA suolo inattese.")
     if list(soil.get("municipalities", {})) != TOWNS:
         raise RuntimeError("v1.37: stock suolo non 7/7.")
@@ -118,7 +118,7 @@ def validate_snapshot(snapshot: dict) -> None:
 
     changes = snapshot.get("landUseChange", {})
     change_years = changes.get("years")
-    if change_years != [2012, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]:
+    if change_years != [2012, *range(2015, years[-1] + 1)]:
         raise RuntimeError("v1.37: annualita' ISPRA variazione inattese.")
     if list(changes.get("municipalities", {})) != TOWNS:
         raise RuntimeError("v1.37: variazione suolo non 7/7.")
@@ -207,7 +207,7 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
     rows = []
     for town in TOWNS:
         item = block["municipalities"][town]
-        latest = item["rows"]["2024"]
+        latest = item["rows"][str(years[-1])]
         rows.append({
             **identity(ids[town]),
             "value": float(latest["consumedPct"]),
@@ -227,12 +227,12 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             "normalized": None,
             "benchmarkValue": None,
         })
-    latest = block["versilia"]["rows"]["2024"]
+    latest = block["versilia"]["rows"][str(years[-1])]
     return {
         "meta": {
             "key": "landUse", "theme": "ambiente", "label": "Suolo consumato", "shortLabel": "Suolo consumato",
             "description": "Suolo consumato ISPRA: stock in ettari, quota della superficie territoriale e metri quadrati per residente. Non coincide con le superfici artificializzate UCS.",
-            "unit": "percent", "year": "2006, 2012, 2015–2024", "source": "ISPRA — Consumo di suolo",
+            "unit": "percent", "year": f"2006, 2012, 2015–{years[-1]}", "source": "ISPRA — Consumo di suolo",
             "polarity": "neutral", "compositeType": "soilStockProfile", "defaultView": "percent",
             "searchTerms": ["consumo di suolo", "suolo consumato", "ISPRA", "ettari", "m2 per residente"],
         },
@@ -252,7 +252,7 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             },
         },
         "normalizedAggregate": None,
-        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": "Stock e quota seguono le annualita' ISPRA 2006, 2012 e 2015–2024. Il dato m²/residente è mostrato nel periodo 2019–2024, sovrapposto alla serie demografica canonica disponibile; nessuna interpolazione.", "coverage": "7/7"},
+        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": f"Stock e quota seguono le annualita' ISPRA 2006, 2012 e 2015–{years[-1]} dell'edizione più recente, che rivede anche gli anni precedenti. Il dato m²/residente è mostrato nel periodo 2019–{years[-1]}, sovrapposto alla serie demografica canonica disponibile; nessuna interpolazione.", "coverage": "7/7"},
     }
 
 
@@ -262,7 +262,7 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
     rows = []
     for town in TOWNS:
         item = block["municipalities"][town]
-        latest = item["rows"]["2024"]
+        latest = item["rows"][str(years[-1])]
         rows.append({
             **identity(ids[town]), "value": float(latest["netHa"]), "formatted": fmt(float(latest["netHa"]), 2, " ha"),
             "parts": [
@@ -275,18 +275,18 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
             },
             "series": None, "normalized": None, "benchmarkValue": None,
         })
-    latest = block["versilia"]["rows"]["2024"]
+    latest = block["versilia"]["rows"][str(years[-1])]
     return {
         "meta": {
             "key": "landUseChange", "theme": "ambiente", "label": "Consumo di suolo annuale", "shortLabel": "Consumo annuale",
             "description": "Variazione annuale ISPRA distinta tra consumo di suolo lordo e netto. Il netto può essere negativo per ripristini o riclassificazioni.",
-            "unit": "hectares", "year": "2012, 2015–2024", "source": "ISPRA — Consumo di suolo",
+            "unit": "hectares", "year": f"2012, 2015–{years[-1]}", "source": "ISPRA — Consumo di suolo",
             "polarity": "neutral", "compositeType": "soilChangeProfile", "defaultView": "net",
             "searchTerms": ["consumo di suolo lordo", "consumo di suolo netto", "ISPRA", "variazione annuale"],
         },
         "sourceUrl": snapshot["sources"]["ispraSoil"]["page"], "years": years, "rows": rows,
         "aggregate": {
-            "value": float(latest["netHa"]), "label": "Versilia · consumo netto 2024",
+            "value": float(latest["netHa"]), "label": f"Versilia · consumo netto {years[-1]}",
             "note": "Aggregato Versilia ottenuto sommando gli ettari dei sette Comuni per la stessa annualita' e la stessa definizione ISPRA.",
             "parts": [
                 {"key": "gross", "label": "Consumo lordo", "value": float(latest["grossHa"]), "unit": "hectares"},
@@ -298,7 +298,7 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
             },
         },
         "normalizedAggregate": None,
-        "method": {"type": "Dato ufficiale ISPRA", "formula": "Versilia = Σ ettari comunali per annualita' e vista (lordo/netto).", "caveat": "Lordo e netto sono grandezze diverse; i valori negativi del netto sono ammessi e non sono trasformati in zero.", "coverage": "7/7"},
+        "method": {"type": "Dato ufficiale ISPRA", "formula": "Versilia = Σ ettari comunali per annualita' e vista (lordo/netto).", "caveat": f"Lordo e netto sono grandezze diverse; i valori negativi del netto sono ammessi e non sono trasformati in zero. Il flusso {years[-1]} è misurato da ISPRA sulla carta {years[-1] - 1} rivista e non coincide con la differenza tra gli stock pubblicati.", "coverage": "7/7"},
     }
 
 

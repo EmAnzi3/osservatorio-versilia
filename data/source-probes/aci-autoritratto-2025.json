@@ -1,0 +1,545 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-09T19:53:09Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": "Autoritratto-2025",
+ "result": {
+  "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+  "contentType": "text/html; charset=UTF-8",
+  "bytes": 223646,
+  "sha256": "90cb0cc451b99914761bae359c1f921e47b2acd1e5720d74f70bc2c922ead8b2",
+  "links": [
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip",
+    "text": "zip , 8 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/07/Autoritratto2025_Parco_veicolare_UTILIZZATORE.zip",
+    "text": "zip , 8 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Prime_Iscrizioni.zip",
+    "text": "zip , 923 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_-Usato.xlsx",
+    "text": "excel , 948 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto-2025-Radiazioni.zip",
+    "text": "zip , 983 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Parco-veicolare-Vendite-nel-Mondo-2025.xlsx",
+    "text": "excel , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Autoritratto-2024-Parco-Veicolare.zip",
+    "text": "zip , 8 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Autoritratto-2024-Prime-Iscrizioni.zip",
+    "text": "zip , 926 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Autoritratto-2024-Usato.xlsx",
+    "text": "excel , 900 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Autoritratto-2024-Radiati.zip",
+    "text": "zip , 940 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Parco-veicolare-Vendite-nel-Mondo-2024.xlsx",
+    "text": "excel , 649 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/11/Veicoli-su-popolazione-Indicatori-2024.xlsx",
+    "text": "excel , 47 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/06/Note_metodologiche_e_considerazioni_2023.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2023_Parco_veicolare.zip",
+    "text": "zip , 6 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto_2023_Prime_iscrizioni.zip",
+    "text": "zip , 820 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2023__Usato.xlsx",
+    "text": "excel , 900 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto_2023_Radiati.zip",
+    "text": "zip , 889 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicolare-Vendite_nel_Mondo_2023.xlsx",
+    "text": "excel , 986 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Note_metodologiche_e_considerazioni_2022.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Consistenza_Parco_veicoli_2022.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Prime_iscrizioni_veicoli_2022.zip",
+    "text": "zip , 906 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Passaggi_di_proprieta_veicoli_2022.xlsx",
+    "text": "excel , 872 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Radiazione_veicoli_2022.zip",
+    "text": "zip , 694 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicoli-Vendite_nel_Mondo_2022.xlsx",
+    "text": "excel , 603 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Note_metodologiche_e_considerazioni_2021.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Passaggi_di_proprieta_veicoli_2021.xlsx",
+    "text": "excel , 964 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicolare-Vendite_nel_Mondo_2021.xlsx",
+    "text": "excel , 724 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Note_metodologiche_e_considerazioni_2020.pdf",
+    "text": "pdf , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2020_Parco_veicolare.zip",
+    "text": "zip , 5 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2020_Prime_iscrizioni.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2020__Usato.xlsx",
+    "text": "excel , 902 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2020_Radiazioni.zip",
+    "text": "zip , 981 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicolare-Vendite_nel_Mondo_2020.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Nota_metodologica_e_considerazioni_2019.pdf",
+    "text": "pdf , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicoli_2019.zip",
+    "text": "zip , 6 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Prime_iscrizioni_2019.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Trasferimenti_di_proprieta_2019.zip",
+    "text": "zip , 881 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Radiazioni_2019.zip",
+    "text": "zip , 714 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicolare-Vendite_nel_Mondo_2019.zip",
+    "text": "zip , 1.017 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Note_metodologiche_e_considerazioni_2018.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2018.zip",
+    "text": "zip , 6 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2018.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Trasferimenti_2018.zip",
+    "text": "zip , 878 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2018.zip",
+    "text": "zip , 718 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_e_Vendite_nel_Mondo_2018.zip",
+    "text": "zip , 485 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_metodologica_e_considerazioni_2017.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_Parco_veicoli_2017.zip",
+    "text": "zip , 6 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_veicoli_2017.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Passaggi_di_proprieta_veicoli_2017.zip",
+    "text": "zip , 916 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_veicoli_2017.zip",
+    "text": "zip , 708 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare-Vendite_nel_mondo_2017.zip",
+    "text": "zip , 317 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_metodologica_e_considerazioni_2016.pdf",
+    "text": "pdf , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_Parco_veicoli_2016.zip",
+    "text": "zip , 5 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_iscrizioni_veicoli_2016.zip",
+    "text": "zip , 868 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Passaggi_di_proprieta_veicoli_2016.zip",
+    "text": "zip , 932 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_veicoli_2016.zip",
+    "text": "zip , 711 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare-Vendite_nel_Mondo_2016.zip",
+    "text": "zip , 451 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_metodologica_e_considerazioni_2015.pdf",
+    "text": "pdf , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_parco_veicoli_2015.zip",
+    "text": "zip , 6 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_iscrizioni_veicoli_2015.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Passaggi_di_proprieta_veicoli_2015.zip",
+    "text": "zip , 886 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_veicoli_2015.zip",
+    "text": "zip , 736 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare-Vendite_nel_Mondo_2015.zip",
+    "text": "zip , 303 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Note_metodologiche_e_Considerazioni_generali_2014.pdf",
+    "text": "pdf , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2014.zip",
+    "text": "zip , 5 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2014.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Passaggi_di_proprieta_2014.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2014.zip",
+    "text": "zip , 728 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_nel_Mondo__fonte_ANFIA_2014.zip",
+    "text": "zip , 422 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_metodologica_e_considerazioni_2013.pdf",
+    "text": "pdf , 413 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicoli_2013.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2013.zip",
+    "text": "zip , 753 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Passaggi_di_proprieta_2013.zip",
+    "text": "zip , 785 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2013.zip",
+    "text": "zip , 526 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare-Vendite_nel_Mondo_13__Fonte_ANFIA_2013.zip",
+    "text": "zip , 75 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Analisi_descrittiva_e_considerazioni_2012.pdf",
+    "text": "pdf , 381 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_2012.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2012.zip",
+    "text": "zip , 764 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Usato_2012.zip",
+    "text": "zip , 758 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2012.zip",
+    "text": "zip , 521 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_nel_Mondo_2012__fonte_ANFIA_.zip",
+    "text": "zip , 234 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Analisi_descrittiva_e_considerazioni_2011.pdf",
+    "text": "pdf , 382 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2011.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2011.zip",
+    "text": "zip , 793 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Usato_2011.zip",
+    "text": "zip , 577 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2011.zip",
+    "text": "zip , 910 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_nel_Mondo__fonte_ANFIA_2011.zip",
+    "text": "zip , 126 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_Metodologica_e_considerazioni_2010.pdf",
+    "text": "pdf , 367 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2010.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2010.zip",
+    "text": "zip , 805 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2010.zip",
+    "text": "zip , 501 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Cartografie_tematiche_2010.pdf",
+    "text": "pdf , 560 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_Metodologica_e_considerazioni_2009.pdf",
+    "text": "pdf , 224 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2009.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2009.zip",
+    "text": "zip , 777 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2009.zip",
+    "text": "zip , 508 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Cartografie_tematiche_-_2009.pdf",
+    "text": "pdf , 530 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_Metodologica_e_considerazioni_2008.pdf",
+    "text": "pdf , 219 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_Veicolare_2008.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_Iscrizioni_2008.zip",
+    "text": "zip , 714 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2008.zip",
+    "text": "zip , 948 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Il_parco_veicolare_in_Italia_2008.pdf",
+    "text": "pdf , 538 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_Metodologica_e_considerazioni_2007.pdf",
+    "text": "pdf , 221 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_parco_2007.zip",
+    "text": "zip , 4 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_iscrizioni_2007.zip",
+    "text": "zip , 1 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2007.zip",
+    "text": "zip , 959 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Il_parco_veicolare_in_Italia_2007.pdf",
+    "text": "pdf , 539 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Nota_Metodologica_e_considerazioni_2006.pdf",
+    "text": "pdf , 273 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_parco_2006.zip",
+    "text": "zip , 3 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Prime_iscrizioni_2006.zip",
+    "text": "zip , 582 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_veicoli_2006.zip",
+    "text": "zip , 94 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Cartografie_tematiche_2006.pdf",
+    "text": "pdf , 525 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/NotaMetodologicaeconsiderazioni_2005.zip",
+    "text": "zip , 903 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_2005.zip",
+    "text": "zip , 3 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Immatricolazioni_2005.zip",
+    "text": "zip , 145 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Radiazioni_2005.zip",
+    "text": "zip , 93 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/IlparcoveicolareinItalia_2005.zip",
+    "text": "zip , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2004Notametodologica.zip",
+    "text": "zip , 790 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2004Parcoveicolare.zip",
+    "text": "zip , 2 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Immatricolazioni_2004.zip",
+    "text": "zip , 160 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2004Radiazioni.zip",
+    "text": "zip , 68 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2003Parcoveicolare.zip",
+    "text": "zip , 7 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2003Primeiscrizioni.zip",
+    "text": "zip , 207 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2003Radiazioni.zip",
+    "text": "zip , 74 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2002Parcoveicolare.zip",
+    "text": "zip , 3 MB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2002Primeiscrizioni.zip",
+    "text": "zip , 138 KB"
+   },
+   {
+    "url": "https://aci.gov.it//app/uploads/2025/02/Autoritratto2002Radiazioni.zip",
+    "text": "zip , 65 KB"
+   }
+  ],
+  "followed": [
+   {
+    "url": "https://aci.gov.it//app/uploads/2026/06/Autoritratto-2025-Radiazioni.zip",
+    "contentType": "application/zip",
+    "bytes": 1006352,
+    "sha256": "111e48bb80148ab02cf9ac99ee6934041eea8c5f71687248ac7db1d6c8da22f1",
+    "members": [
+     {
+      "name": "Autoritratto 2025 Radiazioni/Classificazione_Copert_Euro_2025.xls",
+      "bytes": 83968
+     },
+     {
+      "name": "Autoritratto 2025 Radiazioni/Dati Nazionali Aree geografiche_2025.xls",
+      "bytes": 55296
+     },
+     {
+      "name": "Autoritratto 2025 Radiazioni/Dati Regionali Provinciali_2025.xls",
+      "bytes": 4845056
+     }
+    ],
+    "memberWorkbooks": {}
+   }
+  ]
+ }
+}

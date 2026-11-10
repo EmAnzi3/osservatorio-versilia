@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `571225c888615f1c11e47a065a3616a6d838afe5458d58c22a67e7d51908563b`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `c74efff78e11ec26fbc6a13825de0678adb6d3903ce4601758ba02eaf6623907`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -651,11 +651,11 @@ Quali trasformazioni del territorio incidono sulle risorse naturali e produttive
 
 | Richiesta | Operazione / vista | Periodi / unità | Risposta | Verifica |
 |---|---|---|---|---|
-| soil_stock_current | compare / landUse / total | 2024 / percent | 046005: 14.204736371337567; 046013: 46.165926863050906; 046018: 13.371224022951717; 046024: 24.745537724891555; 046028: 12.240939384322438; 046030: 3.0318354526319973; 046033: 38.49978720603049 | PASS |
-| soil_series_endpoint | series / landUse / view:hectares | 2006, 2012, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 / hectares | 046018: 894.09; 046018: 894.87; 046018: 897.1; 046018: 897.96; 046018: 898.5; 046018: 899.23; 046018: 902.58 | PASS |
-| soil_stock_pooled | weighted_ratio / landUse / total | 2024 / percent | 046005: 14.204736371337567; 046018: 13.371224022951717 | PASS |
+| soil_stock_current | compare / landUse / total | 2025 / percent | 046005: 14.231391738916441; 046013: 46.39487833873201; 046018: 13.374317621873688; 046024: 24.83104704607894; 046028: 12.207017365695135; 046030: 3.0321253952771756; 046033: 38.573576194019104 | PASS |
+| soil_series_endpoint | series / landUse / view:hectares | 2006, 2012, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 / hectares | 046018: 894.03; 046018: 894.81; 046018: 897.04; 046018: 897.9; 046018: 898.44; 046018: 899.17; 046018: 902.52 | PASS |
+| soil_stock_pooled | weighted_ratio / landUse / total | 2025 / percent | 046005: 14.231391738916441; 046018: 13.374317621873688 | PASS |
 | soil_stock_trend_refused | trend / landUse / total |  /  | soil_historical_comparability_not_attested | PASS |
-| soil_flow_gross | compare / landUseChange / view:gross | 2024 / hectares | 046005: 1.1; 046013: 0.19; 046018: 0.0; 046024: 0.29; 046028: 0.15; 046030: 0.0; 046033: 0.56 | PASS |
+| soil_flow_gross | compare / landUseChange / view:gross | 2025 / hectares | 046005: 0.66; 046013: 1.53; 046018: 0.05; 046024: 1.27; 046028: 0.77; 046030: 0.0; 046033: 1.43 | PASS |
 | soil_flow_trend_refused | trend / landUseChange / total |  /  | soil_historical_comparability_not_attested | PASS |
 | soil_ucs_forest | compare / landCoverProfile / part:forest | 2019 / percent | 046005: 47.003711771754666; 046013: 2.1121496207105293; 046018: 19.53077423344499; 046024: 23.117750225105166; 046028: 50.61335121466277; 046030: 72.00815621920223; 046033: 14.023742000397782 | PASS |
 | soil_ucs_pooled | weighted_ratio / landCoverProfile / total | 2019 / percent | 046005: 17.725745822790046; 046018: 14.2903069695683 | PASS |

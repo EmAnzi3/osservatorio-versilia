@@ -1,5 +1,36 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Consumo di suolo e parco veicolare 2025 (10 novembre 2026)
+
+`landUse`, `landUseChange`, `motorization` e `pollutingCars` passano al 2025.
+
+- Nuova sonda generica `update_source_data.py source-probe --name --url [--follow]` (richiesta
+  `"sourceProbe"`): salva in `data/source-probes/` la struttura di pagine, fogli e archivi di una fonte
+  raggiungibile solo dai runner GitHub. Usata per ISPRA e ACI prima di scrivere gli aggiornatori.
+- `ispra-soil --year AAAA` (`"ispraSoil"`): legge dalla libreria ISPRA l'edizione completa
+  `consumo_suolo_AAAA+1_Com_Prov_Reg_Naz` e ricostruisce `landUse`/`landUseChange` in
+  `territorio-v137-official.json` per tutti gli anni (l'edizione 2026 rivede anche gli anni precedenti,
+  di pochi centesimi di ettaro), più `a3-ispra-soil-benchmark-AAAA.json` dalle righe ufficiali
+  Toscana/Italia. I fogli `_rev` non sono usati: il flusso 2025 è misurato da ISPRA sulla carta 2024
+  rivista e non coincide con la differenza tra gli stock pubblicati (dichiarato nel metodo). Dove
+  ISPRA ha cambiato la superficie comunale di un anno, la riga porta `municipalAreaHa`; l'adattatore
+  la usa nel controllo stock/quota, senza allargare la tolleranza. Riesecuzione sullo stesso anno
+  ammessa (idempotente, verificata dal bot), anno precedente rifiutato.
+- Versilia 2025: 5.571,35 ha consumati, 15,63% del territorio; consumo netto 2024–25 5,31 ha
+  (Massarosa −0,19 ha). Toscana 6,22% e 467,76 ha; Italia 7,19% e 9.496,95 ha.
+- `aci-vehicles --year AAAA` (`"aciVehicles"`): trova l'archivio «Parco veicolare» nella pagina
+  Autoritratto, ricostruisce il pannello nativo del foglio «4 AV per Comune » (stesso parser che
+  riproduce esattamente l'impronta 2024) e scrive catalogo e `a3-aci-vehicle-benchmark-AAAA.json`
+  con il workbook congelato. Il 2024 resta vincolato all'archivio originale.
+- Versilia 2025: 703,9 autovetture ogni 1.000 residenti (denominatore sempre al 1° gennaio 2026),
+  quota Euro 0–3 18,2%. Toscana 753,7 e 16,2%; Italia 709,1 e 22,6%.
+- Adattatori suolo e veicoli, fan-in, materializzatore territorio e verificatore seguono l'ultima
+  edizione; pin soil#2, vehicle#1–2, road#3, road_network#1/#3 ripinnati; domande verificate
+  aggiornate (7 suolo, 94 veicoli; i rifiuti «anno non congelato» passano al 2026); test di
+  riferimento suolo e veicoli rigenerati dalle edizioni nuove; dossier rigenerati.
+- Per gli anni ACI dopo il 2024 la validazione rilegge il workbook congelato con `openpyxl`, quindi
+  anche «Controllo mensile dati» (`monthly-data-refresh.yml`) ora installa `requirements-ci.txt`.
+
 ## Capacità ricettiva Istat 2025 (9 novembre 2026)
 
 `tourismBeds`, `tourismBedsPer1000` e `tourismStructuresPer1000` passano al 2025, su decisione di Ema

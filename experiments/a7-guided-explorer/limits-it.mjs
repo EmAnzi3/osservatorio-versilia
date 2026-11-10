@@ -432,6 +432,7 @@ export default {
 "ucs_total_surface_not_istat_or_ispra_municipal_surface": "La superficie totale dell’uso del suolo non coincide con quella ISTAT o ISPRA del Comune.",
 "undefined_responses_not_no_or_zero": "Una risposta non fornita non equivale a «no» né a zero.",
 "vehicles_2024_stock_2026_residents_hybrid_explicit": "I veicoli sono del 2024, i residenti del 2026.",
+"vehicles_2025_stock_2026_residents_hybrid_explicit": "I veicoli sono del 2025, i residenti del 2026.",
 "vehicles_euro_classes_not_measured_air_quality_or_emissions": "Le classi Euro dei veicoli non sono misure di qualità dell’aria o di emissioni.",
 "vehicles_no_automatic_causal_or_policy_priority_claim": "I dati sui veicoli non indicano cause né priorità.",
 "vehicles_public_euro_aggregate_weights_rounded_rates_native_pooling_distinct": "Il dato pubblicato sulle classi Euro e quello calcolato complessivamente possono differire.",
