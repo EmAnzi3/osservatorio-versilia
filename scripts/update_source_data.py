@@ -20,7 +20,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     python scripts/update_source_data.py istat-tourism --year 2025 [--file archivio.zip]
     python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
     python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
-    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX]
+    python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX] [--post URL::CAMPI ...]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
 fonti che altrove non rispondono: il workflow «Aggiorna dati dalla fonte» esegue
@@ -937,12 +937,13 @@ def main() -> int:
     g.add_argument("--name", required=True)
     g.add_argument("--url", required=True)
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
+    g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
     args = parser.parse_args()
     try:
         if args.updater == "source-probe":
             import probe_source_files
 
-            probe_source_files.run(args.name, args.url, args.follow)
+            probe_source_files.run(args.name, args.url, args.follow, args.post)
         elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 

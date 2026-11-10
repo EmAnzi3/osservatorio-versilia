@@ -8,14 +8,12 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "omi-ricerca-2026",
+      "name": "omi-consultazione-lucca",
       "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
-      "follow": "Consultazione/.*\\.(php|js)"
-    },
-    {
-      "name": "omi-geopoi-2026",
-      "url": "https://wwwt.agenziaentrate.gov.it/geopoi_omi/index.php",
-      "follow": "geopoi_omi/.*\\.(php|js)"
+      "post": [
+        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=1&lingua=IT&pr=LU",
+        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm::level=1&lingua=IT&pr=LU"
+      ]
     }
   ],
   "ispraSoil": [],

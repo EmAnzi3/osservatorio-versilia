@@ -17,6 +17,7 @@ import io
 import json
 import re
 import time
+import http.cookiejar
 import urllib.parse
 import urllib.request
 import zipfile
@@ -32,11 +33,14 @@ HEAD_ROWS = 6
 MAX_HITS = 80
 
 
-def fetch(url: str, tries: int = 3) -> tuple[bytes, str]:
+OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+
+
+def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
     for attempt in range(tries):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=180) as r:
+            with OPENER.open(urllib.request.Request(url, data=data, headers=UA), timeout=180) as r:
                 return r.read(), r.headers.get("Content-Type", "")
         except Exception as exc:  # noqa: BLE001 - la sonda registra ogni errore
             error = exc
@@ -101,10 +105,10 @@ def forms(page: str, url: str) -> list[dict[str, Any]]:
     return out[:10]
 
 
-def analyse(url: str, follow: str | None, depth: int = 0) -> dict[str, Any]:
-    item: dict[str, Any] = {"url": url}
+def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = None) -> dict[str, Any]:
+    item: dict[str, Any] = {"url": url, **({"post": post} if post is not None else {})}
     try:
-        data, ctype = fetch(url)
+        data, ctype = fetch(url, data=post.encode() if post is not None else None)
     except RuntimeError as exc:
         item["error"] = str(exc)
         return item
@@ -123,6 +127,7 @@ def analyse(url: str, follow: str | None, depth: int = 0) -> dict[str, Any]:
             item["scripts"] = [urllib.parse.urljoin(url, s) for s in re.findall(r"<script\b[^>]*src=[\"']([^\"']+)", page, flags=re.I)][:20]
             item["inlineScript"] = "\n".join(re.findall(r"<script\b[^>]*>(.*?)</script>", page, flags=re.I | re.S))[:6000]
             item["links"] = [l for l in ls if re.search(r"\.(xlsx?|zip|csv|ods|pdf)\b", l["url"], re.I) or (follow and re.search(follow, l["url"] + " " + l["text"], re.I))]
+            item["text"] = re.sub(r"\s+", " ", htmllib.unescape(re.sub(r"<(script|style)\b.*?</\1>|<[^>]+>", " ", page, flags=re.I | re.S))).strip()[:4000]
             if follow and depth == 0:
                 targets = [l["url"] for l in ls if re.search(follow, l["url"] + " " + l["text"], re.I)][:MAX_FOLLOW]
                 item["followed"] = [analyse(t, follow, depth + 1) for t in targets]
@@ -131,13 +136,16 @@ def analyse(url: str, follow: str | None, depth: int = 0) -> dict[str, Any]:
     return item
 
 
-def run(name: str, url: str, follow: str | None = None) -> Path:
+def run(name: str, url: str, follow: str | None = None, posts: list[str] | None = None) -> Path:
+    """`posts`: passi successivi «URL::campi urlencoded» inviati in POST nella stessa sessione."""
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,60}", name):
         raise RuntimeError("Nome della sonda non valido: minuscole, cifre e trattini")
     path = ROOT / "data" / "source-probes" / f"{name}.json"
     probe = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
              "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.", "follow": follow,
              "result": analyse(url, follow)}
+    if posts:
+        probe["steps"] = [analyse(target, None, 0, fields) for target, _, fields in (step.partition("::") for step in posts)]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(probe, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"Sonda {name} scritta in {path.relative_to(ROOT)}")
