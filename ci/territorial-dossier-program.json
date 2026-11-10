@@ -1049,7 +1049,7 @@
       "interpretationLimit": "Associazione descrittiva e contesto non provano causalità o effetto di politica. Nessuna inferenza individuale da dati aggregati.",
       "composition": "Mostrare vendita e affitto OMI con unità distinte e media semplice di zone; affiancare abitazioni non occupate e morosità ERP nei propri universi. Nessun rapporto OMI/MEF diventa onere dei nuclei: costo effettivo, redditi disponibili e domanda ERP restano fabbisogni istruttori.",
       "pilotTier": "exploratory_priority",
-      "possibleInterpretation": "Le medie semplici OMI 2025-S2 di Massarosa sono inferiori a quelle di Viareggio sia per vendita sia per affitto. Il confronto orienta l’approfondimento dei mercati locali; non dimostra che le famiglie di Massarosa possano sostenere il costo della casa.",
+      "possibleInterpretation": "Le medie semplici OMI 2026-S1 di Massarosa sono inferiori a quelle di Viareggio sia per vendita sia per affitto. Il confronto orienta l’approfondimento dei mercati locali; non dimostra che le famiglie di Massarosa possano sostenere il costo della casa.",
       "methodologicalChecks": [
         {
           "question": "Quotazioni di zona e redditi fiscali permettono di misurare l’onere familiare?",

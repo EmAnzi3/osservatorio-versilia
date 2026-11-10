@@ -105996,7 +105996,7 @@
     },
     {
       "id": "omi_total_046005",
-      "question": "Qual è il riferimento OMI di vendita per 046005 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046005 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106016,13 +106016,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2200,
-              1
+              13175,
+              6
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106030,11 +106030,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046013",
-      "question": "Qual è il riferimento OMI di vendita per 046013 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046013 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106054,13 +106054,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              5520,
+              5580,
               1
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106068,11 +106068,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046018",
-      "question": "Qual è il riferimento OMI di vendita per 046018 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046018 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106092,13 +106092,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              10750,
+              10775,
               7
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106106,11 +106106,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046024",
-      "question": "Qual è il riferimento OMI di vendita per 046024 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046024 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106130,13 +106130,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2750,
+              2815,
               1
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106144,11 +106144,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046028",
-      "question": "Qual è il riferimento OMI di vendita per 046028 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046028 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106168,13 +106168,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              6325,
+              6075,
               4
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106182,11 +106182,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046030",
-      "question": "Qual è il riferimento OMI di vendita per 046030 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046030 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106206,13 +106206,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              8985,
-              11
+              2510,
+              3
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106220,11 +106220,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_046033",
-      "question": "Qual è il riferimento OMI di vendita per 046033 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046033 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106244,13 +106244,13 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              2200,
-              1
+              18125,
+              8
             ]
           },
           {
             "path": "/observations/1/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/1/unit",
@@ -106258,11 +106258,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_rank",
-      "question": "Come si ordinano i Comuni per il riferimento OMI total nel secondo semestre 2025?",
+      "question": "Come si ordinano i Comuni per il riferimento OMI total nel primo semestre 2026?",
       "query": {
         "operation": "rank",
         "selectors": [
@@ -106285,19 +106285,19 @@
           },
           {
             "path": "/result/ranking/2/geography",
-            "value": "046005"
-          },
-          {
-            "path": "/result/ranking/3/geography",
             "value": "046033"
           },
           {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
             "path": "/result/ranking/4/geography",
-            "value": "046028"
+            "value": "046018"
           },
           {
             "path": "/result/ranking/5/geography",
-            "value": "046018"
+            "value": "046028"
           },
           {
             "path": "/result/ranking/6/geography",
@@ -106305,7 +106305,7 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_series_refused",
@@ -106325,7 +106325,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_absolute_change_refused",
@@ -106345,7 +106345,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_relative_change_refused",
@@ -106365,7 +106365,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_percentage_points_refused",
@@ -106385,7 +106385,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_trend_refused",
@@ -106405,7 +106405,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_weighted_ratio_refused",
@@ -106425,7 +106425,7 @@
           "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_benchmark_gap_refused",
@@ -106446,7 +106446,7 @@
           "omi_geographic_benchmark_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_anomaly_refused",
@@ -106466,7 +106466,7 @@
           "omi_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_2025_refused",
@@ -106489,7 +106489,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_2026_refused",
@@ -106512,7 +106512,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_2025-S1_refused",
@@ -106535,7 +106535,30 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_total_2025-S2_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S2 (semestre precedente)?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "total",
+            "periods": [
+              "2025-S2"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_pair_False_refused",
@@ -106561,7 +106584,7 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_total_pair_True_refused",
@@ -106587,11 +106610,11 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046005",
-      "question": "Qual è il riferimento OMI di vendita per 046005 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046005 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106611,13 +106634,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2200,
-              1
+              13175,
+              6
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106625,11 +106648,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046013",
-      "question": "Qual è il riferimento OMI di vendita per 046013 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046013 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106649,13 +106672,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              5520,
+              5580,
               1
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106663,11 +106686,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046018",
-      "question": "Qual è il riferimento OMI di vendita per 046018 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046018 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106687,13 +106710,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              10750,
+              10775,
               7
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106701,11 +106724,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046024",
-      "question": "Qual è il riferimento OMI di vendita per 046024 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046024 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106725,13 +106748,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2750,
+              2815,
               1
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106739,11 +106762,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046028",
-      "question": "Qual è il riferimento OMI di vendita per 046028 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046028 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106763,13 +106786,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              6325,
+              6075,
               4
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106777,11 +106800,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046030",
-      "question": "Qual è il riferimento OMI di vendita per 046030 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046030 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106801,13 +106824,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              8985,
-              11
+              2510,
+              3
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -106815,11 +106838,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_046033",
-      "question": "Qual è il riferimento OMI di vendita per 046033 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di vendita per 046033 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -106839,13 +106862,13 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              2200,
-              1
+              18125,
+              8
             ]
           },
           {
             "path": "/observations/1/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/1/unit",
@@ -106853,11 +106876,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_rank",
-      "question": "Come si ordinano i Comuni per il riferimento OMI saleMean nel secondo semestre 2025?",
+      "question": "Come si ordinano i Comuni per il riferimento OMI saleMean nel primo semestre 2026?",
       "query": {
         "operation": "rank",
         "selectors": [
@@ -106880,19 +106903,19 @@
           },
           {
             "path": "/result/ranking/2/geography",
-            "value": "046005"
-          },
-          {
-            "path": "/result/ranking/3/geography",
             "value": "046033"
           },
           {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
             "path": "/result/ranking/4/geography",
-            "value": "046028"
+            "value": "046018"
           },
           {
             "path": "/result/ranking/5/geography",
-            "value": "046018"
+            "value": "046028"
           },
           {
             "path": "/result/ranking/6/geography",
@@ -106900,7 +106923,7 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_series_refused",
@@ -106920,7 +106943,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_absolute_change_refused",
@@ -106940,7 +106963,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_relative_change_refused",
@@ -106960,7 +106983,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_percentage_points_refused",
@@ -106980,7 +107003,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_trend_refused",
@@ -107000,7 +107023,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_weighted_ratio_refused",
@@ -107020,7 +107043,7 @@
           "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_benchmark_gap_refused",
@@ -107041,7 +107064,7 @@
           "omi_geographic_benchmark_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_anomaly_refused",
@@ -107061,7 +107084,7 @@
           "omi_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_2025_refused",
@@ -107084,7 +107107,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_2026_refused",
@@ -107107,7 +107130,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_2025-S1_refused",
@@ -107130,7 +107153,30 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_saleMean_2025-S2_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S2 (semestre precedente)?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "saleMean",
+            "periods": [
+              "2025-S2"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_pair_False_refused",
@@ -107156,7 +107202,7 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_saleMean_pair_True_refused",
@@ -107182,11 +107228,11 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046005",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046005 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046005 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107206,13 +107252,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              7,
-              1
+              279,
+              40
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107220,11 +107266,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046013",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046013 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046013 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107244,13 +107290,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              382,
-              25
+              1531,
+              100
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107258,11 +107304,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046018",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046018 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046018 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107282,13 +107328,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              26,
-              5
+              363,
+              70
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107296,11 +107342,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046024",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046024 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046024 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107320,13 +107366,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              212,
+              214,
               25
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107334,11 +107380,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046028",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046028 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046028 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107358,13 +107404,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              81,
-              16
+              24,
+              5
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107372,11 +107418,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046030",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046030 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046030 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107396,13 +107442,13 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              133,
-              55
+              46,
+              15
             ]
           },
           {
             "path": "/observations/0/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/0/unit",
@@ -107410,11 +107456,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_046033",
-      "question": "Qual è il riferimento OMI di affitto mensile per 046033 nel secondo semestre 2025?",
+      "question": "Qual è il riferimento OMI di affitto mensile per 046033 nel primo semestre 2026?",
       "query": {
         "operation": "compare",
         "selectors": [
@@ -107434,13 +107480,13 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              579,
-              80
+              149,
+              20
             ]
           },
           {
             "path": "/observations/1/period",
-            "value": "2025-S2"
+            "value": "2026-S1"
           },
           {
             "path": "/observations/1/unit",
@@ -107448,11 +107494,11 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_rank",
-      "question": "Come si ordinano i Comuni per il riferimento OMI rentMean nel secondo semestre 2025?",
+      "question": "Come si ordinano i Comuni per il riferimento OMI rentMean nel primo semestre 2026?",
       "query": {
         "operation": "rank",
         "selectors": [
@@ -107495,7 +107541,7 @@
           }
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_series_refused",
@@ -107515,7 +107561,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_absolute_change_refused",
@@ -107535,7 +107581,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_relative_change_refused",
@@ -107555,7 +107601,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_percentage_points_refused",
@@ -107575,7 +107621,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_trend_refused",
@@ -107595,7 +107641,7 @@
           "omi_single_semester_no_comparable_history_frozen"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_weighted_ratio_refused",
@@ -107615,7 +107661,7 @@
           "omi_transaction_or_dwelling_weights_not_frozen_no_pooling"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_benchmark_gap_refused",
@@ -107636,7 +107682,7 @@
           "omi_geographic_benchmark_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_anomaly_refused",
@@ -107656,7 +107702,7 @@
           "omi_peer_anomaly_not_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_2025_refused",
@@ -107679,7 +107725,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_2026_refused",
@@ -107702,7 +107748,7 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_2025-S1_refused",
@@ -107725,7 +107771,30 @@
           "omi_exact_semester_required"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
+    },
+    {
+      "id": "omi_rentMean_2025-S2_refused",
+      "question": "Posso trattare la fotografia OMI come 2025-S2 (semestre precedente)?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "omiResidential",
+            "dimension": "rentMean",
+            "periods": [
+              "2025-S2"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "not_computable",
+        "reasons": [
+          "omi_exact_semester_required"
+        ]
+      },
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_pair_False_refused",
@@ -107751,7 +107820,7 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "omi_rentMean_pair_True_refused",
@@ -107777,7 +107846,7 @@
           "omi_pair_not_jointly_reviewed"
         ]
       },
-      "reference": "Riferimenti comunali pubblicati OMI S2 2025 trascritti in test_semantic_omi_adapters.py; medie semplici delle 46 zone mostrate. Originali OMI/intervalli non rigiocati; vendita €/m² e affitto €/m²/mese distinti."
+      "reference": "Riferimenti comunali OMI 1° semestre 2026 trascritti in test_semantic_omi_adapters.py dai punti medi delle zone conservati in data/source-snapshots/omi-residential-2026-S1.json; medie semplici delle 38 zone mostrate. Vendita €/m² e affitto €/m²/mese distinti."
     },
     {
       "id": "outside_046005",

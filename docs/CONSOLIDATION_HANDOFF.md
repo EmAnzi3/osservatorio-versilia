@@ -1,5 +1,28 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Quotazioni OMI 1° semestre 2026 (10 novembre 2026)
+
+`omiResidential` passa dal 2° semestre 2025 al 1° semestre 2026.
+
+- Nuovo aggiornatore `update_source_data.py omi-residential --semester AAAA-SN [--correction …]`
+  (richiesta `"omiResidential"`, correzioni in `"omiResidentialCorrections"`): interroga la
+  consultazione pubblica OMI (provincia LU, Comuni riconosciuti dal codice catastale), rigioca il
+  semestre pubblicato e scrive il nuovo solo se il replay coincide. Regola confermata dalla fonte:
+  punto medio min/max della riga «Abitazioni civili NORMALE» (vendita e locazione; la locazione del
+  catalogo può essere esatta o arrotondata al decimo); zone senza quella riga escluse (Viareggio R3).
+- Il replay ha trovato tre errori del catalogo, accettati come correzioni esplicite e registrati in
+  `catalogCorrections` della fotografia: Viareggio D2, Seravezza E3 e la zonizzazione di Stazzema
+  (fonte: B1, E7, R2; catalogo: 11 zone non più esistenti). L'aggiornatore rifiuta correzioni
+  mancanti o superflue.
+- Fotografia `data/source-snapshots/omi-residential-2026-S1.json` con intervalli e tutte le righe
+  della fonte per entrambi i semestri. Zone 38 (prima 46).
+- Versilia 1° semestre 2026: vendita media 2.393 €/m², affitto 7,34 €/m² al mese. Forte dei Marmi
+  5.580 e 15,31; Stazzema 837 e 3,07.
+- Adattatore e test al `2026-S1` (`2025-S2` rifiutato), note e letture in `limits-it.mjs`, pin
+  `omi#1` e `road#3` (impronta del catalogo) ripinnati, 63 domande verificate aggiornate più 3
+  rifiuti di `2025-S2`, dossier rigenerati. Il test dell'aggiornatore ora usa i semestri relativi
+  al catalogo corrente.
+
 ## Consumo di suolo e parco veicolare 2025 (10 novembre 2026)
 
 `landUse`, `landUseChange`, `motorization` e `pollutingCars` passano al 2025.

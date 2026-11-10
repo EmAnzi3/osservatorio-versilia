@@ -1215,25 +1215,25 @@ Associazione descrittiva e contesto non provano causalità o effetto di politica
 
 Richiesta `omi_total_046018` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2025-S2: 1.535,7 eurm2; Viareggio 2025-S2: 2.200,0 eurm2
+**Risultati:** Massarosa 2026-S1: 1.539,3 eurm2; Viareggio 2026-S1: 2.265,6 eurm2
 
 **Universi e definizioni:** displayed residential OMI zones; civil dwellings, normal state, public reference selection — unweighted municipal mean of displayed residential zone sale reference quotations
 
 **Fonti:** [https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm](https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm)
 
-**Avvertenze:** omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean, omi_numerical_rank_not_affordability_or_policy_priority, omi_public_zone_values_replayed_original_omi_ranges_and_files_not_frozen, omi_reference_quotations_not_transaction_prices_or_registered_rents, omi_sale_euro_per_m2_and_rent_euro_per_m2_per_month_are_distinct, omi_second_semester_2025_not_current_2026_or_full_year_average, omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted, omi_zone_codes_are_local_to_each_municipality_not_comparable_neighbourhoods
+**Avvertenze:** omi_first_semester_2026_not_current_market_or_full_year_average, omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean, omi_numerical_rank_not_affordability_or_policy_priority, omi_reference_quotations_not_transaction_prices_or_registered_rents, omi_sale_euro_per_m2_and_rent_euro_per_m2_per_month_are_distinct, omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted, omi_zone_codes_are_local_to_each_municipality_not_comparable_neighbourhoods, omi_zone_values_midpoints_of_source_ranges_frozen_in_semester_snapshot
 
 **Componente della risposta**
 
 Richiesta `omi_rentMean_046018` — `compare`; esito `computed`.
 
-**Risultati:** Massarosa 2025-S2: 5,2 eurm2month; Viareggio 2025-S2: 7,2 eurm2month
+**Risultati:** Massarosa 2026-S1: 5,2 eurm2month; Viareggio 2026-S1: 7,5 eurm2month
 
 **Universi e definizioni:** displayed residential OMI zones; civil dwellings, normal state, public reference selection — unweighted municipal mean of displayed residential zone rental reference quotations
 
 **Fonti:** [https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm](https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm)
 
-**Avvertenze:** omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean, omi_numerical_rank_not_affordability_or_policy_priority, omi_public_zone_values_replayed_original_omi_ranges_and_files_not_frozen, omi_reference_quotations_not_transaction_prices_or_registered_rents, omi_sale_euro_per_m2_and_rent_euro_per_m2_per_month_are_distinct, omi_second_semester_2025_not_current_2026_or_full_year_average, omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted, omi_zone_codes_are_local_to_each_municipality_not_comparable_neighbourhoods
+**Avvertenze:** omi_first_semester_2026_not_current_market_or_full_year_average, omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean, omi_numerical_rank_not_affordability_or_policy_priority, omi_reference_quotations_not_transaction_prices_or_registered_rents, omi_sale_euro_per_m2_and_rent_euro_per_m2_per_month_are_distinct, omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted, omi_zone_codes_are_local_to_each_municipality_not_comparable_neighbourhoods, omi_zone_values_midpoints_of_source_ranges_frozen_in_semester_snapshot
 
 **Componente della risposta**
 
