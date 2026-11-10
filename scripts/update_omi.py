@@ -67,13 +67,14 @@ class Session:
     def post(self, url: str, fields: dict[str, str]) -> str:
         data = urllib.parse.urlencode(fields).encode()
         error: Exception | None = None
-        for attempt in range(4):
+        for attempt in range(6):
+            time.sleep(0.4)  # consultazione pubblica: richieste distanziate
             try:
                 with self.opener.open(urllib.request.Request(url, data=data, headers=UA), timeout=120) as r:
                     return r.read().decode("utf-8", errors="replace")
             except Exception as exc:  # noqa: BLE001 - nuovo tentativo e poi errore esplicito
                 error = exc
-                time.sleep(3 * (attempt + 1))
+                time.sleep(10 * (attempt + 1))
         raise OmiError(f"consultazione OMI non raggiungibile ({url}): {error}")
 
 
