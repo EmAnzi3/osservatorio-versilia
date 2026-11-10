@@ -8,13 +8,11 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "omi-consultazione-camaiore-b2",
+      "name": "omi-risultato-camaiore-b2",
       "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
       "post": [
-        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=1&lingua=IT&pr=LU",
-        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=2&lingua=IT&pr=LU&anno_semestre=20252&co=B455",
-        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=4&lingua=IT&pr=LU&co=B455&linkzonastrada=LU00000045&anno_semestre=20252",
-        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.php::level=4&lingua=IT&pr=LU&co=B455&linkzonastrada=LU00000045&anno_semestre=20261"
+        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/risultato.php::pr=LU&co=B455&anno_semestre=20252&linkzona=LU00000045&idstrada=&fasciazona=Centrale%2FCAPOLUOGO+CENTRO&codzona=B2&lingua=IT&level=4&utilizzo=Residenziale&bt1=Mostra+valori",
+        "https://www1.agenziaentrate.gov.it/servizi/Consultazione/risultato.php::pr=LU&co=B455&anno_semestre=20261&linkzona=LU00000045&idstrada=&fasciazona=Centrale%2FCAPOLUOGO+CENTRO&codzona=B2&lingua=IT&level=4&utilizzo=Residenziale&bt1=Mostra+valori"
       ]
     }
   ],
