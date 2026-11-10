@@ -51934,7 +51934,7 @@
         "shortLabel": "Quotazioni immobiliari",
         "description": "Quotazioni residenziali OMI con media comunale di riferimento e dettaglio delle singole zone: vendita in €/m² e locazione in €/m² al mese.",
         "unit": "eurm2",
-        "year": "2° semestre 2025",
+        "year": "1° semestre 2026",
         "source": "Agenzia delle Entrate — Osservatorio del Mercato Immobiliare (OMI)",
         "polarity": "neutral",
         "compositeType": "omi",
@@ -51954,11 +51954,11 @@
       },
       "sourceUrl": "https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm",
       "aggregate": {
-        "value": 2371.9689239332097,
+        "value": 2393.0229591836733,
         "label": "Versilia · vendita media comunale",
         "note": "Media semplice dei sette valori comunali di riferimento.",
-        "saleMean": 2371.9689239332097,
-        "rentMean": 7.23974025974026,
+        "saleMean": 2393.0229591836733,
+        "rentMean": 7.3353401360544215,
         "saleLabel": "Versilia · vendita",
         "rentLabel": "Versilia · affitto"
       },
@@ -51974,43 +51974,43 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1535.7142857142858,
+          "value": 1539.2857142857142,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1535.7142857142858,
-          "saleMean": 1535.7142857142858,
-          "rentMean": 5.2,
+          "benchmarkValue": 1539.2857142857142,
+          "saleMean": 1539.2857142857142,
+          "rentMean": 5.185714285714285,
           "zones": [
             {
               "code": "B1",
               "label": "Massarosa capoluogo · Sterpeti",
-              "sale": 1575.0,
+              "sale": 1625.0,
               "rent": 6.0
             },
             {
               "code": "D1",
               "label": "Massaciuccoli · Pietra a Padule · Al Sasso",
-              "sale": 1500.0,
+              "sale": 1525.0,
               "rent": 5.5
             },
             {
               "code": "D2",
               "label": "Stiava · Piano del Quercione · località collinari",
-              "sale": 1775.0,
+              "sale": 1750.0,
               "rent": 6.2
             },
             {
               "code": "D3",
               "label": "Casesi · Corsanico · Piano di Mommio · Mommio Castello · Pian di Conca",
-              "sale": 1700.0,
-              "rent": 6.0
+              "sale": 1725.0,
+              "rent": 5.95
             },
             {
               "code": "D4",
               "label": "Quiesa · Macellarino · Colle · Bozzano Est",
-              "sale": 1500.0,
-              "rent": 5.5
+              "sale": 1450.0,
+              "rent": 5.45
             },
             {
               "code": "R1",
@@ -52030,61 +52030,61 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 2200.0,
+          "value": 2265.625,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2200.0,
-          "saleMean": 2200.0,
-          "rentMean": 7.2375,
+          "benchmarkValue": 2265.625,
+          "saleMean": 2265.625,
+          "rentMean": 7.45,
           "zones": [
             {
               "code": "B1",
               "label": "Lungomare nord · Molo · Città Giardino",
               "sale": 3750.0,
-              "rent": 11.6
+              "rent": 11.55
             },
             {
               "code": "B2",
               "label": "Don Bosco · Marco Polo · zona nord",
-              "sale": 2625.0,
-              "rent": 8.6
+              "sale": 2675.0,
+              "rent": 8.75
             },
             {
               "code": "D2",
               "label": "Migliarina · Terminetto · Varignano · Cotone",
-              "sale": 1750.0,
-              "rent": 5.5
+              "sale": 2050.0,
+              "rent": 7.3
             },
             {
               "code": "D5",
               "label": "Darsena interna · ex Campo d’Aviazione",
-              "sale": 2075.0,
+              "sale": 2050.0,
               "rent": 6.8
             },
             {
               "code": "D6",
               "label": "Torre del Lago nord · lago",
-              "sale": 1775.0,
-              "rent": 6.1
+              "sale": 1800.0,
+              "rent": 6.05
             },
             {
               "code": "E1",
               "label": "Torre del Lago",
-              "sale": 1900.0,
-              "rent": 6.5
+              "sale": 1975.0,
+              "rent": 6.45
             },
             {
               "code": "E2",
               "label": "Marina di Torre del Lago",
-              "sale": 2050.0,
-              "rent": 6.9
+              "sale": 2150.0,
+              "rent": 6.85
             },
             {
               "code": "R2",
               "label": "Lago · San Rocchino · Fosso Legname",
               "sale": 1675.0,
-              "rent": 5.9
+              "rent": 5.85
             }
           ]
         },
@@ -52092,49 +52092,49 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 2200.0,
+          "value": 2195.8333333333335,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2200.0,
-          "saleMean": 2200.0,
-          "rentMean": 7.0,
+          "benchmarkValue": 2195.8333333333335,
+          "saleMean": 2195.8333333333335,
+          "rentMean": 6.9750000000000005,
           "zones": [
             {
               "code": "B2",
               "label": "Camaiore capoluogo · centro",
-              "sale": 1925.0,
-              "rent": 6.9
+              "sale": 1850.0,
+              "rent": 6.85
             },
             {
               "code": "D5",
               "label": "Badia · Nocchi e località interne",
-              "sale": 1525.0,
+              "sale": 1500.0,
               "rent": 5.2
             },
             {
               "code": "E3",
               "label": "Lido di Camaiore · Fossa dell’Abate",
-              "sale": 3950.0,
-              "rent": 10.8
+              "sale": 4000.0,
+              "rent": 10.9
             },
             {
               "code": "E4",
               "label": "Secco · entroterra di Lido",
-              "sale": 2500.0,
+              "sale": 2525.0,
               "rent": 8.6
             },
             {
               "code": "E5",
               "label": "Capezzano Pianore · Bucine",
               "sale": 1925.0,
-              "rent": 6.6
+              "rent": 6.45
             },
             {
               "code": "R1",
               "label": "Pedona e aree collinari/rurali",
               "sale": 1375.0,
-              "rent": 3.9
+              "rent": 3.85
             }
           ]
         },
@@ -52142,43 +52142,43 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2750.0,
+          "value": 2815.0,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 2750.0,
-          "saleMean": 2750.0,
-          "rentMean": 8.48,
+          "benchmarkValue": 2815.0,
+          "saleMean": 2815.0,
+          "rentMean": 8.56,
           "zones": [
             {
               "code": "B2",
               "label": "Pietrasanta capoluogo",
-              "sale": 3500.0,
-              "rent": 9.6
+              "sale": 3675.0,
+              "rent": 9.8
             },
             {
               "code": "D6",
               "label": "Interno Marina · Vignone · Saponiera · Pozzodonico",
-              "sale": 2250.0,
-              "rent": 7.3
+              "sale": 2300.0,
+              "rent": 7.45
             },
             {
               "code": "E3",
               "label": "Marina di Pietrasanta · Fiumetto · Tonfano · Motrone · Focette",
-              "sale": 4200.0,
-              "rent": 13.4
+              "sale": 4300.0,
+              "rent": 13.55
             },
             {
               "code": "R2",
               "label": "Strettoia · Cantina · Montiscendi",
               "sale": 1925.0,
-              "rent": 5.9
+              "rent": 5.85
             },
             {
               "code": "R3",
               "label": "Capezzano · Capriglia · Solaio · Vallecchia · Valdicastello",
               "sale": 1875.0,
-              "rent": 6.2
+              "rent": 6.15
             }
           ]
         },
@@ -52186,37 +52186,37 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1581.25,
+          "value": 1518.75,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1581.25,
-          "saleMean": 1581.25,
-          "rentMean": 5.0625,
+          "benchmarkValue": 1518.75,
+          "saleMean": 1518.75,
+          "rentMean": 4.8,
           "zones": [
             {
               "code": "B2",
               "label": "Seravezza capoluogo",
-              "sale": 1650.0,
+              "sale": 1675.0,
               "rent": 5.35
             },
             {
               "code": "D1",
               "label": "Querceta · Ripa · Pozzi · Marzocchino · Ponterosso",
-              "sale": 2125.0,
-              "rent": 6.9
+              "sale": 2150.0,
+              "rent": 7.05
             },
             {
               "code": "E3",
               "label": "Azzano",
-              "sale": 1450.0,
-              "rent": 4.6
+              "sale": 1150.0,
+              "rent": 3.45
             },
             {
               "code": "R1",
               "label": "Fabiano · Minazzana · Giustagnana · Riomagno e aree rurali",
               "sale": 1100.0,
-              "rent": 3.4
+              "rent": 3.35
             }
           ]
         },
@@ -52224,30 +52224,30 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 5520.0,
+          "value": 5580.0,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 5520.0,
-          "saleMean": 5520.0,
-          "rentMean": 15.280000000000001,
+          "benchmarkValue": 5580.0,
+          "saleMean": 5580.0,
+          "rentMean": 15.309999999999999,
           "zones": [
             {
               "code": "B1",
               "label": "Capoluogo · Roma Imperiale",
-              "sale": 9200.0,
+              "sale": 9250.0,
               "rent": 24.5
             },
             {
               "code": "B2",
               "label": "Capoluogo · Vittoria Apuana",
-              "sale": 6250.0,
-              "rent": 17.2
+              "sale": 6350.0,
+              "rent": 17.15
             },
             {
               "code": "C1",
               "label": "Lungomare verso Cinquale · fascia interna",
-              "sale": 5000.0,
+              "sale": 5050.0,
               "rent": 15.0
             },
             {
@@ -52259,8 +52259,8 @@
             {
               "code": "D2",
               "label": "Caranna",
-              "sale": 3750.0,
-              "rent": 10.0
+              "sale": 3850.0,
+              "rent": 10.2
             }
           ]
         },
@@ -52268,79 +52268,31 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 816.8181818181819,
+          "value": 836.6666666666666,
           "formatted": null,
           "series": null,
           "normalized": null,
-          "benchmarkValue": 816.8181818181819,
-          "saleMean": 816.8181818181819,
-          "rentMean": 2.4181818181818184,
+          "benchmarkValue": 836.6666666666666,
+          "saleMean": 836.6666666666666,
+          "rentMean": 3.0666666666666664,
           "zones": [
             {
               "code": "B1",
-              "label": "Ponte Stazzemese · centrale",
-              "sale": 1125.0,
-              "rent": 2.9
-            },
-            {
-              "code": "D1",
-              "label": "Ponte Stazzemese · suburbana",
-              "sale": 925.0,
-              "rent": 3.4
-            },
-            {
-              "code": "B2",
               "label": "Stazzema · centrale",
               "sale": 875.0,
-              "rent": 3.4
+              "rent": 3.35
             },
             {
-              "code": "E1",
-              "label": "Farnocchia · Pomezzana",
-              "sale": 800.0,
-              "rent": 2.2
-            },
-            {
-              "code": "E2",
-              "label": "Levigliani · Terrinca",
-              "sale": 800.0,
-              "rent": 2.2
-            },
-            {
-              "code": "E3",
-              "label": "Pruno · Cardoso · Volegno · Valiventri",
-              "sale": 800.0,
-              "rent": 2.2
-            },
-            {
-              "code": "E4",
-              "label": "Retignano · Ruosina",
-              "sale": 800.0,
-              "rent": 2.2
-            },
-            {
-              "code": "R1",
-              "label": "Fabbricaccia · Campagrina · Palagnana rurale",
-              "sale": 750.0,
-              "rent": 2.0
+              "code": "E7",
+              "label": "Ponte Stazzemese · suburbana",
+              "sale": 925.0,
+              "rent": 3.35
             },
             {
               "code": "R2",
-              "label": "Aree montane rurali diffuse",
+              "label": "Pruno, Cardoso, Volegno, Valiventri, Retignano, Ruosina, Levigliani, Terrinca · extraurbana",
               "sale": 710.0,
               "rent": 2.5
-            },
-            {
-              "code": "E5",
-              "label": "Palagnana · suburbana",
-              "sale": 700.0,
-              "rent": 1.8
-            },
-            {
-              "code": "E6",
-              "label": "Fabbricaccia · Campagrina · suburbana",
-              "sale": 700.0,
-              "rent": 1.8
             }
           ]
         }
