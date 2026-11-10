@@ -28,6 +28,8 @@
   edizione; pin soil#2, vehicle#1–2, road#3, road_network#1/#3 ripinnati; domande verificate
   aggiornate (7 suolo, 94 veicoli; i rifiuti «anno non congelato» passano al 2026); test di
   riferimento suolo e veicoli rigenerati dalle edizioni nuove; dossier rigenerati.
+- Per gli anni ACI dopo il 2024 la validazione rilegge il workbook congelato con `openpyxl`, quindi
+  anche «Controllo mensile dati» (`monthly-data-refresh.yml`) ora installa `requirements-ci.txt`.
 
 ## Capacità ricettiva Istat 2025 (9 novembre 2026)
 
