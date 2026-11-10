@@ -11,5 +11,10 @@
   "aciVehicles": [],
   "omiResidential": [
     "2026-S1"
+  ],
+  "omiResidentialCorrections": [
+    "Viareggio D2",
+    "Seravezza E3",
+    "Stazzema"
   ]
 }

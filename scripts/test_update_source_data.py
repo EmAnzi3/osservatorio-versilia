@@ -434,16 +434,39 @@ def omi_cases(tmp: Path) -> None:
             raise AssertionError("replay diverso accettato")
         except upd.UpdateError as error:
             assert "Viareggio" in str(error) and "Seravezza" in str(error) and "Camaiore" not in str(error)
+        vz = broken["Viareggio"][0]["code"]; sz = broken["Seravezza"][0]["code"]
+        for wrong in ([f"Viareggio {vz}"], [f"Viareggio {vz}", f"Seravezza {sz}", "Camaiore"]):
+            try:
+                upd.update_omi_residential("2026-S1", True, lambda p: broken if p == "2025-S2" else bumped, corrections=wrong)
+                raise AssertionError("correzioni incomplete o superflue accettate")
+            except upd.UpdateError:
+                pass
+        upd.update_omi_residential("2026-S1", True, lambda p: broken if p == "2025-S2" else bumped,
+                                   corrections=[f"Viareggio {vz}", f"Seravezza {sz}"])
+        # Zonizzazione di Stazzema corretta dalla fonte: zone ricostruite con etichette della fonte.
+        rezoned = copy.deepcopy(base); rezoned["Stazzema"] = [dict(code="B1", sale=875.0, rent=3.35, sourceLabel="B1/Centrale/STAZZEMA"),
+                                                             dict(code="E7", sale=925.0, rent=3.35, sourceLabel="E7/Suburbana/PONTE STAZZEMESE")]
+        rebumped = copy.deepcopy(bumped); rebumped["Stazzema"] = [dict(z, sale=z["sale"] + 10) for z in rezoned["Stazzema"]]
+        try:
+            upd.update_omi_residential("2026-S1", True, lambda p: rezoned if p == "2025-S2" else rebumped)
+            raise AssertionError("zonizzazione diversa accettata")
+        except upd.UpdateError as error:
+            assert "Stazzema" in str(error) and "fonte Stazzema E7" in str(error)
+        upd.update_omi_residential("2026-S1", True, lambda p: rezoned if p == "2025-S2" else rebumped, corrections=["Stazzema"])
         before = upd.load(upd.SITE)["metrics"]["omiResidential"]
-        changes = upd.update_omi_residential("2026-S1", False, lambda p: base if p == "2025-S2" else bumped)
+        changes = upd.update_omi_residential("2026-S1", False, lambda p: rezoned if p == "2025-S2" else rebumped, corrections=["Stazzema"])
         m = upd.load(upd.SITE)["metrics"]["omiResidential"]
         assert m["meta"]["year"] == "1° semestre 2026" and changes.lines
-        assert math.isclose(m["aggregate"]["saleMean"], before["aggregate"]["saleMean"] + 100, abs_tol=1e-9)
+        staz = next(r for r in m["rows"] if r["town"] == "Stazzema")
+        assert [(z["code"], z["label"], z["sale"]) for z in staz["zones"]] == [("B1", "Stazzema · centrale", 885.0), ("E7", "Ponte Stazzemese · suburbana", 935.0)]
+        assert all(r["saleMean"] == next(b for b in before["rows"] if b["town"] == r["town"])["saleMean"] + 100 or r["town"] == "Stazzema"
+                   for r in m["rows"])
         for r in m["rows"]:
             assert math.isclose(r["saleMean"], math.fsum(z["sale"] for z in r["zones"]) / len(r["zones"]), abs_tol=1e-12)
             assert r["value"] == r["saleMean"] == r["benchmarkValue"]
         snap = upd.load(tmp / f"data/source-snapshots/{omi.SNAPSHOT_PREFIX}2026-S1.json")
         assert snap["publishedReplayed"] == "2025-S2" and set(snap["zones"]) == set(omi.TOWNS.values())
+        assert list(snap["catalogCorrections"]) == ["Stazzema"] and "--correction 'Stazzema'" in snap["acquisitionEvidence"]["script"]
         assert any(z["code"] == "R3" and not z["residential"] for z in snap["zones"]["046033"])
         assert all(z["code"] != "R3" for r in m["rows"] for z in r["zones"] if r["town"] == "Viareggio")
     finally:

@@ -4,8 +4,8 @@
 Usato da `update_source_data.py omi-residential --semester AAAA-SN`. Percorre la
 consultazione pubblica dell'Agenzia delle Entrate (provincia → Comune e
 semestre → zona → destinazione residenziale) e legge, per ogni zona, l'intervallo
-min/max di compravendita e locazione della tipologia prevalente della zona in
-stato «NORMALE» («Abitazioni civili» se la prevalente non è un'abitazione). Il valore di zona pubblicato è il punto medio dell'intervallo
+min/max di compravendita e locazione delle «Abitazioni civili» in stato
+«NORMALE» (non la tipologia prevalente: il replay lo ha escluso). Il valore di zona pubblicato è il punto medio dell'intervallo
 (compravendita in €/m², locazione in €/m² al mese). Le zone senza
 quella riga sono escluse, come nel catalogo.
 
@@ -128,7 +128,7 @@ def parse_rows(text: str) -> list[dict[str, Any]]:
 
 
 def parse_result(page: str, semester: str) -> dict[str, Any]:
-    """Valore di zona: tipologia prevalente della zona in stato NORMALE (se non è un'abitazione, abitazioni civili)."""
+    """Valore di zona: «Abitazioni civili» in stato NORMALE; si registrano anche tutte le altre righe."""
     text = text_of(page)
     year, half = semester.split("-S")
     if f"Anno {year} - Semestre {half}" not in text:
@@ -136,7 +136,7 @@ def parse_result(page: str, semester: str) -> dict[str, Any]:
     found = re.search(r"Tipologia prevalente:\s*(.+?)\s+Destinazione:", text)
     prevalent = found.group(1).strip() if found else None
     rows = parse_rows(text)
-    wanted = next((t for t in DWELLINGS if prevalent and t.lower() == prevalent.lower()), TYPE)
+    wanted = TYPE  # verificato sul semestre pubblicato: non la tipologia prevalente
     pick = next((r for r in rows if r["type"] == wanted and r["state"] == STATE and "rentMin" in r), None)
     if pick is None:
         raise OmiError(f"riga «{wanted} {STATE}» con compravendita e locazione assente")
@@ -190,3 +190,11 @@ def read_semester(session: Session, semester: str, codes: dict[str, str]) -> dic
             raise OmiError(f"{town}: zone OMI assenti o duplicate")
         out[town] = zones
     return out
+
+
+def zone_label(zone: dict[str, Any]) -> str:
+    """Etichetta di una zona nuova dal nome della fonte: «Ponte Stazzemese · suburbana»."""
+    parts = zone.get("sourceLabel", "").split("/", 2)
+    area = re.sub(r"[\s,\-.…]+$", "", parts[2] if len(parts) == 3 else zone["code"]).strip()
+    area = re.sub(r"\s*,\s*", ", ", area).title().replace(" Di ", " di ").replace(" Dei ", " dei ").replace(" A ", " a ")
+    return f"{area} · {parts[1].lower()}" if len(parts) == 3 else area
