@@ -1,5 +1,36 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: coda delle segnalazioni, quote separate e decisioni verificabili (11 novembre 2026)
+
+- Stato 10/11: `discoveryQueue` 350 segnalazioni; il qualificatore ne legge al massimo 120 per run,
+  ma 97 posti andavano ai topic Funding & Tenders (dati strutturati, nessuno scaricamento): restavano
+  ~23 letture in rete per run e 180 segnalazioni non erano mai state lette.
+- Ora i dati strutturati si decidono tutti fuori quota; le 120 letture in rete restano per le pagine.
+- Il qualificatore usa un `TransportBudget` proprio (`MAX_SECONDS` + 60 s, journal
+  `opportunity-qualifier-progress.jsonl`) e restituisce il tempo speso alla scadenza della scansione.
+- `autoQualificationCache` conserva il motivo della decisione; le voci senza motivo (cache precedente)
+  si rileggono una volta. Il run live stampa `QUALIFICA: esito · fonte · titolo · motivo`.
+- `pcm-famiglia` legge anche la sottosezione `finanziamenti-avvisi-e-bandi/avvisi-e-bandi/`.
+- Revisione dei 107 `QUALIFICA` non F&T del dry-run (regole generali, nessuna correzione per bando):
+  - «Non possono partecipare i Comuni che hanno già ottenuto…» non è più un'esclusione dei Comuni:
+    `PUBLIC_EXCLUDED` ignora l'esclusione seguita da una relativa o un requisito (che, già, con…).
+    Era il motivo del rifiuto di «Fondo investimenti stradali nei piccoli Comuni 2026».
+  - Limiti di popolazione nella voce dei destinatari («popolazione massima di 5.000 abitanti»,
+    «fino a 50.000 abitanti», «superiore a…»): i Comuni fuori limite diventano `not_eligible`
+    con i residenti Istat dell'indicatore `population` di `site-data.json`; se nessuno dei sette
+    rientra la segnalazione è respinta. Le soglie sotto 500 e le età non contano.
+  - Richiedenti limitati agli enti in dissesto o in riequilibrio (anche «gestione liquidatoria»,
+    «organo straordinario di liquidazione»): respinti (es. comunicato DAIT
+    del 10/11 sull'anticipazione del Fondo di rotazione, prima qualificato).
+  - «per la formazione della graduatoria» nel titolo non è più letto come esito.
+  - «dovranno essere completate entro…» è un termine di esecuzione (`EXECUTION_CUE` + completat/eseguit):
+    l'avviso MIM 79378 (candidature fino al 14/10) risultava aperto per la data 31/12/2028 delle verifiche.
+  - Scaduti confermati: «Fabbrica Spazi Civici» (04/11), «Prevenzione Sismica Edifici Pubblici» (01/08).
+- Il job `daily production dry-run` passa da 40 a 55 minuti: con il qualificatore la scansione dura
+  ~25 minuti e la build statica ~14; il run del 11/11 si è fermato al termine della build.
+- Ancora da fare: fonti mancanti Pari opportunità «L'Italia delle donne» (pagina avvisi non raggiungibile
+  dal container, da verificare l'URL), ANCI spazi under 35, MUSE DHC.
+
 ## Radar: rilettura quotidiana delle pagine ufficiali e `verified_at` onesto (10 novembre 2026)
 
 Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora statici).

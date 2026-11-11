@@ -7,7 +7,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche della famiglia",
       "territory": "Italia",
       "family": "social-welfare-equality",
-      "urls": ["https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/"],
+      "urls": ["https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/", "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["avviso", "bando", "finanzi", "fondo", "contribut", "manifestazione di interesse"],
       "municipalTerms": ["comun", "enti locali", "famiglie", "territorio"]
