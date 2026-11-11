@@ -9,6 +9,12 @@ Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora sta
   impostato da `opportunity_daily_refresh_audit_fixed.py`): rilegge la pagina ufficiale di ogni
   scheda pubblica, più le pagine equivalenti già registrate (`_OFFICIAL_ALTERNATE_URLS`,
   `_OFFICIAL_EVIDENCE_SETS`) e un eventuale `official_urls`.
+- La rilettura usa un `TransportBudget` proprio (`RECHECK_SCAN_SECONDS` = 420 s, journal
+  `opportunity-official-recheck-progress.jsonl`) tramite `run_with_own_budget`; il tempo speso è
+  restituito alla scadenza della scansione. Senza isolamento consumava i 1200 s della scansione e il
+  qualificatore finiva con `scan budget exhausted` → `coverageAudit=fail` (run PR dell'11/11).
+- `COVERAGE AUDIT FAIL` nel log riporta anche budget di scansione, storiche non monitorate e
+  copertura residua.
 - Regola unica, senza correzioni per bando: il ruolo di ogni data è deciso dalla parola chiave più
   vicina che la precede (proroga, scadenza, apertura) o da un intervallo «dal … al …»/«from … to …».
   Una proroga successiva sostituisce la scadenza; una scadenza ritrovata è confermata; senza

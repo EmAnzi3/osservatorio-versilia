@@ -344,6 +344,9 @@ def _assert_publishable(result: dict[str, Any]) -> None:
                 + f" · fonti mancanti {', '.join(evidence.get('missingSources') or []) or 'nessuna'}"
                 + f" · evidenze vecchie {', '.join(evidence.get('staleEvidence') or []) or 'nessuna'}"
                 + f" · famiglie scoperte {', '.join(audit.get('runtimeUncoveredFamilies') or []) or 'nessuna'}"
+                + f" · budget scansione {(audit.get('transportBudget') or {}).get('status', 'ok')}"
+                + f" · storiche non monitorate {', '.join(audit.get('historicalUnmonitored') or []) or 'nessuna'}"
+                + f" · copertura residua {(audit.get('residualCoverage') or {}).get('status', 'n.d.')}"
             )
         raise RuntimeError("Snapshot giornaliero non pubblicabile: " + ", ".join(problems))
 

@@ -170,6 +170,30 @@ def test_section_page_extension_of_another_call_is_ignored():
     assert item["deadline_at"] == "2026-11-30"
 
 
+def test_recheck_uses_own_budget_and_returns_scan_time():
+    import threading
+    import time
+    import types
+
+    class Budget:
+        def __init__(self):
+            self.deadline, self.lock = 100.0, threading.Condition()
+
+    main_budget, seen = Budget(), []
+    discovery = types.SimpleNamespace(LIVE_BUDGET=main_budget)
+
+    def work():
+        seen.append(discovery.LIVE_BUDGET)
+        time.sleep(0.05)
+        return "ok"
+
+    assert recheck.run_with_own_budget(discovery, work, make_budget=Budget) == "ok"
+    assert seen[0] is not main_budget and discovery.LIVE_BUDGET is main_budget
+    assert main_budget.deadline >= 100.05
+    offline = types.SimpleNamespace(LIVE_BUDGET=None)
+    assert recheck.run_with_own_budget(offline, lambda: 1, make_budget=Budget) == 1
+
+
 def main() -> None:
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

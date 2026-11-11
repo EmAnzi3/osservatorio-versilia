@@ -26,6 +26,7 @@ import opportunity_document_promotion as document_promotion
 import opportunity_qualifier as auto_qualifier
 import opportunity_independent_audit_recovery as independent_recovery
 import opportunity_review_actions as review_actions
+import opportunity_discovery_resilient as discovery
 import opportunity_official_recheck as official_recheck
 from opportunity_discovery_noise import clean_review_queues
 
@@ -222,7 +223,14 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     live = kwargs.get("payloads") is None
 
     def _recheck(opportunities: list[dict[str, Any]], day: date) -> None:
-        summary = official_recheck.apply(opportunities, day, previous=previous)
+        def _budget():
+            from opportunity_transport_budget import TransportBudget
+            return TransportBudget({}, scan_seconds=official_recheck.RECHECK_SCAN_SECONDS,
+                                   journal=ROOT / "reports/runtime/opportunity-official-recheck-progress.jsonl")
+
+        summary = official_recheck.run_with_own_budget(
+            discovery, lambda: official_recheck.apply(opportunities, day, previous=previous),
+            make_budget=_budget)
         result["officialRecheck"] = summary
         counts = result.setdefault("counts", {})
         for key in ("checked", "updated", "confirmed", "unconfirmed", "unreachable", "stale"):

@@ -38,6 +38,8 @@ STALE_AFTER_DAYS = 7
 MAX_EXTENSION_DAYS = 550
 HTTP_WORKERS = 10
 BROWSER_BUDGET_SECONDS = 240
+# Budget di trasporto proprio: la rilettura non consuma quello della scansione.
+RECHECK_SCAN_SECONDS = 420
 
 _IT_MONTHS = {
     "gennaio": 1, "febbraio": 2, "marzo": 3, "aprile": 4, "maggio": 5, "giugno": 6,
@@ -408,6 +410,27 @@ def read_pages(items: list[dict[str, Any]], http: Callable[[str], str],
                 texts[url] = text
                 errors.pop(url, None)
     return {"texts": texts, "errors": errors}
+
+
+def run_with_own_budget(discovery: Any, fn: Callable[[], Any], *, make_budget: Callable[[], Any]) -> Any:
+    """Esegue ``fn`` con un budget di trasporto dedicato e restituisce alla scansione il tempo speso.
+
+    Le letture passano da ``discovery.LIVE_BUDGET``: senza isolamento consumerebbero la scadenza
+    unica della scansione e i limiti per fonte, lasciando senza tempo il qualificatore e le
+    verifiche regionali che vengono dopo.
+    """
+    main_budget = getattr(discovery, "LIVE_BUDGET", None)
+    if main_budget is None:
+        return fn()
+    started = time.monotonic()
+    discovery.LIVE_BUDGET = make_budget()
+    try:
+        return fn()
+    finally:
+        discovery.LIVE_BUDGET = main_budget
+        with main_budget.lock:
+            main_budget.deadline += time.monotonic() - started
+            main_budget.lock.notify_all()
 
 
 def apply(items: list[dict[str, Any]], today: date, *, previous: dict[str, Any] | None = None,
