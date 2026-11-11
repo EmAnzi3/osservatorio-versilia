@@ -227,6 +227,17 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
         counts = result.setdefault("counts", {})
         for key in ("checked", "updated", "confirmed", "unconfirmed", "unreachable", "stale"):
             counts["officialRecheck" + key.capitalize()] = summary[key]
+        print(
+            "RILETTURA UFFICIALE: "
+            + " · ".join(f"{key} {summary[key]}" for key in
+                         ("checked", "confirmed", "updated", "unconfirmed", "unreachable", "stale"))
+        )
+        for row in summary.get("changes") or []:
+            after, before = row.get("after") or {}, row.get("before") or {}
+            diff = ", ".join(f"{k} {before.get(k)} → {after.get(k)}" for k in after if after.get(k) != before.get(k))
+            print(f"  aggiornata: {row.get('title')} · {diff}")
+        for row in summary.get("unreachableItems") or []:
+            print(f"  non raggiungibile: {row.get('title')} · ultima lettura {row.get('last_ok_at') or 'mai'}")
 
     audit_promotions.PRE_EXPIRY_HOOK = _recheck if live else None
     try:
