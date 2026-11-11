@@ -254,7 +254,9 @@ def decide(item: dict[str, Any], facts: dict[str, Any], today: date) -> dict[str
         # Una scheda già scaduta torna aperta solo con una proroga esplicita:
         # altre date future della pagina (nuovi cicli, validità) non bastano.
         pass
-    elif len(future_deadlines) == 1:
+    elif current is None and len(future_deadlines) == 1:
+        # Una scadenza già presente cambia solo con una proroga esplicita: una
+        # diversa data "entro" della pagina può riguardare un'altra fase.
         deadline = future_deadlines[0]
         deadline_row = next(r for r in deadlines if r["date"] == deadline)
         reasons.append(f"scadenza indicata dalla fonte: {deadline.isoformat()}")

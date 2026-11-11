@@ -18,8 +18,9 @@ Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora sta
 - Regola unica, senza correzioni per bando: il ruolo di ogni data è deciso dalla parola chiave più
   vicina che la precede (proroga, scadenza, apertura) o da un intervallo «dal … al …»/«from … to …».
   Una proroga successiva sostituisce la scadenza; una scadenza ritrovata è confermata; senza
-  scadenza ritrovata vale l'unica scadenza futura della pagina, altrimenti la scheda resta invariata
-  e «non confermata». Apertura passata con scadenza futura → aperta; apertura futura → in arrivo.
+  scadenza la scheda prende l'unica scadenza futura della pagina; una scadenza esistente non
+  ritrovata cambia solo con una proroga esplicita (altrimenti scheda invariata e «non confermata»:
+  il run dell'11/11 spostava «Assistenti sociali» dall'11/11 al 5/02/2027, data di un'altra fase). Apertura passata con scadenza futura → aperta; apertura futura → in arrivo.
   Una scheda già scaduta torna aperta solo con una proroga esplicita (nel run di prova la regola
   senza questo vincolo riapriva Erasmus KA120 e BETTERRENO con date di altri cicli). Le proroghe si
   leggono anche dalla pagina di sezione del sito (host + primo segmento), ma solo se il contesto

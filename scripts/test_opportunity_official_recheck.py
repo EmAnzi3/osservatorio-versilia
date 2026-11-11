@@ -170,6 +170,16 @@ def test_section_page_extension_of_another_call_is_ignored():
     assert item["deadline_at"] == "2026-11-30"
 
 
+def test_existing_deadline_is_not_replaced_by_another_phase_date():
+    item = _item(title="Assistenti sociali · Adesione di Comuni e ATS al concorso nazionale",
+                 deadline_at=TODAY.isoformat())
+    page = ("Assistenti sociali, adesione di Comuni e ATS: le assunzioni dei vincitori del concorso "
+            "dovranno avvenire entro il 5 febbraio 2027." + FILLER)
+    _run([item], {item["url"]: page})
+    assert item["deadline_at"] == TODAY.isoformat(), item
+    assert item["official_recheck"]["outcome"] == "unconfirmed"
+
+
 def test_recheck_uses_own_budget_and_returns_scan_time():
     import threading
     import time
