@@ -703,7 +703,7 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     # avanza e le segnalazioni nuove vengono lette entro un giorno.
     horizon = (today - timedelta(days=RECHECK_DAYS)).isoformat()
     cache = {url: row for url, row in ((previous or {}).get("autoQualificationCache") or {}).items()
-             if str(row.get("checkedAt") or "") >= horizon}
+             if str(row.get("checkedAt") or "") >= horizon and row.get("reason")}
     result["autoQualificationCache"] = cache
     pending = []
     for candidate in unique:
@@ -730,12 +730,18 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     # Prima i dati strutturati (nessuno scaricamento), poi le segnalazioni più recenti.
     fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, not c.get("structured_text"),
                               -(max(_years(c)) if _years(c) else today.year)))
-    report["deferred"] = max(0, len(fresh) - MAX_CANDIDATES)
+    # I dati strutturati non scaricano nulla: si decidono tutti e non tolgono
+    # posto alle segnalazioni da leggere in rete (prima occupavano 97 posti su 120).
+    structured = [c for c in fresh if c.get("structured_text")]
+    networked = [c for c in fresh if not c.get("structured_text")]
+    report["deferred"] = max(0, len(networked) - MAX_CANDIDATES)
     started = time.monotonic()
-    for position, candidate in enumerate(fresh[:MAX_CANDIDATES]):
+    selected = structured + networked[:MAX_CANDIDATES]
+    for position, candidate in enumerate(selected):
         # Tempo massimo per run: il resto passa al run successivo, in ordine di priorità.
-        if loader is not None and time.monotonic() - started > MAX_SECONDS:
-            report["deferred"] += min(len(fresh), MAX_CANDIDATES) - position
+        if (loader is not None and not candidate.get("structured_text")
+                and time.monotonic() - started > MAX_SECONDS):
+            report["deferred"] += len(selected) - position
             break
         url = str(candidate["url"])
         check: dict[str, Any] = {"url": url, "title": candidate.get("title"), "source_id": candidate.get("source_id")}
@@ -769,7 +775,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         check.update(status=decision.status, reason=decision.reason, applicant=decision.applicant,
                      deadline=decision.deadline, documents=decision.documents)
         if not candidate.get("structured_text"):
-            cache[url] = {"status": decision.status, "checkedAt": today.isoformat()}
+            cache[url] = {"status": decision.status, "checkedAt": today.isoformat(),
+                          "reason": str(decision.reason or "")[:200]}
         if decision.status != "qualified":
             report[decision.status] = report.get(decision.status, 0) + 1
             continue
@@ -835,10 +842,16 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
     import opportunity_discovery_resilient as discovery
     import opportunity_pdf_evidence as pdf
     import run_opportunity_radar_v04 as core
-    budget = discovery.LIVE_BUDGET
-    if budget is None:
-        from opportunity_transport_budget import TransportBudget
-        budget = TransportBudget({}, scan_seconds=180)
+    from pathlib import Path
+
+    from opportunity_transport_budget import TransportBudget
+    main_budget = discovery.LIVE_BUDGET
+    # Budget proprio: le letture della qualificazione non consumano la scadenza
+    # unica della scansione; il tempo speso le viene restituito alla fine.
+    budget = TransportBudget({}, scan_seconds=MAX_SECONDS + 60 if main_budget is not None else 180,
+                             journal=Path(__file__).resolve().parents[1]
+                             / "reports/runtime/opportunity-qualifier-progress.jsonl")
+    started = time.monotonic()
 
     def loader(url: str, document: bool) -> str:
         host = urlsplit(url).hostname or ""
@@ -852,8 +865,21 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
     def links(payload: str, page_url: str) -> list[str]:
         return [u for u in pdf.pdf_links(payload, page_url, limit=6) if official_host(u, page_url)]
 
-    return apply(result, today, loader=loader, previous=previous, build_item=core.build_seed_item,
-                 towns=core.TOWNS, document_links=links)
+    try:
+        out = apply(result, today, loader=loader, previous=previous, build_item=core.build_seed_item,
+                    towns=core.TOWNS, document_links=links)
+    finally:
+        if main_budget is not None:
+            with main_budget.lock:
+                main_budget.deadline += time.monotonic() - started
+                main_budget.lock.notify_all()
+    # Le decisioni lette in rete finiscono nel log del run: gli artefatti non
+    # sono sempre scaricabili e i rifiuti vanno verificabili.
+    for check in (result.get("autoQualification") or {}).get("checks") or []:
+        if check.get("status") in {"qualified", "rejected", "expired", "unreadable"}:
+            print(f"QUALIFICA: {check.get('status')} · {check.get('source_id')} · "
+                  f"{str(check.get('title') or '')[:90]} · {str(check.get('reason') or '')[:140]}")
+    return out
 
 
 # Fonti che bloccano i server della CI (firewall) e i cui bandi per i Comuni

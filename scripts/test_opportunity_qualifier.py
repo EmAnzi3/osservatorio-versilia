@@ -412,6 +412,33 @@ def test_cards_from_older_rules_are_reread():
     assert reread[0]["auto_qualification_version"] == q.VERSION
 
 
+def test_structured_topics_do_not_take_network_slots():
+    calls = []
+    def loader(url, document):
+        calls.append(url)
+        return "<html><body><main>" + "Comunicato stampa sulla sicurezza. " * 30 + "</main></body></html>"
+    structured = [candidate(f"EU-TOPIC-{i} · Topic", url=f"https://ec.europa.eu/t{i}", structured_text="Topic text.")
+                  for i in range(q.MAX_CANDIDATES)]
+    pages = [candidate("Notizia varia", url="https://x.gov.it/n1")]
+    result = {"opportunities": [], "discoveryQueue": structured + pages}
+    q.apply(result, date(2026, 10, 1), loader=loader, build_item=lambda *a: {}, towns=TOWNS)
+    assert calls == ["https://x.gov.it/n1"], calls
+    assert result["autoQualification"]["checked"] == q.MAX_CANDIDATES + 1
+    assert result["autoQualification"]["deferred"] == 0
+
+
+def test_cached_decision_without_reason_is_reread():
+    calls = []
+    def loader(url, document):
+        calls.append(url)
+        return "<html><body><main>" + "Comunicato stampa sulla sicurezza. " * 30 + "</main></body></html>"
+    previous = {"autoQualificationCache": {"https://x.gov.it/n1": {"status": "rejected", "checkedAt": "2026-09-30"}}}
+    result = {"opportunities": [], "discoveryQueue": [candidate("Notizia varia", url="https://x.gov.it/n1")]}
+    q.apply(result, date(2026, 10, 1), loader=loader, previous=previous, build_item=lambda *a: {}, towns=TOWNS)
+    assert calls == ["https://x.gov.it/n1"]
+    assert result["autoQualificationCache"]["https://x.gov.it/n1"]["reason"]
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

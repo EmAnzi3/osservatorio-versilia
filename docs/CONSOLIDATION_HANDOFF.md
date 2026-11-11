@@ -1,5 +1,20 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: coda delle segnalazioni, quote separate e decisioni verificabili (11 novembre 2026)
+
+- Stato 10/11: `discoveryQueue` 350 segnalazioni; il qualificatore ne legge al massimo 120 per run,
+  ma 97 posti andavano ai topic Funding & Tenders (dati strutturati, nessuno scaricamento): restavano
+  ~23 letture in rete per run e 180 segnalazioni non erano mai state lette.
+- Ora i dati strutturati si decidono tutti fuori quota; le 120 letture in rete restano per le pagine.
+- Il qualificatore usa un `TransportBudget` proprio (`MAX_SECONDS` + 60 s, journal
+  `opportunity-qualifier-progress.jsonl`) e restituisce il tempo speso alla scadenza della scansione.
+- `autoQualificationCache` conserva il motivo della decisione; le voci senza motivo (cache precedente)
+  si rileggono una volta. Il run live stampa `QUALIFICA: esito · fonte · titolo · motivo`.
+- `pcm-famiglia` legge anche la sottosezione `finanziamenti-avvisi-e-bandi/avvisi-e-bandi/`.
+- Prossimo: rivedere dal log i rifiuti dei rilanci ANCI/PCM (es. «Fabbrica Spazi Civici per la
+  Gioventù» scaduto, «Fondo investimenti stradali nei piccoli Comuni 2026» respinto) e le fonti
+  mancanti (Pari opportunità «L'Italia delle donne», ANCI spazi under 35, MUSE DHC).
+
 ## Radar: rilettura quotidiana delle pagine ufficiali e `verified_at` onesto (10 novembre 2026)
 
 Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora statici).
