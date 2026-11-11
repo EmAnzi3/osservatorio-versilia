@@ -480,6 +480,13 @@ def test_call_to_form_a_ranking_is_not_a_result():
     assert decide("Approvazione della graduatoria degli edifici scolastici", SEISMIC).status == "rejected"
 
 
+def test_completion_date_of_funded_checks_is_not_the_deadline():
+    text = ("La trasmissione delle candidature è consentita dalle ore 14:00 del giorno 07 ottobre 2026 e fino alle ore "
+            "14:00 del giorno 14 ottobre 2026. Le verifiche di vulnerabilità sismica, oggetto del presente "
+            "finanziamento, dovranno essere completate entro il 31 dicembre 2028.")
+    assert q.find_deadline(text, date(2026, 11, 11))[0] == date(2026, 10, 14)
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

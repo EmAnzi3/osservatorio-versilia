@@ -23,6 +23,8 @@
     «organo straordinario di liquidazione»): respinti (es. comunicato DAIT
     del 10/11 sull'anticipazione del Fondo di rotazione, prima qualificato).
   - «per la formazione della graduatoria» nel titolo non è più letto come esito.
+  - «dovranno essere completate entro…» è un termine di esecuzione (`EXECUTION_CUE` + completat/eseguit):
+    l'avviso MIM 79378 (candidature fino al 14/10) risultava aperto per la data 31/12/2028 delle verifiche.
   - Scaduti confermati: «Fabbrica Spazi Civici» (04/11), «Prevenzione Sismica Edifici Pubblici» (01/08).
 - Il job `daily production dry-run` passa da 40 a 55 minuti: con il qualificatore la scansione dura
   ~25 minuti e la build statica ~14; il run del 11/11 si è fermato al termine della build.

@@ -374,7 +374,7 @@ DEADLINE_CUE = re.compile(
 # rendiconto (lavori, spese, relazioni) che seguono il finanziamento.
 SUBMISSION_CUE = re.compile(r"(domand|candidatur|istanz|propost|presentazion|manifestazion|invio\s+delle|iscrizion|"
                             r"adesion|partecipazion|richiest[ae]\s+di|submission|applications?|deadline)", re.I)
-EXECUTION_CUE = re.compile(r"(lavori|conclu[sd]|rendicont|relazione|impegn|restituir|aggiudicat|appaltat|spes[ae]\b|erogazion|"
+EXECUTION_CUE = re.compile(r"(lavori|conclu[sd]|completat|eseguit|rendicont|relazione|impegn|restituir|aggiudicat|appaltat|spes[ae]\b|erogazion|"
                            r"liquidazion|realizzat|ultimat|collaud|certificazion|documentazione|utilizz)", re.I)
 OPEN_CUE = re.compile(r"(a\s+partire\s+dal|dal(?:le\s+ore\s+[\d.:]+\s+del)?|apertura|opening\s+date|opens?\s+on)", re.I)
 ROLLING = re.compile(r"\b(a\s+sportello|fino\s+ad?\s+esaurimento|senza\s+scadenza|sempre\s+aperto|open\s+until\s+further\s+notice)\b", re.I)
