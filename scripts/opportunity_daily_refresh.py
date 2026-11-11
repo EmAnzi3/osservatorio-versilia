@@ -333,6 +333,18 @@ def _assert_publishable(result: dict[str, Any]) -> None:
     if result.get("continuityHold"):
         _write_continuity_diagnostic(result)
     if problems:
+        audit = result.get("coverageAudit") or {}
+        if audit.get("status") != "pass":
+            # Il dettaglio resta nel log del run: gli artefatti non sono sempre consultabili.
+            evidence = audit.get("sportLifeCoverage") or {}
+            print(
+                "COVERAGE AUDIT FAIL: sentinelle mancanti "
+                + (", ".join(audit.get("missingCurrentSentinels") or []) or "nessuna")
+                + f" · evidenze {evidence.get('status', 'n.d.')}"
+                + f" · fonti mancanti {', '.join(evidence.get('missingSources') or []) or 'nessuna'}"
+                + f" · evidenze vecchie {', '.join(evidence.get('staleEvidence') or []) or 'nessuna'}"
+                + f" · famiglie scoperte {', '.join(audit.get('runtimeUncoveredFamilies') or []) or 'nessuna'}"
+            )
         raise RuntimeError("Snapshot giornaliero non pubblicabile: " + ", ".join(problems))
 
 
