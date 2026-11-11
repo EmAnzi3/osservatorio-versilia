@@ -1,5 +1,47 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: rilettura quotidiana delle pagine ufficiali e `verified_at` onesto (10 novembre 2026)
+
+Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora statici).
+
+- Nuovo `scripts/opportunity_official_recheck.py`, eseguito in ogni refresh live prima
+  dell'archiviazione delle scadute (hook `PRE_EXPIRY_HOOK` in `opportunity_matrix_promotions.py`,
+  impostato da `opportunity_daily_refresh_audit_fixed.py`): rilegge la pagina ufficiale di ogni
+  scheda pubblica, più le pagine equivalenti già registrate (`_OFFICIAL_ALTERNATE_URLS`,
+  `_OFFICIAL_EVIDENCE_SETS`) e un eventuale `official_urls`.
+- La rilettura usa un `TransportBudget` proprio (`RECHECK_SCAN_SECONDS` = 420 s, journal
+  `opportunity-official-recheck-progress.jsonl`) tramite `run_with_own_budget`; il tempo speso è
+  restituito alla scadenza della scansione. Senza isolamento consumava i 1200 s della scansione e il
+  qualificatore finiva con `scan budget exhausted` → `coverageAudit=fail` (run PR dell'11/11).
+- `COVERAGE AUDIT FAIL` nel log riporta anche budget di scansione, storiche non monitorate e
+  copertura residua.
+- Regola unica, senza correzioni per bando: il ruolo di ogni data è deciso dalla parola chiave più
+  vicina che la precede (proroga, scadenza, apertura) o da un intervallo «dal … al …»/«from … to …».
+  Una proroga successiva sostituisce la scadenza; una scadenza ritrovata è confermata; senza
+  scadenza la scheda prende l'unica scadenza futura della pagina; una scadenza esistente non
+  ritrovata cambia solo con una proroga esplicita (altrimenti scheda invariata e «non confermata»:
+  il run dell'11/11 spostava «Assistenti sociali» dall'11/11 al 5/02/2027, data di un'altra fase). Apertura passata con scadenza futura → aperta; apertura futura → in arrivo.
+  Una scheda già scaduta torna aperta solo con una proroga esplicita (nel run di prova la regola
+  senza questo vincolo riapriva Erasmus KA120 e BETTERRENO con date di altri cicli). Le proroghe si
+  leggono anche dalla pagina di sezione del sito (host + primo segmento), ma solo se il contesto
+  della data nomina la scheda: così i due SAI che puntano all'avviso originale ricevono la proroga
+  pubblicata sul portale.
+  Sulle pagine reali: SAI prorogato al 10/12 ore 18:00, EUCF 8ª call aperta 26/10–21/12 ore 17:00,
+  C3 entro il 13/11.
+  Run live sulla PR: 105 schede rilette, 32 confermate, 42 aggiornate, 23 non confermate,
+  8 non raggiungibili (Erasmus+ giovani, ESC, Marchio patrimonio europeo, Conto Termico/GSE con WAF).
+- `verified_at` è la data dell'ultima lettura riuscita della fonte ufficiale. Se oggi la pagina non
+  risponde restano i fatti e la data dell'ultima lettura (campo `official_recheck` nello snapshot);
+  una scheda dei corpora statici mai riletta ha `verified_at` nullo. Il rapporto del run ha la
+  sezione «Rilettura delle pagine ufficiali» con modifiche e pagine non raggiungibili.
+- Le icone delle fonti nuove non bloccano più la build: un dominio senza icona registrata riceve un
+  badge tipografico locale (`local-source-mark-auto`). Il run delle 14:50 del 10/11 era fallito
+  per `dait.interno.gov.it`.
+- Pages: un secondo tentativo di deploy dopo 90 secondi se il primo fallisce.
+- Budget: scan 38 minuti (prima 30), job 113 (prima 105).
+- Resta da fare (PR successiva): promozione automatica dei lead in revisione e fonti mancate
+  (famiglia.governo.it «avvisi-e-bandi», ANCI, MUSE DHC, «L'Italia delle donne»).
+
 ## Deploy del sito: dipendenze prima del catalogo (10 novembre 2026)
 
 Il deploy di `main` dopo #576 è fallito nel job `build` di `pages.yml`: lo step «Select verified

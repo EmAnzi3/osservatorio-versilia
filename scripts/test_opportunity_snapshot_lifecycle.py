@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -119,7 +120,10 @@ def verify_release(path: Path) -> None:
 
 def verify_daily(path: Path) -> None:
     payload = _load(path)
-    expected = datetime.now(timezone.utc).date()
+    # Il workflow fissa la data all'inizio del job (RADAR_RUN_DATE): lo scan e la
+    # validazione restano coerenti anche a cavallo della mezzanotte UTC.
+    fixed = os.environ.get("RADAR_RUN_DATE")
+    expected = date.fromisoformat(fixed) if fixed else datetime.now(timezone.utc).date()
     assert payload.get("referenceDate") == expected.isoformat(), (payload.get("referenceDate"), expected.isoformat())
     assert payload.get("releaseVersion") == "0.4.4"
     assert payload.get("dailyHardeningVersion") == "0.4.4-h5"

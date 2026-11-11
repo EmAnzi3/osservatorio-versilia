@@ -182,6 +182,20 @@ def test_anci_favicon_local_in_full_release() -> None:
         assert ElementTree.fromstring(artifact.read_bytes()).tag.endswith("svg")
         assert ">ANCI</text>" in artifact.read_text(encoding="utf-8")
 
+    # Una fonte mai vista (es. dait.interno.gov.it) riceve un badge locale invece
+    # di far fallire la build dell'intero sito.
+    payload = {"opportunities": [{"title": "Comunicato del 10 novembre 2026", "source_id": "nuova-fonte",
+                                   "url": "https://dait.interno.gov.it/finanza-locale/x", "presentation": {}}],
+               "archive": []}
+    with tempfile.TemporaryDirectory(prefix="radar-auto-icon-") as folder:
+        dist = Path(folder)
+        provenance = favicons.materialize(payload, dist)
+        favicons.apply_to_payload(payload, provenance)
+        assert payload["opportunities"][0]["presentation"]["source_favicon_family"] == "generated:dait.interno.gov.it"
+        artifact = dist / "assets" / "source-favicons" / "source-dait-interno-gov-it.svg"
+        assert ">DAIT</text>" in artifact.read_text(encoding="utf-8")
+        assert provenance["generated:dait.interno.gov.it"]["method"] == "local-source-mark-auto"
+
 
 
 def test_anci_alternate_primary_requires_live_same_host() -> None:

@@ -497,6 +497,9 @@ _SPECS: list[dict[str, Any]] = [
 ]
 
 
+PRE_EXPIRY_HOOK: Any = None
+
+
 def _build_item(spec: dict[str, Any], today: date) -> dict[str, Any]:
     deadline = spec.get("deadline_at")
     opens = spec.get("opens_at")
@@ -634,6 +637,12 @@ def apply_complete_promotions(result: dict[str, Any], today: date) -> dict[str, 
         opportunities.append(item)
         existing_ids.add(coverage_id)
         existing_titles.add(title_key)
+
+    # Rilettura delle pagine ufficiali (solo nei run live): proroghe, aperture e
+    # scadenze della fonte prevalgono sulle date scritte nei corpora prima che le
+    # schede vengano archiviate come scadute.
+    if PRE_EXPIRY_HOOK is not None:
+        PRE_EXPIRY_HOOK(opportunities, today)
 
     active: list[dict[str, Any]] = []
     for item in opportunities:
