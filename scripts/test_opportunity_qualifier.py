@@ -439,6 +439,44 @@ def test_cached_decision_without_reason_is_reread():
     assert result["autoQualificationCache"]["https://x.gov.it/n1"]["reason"]
 
 
+def test_partial_exclusion_of_municipalities_keeps_them_applicants():
+    text = (PAD + "Beneficiari. Sono ammessi i Comuni della Toscana. Non possono partecipare i Comuni che hanno già "
+            "ottenuto fondi nelle annualità precedenti. Le candidature devono essere presentate entro le ore 12:00 del 30 novembre 2026 tramite PEC.")
+    d = decide("Fondo per la manutenzione delle strade comunali 2026", text)
+    assert d.status == "qualified", d
+
+
+def test_population_cap_limits_towns_and_rejects_when_none_fit():
+    text = (PAD + "Beneficiari. Sono ammessi unicamente i Comuni con una popolazione massima di 5.000 abitanti. "
+            "Le candidature devono essere presentate entro le ore 12:00 del 30 novembre 2026 tramite PEC.")
+    pops = {"Camaiore": 31763, "Massarosa": 21782}
+    d = decide("Fondo per la manutenzione delle strade comunali 2026", text, town_populations=pops)
+    assert d.status == "rejected" and "popolazione" in d.reason, d
+    small = dict(pops, Stazzema=2783)
+    ok = decide("Fondo per la manutenzione delle strade comunali 2026", text, town_populations=small)
+    assert ok.status == "qualified" and ok.population == (None, 5000), ok
+    entry = q.build_entry(candidate("Fondo strade"), ok, date(2026, 10, 1), ("Camaiore", "Stazzema"))
+    statuses = {t: v["status"] for t, v in entry["municipality_status_overrides"].items()}
+    assert statuses == {"Camaiore": "not_eligible", "Stazzema": "conditional"}, statuses
+
+
+def test_age_limits_are_not_population_limits():
+    assert q.population_limits("giovani residenti di età fino a 35 anni") == (None, None)
+    assert q.population_limits("Comuni con popolazione non inferiore a 10.000 abitanti") == (10000, None)
+
+
+def test_distressed_entities_only_rejected():
+    text = (PAD + "Gli enti locali in dissesto finanziario possono presentare istanza entro e non oltre il "
+            "31 dicembre 2026 utilizzando il modello allegato.")
+    assert decide("Anticipazione per la gestione liquidatoria", text).status == "rejected"
+
+
+def test_call_to_form_a_ranking_is_not_a_result():
+    title = "Avviso pubblico: manifestazioni di interesse per la formazione della graduatoria degli edifici scolastici"
+    assert decide(title, SEISMIC).status == "qualified"
+    assert decide("Approvazione della graduatoria degli edifici scolastici", SEISMIC).status == "rejected"
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

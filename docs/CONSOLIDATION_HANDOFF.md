@@ -11,9 +11,22 @@
 - `autoQualificationCache` conserva il motivo della decisione; le voci senza motivo (cache precedente)
   si rileggono una volta. Il run live stampa `QUALIFICA: esito · fonte · titolo · motivo`.
 - `pcm-famiglia` legge anche la sottosezione `finanziamenti-avvisi-e-bandi/avvisi-e-bandi/`.
-- Prossimo: rivedere dal log i rifiuti dei rilanci ANCI/PCM (es. «Fabbrica Spazi Civici per la
-  Gioventù» scaduto, «Fondo investimenti stradali nei piccoli Comuni 2026» respinto) e le fonti
-  mancanti (Pari opportunità «L'Italia delle donne», ANCI spazi under 35, MUSE DHC).
+- Revisione dei 107 `QUALIFICA` non F&T del dry-run (regole generali, nessuna correzione per bando):
+  - «Non possono partecipare i Comuni che hanno già ottenuto…» non è più un'esclusione dei Comuni:
+    `PUBLIC_EXCLUDED` ignora l'esclusione seguita da una relativa o un requisito (che, già, con…).
+    Era il motivo del rifiuto di «Fondo investimenti stradali nei piccoli Comuni 2026».
+  - Limiti di popolazione nella voce dei destinatari («popolazione massima di 5.000 abitanti»,
+    «fino a 50.000 abitanti», «superiore a…»): i Comuni fuori limite diventano `not_eligible`
+    con i residenti Istat dell'indicatore `population` di `site-data.json`; se nessuno dei sette
+    rientra la segnalazione è respinta. Le soglie sotto 500 e le età non contano.
+  - Richiedenti limitati agli enti in dissesto o in riequilibrio: respinti (es. comunicato DAIT
+    del 10/11 sull'anticipazione del Fondo di rotazione, prima qualificato).
+  - «per la formazione della graduatoria» nel titolo non è più letto come esito.
+  - Scaduti confermati: «Fabbrica Spazi Civici» (04/11), «Prevenzione Sismica Edifici Pubblici» (01/08).
+- Il job `daily production dry-run` passa da 40 a 55 minuti: con il qualificatore la scansione dura
+  ~25 minuti e la build statica ~14; il run del 11/11 si è fermato al termine della build.
+- Ancora da fare: fonti mancanti Pari opportunità «L'Italia delle donne» (pagina avvisi non raggiungibile
+  dal container, da verificare l'URL), ANCI spazi under 35, MUSE DHC.
 
 ## Radar: rilettura quotidiana delle pagine ufficiali e `verified_at` onesto (10 novembre 2026)
 

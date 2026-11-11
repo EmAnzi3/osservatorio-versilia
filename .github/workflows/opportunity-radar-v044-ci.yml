@@ -162,7 +162,7 @@ jobs:
     name: daily production dry-run
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     steps:
       - name: Checkout exact PR head
         uses: actions/checkout@v4

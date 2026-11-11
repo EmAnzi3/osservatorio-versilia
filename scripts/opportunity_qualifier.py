@@ -52,7 +52,7 @@ CALL = re.compile(
     r"\b(avvis[oi]|bando|bandi|manifestazion[ei] di interesse|call for proposals|call\b|invito a presentare|"
     r"contribut[oi]|finanziament[oi]|fondo|sovvenzion[ei]|candidatur[ae]|grant|funding|topic)\b", re.I)
 NOT_A_CALL = re.compile(
-    r"\b(graduatori[ae]|esit[oi]|vincitor[ie]|ammess[ie] a finanziamento|elenco (?:dei |degli )?(?:beneficiari|ammessi)|"
+    r"\b((?<!formazione della )(?<!formazione delle )graduatori[ae]|esit[oi]|vincitor[ie]|ammess[ie] a finanziamento|elenco (?:dei |degli )?(?:beneficiari|ammessi)|"
     r"approvazione (?:della |delle )?graduatori|chiariment[oi]|faq|orari|video|convegno|webinar|seminario|"
     r"seduta di gara|appalto|affidamento|rendicontazion[ei]|erogazion[ei]|liquidazion[ei]|riparto|ripartizion[ei]|"
     r"decreto di assegnazione|comunicato stampa|intervista|news in evidenza|"
@@ -168,7 +168,60 @@ PUBLIC_BODIES = re.compile(
     # Etichetta «Destinatari: Enti» delle schede regionali (enti pubblici).
     r"^\s*enti\b(?!\s+(?:del\s+terzo|privat|non\s+profit|no[\s-]?profit|ecclesiastic|religios|gestori|di\s+formazione|accreditat))",
     re.I)
-PUBLIC_EXCLUDED = re.compile(r"\b(?:esclus[ie]\b|non\s+(?:sono\s+ammess[ie]|possono))[^.;]{0,60}\b(?:enti\s+pubblici|soggetti\s+pubblici|comuni|enti\s+locali|pubbliche\s+amministrazioni)", re.I)
+PUBLIC_EXCLUDED = re.compile(r"\b(?:esclus[ie]\b|non\s+(?:sono\s+ammess[ie]|possono))[^.;]{0,60}\b(?:enti\s+pubblici|soggetti\s+pubblici|comuni|enti\s+locali|pubbliche\s+amministrazioni)\b"
+                             # «Non possono partecipare i Comuni che hanno già ottenuto…»: esclude
+                             # una parte dei Comuni, non i Comuni come richiedenti.
+                             r"(?!\s*,?\s+(?:che|i\s+quali|le\s+quali|gi[àa]|nei\s+quali|in\s+cui|con|aventi|privi|"
+                             r"beneficiari|titolari|assegnatari|destinatari|finanziati|ammessi|sopra|sotto|oltre))", re.I)
+# Richiedenti limitati agli enti in dissesto o in riequilibrio: non è un'opportunità per i sette Comuni.
+DISTRESS_ONLY = re.compile(r"\b(?:in\s+(?:stato\s+di\s+)?dissesto|dissestat\w+|riequilibrio\s+finanziario|"
+                           r"strutturalmente\s+deficitari)\b", re.I)
+# Limiti di popolazione dei Comuni ammessi, letti dalla voce sui destinatari.
+_NUMBER = r"(\d{1,3}(?:[.\s’']\d{3})+|\d+)(?!\s*(?:anni|mesi|euro|%|per\s*cento))"
+POPULATION_UPPER = re.compile(
+    r"(?:popolazion\w*|abitanti)[^.;]{0,30}?(?:massim[ao]\s+(?:di\s+)?|non\s+superior\w+\s+a(?:i|lle)?\s*|"
+    r"(?<!non )inferior\w+\s+a(?:i|lle)?\s*|pari\s+o\s+inferior\w+\s+a(?:i|lle)?\s*|fino\s+a(?:i|lle)?\s*|entro\s+i\s*|sotto\s+i\s*|"
+    r"meno\s+di\s*|≤\s*|<\s*)" + _NUMBER + r"\s*(?:abitanti|residenti)?|"
+    r"\b(?:fino\s+a|meno\s+di|non\s+oltre|sotto\s+i|(?<!non )inferiore\s+a)\s+" + _NUMBER + r"\s+(?:abitanti|residenti)", re.I)
+POPULATION_LOWER = re.compile(
+    r"(?:popolazion\w*|abitanti)[^.;]{0,30}?(?:(?<!non )superior\w+\s+a(?:i|lle)?\s*|pari\s+o\s+superior\w+\s+a(?:i|lle)?\s*|"
+    r"non\s+inferior\w+\s+a(?:i|lle)?\s*|almeno\s*|oltre\s*|più\s+di\s*|≥\s*|>\s*)" + _NUMBER + r"\s*(?:abitanti|residenti)?|"
+    r"\b(?:oltre|più\s+di|almeno|(?<!non )superiore\s+a|sopra\s+i)\s+" + _NUMBER + r"\s+(?:abitanti|residenti)", re.I)
+
+
+def population_limits(text: str) -> tuple[int | None, int | None]:
+    """(minimo, massimo) di abitanti richiesti ai Comuni, se la voce li indica."""
+    def first(pattern: re.Pattern[str]) -> int | None:
+        match = pattern.search(text or "")
+        if not match:
+            return None
+        raw = next(g for g in match.groups() if g)
+        value = int(re.sub(r"\D", "", raw))
+        # Sotto i 500 non è una soglia demografica (anni, posti, percentuali).
+        return value if value >= 500 else None
+    return first(POPULATION_LOWER), first(POPULATION_UPPER)
+
+
+_POPULATIONS: dict[str, int] | None = None
+
+
+def town_populations() -> dict[str, int]:
+    """Residenti dei sette Comuni dall'indicatore pubblicato dall'Osservatorio (Istat)."""
+    global _POPULATIONS
+    if _POPULATIONS is None:
+        import json
+        from pathlib import Path
+        rows = json.loads((Path(__file__).resolve().parents[1] / "data" / "site-data.json")
+                          .read_text(encoding="utf-8"))["metrics"]["population"]["rows"]
+        _POPULATIONS = {str(row["town"]): int(row["value"]) for row in rows}
+    return _POPULATIONS
+
+
+def population_eligible(towns: tuple[str, ...], limits: tuple[int | None, int | None],
+                        populations: dict[str, int]) -> dict[str, bool]:
+    low, high = limits
+    return {town: (low is None or populations.get(town, 0) >= low) and (high is None or populations.get(town, 0) <= high)
+            for town in towns}
 # Il Comune come finanziatore o come sede del progetto altrui: non è un richiedente.
 MUNICIPAL_AS_FUNDER = re.compile(
     r"\b(?:finanziator\w*|cofinanzi\w*|patrocin\w*)\b[^.;]{0,100}?\bcomun[ei]\b", re.I)
@@ -352,6 +405,7 @@ class Decision:
     rolling: bool = False
     role: str = "direct_applicant"
     documents: list[str] = field(default_factory=list)
+    population: tuple[int | None, int | None] = (None, None)
 
 
 def visible_text(payload: str) -> str:
@@ -518,6 +572,16 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     region = other_region(title, applicant)
     if region:
         return Decision("rejected", f"Avviso riservato a enti di un'altra regione ({region}).")
+    if DISTRESS_ONLY.search(applicant):
+        return Decision("rejected", "Riservato a enti in dissesto o in riequilibrio finanziario.", applicant=applicant)
+    population = population_limits(applicant)
+    if population != (None, None):
+        populations = candidate.get("town_populations") or town_populations()
+        if not any(population_eligible(tuple(populations), population, populations).values()):
+            low, high = population
+            bound = " e ".join(x for x in (f"almeno {low}" if low else "", f"al massimo {high}" if high else "") if x)
+            return Decision("rejected", f"Limite di popolazione ({bound} abitanti): nessuno dei sette Comuni rientra.",
+                            applicant=applicant)
     structured_deadline = candidate.get("deadline_at")
     if structured_deadline:
         deadline, evidence, opens, rolling = date.fromisoformat(str(structured_deadline)[:10]), \
@@ -534,7 +598,7 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     return Decision("qualified", "Avviso aperto con Comuni o enti locali fra i soggetti ammessi.", applicant=applicant,
                     deadline=deadline.isoformat() if deadline else None, deadline_evidence=evidence,
                     opens_at=opens.isoformat() if opens else None, rolling=rolling and not deadline, role=role,
-                    documents=list(documents))
+                    documents=list(documents), population=population)
 
 
 def identity(candidate: dict[str, Any], decision: Decision) -> str:
@@ -585,8 +649,19 @@ def build_entry(candidate: dict[str, Any], decision: Decision, today: date, town
         "geographic_scope": candidate.get("territory") or "Da verificare nell’avviso",
         "project_requirements": requirements,
         "condition_label": LABEL,
-        "municipality_status_overrides": {town: {"status": "conditional", "reason": requirements} for town in towns},
+        "municipality_status_overrides": _town_statuses(towns, decision, requirements),
     }
+
+
+def _town_statuses(towns: tuple[str, ...], decision: Decision, requirements: str) -> dict[str, dict[str, str]]:
+    if decision.population == (None, None):
+        return {town: {"status": "conditional", "reason": requirements} for town in towns}
+    populations = town_populations()
+    fits = population_eligible(towns, decision.population, populations)
+    return {town: ({"status": "conditional", "reason": requirements} if fits[town] else
+                   {"status": "not_eligible",
+                    "reason": f"Fuori dal limite di popolazione dell’avviso: {populations.get(town, 0)} residenti (Istat)."})
+            for town in towns}
 
 
 # Fonti la cui coda interna contiene notizie di altri territori e non avvisi:
