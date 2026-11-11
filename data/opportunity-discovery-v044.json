@@ -20,6 +20,7 @@
       "checkEveryDays": 7,
       "urls": [
         "https://www.anci.it/wp-json/wp/v2/posts?per_page=30",
+        "https://www.anci.it/wp-json/wp/v2/posts?search=avviso&orderby=date&per_page=30",
         "https://www.anci.it/feed/",
         "https://www.anci.it/category/generico/news/",
         "https://www.anci.it/category/generico/news/feed/",

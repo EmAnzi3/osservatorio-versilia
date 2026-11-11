@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+
+## Radar: ANCI nazionale letto anche per ricerca «avviso» (12 novembre 2026)
+
+- L'avviso ANCI per gli spazi pubblici agli under 35 (IV edizione, scadenza 30/11, Comuni capoluogo
+  e non capoluogo con almeno 50.000 abitanti: Viareggio) era uscito dalla finestra delle ultime 30
+  notizie ANCI prima di essere letto (`anci-nazionale` si controlla ogni 7 giorni).
+- `anci-nazionale` legge ora anche `wp-json/wp/v2/posts?search=avviso&orderby=date&per_page=30`: gli ultimi 30
+  articoli che parlano di avvisi, indipendentemente dalle notizie intermedie. La qualifica applica il
+  limite di popolazione introdotto in #581 (≥50.000 → solo Viareggio ammissibile).
+- Non integrati, con motivo: «L'Italia delle donne» (Pari opportunità, 18/12) è un avviso per proporre
+  figure femminili da promuovere, senza contributo; MUSE DHC non ha una call verificabile dalla pagina
+  del progetto. La fonte `pcm-pari-opportunita` resta bloccata dal WAF del sito (403/timeout) in CI.
+
 ## Radar: coda delle segnalazioni, quote separate e decisioni verificabili (11 novembre 2026)
 
 - Stato 10/11: `discoveryQueue` 350 segnalazioni; il qualificatore ne legge al massimo 120 per run,
