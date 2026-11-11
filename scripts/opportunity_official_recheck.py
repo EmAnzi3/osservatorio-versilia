@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import re
 import time
+from urllib.parse import urlsplit
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 from typing import Any, Callable, Iterable
@@ -82,6 +83,7 @@ _RANGE = re.compile(
 )
 _BREAK = re.compile(r"[\n•|]|(?<=[a-zà-ù\)])\.\s")
 _PREFIX_CHARS = 70
+_CONTEXT_CHARS = 260
 _ERROR_PAGE = re.compile(r"\b(404|pagina non trovata|page not found|not found|access denied|"
                          r"forbidden|errore\s+del\s+server)\b", re.I)
 _STOP = {
@@ -144,7 +146,8 @@ def extract_facts(text: str) -> dict[str, Any]:
         # a un'altra data (es. elenchi di notizie datate) non si trasferisce.
         role = _role(text[max(previous_end, start - _PREFIX_CHARS):start])
         previous_end = end
-        row = {"date": value, "role": role, "time": _time_after(text, end), "at": start}
+        row = {"date": value, "role": role, "time": _time_after(text, end), "at": start,
+               "context": text[max(0, start - _CONTEXT_CHARS):start].casefold()}
         found.append(row)
         positions[start] = row
     # Intervalli espliciti: la prima data apre, la seconda chiude.
@@ -169,7 +172,7 @@ def extract_facts(text: str) -> dict[str, Any]:
                     value = _to_date(partial.group("d"), month, str(b[2].year - 1))
                 if value:
                     first = {"date": value, "role": "opening", "time": None,
-                             "at": match.start("a") + partial.start()}
+                             "at": match.start("a") + partial.start(), "context": ""}
                     found.append(first)
         if not first or not first["date"] < second["date"]:
             continue
@@ -177,6 +180,24 @@ def extract_facts(text: str) -> dict[str, Any]:
         if second["role"] != "extension":
             second["role"] = "deadline"
     return {"dates": found}
+
+
+def item_tokens(item: dict[str, Any]) -> list[str]:
+    return [t for t in re.findall(r"[\wà-ù]{3,}", str(item.get("title") or "").casefold())
+            if t not in _STOP and not t.isdigit()]
+
+
+def section_root(url: str) -> str | None:
+    """Pagina di sezione del sito ufficiale (host + primo segmento), dove le fonti
+    pubblicano proroghe e avvisi che la pagina originale del bando non riporta."""
+    parts = urlsplit(url)
+    if parts.scheme not in {"http", "https"} or not parts.netloc:
+        return None
+    segments = [x for x in parts.path.split("/") if x]
+    if parts.path.casefold().endswith(".pdf") and len(segments) <= 1:
+        return f"{parts.scheme}://{parts.netloc}/"
+    root = f"{parts.scheme}://{parts.netloc}/" + (f"{segments[0]}/" if len(segments) > 1 else "")
+    return None if root.rstrip("/") == url.rstrip("/") else root
 
 
 def page_matches_item(text: str, item: dict[str, Any]) -> bool:
@@ -187,8 +208,7 @@ def page_matches_item(text: str, item: dict[str, Any]) -> bool:
     if _ERROR_PAGE.search(head) and len(text) < 3000:
         return False
     folded = text.casefold()
-    tokens = [t for t in re.findall(r"[\wà-ù]{3,}", str(item.get("title") or "").casefold())
-              if t not in _STOP and not t.isdigit()]
+    tokens = item_tokens(item)
     if not tokens:
         return True
     return any(t in folded for t in tokens)
@@ -228,6 +248,10 @@ def decide(item: dict[str, Any], facts: dict[str, Any], today: date) -> dict[str
         reasons.append(f"proroga indicata dalla fonte al {deadline.isoformat()}")
     elif current is not None and current in page_dates:
         deadline_row = next((r for r in rows if r["date"] == current and r["time"]), None)
+    elif current is not None and current < today:
+        # Una scheda già scaduta torna aperta solo con una proroga esplicita:
+        # altre date future della pagina (nuovi cicli, validità) non bastano.
+        pass
     elif len(future_deadlines) == 1:
         deadline = future_deadlines[0]
         deadline_row = next(r for r in deadlines if r["date"] == deadline)
@@ -309,6 +333,29 @@ def _urls(item: dict[str, Any]) -> list[str]:
     return urls
 
 
+def _section_urls(item: dict[str, Any]) -> list[str]:
+    own = set(_urls(item))
+    roots = []
+    for url in own:
+        root = section_root(url)
+        if root and root not in own and root not in roots:
+            roots.append(root)
+    return roots
+
+
+def _section_extensions(item: dict[str, Any], texts: dict[str, str]) -> list[dict[str, Any]]:
+    """Solo proroghe dalla pagina di sezione, e solo se il contesto nomina la scheda."""
+    tokens = [t for t in item_tokens(item) if len(t) >= 3]
+    rows = []
+    for url in _section_urls(item):
+        if url not in texts:
+            continue
+        for row in extract_facts(texts[url])["dates"]:
+            if row["role"] == "extension" and any(re.search(rf"\b{re.escape(t)}\b", row["context"]) for t in tokens):
+                rows.append(row)
+    return rows
+
+
 def default_fetchers() -> tuple[Callable[[str], str], Callable[[str], str]]:
     """Trasporti già usati dal Radar: HTTP con intestazioni browser/PDF, poi Chromium."""
     import opportunity_daily_refresh_revalidated as revalidated
@@ -329,7 +376,7 @@ def default_fetchers() -> tuple[Callable[[str], str], Callable[[str], str]]:
 def read_pages(items: list[dict[str, Any]], http: Callable[[str], str],
                browser: Callable[[str], str] | None) -> dict[str, dict[str, str]]:
     """Legge in parallelo tutte le pagine ufficiali; Chromium solo per chi fallisce."""
-    urls = sorted({url for item in items for url in _urls(item)})
+    urls = sorted({url for item in items for url in [*_urls(item), *_section_urls(item)]})
     texts: dict[str, str] = {}
     errors: dict[str, str] = {}
 
@@ -387,7 +434,8 @@ def apply(items: list[dict[str, Any]], today: date, *, previous: dict[str, Any] 
         static = str(item.get("source_id") or "") in STATIC_SOURCES or bool(item.get("audit_promotion_version"))
 
         if read:
-            facts = {"dates": [row for _, text in read for row in extract_facts(text)["dates"]]}
+            facts = {"dates": [row for _, text in read for row in extract_facts(text)["dates"]]
+                     + _section_extensions(item, texts)}
             decision = decide(item, facts, today)
             item.update(decision["update"])
             item["verified_at"] = today.isoformat()

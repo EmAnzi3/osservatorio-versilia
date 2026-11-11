@@ -137,6 +137,39 @@ def test_extension_on_alternate_official_url():
     assert item["deadline_at"] == "2026-12-10"
 
 
+def test_expired_item_is_not_revived_by_other_future_dates():
+    item = _item(title="Erasmus Accreditation KA120", deadline_at="2026-09-29")
+    page = "Erasmus accreditation KA120: accreditations are valid until 31 December 2027." + FILLER
+    _run([item], {item["url"]: page})
+    assert item["deadline_at"] == "2026-09-29", item
+
+
+def test_expired_item_is_revived_by_explicit_extension():
+    item = _item(title="Cultura Missione Comune 2026", deadline_at="2026-11-05")
+    page = "Cultura Missione Comune 2026: termine prorogato al 5 dicembre 2026 ore 12:00." + FILLER
+    _run([item], {item["url"]: page})
+    assert item["deadline_at"] == "2026-12-05" and item["deadline_time"] == "12:00"
+
+
+def test_section_page_extension_reaches_notice_url():
+    item = _item(title="Ministero dell'Interno · SAI 2026 · 500 posti MSNA", deadline_at="2026-11-10",
+                 url="https://fnasilo.dlci.interno.it/sprar/secure/notiziaVisualizza/64")
+    notice = "Avviso SAI 2026 MSNA: domande entro il 10 novembre 2026." + FILLER
+    texts = {item["url"]: notice, "https://fnasilo.dlci.interno.it/sprar/": SAI_PAGE}
+    assert recheck.section_root(item["url"]) == "https://fnasilo.dlci.interno.it/sprar/"
+    _run([item], texts)
+    assert item["deadline_at"] == "2026-12-10" and item["deadline_time"] == "18:00", item
+
+
+def test_section_page_extension_of_another_call_is_ignored():
+    item = _item(title="Bando parcheggi 2026", deadline_at="2026-11-30",
+                 url="https://www.regione.toscana.it/bandi/parcheggi")
+    notice = "Bando parcheggi 2026: domande entro il 30 novembre 2026." + FILLER
+    section = "Contributi alle imprese agricole: termine prorogato al 20 dicembre 2026." + FILLER
+    _run([item], {item["url"]: notice, "https://www.regione.toscana.it/bandi/": section})
+    assert item["deadline_at"] == "2026-11-30"
+
+
 def main() -> None:
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

@@ -14,8 +14,15 @@ Correzione sistemica dell'audit sul Radar (bandi fermi alle date dei corpora sta
   Una proroga successiva sostituisce la scadenza; una scadenza ritrovata è confermata; senza
   scadenza ritrovata vale l'unica scadenza futura della pagina, altrimenti la scheda resta invariata
   e «non confermata». Apertura passata con scadenza futura → aperta; apertura futura → in arrivo.
+  Una scheda già scaduta torna aperta solo con una proroga esplicita (nel run di prova la regola
+  senza questo vincolo riapriva Erasmus KA120 e BETTERRENO con date di altri cicli). Le proroghe si
+  leggono anche dalla pagina di sezione del sito (host + primo segmento), ma solo se il contesto
+  della data nomina la scheda: così i due SAI che puntano all'avviso originale ricevono la proroga
+  pubblicata sul portale.
   Sulle pagine reali: SAI prorogato al 10/12 ore 18:00, EUCF 8ª call aperta 26/10–21/12 ore 17:00,
   C3 entro il 13/11.
+  Run live sulla PR: 105 schede rilette, 32 confermate, 42 aggiornate, 23 non confermate,
+  8 non raggiungibili (Erasmus+ giovani, ESC, Marchio patrimonio europeo, Conto Termico/GSE con WAF).
 - `verified_at` è la data dell'ultima lettura riuscita della fonte ufficiale. Se oggi la pagina non
   risponde restano i fatti e la data dell'ultima lettura (campo `official_recheck` nello snapshot);
   una scheda dei corpora statici mai riletta ha `verified_at` nullo. Il rapporto del run ha la
