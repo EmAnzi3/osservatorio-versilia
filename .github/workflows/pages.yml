@@ -173,6 +173,14 @@ jobs:
               --output "$SNAPSHOT"
           fi
 
+      # Prima di ogni script: la materializzazione del catalogo valida anche
+      # fotografie XLSX (openpyxl), quindi le dipendenze servono già qui.
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
       - name: Select verified source monitor runtime state
         env:
           GH_TOKEN: ${{ github.token }}
@@ -185,12 +193,6 @@ jobs:
             --registry /tmp/source-monitor-catalog/source-registry.json \
             --state /tmp/source-monitor-repository.json \
             --output data/source-monitor-state.json
-
-      - name: Install build dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements-ci.txt
-          python -m playwright install --with-deps chromium
 
       - name: Build deployment artifact
         shell: bash

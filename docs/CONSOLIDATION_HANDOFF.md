@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Deploy del sito: dipendenze prima del catalogo (10 novembre 2026)
+
+Il deploy di `main` dopo #576 è fallito nel job `build` di `pages.yml`: lo step «Select verified
+source monitor runtime state» esegue `materialize_source_monitor_snapshot.py`, che ora valida anche
+la fotografia ACI in XLSX (`openpyxl`), ma girava prima di «Install build dependencies». Lo step di
+installazione è stato anticipato. Stesso difetto in «Controllo frequente fonti»
+(`source-monitor-light.yml`), che non installava dipendenze: ora installa `requirements-ci.txt`.
+`test_source_monitor_runtime_snapshot.py` controlla l'ordine in entrambi.
+
 ## Quotazioni OMI 1° semestre 2026 (10 novembre 2026)
 
 `omiResidential` passa dal 2° semestre 2025 al 1° semestre 2026.
