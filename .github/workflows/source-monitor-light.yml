@@ -76,6 +76,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      # La materializzazione del catalogo valida anche fotografie XLSX (openpyxl).
+      - name: Install catalog dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
 
       - name: Run light monitor unit tests
         run: |

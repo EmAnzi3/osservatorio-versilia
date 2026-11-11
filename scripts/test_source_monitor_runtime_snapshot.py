@@ -123,6 +123,8 @@ def main():
     # le dipendenze vanno installate prima (deploy del 10/11/2026 fallito su openpyxl).
     build = pages[pages.index("\n  build:\n"):]
     assert build.index("Install build dependencies") < build.index("Select verified source monitor runtime state")
+    light = (root / ".github/workflows/source-monitor-light.yml").read_text()
+    assert light.index("pip install -r requirements-ci.txt") < light.index("materialize_source_monitor_snapshot.py \\")
     for workflow in (pages, radar):
         assert "python scripts/source_monitor_runtime_snapshot.py" in workflow
         assert "data/source-monitor-state.json" in workflow
