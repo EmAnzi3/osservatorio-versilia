@@ -19,7 +19,8 @@
     «fino a 50.000 abitanti», «superiore a…»): i Comuni fuori limite diventano `not_eligible`
     con i residenti Istat dell'indicatore `population` di `site-data.json`; se nessuno dei sette
     rientra la segnalazione è respinta. Le soglie sotto 500 e le età non contano.
-  - Richiedenti limitati agli enti in dissesto o in riequilibrio: respinti (es. comunicato DAIT
+  - Richiedenti limitati agli enti in dissesto o in riequilibrio (anche «gestione liquidatoria»,
+    «organo straordinario di liquidazione»): respinti (es. comunicato DAIT
     del 10/11 sull'anticipazione del Fondo di rotazione, prima qualificato).
   - «per la formazione della graduatoria» nel titolo non è più letto come esito.
   - Scaduti confermati: «Fabbrica Spazi Civici» (04/11), «Prevenzione Sismica Edifici Pubblici» (01/08).

@@ -175,7 +175,7 @@ PUBLIC_EXCLUDED = re.compile(r"\b(?:esclus[ie]\b|non\s+(?:sono\s+ammess[ie]|poss
                              r"beneficiari|titolari|assegnatari|destinatari|finanziati|ammessi|sopra|sotto|oltre))", re.I)
 # Richiedenti limitati agli enti in dissesto o in riequilibrio: non è un'opportunità per i sette Comuni.
 DISTRESS_ONLY = re.compile(r"\b(?:in\s+(?:stato\s+di\s+)?dissesto|dissestat\w+|riequilibrio\s+finanziario|"
-                           r"strutturalmente\s+deficitari)\b", re.I)
+                           r"strutturalmente\s+deficitari|gestione\s+liquidatoria|organo\s+straordinario\s+di\s+liquidazione)\b", re.I)
 # Limiti di popolazione dei Comuni ammessi, letti dalla voce sui destinatari.
 _NUMBER = r"(\d{1,3}(?:[.\s’']\d{3})+|\d+)(?!\s*(?:anni|mesi|euro|%|per\s*cento))"
 POPULATION_UPPER = re.compile(

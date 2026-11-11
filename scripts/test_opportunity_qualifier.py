@@ -469,6 +469,9 @@ def test_distressed_entities_only_rejected():
     text = (PAD + "Gli enti locali in dissesto finanziario possono presentare istanza entro e non oltre il "
             "31 dicembre 2026 utilizzando il modello allegato.")
     assert decide("Anticipazione per la gestione liquidatoria", text).status == "rejected"
+    relay = (PAD + "Gli enti locali interessati possono presentare istanza entro e non oltre il 31 dicembre 2026 "
+             "utilizzando il modello allegato, previa valutazione del fabbisogno della gestione liquidatoria.")
+    assert decide("Comunicato del 10 novembre 2026", relay).status == "rejected"
 
 
 def test_call_to_form_a_ranking_is_not_a_result():
