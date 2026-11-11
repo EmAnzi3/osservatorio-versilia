@@ -842,6 +842,7 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
     import opportunity_discovery_resilient as discovery
     import opportunity_pdf_evidence as pdf
     import run_opportunity_radar_v04 as core
+    import tempfile
     from pathlib import Path
 
     from opportunity_transport_budget import TransportBudget
@@ -849,8 +850,9 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
     # Budget proprio: le letture della qualificazione non consumano la scadenza
     # unica della scansione; il tempo speso le viene restituito alla fine.
     budget = TransportBudget({}, scan_seconds=MAX_SECONDS + 60 if main_budget is not None else 180,
-                             journal=Path(__file__).resolve().parents[1]
-                             / "reports/runtime/opportunity-qualifier-progress.jsonl")
+                             journal=(Path(__file__).resolve().parents[1] / "reports/runtime"
+                                      if main_budget is not None else Path(tempfile.gettempdir()))
+                             / "opportunity-qualifier-progress.jsonl")
     started = time.monotonic()
 
     def loader(url: str, document: bool) -> str:
