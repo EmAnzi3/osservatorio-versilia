@@ -15,7 +15,9 @@
   1° gennaio 2026, metodo e scrive `mim-school-sites-AAAA.json` con impronta del file. Rifiuta a.s.
   precedenti, righe di altri anni, codici con attributi diversi e Comuni senza sedi. Aggiunto al giro
   mensile (`NEXT_YEAR`).
-- a.s. 2026/27 (dati al 01/09/2026), verificato dal browser sul file MIM: cambia solo Viareggio 49 → 48.
+- a.s. 2026/27 (dati al 01/09/2026), scritto dal workflow «Aggiorna dati dalla fonte»: cambia solo
+  Viareggio 49 → 48 (Versilia 145); Toscana 3.200 e Italia 50.273 codici statali nello snapshot
+  `mim-school-sites-2026.json`. Impronta `road#3` ripinnata (`a6_repin.py --allow road --write`).
 - **Farmacie**: nessun aggiornamento. `pharmaciesPer1000` è la fotografia annuale al 31/12/2025 del file
   ministeriale `FRM_FARMA_5_20251231.csv`; i file mensili 2026 non la sostituiscono (scelta dichiarata
   nello snapshot). Il prossimo dato è al 31/12/2026.
