@@ -1123,7 +1123,7 @@ def main() -> int:
     k.add_argument("--file", type=Path, help="CSV SCUANAGRAFESTAT già scaricato (nome originale)")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f, t, o, v, q):
+    for p in (a, m, u, f, t, o, v, q, k):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)

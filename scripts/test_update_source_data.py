@@ -537,6 +537,13 @@ def mim_cases(tmp: Path) -> None:
             return path
 
         assert upd.update_mim_schools(pub, registry(pub), dry_run=True).lines == []
+        import sys as _sys
+        argv = _sys.argv
+        _sys.argv = ["update_source_data.py", "mim-schools", "--year", str(pub), "--file", str(registry(pub)), "--dry-run"]
+        try:
+            assert upd.main() == 0
+        finally:
+            _sys.argv = argv
         changes = upd.update_mim_schools(pub + 1, registry(pub + 1, delta=-1), dry_run=False)
         assert any("Viareggio" in line for line in changes.lines), changes.lines
         site = upd.load(upd.SITE)
