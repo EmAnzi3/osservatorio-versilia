@@ -138,17 +138,6 @@
       "municipalTerms": ["comun", "enti locali", "amministrazioni pubbliche", "edifici pubblici", "territorio"]
     },
     {
-      "id": "anci-nazionale",
-      "label": "ANCI",
-      "publisher": "ANCI",
-      "territory": "Italia",
-      "favicon": "https://www.anci.it/favicon.ico",
-      "urls": ["https://www.anci.it/", "https://sistemacomunidigitali.anci.it/news/"],
-      "fetchTimeoutSeconds": 25,
-      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "incentiv", "opportunit"],
-      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni"]
-    },
-    {
       "id": "gse",
       "label": "GSE",
       "publisher": "Gestore dei Servizi Energetici",

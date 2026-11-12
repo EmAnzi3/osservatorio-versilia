@@ -448,44 +448,9 @@ def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
     assert all(row["readerFailureClass"] == "http_403_waf" for row in failed), failed
 
 
-def _test_anci_news_short_previews_preserve_discovery() -> None:
-    # Reduced cards from the owner-provided ANCI News HTML (6 October 2026).
-    # Short previews omit municipal beneficiaries: discovery must not infer
-    # eligibility, but must retain the school-building notice for review.
-    config, _ = daily_h4._compose_runtime_hardened()
-    source = next(row for row in config["discoverySources"] if row["id"] == "anci-nazionale")
-    listing = "https://www.anci.it/category/generico/news/"
-    assert listing in source["urls"]
-    assert listing + "feed/" in source["urls"]
-    assert discovery.endpoint_role(source, listing) == "listing"
-    payload = """
-    <h4><a href="/proroga-sport-cultura/">Prorogati al 5 dicembre i bandi Sport Missione Comune e Cultura Missione Comune</a></h4>
-    <p>Possono partecipare Comuni e Unioni di Comuni per richiedere mutui.</p>
-    <h4><a href="/edilizia-mim/">Edilizia scolastica, avviso MIM su risorse otto per mille per interventi urgenti e indifferibili</a></h4>
-    <p>Da oggi 5 ottobre al via alle candidature sulla piattaforma informatica dedicata.</p>
-    <h4><a href="/asacom/">Asacom 2026, intesa sul decreto riparto per Comuni e Regioni</a></h4>
-    <p>Il decreto prevede lo stanziamento di 160 milioni a favore dei Comuni.</p>
-    <h4><a href="/protocollo/">Firma del protocollo di intesa tra Anci e Comitato Paralimpico</a></h4>
-    <p>Interverranno il presidente e i sindaci.</p>
-    """
-    queue = daily_h4.radar_module.discovery_candidates(source, payload, listing)
-    assert {row["url"] for row in queue} == {
-        "https://www.anci.it/proroga-sport-cultura/",
-        "https://www.anci.it/edilizia-mim/",
-        "https://www.anci.it/asacom/",
-    }, queue
-    assert all(row["discovery_only"] and row["status"] == "internal_review" for row in queue)
-
-
 def _test_rss_and_mim_table_keep_individual_notice_links() -> None:
     config, _ = daily_h4._compose_runtime_hardened()
     sources = {row["id"]: row for row in config["discoverySources"]}
-    feed = """<rss><channel><title>ANCI</title>
-    <item><title>Riparto fondo per Comuni</title><link>https://www.anci.it/riparto/</link><description>Risorse per Comuni e Regioni</description></item>
-    <item><title>La bandiera dei Comuni</title><link>https://www.anci.it/bandiera/</link><description>Cerimonia</description></item>
-    </channel></rss>"""
-    queue = daily_h4.radar_module.discovery_candidates(sources["anci-nazionale"], feed, "https://www.anci.it/category/generico/news/feed/")
-    assert [row["url"] for row in queue] == ["https://www.anci.it/riparto/"], queue
     listing = "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali"
     assert listing in sources["mim-enti-locali"]["urls"]
     assert discovery.endpoint_role(sources["mim-enti-locali"], listing) == "listing"
@@ -511,7 +476,6 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     }
     mare = discovery_by_id["pcm-politiche-mare"]
     scu = discovery_by_id["pcm-politiche-giovanili-scu"]
-    anci = discovery_by_id["anci-nazionale"]
 
     assert mare["urls"] == list(daily_h4._MARE_OFFICIAL_URLS), mare
     assert scu["urls"] == list(daily_h4._SCU_OFFICIAL_URLS), scu
@@ -525,11 +489,8 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     assert len({urlsplit(url).hostname for url in scu["urls"]}) == len(scu["urls"])
     assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in mare["urls"])
     assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in scu["urls"])
-    assert "https://www.anci.piemonte.it/" in anci["urls"], anci
-    assert len({urlsplit(url).hostname for url in anci["urls"]}) >= 3, anci
-    assert anci["endpointRequiredTerms"]["https://www.anci.piemonte.it/"] == [
-        "Notizie da ANCI Nazionale"
-    ]
+    # ANCI nazionale blocca i server della CI su ogni endpoint: fonte rimossa.
+    assert "anci-nazionale" not in discovery_by_id
 
 
 def _test_transport_audit_exposes_endpoint_health() -> None:
@@ -884,7 +845,7 @@ def _test_route_diagnostics_preserve_failures_and_tls() -> None:
             report = json.loads(Path("reports/runtime/opportunity-route-diagnostic.json").read_text())
             assert report["diagnosticOnly"] is True
             rows = report["sources"]
-            assert {row["sourceId"] for row in rows} == {"anci-toscana", "anci-nazionale", "mim-enti-locali"}
+            assert {row["sourceId"] for row in rows} == {"anci-toscana", "mim-enti-locali"}
             assert all(row["candidateCount"] == 0 for row in rows)
             assert all(row["http_code"] == 403 for row in rows if row["route"] == "default")
             assert all(row["exitCode"] == 60 and row["ssl_verify_result"] == 20 for row in rows if row["route"] == "ipv4")
@@ -981,7 +942,6 @@ def main() -> int:
     _test_probe_uses_resolved_url_for_relative_links()
     _test_endpoint_content_signature_rejects_unrelated_200_page()
     _test_anci_independent_mirror_survives_national_endpoint_failures()
-    _test_anci_news_short_previews_preserve_discovery()
     _test_rss_and_mim_table_keep_individual_notice_links()
     _test_runtime_compose_replaces_stale_sources()
     _test_transport_audit_exposes_endpoint_health()

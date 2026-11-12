@@ -964,7 +964,7 @@ def run_live(result: dict[str, Any], today: date, *, previous: dict[str, Any] | 
 # e l'ANCI che li rilancia. Se il blocco è del sito e almeno una fonte di
 # copertura risponde, la fonte non è «da riparare» ma «bloccata e coperta».
 COVERED_WHEN_BLOCKED = {
-    "gse": ("mase-bandi", "anci-nazionale", "anci-toscana"),
+    "gse": ("mase-bandi", "anci-toscana"),
 }
 BLOCK_CLASSES = {"http_401", "http_403", "http_403_waf", "http_429"}
 
