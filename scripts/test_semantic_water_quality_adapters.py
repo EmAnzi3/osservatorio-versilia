@@ -19,7 +19,9 @@ def query(p=5, **selection):
 
 
 def regressions(path):
+    global PERIOD, NATIVE
     e = QueryEngine(path,layer='effective')
+    PERIOD = x.period_of(e._catalog['metrics'][x.KEYS[0]]); NATIVE = x.native_of(e._catalog['metrics'][x.KEYS[0]])
     for p,raw in enumerate(CASE_ROSSE):
         r = e.query(query(p,towns=['046018'],localities=['28A02K01/0']))
         assert r['status']=='computed' and r['interpretationLevel']=='source_lookup', r
@@ -36,7 +38,7 @@ def regressions(path):
         r = e.query(query(p));assert r['status']=='computed' and len(r['observations'])==70, r
         assert r['coverage']==dict(requested=70,usable=70,excludedIndices=[])
         for o in r['observations']:
-            assert o['period']==x.PERIOD and o['sourcePeriod']=='2° Semestre 2025'
+            assert o['period']==PERIOD and o['sourcePeriod']==PERIOD.replace('semestre','Semestre')
             assert o['locality']==o['sampleCode']+'/'+o['sampleCode2']
             assert 'numerator' not in o and 'denominator' not in o and 'numericValue' not in o
             assert (o['reportedQualifier'],o['reportedNumber'])==reported_measurement(o['value'])
@@ -64,14 +66,14 @@ def regressions(path):
     assert 'duplicate_observation' in assess('lookup',[base,base])['reasons']
     rejected(e,dict(operation='lookup',selectors=[dict(metric=x.KEYS[0])]),'water_quality_explicit_parameter_required')
     rejected(e,query(periods=['2025']),'water_quality_period_not_frozen')
-    rejected(e,query(periods=[x.PERIOD,x.PERIOD]),'water_quality_period_not_frozen')
+    rejected(e,query(periods=[PERIOD,PERIOD]),'water_quality_period_not_frozen')
     for localities in [[],['unknown'],['28A02K01/0']*2,['07A01K01/0']]:
         rejected(e,query(towns=['046018'],localities=localities),'water_quality_unknown_duplicate_or_out_of_scope_locality')
     for op in ['lookup','compare']:
         r=dict(operation=op,selectors=[dict(metric='population',localities=['28A02K01/0'])])
         rejected(e,r,'locality_selector_requires_water_quality_adapter')
     rejected(e,dict(operation='lookup',selectors=[dict(metric='population')]),'lookup_adapter_not_implemented')
-    for mode in ['value','null','locality','name','url','qualifier','count','flag','row_identity','parameter','unit','year','native','hash']:
+    for mode in ['value','null','locality','name','url','qualifier','count','flag','row_identity','parameter','unit','year','snapshot','method_snapshot','semester','native','hash']:
         g=QueryEngine(path,layer='effective');m=g._catalog['metrics'][x.KEYS[0]];row=m['rows'][0];l=row['localities'][0]
         reason='water_quality_public_native_mismatch'
         if mode=='value':l['values'][5]='0.025'
@@ -86,14 +88,19 @@ def regressions(path):
         elif mode=='parameter':m['parameterDefinitions'][5]['unit']='µg/L';reason='water_quality_parameter_definition_changed'
         elif mode=='unit':m['meta']['unit']='percent';reason='water_quality_definition_or_reference_changed'
         elif mode=='year':m['meta']['year']='2026';reason='water_quality_definition_or_reference_changed'
+        elif mode=='snapshot':m['meta']['sourceMeta']['snapshot']='data/source-snapshots/other.json';reason='water_quality_definition_or_reference_changed'
+        elif mode=='method_snapshot':m['method']['snapshot']='data/source-snapshots/gaia-water-quality-2099-S1.json';reason='water_quality_definition_or_reference_changed'
+        elif mode=='semester':
+            m['meta']['year']='1° semestre 2099' if NATIVE!=x.NATIVE else '1° semestre 2026'
+            reason='water_quality_native_period_or_axis_changed' if NATIVE!=x.NATIVE else 'water_quality_definition_or_reference_changed'
         else:
-            s,ref=g.file(x.NATIVE);s=copy.deepcopy(s);ref=copy.deepcopy(ref)
+            s,ref=g.file(NATIVE);s=copy.deepcopy(s);ref=copy.deepcopy(ref)
             if mode=='native':s['drinkingWaterQuality']['localities'][0]['values'][5]='0'
             else:ref['sha256']='0'*64
-            g.files[x.NATIVE]=(s,ref);reason='water_quality_frozen_input_changed'
+            g.files[NATIVE]=(s,ref);reason='water_quality_frozen_input_changed'
         rejected(g,query(),reason)
     g=QueryEngine(path,layer='effective');assert g.query(query())['status']=='computed'
-    g.file(x.NATIVE)[0]['release']='mutated';rejected(g,query(),'water_quality_frozen_input_changed')
+    g.file(NATIVE)[0]['release']='mutated';rejected(g,query(),'water_quality_frozen_input_changed')
     assert replay==1190
     print('A6 GAIA PASS: 24 fixed cells, 7 fixed locality counts, 1190 frozen-cell replay, qualifiers/provenance and refusal/adversarial boundaries')
 

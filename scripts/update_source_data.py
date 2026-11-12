@@ -21,6 +21,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
     python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
     python scripts/update_source_data.py omi-residential --semester 2026-S1
+    python scripts/update_source_data.py gaia-water --period 2026-S1
     python scripts/update_source_data.py mim-schools --year 2026 [--file SCUANAGRAFESTAT20262720260901.csv]
     python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX] [--post URL::CAMPI ...]
 
@@ -33,6 +34,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html.parser
 import io
 import json
 import math
@@ -1093,6 +1095,141 @@ def update_mim_schools(year: int, file: Path | None, dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ GAIA qualità dell'acqua potabile
+
+GAIA_URL = "https://www.gaia-spa.it/analisiweb_v2/"
+GAIA_TOWN = {"046005": "6", "046013": "19", "046018": "26", "046024": "33", "046028": "39", "046030": "41", "046033": "45"}
+GAIA_SNAPSHOT = "data/source-snapshots/gaia-water-quality-{period}.json"
+
+
+class _GaiaPage(html.parser.HTMLParser):
+    """Titolo (h4), periodo (h6) e righe della tabella #campioni di una pagina località GAIA."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.title, self.period, self.rows = "", "", []
+        self._tag, self._text, self._in_table, self._row, self._cell, self._hint = None, [], False, None, None, ""
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag in ("h4", "h6"):
+            self._tag, self._text = tag, []
+        elif tag == "table" and attrs.get("id") == "campioni":
+            self._in_table = True
+        elif self._in_table and tag == "tr":
+            self._row = []
+        elif self._row is not None and tag == "td":
+            self._cell, self._hint = [], ""
+        elif self._cell is not None and attrs.get("title") and not self._hint:
+            self._hint = attrs["title"]
+
+    def handle_endtag(self, tag):
+        if tag == self._tag:
+            text = re.sub(r"\s+", " ", "".join(self._text)).strip()
+            if tag == "h4" and not self.title:
+                self.title = text
+            if tag == "h6" and "Periodo di riferimento" in text:
+                self.period = re.sub(r"^Periodo di riferimento\s*:\s*", "", text, flags=re.I)
+            self._tag = None
+        elif tag == "td" and self._cell is not None:
+            self._row.append((re.sub(r"\s+", " ", "".join(self._cell)).strip(), re.sub(r"\s+", " ", self._hint).strip()))
+            self._cell = None
+        elif tag == "tr" and self._row is not None:
+            if len(self._row) >= 4:
+                self.rows.append(self._row)
+            self._row = None
+        elif tag == "table":
+            self._in_table = False
+
+    def handle_data(self, data):
+        if self._tag:
+            self._text.append(data)
+        if self._cell is not None:
+            self._cell.append(data)
+
+
+def gaia_label(period: str) -> str:
+    """«2026-S1» → «1° semestre 2026»."""
+    match = re.fullmatch(r"(20\d\d)-S([12])", period)
+    if not match:
+        raise UpdateError(f"GAIA: semestre non valido {period!r} (atteso AAAA-S1/S2)")
+    return f"{match.group(2)}° semestre {match.group(1)}"
+
+
+def gaia_order(label: str) -> tuple[int, int]:
+    half, year = label.split("° semestre ")
+    return int(year), int(half)
+
+
+def gaia_fetch(locality: dict[str, Any]) -> bytes:
+    """Imposta la sessione GAIA sulla località e scarica la pagina dei valori medi."""
+    import http.cookiejar
+    import urllib.parse
+    import urllib.request
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+    opener.addheaders = [("User-Agent", "OsservatorioVersilia/aggiornamento (+https://osservatorioversilia.it)")]
+    data = urllib.parse.urlencode({"codice_comune": GAIA_TOWN[locality["townCode"]], "codice_prelievo": locality["sampleCode"],
+                                   "codice_prelievo1": locality["sampleCode2"], "codice_area": "1", "op": "set_session"}).encode()
+    opener.open(GAIA_URL + "php/ajax.inc.php", data=data, timeout=30).read()
+    return opener.open(locality["url"], timeout=30).read()
+
+
+def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where: str) -> tuple[str, list[str]]:
+    page = _GaiaPage()
+    page.feed(body.decode("utf-8", "replace"))
+    if page.period.casefold() != label.casefold():
+        raise UpdateError(f"GAIA {where}: {label} non presente (la pagina riporta {page.period!r})")
+    if len(page.rows) != len(definitions):
+        raise UpdateError(f"GAIA {where}: {len(page.rows)} parametri, attesi {len(definitions)}")
+    for row, definition in zip(page.rows, definitions):
+        got = {"name": row[0][0], "unit": row[1][0], "reference": row[3][0]}
+        if got != {k: definition[k] for k in ("name", "unit", "reference")}:
+            raise UpdateError(f"GAIA {where}: parametro cambiato {got} (pubblicato {definition['name']})")
+    return page.title, [row[2][0] for row in page.rows]
+
+
+def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes:
+    """Valori medi GAIA per le stesse 70 località e 17 parametri, semestre nuovo."""
+    site = load(SITE)
+    metric = site["metrics"]["drinkingWaterQuality"]
+    label = gaia_label(period)
+    published = metric["meta"]["year"]
+    if gaia_order(label) < gaia_order(published):
+        raise UpdateError(f"GAIA: {label} precedente al pubblicato {published}")
+    definitions = metric["parameterDefinitions"]
+    changes = Changes()
+    localities = []
+    for row in metric["rows"]:
+        for locality in row["localities"]:
+            where = f"{row['town']} · {locality['name']}"
+            if pages is not None:
+                body = (pages / f"{locality['sampleCode']}_{locality['sampleCode2']}.html").read_bytes()
+            else:
+                body = gaia_fetch(locality)
+            title, values = gaia_parse(body, label, definitions, where)
+            if title and title != locality["title"]:
+                changes.note(f"titolo {locality['sampleCode']}", locality["title"], title)
+            for name, old, new in zip((d["name"] for d in definitions), locality["values"], values):
+                changes.note(f"{where} · {name}", old, new)
+            locality.update(title=title or locality["title"], period=label.replace("semestre", "Semestre"), values=values)
+            localities.append(locality)
+    path = GAIA_SNAPSHOT.format(period=period)
+    extraction = json.dumps(localities, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
+    snapshot = {"schemaVersion": 1, "period": label, "acquiredAt": date.today().isoformat(),
+                "sources": {"gaia": {"url": GAIA_URL, "extractionSha256": hashlib.sha256(extraction).hexdigest(),
+                                     "rule": "Stesse 70 località e 17 parametri pubblicati; valori medi verbatim dalla pagina della località."}},
+                "drinkingWaterQuality": {"parameterDefinitions": definitions, "localities": localities},
+                "acquisitionEvidence": {"script": f"scripts/update_source_data.py gaia-water --period {period}"}}
+    changes.note("drinkingWaterQuality periodo", published, label)
+    metric["meta"]["year"] = label
+    metric["meta"]["sourceMeta"]["snapshot"] = path
+    metric["method"]["snapshot"] = path
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -1118,12 +1255,15 @@ def main() -> int:
     q.add_argument("--semester", required=True, help="semestre nuovo, es. 2026-S1")
     q.add_argument("--correction", action="append", default=[],
                    help="differenza del catalogo dalla fonte già rivista: «Comune ZONA» o «Comune» (zonizzazione)")
+    w = sub.add_parser("gaia-water")
+    w.add_argument("--period", required=True, help="semestre GAIA, es. 2026-S1")
+    w.add_argument("--pages", type=Path, help="cartella con le pagine località già scaricate (CODICE_CODICE2.html)")
     k = sub.add_parser("mim-schools")
     k.add_argument("--year", type=int, required=True, help="primo anno dell'a.s., es. 2026 per 2026/27")
     k.add_argument("--file", type=Path, help="CSV SCUANAGRAFESTAT già scaricato (nome originale)")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f, t, o, v, q, k):
+    for p in (a, m, u, f, t, o, v, q, k, w):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
@@ -1150,6 +1290,8 @@ def main() -> int:
             update_ispra_soil(args.year, args.file, args.dry_run).report(f"Consumo di suolo {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-tourism":
             update_istat_tourism(args.year, args.file, args.dry_run).report(f"Capacità ricettiva {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "gaia-water":
+            update_gaia_water(args.period, args.pages, args.dry_run).report(f"Acqua potabile GAIA {args.period}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "mim-schools":
             update_mim_schools(args.year, args.file, args.dry_run).report(f"Sedi scolastiche a.s. {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "agcom-ftth":

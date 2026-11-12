@@ -11,5 +11,6 @@
   "aciVehicles": [],
   "omiResidential": [],
   "omiResidentialCorrections": [],
-  "mimSchools": [2026]
+  "mimSchools": [],
+  "gaiaWater": ["2026-S1"]
 }

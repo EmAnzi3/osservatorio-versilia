@@ -507,6 +507,60 @@ def mef_probe_cases() -> None:
     assert ctx and "1,14%" in ctx[0]
 
 
+def gaia_cases(tmp: Path) -> None:
+    """Acqua GAIA: semestre pubblicato ricostruito identico; semestre nuovo accettato; periodo, parametro e semestre precedente rifiutati."""
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    try:
+        metric = upd.load(upd.SITE)["metrics"]["drinkingWaterQuality"]
+        defs = metric["parameterDefinitions"]
+        published = metric["meta"]["year"]
+        half, year = published.split("° semestre ")
+        current = f"{year}-S{half}"
+        following = f"{int(year) + 1}-S1" if half == "2" else f"{year}-S2"
+
+        def pages(name: str, label: str, bump: bool = False, unit: str | None = None) -> Path:
+            folder = tmp / name
+            folder.mkdir()
+            for row in metric["rows"]:
+                for loc in row["localities"]:
+                    cells = "".join(
+                        f'<tr><td><span title="{d["description"]}">{d["name"]}</span></td><td>{unit if unit and i == 7 else d["unit"]}</td>'
+                        f'<td>{("9.9" if bump and i == 7 else v)}</td><td>{d["reference"]}</td></tr>'
+                        for i, (d, v) in enumerate(zip(defs, loc["values"])))
+                    html = (f'<main><h4>{loc["title"]}</h4><h6>Periodo di riferimento: {label}</h6>'
+                            f'<table id="campioni"><thead><tr><th>P</th><th>U</th><th>V</th><th>L</th></tr></thead><tbody>{cells}</tbody></table></main>')
+                    (folder / f"{loc['sampleCode']}_{loc['sampleCode2']}.html").write_text(html, encoding="utf-8")
+            return folder
+
+        same = upd.update_gaia_water(current, pages("same", published.replace("semestre", "Semestre")), dry_run=True)
+        assert same.lines == [], same.lines
+        new_label = upd.gaia_label(following).replace("semestre", "Semestre")
+        changes = upd.update_gaia_water(following, pages("new", new_label, bump=True), dry_run=False)
+        assert sum("Nitrato" in line for line in changes.lines) >= 1, changes.lines
+        site = upd.load(upd.SITE)
+        m2 = site["metrics"]["drinkingWaterQuality"]
+        path = upd.GAIA_SNAPSHOT.format(period=following)
+        assert m2["meta"]["year"] == upd.gaia_label(following) and m2["meta"]["sourceMeta"]["snapshot"] == m2["method"]["snapshot"] == path
+        snap = upd.load(tmp / path)["drinkingWaterQuality"]
+        assert [l for r in m2["rows"] for l in r["localities"]] == snap["localities"] and len(snap["localities"]) == 70
+        assert all(l["period"] == new_label and l["values"][7] == "9.9" for l in snap["localities"])
+        upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+        for bad in (lambda: upd.update_gaia_water(following, pages("stale", published.replace("semestre", "Semestre")), dry_run=True),
+                    lambda: upd.update_gaia_water(following, pages("unit", new_label, unit="(g/L)"), dry_run=True),
+                    lambda: upd.update_gaia_water(f"{int(year) - 1}-S1", pages("old", "1° Semestre " + str(int(year) - 1)), dry_run=True),
+                    lambda: upd.gaia_label("2026-S3")):
+            try:
+                bad()
+                raise AssertionError("pagine GAIA non valide accettate")
+            except upd.UpdateError:
+                pass
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def mim_cases(tmp: Path) -> None:
     """Sedi scolastiche: a.s. pubblicato ricostruito identico; a.s. nuovo accettato; a.s. precedente, altro anno e Comune mancante rifiutati."""
     real_site, real_root = upd.SITE, upd.ROOT
@@ -586,8 +640,10 @@ def main() -> None:
         omi_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         mim_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        gaia_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
 
 
 if __name__ == "__main__":

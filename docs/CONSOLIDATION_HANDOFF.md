@@ -2,6 +2,21 @@
 
 
 
+
+## Acqua potabile GAIA 1° semestre 2026 (12 novembre 2026)
+
+- GAIA pubblica il 1° semestre 2026 (verificato dal browser su «MASSAROSA - Case Rosse»); il sito era al
+  2° semestre 2025. `www.gaia-spa.it` non è raggiungibile dal container: aggiorna il workflow.
+- Nuovo aggiornatore `update_source_data.py gaia-water --period AAAA-S1|S2` (richiesta `"gaiaWater"`):
+  per ognuna delle 70 località pubblicate imposta la sessione GAIA e legge la pagina; richiede il periodo
+  esatto e gli stessi 17 parametri (nome, unità, riferimento) pubblicati, copia i valori medi verbatim,
+  scrive `gaia-water-quality-AAAA-SN.json` e sposta su quel file `sourceMeta.snapshot`/`method.snapshot`.
+  Rifiuta semestri precedenti, pagine ancora al periodo vecchio, parametri cambiati. Nel giro mensile.
+- Adattatore A6 `semantic_query_water_quality_adapters`: semestre e snapshot nativo letti dal catalogo
+  (`period_of`, `native_of`), ammessi solo lo snapshot storico (fermo al 2° semestre 2025) o
+  `gaia-water-quality-AAAA-SN.json`; impronte sempre nei pin `water_quality#1/#2`. Test con 3 mutazioni nuove
+  (snapshot, snapshot del metodo, semestre).
+
 ## Sedi scolastiche a.s. 2026/27 e farmacie (12 novembre 2026)
 
 - **Definizione ricostruita.** `schoolSites` pubblicato (anno «2025») coincide 7/7 con i codici scuola
