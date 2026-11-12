@@ -487,6 +487,24 @@ def test_completion_date_of_funded_checks_is_not_the_deadline():
     assert q.find_deadline(text, date(2026, 11, 11))[0] == date(2026, 10, 14)
 
 
+def test_open_call_absorbs_its_announcement_only():
+    opened = {"id": "auto-1", "status": "open", "title": "Fondo investimenti stradali nei piccoli Comuni 2026",
+              "deadline_at": "2026-11-30"}
+    items = [opened,
+             {"id": "mit", "status": "upcoming", "title": "Fondo investimenti stradali piccoli Comuni — bando 2026"},
+             {"id": "anci", "status": "upcoming", "deadline_at": "2026-11-30",
+              "title": "Avviso per accesso a Fondo investimenti manutenzione strade piccoli Comuni"},
+             {"id": "old", "status": "upcoming", "title": "Fondo investimenti stradali piccoli Comuni 2027"},
+             {"id": "other", "status": "upcoming", "title": "Fondo per la progettazione degli enti locali 2026"},
+             {"id": "late", "status": "upcoming", "deadline_at": "2027-01-15",
+              "title": "Fondo investimenti stradali piccoli Comuni"}]
+    result = {"opportunities": items}
+    absorbed = q.absorb_announcements(result)
+    assert {x["id"] for x in absorbed} == {"mit", "anci"}, absorbed
+    assert {x["absorbedBy"] for x in result["absorbedAnnouncements"]} == {"auto-1"}
+    assert [x["id"] for x in result["opportunities"]] == ["auto-1", "old", "other", "late"]
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:
