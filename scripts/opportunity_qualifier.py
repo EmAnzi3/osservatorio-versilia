@@ -1000,7 +1000,9 @@ def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
     """
     items = result.get("opportunities") or []
     opened = [x for x in items if x.get("status") == "open"]
-    keep, absorbed = [], []
+    keep: list[dict[str, Any]] = []
+    absorbed: list[dict[str, Any]] = []
+    summary: list[dict[str, Any]] = []
     for item in items:
         target = None
         if item.get("status") == "upcoming" or item.get("lifecycle_stage") == "announced_upcoming":
@@ -1017,10 +1019,11 @@ def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
         if target is None:
             keep.append(item)
         else:
-            absorbed.append({"id": item.get("id"), "title": item.get("title"), "source_id": item.get("source_id"),
-                             "absorbedBy": target.get("id"), "absorbedByTitle": target.get("title")})
+            absorbed.append(item)
+            summary.append({"id": item.get("id"), "title": item.get("title"), "source_id": item.get("source_id"),
+                            "absorbedBy": target.get("id"), "absorbedByTitle": target.get("title")})
     result["opportunities"] = keep
-    result["absorbedAnnouncements"] = absorbed
+    result["absorbedAnnouncements"] = summary
     return absorbed
 
 

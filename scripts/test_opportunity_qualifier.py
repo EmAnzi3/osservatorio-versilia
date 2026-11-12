@@ -501,6 +501,7 @@ def test_open_call_absorbs_its_announcement_only():
     result = {"opportunities": items}
     absorbed = q.absorb_announcements(result)
     assert {x["id"] for x in absorbed} == {"mit", "anci"}, absorbed
+    assert {x["absorbedBy"] for x in result["absorbedAnnouncements"]} == {"auto-1"}
     assert [x["id"] for x in result["opportunities"]] == ["auto-1", "old", "other", "late"]
 
 

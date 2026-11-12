@@ -9,7 +9,9 @@
   un bando aperto ha almeno 4 parole distintive del titolo in comune (80% del titolo più corto,
   prime 5 lettere, escluse parole generiche come avviso/bando/comuni), gli stessi anni e, se annunciata,
   la stessa scadenza. Le schede assorbite sono in `absorbedAnnouncements` con il bando che le sostituisce.
-- Chiamata dopo `_apply_publication_exclusions` nel run e nella preparazione pubblica.
+- Chiamata dopo `_apply_publication_exclusions` nel run e nella preparazione pubblica; le schede assorbite
+  vanno in `archive` con `archive_reason: superseded_by_open_call`, così la riconciliazione finale della
+  continuità le riconosce (senza archivio il primo dry-run dava `continuityHold=1` sul rilancio ANCI Lombardia).
 
 ## Radar: fonte ANCI nazionale rimossa (12 novembre 2026)
 

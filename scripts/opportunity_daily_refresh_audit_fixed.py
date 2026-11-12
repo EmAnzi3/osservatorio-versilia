@@ -267,12 +267,21 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
         if discovery.LIVE_BUDGET is not None:
             review_actions.collect_document_links(result, previous=previous, budget=discovery.LIVE_BUDGET)
     _apply_publication_exclusions(result)
-    auto_qualifier.absorb_announcements(result)
+    _archive_absorbed_announcements(result)
     _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
     relevance.apply_to_payload(result, drop_review=True)
     return result
+
+
+def _archive_absorbed_announcements(result: dict[str, Any]) -> None:
+    """Le schede «in arrivo» sostituite dal bando aperto vanno in archivio, così la continuità le riconosce."""
+    for item in auto_qualifier.absorb_announcements(result):
+        core._append_archive(result, item)
+        for row in result.get("archive") or []:
+            if (row.get("coverage_id") or row.get("id")) == (item.get("coverage_id") or item.get("id")):
+                row["archive_reason"] = "superseded_by_open_call"
 
 
 def _archive_expired_opportunities(result: dict[str, Any], today: date) -> None:
@@ -404,7 +413,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     if result.get("auditCorpusPromotionVersion") != audit_promotions.PROMOTION_VERSION:
         audit_promotions.apply_complete_promotions(result, today)
     _apply_publication_exclusions(result)
-    auto_qualifier.absorb_announcements(result)
+    _archive_absorbed_announcements(result)
     _archive_expired_opportunities(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
