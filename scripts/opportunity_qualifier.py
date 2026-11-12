@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import html as html_lib
 import re
+import unicodedata
 import time
 from dataclasses import dataclass, field
 from datetime import date, timedelta
@@ -976,6 +977,51 @@ def _blocked_by_site(state: dict[str, Any]) -> bool:
             if endpoint.get(key):
                 classes.add(endpoint[key])
     return bool(classes) and classes <= BLOCK_CLASSES
+
+
+_GENERIC_STEMS = {"avvis", "bando", "band", "acces", "comun", "enti", "local", "contr", "finan", "nuovo", "aperto",
+                  "pubbl", "manif", "inter", "per", "nei", "dei", "del", "della", "delle", "degli", "di", "il", "la",
+                  "le", "lo", "gli", "al", "alla", "e", "a", "in", "con", "su", "da", "ai", "agli"}
+
+
+def _stems(title: Any) -> tuple[set[str], set[str]]:
+    words = _fold(unicodedata.normalize("NFKD", str(title or "")).encode("ascii", "ignore").decode()).split()
+    years = {w for w in words if re.fullmatch(r"20\d\d", w)}
+    stems = {w[:5] for w in words if not w.isdigit() and w[:5] not in _GENERIC_STEMS and len(w) > 2}
+    return stems, years
+
+
+def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
+    """Una scheda «in arrivo» sparisce quando lo stesso bando è pubblicato come aperto.
+
+    Stesso bando = le parole distintive del titolo più corto stanno (almeno 4 e
+    per l'80%) in quello dell'altro, gli anni citati coincidono e la scadenza
+    eventualmente annunciata è la stessa del bando aperto.
+    """
+    items = result.get("opportunities") or []
+    opened = [x for x in items if x.get("status") == "open"]
+    keep, absorbed = [], []
+    for item in items:
+        target = None
+        if item.get("status") == "upcoming" or item.get("lifecycle_stage") == "announced_upcoming":
+            stems, years = _stems(item.get("title"))
+            for other in opened:
+                other_stems, other_years = _stems(other.get("title"))
+                shared = stems & other_stems
+                smaller = min(len(stems), len(other_stems))
+                if (len(shared) >= 4 and smaller and len(shared) >= 0.8 * smaller
+                        and (not years or not other_years or years & other_years)
+                        and (not item.get("deadline_at") or item.get("deadline_at") == other.get("deadline_at"))):
+                    target = other
+                    break
+        if target is None:
+            keep.append(item)
+        else:
+            absorbed.append({"id": item.get("id"), "title": item.get("title"), "source_id": item.get("source_id"),
+                             "absorbedBy": target.get("id"), "absorbedByTitle": target.get("title")})
+    result["opportunities"] = keep
+    result["absorbedAnnouncements"] = absorbed
+    return absorbed
 
 
 def track_silent_zero(result: dict[str, Any], previous: dict[str, Any] | None) -> list[dict[str, Any]]:
