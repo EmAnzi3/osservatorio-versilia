@@ -530,8 +530,11 @@ def gaia_cases(tmp: Path) -> None:
                         f'<tr><td><span title="{d["description"]}">{d["name"]}</span></td><td>{unit if unit and i == 7 else d["unit"]}</td>'
                         f'<td>{("9.9" if bump and i == 7 else v)}</td><td>{d["reference"]}</td></tr>'
                         for i, (d, v) in enumerate(zip(defs, loc["values"])))
+                    # id «campioni» sul contenitore, come nel selettore «#campioni tbody tr» dell'acquisizione storica,
+                    # e una tabella estranea dopo che non va letta.
                     html = (f'<main><h4>{loc["title"]}</h4><h6>Periodo di riferimento: {label}</h6>'
-                            f'<table id="campioni"><thead><tr><th>P</th><th>U</th><th>V</th><th>L</th></tr></thead><tbody>{cells}</tbody></table></main>')
+                            f'<div id="campioni"><table><thead><tr><th>P</th><th>U</th><th>V</th><th>L</th></tr></thead><tbody>{cells}</tbody></table></div>'
+                            f'<table><tr><td>a</td><td>b</td><td>c</td><td>d</td></tr></table></main>')
                     (folder / f"{loc['sampleCode']}_{loc['sampleCode2']}.html").write_text(html, encoding="utf-8")
             return folder
 

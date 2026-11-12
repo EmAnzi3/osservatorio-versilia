@@ -1108,15 +1108,19 @@ class _GaiaPage(html.parser.HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.title, self.period, self.rows = "", "", []
-        self._tag, self._text, self._in_table, self._row, self._cell, self._hint = None, [], False, None, None, ""
+        self._tag, self._text, self._row, self._cell, self._hint = None, [], None, None, ""
+        self._root, self._depth = None, 0  # elemento con id «campioni» (tabella o contenitore), come «#campioni tbody tr»
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag in ("h4", "h6"):
             self._tag, self._text = tag, []
-        elif tag == "table" and attrs.get("id") == "campioni":
-            self._in_table = True
-        elif self._in_table and tag == "tr":
+        if self._root is None and attrs.get("id") == "campioni":
+            self._root, self._depth = tag, 1
+            return
+        if self._root and tag == self._root:
+            self._depth += 1
+        if self._root and tag == "tr":
             self._row = []
         elif self._row is not None and tag == "td":
             self._cell, self._hint = [], ""
@@ -1138,8 +1142,10 @@ class _GaiaPage(html.parser.HTMLParser):
             if len(self._row) >= 4:
                 self.rows.append(self._row)
             self._row = None
-        elif tag == "table":
-            self._in_table = False
+        if self._root and tag == self._root:
+            self._depth -= 1
+            if self._depth == 0:
+                self._root = False
 
     def handle_data(self, data):
         if self._tag:
@@ -1180,7 +1186,9 @@ def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where
     if page.period.casefold() != label.casefold():
         raise UpdateError(f"GAIA {where}: {label} non presente (la pagina riporta {page.period!r})")
     if len(page.rows) != len(definitions):
-        raise UpdateError(f"GAIA {where}: {len(page.rows)} parametri, attesi {len(definitions)}")
+        text = body.decode("utf-8", "replace")
+        raise UpdateError(f"GAIA {where}: {len(page.rows)} parametri, attesi {len(definitions)} "
+                          f"(id campioni {'presente' if 'campioni' in text else 'assente'}, {text.count('<tr')} righe <tr>, {len(body)} byte)")
     for row, definition in zip(page.rows, definitions):
         got = {"name": row[0][0], "unit": row[1][0], "reference": row[3][0]}
         if got != {k: definition[k] for k in ("name", "unit", "reference")}:
