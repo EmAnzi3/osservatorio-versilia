@@ -1187,8 +1187,12 @@ def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where
         raise UpdateError(f"GAIA {where}: {label} non presente (la pagina riporta {page.period!r})")
     if len(page.rows) != len(definitions):
         text = body.decode("utf-8", "replace")
+        at = text.find("campioni")
+        around = re.sub(r"\s+", " ", text[max(0, at - 300):at + 900])
+        scripts = re.findall(r"""(?:url|src)\s*[:=]\s*["']([^"']+)""", text)[:12]
         raise UpdateError(f"GAIA {where}: {len(page.rows)} parametri, attesi {len(definitions)} "
-                          f"(id campioni {'presente' if 'campioni' in text else 'assente'}, {text.count('<tr')} righe <tr>, {len(body)} byte)")
+                          f"(id campioni {'presente' if at >= 0 else 'assente'}, {text.count('<tr')} righe <tr>, {len(body)} byte; "
+                          f"titolo {page.title!r}; intorno a campioni: {around!r}; script: {scripts})")
     for row, definition in zip(page.rows, definitions):
         got = {"name": row[0][0], "unit": row[1][0], "reference": row[3][0]}
         if got != {k: definition[k] for k in ("name", "unit", "reference")}:
