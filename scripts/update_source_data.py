@@ -21,6 +21,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
     python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
     python scripts/update_source_data.py omi-residential --semester 2026-S1
+    python scripts/update_source_data.py mim-schools --year 2026 [--file SCUANAGRAFESTAT20262720260901.csv]
     python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX] [--post URL::CAMPI ...]
 
 Con `--dry-run` mostra le differenze senza scrivere. I server GitHub raggiungono
@@ -1007,6 +1008,91 @@ def update_omi_residential(semester: str, dry_run: bool, reader: Any = None, cor
     return changes
 
 
+# ------------------------------------------------------------------ MIM anagrafe scuole statali (sedi)
+
+MIM_LEAF = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/"
+MIM_CATALOG = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole"
+MIM_SNAPSHOT = "data/source-snapshots/mim-school-sites-{year}.json"
+
+
+def mim_registry_name(year: int, catalog: bytes) -> str:
+    """Nome del file dell'anagrafe statale per l'a.s. year/year+1, dalla pagina del catalogo MIM."""
+    tag = f"{year}{(year + 1) % 100:02d}"
+    names = sorted(set(re.findall(rf"SCUANAGRAFESTAT{tag}\d{{8}}\.csv", catalog.decode("utf-8", "replace"))))
+    if not names:
+        raise UpdateError(f"Anagrafe scuole: file statale dell'a.s. {year}/{(year + 1) % 100:02d} non presente nel catalogo MIM")
+    return names[-1]
+
+
+def mim_school_counts(body: bytes, year: int, towns: dict[str, str]) -> dict[str, Any]:
+    """Codici scuola statali univoci per Comune (7/7), Toscana e Italia."""
+    text = body.decode("utf-8-sig")
+    reader = csv.DictReader(io.StringIO(text), delimiter=";" if text.split("\n", 1)[0].count(";") > text.split("\n", 1)[0].count(",") else ",")
+    need = {"ANNOSCOLASTICO", "REGIONE", "PROVINCIA", "CODICESCUOLA", "DESCRIZIONECOMUNE"}
+    if not need.issubset(reader.fieldnames or []):
+        raise UpdateError("Anagrafe scuole: intestazioni MIM attese mancanti")
+    tag = f"{year}{(year + 1) % 100:02d}"
+    codes: dict[str, tuple[str, str, str]] = {}
+    for row in reader:
+        if row["ANNOSCOLASTICO"].strip() != tag:
+            raise UpdateError(f"Anagrafe scuole: riga di un altro anno scolastico ({row['ANNOSCOLASTICO']})")
+        code = row["CODICESCUOLA"].strip()
+        info = (row["REGIONE"].strip().upper(), row["PROVINCIA"].strip().upper(), row["DESCRIZIONECOMUNE"].strip().upper())
+        if not code or codes.get(code, info) != info:
+            raise UpdateError(f"Anagrafe scuole: codice scuola vuoto o con attributi diversi ({code})")
+        codes[code] = info
+    municipal = {}
+    for istat, name in towns.items():
+        found = {c for c, (region, province, town) in codes.items() if region == "TOSCANA" and province == "LUCCA" and town == name}
+        if not found:
+            raise UpdateError(f"Anagrafe scuole: nessuna sede per {name}")
+        municipal[istat] = len(found)
+    return {"municipal": municipal, "tuscany": sum(1 for v in codes.values() if v[0] == "TOSCANA"), "italy": len(codes)}
+
+
+def update_mim_schools(year: int, file: Path | None, dry_run: bool) -> Changes:
+    """Sedi scolastiche (anagrafe MIM delle scuole statali) per l'anno scolastico year/year+1."""
+    site = load(SITE)
+    metric = site["metrics"]["schoolSites"]
+    published = int(metric["meta"]["year"])
+    if year < published:
+        raise UpdateError(f"Sedi scolastiche: a.s. {year}/{(year + 1) % 100:02d} precedente al pubblicato {published}")
+    if site["metrics"]["population"]["meta"]["year"] != "2026":
+        raise UpdateError("Sedi scolastiche: popolazione pubblica non al 1° gennaio 2026")
+    name = file.name if file is not None else mim_registry_name(year, fetch(MIM_CATALOG, None))
+    url = MIM_LEAF + name
+    body = fetch(url, file)
+    towns = {r["code"]: r["town"].upper() for r in metric["rows"]}
+    counts = mim_school_counts(body, year, towns)
+    population = {r["code"]: r["value"] for r in site["metrics"]["population"]["rows"]}
+    school_year = f"{year}/{(year + 1) % 100:02d}"
+    changes = Changes()
+    for row in metric["rows"]:
+        value = counts["municipal"][row["code"]]
+        changes.note(f"schoolSites {row['town']}", row["value"], value)
+        row.update(value=value, formatted=it_number(value, 0), benchmarkValue=value)
+        row["normalized"]["value"] = value / population[row["code"]] * 1000
+    total = sum(r["value"] for r in metric["rows"])
+    metric["aggregate"]["value"] = total
+    metric["normalizedAggregate"]["value"] = total / sum(population[r["code"]] for r in metric["rows"]) * 1000
+    path = MIM_SNAPSHOT.format(year=year)
+    metric["meta"].update(year=str(year), source="Ministero dell'Istruzione e del Merito — Anagrafe scuole statali",
+                          description=f"Codici scuola statali attivi nel Comune, anagrafe MIM a.s. {school_year} (dati al {name[-6:-4]}/{name[-8:-6]}/{name[-12:-8]}).")
+    metric["method"].update(type="Elaborazione Osservatorio",
+                            formula=f"Codici scuola univoci dell'anagrafe MIM delle scuole statali a.s. {school_year} per Comune; rapporto ogni 1.000 residenti al 1° gennaio 2026.",
+                            caveat="Un codice scuola è un punto di erogazione (plesso o indirizzo), non un edificio; scuole paritarie escluse.")
+    snapshot = {"schemaVersion": 1, "publisher": "Ministero dell'Istruzione e del Merito", "schoolYear": school_year,
+                "sourceUrl": url, "sourceFile": name, "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body),
+                "rule": "CODICESCUOLA univoci dell'anagrafe statale; Comune da REGIONE=TOSCANA, PROVINCIA=LUCCA, DESCRIZIONECOMUNE; paritarie escluse.",
+                "municipal": counts["municipal"], "tuscany": counts["tuscany"], "italy": counts["italy"],
+                "acquisitionEvidence": {"script": f"scripts/update_source_data.py mim-schools --year {year}", "catalogUrl": MIM_CATALOG}}
+    changes.note("schoolSites anno", published, year)
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -1032,6 +1118,9 @@ def main() -> int:
     q.add_argument("--semester", required=True, help="semestre nuovo, es. 2026-S1")
     q.add_argument("--correction", action="append", default=[],
                    help="differenza del catalogo dalla fonte già rivista: «Comune ZONA» o «Comune» (zonizzazione)")
+    k = sub.add_parser("mim-schools")
+    k.add_argument("--year", type=int, required=True, help="primo anno dell'a.s., es. 2026 per 2026/27")
+    k.add_argument("--file", type=Path, help="CSV SCUANAGRAFESTAT già scaricato (nome originale)")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
     for p in (a, m, u, f, t, o, v, q):
@@ -1061,6 +1150,8 @@ def main() -> int:
             update_ispra_soil(args.year, args.file, args.dry_run).report(f"Consumo di suolo {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-tourism":
             update_istat_tourism(args.year, args.file, args.dry_run).report(f"Capacità ricettiva {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "mim-schools":
+            update_mim_schools(args.year, args.file, args.dry_run).report(f"Sedi scolastiche a.s. {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "agcom-ftth":
             update_agcom_ftth(args.dir, args.dry_run).report(f"AGCOM FTTH{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "ars-legacy":

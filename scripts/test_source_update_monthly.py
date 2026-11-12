@@ -14,12 +14,14 @@ ars = json.loads(m.ARS_LEGACY.read_text(encoding="utf-8"))
 commands = m.plan(site, ars)
 year = int(site["metrics"][m.MOBILITY_KEY]["meta"]["year"])
 assert [c for c in commands if c[0] == "ars-legacy"] == [["ars-legacy", "--metric", k] for k in sorted(ars["indicators"])]
-assert commands[-7:-4] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)], ["agcom-ftth"]]
-assert commands[-4:-1] == [[n, "--year", str(int(site["metrics"][k]["meta"]["year"]) + 1)] for n, k in m.NEXT_YEAR]
+n = len(m.NEXT_YEAR)
+assert commands[-(n + 4):-(n + 1)] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)], ["agcom-ftth"]]
+assert commands[-(n + 1):-1] == [[n, "--year", str(int(site["metrics"][k]["meta"]["year"]) + 1)] for n, k in m.NEXT_YEAR]
 assert commands[-1][:2] == ["omi-residential", "--semester"]
 assert m.next_semester("2° semestre 2025") == "2026-S1" and m.next_semester("1° semestre 2026") == "2026-S2"
 assert "non ancora pubblicato" in m.advice(["ispra-soil", "--year", "2026"], "Consumo di suolo: edizione 2027 non trovata nella libreria ISPRA")
 assert "non ancora pubblicato" in m.advice(["omi-residential"], "OMI: semestre 2026-S2 o 2026-S1 non presente nella consultazione")
+assert "non ancora pubblicato" in m.advice(["mim-schools", "--year", "2027"], "Anagrafe scuole: file statale dell'a.s. 2027/28 non presente nel catalogo MIM")
 assert "hospitalizedAll" in ars["indicators"]
 asia = int(site["metrics"]["localUnits"]["meta"]["year"])
 assert [c for c in commands if c[0] == "istat-asia"] == [["istat-asia", "--year", str(asia)], ["istat-asia", "--year", str(asia + 1)]]
