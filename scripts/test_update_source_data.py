@@ -507,6 +507,66 @@ def mef_probe_cases() -> None:
     assert ctx and "1,14%" in ctx[0]
 
 
+def mim_cases(tmp: Path) -> None:
+    """Sedi scolastiche: a.s. pubblicato ricostruito identico; a.s. nuovo accettato; a.s. precedente, altro anno e Comune mancante rifiutati."""
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    try:
+        site = upd.load(upd.SITE)
+        metric = site["metrics"]["schoolSites"]
+        pub = int(metric["meta"]["year"])
+        head = "ANNOSCOLASTICO;AREAGEOGRAFICA;REGIONE;PROVINCIA;CODICESCUOLA;DESCRIZIONECOMUNE"
+
+        def registry(year: int, delta: int = 0, drop: str | None = None, other_year: bool = False) -> Path:
+            tag = f"{year}{(year + 1) % 100:02d}"
+            lines = [head]
+            for row in metric["rows"]:
+                if row["town"] == drop:
+                    continue
+                n = row["value"] + (delta if row["town"] == "Viareggio" else 0)
+                lines += [f"{tag};CENTRO;TOSCANA;LUCCA;LU{row['code']}{i:03d};{row['town'].upper()}" for i in range(n)]
+                lines.append(f"{tag};CENTRO;TOSCANA;LUCCA;LU{row['code']}000;{row['town'].upper()}")  # duplicato
+            lines += [f"{tag};CENTRO;TOSCANA;FIRENZE;FI{i:05d};FIRENZE" for i in range(5)]
+            lines += [f"{tag};NORD;LOMBARDIA;MILANO;MI{i:05d};MILANO" for i in range(7)]
+            if other_year:
+                lines.append(f"{year - 1}{year % 100:02d};NORD;LOMBARDIA;MILANO;MIX;MILANO")
+            path = tmp / f"SCUANAGRAFESTAT{tag}{year}0901.csv"
+            path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            return path
+
+        assert upd.update_mim_schools(pub, registry(pub), dry_run=True).lines == []
+        import sys as _sys
+        argv = _sys.argv
+        _sys.argv = ["update_source_data.py", "mim-schools", "--year", str(pub), "--file", str(registry(pub)), "--dry-run"]
+        try:
+            assert upd.main() == 0
+        finally:
+            _sys.argv = argv
+        changes = upd.update_mim_schools(pub + 1, registry(pub + 1, delta=-1), dry_run=False)
+        assert any("Viareggio" in line for line in changes.lines), changes.lines
+        site = upd.load(upd.SITE)
+        metric2 = site["metrics"]["schoolSites"]
+        vi = next(r for r in metric2["rows"] if r["town"] == "Viareggio")
+        old = next(r for r in metric["rows"] if r["town"] == "Viareggio")
+        assert vi["value"] == old["value"] - 1 and metric2["meta"]["year"] == str(pub + 1)
+        assert metric2["aggregate"]["value"] == sum(r["value"] for r in metric2["rows"])
+        snap = upd.load(tmp / f"data/source-snapshots/mim-school-sites-{pub + 1}.json")
+        assert snap["tuscany"] == sum(snap["municipal"].values()) + 5 and snap["italy"] == snap["tuscany"] + 7
+        for bad in (lambda: upd.update_mim_schools(pub, registry(pub), dry_run=True),
+                    lambda: upd.update_mim_schools(pub + 1, registry(pub + 1, drop="Stazzema"), dry_run=True),
+                    lambda: upd.update_mim_schools(pub + 1, registry(pub + 1, other_year=True), dry_run=True)):
+            try:
+                bad()
+                raise AssertionError("anagrafe non valida accettata")
+            except upd.UpdateError:
+                pass
+        assert upd.mim_registry_name(2026, b'x SCUANAGRAFESTAT20262720260901.csv SCUANAGRAFESTAT20252620250901.csv') == "SCUANAGRAFESTAT20262720260901.csv"
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         ars_cases(Path(tmp))
@@ -524,8 +584,10 @@ def main() -> None:
         aci_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         omi_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        mim_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
 
 
 if __name__ == "__main__":

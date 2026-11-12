@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Ministero dell'Istruzione e del Merito",
+  "schoolYear": "2026/27",
+  "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20262720260901.csv",
+  "sourceFile": "SCUANAGRAFESTAT20262720260901.csv",
+  "sha256": "d27524bad636b07932f0abcc78336f5b0b7be7d93f47729c4b72e875694ae818",
+  "bytes": 13069213,
+  "rule": "CODICESCUOLA univoci dell'anagrafe statale; Comune da REGIONE=TOSCANA, PROVINCIA=LUCCA, DESCRIZIONECOMUNE; paritarie escluse.",
+  "municipal": {
+    "046018": 22,
+    "046033": 48,
+    "046005": 24,
+    "046024": 24,
+    "046028": 13,
+    "046013": 8,
+    "046030": 6
+  },
+  "tuscany": 3200,
+  "italy": 50273,
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mim-schools --year 2026",
+    "catalogUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole"
+  }
+}

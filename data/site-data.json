@@ -19376,10 +19376,10 @@
         "theme": "istruzione",
         "label": "Sedi scolastiche",
         "shortLabel": "Sedi scolastiche",
-        "description": "Sedi attive per i diversi ordini di istruzione presenti nel territorio comunale.",
+        "description": "Codici scuola statali attivi nel Comune, anagrafe MIM a.s. 2026/27 (dati al 01/09/2026).",
         "unit": "number",
-        "year": "2025",
-        "source": "Ministero dell'Istruzione — Scuola in chiaro",
+        "year": "2026",
+        "source": "Ministero dell'Istruzione e del Merito — Anagrafe scuole statali",
         "polarity": "neutral",
         "normalized": {
           "label": "Sedi scolastiche ogni 1.000 residenti",
@@ -19408,16 +19408,16 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 49,
-          "formatted": "49",
+          "value": 48,
+          "formatted": "48",
           "series": null,
           "normalized": {
-            "value": 0.8075148319050758,
+            "value": 0.7910349373764008,
             "label": "Sedi scolastiche ogni 1.000 residenti",
             "description": "Sedi scolastiche attive rapportate alla popolazione residente.",
             "unit": "per1000"
           },
-          "benchmarkValue": 49
+          "benchmarkValue": 48
         },
         {
           "town": "Camaiore",
@@ -19496,19 +19496,19 @@
         }
       ],
       "aggregate": {
-        "value": 146,
+        "value": 145,
         "label": "Totale Versilia",
         "note": "Somma dei valori dei sette comuni."
       },
       "normalizedAggregate": {
-        "value": 0.9210194297249559,
+        "value": 0.9147110774665658,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
       },
       "method": {
-        "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "type": "Elaborazione Osservatorio",
+        "formula": "Codici scuola univoci dell'anagrafe MIM delle scuole statali a.s. 2026/27 per Comune; rapporto ogni 1.000 residenti al 1° gennaio 2026.",
+        "caveat": "Un codice scuola è un punto di erogazione (plesso o indirizzo), non un edificio; scuole paritarie escluse.",
         "coverage": "7/7"
       }
     },

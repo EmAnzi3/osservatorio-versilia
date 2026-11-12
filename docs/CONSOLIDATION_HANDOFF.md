@@ -1,6 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
 
+
+## Sedi scolastiche a.s. 2026/27 e farmacie (12 novembre 2026)
+
+- **Definizione ricostruita.** `schoolSites` pubblicato (anno «2025») coincide 7/7 con i codici scuola
+  univoci dell'anagrafe MIM delle **scuole statali** a.s. 2025/26 (`SCUANAGRAFESTAT20252620250901.csv`):
+  Massarosa 22, Viareggio 49, Camaiore 24, Pietrasanta 24, Seravezza 13, Forte dei Marmi 8, Stazzema 6.
+  Le paritarie sono escluse. È la riconciliazione che `a3-benchmark-residual-evidence.json` dava come
+  `AMBIGUOUS_OR_MISMATCH` sul 2024/25 statali+paritarie.
+- Nuovo aggiornatore `update_source_data.py mim-schools --year AAAA` (richiesta `"mimSchools"`): trova
+  nel catalogo MIM il file statale dell'a.s. AAAA/AA+1, conta i codici univoci per Comune (REGIONE,
+  PROVINCIA, DESCRIZIONECOMUNE), Toscana e Italia, aggiorna valori, rapporto ogni 1.000 residenti al
+  1° gennaio 2026, metodo e scrive `mim-school-sites-AAAA.json` con impronta del file. Rifiuta a.s.
+  precedenti, righe di altri anni, codici con attributi diversi e Comuni senza sedi. Aggiunto al giro
+  mensile (`NEXT_YEAR`).
+- a.s. 2026/27 (dati al 01/09/2026), scritto dal workflow «Aggiorna dati dalla fonte»: cambia solo
+  Viareggio 49 → 48 (Versilia 145); Toscana 3.200 e Italia 50.273 codici statali nello snapshot
+  `mim-school-sites-2026.json`. Impronta `road#3` ripinnata (`a6_repin.py --allow road --write`).
+- **Farmacie**: nessun aggiornamento. `pharmaciesPer1000` è la fotografia annuale al 31/12/2025 del file
+  ministeriale `FRM_FARMA_5_20251231.csv`; i file mensili 2026 non la sostituiscono (scelta dichiarata
+  nello snapshot). Il prossimo dato è al 31/12/2026.
+
 ## Radar: il bando aperto assorbe le schede «in arrivo» dello stesso bando (12 novembre 2026)
 
 - Dopo #581 il sito mostrava «Fondo investimenti stradali nei piccoli Comuni 2026» aperto (ANCI Toscana,
