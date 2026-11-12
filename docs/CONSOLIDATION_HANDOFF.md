@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+
+## Radar: fonte ANCI nazionale rimossa (12 novembre 2026)
+
+- `anci-nazionale` non era leggibile dalla CI: tutti gli endpoint `anci.it` e `sistemacomunidigitali.anci.it`
+  vanno in timeout o rispondono 403 (WAF) / errore TLS in IPv4; restava solo il mirror ANCI Piemonte,
+  supplementare, le cui segnalazioni non potevano essere verificate sulla fonte primaria.
+- Rimossa da `opportunity-discovery-v044.json` (override e registro copertura), `opportunity-sources-v03.json`,
+  `opportunity-source-coverage-v03.json`, dalla diagnosi rotte di `opportunity_transport_smoke.py` e dalle
+  fonti di copertura del GSE in `COVERED_WHEN_BLOCKED` (resta `mase-bandi` + `anci-toscana`).
+- Test: eliminati i due casi che leggevano la configurazione reale di `anci-nazionale`; il caso sui
+  successi supplementari usa ora `pcm-politiche-mare` (stesso meccanismo); il caso sintetico sul mirror resta.
+- I rilanci ANCI arrivano da `anci-toscana`. La #583 (endpoint di ricerca ANCI) è chiusa senza merge.
+
 ## Radar: coda delle segnalazioni, quote separate e decisioni verificabili (11 novembre 2026)
 
 - Stato 10/11: `discoveryQueue` 350 segnalazioni; il qualificatore ne legge al massimo 120 per run,

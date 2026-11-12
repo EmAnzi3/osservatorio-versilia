@@ -701,18 +701,20 @@ def _test_same_host_canonical_redirect_is_verification_grade() -> None:
 
 
 def _test_legacy_supplementary_success_does_not_seed_national_health() -> None:
-    row = {"sourceId": "anci-nazionale", "runtimeStatus": "degraded",
+    supplementary = ("https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?"
+                     "atto.codiceRedazionale=26A03679&atto.dataPubblicazioneGazzetta=2026-07-23&elenco30giorni=false")
+    row = {"sourceId": "pcm-politiche-mare", "runtimeStatus": "degraded",
         "lastSuccessfulFetch": "2026-10-06", "consecutiveFailures": 0,
-        "endpoints": [{"url": "https://www.anci.piemonte.it/", "status": "ok"},
-            {"url": "https://www.anci.it/feed/", "status": "error"}]}
+        "endpoints": [{"url": supplementary, "status": "ok"},
+            {"url": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/", "status": "error"}]}
     snapshot = {"referenceDate": "2026-10-06", "transportAudit": {"sources": [row]}}
-    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] is None
+    assert stable._seed_previous_health(snapshot)["pcm-politiche-mare"]["lastSuccessfulFetch"] is None
     row["endpoints"][1]["status"] = "ok"
-    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] == "2026-10-06"
+    assert stable._seed_previous_health(snapshot)["pcm-politiche-mare"]["lastSuccessfulFetch"] == "2026-10-06"
     row["coverageEndpointOk"] = 0
     row["runtimeStatus"] = "error"
     row["lastSuccessfulFetch"] = "2026-10-05"
-    assert stable._seed_previous_health(snapshot)["anci-nazionale"]["lastSuccessfulFetch"] == "2026-10-05"
+    assert stable._seed_previous_health(snapshot)["pcm-politiche-mare"]["lastSuccessfulFetch"] == "2026-10-05"
 
 
 def _test_legacy_gse_faq_success_is_not_listing_success() -> None:

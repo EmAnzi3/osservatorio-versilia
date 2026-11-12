@@ -16,24 +16,6 @@
     }
   ],
   "sourceOverrides": {
-    "anci-nazionale": {
-      "checkEveryDays": 7,
-      "urls": [
-        "https://www.anci.it/wp-json/wp/v2/posts?per_page=30",
-        "https://www.anci.it/feed/",
-        "https://www.anci.it/category/generico/news/",
-        "https://www.anci.it/category/generico/news/feed/",
-        "https://sistemacomunidigitali.anci.it/feed/",
-        "https://www.anci.piemonte.it/"
-      ],
-      "endpointRoles": {"https://www.anci.piemonte.it/": "supplementary"},
-      "endpointRequiredTerms": {
-        "https://www.anci.piemonte.it/": ["Notizie da ANCI Nazionale"]
-      },
-      "fetchTimeoutSeconds": 18,
-      "includeTerms": ["bando", "bandi", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo", "riparto", "stanziament"],
-      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni", "città", "edilizia scolastica"]
-    },
     "gse": {
       "endpointRoles": {
         "https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-incentivo-100-nei-comuni-sotto-15-000-abitanti?id=faq&sys_id=1fac4456fb5a325083f3f12c6eefdc52": "supplementary",
@@ -112,9 +94,6 @@
       "historicalReplay": true,
       "favicon": "https://www.regione.toscana.it/favicon.ico",
       "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId."
-    },
-    "anci-nazionale": {
-      "note": "Copertura ANCI nazionale misurata sull’archivio News e sul suo feed dichiarato nel sorgente ufficiale. Le anteprime di edilizia scolastica entrano solo nella coda interna, senza presumere ammissibilità comunale. Il mirror editoriale ANCI Piemonte è solo supplementare, validato dalla firma 'Notizie da ANCI Nazionale'; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
     },
     "mim-enti-locali": {
       "note": "Presidio MIM su feed ufficiale FUTURA/PNRR e comunicati ministeriali; il collector filtra edilizia e servizi scolastici con ruolo di enti locali e richiede verifica primaria prima della pubblicazione."

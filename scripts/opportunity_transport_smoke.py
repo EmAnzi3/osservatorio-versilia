@@ -27,7 +27,6 @@ import opportunity_discovery_resilient as transport
 
 
 TARGET_SOURCE_IDS = (
-    "anci-nazionale",
     "gse",
     "pcm-stato-citta",
     "pcm-politiche-mare",
@@ -44,7 +43,7 @@ def diagnose_routes(config: dict[str, Any]) -> int:
     """Read-only default/IPv4 comparison; never changes source health or snapshots."""
     sources = _source_map(config)
     requests = [(source_id, url, route)
-                for source_id in ("anci-toscana", "anci-nazionale", "mim-enti-locali")
+                for source_id in ("anci-toscana", "mim-enti-locali")
                 for url in _urls(sources[source_id])
                 if source_id != "anci-toscana" or url.endswith("/categorie/bandi/")
                 for route in ("default", "ipv4")]
