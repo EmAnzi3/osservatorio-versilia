@@ -1167,22 +1167,30 @@ def gaia_order(label: str) -> tuple[int, int]:
     return int(year), int(half)
 
 
+_GAIA_SESSION = None
+
+
 def gaia_fetch(locality: dict[str, Any]) -> bytes:
-    """Imposta la sessione GAIA sulla località e scarica la pagina dei valori medi."""
-    import http.cookiejar
-    import urllib.parse
-    import urllib.request
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-    opener.addheaders = [("User-Agent", "OsservatorioVersilia/aggiornamento (+https://osservatorioversilia.it)")]
-    data = urllib.parse.urlencode({"codice_comune": GAIA_TOWN[locality["townCode"]], "codice_prelievo": locality["sampleCode"],
-                                   "codice_prelievo1": locality["sampleCode2"], "codice_area": "1", "op": "set_session"}).encode()
-    opener.open(GAIA_URL + "php/ajax.inc.php", data=data, timeout=30).read()
-    return opener.open(locality["url"], timeout=30).read()
+    """Imposta la sessione GAIA sulla località e scarica la pagina dei valori medi (come l'acquisizione storica)."""
+    global _GAIA_SESSION
+    import requests
+    if _GAIA_SESSION is None:
+        _GAIA_SESSION = requests.Session()
+        _GAIA_SESSION.headers.update({"User-Agent": "OsservatorioVersilia/aggiornamento (+https://osservatorioversilia.it)"})
+        _GAIA_SESSION.get(GAIA_URL, timeout=30).raise_for_status()  # cookie di sessione prima di set_session
+    _GAIA_SESSION.post(GAIA_URL + "php/ajax.inc.php", data={
+        "codice_comune": GAIA_TOWN[locality["townCode"]], "codice_prelievo": locality["sampleCode"],
+        "codice_prelievo1": locality["sampleCode2"], "codice_area": "1", "op": "set_session"}, timeout=30).raise_for_status()
+    response = _GAIA_SESSION.get(locality["url"], timeout=30)
+    response.raise_for_status()
+    return response.content
 
 
 def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where: str) -> tuple[str, list[str]]:
     page = _GaiaPage()
     page.feed(body.decode("utf-8", "replace"))
+    if not page.title or page.title.strip("- ") == "" or "Notice</b>" in body.decode("utf-8", "replace"):
+        raise UpdateError(f"GAIA {where}: località non impostata nella sessione GAIA (titolo {page.title!r})")
     if page.period.casefold() != label.casefold():
         raise UpdateError(f"GAIA {where}: {label} non presente (la pagina riporta {page.period!r})")
     if len(page.rows) != len(definitions):

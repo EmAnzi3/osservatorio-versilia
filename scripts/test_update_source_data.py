@@ -554,7 +554,9 @@ def gaia_cases(tmp: Path) -> None:
         for bad in (lambda: upd.update_gaia_water(following, pages("stale", published.replace("semestre", "Semestre")), dry_run=True),
                     lambda: upd.update_gaia_water(following, pages("unit", new_label, unit="(g/L)"), dry_run=True),
                     lambda: upd.update_gaia_water(f"{int(year) - 1}-S1", pages("old", "1° Semestre " + str(int(year) - 1)), dry_run=True),
-                    lambda: upd.gaia_label("2026-S3")):
+                    lambda: upd.gaia_label("2026-S3"),
+                    lambda: upd.gaia_parse(b'<h4>-</h4><h6>Periodo di riferimento: 1\xc2\xb0 Semestre 2026</h6><b>Notice</b>',
+                                           "1° semestre 2026", defs, "sessione")):
             try:
                 bad()
                 raise AssertionError("pagine GAIA non valide accettate")
