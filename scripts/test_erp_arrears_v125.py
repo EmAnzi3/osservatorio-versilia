@@ -8,7 +8,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data/site-data.json"
 REGISTRY = ROOT / "data/source-registry.json"
-SNAPSHOT = ROOT / "data/source-snapshots/erp-lucca-arrears-2020-2024.json"
 APP00 = ROOT / "assets/app-parts/00.txt"
 APP03 = ROOT / "assets/app-parts/03.txt"
 UXHC = ROOT / "assets/ux-history-core.js"
@@ -46,7 +45,13 @@ def semver_tuple(version: str) -> tuple[int, int, int]:
 def main() -> None:
     site = load(SITE)
     registry = load(REGISTRY)
-    snapshot = load(SNAPSHOT)
+    # Lo snapshot si allunga di un esercizio all'anno (update_source_data.py erp-arrears):
+    # i valori 2020–2024 restano verificati come storia, l'ultimo esercizio deve riconciliare.
+    snapshot = load(ROOT / site["metrics"]["erpArrears"]["meta"]["sourceMeta"]["snapshot"])
+    years = snapshot["scope"]["years"]
+    last = years[-1]
+    assert years == list(range(2020, last + 1)) and last >= 2024
+    i24 = years.index(2024)
 
     # Questo è un regression gate della funzionalità introdotta in v1.25:
     # non deve bloccare release successive che aggiungono indicatori.
@@ -59,15 +64,15 @@ def main() -> None:
     metric = site["metrics"]["erpArrears"]
     assert metric["meta"]["theme"] == "abitare"
     assert metric["meta"]["unit"] == "%"
-    assert metric["meta"]["year"] == "2024"
+    assert metric["meta"]["year"] == str(last)
     assert metric["meta"]["polarity"] == "neutral"
     assert metric["meta"]["comparisonReference"] == "aggregate"
     assert metric["meta"]["comparisonLabel"] == "valore Versilia"
     assert "non la media semplice" in metric["meta"]["comparisonNote"]
     assert metric["sourceUrl"] == "https://at.erplucca.it/default?path=75&t=1"
-    assert metric["method"]["coverage"] == "7/7 · 2020–2024"
+    assert metric["method"]["coverage"] == f"7/7 · 2020–{last}"
     assert "percentuali stampate incoerenti" in metric["method"]["caveat"]
-    assert metric["history"]["years"] == [2020, 2021, 2022, 2023, 2024]
+    assert metric["history"]["years"] == years
 
     sections = site["themes"]["abitare"]["sections"]
     erp_sections = [section for section in sections if section.get("key") == "erp-fragilita-abitativa"]
@@ -80,20 +85,23 @@ def main() -> None:
     assert set(rows) == set(EXPECTED_2024)
     for code, expected in EXPECTED_2024.items():
         row = rows[code]
-        assert close(row["value"], expected), (code, row["value"], expected)
-        assert row["series"]["years"] == [2020, 2021, 2022, 2023, 2024]
-        assert len(row["series"]["values"]) == 5
+        assert close(row["series"]["values"][i24], expected), (code, row["series"]["values"][i24], expected)
+        assert row["series"]["years"] == years
+        assert len(row["series"]["values"]) == len(years) and row["value"] == row["series"]["values"][-1]
         issued = row["accounting"]["issued"]
         arrears = row["accounting"]["arrears"]
         assert close(row["value"], arrears / issued * 100.0)
 
-    assert close(metric["aggregate"]["value"], 8.56)
-    simple_mean = sum(row["value"] for row in metric["rows"]) / len(metric["rows"])
+    aggregate = metric["aggregate"]
+    assert close(aggregate["series"]["values"][i24], 8.56)
+    simple_mean = sum(row["series"]["values"][i24] for row in metric["rows"]) / len(metric["rows"])
     assert close(simple_mean, 6.31)
-    assert not close(simple_mean, metric["aggregate"]["value"]), "Il benchmark ERP non deve usare la media semplice comunale"
-    assert metric["aggregate"]["accounting"]["issued"] == 50285906.83
-    assert metric["aggregate"]["accounting"]["arrears"] == 4304930.64
-    assert close(metric["aggregate"]["accounting"]["arrears"] / metric["aggregate"]["accounting"]["issued"] * 100.0, 8.56)
+    assert not close(simple_mean, aggregate["series"]["values"][i24]), "Il benchmark ERP non deve usare la media semplice comunale"
+    assert aggregate["accountingSeries"]["issued"][i24] == 50285906.83
+    assert aggregate["accountingSeries"]["arrears"][i24] == 4304930.64
+    latest_mean = sum(row["value"] for row in metric["rows"]) / len(metric["rows"])
+    assert not close(latest_mean, aggregate["value"]), "Anche l'ultimo esercizio usa somma-poi-rapporto, non la media"
+    assert close(aggregate["accounting"]["arrears"] / aggregate["accounting"]["issued"] * 100.0, aggregate["value"])
 
     # Il dato anomalo 2023 di Massarosa deve restare quello pubblicato, non corretto o interpolato.
     massarosa = rows["046018"]
@@ -110,7 +118,8 @@ def main() -> None:
         assert abs(item["rate"] - item["arrears"] / item["issued"] * 100.0) < 0.00011, item
 
     hashes = {item["year"]: item["sha256"] for item in snapshot["sourceDocuments"]}
-    assert hashes == EXPECTED_HASHES
+    assert {year: hashes[year] for year in EXPECTED_HASHES} == EXPECTED_HASHES
+    assert set(hashes) == set(years) and all(len(hashes[year]) == 64 for year in years)
     assert any(item["type"] == "published_header_date_mismatch" and item["year"] == 2022 for item in snapshot["anomalies"])
     assert any(item["type"] == "published_percentage_inconsistency" and item["year"] == 2023 for item in snapshot["anomalies"])
 
