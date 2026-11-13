@@ -12,6 +12,11 @@
   esatto e gli stessi 17 parametri (nome, unità, riferimento) pubblicati, copia i valori medi verbatim,
   scrive `gaia-water-quality-AAAA-SN.json` e sposta su quel file `sourceMeta.snapshot`/`method.snapshot`.
   Rifiuta semestri precedenti, pagine ancora al periodo vecchio, parametri cambiati. Nel giro mensile.
+- GAIA ha cambiato il secondo codice di prelievo di 4 località (Torcigliano 07A07K13, Pietrasanta
+  35A02K13, Minazzana 42A06K05, Farnocchia 44A04K02): con il codice vecchio la pagina esce senza località
+  (titolo «-», tabella vuota). L'aggiornatore legge i codici dall'indice GAIA (pulsanti `btn_localita`,
+  area 1), richiede lo stesso insieme di località (Comune + primo codice) e aggiorna secondo codice e URL;
+  una pagina senza località è rifiutata.
 - Adattatore A6 `semantic_query_water_quality_adapters`: semestre e snapshot nativo letti dal catalogo
   (`period_of`, `native_of`), ammessi solo lo snapshot storico (fermo al 2° semestre 2025) o
   `gaia-water-quality-AAAA-SN.json`; impronte sempre nei pin `water_quality#1/#2`. Test con 3 mutazioni nuove

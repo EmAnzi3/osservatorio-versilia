@@ -1172,18 +1172,31 @@ _GAIA_SESSION = None
 
 def gaia_fetch(locality: dict[str, Any]) -> bytes:
     """Imposta la sessione GAIA sulla località e scarica la pagina dei valori medi (come l'acquisizione storica)."""
+    _GAIA_SESSION.post(GAIA_URL + "php/ajax.inc.php", data={
+        "codice_comune": GAIA_TOWN[locality["townCode"]], "codice_prelievo": locality["sampleCode"],
+        "codice_prelievo1": locality["sampleCode2"], "codice_area": "1", "op": "set_session"}, timeout=30).raise_for_status()
+    return gaia_get(locality["url"])
+
+
+def gaia_get(url: str) -> bytes:
     global _GAIA_SESSION
     import requests
     if _GAIA_SESSION is None:
         _GAIA_SESSION = requests.Session()
         _GAIA_SESSION.headers.update({"User-Agent": "OsservatorioVersilia/aggiornamento (+https://osservatorioversilia.it)"})
-        _GAIA_SESSION.get(GAIA_URL, timeout=30).raise_for_status()  # cookie di sessione prima di set_session
-    _GAIA_SESSION.post(GAIA_URL + "php/ajax.inc.php", data={
-        "codice_comune": GAIA_TOWN[locality["townCode"]], "codice_prelievo": locality["sampleCode"],
-        "codice_prelievo1": locality["sampleCode2"], "codice_area": "1", "op": "set_session"}, timeout=30).raise_for_status()
-    response = _GAIA_SESSION.get(locality["url"], timeout=30)
+    response = _GAIA_SESSION.get(url, timeout=30)
     response.raise_for_status()
     return response.content
+
+
+def gaia_index(body: bytes) -> dict[tuple[str, str], str]:
+    """(codice_comune, codice_prelievo) → codice_prelievo1 dai pulsanti località dell'indice GAIA (area 1)."""
+    found: dict[tuple[str, str], str] = {}
+    for tag in re.findall(r"<[^>]*\bbtn_localita\b[^>]*>", body.decode("utf-8", "replace")):
+        data = dict(re.findall(r'data-(codice_[a-z0-9]+)\s*=\s*"([^"]*)"', tag))
+        if data.get("codice_area") == "1" and data.get("codice_comune") in GAIA_TOWN.values():
+            found[(data["codice_comune"], data["codice_prelievo"])] = data.get("codice_prelievo1", "0")
+    return found
 
 
 def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where: str) -> tuple[str, list[str]]:
@@ -1218,10 +1231,23 @@ def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes
         raise UpdateError(f"GAIA: {label} precedente al pubblicato {published}")
     definitions = metric["parameterDefinitions"]
     changes = Changes()
+    # Il secondo codice di prelievo di una località può cambiare tra un semestre e l'altro
+    # (nel 2026 Torcigliano, Pietrasanta, Minazzana, Farnocchia): si prende dall'indice GAIA,
+    # la località resta la stessa (Comune e primo codice) e l'insieme deve restare identico.
+    index_body = (pages / "index.html").read_bytes() if pages is not None else gaia_get(GAIA_URL)
+    index = gaia_index(index_body)
+    known = {(GAIA_TOWN[l["townCode"]], l["sampleCode"]) for r in metric["rows"] for l in r["localities"]}
+    if set(index) != known:
+        raise UpdateError(f"GAIA: località dell'indice diverse da quelle pubblicate "
+                          f"(nuove {sorted(set(index) - known)}, mancanti {sorted(known - set(index))})")
     localities = []
     for row in metric["rows"]:
         for locality in row["localities"]:
             where = f"{row['town']} · {locality['name']}"
+            second = index[(GAIA_TOWN[locality["townCode"]], locality["sampleCode"])]
+            if second != locality["sampleCode2"]:
+                changes.note(f"{where} · secondo codice", locality["sampleCode2"], second)
+                locality.update(sampleCode2=second, url=f"{GAIA_URL}campioni/{locality['sampleCode']}/{second}")
             if pages is not None:
                 body = (pages / f"{locality['sampleCode']}_{locality['sampleCode2']}.html").read_bytes()
             else:

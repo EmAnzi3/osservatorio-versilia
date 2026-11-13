@@ -521,11 +521,17 @@ def gaia_cases(tmp: Path) -> None:
         current = f"{year}-S{half}"
         following = f"{int(year) + 1}-S1" if half == "2" else f"{year}-S2"
 
-        def pages(name: str, label: str, bump: bool = False, unit: str | None = None) -> Path:
+        def pages(name: str, label: str, bump: bool = False, unit: str | None = None,
+                  second: dict[str, str] | None = None, extra: bool = False) -> Path:
             folder = tmp / name
             folder.mkdir()
+            second = second or {}
+            buttons = []
             for row in metric["rows"]:
                 for loc in row["localities"]:
+                    code2 = second.get(loc["sampleCode"], loc["sampleCode2"])
+                    buttons.append(f'<a class="btn btn_localita" data-codice_comune="{upd.GAIA_TOWN[loc["townCode"]]}" '
+                                   f'data-codice_prelievo="{loc["sampleCode"]}" data-codice_prelievo1="{code2}" data-codice_area="1">x</a>')
                     cells = "".join(
                         f'<tr><td><span title="{d["description"]}">{d["name"]}</span></td><td>{unit if unit and i == 7 else d["unit"]}</td>'
                         f'<td>{("9.9" if bump and i == 7 else v)}</td><td>{d["reference"]}</td></tr>'
@@ -535,13 +541,18 @@ def gaia_cases(tmp: Path) -> None:
                     html = (f'<main><h4>{loc["title"]}</h4><h6>Periodo di riferimento: {label}</h6>'
                             f'<div id="campioni"><table><thead><tr><th>P</th><th>U</th><th>V</th><th>L</th></tr></thead><tbody>{cells}</tbody></table></div>'
                             f'<table><tr><td>a</td><td>b</td><td>c</td><td>d</td></tr></table></main>')
-                    (folder / f"{loc['sampleCode']}_{loc['sampleCode2']}.html").write_text(html, encoding="utf-8")
+                    (folder / f"{loc['sampleCode']}_{code2}.html").write_text(html, encoding="utf-8")
+            if extra:
+                buttons.append('<a class="btn_localita" data-codice_comune="6" data-codice_prelievo="07Z99K99" data-codice_prelievo1="0" data-codice_area="1">x</a>')
+            buttons.append('<a class="btn_localita" data-codice_comune="31" data-codice_prelievo="33A02K14" data-codice_prelievo1="0" data-codice_area="4">altro gestore</a>')
+            (folder / "index.html").write_text("".join(buttons), encoding="utf-8")
             return folder
 
         same = upd.update_gaia_water(current, pages("same", published.replace("semestre", "Semestre")), dry_run=True)
         assert same.lines == [], same.lines
         new_label = upd.gaia_label(following).replace("semestre", "Semestre")
-        changes = upd.update_gaia_water(following, pages("new", new_label, bump=True), dry_run=False)
+        changes = upd.update_gaia_water(following, pages("new", new_label, bump=True, second={"07A07K06": "07A07K13"}), dry_run=False)
+        assert any("secondo codice" in line and "07A07K13" in line for line in changes.lines), changes.lines
         assert sum("Nitrato" in line for line in changes.lines) >= 1, changes.lines
         site = upd.load(upd.SITE)
         m2 = site["metrics"]["drinkingWaterQuality"]
@@ -550,11 +561,14 @@ def gaia_cases(tmp: Path) -> None:
         snap = upd.load(tmp / path)["drinkingWaterQuality"]
         assert [l for r in m2["rows"] for l in r["localities"]] == snap["localities"] and len(snap["localities"]) == 70
         assert all(l["period"] == new_label and l["values"][7] == "9.9" for l in snap["localities"])
+        torcigliano = next(l for l in snap["localities"] if l["sampleCode"] == "07A07K06")
+        assert torcigliano["sampleCode2"] == "07A07K13" and torcigliano["url"].endswith("/campioni/07A07K06/07A07K13")
         upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
         for bad in (lambda: upd.update_gaia_water(following, pages("stale", published.replace("semestre", "Semestre")), dry_run=True),
                     lambda: upd.update_gaia_water(following, pages("unit", new_label, unit="(g/L)"), dry_run=True),
                     lambda: upd.update_gaia_water(f"{int(year) - 1}-S1", pages("old", "1° Semestre " + str(int(year) - 1)), dry_run=True),
                     lambda: upd.gaia_label("2026-S3"),
+                    lambda: upd.update_gaia_water(following, pages("extra", new_label, extra=True), dry_run=True),
                     lambda: upd.gaia_parse(b'<h4>-</h4><h6>Periodo di riferimento: 1\xc2\xb0 Semestre 2026</h6><b>Notice</b>',
                                            "1° semestre 2026", defs, "sessione")):
             try:
