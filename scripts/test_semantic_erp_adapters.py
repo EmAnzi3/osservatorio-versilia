@@ -6,16 +6,17 @@ from test_semantic_query_engine import rejected
 import semantic_query_erp_adapters as erp
 
 # Reviewed balances: issued/arrears euro pairs and public two-decimal rates.
+# 2025: estratto assemblea Soci Bilancio_2025 (28/04/2026), percentuali stampate riconciliate con gli importi.
 CELLS = {
- '046005': ([(3582792.37,247063.23),(3854507.54,267712.42),(4132419.89,296554.22),(4402239.72,308511.54),(4721245.44,348067.19)], [6.90,6.95,7.18,7.01,7.37]),
- '046013': ([(2949206.99,172475.09),(3192864.58,194717.67),(3429308.68,225193.13),(3459825.27,246056.52),(3911358.57,272869.37)], [5.85,6.10,6.57,7.11,6.98]),
- '046018': ([(1656939.53,62971.17),(1755764.28,61148.91),(1860507.25,64950.49),(3164988.55,64990.36),(2078965.36,72398.09)], [3.80,3.48,3.49,2.05,3.48]),
- '046024': ([(5363800.69,412828.20),(5709770.82,417031.70),(6081755.16,447394.65),(6136480.16,463131.42),(6812489.99,478114.18)], [7.70,7.30,7.36,7.55,7.02]),
- '046028': ([(4117358.99,216108.44),(4409130.00,208201.92),(4709525.63,211210.84),(4720359.45,219836.25),(5346600.17,235874.51)], [5.25,4.72,4.48,4.66,4.41]),
- '046030': ([(825116.56,28883.37),(887449.32,28598.67),(947137.77,35187.95),(1259681.08,36132.36),(1036145.57,41967.92)], [3.50,3.22,3.72,2.87,4.05]),
- '046033': ([(20275358.16,2333819.91),(21713625.62,2401763.10),(23257105.59,2558637.44),(23303630.28,2712346.75),(26379101.73,2855639.38)], [11.51,11.06,11.00,11.64,10.83]),
+ '046005': ([(3582792.37,247063.23),(3854507.54,267712.42),(4132419.89,296554.22),(4402239.72,308511.54),(4721245.44,348067.19),(5039222.44,385582.55)], [6.90,6.95,7.18,7.01,7.37,7.65]),
+ '046013': ([(2949206.99,172475.09),(3192864.58,194717.67),(3429308.68,225193.13),(3459825.27,246056.52),(3911358.57,272869.37),(4151908.56,303196.97)], [5.85,6.10,6.57,7.11,6.98,7.30]),
+ '046018': ([(1656939.53,62971.17),(1755764.28,61148.91),(1860507.25,64950.49),(3164988.55,64990.36),(2078965.36,72398.09),(2184259.17,73162.83)], [3.80,3.48,3.49,2.05,3.48,3.35]),
+ '046024': ([(5363800.69,412828.20),(5709770.82,417031.70),(6081755.16,447394.65),(6136480.16,463131.42),(6812489.99,478114.18),(7185201.31,474515.31)], [7.70,7.30,7.36,7.55,7.02,6.60]),
+ '046028': ([(4117358.99,216108.44),(4409130.00,208201.92),(4709525.63,211210.84),(4720359.45,219836.25),(5346600.17,235874.51),(5650196.60,235104.29)], [5.25,4.72,4.48,4.66,4.41,4.16]),
+ '046030': ([(825116.56,28883.37),(887449.32,28598.67),(947137.77,35187.95),(1259681.08,36132.36),(1036145.57,41967.92),(1074168.22,47012.01)], [3.50,3.22,3.72,2.87,4.05,4.38]),
+ '046033': ([(20275358.16,2333819.91),(21713625.62,2401763.10),(23257105.59,2558637.44),(23303630.28,2712346.75),(26379101.73,2855639.38),(27984513.43,2912512.45)], [11.51,11.06,11.00,11.64,10.83,10.41]),
 }
-TOTALS = [(38770573.29,3474149.41),(41523112.16,3579174.39),(44417759.97,3839128.72),(46447204.51,4051005.20),(50285906.83,4304930.64)]
+TOTALS = [(38770573.29,3474149.41),(41523112.16,3579174.39),(44417759.97,3839128.72),(46447204.51,4051005.20),(50285906.83,4304930.64),(53269469.73,4431086.41)]
 
 
 def query(op='compare', **selectors):
@@ -24,8 +25,10 @@ def query(op='compare', **selectors):
 
 def regressions(path):
     e = QueryEngine(path, layer='effective')
+    PATH, YEARS = erp.frozen_path(e, 'erpArrears')
+    assert YEARS[0] == 2020 and len(YEARS) <= len(TOTALS)
     for dim in erp.dimensions('erpArrears'):
-        for j, year in enumerate(erp.YEARS):
+        for j, year in enumerate(YEARS):
             r = e.query(query(dimension=dim, periods=[str(year)])); assert r['status'] == 'computed', r
             for o in r['observations']:
                 amounts, rates = CELLS[o['geography']]; issued, arrears = amounts[j]
@@ -40,7 +43,7 @@ def regressions(path):
             assert [x['geography'] for x in r['result']['ranking']] == sorted(expected,key=lambda c:(-expected[c],c))
         for code,(amounts,rates) in CELLS.items():
             r=e.query(query('series',dimension=dim,towns=[code])); assert r['status']=='computed',r
-            assert [o['period'] for o in r['observations']]==[str(y) for y in erp.YEARS]
+            assert [o['period'] for o in r['observations']]==[str(y) for y in YEARS]
         for op in ('absolute_change','relative_change','percentage_points','trend'):
             rejected(e,query(op,dimension=dim,towns=['046018'],periods=['2023','2024']),'erp_accounting_continuity_not_attested_for_temporal_analysis')
         rejected(e,query('anomaly',dimension=dim),'erp_peer_anomaly_not_reviewed')
@@ -48,7 +51,7 @@ def regressions(path):
         rejected(e,query(dimension=dim,periods=['2019']),'erp_period_not_frozen')
         for pair in ([dict(metric='erpArrears',dimension=dim),dict(metric='population')],[dict(metric='population'),dict(metric='erpArrears',dimension=dim)]):
             rejected(e,dict(operation='correlation',selectors=pair,axis='municipalities',method='pearson',purpose='descriptive'),'erp_pair_not_jointly_reviewed')
-    for j,year in enumerate(erp.YEARS):
+    for j,year in enumerate(YEARS):
         r=e.query(query('weighted_ratio',dimension='nativeRatio',periods=[str(year)])); assert r['status']=='computed',r
         issued,arrears=TOTALS[j]
         assert math.isclose(r['result']['value'],arrears/issued*100,abs_tol=1e-9)
@@ -61,11 +64,11 @@ def regressions(path):
     for mutate in mutations:
         g=QueryEngine(path,layer='effective');mutate(g._catalog['metrics']['erpArrears']);assert g.query(query())['status']=='not_computable'
     for field in ('path','sha256'):
-        g=QueryEngine(path,layer='effective');_,ref=g.file(erp.PATH);ref[field]='changed';assert g.query(query())['status']=='not_computable'
-    g=QueryEngine(path,layer='effective');snap,_=g.file(erp.PATH);snap['rows']['046018']['values'][3]['issued']=0;assert g.query(query())['status']=='not_computable'
+        g=QueryEngine(path,layer='effective');_,ref=g.file(PATH);ref[field]='changed';assert g.query(query())['status']=='not_computable'
+    g=QueryEngine(path,layer='effective');snap,_=g.file(PATH);snap['rows']['046018']['values'][3]['issued']=0;assert g.query(query())['status']=='not_computable'
     g=QueryEngine(path,layer='effective');g._catalog['towns'][0]['name']='Unknown';assert g.query(query())['status']=='not_computable'
     assert CELLS['046018'][0][3][0]==3164988.55 and CELLS['046018'][1][3]==2.05
-    print('ERP adapters PASS: 35 fixed public cells, 70 fixed euro components, five pooled ratios, series and adversarial guards')
+    print(f'ERP adapters PASS: {7*len(YEARS)} fixed public cells, {14*len(YEARS)} fixed euro components, {len(YEARS)} pooled ratios, series and adversarial guards')
 
 
 if __name__=='__main__':regressions(ROOT/'dist/data/site-data.json')

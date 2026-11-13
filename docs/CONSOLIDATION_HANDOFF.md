@@ -3,6 +3,20 @@
 
 
 
+
+## Morosità ERP 2025 (13 novembre 2026)
+
+- E.R.P. Lucca ha pubblicato l'estratto dell'assemblea soci del 28/04/2026 con il bilancio 2025
+  (`estratto assemblea Soci Bilancio_2025.pdf`, sezione «Bilanci»). Prospetto «COMUNI EMESSO dal 1/4/2004
+  al 31/12/2025 MOROSITA’ %»: le sette percentuali stampate riconciliano con gli importi (Versilia 8,32%).
+- Nuovo aggiornatore `update_source_data.py erp-arrears --year AAAA` (richiesta `"erpArrears"`, giro mensile):
+  scarica il PDF, legge le sette righe del prospetto, richiede intestazione dell'esercizio e percentuali
+  stampate coerenti (±0,01), aggiunge l'esercizio allo snapshot (`erp-lucca-arrears-2020-AAAA.json`, con
+  impronta del PDF) e ricostruisce la metrica con lo stesso `build_metric` del materializzatore, ora
+  parametrico su anni e percorso (identico per lo snapshot 2020–2024).
+- Adattatore A6 `semantic_query_erp_adapters`: percorso ed esercizi da catalogo e snapshot (`frozen_path`);
+  test con le celle 2025 rivedute (7 percentuali, 14 importi, totale Versilia).
+
 ## Acqua potabile GAIA 1° semestre 2026 (12 novembre 2026)
 
 - GAIA pubblica il 1° semestre 2026 (verificato dal browser su «MASSAROSA - Case Rosse»); il sito era al

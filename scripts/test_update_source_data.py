@@ -507,6 +507,48 @@ def mef_probe_cases() -> None:
     assert ctx and "1,14%" in ctx[0]
 
 
+def erp_cases(tmp: Path) -> None:
+    """Morosità ERP: esercizio nuovo dal prospetto (righe e percentuali riconciliate); esercizio non successivo, riga mancante e percentuale incoerente rifiutati."""
+    real_site, real_root, real_text = upd.SITE, upd.ROOT, upd.erp_pdf_text
+    (tmp / "data/source-snapshots").mkdir(parents=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    path = upd.load(upd.SITE)["metrics"]["erpArrears"]["meta"]["sourceMeta"]["snapshot"]
+    (tmp / path).write_text((real_root / path).read_text(encoding="utf-8"), encoding="utf-8")
+    last = upd.load(tmp / path)["scope"]["years"][-1]
+    year = last + 1
+    rows = ("Camaiore 5.039.222,44 385.582,55 7,65%\nForte Dei Marmi 4.151.908,56 303.196,97 7,30%\nMassarosa 2.184.259,17 73.162,83 3,35%\n"
+            "Pietrasanta 7.185.201,31 474.515,31 6,60%\nSeravezza 5.650.196,60\n235.104,29 4,16%\nStazzema 1.074.168,22 47.012,01 4,38%\n"
+            "Viareggio 27.984.513,43 2.912.512,45 10,41%")
+    text = f"Somme non ancora incassate ...\nCOMUNI EMESSO dal 1/4/2004 al 31/12/{year} MOROSITA’ %\n{rows}\nAltro testo 1.000,00"
+    pdf = tmp / "bilancio.pdf"
+    pdf.write_bytes(b"%PDF-fixture")
+    try:
+        upd.erp_pdf_text = lambda body: text
+        changes = upd.update_erp_arrears(year, pdf, dry_run=False)
+        assert any("Viareggio" in line and "10.41%" in line for line in changes.lines), changes.lines
+        site = upd.load(upd.SITE)
+        metric = site["metrics"]["erpArrears"]
+        new_path = metric["meta"]["sourceMeta"]["snapshot"]
+        snap = upd.load(tmp / new_path)
+        assert new_path.endswith(f"-{year}.json") and snap["scope"]["years"][-1] == year and metric["meta"]["year"] == str(year)
+        assert next(r for r in metric["rows"] if r["code"] == "046030")["value"] == 4.38 and metric["aggregate"]["value"] == 8.32
+        assert snap["sourceDocuments"][-1]["sha256"] == upd.hashlib.sha256(b"%PDF-fixture").hexdigest()
+        import materialize_erp_arrears_v125 as erp
+        assert metric == erp.build_metric(snap)
+        upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+        for bad_text, bad_year in ((text, year + 1), (text.replace("Stazzema 1.074.168,22 47.012,01 4,38%", ""), year),
+                                   (text.replace("4,38%", "5,38%"), year), (text.replace(f"31/12/{year}", f"31/12/{last}"), year)):
+            upd.erp_pdf_text = lambda body, t=bad_text: t
+            try:
+                upd.update_erp_arrears(bad_year, pdf, dry_run=True)
+                raise AssertionError("prospetto ERP non valido accettato")
+            except upd.UpdateError:
+                pass
+    finally:
+        upd.SITE, upd.ROOT, upd.erp_pdf_text = real_site, real_root, real_text
+
+
 def gaia_cases(tmp: Path) -> None:
     """Acqua GAIA: semestre pubblicato ricostruito identico; semestre nuovo accettato; periodo, parametro e semestre precedente rifiutati."""
     real_site, real_root = upd.SITE, upd.ROOT
@@ -664,8 +706,10 @@ def main() -> None:
         mim_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         gaia_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        erp_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
 
 
 if __name__ == "__main__":
