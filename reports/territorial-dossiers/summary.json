@@ -17,7 +17,7 @@
   "expectedRefusals": 94,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "de459927ba7a07d23899b5ec2c1553ea5e00186fb9ccf15123c627a71ab867bc",
+  "evidenceSha256": "7b0b9371f4fce9976c3427e87ff09883612907a423f9d61bb934f8b4abc5d180",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,
