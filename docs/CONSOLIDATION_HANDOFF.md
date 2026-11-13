@@ -1,5 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo mensile: falsi «periodo nuovo» su servizi online e perdite idriche (13 novembre 2026)
+
+Il primo giro del controllo (#570) segnalava come nuovi due periodi che alla fonte non esistono.
+
+- **`municipalOnlineServicesAdvanced` (ind18):** il file regionale «Indicatori 2024» (aggiornato il
+  7/7/2026) ripete i valori Istat ICT al 31/12/2022, identici per i 7 Comuni; Istat non ha diffuso
+  una rilevazione ICT nelle PA locali successiva. La regola `rt_indicatori_comunali` leggeva l'anno
+  del file. Nuova regola `rt_indicatori_ind18` con il nuovo modo `values` di
+  `scripts/release_period_probes.py`: prende il file dell'edizione più recente elencato nella pagina,
+  legge `ind18` per codice Istat e confronta i valori pubblicati (tolleranza 0,01 per i file
+  arrotondati). Valori uguali = nessuna rilevazione nuova; valori diversi = periodo nuovo con il
+  dettaglio dei Comuni; colonna o Comune assente = da verificare.
+- **`waterNetworkLosses`:** il dataflow Istat `DCCV_CONSACQUA_2` ha 2020 e 2022 solo per Italia e
+  ripartizioni; per i Comuni l'ultimo anno resta il 2018. La regola `istat_acqua_comuni` interrogava
+  tutte le aree: ora la chiave è limitata ai 7 Comuni.
+
+Nessun dato pubblicato cambia. Regole in `sourceChecks`: 74.
+
 
 
 
@@ -328,7 +346,7 @@ Primo periodo nuovo segnalato dal controllo mensile completo. I 6 indicatori ASI
 Il «Controllo mensile dati» ora verifica alla fonte tutti i 225 indicatori. 60 hanno un
 probe dedicato che confronta periodo e valori (OpenBDAP, ARS, demografia Istat, SIOPE, RGS);
 i restanti 165 hanno una verifica **del solo periodo**: `source_period` in
-`scripts/release_period_probes.py`, con 73 regole in `sourceChecks` di
+`scripts/release_period_probes.py`, con 73 regole (74 dal 13 novembre 2026) in `sourceChecks` di
 `ci/release-probe-coverage.json`. Il rapporto lo dichiara riga per riga («verifica del solo
 periodo»): un periodo uguale non garantisce valori identici alla fonte.
 

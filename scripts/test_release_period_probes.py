@@ -49,13 +49,15 @@ def coverage_contract() -> None:
     assert used == set(contract["sourceChecks"]), f"regole non usate: {sorted(set(contract['sourceChecks']) - used)}"
     for name, check in contract["sourceChecks"].items():
         mode = check.get("mode", "latest")
-        assert mode in {"latest", "next", "absent", "snapshot"}, name
+        assert mode in {"latest", "next", "absent", "snapshot", "values"}, name
         assert check["url"].split(" ")[-1].startswith("https://") and check.get("hint"), name
         assert check.get("kind", "year") in {"year", "month", "semester", "date"}, name
         if mode in {"latest", "absent"}:
             assert re.compile(check["pattern"]).groups >= 1, name
         if mode == "next":
             assert "{next}" in check["url"] and all("{next}" in u for u in check.get("alternatives", [])), name
+        if mode == "values":
+            assert re.compile(check["link"]).groups == 2 and check["column"] and check["geography"], name
         if mode == "snapshot":
             assert check["expect"] and (check.get("kind") == "year" or 0 < int(check["maxAgeDays"]) <= 92), name
         if check.get("kind") == "date" and mode == "latest":
@@ -150,6 +152,8 @@ def period_cases() -> None:
         "daily": {"url": "https://x.test/d", "kind": "date", "graceDays": 30, "pattern": r"Elenco del (\d\d/\d\d/20\d\d)", "hint": "h"},
         "semester": {"url": "https://x.test/s", "kind": "semester", "pattern": r"(\d\d/\d\d/20\d\d)", "hint": "h"},
         "absent": {"mode": "absent", "url": "https://x.test/sdmx?startPeriod={next}", "pattern": r'TIME_PERIOD="(20\d\d)', "text": "raw", "hint": "h"},
+        "values": {"mode": "values", "url": "https://x.test/ind/", "link": r'href="([^"]+)"[^>]*>\s*Indicatori (20\d\d)\s*</a>',
+                   "column": "ind18", "geography": "codice_istat_num", "hint": "h"},
     })
 
     def site(pages):
@@ -193,6 +197,19 @@ def period_cases() -> None:
     assert run("semester", "2° semestre 2025", {"https://x.test/s": page("prelievo del 03/02/2026")})["status"] == "release_detected"
     assert run("absent", "2018", {})["status"] == "current", "nessun dato dopo il periodo pubblicato"
     assert run("absent", "2018", {"https://x.test/sdmx?startPeriod=2019": b'<Obs TIME_PERIOD="2020"/>'})["status"] == "release_detected"
+    # `values`: l'anno del file cambia, il dato no (ind18 resta al 31/12/2022 nel file 2024).
+    listing = page('<a href="/f/ind-2023">Indicatori 2023</a>&nbsp;(file.csv) <a href="/f/ind-2024-1">Indicatori 2024</a>&nbsp;(file.csv)')
+    csv_file = lambda a, b: f"Comune;codice_istat_num;ind17;ind18\nCamaiore;46005;1;{a}\nMassarosa;46018;nd;{b}\n".encode("cp1252")
+    rows = {"meta": {"year": "2022"}, "rows": [{"town": "Camaiore", "code": "046005", "value": 75.0}, {"town": "Massarosa", "code": "046018", "value": 33.333333333}]}
+    values = lambda pages: probes.probe_metric("m", rows, {"probe": "source_period", "checks": ["values"]}, fetch=site(pages))
+    same = values({"https://x.test/ind/": listing, "https://x.test/f/ind-2024-1": csv_file("75", "33,333333333"), "https://x.test/f/ind-2023": csv_file("1", "1")})
+    assert same["status"] == "current" and same["checks"][0]["edition"] == "2024", same
+    assert values({"https://x.test/ind/": listing, "https://x.test/f/ind-2024-1": csv_file("75", "33,33")})["status"] == "current", "arrotondamento del file"
+    moved = values({"https://x.test/ind/": listing, "https://x.test/f/ind-2024-1": csv_file("80", "33,33")})
+    assert moved["status"] == "release_detected" and "Camaiore" in moved["detail"], moved
+    assert values({"https://x.test/ind/": listing, "https://x.test/f/ind-2024-1": b"Comune;codice_istat_num;ind17\n"})["reason"] == "structure_changed"
+    assert values({"https://x.test/ind/": page("nessun file")})["reason"] == "structure_changed"
+    assert values({"https://x.test/ind/": listing, "https://x.test/f/ind-2024-1": csv_file("75", "nd")})["reason"] == "structure_changed", "valore assente = da verificare"
     probes.SOURCE_CHECKS.clear()
     assert probes.parse_period("settembre 8, 2026", "date") == (2026, 9, 8)
     assert probes.parse_period("agosto 2026", "month") == (2026, 8)
