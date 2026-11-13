@@ -29412,7 +29412,9 @@
         ],
         "sourceMeta": {
           "snapshot": "data/source-snapshots/gaia-water-quality-2026-S1.json",
-          "note": "70 località, 17 parametri; valori e riferimenti restano nelle unità originali GAIA."
+          "note": "70 località, 17 parametri; valori e riferimenti restano nelle unità originali GAIA.",
+          "unitCorrections": 18,
+          "unitCorrectionNote": "1° semestre 2026: in 18 valori (Fluoruro) GAIA riporta il dato in µg/L nella colonna mg/L; convertiti in mg/L dividendo per 1.000. Elenco nello snapshot (unitCorrections)."
         }
       },
       "sourceUrl": "https://www.gaia-spa.it/analisiweb_v2/",
@@ -29579,7 +29581,7 @@
                 "91.1",
                 "15",
                 "238",
-                "102",
+                "0.102",
                 "0.92",
                 "16.7"
               ]
@@ -29607,7 +29609,7 @@
                 "88.5",
                 "10",
                 "191",
-                "109",
+                "0.109",
                 "0.80",
                 "8.85"
               ]
@@ -29663,7 +29665,7 @@
                 "144",
                 "11",
                 "156",
-                "112",
+                "0.112",
                 "0.86",
                 "9.65"
               ]
@@ -29691,7 +29693,7 @@
                 "120",
                 "15",
                 "133",
-                "111",
+                "0.111",
                 "0.56",
                 "8.02"
               ]
@@ -29747,7 +29749,7 @@
                 "143",
                 "11",
                 "139",
-                "111",
+                "0.111",
                 "0.72",
                 "9.50"
               ]
@@ -29787,7 +29789,7 @@
                 "139",
                 "34",
                 "177",
-                "114",
+                "0.114",
                 "0.80",
                 "8.60"
               ]
@@ -29815,7 +29817,7 @@
                 "97.5",
                 "11",
                 "156",
-                "108",
+                "0.108",
                 "1.0",
                 "8.05"
               ]
@@ -29855,7 +29857,7 @@
                 "92.0",
                 "11",
                 "244",
-                "122",
+                "0.122",
                 "0.77",
                 "13.6"
               ]
@@ -29967,7 +29969,7 @@
                 "70.9",
                 "5.6",
                 "207",
-                "171",
+                "0.171",
                 "0.49",
                 "7.73"
               ]
@@ -30051,7 +30053,7 @@
                 "93.0",
                 "11",
                 "201",
-                "120",
+                "0.120",
                 "0.77",
                 "8.94"
               ]
@@ -30427,7 +30429,7 @@
                 "121",
                 "12",
                 "208",
-                "160",
+                "0.160",
                 "0.70",
                 "10.7"
               ]
@@ -30455,7 +30457,7 @@
                 "93.0",
                 "11",
                 "214",
-                "125",
+                "0.125",
                 "0.81",
                 "9.30"
               ]
@@ -30483,7 +30485,7 @@
                 "111",
                 "8.7",
                 "222",
-                "113",
+                "0.113",
                 "3.9",
                 "14.8"
               ]
@@ -30539,7 +30541,7 @@
                 "124",
                 "12",
                 "224",
-                "159",
+                "0.159",
                 "0.74",
                 "10.4"
               ]
@@ -30623,7 +30625,7 @@
                 "98.8",
                 "8.3",
                 "245",
-                "100",
+                "0.100",
                 "0.52",
                 "10.2"
               ]
@@ -30651,7 +30653,7 @@
                 "111",
                 "8.3",
                 "339",
-                "118",
+                "0.118",
                 "1.8",
                 "14.6"
               ]
@@ -31387,7 +31389,7 @@
                 "37.7",
                 "7.4",
                 "134",
-                "100",
+                "0.100",
                 "0.21",
                 "5.91"
               ]
@@ -31471,7 +31473,7 @@
                 "66.9",
                 "6.0",
                 "193",
-                "120",
+                "0.120",
                 "0.60",
                 "7.87"
               ]
@@ -31575,7 +31577,7 @@
       "method": {
         "type": "Pubblicazione analitica GAIA per località",
         "formula": "Nessuna aggregazione delle concentrazioni: si riportano i valori medi e i limiti/riferimenti della singola località.",
-        "caveat": "Valori consigliati e limiti normativi sono mantenuti distinti. Le stringhe con < o > non vengono trasformate.",
+        "caveat": "Valori consigliati e limiti normativi sono mantenuti distinti. Le stringhe con < o > non vengono trasformate. 1° semestre 2026: in 18 valori (Fluoruro) GAIA riporta il dato in µg/L nella colonna mg/L; convertiti in mg/L dividendo per 1.000. Elenco nello snapshot (unitCorrections).",
         "coverage": "7/7 · 70/70 località · 1.190 valori",
         "snapshot": "data/source-snapshots/gaia-water-quality-2026-S1.json"
       }

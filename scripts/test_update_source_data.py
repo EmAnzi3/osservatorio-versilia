@@ -551,8 +551,8 @@ def gaia_cases(tmp: Path) -> None:
         same = upd.update_gaia_water(current, pages("same", published.replace("semestre", "Semestre")), dry_run=True)
         assert same.lines == [], same.lines
         new_label = upd.gaia_label(following).replace("semestre", "Semestre")
-        changes = upd.update_gaia_water(following, pages("new", new_label, bump=True, second={"07A07K06": "07A07K13"}), dry_run=False)
-        assert any("secondo codice" in line and "07A07K13" in line for line in changes.lines), changes.lines
+        changes = upd.update_gaia_water(following, pages("new", new_label, bump=True, second={"07A07K06": "07A07K99"}), dry_run=False)
+        assert any("secondo codice" in line and "07A07K99" in line for line in changes.lines), changes.lines
         assert sum("Nitrato" in line for line in changes.lines) >= 1, changes.lines
         site = upd.load(upd.SITE)
         m2 = site["metrics"]["drinkingWaterQuality"]
@@ -562,7 +562,10 @@ def gaia_cases(tmp: Path) -> None:
         assert [l for r in m2["rows"] for l in r["localities"]] == snap["localities"] and len(snap["localities"]) == 70
         assert all(l["period"] == new_label and l["values"][7] == "9.9" for l in snap["localities"])
         torcigliano = next(l for l in snap["localities"] if l["sampleCode"] == "07A07K06")
-        assert torcigliano["sampleCode2"] == "07A07K13" and torcigliano["url"].endswith("/campioni/07A07K06/07A07K13")
+        assert torcigliano["sampleCode2"] == "07A07K99" and torcigliano["url"].endswith("/campioni/07A07K06/07A07K99")
+        fluoride = next(d for d in defs if d["name"] == "Fluoruro")
+        assert upd.gaia_unit_fix("102", fluoride) == "0.102" and upd.gaia_unit_fix("0.105", fluoride) is None
+        assert upd.gaia_unit_fix("3.0", fluoride) is None and upd.gaia_unit_fix("5000", fluoride) is None  # superamento vero o incoerente: resta
         upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
         for bad in (lambda: upd.update_gaia_water(following, pages("stale", published.replace("semestre", "Semestre")), dry_run=True),
                     lambda: upd.update_gaia_water(following, pages("unit", new_label, unit="(g/L)"), dry_run=True),

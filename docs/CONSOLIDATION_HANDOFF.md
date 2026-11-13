@@ -17,6 +17,16 @@
   (titolo «-», tabella vuota). L'aggiornatore legge i codici dall'indice GAIA (pulsanti `btn_localita`,
   area 1), richiede lo stesso insieme di località (Comune + primo codice) e aggiorna secondo codice e URL;
   una pagina senza località è rifiutata.
+- Dato 1° semestre 2026 acquisito dal workflow. In 18 località (Massarosa, Viareggio, Camaiore, Pietrasanta,
+  Stazzema) GAIA pubblica il fluoruro come 100–171 nella colonna mg/L (limite 1,50; nel 2° semestre 2025
+  ~0,105): verificato sulla pagina GAIA, è il dato in µg/L. Decisione di Ema: convertire. Regola generale
+  `gaia_unit_fix`: valore mg/L oltre 10 volte il limite che diviso per 1.000 rientra nel limite → convertito;
+  i superamenti veri e i valori incoerenti anche dopo la divisione restano. Elenco in `unitCorrections`
+  dello snapshot, nota nel metodo. La conversione è stata applicata in locale con lo stesso codice ai
+  valori scaricati dal workflow (richiesta `gaiaWater` riportata a vuota).
+- Pin `water_quality#1/#2` sul nuovo snapshot e `road#3` ripinnati; celle fisse del test A6 (Case Rosse e
+  primi nitrati per Comune) rilette dal browser sulla pagina GAIA il 13/11; 24 domande verificate
+  aggiornate agli stessi valori; dossier rigenerati.
 - Adattatore A6 `semantic_query_water_quality_adapters`: semestre e snapshot nativo letti dal catalogo
   (`period_of`, `native_of`), ammessi solo lo snapshot storico (fermo al 2° semestre 2025) o
   `gaia-water-quality-AAAA-SN.json`; impronte sempre nei pin `water_quality#1/#2`. Test con 3 mutazioni nuove

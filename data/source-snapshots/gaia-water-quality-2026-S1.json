@@ -5,8 +5,8 @@
   "sources": {
     "gaia": {
       "url": "https://www.gaia-spa.it/analisiweb_v2/",
-      "extractionSha256": "28fc4019b39b934b483ba2a5996cbb58e6591b542ad62d183eabf33c4da9bdac",
-      "rule": "Stesse 70 località e 17 parametri pubblicati; valori medi verbatim dalla pagina della località."
+      "extractionSha256": "e3f63f1db2059354968dc9135fe875a82287818b23b1b3c1230fb1d9977e39d9",
+      "rule": "Stesse 70 località e 17 parametri pubblicati; valori medi verbatim dalla pagina della località, salvo i valori in µg/L nella colonna mg/L convertiti (unitCorrections)."
     }
   },
   "drinkingWaterQuality": {
@@ -166,7 +166,7 @@
           "91.1",
           "15",
           "238",
-          "102",
+          "0.102",
           "0.92",
           "16.7"
         ]
@@ -194,7 +194,7 @@
           "88.5",
           "10",
           "191",
-          "109",
+          "0.109",
           "0.80",
           "8.85"
         ]
@@ -250,7 +250,7 @@
           "144",
           "11",
           "156",
-          "112",
+          "0.112",
           "0.86",
           "9.65"
         ]
@@ -278,7 +278,7 @@
           "120",
           "15",
           "133",
-          "111",
+          "0.111",
           "0.56",
           "8.02"
         ]
@@ -334,7 +334,7 @@
           "143",
           "11",
           "139",
-          "111",
+          "0.111",
           "0.72",
           "9.50"
         ]
@@ -362,7 +362,7 @@
           "139",
           "34",
           "177",
-          "114",
+          "0.114",
           "0.80",
           "8.60"
         ]
@@ -390,7 +390,7 @@
           "97.5",
           "11",
           "156",
-          "108",
+          "0.108",
           "1.0",
           "8.05"
         ]
@@ -418,7 +418,7 @@
           "92.0",
           "11",
           "244",
-          "122",
+          "0.122",
           "0.77",
           "13.6"
         ]
@@ -530,7 +530,7 @@
           "70.9",
           "5.6",
           "207",
-          "171",
+          "0.171",
           "0.49",
           "7.73"
         ]
@@ -614,7 +614,7 @@
           "93.0",
           "11",
           "201",
-          "120",
+          "0.120",
           "0.77",
           "8.94"
         ]
@@ -978,7 +978,7 @@
           "121",
           "12",
           "208",
-          "160",
+          "0.160",
           "0.70",
           "10.7"
         ]
@@ -1006,7 +1006,7 @@
           "93.0",
           "11",
           "214",
-          "125",
+          "0.125",
           "0.81",
           "9.30"
         ]
@@ -1034,7 +1034,7 @@
           "111",
           "8.7",
           "222",
-          "113",
+          "0.113",
           "3.9",
           "14.8"
         ]
@@ -1090,7 +1090,7 @@
           "124",
           "12",
           "224",
-          "159",
+          "0.159",
           "0.74",
           "10.4"
         ]
@@ -1174,7 +1174,7 @@
           "98.8",
           "8.3",
           "245",
-          "100",
+          "0.100",
           "0.52",
           "10.2"
         ]
@@ -1202,7 +1202,7 @@
           "111",
           "8.3",
           "339",
-          "118",
+          "0.118",
           "1.8",
           "14.6"
         ]
@@ -1902,7 +1902,7 @@
           "37.7",
           "7.4",
           "134",
-          "100",
+          "0.100",
           "0.21",
           "5.91"
         ]
@@ -1986,7 +1986,7 @@
           "66.9",
           "6.0",
           "193",
-          "120",
+          "0.120",
           "0.60",
           "7.87"
         ]
@@ -2077,6 +2077,134 @@
       }
     ]
   },
+  "unitCorrections": [
+    {
+      "sampleCode": "28A01K04",
+      "locality": "GUALDO - MONTIGIANO",
+      "parameter": "Fluoruro",
+      "published": "102",
+      "converted": "0.102"
+    },
+    {
+      "sampleCode": "28A01K10",
+      "locality": "PIANO DI MOMMIO - CORSANICO - MOMMIO CASTELLO",
+      "parameter": "Fluoruro",
+      "published": "109",
+      "converted": "0.109"
+    },
+    {
+      "sampleCode": "28A01K14",
+      "locality": "MASSAROSA",
+      "parameter": "Fluoruro",
+      "published": "112",
+      "converted": "0.112"
+    },
+    {
+      "sampleCode": "28A01K11",
+      "locality": "STIAVA - BARGECCHIA",
+      "parameter": "Fluoruro",
+      "published": "111",
+      "converted": "0.111"
+    },
+    {
+      "sampleCode": "28A01K09",
+      "locality": "QUIESA - MASSACIUCCOLI",
+      "parameter": "Fluoruro",
+      "published": "111",
+      "converted": "0.111"
+    },
+    {
+      "sampleCode": "49A01K03",
+      "locality": "VIAREGGIO",
+      "parameter": "Fluoruro",
+      "published": "114",
+      "converted": "0.114"
+    },
+    {
+      "sampleCode": "49A02K17",
+      "locality": "TORRE DEL LAGO",
+      "parameter": "Fluoruro",
+      "published": "108",
+      "converted": "0.108"
+    },
+    {
+      "sampleCode": "07A01K01",
+      "locality": "CAMAIORE- PEDONA -BASTIANELLA- MONTEBELLO",
+      "parameter": "Fluoruro",
+      "published": "122",
+      "converted": "0.122"
+    },
+    {
+      "sampleCode": "07A02K01",
+      "locality": "MONTEGGIORI-S.LUCIA",
+      "parameter": "Fluoruro",
+      "published": "171",
+      "converted": "0.171"
+    },
+    {
+      "sampleCode": "07A04K01",
+      "locality": "LIDO DI CAMAIORE-SECCO",
+      "parameter": "Fluoruro",
+      "published": "120",
+      "converted": "0.120"
+    },
+    {
+      "sampleCode": "35A01K01",
+      "locality": "CAPEZZANO MONTE",
+      "parameter": "Fluoruro",
+      "published": "160",
+      "converted": "0.160"
+    },
+    {
+      "sampleCode": "35A04K01",
+      "locality": "MARINA DI PIETRASANTA",
+      "parameter": "Fluoruro",
+      "published": "125",
+      "converted": "0.125"
+    },
+    {
+      "sampleCode": "35A02K08",
+      "locality": "PIETRASANTA",
+      "parameter": "Fluoruro",
+      "published": "113",
+      "converted": "0.113"
+    },
+    {
+      "sampleCode": "35A01K03",
+      "locality": "VALDICASTELLO",
+      "parameter": "Fluoruro",
+      "published": "159",
+      "converted": "0.159"
+    },
+    {
+      "sampleCode": "35A01K02",
+      "locality": "CAPRIGLIA",
+      "parameter": "Fluoruro",
+      "published": "100",
+      "converted": "0.100"
+    },
+    {
+      "sampleCode": "35A02K19",
+      "locality": "POLLINO - TRAVERSAGNA - PORTONE",
+      "parameter": "Fluoruro",
+      "published": "118",
+      "converted": "0.118"
+    },
+    {
+      "sampleCode": "44A10K02",
+      "locality": "PONTE STAZZEMESE - RUOSINA - IACCO",
+      "parameter": "Fluoruro",
+      "published": "100",
+      "converted": "0.100"
+    },
+    {
+      "sampleCode": "44A03K01",
+      "locality": "SANT ANNA DI STAZZEMA",
+      "parameter": "Fluoruro",
+      "published": "120",
+      "converted": "0.120"
+    }
+  ],
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py gaia-water --period 2026-S1"
   }

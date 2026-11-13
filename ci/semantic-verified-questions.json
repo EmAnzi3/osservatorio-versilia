@@ -18101,7 +18101,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "7.6"
+            "value": "7.7"
           },
           {
             "path": "/interpretationLevel",
@@ -18113,7 +18113,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_1",
@@ -18138,7 +18138,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "509.0"
+            "value": "539.0"
           },
           {
             "path": "/interpretationLevel",
@@ -18150,7 +18150,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_2",
@@ -18175,7 +18175,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "31"
+            "value": "25"
           },
           {
             "path": "/interpretationLevel",
@@ -18187,7 +18187,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_3",
@@ -18212,7 +18212,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "363.9"
+            "value": "385.4"
           },
           {
             "path": "/interpretationLevel",
@@ -18224,7 +18224,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_4",
@@ -18249,7 +18249,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "0.1"
+            "value": "0.15"
           },
           {
             "path": "/interpretationLevel",
@@ -18261,7 +18261,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_5",
@@ -18298,7 +18298,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_6",
@@ -18335,7 +18335,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_7",
@@ -18360,7 +18360,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "4.2"
+            "value": "3.8"
           },
           {
             "path": "/interpretationLevel",
@@ -18372,7 +18372,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_8",
@@ -18397,7 +18397,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "20.7"
+            "value": "22.2"
           },
           {
             "path": "/interpretationLevel",
@@ -18409,7 +18409,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_9",
@@ -18434,7 +18434,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "45.0"
+            "value": "47.8"
           },
           {
             "path": "/interpretationLevel",
@@ -18446,7 +18446,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_10",
@@ -18483,7 +18483,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_11",
@@ -18508,7 +18508,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "119"
+            "value": "90.0"
           },
           {
             "path": "/interpretationLevel",
@@ -18520,7 +18520,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_12",
@@ -18545,7 +18545,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "4.2"
+            "value": "6.1"
           },
           {
             "path": "/interpretationLevel",
@@ -18557,7 +18557,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_13",
@@ -18582,7 +18582,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "242"
+            "value": "240"
           },
           {
             "path": "/interpretationLevel",
@@ -18594,7 +18594,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_14",
@@ -18619,7 +18619,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "0.0560"
+            "value": "0.0500"
           },
           {
             "path": "/interpretationLevel",
@@ -18631,7 +18631,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_15",
@@ -18656,7 +18656,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "0.49"
+            "value": "0.96"
           },
           {
             "path": "/interpretationLevel",
@@ -18668,7 +18668,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_case_rosse_16",
@@ -18693,7 +18693,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "26.6"
+            "value": "30.0"
           },
           {
             "path": "/interpretationLevel",
@@ -18705,7 +18705,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046005",
@@ -18730,7 +18730,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "5.0"
+            "value": "4.7"
           },
           {
             "path": "/observations/0/locality",
@@ -18742,7 +18742,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046005",
@@ -18768,7 +18768,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046013",
@@ -18793,7 +18793,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "24"
+            "value": "22"
           },
           {
             "path": "/observations/0/locality",
@@ -18805,7 +18805,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046013",
@@ -18831,7 +18831,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046018",
@@ -18856,7 +18856,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "4.2"
+            "value": "3.8"
           },
           {
             "path": "/observations/0/locality",
@@ -18868,7 +18868,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046018",
@@ -18894,7 +18894,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046024",
@@ -18919,7 +18919,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "2.9"
+            "value": "3.4"
           },
           {
             "path": "/observations/0/locality",
@@ -18931,7 +18931,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046024",
@@ -18957,7 +18957,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046028",
@@ -18982,7 +18982,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "4.6"
+            "value": "4.8"
           },
           {
             "path": "/observations/0/locality",
@@ -18994,7 +18994,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046028",
@@ -19020,7 +19020,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046030",
@@ -19045,7 +19045,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "1.6"
+            "value": "1.0"
           },
           {
             "path": "/observations/0/locality",
@@ -19057,7 +19057,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046030",
@@ -19083,7 +19083,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_nitrates_046033",
@@ -19108,7 +19108,7 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": "5.4"
+            "value": "4.8"
           },
           {
             "path": "/observations/0/locality",
@@ -19120,7 +19120,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_localities_046033",
@@ -19146,7 +19146,7 @@
           }
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_compare_refused",
@@ -19166,7 +19166,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_series_refused",
@@ -19186,7 +19186,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_absolute_change_refused",
@@ -19206,7 +19206,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_relative_change_refused",
@@ -19226,7 +19226,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_rank_refused",
@@ -19246,7 +19246,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_trend_refused",
@@ -19266,7 +19266,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_correlation_refused",
@@ -19292,7 +19292,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_percentage_points_refused",
@@ -19312,7 +19312,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_weighted_ratio_refused",
@@ -19332,7 +19332,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_benchmark_gap_refused",
@@ -19352,7 +19352,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_anomaly_refused",
@@ -19372,7 +19372,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_total_count_refused",
@@ -19391,7 +19391,7 @@
           "water_quality_explicit_parameter_required"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_year_refused",
@@ -19414,7 +19414,7 @@
           "water_quality_period_not_frozen"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_other_locality_refused",
@@ -19440,7 +19440,7 @@
           "water_quality_unknown_duplicate_or_out_of_scope_locality"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_reverse_pair_refused",
@@ -19466,7 +19466,7 @@
           "water_quality_arithmetic_or_association_not_supported"
         ]
       },
-      "reference": "Frozen GAIA 2° Semestre 2025; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
+      "reference": "Frozen GAIA 1° Semestre 2026; reviewed Case Rosse/first-locality cells or explicit refusal policy; not a fresh acquisition or potability assessment"
     },
     {
       "id": "water_quality_population_lookup_refused",

@@ -1100,6 +1100,7 @@ def update_mim_schools(year: int, file: Path | None, dry_run: bool) -> Changes:
 GAIA_URL = "https://www.gaia-spa.it/analisiweb_v2/"
 GAIA_TOWN = {"046005": "6", "046013": "19", "046018": "26", "046024": "33", "046028": "39", "046030": "41", "046033": "45"}
 GAIA_SNAPSHOT = "data/source-snapshots/gaia-water-quality-{period}.json"
+GAIA_CAVEAT = "Valori consigliati e limiti normativi sono mantenuti distinti. Le stringhe con < o > non vengono trasformate."
 
 
 class _GaiaPage(html.parser.HTMLParser):
@@ -1199,6 +1200,20 @@ def gaia_index(body: bytes) -> dict[tuple[str, str], str]:
     return found
 
 
+def gaia_unit_fix(value: str, definition: dict[str, str]) -> str | None:
+    """Valore in µg/L scritto nella colonna mg/L: oltre 10 volte il limite e, diviso per 1.000, entro il limite."""
+    if definition["unit"] != "(mg/L)":
+        return None
+    try:
+        number = float(value.replace(",", "."))
+        limit = float(definition["reference"].replace(".", "").replace(",", "."))
+    except ValueError:
+        return None
+    if number > 10 * limit and number / 1000 <= limit:
+        return f"{number / 1000:.3f}"
+    return None
+
+
 def gaia_parse(body: bytes, label: str, definitions: list[dict[str, str]], where: str) -> tuple[str, list[str]]:
     page = _GaiaPage()
     page.feed(body.decode("utf-8", "replace"))
@@ -1241,6 +1256,7 @@ def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes
         raise UpdateError(f"GAIA: località dell'indice diverse da quelle pubblicate "
                           f"(nuove {sorted(set(index) - known)}, mancanti {sorted(known - set(index))})")
     localities = []
+    corrections: list[dict[str, str]] = []
     for row in metric["rows"]:
         for locality in row["localities"]:
             where = f"{row['town']} · {locality['name']}"
@@ -1253,6 +1269,12 @@ def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes
             else:
                 body = gaia_fetch(locality)
             title, values = gaia_parse(body, label, definitions, where)
+            for i, definition in enumerate(definitions):
+                fixed = gaia_unit_fix(values[i], definition)
+                if fixed is not None:
+                    corrections.append({"sampleCode": locality["sampleCode"], "locality": locality["name"], "parameter": definition["name"],
+                                        "published": values[i], "converted": fixed})
+                    values[i] = fixed
             if title and title != locality["title"]:
                 changes.note(f"titolo {locality['sampleCode']}", locality["title"], title)
             for name, old, new in zip((d["name"] for d in definitions), locality["values"], values):
@@ -1263,12 +1285,23 @@ def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes
     extraction = json.dumps(localities, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
     snapshot = {"schemaVersion": 1, "period": label, "acquiredAt": date.today().isoformat(),
                 "sources": {"gaia": {"url": GAIA_URL, "extractionSha256": hashlib.sha256(extraction).hexdigest(),
-                                     "rule": "Stesse 70 località e 17 parametri pubblicati; valori medi verbatim dalla pagina della località."}},
+                                     "rule": "Stesse 70 località e 17 parametri pubblicati; valori medi verbatim dalla pagina della località, salvo i valori in µg/L nella colonna mg/L convertiti (unitCorrections)."}},
                 "drinkingWaterQuality": {"parameterDefinitions": definitions, "localities": localities},
+                "unitCorrections": corrections,
                 "acquisitionEvidence": {"script": f"scripts/update_source_data.py gaia-water --period {period}"}}
     changes.note("drinkingWaterQuality periodo", published, label)
     metric["meta"]["year"] = label
     metric["meta"]["sourceMeta"]["snapshot"] = path
+    metric["meta"]["sourceMeta"]["unitCorrections"] = len(corrections)
+    if corrections:
+        names = sorted({c["parameter"] for c in corrections})
+        changes.note("correzioni di unità", 0, len(corrections))
+        metric["meta"]["sourceMeta"]["unitCorrectionNote"] = (
+            f"{label[0].upper()}{label[1:]}: in {len(corrections)} valori ({', '.join(names)}) GAIA riporta il dato in µg/L nella colonna mg/L; "
+            "convertiti in mg/L dividendo per 1.000. Elenco nello snapshot (unitCorrections).")
+    else:
+        metric["meta"]["sourceMeta"].pop("unitCorrectionNote", None)
+    metric["method"]["caveat"] = " ".join(x for x in (GAIA_CAVEAT, metric["meta"]["sourceMeta"].get("unitCorrectionNote")) if x)
     metric["method"]["snapshot"] = path
     if not dry_run:
         save(SITE, site)
