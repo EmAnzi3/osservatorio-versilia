@@ -44,6 +44,8 @@ def main() -> None:
     aggregate, viareggio, massarosa, camaiore = (fmt(metric["aggregate"]["value"]), fmt(by_town["Viareggio"]["value"]),
                                                  fmt(by_town["Massarosa"]["value"]), fmt(by_town["Camaiore"]["value"]))
     last = metric["meta"]["year"]
+    euro = lambda value: f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    issued, arrears = euro(by_town["Massarosa"]["accounting"]["issued"]), euro(by_town["Massarosa"]["accounting"]["arrears"])
     assert metric["aggregate"]["value"] > by_town["Camaiore"]["value"], "il test di posizione richiede Versilia sopra Camaiore"
 
     compare = urljoin(args.base, "confronta/abitare/?indicatore=erpArrears")
@@ -103,8 +105,8 @@ def main() -> None:
                 for token in (
                     "Importi emessi cumulati",
                     "Morosità cumulata",
-                    "2.078.965,36",
-                    "72.398,09",
+                    issued,
+                    arrears,
                 ):
                     assert token in expanded, (town, token)
 
