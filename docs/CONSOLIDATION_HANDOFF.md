@@ -1,5 +1,17 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Piano regionale cave: variante 2026 (13 novembre 2026)
+
+Il controllo mensile (#570) segnalava `extractivePlanning` per la deliberazione del Consiglio
+regionale n. 81 del 6 ottobre 2026. La variante riguarda solo i giacimenti potenziali «il
+Romitorino» e «Valle delle Dispense» a Castagneto Carducci (LI): in Versilia le geometrie del PRC
+non cambiano.
+
+Ema ha scelto di aggiornare l'etichetta: `PRC vigente · variante 2026`, con la nota nel
+`sourceMeta` della metrica. Valori invariati. Allineati l'adapter estrattivo (`LABELS`,
+`PERIODS` = `PRC-2026`, `periodBasis`), lo script v1.28, lo stato del monitor e i dossier (solo
+l'hash del catalogo). Pin A6: cambia solo road#3.
+
 
 
 
