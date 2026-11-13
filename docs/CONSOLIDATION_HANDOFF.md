@@ -16,6 +16,9 @@
   parametrico su anni e percorso (identico per lo snapshot 2020–2024).
 - Adattatore A6 `semantic_query_erp_adapters`: percorso ed esercizi da catalogo e snapshot (`frozen_path`);
   test con le celle 2025 rivedute (7 percentuali, 14 importi, totale Versilia).
+- Dato 2025 scritto dal workflow: coincide al centesimo con la trascrizione riveduta. Pin `erp#1/#2` sul nuovo
+  snapshot e `road#3` ripinnati, richiesta `erpArrears` riportata a vuota, dossier rigenerati; domande
+  verificate 3.730/3.730 invariate.
 
 ## Acqua potabile GAIA 1° semestre 2026 (12 novembre 2026)
 

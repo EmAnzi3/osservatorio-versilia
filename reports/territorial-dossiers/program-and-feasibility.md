@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `5bedd1e740dc37dc26d4bda04a4f6afd513267a702864d36acf0bdca5a45558c`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `c4e6b9625e672c9fba61e8cb4939fb82614d7edbaaec49686ad0292ada9f9519`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -435,7 +435,7 @@ Chi incontra difficoltà abitative e quali segnali possiamo osservare oggi? **Ri
 | mef_incomeDistribution_macro_0_pooled | weighted_ratio / incomeDistribution / macro:0 | 2024 / percent | 046005: 37.207501720578115; 046013: 33.40779853777417; 046018: 34.4734529935986; 046024: 37.160751565762006; 046028: 36.95273360923546; 046030: 40.49665711556829; 046033: 34.64680229340536 | PASS |
 | mef_incomeDistribution_absolute_change_refused | absolute_change / incomeDistribution / total |  /  | mef_temporal_change_not_reviewed | PASS |
 | erp_public_046018_2020 | compare / erpArrears / total | 2020 / percent | 046018: 3.8; 046033: 11.51 | PASS |
-| erp_series_total_046018 | series / erpArrears / total | 2020, 2021, 2022, 2023, 2024 / percent | 046018: 3.8; 046018: 3.48; 046018: 3.49; 046018: 2.05; 046018: 3.48 | PASS |
+| erp_series_total_046018 | series / erpArrears / total | 2020, 2021, 2022, 2023, 2024, 2025 / percent | 046018: 3.8; 046018: 3.48; 046018: 3.49; 046018: 2.05; 046018: 3.48; 046018: 3.35 | PASS |
 | erp_pooled_2020 | weighted_ratio / erpArrears / nativeRatio | 2020 / percent | 046005: 6.895828853180236; 046013: 5.848185311672545; 046018: 3.8004507020241105; 046024: 7.696561148695478; 046028: 5.248715026425228; 046030: 3.5005199750202562; 046033: 11.510622360320367 | PASS |
 | erp_total_absolute_change_refused | absolute_change / erpArrears / total |  /  | erp_accounting_continuity_not_attested_for_temporal_analysis | PASS |
 | dossier_primary_territorialPlanningMissionExpenditurePerResident | compare / territorialPlanningMissionExpenditurePerResident / total | 2025 / currency | 046005: 61.693765079165615; 046013: 277.8279777977798; 046018: 97.95091672016876; 046024: 104.30770874554808; 046028: 65.09314110330345; 046030: 86.96942600276624; 046033: 39.95002243558019 | PASS |
