@@ -135,6 +135,7 @@ jobs:
           commands += [["aci-vehicles", "--year", str(int(y))] for y in request.get("aciVehicles", [])]
           commands += [["mim-schools", "--year", str(int(y))] for y in request.get("mimSchools", [])]
           commands += [["gaia-water", "--period", str(p)] for p in request.get("gaiaWater", [])]
+          commands += [["erp-arrears", "--year", str(int(y))] for y in request.get("erpArrears", [])]
           commands += [["mef-fiscal-probe", "--year", str(int(y))] for y in request.get("mefFiscalProbe", [])]
           commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) + [a for step in p.get("post", []) for a in ("--post", str(step))] for p in request.get("sourceProbe", [])]
           failed = 0

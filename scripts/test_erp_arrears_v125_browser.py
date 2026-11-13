@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -36,6 +37,17 @@ def main() -> None:
     output = Path(args.screenshots_dir)
     output.mkdir(parents=True, exist_ok=True)
 
+    # Valori attesi dall'ultimo esercizio del catalogo (lo snapshot si allunga ogni anno).
+    metric = json.loads((Path(__file__).resolve().parents[1] / "data/site-data.json").read_text(encoding="utf-8"))["metrics"]["erpArrears"]
+    by_town = {row["town"]: row for row in metric["rows"]}
+    fmt = lambda value: f"{value:.2f}%".replace(".", ",")
+    aggregate, viareggio, massarosa, camaiore = (fmt(metric["aggregate"]["value"]), fmt(by_town["Viareggio"]["value"]),
+                                                 fmt(by_town["Massarosa"]["value"]), fmt(by_town["Camaiore"]["value"]))
+    last = metric["meta"]["year"]
+    euro = lambda value: f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    issued, arrears = euro(by_town["Massarosa"]["accounting"]["issued"]), euro(by_town["Massarosa"]["accounting"]["arrears"])
+    assert metric["aggregate"]["value"] > by_town["Camaiore"]["value"], "il test di posizione richiede Versilia sopra Camaiore"
+
     compare = urljoin(args.base, "confronta/abitare/?indicatore=erpArrears")
     town = urljoin(args.base, "comuni/massarosa/?tema=abitare&indicatore=erpArrears")
     indicator = urljoin(args.base, "indicatori/morosita-erp/")
@@ -53,7 +65,7 @@ def main() -> None:
                 context = browser.new_context(viewport=viewport, color_scheme=scheme)
                 page = context.new_page()
 
-                check_page(page, compare, ["Morosità ERP", "8,56%", "Viareggio", "10,83%", "Massarosa", "3,48%"])
+                check_page(page, compare, ["Morosità ERP", aggregate, "Viareggio", viareggio, "Massarosa", massarosa])
                 page.locator(".comparison-legend").wait_for(state="visible")
                 legend = page.locator(".comparison-legend").inner_text()
                 assert "Versilia · 7 Comuni" in legend, legend
@@ -66,16 +78,16 @@ def main() -> None:
                 assert reference.count() == 1 and dot.count() == 1
                 reference_left = float(reference.evaluate("el => parseFloat(el.style.left)"))
                 dot_left = float(dot.evaluate("el => parseFloat(el.style.left)"))
-                assert reference_left > dot_left, (reference_left, dot_left, "8,56% deve stare a destra di Camaiore 7,37%")
+                assert reference_left > dot_left, (reference_left, dot_left, f"{aggregate} deve stare a destra di Camaiore {camaiore}")
                 page.screenshot(path=output / f"compare-{label}-{scheme}.png", full_page=True)
 
-                check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024"])
+                check_page(page, town, ["Morosità ERP", massarosa, f"Dettaglio contabile {last}"])
                 primary_value = page.locator(".town-metric-primary [data-composite-primary-value]").inner_text().strip()
-                assert primary_value == "3,48%", primary_value
+                assert primary_value == massarosa, primary_value
 
                 history_button = page.locator('.history-panel [data-view-mode="history"]')
                 assert history_button.count() == 1, "Comando Storico assente nella scheda comunale ERP"
-                assert not history_button.is_disabled(), "Vista Storico ERP disabilitata nonostante la serie 2020–2024"
+                assert not history_button.is_disabled(), f"Vista Storico ERP disabilitata nonostante la serie 2020–{last}"
                 history_button.click()
                 history_card = page.locator(".history-panel .ux-history-card")
                 history_card.wait_for(state="visible")
@@ -93,8 +105,8 @@ def main() -> None:
                 for token in (
                     "Importi emessi cumulati",
                     "Morosità cumulata",
-                    "2.078.965,36",
-                    "72.398,09",
+                    issued,
+                    arrears,
                 ):
                     assert token in expanded, (town, token)
 
@@ -108,11 +120,11 @@ def main() -> None:
                 assert page.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), f"Overflow orizzontale dopo apertura dettaglio: {town}"
                 page.screenshot(path=output / f"massarosa-{label}-{scheme}.png", full_page=True)
 
-                check_page(page, indicator, ["Morosità ERP", "8,56%", "2020", "2024", "Fonte originale"])
+                check_page(page, indicator, ["Morosità ERP", aggregate, "2020", last, "Fonte originale"])
                 context.close()
         browser.close()
 
-    print("Morosità ERP v1.25.0 browser: benchmark Versilia 8,56%, unità %, contrasto e padding verificati desktop/mobile light/dark.")
+    print(f"Morosità ERP v1.25.0 browser: benchmark Versilia {aggregate}, unità %, contrasto e padding verificati desktop/mobile light/dark.")
 
 
 if __name__ == "__main__":

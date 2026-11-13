@@ -1,15 +1,25 @@
 """ERP Lucca cumulative accounting: public rounding and native ratios separate."""
 from a6_pins import Pin as _pin
 import math
+import re
 from materialize_erp_arrears_v125 import build_metric
 from semantic_operations import finite
 from semantic_query_library_adapters import TOWNS, fingerprint
 
 KEYS = ('erpArrears',)
-PATH = 'data/source-snapshots/erp-lucca-arrears-2020-2024.json'
+# Lo snapshot si allunga di un esercizio all'anno (update_source_data.py erp-arrears):
+# percorso ed esercizi vengono dal catalogo e dallo snapshot, le impronte restano nei pin.
+PATH_RE = re.compile(r'data/source-snapshots/erp-lucca-arrears-2020-(20[0-9]{2})[.]json')
 HASH = _pin('erp#1')
 FINGERPRINT = _pin('erp#2')
-YEARS = [2020, 2021, 2022, 2023, 2024]
+
+
+def frozen_path(engine, key):
+    path = engine._catalog['metrics'][key]['meta'].get('sourceMeta', {}).get('snapshot')
+    match = PATH_RE.fullmatch(str(path))
+    if not match:
+        raise ValueError('erp_frozen_input_changed')
+    return path, list(range(2020, int(match.group(1)) + 1))
 NOTES = ['erp_cumulative_accounting_not_annual_unpaid_rent_or_household_share',
          'erp_snapshot_reconciled_original_balance_sheet_pdfs_not_replayed',
          'erp_2022_header_mismatch_2023_printed_percentages_not_used',
@@ -47,8 +57,9 @@ def equal(actual, expected):
 
 
 def validated(engine, key):
-    snap, ref = engine.file(PATH)
-    if ref.get('path') != PATH or ref.get('sha256') != HASH or fingerprint(snap) != FINGERPRINT:
+    path, years = frozen_path(engine, key)
+    snap, ref = engine.file(path)
+    if ref.get('path') != path or ref.get('sha256') != HASH or fingerprint(snap) != FINGERPRINT or snap['scope']['years'] != years:
         raise ValueError('erp_frozen_input_changed')
     towns = engine._catalog['towns']
     if len(towns) != 7 or {t['code']:t['name'] for t in towns} != TOWNS:
@@ -56,7 +67,7 @@ def validated(engine, key):
     # Reconcile full public definition, components, series and aggregate.
     if fingerprint(engine._catalog['metrics'][key]) != fingerprint(build_metric(snap)):
         raise ValueError('erp_catalog_native_reconciliation_changed')
-    for j, year in enumerate(YEARS):
+    for j, year in enumerate(years):
         for code, name in TOWNS.items():
             r = snap['rows'][code]; cell = r['values'][j]
             if r['town'] != name or cell['year'] != year or not finite(cell['issued']) or cell['issued'] <= 0 or not finite(cell['arrears']) or cell['arrears'] < 0:
@@ -70,17 +81,18 @@ def validated(engine, key):
 
 
 def available_periods(engine, key, dim, row):
-    validated(engine, key)
-    return [str(y) for y in YEARS]
+    snap, _ = validated(engine, key)
+    return [str(y) for y in snap['scope']['years']]
 
 
 def observation(engine, key, index, dim, period, historical):
     metric = engine._catalog['metrics'][key]; ctx = context(metric, key, dim)
     snap, ref = validated(engine, key)
-    if period not in [str(y) for y in YEARS]: raise ValueError('erp_period_not_frozen')
-    row = metric['rows'][index]; code = row['code']; j = YEARS.index(int(period)); cell = snap['rows'][code]['values'][j]
+    years = snap['scope']['years']
+    if period not in [str(y) for y in years]: raise ValueError('erp_period_not_frozen')
+    row = metric['rows'][index]; code = row['code']; j = years.index(int(period)); cell = snap['rows'][code]['values'][j]
     public = round(cell['rate'], 2); native = cell['arrears']/cell['issued']*100
-    pointer = f'/metrics/{key}/rows/{index}/value' if period == '2024' else f'/metrics/{key}/rows/{index}/series/values/{j}'
+    pointer = f'/metrics/{key}/rows/{index}/value' if period == str(years[-1]) else f'/metrics/{key}/rows/{index}/series/values/{j}'
     evidence = [dict(kind='catalog_snapshot', path=engine.catalog_path, sha256=engine.catalog_hash, valuePointer=pointer, publishedPrecision='two decimals', nativeRatioSeparate=dim == 'nativeRatio'),
                 dict(ref, kind='source_snapshot', recordPointer=f'/rows/{code}/values/{j}', nativeComponents=dict(numerator=cell['arrears'], denominator=cell['issued'], scale=100), sourceDocument=snap['sourceDocuments'][j], replayScope='normalized accounting snapshot reconciled; original PDF not replayed')]
     result = dict(ctx, metric=key, dimension=dim, geography=code, period=period, value=public if dim == 'total' else native,

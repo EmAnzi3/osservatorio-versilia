@@ -30,8 +30,8 @@ SITE = ROOT / "data" / "site-data.json"
 ARS_LEGACY = ROOT / "data" / "source-snapshots" / "ars-a3-5-legacy-history.json"
 MOBILITY_KEY = "internalResidentialMobility"
 # Aggiornatori di un'edizione annuale nuova: comando e indicatore che ne porta l'anno pubblicato.
-NEXT_YEAR = [("istat-tourism", "tourismBeds"), ("aci-vehicles", "motorization"), ("ispra-soil", "landUse"), ("mim-schools", "schoolSites")]
-NEW_PERIOD = {"istat-tourism", "aci-vehicles", "ispra-soil", "omi-residential", "mim-schools", "gaia-water"}
+NEXT_YEAR = [("istat-tourism", "tourismBeds"), ("aci-vehicles", "motorization"), ("ispra-soil", "landUse"), ("mim-schools", "schoolSites"), ("erp-arrears", "erpArrears")]
+NEW_PERIOD = {"istat-tourism", "aci-vehicles", "ispra-soil", "omi-residential", "mim-schools", "gaia-water", "erp-arrears"}
 
 
 def plan(site: dict, ars: dict) -> list[list[str]]:

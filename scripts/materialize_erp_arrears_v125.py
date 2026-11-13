@@ -148,7 +148,17 @@ def build_snapshot() -> dict:
     }
 
 
+def snapshot_path(snapshot: dict) -> str:
+    years = snapshot["scope"]["years"]
+    return f"data/source-snapshots/erp-lucca-arrears-{years[0]}-{years[-1]}.json"
+
+
 def build_metric(snapshot: dict) -> dict:
+    # Anni, ultimo esercizio e percorso dello snapshot vengono dallo snapshot stesso,
+    # così l'aggiornatore annuale (update_source_data.py erp-arrears) riusa lo stesso builder.
+    years = snapshot["scope"]["years"]
+    last = years[-1]
+    path = snapshot_path(snapshot)
     rows = []
     for code, (name, slug) in TOWNS.items():
         values = snapshot["rows"][code]["values"]
@@ -159,10 +169,10 @@ def build_metric(snapshot: dict) -> dict:
             "slug": slug,
             "value": round(current["rate"], 2),
             "formatted": f"{current['rate']:.2f}%".replace(".", ","),
-            "series": {"years":YEARS, "values":[round(item["rate"],2) for item in values]},
-            "accounting": {"year":2024,"issued":current["issued"],"arrears":current["arrears"]},
+            "series": {"years":years, "values":[round(item["rate"],2) for item in values]},
+            "accounting": {"year":last,"issued":current["issued"],"arrears":current["arrears"]},
             "accountingSeries": {
-                "years": YEARS,
+                "years": years,
                 "issued": [item["issued"] for item in values],
                 "arrears": [item["arrears"] for item in values],
             },
@@ -183,13 +193,13 @@ def build_metric(snapshot: dict) -> dict:
             "comparisonLabel": "valore Versilia",
             "comparisonOverline": "Rispetto alla Versilia",
             "comparisonNote": "Il riferimento è il rapporto calcolato sulla somma della morosità e degli importi emessi dei sette Comuni, non la media semplice delle percentuali comunali.",
-            "year": "2024",
+            "year": str(last),
             "source": "E.R.P. Lucca S.r.l. — Bilanci d’esercizio",
             "polarity": "neutral",
             "context": "ERP e fragilità abitativa",
             "searchTerms": ["morosità erp","edilizia residenziale pubblica","erp lucca","affitti erp","canoni non incassati","assegnatari"],
             "sourceMeta": {
-                "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
+                "snapshot": path,
                 "note": "Percentuali ricalcolate dagli importi elementari pubblicati. Nel 2023 le percentuali stampate nel prospetto non vengono utilizzate perché non riconciliano con gli importi.",
             },
         },
@@ -200,29 +210,29 @@ def build_metric(snapshot: dict) -> dict:
             "formatted": f"{current_aggregate['rate']:.2f}%".replace(".", ","),
             "label": "Versilia · 7 Comuni",
             "note": "Rapporto tra la somma della morosità cumulata e la somma degli importi emessi cumulati dei sette Comuni; non è la media delle percentuali comunali.",
-            "series": {"years":YEARS,"values":[round(item["rate"],2) for item in aggregate_values]},
-            "accounting": {"year":2024,"issued":current_aggregate["issued"],"arrears":current_aggregate["arrears"]},
+            "series": {"years":years,"values":[round(item["rate"],2) for item in aggregate_values]},
+            "accounting": {"year":last,"issued":current_aggregate["issued"],"arrears":current_aggregate["arrears"]},
             "accountingSeries": {
-                "years": YEARS,
+                "years": years,
                 "issued": [item["issued"] for item in aggregate_values],
                 "arrears": [item["arrears"] for item in aggregate_values],
             },
         },
         "normalizedAggregate": None,
         "history": {
-            "years": YEARS,
+            "years": years,
             "coverage": "7/7",
             "source": "E.R.P. Lucca S.r.l. — Bilanci d’esercizio",
             "aggregateType": "sum-then-ratio",
             "aggregateLabel": "Versilia · 7 Comuni",
-            "note": "Serie 2020–2024 ricalcolata dagli importi elementari pubblicati per ciascun Comune.",
+            "note": f"Serie {years[0]}–{last} ricalcolata dagli importi elementari pubblicati per ciascun Comune.",
         },
         "method": {
             "type": "Ricalcolo da valori contabili pubblicati",
             "formula": "Morosità cumulata / importi emessi cumulati × 100.",
             "caveat": "Il prospetto 2023 contiene percentuali stampate incoerenti con gli importi elementari e coincidenti con quelle del 2022. Sono quindi usati esclusivamente gli importi pubblicati. Per Massarosa 2023 l’emesso cumulato pubblicato è 3.164.988,55 €: il valore è mantenuto senza interpolazioni o correzioni e produce un rapporto ricalcolato di circa 2,05%.",
-            "coverage": "7/7 · 2020–2024",
-            "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
+            "coverage": f"7/7 · {years[0]}–{last}",
+            "snapshot": path,
         },
     }
 

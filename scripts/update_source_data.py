@@ -21,6 +21,7 @@ attesa o i Comuni non sono 7/7, si ferma senza scrivere.
     python scripts/update_source_data.py aci-vehicles --year 2025 [--file Autoritratto2025_Parco_veicolare.zip]
     python scripts/update_source_data.py ispra-soil --year 2025 [--file consumo_suolo_2026_Com_Prov_Reg_Naz.xlsx]
     python scripts/update_source_data.py omi-residential --semester 2026-S1
+    python scripts/update_source_data.py erp-arrears --year 2025
     python scripts/update_source_data.py gaia-water --period 2026-S1
     python scripts/update_source_data.py mim-schools --year 2026 [--file SCUANAGRAFESTAT20262720260901.csv]
     python scripts/update_source_data.py source-probe --name NOME --url URL [--follow REGEX] [--post URL::CAMPI ...]
@@ -1309,6 +1310,74 @@ def update_gaia_water(period: str, pages: Path | None, dry_run: bool) -> Changes
     return changes
 
 
+# ------------------------------------------------------------------ E.R.P. Lucca: morosità cumulata
+
+ERP_PDF = "https://at.erplucca.it/upload/guido/1/estratto%20assemblea%20Soci%20Bilancio_{year}.pdf"
+ERP_TOWNS = {"046005": r"Camaiore", "046013": r"Forte\s+dei\s+Marmi", "046018": r"Massarosa", "046024": r"Pietrasanta",
+             "046028": r"Seravezza", "046030": r"Stazzema", "046033": r"Viareggio"}
+_IT_AMOUNT = r"(\d{1,3}(?:\.\d{3})*,\d{2})"
+
+
+def erp_amount(text: str) -> float:
+    return float(text.replace(".", "").replace(",", "."))
+
+
+def erp_pdf_text(body: bytes) -> str:
+    from pypdf import PdfReader
+    return "\n".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(body)).pages)
+
+
+def erp_table(text: str, year: int) -> dict[str, tuple[float, float, float]]:
+    """(emesso, morosità, % stampata) per Comune dal prospetto «COMUNI EMESSO dal 1/4/2004 al 31/12/AAAA MOROSITA’ %»."""
+    flat = re.sub(r"\s+", " ", text)
+    if not re.search(rf"EMESSO\s+dal\s+1/4/2004\s+al\s+31/12/{year}", flat, re.I):
+        raise UpdateError(f"ERP Lucca {year}: intestazione del prospetto morosità per Comune non trovata")
+    found = {}
+    for code, name in ERP_TOWNS.items():
+        hits = re.findall(rf"\b{name}\s+{_IT_AMOUNT}\s+{_IT_AMOUNT}\s+(\d{{1,2}},\d{{1,2}})\s*%", flat, re.I)
+        if len(hits) != 1:
+            raise UpdateError(f"ERP Lucca {year}: riga di {name.replace(chr(92) + 's+', ' ')} trovata {len(hits)} volte nel prospetto")
+        issued, arrears, printed = erp_amount(hits[0][0]), erp_amount(hits[0][1]), float(hits[0][2].replace(",", "."))
+        if issued <= 0 or arrears < 0 or abs(round(arrears / issued * 100, 2) - printed) > 0.011:
+            raise UpdateError(f"ERP Lucca {year}: {code} percentuale stampata {printed} non riconcilia con gli importi")
+        found[code] = (issued, arrears, printed)
+    return found
+
+
+def update_erp_arrears(year: int, file: Path | None, dry_run: bool) -> Changes:
+    """Aggiunge l'esercizio year allo snapshot ERP Lucca e ricostruisce la metrica con lo stesso builder."""
+    import math
+    import materialize_erp_arrears_v125 as erp
+    site = load(SITE)
+    metric = site["metrics"]["erpArrears"]
+    current_path = metric["meta"]["sourceMeta"]["snapshot"]
+    snapshot = load(ROOT / current_path)
+    years = snapshot["scope"]["years"]
+    if year != years[-1] + 1:
+        raise UpdateError(f"ERP Lucca: esercizio {year} non successivo all'ultimo pubblicato {years[-1]}")
+    body = fetch(ERP_PDF.format(year=year), file)
+    table = erp_table(erp_pdf_text(body), year)
+    changes = Changes()
+    for code, (issued, arrears, printed) in table.items():
+        rate = round(arrears / issued * 100, 4)
+        snapshot["rows"][code]["values"].append({"year": year, "issued": issued, "arrears": arrears, "rate": rate})
+        changes.note(f"erpArrears {snapshot['rows'][code]['town']} {year}", "—", f"{round(rate, 2)}%")
+    issued = round(math.fsum(v[0] for v in table.values()), 2)
+    arrears = round(math.fsum(v[1] for v in table.values()), 2)
+    snapshot["aggregate"]["values"].append({"year": year, "issued": issued, "arrears": arrears, "rate": round(arrears / issued * 100, 4)})
+    snapshot["scope"]["years"] = years + [year]
+    snapshot["sourceDocuments"].append({"year": year, "file": f"estratto assemblea Soci Bilancio_{year}.pdf",
+                                        "sha256": hashlib.sha256(body).hexdigest()})
+    snapshot["retrieved"] = date.today().isoformat()
+    path = erp.snapshot_path(snapshot)
+    site["metrics"]["erpArrears"] = erp.build_metric(snapshot)
+    changes.note("erpArrears anno", years[-1], year)
+    if not dry_run:
+        save(SITE, site)
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="updater", required=True)
@@ -1334,6 +1403,9 @@ def main() -> int:
     q.add_argument("--semester", required=True, help="semestre nuovo, es. 2026-S1")
     q.add_argument("--correction", action="append", default=[],
                    help="differenza del catalogo dalla fonte già rivista: «Comune ZONA» o «Comune» (zonizzazione)")
+    e = sub.add_parser("erp-arrears")
+    e.add_argument("--year", type=int, required=True, help="esercizio di bilancio, es. 2025")
+    e.add_argument("--file", type=Path, help="PDF «estratto assemblea Soci Bilancio_AAAA» già scaricato")
     w = sub.add_parser("gaia-water")
     w.add_argument("--period", required=True, help="semestre GAIA, es. 2026-S1")
     w.add_argument("--pages", type=Path, help="cartella con le pagine località già scaricate (CODICE_CODICE2.html)")
@@ -1342,7 +1414,7 @@ def main() -> int:
     k.add_argument("--file", type=Path, help="CSV SCUANAGRAFESTAT già scaricato (nome originale)")
     f = sub.add_parser("agcom-ftth")
     f.add_argument("--dir", type=Path, help="cartella con report.js e comuni.csv già scaricati")
-    for p in (a, m, u, f, t, o, v, q, k, w):
+    for p in (a, m, u, f, t, o, v, q, k, w, e):
         p.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("mef-fiscal-probe", help="sonda dei documenti MEF IRPEF/IMU/TARI (non modifica il catalogo)")
     s.add_argument("--year", type=int, required=True)
@@ -1369,6 +1441,8 @@ def main() -> int:
             update_ispra_soil(args.year, args.file, args.dry_run).report(f"Consumo di suolo {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "istat-tourism":
             update_istat_tourism(args.year, args.file, args.dry_run).report(f"Capacità ricettiva {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "erp-arrears":
+            update_erp_arrears(args.year, args.file, args.dry_run).report(f"Morosità ERP {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "gaia-water":
             update_gaia_water(args.period, args.pages, args.dry_run).report(f"Acqua potabile GAIA {args.period}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "mim-schools":
