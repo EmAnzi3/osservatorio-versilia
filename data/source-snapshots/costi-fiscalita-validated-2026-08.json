@@ -120,33 +120,33 @@
       "anagrafica": "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv",
       "prezzi": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv"
     },
-    "referenceDate": "2026-10-10",
+    "referenceDate": "2026-11-12",
     "statistic": "mediana comunale impianti attivi, self-service",
     "coverage": "6/7",
     "towns": {
       "Camaiore": {
-        "benzina": 2.03,
-        "gasolio": 2.289,
+        "benzina": 1.949,
+        "gasolio": 2.199,
         "stations": 11
       },
       "Forte dei Marmi": {
-        "benzina": 2.011,
-        "gasolio": 2.242,
+        "benzina": 1.96,
+        "gasolio": 2.194,
         "stations": 4
       },
       "Massarosa": {
-        "benzina": 2.077,
-        "gasolio": 2.277,
+        "benzina": 1.949,
+        "gasolio": 2.199,
         "stations": 7
       },
       "Pietrasanta": {
-        "benzina": 2.01,
-        "gasolio": 2.23,
+        "benzina": 1.949,
+        "gasolio": 2.199,
         "stations": 15
       },
       "Seravezza": {
-        "benzina": 2.03,
-        "gasolio": 2.291,
+        "benzina": 1.999,
+        "gasolio": 2.212,
         "stations": 6
       },
       "Stazzema": {
@@ -155,8 +155,8 @@
         "stations": 0
       },
       "Viareggio": {
-        "benzina": 1.994,
-        "gasolio": 2.254,
+        "benzina": 1.96,
+        "gasolio": 2.199,
         "stations": 20
       }
     }

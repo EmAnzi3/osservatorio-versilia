@@ -1866,7 +1866,7 @@ Richiesta `energy_ev_046018` — `compare`; esito `computed`.
 
 Richiesta `energy_fuel_fuel:benzina_series` — `series`; esito `computed`.
 
-**Risultati:** Massarosa 2026-08-14: 2,0 eurliter; Massarosa 2026-08-27: 2,0 eurliter; Massarosa 2026-08-28: 2,0 eurliter; Massarosa 2026-10-03: 2,1 eurliter; Massarosa 2026-10-10: 2,1 eurliter
+**Risultati:** Massarosa 2026-08-14: 2,0 eurliter; Massarosa 2026-08-27: 2,0 eurliter; Massarosa 2026-08-28: 2,0 eurliter; Massarosa 2026-10-03: 2,1 eurliter; Massarosa 2026-10-10: 2,1 eurliter; Massarosa 2026-11-12: 1,9 eurliter
 
 **Universi e definizioni:** self-service benzina reported at active MIMIT municipal stations; changing reporting universe — municipal station-price median on selected snapshot date
 
