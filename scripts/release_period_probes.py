@@ -711,9 +711,11 @@ def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, A
 # - `next`: cerca l'edizione successiva (`url` con {next}); se esiste è uscito un periodo nuovo.
 #   Con `confirm` controlla anche che l'edizione pubblicata ({year}) sia ancora dove ce l'aspettiamo;
 # - `absent`: interroga la fonte dal periodo successivo in poi; nessun dato = nessun periodo nuovo;
+#   con `link` (gruppi href e periodo) e `expect` il periodo conta solo se il suo file ha dati;
 # - `snapshot`: fonti continue (registri, mappe, feed) senza data alla fonte: la fonte deve
 #   rispondere con il contenuto atteso e l'istantanea pubblicata non deve superare `maxAgeDays`;
 #   con `kind: year` l'istantanea è annuale e alla fonte il periodo è l'anno in corso;
+# - `kind: yearend`: fotografia annuale al 31/12 letta dalla data di un file continuo (AAAAMMGG);
 # - `values`: la fonte ripubblica lo stesso dato in file di edizioni successive, quindi l'anno del
 #   file non è il periodo del dato. Dalla pagina (`url`) si prende il file dell'edizione più recente
 #   (`link`: gruppi href e anno), si legge la colonna `column` per codice Istat (`geography`) e si
@@ -757,6 +759,14 @@ def parse_period(value: str, kind: str) -> tuple[int, ...] | None:
     if kind == "year":
         years = re.findall(r"(?<!\d)(19\d\d|20\d\d)(?!\d)", text)
         return (int(years[-1]),) if years else None
+    if kind == "yearend":
+        # Fotografia annuale al 31/12 da un file aggiornato di continuo: il file datato AAAAMMGG
+        # contiene la fotografia dell'anno AAAA solo dal 31/12; prima vale quella dell'anno prima.
+        date = re.search(r"(20\d\d)(\d\d)(\d\d)", text) or re.search(r"(20\d\d)-(\d\d)-(\d\d)", text)
+        if date:
+            y, m, d = (int(g) for g in date.groups())
+            return (y,) if (m, d) == (12, 31) else (y - 1,)
+        return parse_period(text, "year")
     if kind == "semester":
         match = re.search(r"([12])\s*°?\s*semestre\s*(20\d\d)", text)
         if match:
@@ -795,7 +805,7 @@ def parse_period(value: str, kind: str) -> tuple[int, ...] | None:
 def format_period(period: tuple[int, ...] | None, kind: str) -> str:
     if not period:
         return ""
-    if kind == "year":
+    if kind in ("year", "yearend"):
         return str(period[0])
     if kind == "semester":
         return f"{period[1]}° semestre {period[0]}"
@@ -897,6 +907,18 @@ def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> 
     found = [f for f in found if f]
     if mode == "absent":
         later = [f for f in found if f > published]
+        if later and check.get("link"):
+            # Alcune fonti pubblicano i link dell'anno successivo prima dei dati (archivi vuoti):
+            # conta solo un periodo il cui file risponde con il contenuto atteso.
+            ready = set()
+            for m in re.finditer(check["link"], text):
+                period = parse_period(m.group(2), kind)
+                if period and period > published and period not in ready:
+                    if _peek_ok(fetch, urllib.parse.urljoin(out["url"], m.group(1)), check):
+                        ready.add(period)
+            if not ready:
+                out["detail"] = f"link del {format_period(max(later), kind)} presenti ma senza dati"
+            later = sorted(ready)
         out.update(observed=format_period(max(later), kind) if later else out["published"], verdict="new_period" if later else "period_match")
         return out
     if not found:

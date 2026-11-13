@@ -1,5 +1,22 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Controllo mensile: falsi «periodo nuovo» su IMU 2027 e farmacie 2026 (14 novembre 2026)
+
+Il giro di verifica sul ramo #594 segnalava ancora due periodi nuovi che alla fonte non ci sono.
+
+- **`municipalImuStandard` (`mef_imu`):** la pagina MEF dell'anno 2027 elenca già gli archivi
+  regionali, ma `toscana.zip` 2027 è vuoto (0 byte): il MEF pubblica i link prima dei dati. Il modo
+  `absent` accetta ora `link` (gruppi href e periodo) con `expect`: un periodo successivo conta solo se
+  il suo archivio risponde con il contenuto atteso (`PK`). Esito live: corrente, «link del 2027
+  presenti ma senza dati».
+- **`pharmaciesPer1000` (`salute_farmacie`):** la pagina del Ministero elenca solo il file continuo del
+  giorno (`FRM_FARMA_5_20261113`), mentre l'indicatore è la fotografia al 31/12. Nuovo `kind: yearend`:
+  il file datato AAAAMMGG chiude l'anno AAAA solo dal 31/12, prima vale l'anno precedente. Esito live:
+  corrente (2025); il 2026 scatterà con il file del 31/12/2026.
+
+Restano aperti nello stesso giro: `municipalIrpef` (delibere 2026, da integrare dopo il 20/12),
+`fuelPrices` e concessioni demaniali (fonti non raggiungibili dai runner). Nessun dato pubblicato cambia.
+
 ## Controllo mensile: falsi «periodo nuovo» su servizi online e perdite idriche (13 novembre 2026)
 
 Il primo giro del controllo (#570) segnalava come nuovi due periodi che alla fonte non esistono.
