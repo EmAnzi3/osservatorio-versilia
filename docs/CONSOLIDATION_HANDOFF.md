@@ -12,9 +12,23 @@ Ema ha scelto di aggiornare l'etichetta: `PRC vigente · variante 2026`, con la 
 `PERIODS` = `PRC-2026`, `periodBasis`), lo script v1.28, lo stato del monitor e i dossier (solo
 l'hash del catalogo). Pin A6: cambia solo road#3.
 
+## Controllo mensile: falsi «periodo nuovo» su servizi online e perdite idriche (13 novembre 2026)
 
+Il primo giro del controllo (#570) segnalava come nuovi due periodi che alla fonte non esistono.
 
+- **`municipalOnlineServicesAdvanced` (ind18):** il file regionale «Indicatori 2024» (aggiornato il
+  7/7/2026) ripete i valori Istat ICT al 31/12/2022, identici per i 7 Comuni; Istat non ha diffuso
+  una rilevazione ICT nelle PA locali successiva. La regola `rt_indicatori_comunali` leggeva l'anno
+  del file. Nuova regola `rt_indicatori_ind18` con il nuovo modo `values` di
+  `scripts/release_period_probes.py`: prende il file dell'edizione più recente elencato nella pagina,
+  legge `ind18` per codice Istat e confronta i valori pubblicati (tolleranza 0,01 per i file
+  arrotondati). Valori uguali = nessuna rilevazione nuova; valori diversi = periodo nuovo con il
+  dettaglio dei Comuni; colonna o Comune assente = da verificare.
+- **`waterNetworkLosses`:** il dataflow Istat `DCCV_CONSACQUA_2` ha 2020 e 2022 solo per Italia e
+  ripartizioni; per i Comuni l'ultimo anno resta il 2018. La regola `istat_acqua_comuni` interrogava
+  tutte le aree: ora la chiave è limitata ai 7 Comuni.
 
+Nessun dato pubblicato cambia. Regole in `sourceChecks`: 74.
 
 ## Morosità ERP 2025 (13 novembre 2026)
 
@@ -340,7 +354,7 @@ Primo periodo nuovo segnalato dal controllo mensile completo. I 6 indicatori ASI
 Il «Controllo mensile dati» ora verifica alla fonte tutti i 225 indicatori. 60 hanno un
 probe dedicato che confronta periodo e valori (OpenBDAP, ARS, demografia Istat, SIOPE, RGS);
 i restanti 165 hanno una verifica **del solo periodo**: `source_period` in
-`scripts/release_period_probes.py`, con 73 regole in `sourceChecks` di
+`scripts/release_period_probes.py`, con 73 regole (74 dal 13 novembre 2026) in `sourceChecks` di
 `ci/release-probe-coverage.json`. Il rapporto lo dichiara riga per riga («verifica del solo
 periodo»): un periodo uguale non garantisce valori identici alla fonte.
 
@@ -799,7 +813,6 @@ Altre modifiche:
 ## Radar 2.0 — le schede automatiche si rileggono quando cambiano le regole (3 novembre 2026)
 
 Branch `fix/radar-rilettura-schede-auto`: dopo il merge della #536 il run del 3/11 ha tenuto pubblicata GranFest (Fondazione CR Lucca), qualificata il 2/11 con le regole precedenti su una frase che cita il Comune solo come possibile finanziatore. Causa: `apply()` riportava le schede `auto_qualified` dei giorni precedenti fino alla scadenza senza rileggerle. Ora `VERSION` del qualificatore è `1.1` e una scheda con `auto_qualification_version` diversa torna in lettura per prima, anche se scartata di recente: se le regole attuali la qualificano viene ricostruita, se la respingono o è scaduta esce (conteggio `withdrawn`, «ritirate perché non superano più le regole» nel rapporto del run), se la pagina non si legge in quel run resta com'era. Ogni futura modifica alle regole di ammissibilità deve alzare `VERSION`. Test: `test_cards_from_older_rules_are_reread` (fallisce senza la correzione).
-
 
 ## Radar 2.0 — icone fonte per tutti i domini ufficiali (2 novembre 2026)
 
