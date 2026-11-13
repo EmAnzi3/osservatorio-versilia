@@ -30,6 +30,10 @@ Il primo giro del controllo (#570) segnalava come nuovi due periodi che alla fon
 
 Nessun dato pubblicato cambia. Regole in `sourceChecks`: 74.
 
+
+
+
+
 ## Morosità ERP 2025 (13 novembre 2026)
 
 - E.R.P. Lucca ha pubblicato l'estratto dell'assemblea soci del 28/04/2026 con il bilancio 2025
@@ -813,6 +817,7 @@ Altre modifiche:
 ## Radar 2.0 — le schede automatiche si rileggono quando cambiano le regole (3 novembre 2026)
 
 Branch `fix/radar-rilettura-schede-auto`: dopo il merge della #536 il run del 3/11 ha tenuto pubblicata GranFest (Fondazione CR Lucca), qualificata il 2/11 con le regole precedenti su una frase che cita il Comune solo come possibile finanziatore. Causa: `apply()` riportava le schede `auto_qualified` dei giorni precedenti fino alla scadenza senza rileggerle. Ora `VERSION` del qualificatore è `1.1` e una scheda con `auto_qualification_version` diversa torna in lettura per prima, anche se scartata di recente: se le regole attuali la qualificano viene ricostruita, se la respingono o è scaduta esce (conteggio `withdrawn`, «ritirate perché non superano più le regole» nel rapporto del run), se la pagina non si legge in quel run resta com'era. Ogni futura modifica alle regole di ammissibilità deve alzare `VERSION`. Test: `test_cards_from_older_rules_are_reread` (fallisce senza la correzione).
+
 
 ## Radar 2.0 — icone fonte per tutti i domini ufficiali (2 novembre 2026)
 
