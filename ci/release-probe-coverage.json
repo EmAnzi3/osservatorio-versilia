@@ -116,10 +116,10 @@
     },
     "istat_acqua_comuni": {
       "mode": "absent",
-      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,12_60_DF_DCCV_CONSACQUA_2,1.0/all?startPeriod={next}",
+      "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,12_60_DF_DCCV_CONSACQUA_2,1.0/A.046005+046013+046018+046024+046028+046030+046033./all?startPeriod={next}",
       "pattern": "(?:TIME_PERIOD=\\\"|ObsDimension[^>]*value=\\\"|TIME_PERIOD,)(20\\d\\d)",
       "text": "raw",
-      "hint": "Censimento delle acque per uso civile (Istat): dati comunali successivi al 2018"
+      "hint": "Censimento delle acque per uso civile (Istat): dati dei 7 Comuni successivi al 2018 (le edizioni 2020 e 2022 hanno solo Italia e ripartizioni)"
     },
     "istat_asia_ul": {
       "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A.046033.LU.0010.TOTAL",
@@ -361,6 +361,14 @@
       "url": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
       "pattern": "Indicatori (20\\d\\d) \\(file",
       "hint": "ultimo anno degli indicatori comunali per le politiche locali"
+    },
+    "rt_indicatori_ind18": {
+      "mode": "values",
+      "url": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "link": "href=\"([^\"]+)\"[^>]*>\\s*Indicatori (20\\d\\d)\\s*</a>",
+      "column": "ind18",
+      "geography": "codice_istat_num",
+      "hint": "ind18 (Istat ICT nelle PA locali) nell'ultimo file degli indicatori comunali: il file 2024 ripete i valori al 31/12/2022, quindi conta il valore, non l'anno del file"
     },
     "rt_opere_idrauliche": {
       "url": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
@@ -1232,7 +1240,7 @@
     "municipalOnlineServicesAdvanced": {
       "probe": "source_period",
       "checks": [
-        "rt_indicatori_comunali"
+        "rt_indicatori_ind18"
       ]
     },
     "municipalStaffAgeStructure": {

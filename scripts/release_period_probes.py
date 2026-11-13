@@ -713,7 +713,11 @@ def demo_manual(metric_key: str, spec: dict[str, Any], year: int) -> dict[str, A
 # - `absent`: interroga la fonte dal periodo successivo in poi; nessun dato = nessun periodo nuovo;
 # - `snapshot`: fonti continue (registri, mappe, feed) senza data alla fonte: la fonte deve
 #   rispondere con il contenuto atteso e l'istantanea pubblicata non deve superare `maxAgeDays`;
-#   con `kind: year` l'istantanea è annuale e alla fonte il periodo è l'anno in corso.
+#   con `kind: year` l'istantanea è annuale e alla fonte il periodo è l'anno in corso;
+# - `values`: la fonte ripubblica lo stesso dato in file di edizioni successive, quindi l'anno del
+#   file non è il periodo del dato. Dalla pagina (`url`) si prende il file dell'edizione più recente
+#   (`link`: gruppi href e anno), si legge la colonna `column` per codice Istat (`geography`) e si
+#   confrontano i valori comunali pubblicati: valori uguali = nessuna rilevazione nuova.
 
 MONTHS = {name: i for i, names in enumerate((
     (), ("gennaio", "january", "jan", "gen"), ("febbraio", "february", "feb"), ("marzo", "march", "mar"),
@@ -878,6 +882,8 @@ def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> 
         if found:
             out["detail"] = f"edizione successiva pubblicata: {found[0]}"
         return out
+    if mode == "values":
+        return values_check(metric, check, out, fetch)
     try:
         text = page_text(fetch(out["url"]), check.get("text", "auto"))
     except ProbeError as error:
@@ -911,6 +917,51 @@ def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> 
         out["verdict"] = "source_period_older"
     else:
         out["verdict"] = "period_match"
+    return out
+
+
+def values_check(metric: dict[str, Any], check: dict[str, Any], out: dict[str, Any], fetch: Fetcher) -> dict[str, Any]:
+    page = page_text(fetch(out["url"]), "raw")
+    links = [(parse_period(m.group(2), "year"), m.group(1)) for m in re.finditer(check["link"], page)]
+    links = [(year, href) for year, href in links if year]
+    if not links:
+        raise ProbeError("structure_changed", f"{out['url']}: nessun file trovato (regola «{check['name']}»)")
+    edition, href = max(links)
+    url = urllib.parse.urljoin(out["url"], href.strip())
+    raw = fetch(url)
+    text = raw.decode("utf-8", "replace")
+    if "\ufffd" in text[:20000]:
+        text = raw.decode("cp1252", "replace")
+    rows = list(csv.reader(io.StringIO(text), delimiter=check.get("delimiter", ";")))
+    header = [cell.strip() for cell in rows[0]] if rows else []
+    if check["geography"] not in header or check["column"] not in header:
+        raise ProbeError("structure_changed", f"{url}: colonne {check['geography']}/{check['column']} assenti")
+    gi, ci = header.index(check["geography"]), header.index(check["column"])
+    source: dict[int, float | None] = {}
+    for row in rows[1:]:
+        if len(row) > max(gi, ci) and row[gi].strip().isdigit():
+            try:
+                source[int(row[gi])] = parse_number(row[ci])
+            except ValueError:
+                source[int(row[gi])] = None
+    tolerance = float(check.get("tolerance", 0.01))
+    missing, changed = [], []
+    for row in metric.get("rows", []):
+        if row.get("value") is None:
+            continue
+        observed = source.get(int(row["code"]))
+        if observed is None:
+            missing.append(row["code"])
+        elif abs(observed - float(row["value"])) > tolerance:
+            changed.append(f"{row.get('town', row['code'])} {row['value']} → {observed}")
+    out.update(url=url, edition=format_period(edition, "year"))
+    if missing:
+        raise ProbeError("structure_changed", f"{url}: valori assenti per {', '.join(missing)}")
+    if changed:
+        out.update(observed=f"valori nuovi nell'edizione {edition[0]}", verdict="new_period",
+                   detail=f"edizione {edition[0]}: " + "; ".join(changed))
+    else:
+        out.update(observed=out["published"], verdict="period_match")
     return out
 
 
