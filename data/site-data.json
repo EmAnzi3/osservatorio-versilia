@@ -52312,7 +52312,7 @@
         "comparisonLabel": "valore Versilia",
         "comparisonOverline": "Rispetto alla Versilia",
         "comparisonNote": "Il riferimento è il rapporto calcolato sulla somma della morosità e degli importi emessi dei sette Comuni, non la media semplice delle percentuali comunali.",
-        "year": "2024",
+        "year": "2025",
         "source": "E.R.P. Lucca S.r.l. — Bilanci d’esercizio",
         "polarity": "neutral",
         "context": "ERP e fragilità abitativa",
@@ -52325,7 +52325,7 @@
           "assegnatari"
         ],
         "sourceMeta": {
-          "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
+          "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2025.json",
           "note": "Percentuali ricalcolate dagli importi elementari pubblicati. Nel 2023 le percentuali stampate nel prospetto non vengono utilizzate perché non riconciliano con gli importi."
         }
       },
@@ -52335,28 +52335,30 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 7.37,
-          "formatted": "7,37%",
+          "value": 7.65,
+          "formatted": "7,65%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               6.9,
               6.95,
               7.18,
               7.01,
-              7.37
+              7.37,
+              7.65
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 4721245.44,
-            "arrears": 348067.19
+            "year": 2025,
+            "issued": 5039222.44,
+            "arrears": 385582.55
           },
           "accountingSeries": {
             "years": [
@@ -52364,21 +52366,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               3582792.37,
               3854507.54,
               4132419.89,
               4402239.72,
-              4721245.44
+              4721245.44,
+              5039222.44
             ],
             "arrears": [
               247063.23,
               267712.42,
               296554.22,
               308511.54,
-              348067.19
+              348067.19,
+              385582.55
             ]
           },
           "normalized": null,
@@ -52388,28 +52393,30 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 6.98,
-          "formatted": "6,98%",
+          "value": 7.3,
+          "formatted": "7,30%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               5.85,
               6.1,
               6.57,
               7.11,
-              6.98
+              6.98,
+              7.3
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 3911358.57,
-            "arrears": 272869.37
+            "year": 2025,
+            "issued": 4151908.56,
+            "arrears": 303196.97
           },
           "accountingSeries": {
             "years": [
@@ -52417,21 +52424,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               2949206.99,
               3192864.58,
               3429308.68,
               3459825.27,
-              3911358.57
+              3911358.57,
+              4151908.56
             ],
             "arrears": [
               172475.09,
               194717.67,
               225193.13,
               246056.52,
-              272869.37
+              272869.37,
+              303196.97
             ]
           },
           "normalized": null,
@@ -52441,28 +52451,30 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 3.48,
-          "formatted": "3,48%",
+          "value": 3.35,
+          "formatted": "3,35%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               3.8,
               3.48,
               3.49,
               2.05,
-              3.48
+              3.48,
+              3.35
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 2078965.36,
-            "arrears": 72398.09
+            "year": 2025,
+            "issued": 2184259.17,
+            "arrears": 73162.83
           },
           "accountingSeries": {
             "years": [
@@ -52470,21 +52482,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               1656939.53,
               1755764.28,
               1860507.25,
               3164988.55,
-              2078965.36
+              2078965.36,
+              2184259.17
             ],
             "arrears": [
               62971.17,
               61148.91,
               64950.49,
               64990.36,
-              72398.09
+              72398.09,
+              73162.83
             ]
           },
           "normalized": null,
@@ -52494,28 +52509,30 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 7.02,
-          "formatted": "7,02%",
+          "value": 6.6,
+          "formatted": "6,60%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               7.7,
               7.3,
               7.36,
               7.55,
-              7.02
+              7.02,
+              6.6
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 6812489.99,
-            "arrears": 478114.18
+            "year": 2025,
+            "issued": 7185201.31,
+            "arrears": 474515.31
           },
           "accountingSeries": {
             "years": [
@@ -52523,21 +52540,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               5363800.69,
               5709770.82,
               6081755.16,
               6136480.16,
-              6812489.99
+              6812489.99,
+              7185201.31
             ],
             "arrears": [
               412828.2,
               417031.7,
               447394.65,
               463131.42,
-              478114.18
+              478114.18,
+              474515.31
             ]
           },
           "normalized": null,
@@ -52547,28 +52567,30 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 4.41,
-          "formatted": "4,41%",
+          "value": 4.16,
+          "formatted": "4,16%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               5.25,
               4.72,
               4.48,
               4.66,
-              4.41
+              4.41,
+              4.16
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 5346600.17,
-            "arrears": 235874.51
+            "year": 2025,
+            "issued": 5650196.6,
+            "arrears": 235104.29
           },
           "accountingSeries": {
             "years": [
@@ -52576,21 +52598,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               4117358.99,
               4409130.0,
               4709525.63,
               4720359.45,
-              5346600.17
+              5346600.17,
+              5650196.6
             ],
             "arrears": [
               216108.44,
               208201.92,
               211210.84,
               219836.25,
-              235874.51
+              235874.51,
+              235104.29
             ]
           },
           "normalized": null,
@@ -52600,28 +52625,30 @@
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 4.05,
-          "formatted": "4,05%",
+          "value": 4.38,
+          "formatted": "4,38%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               3.5,
               3.22,
               3.72,
               2.87,
-              4.05
+              4.05,
+              4.38
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 1036145.57,
-            "arrears": 41967.92
+            "year": 2025,
+            "issued": 1074168.22,
+            "arrears": 47012.01
           },
           "accountingSeries": {
             "years": [
@@ -52629,21 +52656,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               825116.56,
               887449.32,
               947137.77,
               1259681.08,
-              1036145.57
+              1036145.57,
+              1074168.22
             ],
             "arrears": [
               28883.37,
               28598.67,
               35187.95,
               36132.36,
-              41967.92
+              41967.92,
+              47012.01
             ]
           },
           "normalized": null,
@@ -52653,28 +52683,30 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 10.83,
-          "formatted": "10,83%",
+          "value": 10.41,
+          "formatted": "10,41%",
           "series": {
             "years": [
               2020,
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "values": [
               11.51,
               11.06,
               11.0,
               11.64,
-              10.83
+              10.83,
+              10.41
             ]
           },
           "accounting": {
-            "year": 2024,
-            "issued": 26379101.73,
-            "arrears": 2855639.38
+            "year": 2025,
+            "issued": 27984513.43,
+            "arrears": 2912512.45
           },
           "accountingSeries": {
             "years": [
@@ -52682,21 +52714,24 @@
               2021,
               2022,
               2023,
-              2024
+              2024,
+              2025
             ],
             "issued": [
               20275358.16,
               21713625.62,
               23257105.59,
               23303630.28,
-              26379101.73
+              26379101.73,
+              27984513.43
             ],
             "arrears": [
               2333819.91,
               2401763.1,
               2558637.44,
               2712346.75,
-              2855639.38
+              2855639.38,
+              2912512.45
             ]
           },
           "normalized": null,
@@ -52704,8 +52739,8 @@
         }
       ],
       "aggregate": {
-        "value": 8.56,
-        "formatted": "8,56%",
+        "value": 8.32,
+        "formatted": "8,32%",
         "label": "Versilia · 7 Comuni",
         "note": "Rapporto tra la somma della morosità cumulata e la somma degli importi emessi cumulati dei sette Comuni; non è la media delle percentuali comunali.",
         "series": {
@@ -52714,20 +52749,22 @@
             2021,
             2022,
             2023,
-            2024
+            2024,
+            2025
           ],
           "values": [
             8.96,
             8.62,
             8.64,
             8.72,
-            8.56
+            8.56,
+            8.32
           ]
         },
         "accounting": {
-          "year": 2024,
-          "issued": 50285906.83,
-          "arrears": 4304930.64
+          "year": 2025,
+          "issued": 53269469.73,
+          "arrears": 4431086.41
         },
         "accountingSeries": {
           "years": [
@@ -52735,21 +52772,24 @@
             2021,
             2022,
             2023,
-            2024
+            2024,
+            2025
           ],
           "issued": [
             38770573.29,
             41523112.16,
             44417759.97,
             46447204.51,
-            50285906.83
+            50285906.83,
+            53269469.73
           ],
           "arrears": [
             3474149.41,
             3579174.39,
             3839128.72,
             4051005.2,
-            4304930.64
+            4304930.64,
+            4431086.41
           ]
         }
       },
@@ -52760,20 +52800,21 @@
           2021,
           2022,
           2023,
-          2024
+          2024,
+          2025
         ],
         "coverage": "7/7",
         "source": "E.R.P. Lucca S.r.l. — Bilanci d’esercizio",
         "aggregateType": "sum-then-ratio",
         "aggregateLabel": "Versilia · 7 Comuni",
-        "note": "Serie 2020–2024 ricalcolata dagli importi elementari pubblicati per ciascun Comune."
+        "note": "Serie 2020–2025 ricalcolata dagli importi elementari pubblicati per ciascun Comune."
       },
       "method": {
         "type": "Ricalcolo da valori contabili pubblicati",
         "formula": "Morosità cumulata / importi emessi cumulati × 100.",
         "caveat": "Il prospetto 2023 contiene percentuali stampate incoerenti con gli importi elementari e coincidenti con quelle del 2022. Sono quindi usati esclusivamente gli importi pubblicati. Per Massarosa 2023 l’emesso cumulato pubblicato è 3.164.988,55 €: il valore è mantenuto senza interpolazioni o correzioni e produce un rapporto ricalcolato di circa 2,05%.",
-        "coverage": "7/7 · 2020–2024",
-        "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2024.json"
+        "coverage": "7/7 · 2020–2025",
+        "snapshot": "data/source-snapshots/erp-lucca-arrears-2020-2025.json"
       }
     },
     "roadSafety": {
