@@ -2,13 +2,25 @@
 from a6_pins import Pin as _pin
 import hashlib
 import json
+import re
 
 from semantic_operations import reported_measurement
 
 KEYS = ('drinkingWaterQuality',)
 NATIVE = 'data/source-snapshots/ambiente-acqua-v124-data.json'
 URL = 'https://www.gaia-spa.it/analisiweb_v2/'
-PERIOD = '2° semestre 2025'
+# Semestre e snapshot nativo vengono dal catalogo: l'aggiornatore GAIA li sposta insieme
+# (scripts/update_source_data.py gaia-water); le impronte restano congelate nei pin.
+PERIOD_RE = re.compile(r'[12]° semestre 20[0-9]{2}')
+SNAPSHOT_RE = re.compile(r'data/source-snapshots/gaia-water-quality-20[0-9]{2}-S[12][.]json')
+
+
+def period_of(metric):
+    return metric['meta'].get('year')
+
+
+def native_of(metric):
+    return metric['meta'].get('sourceMeta',{}).get('snapshot')
 FILE_SHA = _pin('water_quality#1')
 STRUCTURE_SHA = _pin('water_quality#2')
 
@@ -21,7 +33,10 @@ def context(metric, key, dimension):
     meta = metric['meta']
     if dimension not in dimensions(key):
         raise ValueError('water_quality_explicit_parameter_required')
-    if meta.get('unit') != 'number' or meta.get('year') != PERIOD or meta.get('compositeType') != key or metric.get('sourceUrl') != URL or meta.get('sourceMeta',{}).get('snapshot') != NATIVE or metric.get('method',{}).get('snapshot') != NATIVE:
+    native = native_of(metric)
+    if meta.get('unit') != 'number' or not PERIOD_RE.fullmatch(str(meta.get('year'))) or meta.get('compositeType') != key or metric.get('sourceUrl') != URL \
+            or not (native == NATIVE or SNAPSHOT_RE.fullmatch(str(native))) or metric.get('method',{}).get('snapshot') != native \
+            or native == NATIVE and meta.get('year') != '2° semestre 2025':
         raise ValueError('water_quality_definition_or_reference_changed')
     p = metric['parameterDefinitions'][int(dimension.split(':')[1])]
     return dict(unit=p['unit'], population='GAIA served areas/localities; not municipal resident populations',
@@ -37,13 +52,14 @@ def select(engine, selector, operation):
     dimension = selector.get('dimension','total')
     metric = engine._catalog['metrics'][key]
     ctx = context(metric,key,dimension)
-    periods = selector.get('periods',[PERIOD])
-    if periods != [PERIOD]:
+    period = period_of(metric)
+    periods = selector.get('periods',[period])
+    if periods != [period]:
         raise ValueError('water_quality_period_not_frozen')
     towns = selector.get('towns',sorted(engine.codes))
     if not isinstance(towns,list) or not towns or any(not isinstance(c,str) or c not in engine.codes for c in towns) or len(towns) != len(set(towns)):
         raise ValueError('unknown_or_duplicate_geography')
-    snap, ref = engine.file(NATIVE)
+    snap, ref = engine.file(native_of(metric))
     structure = hashlib.sha256(json.dumps(snap,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
     if ref.get('sha256') != FILE_SHA or structure != STRUCTURE_SHA:
         raise ValueError('water_quality_frozen_input_changed')
@@ -76,7 +92,7 @@ def select(engine, selector, operation):
         identity = identities[index]
         if l['townCode'] not in towns or selected is not None and identity not in selected:
             continue
-        if l['period'] != '2° Semestre 2025' or len(l['values']) != len(native['parameterDefinitions']):
+        if l['period'] != period.replace('semestre','Semestre') or len(l['values']) != len(native['parameterDefinitions']):
             raise ValueError('water_quality_native_period_or_axis_changed')
         raw = l['values'][p]
         qualifier, number = reported_measurement(raw)
@@ -84,7 +100,7 @@ def select(engine, selector, operation):
         li = next(i for i,x in enumerate(rows[ri]['localities']) if x['sampleCode']+'/'+x['sampleCode2'] == identity)
         evidence = [dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/rows/{ri}/localities/{li}/values/{p}',parameterPointer=f'/metrics/{key}/parameterDefinitions/{p}'),
             dict(ref,kind='source_snapshot',recordPointer=f'/drinkingWaterQuality/localities/{index}/values/{p}',parameterPointer=f'/drinkingWaterQuality/parameterDefinitions/{p}')]
-        result.append(dict(ctx,metric=key,dimension=dimension,geography=l['townCode'],period=PERIOD,
+        result.append(dict(ctx,metric=key,dimension=dimension,geography=l['townCode'],period=period,
             locality=identity,localityName=l['name'],localityTitle=l['title'],sampleCode=l['sampleCode'],sampleCode2=l['sampleCode2'],
             parameter=parameter['name'],referenceText=parameter['reference'],sourcePeriod=l['period'],
             value=raw,sourceValue=raw,valueKind='source_reported_measurement',reportedQualifier=qualifier,reportedNumber=number,

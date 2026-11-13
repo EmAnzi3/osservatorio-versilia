@@ -134,6 +134,7 @@ jobs:
           commands += [["omi-residential", "--semester", str(q)] + [a for c in request.get("omiResidentialCorrections", []) for a in ("--correction", str(c))] for q in request.get("omiResidential", [])]
           commands += [["aci-vehicles", "--year", str(int(y))] for y in request.get("aciVehicles", [])]
           commands += [["mim-schools", "--year", str(int(y))] for y in request.get("mimSchools", [])]
+          commands += [["gaia-water", "--period", str(p)] for p in request.get("gaiaWater", [])]
           commands += [["mef-fiscal-probe", "--year", str(int(y))] for y in request.get("mefFiscalProbe", [])]
           commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) + [a for step in p.get("post", []) for a in ("--post", str(step))] for p in request.get("sourceProbe", [])]
           failed = 0

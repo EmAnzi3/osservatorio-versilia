@@ -2,6 +2,36 @@
 
 
 
+
+## Acqua potabile GAIA 1° semestre 2026 (12 novembre 2026)
+
+- GAIA pubblica il 1° semestre 2026 (verificato dal browser su «MASSAROSA - Case Rosse»); il sito era al
+  2° semestre 2025. `www.gaia-spa.it` non è raggiungibile dal container: aggiorna il workflow.
+- Nuovo aggiornatore `update_source_data.py gaia-water --period AAAA-S1|S2` (richiesta `"gaiaWater"`):
+  per ognuna delle 70 località pubblicate imposta la sessione GAIA e legge la pagina; richiede il periodo
+  esatto e gli stessi 17 parametri (nome, unità, riferimento) pubblicati, copia i valori medi verbatim,
+  scrive `gaia-water-quality-AAAA-SN.json` e sposta su quel file `sourceMeta.snapshot`/`method.snapshot`.
+  Rifiuta semestri precedenti, pagine ancora al periodo vecchio, parametri cambiati. Nel giro mensile.
+- GAIA ha cambiato il secondo codice di prelievo di 4 località (Torcigliano 07A07K13, Pietrasanta
+  35A02K13, Minazzana 42A06K05, Farnocchia 44A04K02): con il codice vecchio la pagina esce senza località
+  (titolo «-», tabella vuota). L'aggiornatore legge i codici dall'indice GAIA (pulsanti `btn_localita`,
+  area 1), richiede lo stesso insieme di località (Comune + primo codice) e aggiorna secondo codice e URL;
+  una pagina senza località è rifiutata.
+- Dato 1° semestre 2026 acquisito dal workflow. In 18 località (Massarosa, Viareggio, Camaiore, Pietrasanta,
+  Stazzema) GAIA pubblica il fluoruro come 100–171 nella colonna mg/L (limite 1,50; nel 2° semestre 2025
+  ~0,105): verificato sulla pagina GAIA, è il dato in µg/L. Decisione di Ema: convertire. Regola generale
+  `gaia_unit_fix`: valore mg/L oltre 10 volte il limite che diviso per 1.000 rientra nel limite → convertito;
+  i superamenti veri e i valori incoerenti anche dopo la divisione restano. Elenco in `unitCorrections`
+  dello snapshot, nota nel metodo. La conversione è stata applicata in locale con lo stesso codice ai
+  valori scaricati dal workflow (richiesta `gaiaWater` riportata a vuota).
+- Pin `water_quality#1/#2` sul nuovo snapshot e `road#3` ripinnati; celle fisse del test A6 (Case Rosse e
+  primi nitrati per Comune) rilette dal browser sulla pagina GAIA il 13/11; 24 domande verificate
+  aggiornate agli stessi valori; dossier rigenerati.
+- Adattatore A6 `semantic_query_water_quality_adapters`: semestre e snapshot nativo letti dal catalogo
+  (`period_of`, `native_of`), ammessi solo lo snapshot storico (fermo al 2° semestre 2025) o
+  `gaia-water-quality-AAAA-SN.json`; impronte sempre nei pin `water_quality#1/#2`. Test con 3 mutazioni nuove
+  (snapshot, snapshot del metodo, semestre).
+
 ## Sedi scolastiche a.s. 2026/27 e farmacie (12 novembre 2026)
 
 - **Definizione ricostruita.** `schoolSites` pubblicato (anno «2025») coincide 7/7 con i codici scuola
