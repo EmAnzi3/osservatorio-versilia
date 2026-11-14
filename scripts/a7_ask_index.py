@@ -2,6 +2,8 @@
 disponibili nel runtime pubblicato, mai valori. Usato in build e nei test."""
 import gzip
 import json
+import re
+import unicodedata
 from pathlib import Path
 
 PROFILES = {'observe': 'current', 'lookup': 'current', 'compare': 'comparison', 'series': 'history', 'rank': 'ranking',
@@ -9,9 +11,29 @@ PROFILES = {'observe': 'current', 'lookup': 'current', 'compare': 'comparison', 
             'relative_change': 'changes', 'percentage_points': 'changes', 'trend': 'trends', 'anomaly': 'outliers'}
 
 
-def ask_index(catalog, runtime, view_labels=None):
-    """view_labels: {metrica: {dimensione: etichetta}} dalla presentazione della build."""
+def indicator_slug(label):
+    """Stesso slug delle pagine canoniche `indicatori/<slug>/` di build_static."""
+    value = unicodedata.normalize('NFD', str(label or '').lower())
+    value = ''.join(ch for ch in value if unicodedata.category(ch) != 'Mn')
+    return re.sub(r'[^a-z0-9]+', '-', value).strip('-')
+
+
+def indicator_pages(catalog, site):
+    """{metrica: percorso relativo a /chiedi/} per le sole pagine indicatore presenti nel sito."""
+    data = json.loads(Path(catalog).read_text(encoding='utf-8'))
+    pages = {}
+    for key, metric in data['metrics'].items():
+        slug = indicator_slug(metric.get('meta', {}).get('label'))
+        if slug and (Path(site)/'indicatori'/slug/'index.html').is_file():
+            pages[key] = f'../indicatori/{slug}/'
+    return pages
+
+
+def ask_index(catalog, runtime, view_labels=None, pages=None):
+    """view_labels: {metrica: {dimensione: etichetta}} dalla presentazione della build;
+    pages: {metrica: pagina dell'Osservatorio con fonte e metodo}."""
     view_labels = view_labels or {}
+    pages = pages or {}
     catalog = json.loads(Path(catalog).read_text(encoding='utf-8'))
     runtime = Path(runtime)
     root = json.loads((runtime/'release.json').read_text(encoding='utf-8'))
@@ -44,7 +66,8 @@ def ask_index(catalog, runtime, view_labels=None):
         metrics.append(dict(key=summary['metric'], label=summary['label'], short=meta.get('shortLabel') or '',
                             terms=meta.get('searchTerms') or [], description=(meta.get('description') or '')[:200],
                             themeLabel=themes.get(summary['theme'], summary['theme']), section=sections.get(summary['metric'], ''),
-                            view=view['dimension'], operations=operations, views=others, featured=summary['metric'] in featured))
+                            view=view['dimension'], operations=operations, views=others, featured=summary['metric'] in featured,
+                            page=pages.get(summary['metric'])))
     associations = []
     plan = (root.get('associationPlan') or {}).get('plan')
     for step in (plan or {}).get('steps', []):

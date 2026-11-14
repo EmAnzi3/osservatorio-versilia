@@ -88,7 +88,8 @@ export async function startAssociations(openRuntime,presentation){
  }
  function sources(observation,cell){
    const url=observation.source;let safeURL=null;try{const u=new URL(url);if(['http:','https:'].includes(u.protocol))safeURL=u.href;}catch{}
-   if(safeURL){const a=el('a','Fonte');a.href=safeURL;a.target='_blank';a.rel='noopener noreferrer';cell.append(a);}else cell.append(el('span',url||'Fonte non dichiarata'));
+   const page=presentation.metrics[observation.metric]?.page;const link=page||safeURL;
+   if(link){const a=el('a','Fonte');a.href=link;a.target='_blank';a.rel='noopener noreferrer';if(page){a.dataset.sourcePage='observatory';a.title='Pagina dell’indicatore sull’Osservatorio: origine dei dati, aggiornamento e metodo';}cell.append(a);}else cell.append(el('span',url||'Fonte non dichiarata'));
    const detail=el('div');for(const [name,label] of [['definition','Definizione'],['population','Popolazione descritta'],['periodBasis','Riferimento temporale'],['method','Metodo']])if(observation[name])detail.append(el('p',label+': '+observation[name]));cell.append(fold('Definizione originale',detail));
  }
  function graph(result){

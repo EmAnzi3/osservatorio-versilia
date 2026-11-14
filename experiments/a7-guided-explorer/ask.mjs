@@ -5,7 +5,7 @@ import { units } from './explorer.mjs';
 // riferimento) o in un incrocio rivisto. Non calcola nulla: i numeri restano del
 // motore A6. Un futuro livello LLM dovrà produrre la stessa struttura `selection`.
 
-const STOP = new Set(('a ad al alla alle allo agli ai all che chi ci come con cosa cos cui da dal dalla dalle dai degli dei del della delle dello di e ed fra gli ha hanno ho i il in la le lo ma mi ne nei nel nella nelle nello noi o per piu po qual quale quali quanta quante quanti quanto se si sono su sul sulla sulle sui tra tu un una uno vs ce c e è dimmi mostrami fammi vedere sapere vorrei voglio dati dato valore valori numero comune comuni versilia sette territorio oggi ora anno anni ultimo ultima ultimi recente attuale negli sugli dagli agli coi col tutti tutte tutto tanto tanti molto meno avere essere esiste ci sono costa costano paga pagano fa fanno fra tra rispetto vive vivono abita abitano spende spendono qual quali dove').split(' '));
+const STOP = new Set(('a ad al alla alle allo agli ai all che chi ci come con cosa cos cui da dal dalla dalle dai degli dei del della delle dello di e ed fra gli ha hanno ho i il in la le lo ma mi ne nei nel nella nelle nello noi o per piu po qual quale quali quanta quante quanti quanto se si sono su sul sulla sulle sui tra tu un una uno vs ce c e è dimmi mostrami fammi vedere sapere vorrei voglio dati dato valore valori numero comune comuni versilia sette territorio oggi ora anno anni ultimo ultima ultimi recente attuale negli sugli dagli agli coi col tutti tutte tutto tanto tanti molto meno avere essere esiste ci sono costa costano paga pagano fa fanno fra tra rispetto vive vivono abita abitano spende spendono qual quali dove invece anche mentre allora stesso stessa stessi stesse quello quella quelli ok grazie poi pure dieci cinque venti trenta quindici fa vanno va vengono andare venire produce producono economica economico economiche economici cara caro care cari').split(' '));
 
 // Parole della domanda che indicano la lettura; l'ordine conta (prima vince).
 const OPERATIONS = [
@@ -13,27 +13,28 @@ const OPERATIONS = [
   ['benchmark_gap', /\b(toscana|italia|regional\w*|nazional\w*|media (?:della )?(?:toscana|regione|italia))\b/],
   ['trend', /\b(tendenz\w*|trend|pendenz\w*)\b/],
   ['percentage_points', /\bpunti percentuali\b/],
-  ['series', /\b(nel tempo|negli anni|andamento|evoluzion\w*|stori\w*|serie|anno per anno|dal \d{4}|com e cambiat\w*)\b/],
+  ['series', /\b(nel tempo|negli anni|andamento|evoluzion\w*|stori\w*|serie|anno per anno|dal \d{4}|com e cambiat\w*|anni fa|in passato)\b/],
   ['relative_change', /\b(in percentuale|percentualmente|di quanto (?:e )?(?:cresciut|aumentat|calat|diminuit)\w*|variazione percentuale|quanto (?:e )?(?:cresciut|aumentat|calat|diminuit|cambiat|variat)\w*|crescit\w*|aument\w*|cal\w* |diminu\w*|variazion\w*|cambiat\w*)\b/],
-  ['rank', /\b(classifica|ordin\w*|piu alt\w*|piu bass\w*|il piu|la piu|i piu|le piu|maggior\w*|minor\w*|primo|prima posizione|ultimo posto|chi ha (?:piu|meno)|dove (?:e|sono|ci sono) (?:piu|meno)|in testa)\b/],
-  ['compare', /\b(confront\w*|paragon\w*|rispetto agli altri|fra i comuni|tra i comuni|tutti i comuni|differenz\w* fra|ogni comune|ciascun comune)\b/],
+  ['rank', /\b(classifica|ordin\w*|piu alt\w*|piu bass\w*|il piu|la piu|i piu|le piu|maggior\w*|minor\w*|primo|prima posizione|ultimo posto|chi ha (?:piu|meno)|dove (?:e|sono|ci sono) (?:piu|meno)|di (?:piu|meno)|piu (?:vecch|giovan|ricc|pover|car|economic|popolos|grand|piccol)\w*|in testa)\b/],
+  ['compare', /\b(confront\w*|paragon\w*|rispetto agli altri|fra i comuni|tra i comuni|tutti i comuni|gli altri comuni|altri comuni|sette comuni|differenz\w* fra|ogni comune|ciascun comune)\b/],
   ['weighted_ratio', /\b(versilia nel suo insieme|intera versilia|tutta la versilia|complessivo della versilia|totale della versilia|in versilia)\b/],
 ];
-const ASSOCIATION = /\b(relazion\w*|legat\w*|legame|correlaz\w*|associaz\w*|incroci\w*|dipend\w* da|influenz\w*|va di pari passo|quando .* (?:anche|allora))\b/;
+const ASSOCIATION = /\b(relazion\w*|legat\w*|legame|correlaz\w*|associazione (?:tra|fra)|incroci\w*|dipend\w* da|influenz\w*|va di pari passo|quando .* (?:anche|allora))\b/;
 
 // Sinonimi d'uso comune → parole che compaiono nelle etichette del catalogo.
 const SYNONYMS = {
   abitanti: 'popolazione residenti', abitante: 'residenti', residenti: 'popolazione', gente: 'popolazione', persone: 'popolazione',
-  stipendi: 'reddito', stipendio: 'reddito', guadagni: 'reddito', guadagna: 'reddito', ricchezza: 'reddito', ricchi: 'reddito', poveri: 'reddito vulnerabilita',
+  stipendi: 'reddito', stipendio: 'reddito', guadagni: 'reddito', guadagna: 'reddito', guadagnano: 'reddito', ricchezza: 'reddito', ricchi: 'reddito', poveri: 'reddito vulnerabilita',
   case: 'abitazioni immobiliare', casa: 'abitazioni immobiliare', affitti: 'locazione affitto', affitto: 'locazione', prezzi: 'quotazioni prezzo', mattone: 'immobiliare',
   vecchi: 'vecchiaia anziani', anziani: 'vecchiaia anziani', invecchiamento: 'vecchiaia', giovani: 'giovani', bambini: 'infanzia minori', figli: 'natalita nascite',
   nati: 'nascite natalita', nascono: 'nascite natalita', nascite: 'nascite natalita', nasce: 'nascite', morti: 'decessi', stranieri: 'stranieri cittadinanza', immigrati: 'stranieri',
   lavoro: 'occupazione', lavorano: 'occupazione occupati', disoccupati: 'disoccupazione', disoccupazione: 'disoccupazione', donne: 'femminile', uomini: 'maschile',
   aziende: 'unita locali', imprese: 'unita locali', ditte: 'imprese', negozi: 'unita locali commercio', dipendenti: 'addetti', lavoratori: 'addetti',
   turisti: 'turismo presenze arrivi', arrivano: 'arrivi', arriva: 'arrivi', turismo: 'turistico presenze', alberghi: 'ricettiva strutture', letti: 'posti letto',
-  spazzatura: 'rifiuti', immondizia: 'rifiuti', raccolta: 'differenziata rifiuti', riciclo: 'differenziata',
+  spazzatura: 'rifiuti', immondizia: 'rifiuti', raccolta: 'differenziata rifiuti', riciclo: 'differenziata', ricicla: 'differenziata', riciclano: 'differenziata',
+  vuote: 'occupate', sfitte: 'occupate', restano: 'permanenza', laureati: 'terziario titolo', laurea: 'terziario titolo', inquinanti: 'euro', colonnine: 'ricarica punti', piste: 'percorsi', ottica: 'ftth', veloce: 'ftth banda', fondi: 'risorse', superficie: 'superficie',
 mare: 'balneazione costa', spiagge: 'balneazione spiagge concessioni', balneari: 'concessioni demaniali',
-  tasse: 'tributi imposte irpef imu tari', imu: 'imu', tari: 'tari rifiuti', irpef: 'irpef addizionale',
+  famiglia: 'famiglie persone', famiglie: 'persone', tasse: 'tributi imposte irpef imu tari', imu: 'imu', tari: 'tari rifiuti', irpef: 'irpef addizionale',
   istruzione: 'diploma titolo', studio: 'diploma titolo', scuole: 'scuola scolastici istruzione', scuola: 'scolastici istruzione', studenti: 'alunni', alunni: 'alunni', mensa: 'mense', diploma: 'diploma titolo',
   ospedale: 'ospedalieri ricoveri', medici: 'medici sanita', farmacie: 'farmacie', salute: 'sanitari salute',
   auto: 'autovetture motorizzazione', macchine: 'autovetture motorizzazione', traffico: 'veicoli', autobus: 'tpl trasporto pubblico', bus: 'tpl', treni: 'ferroviario',
@@ -49,7 +50,20 @@ mare: 'balneazione costa', spiagge: 'balneazione spiagge concessioni', balneari:
 const GENERIC = new Set(['base', 'medio', 'media', 'medi', 'totale', 'tasso', 'numero', 'quota', 'indice', 'livello', 'percentuale', 'mille', 'abitante', 'residenti', 'spesa', 'costo', 'prezzo', 'qualita', 'servizi', 'servizio'].map(w => w.length > 4 ? w.replace(/[aeiou]$/, '').slice(0, 6) : w));
 
 // Concetti frequenti → indicatore principale, se presente nel runtime.
-const CONCEPTS = { abitanti: 'population', residenti: 'population', popolazione: 'population', imprese: 'localUnits', aziende: 'localUnits', ditte: 'localUnits', reddito: 'income', redditi: 'income', stipendi: 'income', anziani: 'oldAgeIndex', vecchiaia: 'oldAgeIndex', stranieri: 'foreignResidents', disoccupazione: 'unemploymentRate', disoccupati: 'unemploymentRate', turisti: 'tourismPresences', presenze: 'tourismPresences', differenziata: 'recycling', rifiuti: 'wastePerResident', auto: 'motorization', macchine: 'motorization', nascite: 'naturalDemographicDynamics', arrivano: 'tourismArrivals', arrivi: 'tourismArrivals', nascono: 'naturalDemographicDynamics', case: 'omiResidential', affitti: 'omiResidential' };
+const CONCEPTS = { abitanti: 'population', residenti: 'population', popolazione: 'population', imprese: 'localUnits', aziende: 'localUnits', ditte: 'localUnits', reddito: 'income', redditi: 'income', stipendi: 'income', anziani: 'oldAgeIndex', vecchiaia: 'oldAgeIndex', stranieri: 'foreignResidents', disoccupazione: 'unemploymentRate', disoccupati: 'unemploymentRate', turisti: 'tourismPresences', presenze: 'tourismPresences', differenziata: 'recycling', rifiuti: 'wastePerResident', auto: 'motorization', macchine: 'motorization', nascite: 'naturalDemographicDynamics', arrivano: 'tourismArrivals', arrivi: 'tourismArrivals', nascono: 'naturalDemographicDynamics', case: 'omiResidential', affitti: 'omiResidential', vuote: 'vacantHomes', sfitte: 'vacantHomes', lavorano: 'employmentRate', turismo: 'tourismPresences', ricicla: 'recycling', riciclano: 'recycling', negozi: 'localUnits', superficie: 'municipalSurface', scuole: 'schoolSites', laureati: 'tertiary', restano: 'tourismAverageStay', permanenza: 'tourismAverageStay', uscita: 'outboundCommuters', entrata: 'inboundCommuters' };
+
+// Espressioni di più parole riscritte prima dell'analisi.
+const PHRASES = [
+  [/\b(non lavorano|senza lavoro|senza un lavoro)\b/g, 'disoccupati'],
+  [/\bseconde case\b/g, 'abitazioni non occupate'],
+  [/\bcosto (?:dei rifiuti|della raccolta|del servizio rifiuti|della spazzatura)\b/g, 'costo servizio rifiuti'],
+  [/\b(?:spend\w*|spesa) (?:\w+ )?per (?:la |le )?scuol\w*\b/g, 'spesa istruzione diritto studio'],
+  [/\b(?:piu|meno) vecch\w*\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
+  [/\b(?:piu|meno) giovan\w*\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu basso' : 'piu alto')],
+  [/\bescono (?:dal comune )?per lavor\w*\b/g, 'pendolari in uscita'],
+  [/\bentrano (?:nel comune )?per lavor\w*\b/g, 'pendolari in entrata'],
+];
+const rewrite = text => PHRASES.reduce((t, [re, to]) => t.replace(re, to), text);
 
 // Nomi brevi e d'uso dei Comuni.
 const TOWN_ALIASES = { forte: 'Forte dei Marmi', 'forte dei marmi': 'Forte dei Marmi', viareggio: 'Viareggio', camaiore: 'Camaiore', massarosa: 'Massarosa', pietrasanta: 'Pietrasanta', seravezza: 'Seravezza', stazzema: 'Stazzema' };
@@ -80,7 +94,8 @@ export function prepare(index) {
     }
     for (const s of weights.keys()) df.set(s, (df.get(s) || 0) + 1);
     return { metric, weights, labelStems: new Set(tokens(metric.label + ' ' + metric.short).map(stem)),
-      termStems: new Set(tokens([metric.label, metric.short, (metric.terms || []).join(' '), metric.section].join(' ')).map(stem)) };
+      termStems: new Set(tokens([metric.label, metric.short, (metric.terms || []).join(' '), metric.section].join(' ')).map(stem)),
+      viewStems: new Set(tokens((metric.views || []).map(v => v.label).join(' ')).map(stem)) };
   });
   const n = docs.length;
   for (const doc of docs) for (const [s, w] of doc.weights) doc.weights.set(s, w * Math.log(1 + n / df.get(s)));
@@ -142,6 +157,12 @@ function chooseView(top, words, text) {
   return scored[0]?.v || null;
 }
 
+// Parole di età e sesso: scelgono il dettaglio, non l'indicatore.
+const CUES = /^(giovan\w*|ragazz\w*|under|anzian\w*|over|donn\w*|femmin\w*|uomin\w*|maschi\w*|bambin\w*)$/;
+// Con «donne» o «uomini» le età già implicite (nel nome o nel dettaglio precedente) restano.
+const SEX = /\b(donn\w*|femmin\w*|uomin\w*|maschi\w*)\b/;
+const ageContext = (text, label) => SEX.test(text) ? text + ' ' + (normalize(label).match(/\d+/g) || []).join(' ') : text;
+
 function detectOperation(text) {
   for (const [operation, pattern] of OPERATIONS) if (pattern.test(text)) return operation;
   return null;
@@ -166,28 +187,118 @@ function chooseOperation(wanted, metric, towns) {
 }
 
 const SINGLE_TOWN = new Set(['observe', 'lookup', 'series', 'trend', 'absolute_change', 'relative_change', 'percentage_points', 'benchmark_gap']);
+// Domanda di seguito: comincia con «e…», «invece…», «anche…» o rimanda alla precedente.
+const FOLLOW = /^(e|ed|invece|anche|mentre|allora|e invece|e per|e a|e nel|e in|e se|e per i|e per le)\b|\b(stesso|stessa|stessi|stesse|lo stesso|la stessa)\b/;
 
-export function interpret(question, prepared, { metric: forced = null } = {}) {
-  const text = normalize(question);
-  const result = { question, text, notes: [] };
-  if (!text) return { ...result, kind: 'empty' };
-  const towns = findTowns(text, prepared);
-  // I nomi dei Comuni non aiutano a scegliere l'indicatore.
+function stripQuestion(text) {
   let stripped = text;
-  for (const alias of Object.keys(TOWN_ALIASES)) stripped = stripped.replace(new RegExp('\\b' + alias + '\\b', 'g'), ' ');
+  // I nomi dei Comuni non aiutano a scegliere l'indicatore.
+  for (const alias of Object.keys(TOWN_ALIASES).sort((a, b) => b.length - a.length)) stripped = stripped.replace(new RegExp('\\b' + alias + '\\b', 'g'), ' ');
   // Neppure le parole che indicano la lettura (es. «fuori scala», «più alto»).
   for (const [, pattern] of OPERATIONS) stripped = stripped.replace(new RegExp(pattern.source, 'g'), ' ');
-  stripped = stripped.replace(new RegExp(ASSOCIATION.source, 'g'), ' ');
-  const words = tokens(stripped);
+  return stripped.replace(new RegExp(ASSOCIATION.source, 'g'), ' ');
+}
+
+// Costruisce la selezione per un indicatore (ed eventuale dettaglio) già scelto.
+function reading(result, metric, view, wanted, towns, text, previous) {
+  const target = view ? { ...metric, view: view.dimension, operations: view.operations } : metric;
+  // In una domanda di seguito senza lettura esplicita si conserva quella precedente,
+  // salvo il caso di un Comune nominato dopo un confronto fra Comuni.
+  let asked = wanted;
+  if (!asked && previous) {
+    const before = previous.selection.domanda;
+    asked = towns.length && !SINGLE_TOWN.has(before) ? 'observe' : before;
+  }
+  const { operation, exact } = chooseOperation(asked, target, towns.length ? towns : (previous?.selection?.comune ? [{ code: previous.selection.comune }] : []));
+  if (!operation) return { ...result, kind: 'no_reading', metric, alternatives: [] };
+  if (wanted && !exact) result.notes.push('requested_reading_unavailable');
+  let town = towns[0]?.code || null;
+  if (!town && previous && SINGLE_TOWN.has(operation)) { town = previous.selection.comune || null; if (town) result.inherited.push('town'); }
+  if (SINGLE_TOWN.has(operation) && !town) result.notes.push('town_needed');
+  if (SINGLE_TOWN.has(operation) && towns.length > 1) result.notes.push('one_town_only');
+  let benchmark = null;
+  if (operation === 'benchmark_gap') benchmark = /\bitalia|nazional/.test(text) ? 'italy' : (previous?.selection?.riferimento && !/\btoscana|regional/.test(text) ? previous.selection.riferimento : 'tuscany');
+  const selection = { indicatore: metric.key, dettaglio: target.view, domanda: operation };
+  if (view) result.viewLabel = view.label;
+  if (SINGLE_TOWN.has(operation)) selection.comune = town; // null: l'interfaccia chiede il Comune
+  if (benchmark) selection.riferimento = benchmark;
+  return { ...result, kind: 'reading', metric, selection, towns, wanted, alternatives: [] };
+}
+
+// Errori di battitura: una parola sconosciuta vicina a una del catalogo viene corretta
+// («redito» → «reddito»). Distanza 1, oppure 2 per parole lunghe.
+function distance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i]; let best = i;
+    for (let j = 1; j <= b.length; j++) { row[j] = Math.min(prev[j] + 1, row[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); best = Math.min(best, row[j]); }
+    if (best > max) return max + 1;
+    prev = row;
+  }
+  return prev[b.length];
+}
+// Nomi dei Comuni scritti male («viaregio», «pietrasnta»).
+const TOWN_WORDS = Object.keys(TOWN_ALIASES).filter(a => !a.includes(' ') && a.length > 5);
+const fixTowns = text => text.split(' ').map(w => {
+  if (w.length < 6 || TOWN_WORDS.includes(w)) return w;
+  return TOWN_WORDS.find(a => a[0] === w[0] && distance(w, a, a.length >= 8 ? 2 : 1) <= (a.length >= 8 ? 2 : 1)) || w;
+}).join(' ');
+function correct(word, prepared) {
+  if (word.length < 5 || /\d/.test(word)) return word;
+  const vocab = vocabulary(prepared);
+  if (!prepared.vocabSet) prepared.vocabSet = new Set(vocab);
+  if (prepared.vocabSet.has(word) || prepared.docs.some(d => d.weights.has(stem(word)))) return word;
+  const max = word.length >= 8 ? 2 : 1;
+  let best = word, bestDistance = max + 1;
+  for (const v of vocab) if (v[0] === word[0]) { const d = distance(word, v, max); if (d < bestDistance) { best = v; bestDistance = d; if (d === 1) break; } }
+  return best;
+}
+
+// `previous`: l'ultima lettura riuscita della conversazione, per domande come «e a Camaiore?».
+export function interpret(question, prepared, { metric: forced = null, previous = null } = {}) {
+  const base = fixTowns(normalize(question)), text = rewrite(base);
+  const result = { question, text, notes: [], inherited: [] };
+  if (!text) return { ...result, kind: 'empty' };
+  const prev = previous && previous.kind === 'reading' && previous.selection ? previous : null;
+  const towns = findTowns(base, prepared);
+  const words = tokens(stripQuestion(text)).map(w => correct(w, prepared));
+  const wanted = detectOperation(text);
+  const cue = FOLLOW.test(text);
   const ranked = scoreMetrics(words, prepared);
-  if (!ranked.length) return { ...result, kind: 'no_metric', towns };
-  const top = (forced && ranked.find(r => r.metric.key === forced)) || ranked[0];
-  // Copertura: quante parole specifiche della domanda trovano posto nell'indicatore.
-  const doc = prepared.docs.find(d => d.metric === top.metric);
   const content = words.filter(w => !GENERIC.has(stem(w)) && !/^\d+$/.test(w));
-  const covered = content.filter(w => [w, ...(SYNONYMS[w] || '').split(' ').filter(Boolean)].some(x => doc.termStems.has(stem(x)))).length;
-  result.coverage = content.length ? covered / content.length : 1;
-  if (!forced && !ASSOCIATION.test(text) && content.length >= 2 && result.coverage < 0.5) return { ...result, kind: 'no_metric', towns, near: ranked.slice(0, 3).map(r => r.metric) };
+  // Copertura: quante parole specifiche della domanda trovano posto nell'indicatore.
+  const coverage = r => {
+    const doc = prepared.docs.find(d => d.metric === r.metric);
+    const covered = content.filter(w => CUES.test(w) || [w, ...(SYNONYMS[w] || '').split(' ').filter(Boolean)].some(x => doc.termStems.has(stem(x)) || doc.viewStems.has(stem(x)))).length;
+    return content.length ? covered / content.length : 1;
+  };
+  let top = ranked.length ? ((forced && ranked.find(r => r.metric.key === forced)) || ranked[0]) : null;
+  if (top) {
+    result.coverage = coverage(top);
+    if (!forced && !ASSOCIATION.test(text) && content.length >= 2 && result.coverage <= 0.5) {
+      // Il primo indicatore non copre la domanda: si prova fra i successivi più vicini.
+      const better = ranked.slice(1, 6).find(r => r.score >= ranked[0].score * 0.25 && coverage(r) > 0.5);
+      top = better || null;
+      if (better) result.coverage = coverage(better);
+    }
+  }
+  // Seguito della domanda precedente: stesso indicatore, cambia Comune, lettura o dettaglio.
+  const prevMetric = prev && (prepared.metrics.find(m => m.key === prev.selection.indicatore) || prev.metric);
+  const prevDoc = prevMetric && prepared.docs.find(d => d.metric.key === prevMetric.key);
+  // «e le donne?»: la parola nuova è un dettaglio dell'indicatore precedente.
+  const newView = prevDoc && content.length === 1 ? chooseView({ metric: prevMetric, labelStems: prevDoc.labelStems }, words, ageContext(text, prev.viewLabel || prevMetric.label)) : null;
+  if (prevDoc && !forced && (!top || (cue && newView))) {
+    const followable = towns.length || wanted || cue || /\b(toscana|italia)\b/.test(text);
+    // Al più una parola nuova (per esempio «donne»): altrimenti è un'altra domanda.
+    if (followable && (content.length === 0 || newView)) {
+      result.followUp = true; result.inherited.push('metric');
+      const keep = !newView && prev.selection.dettaglio !== prevMetric.view ? (prevMetric.views || []).find(v => v.dimension === prev.selection.dettaglio) : null;
+      const view = newView || keep || null;
+      return reading(result, prevMetric, view, wanted, towns, text, prev);
+    }
+  }
+  if (!top) return { ...result, kind: 'no_metric', towns, near: ranked.slice(0, 3).map(r => r.metric) };
   const alternatives = ranked.filter(r => r !== top).slice(0, 3).filter(r => r.score >= ranked[0].score * 0.6).map(r => r.metric);
 
   // Incroci: due variabili e una parola di relazione.
@@ -199,23 +310,113 @@ export function interpret(question, prepared, { metric: forced = null } = {}) {
     return { ...result, kind: 'association_unavailable', metric: top.metric, alternatives };
   }
 
-  const wanted = detectOperation(text);
   // Un dettaglio (es. «15–24 anni», «femmine») vince sul dato complessivo se la domanda lo nomina.
-  const view = chooseView(top, words, text);
-  const target = view ? { ...top.metric, view: view.dimension, operations: view.operations } : top.metric;
-  const { operation, exact } = chooseOperation(wanted, target, towns);
-  if (!operation) return { ...result, kind: 'no_reading', metric: top.metric, alternatives };
-  if (wanted && !exact) result.notes.push('requested_reading_unavailable');
-  let town = towns[0]?.code || null;
-  if (SINGLE_TOWN.has(operation) && !town) result.notes.push('town_needed');
-  if (SINGLE_TOWN.has(operation) && towns.length > 1) result.notes.push('one_town_only');
-  let benchmark = null;
-  if (operation === 'benchmark_gap') benchmark = /\bitalia|nazional/.test(text) ? 'italy' : 'tuscany';
-  const selection = { indicatore: top.metric.key, dettaglio: target.view, domanda: operation };
-  if (view) result.viewLabel = view.label;
-  if (SINGLE_TOWN.has(operation)) selection.comune = town; // null: l'interfaccia chiede il Comune
-  if (benchmark) selection.riferimento = benchmark;
-  return { ...result, kind: 'reading', metric: top.metric, selection, towns, alternatives, wanted };
+  const view = chooseView(top, words, ageContext(text, top.metric.label));
+  // «e il reddito?» dopo una domanda su un Comune: nuovo indicatore, stesso Comune e stessa lettura.
+  const carry = prev && cue && !towns.length ? prev : null;
+  if (carry) { result.followUp = true; }
+  return { ...reading(result, top.metric, view, wanted, towns, text, carry), alternatives };
+}
+
+// Suggeritore: mentre si scrive propone domande complete che l'interprete capisce
+// davvero. Ogni proposta è verificata con `interpret` prima di essere mostrata.
+const lower = label => /^[A-Z]{2,}/.test(label) ? label : label.charAt(0).toLowerCase() + label.slice(1);
+const TEMPLATES = {
+  observe: (l, t) => t && `${l} a ${t}`,
+  lookup: (l, t) => t && `${l} a ${t}`,
+  series: (l, t) => t && `${l} a ${t} nel tempo`,
+  benchmark_gap: (l, t) => t && `${l} a ${t} rispetto alla Toscana`,
+  relative_change: (l, t) => t && `${l} a ${t}: variazione percentuale`,
+  rank: (l, t) => !t && `Classifica dei Comuni: ${l}`,
+  compare: (l, t) => !t && `${l}: confronto fra i Comuni`,
+  weighted_ratio: (l, t) => !t && `${l} in tutta la Versilia`,
+};
+const ORDER_TOWN = ['observe', 'lookup', 'series', 'benchmark_gap', 'relative_change'];
+const ORDER_ALL = ['rank', 'compare', 'weighted_ratio'];
+const FOLLOW_UPS = [['series', 'E nel tempo?'], ['benchmark_gap', 'E rispetto alla Toscana?'], ['compare', 'E fra i sette Comuni?']];
+
+function vocabulary(prepared) {
+  if (prepared.vocab) return prepared.vocab;
+  const words = new Map();
+  const add = (w, n = 1) => { if (w.length > 2 && !/^\d+$/.test(w)) words.set(w, (words.get(w) || 0) + n); };
+  for (const m of prepared.metrics) for (const w of tokens([m.label, m.short, (m.terms || []).join(' ')].join(' '))) add(w, m.featured ? 2 : 1);
+  for (const w of Object.keys(SYNONYMS)) add(w, 3);
+  prepared.vocab = [...words.entries()].sort((a, b) => b[1] - a[1]).map(([w]) => w);
+  return prepared.vocab;
+}
+
+const same = (r, metric, operation, town) => r.kind === 'reading' && r.metric.key === metric && r.selection.domanda === operation && (r.selection.comune || null) === (town || null);
+
+export function suggest(input, prepared, { previous = null, limit = 6 } = {}) {
+  const raw = String(input || '');
+  const text = normalize(raw);
+  const out = [], seen = new Set();
+  const push = (item, check) => {
+    const key = normalize(item.text);
+    if (seen.has(key) || out.length >= limit) return;
+    const r = interpret(item.text, prepared, { previous: item.followUp ? previous : null });
+    if (!check(r)) return;
+    seen.add(key); out.push({ ...item, reading: r.selection?.domanda || null });
+  };
+  const prevReading = previous && previous.kind === 'reading' ? previous : null;
+  // Seguiti della conversazione: utili a casella vuota o dopo «e…».
+  if (prevReading && (!text || /^(e|ed|invece|anche)$/.test(text))) {
+    const used = prevReading.selection.comune;
+    for (const town of prepared.towns.filter(t => t.code !== used).slice(0, used ? 2 : 0))
+      push({ text: `E a ${town.name}?`, followUp: true, kind: 'question' }, r => r.kind === 'reading' && r.selection.comune === town.code);
+    for (const [op, q] of FOLLOW_UPS) if (prevReading.selection.domanda !== op)
+      push({ text: q, followUp: true, kind: 'question' }, r => r.kind === 'reading' && r.selection.domanda === op && !r.notes.includes('requested_reading_unavailable'));
+    return out;
+  }
+  if (text.length < 2) return out;
+  const partial = /\s$/.test(raw) ? '' : (text.split(' ').at(-1) || '');
+  // Comune già scritto, anche a metà («viar» → Viareggio).
+  let towns = findTowns(text, prepared);
+  if (!towns.length && partial.length >= 3) {
+    const alias = Object.keys(TOWN_ALIASES).find(a => a.startsWith(partial));
+    if (alias) towns = prepared.towns.filter(t => t.name === TOWN_ALIASES[alias]);
+  }
+  const words = tokens(stripQuestion(text));
+  const complete = partial && words.at(-1) === partial ? words.slice(0, -1) : words;
+  // Completamenti dell'ultima parola, poi indicatori più vicini.
+  const completions = partial.length >= 3 && !towns.some(t => normalize(t.name).startsWith(partial))
+    ? vocabulary(prepared).filter(w => w.startsWith(partial)).slice(0, 6) : [];
+  const scores = new Map();
+  for (const extra of completions.length ? completions : [null]) {
+    for (const r of scoreMetrics(extra ? [...complete, extra] : complete, prepared).slice(0, 6))
+      if (!scores.has(r.metric.key) || scores.get(r.metric.key).score < r.score) scores.set(r.metric.key, r);
+  }
+  const metrics = [...scores.values()].sort((a, b) => b.score - a.score).slice(0, 4).map(r => r.metric);
+  // Incroci rivisti quando si parla di relazione o compaiono due indicatori.
+  if (ASSOCIATION.test(text) || /\b(tra|fra)\b.*\be\b/.test(text)) {
+    const keys = new Set(metrics.map(m => m.key));
+    for (const a of prepared.associations || []) if (keys.has(a.left) || keys.has(a.right)) {
+      const left = prepared.metrics.find(m => m.key === a.left), right = prepared.metrics.find(m => m.key === a.right);
+      if (left && right) push({ text: `Relazione tra ${lower(left.label)} e ${lower(right.label)}`, kind: 'question', association: a.id }, r => r.kind === 'association' && r.association.id === a.id);
+    }
+  }
+  const town = towns[0];
+  // Senza Comune: invito a completarlo, senza inviare la domanda.
+  const invite = metric => {
+    const label = metric.label.charAt(0).toUpperCase() + metric.label.slice(1), key = normalize(label + ' a');
+    if (town || !metric.operations.includes('observe') || out.length >= limit || seen.has(key)) return;
+    seen.add(key); out.push({ text: label + ' a …', fill: label + ' a ', kind: 'complete', reading: 'observe' });
+  };
+  for (const metric of metrics) {
+    const label = lower(metric.label);
+    const order = town ? ORDER_TOWN : ORDER_ALL;
+    if (metric === metrics[0]) invite(metric);
+    let added = 0;
+    for (const op of order) {
+      if (added >= (metric === metrics[0] ? 3 : 1) || !metric.operations.includes(op)) continue;
+      const q = TEMPLATES[op](label, town?.name);
+      if (!q) continue;
+      const before = out.length;
+      push({ text: q.charAt(0).toUpperCase() + q.slice(1), kind: 'question' }, r => same(r, metric.key, op, town?.code));
+      if (out.length > before) added++;
+    }
+  }
+  return out;
 }
 
 // Testo della conferma: dice sempre che cosa è stato capito.
@@ -277,13 +478,18 @@ export function startAsk(index, presentation) {
   const hint = make('p', 'Scrivi in italiano che cosa vuoi sapere sui sette Comuni. Ti dico come ho capito la domanda e ti mostro i dati verificati, con fonti e limiti. Le risposte vengono solo dal catalogo dell’Osservatorio.');
   const form = make('form'); form.id = 'ask-form'; form.setAttribute('role', 'search');
   const label = make('label', 'La tua domanda', 'ask-label'); label.htmlFor = 'ask-input';
-  const input = make('input'); input.id = 'ask-input'; input.type = 'search'; input.maxLength = 200; input.autocomplete = 'off'; input.placeholder = 'Per esempio: quanti turisti arrivano a Pietrasanta?';
+  const input = make('input'); input.id = 'ask-input'; input.type = 'search'; input.maxLength = 200; input.autocomplete = 'off'; input.placeholder = 'Es.: reddito a Viareggio';
+  // Suggeritore (schema combobox ARIA): proposte che si aggiornano mentre si scrive.
+  const list = make('ul', undefined, 'ask-suggest'); list.id = 'ask-suggest'; list.setAttribute('role', 'listbox'); list.setAttribute('aria-label', 'Domande suggerite'); list.hidden = true;
+  Object.entries({ role: 'combobox', 'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': 'ask-suggest' }).forEach(([k, v]) => input.setAttribute(k, v));
+  const field = make('div', undefined, 'ask-field'); field.append(input, list);
   const send = make('button', 'Chiedi'); send.id = 'ask-send'; send.type = 'submit';
-  form.append(label, input, send);
+  form.append(label, field, send);
+  const context = make('p', undefined, 'ask-context'); context.id = 'ask-context'; context.hidden = true;
   const examples = make('div', undefined, 'ask-examples'); examples.setAttribute('aria-label', 'Domande di esempio');
   for (const q of EXAMPLES) examples.append(button(q, () => { input.value = q; ask(q); }));
   const log = make('ol', undefined, 'ask-log'); log.id = 'ask-log'; log.setAttribute('aria-live', 'polite');
-  box.append(title, hint, form, examples, log);
+  box.append(title, hint, form, context, examples, log);
   const anchor = document.getElementById('association-modes') || document.getElementById('association-measure') || document.getElementById('explorer-form');
   anchor.before(box);
 
@@ -315,10 +521,12 @@ export function startAsk(index, presentation) {
       const sentence = summarize(evidence, townLabel, unitLabel);
       if (sentence) target.append(make('p', sentence, 'ask-reply'));
       target.append(make('p', 'Dati, fonti e limiti qui sotto.', 'ask-note'));
+      sourceLink(index.metrics.find(m => m.key === sel.indicatore), target);
       result.scrollIntoView({ block: 'start' });
     } else if (!consent.hidden) {
       const target = waiting.answer; waiting = null;
       target.append(make('p', 'Per almeno un Comune il dato manca: conferma qui sotto per vedere gli altri con i limiti indicati.', 'ask-note'));
+      sourceLink(index.metrics.find(m => m.key === sel.indicatore), target);
       consent.scrollIntoView({ block: 'center' });
     }
   }).observe(document.getElementById('a7-explorer'), { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden'] });
@@ -344,11 +552,31 @@ export function startAsk(index, presentation) {
         const r = evidence.steps[0].response;
         if (r.status === 'computed') answer.append(make('p', 'Coefficiente di Spearman ' + new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(r.result.coefficient) + ' su ' + r.result.n + ' Comuni (scala da −1 a +1). Descrive se gli ordini dei Comuni coincidono, non una causa.', 'ask-reply'));
         answer.append(make('p', 'Grafico, coppie, fonti e limiti qui sotto.', 'ask-note'));
+        const a = index.associations.find(x => x.id === id);
+        for (const key of a ? [a.left, a.right] : []) sourceLink(index.metrics.find(m => m.key === key), answer);
         out.scrollIntoView({ block: 'start' });
       });
       watch.observe(out, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
     }
     document.dispatchEvent(new CustomEvent('chiedi-association', { detail: { id } }));
+  }
+  // Conversazione: l'ultima lettura riuscita permette domande come «e a Camaiore?».
+  let current = null;
+  function remember(r) {
+    current = r;
+    context.replaceChildren();
+    if (!r) { context.hidden = true; return; }
+    const parts = [r.metric.label]; if (r.viewLabel) parts.push(r.viewLabel); if (r.selection.comune) parts.push(townName(r.selection.comune));
+    const other = index.towns.find(t => t.code !== r.selection.comune && t.name.length < 10)?.name || 'Camaiore';
+    context.append(make('span', 'Stai parlando di: ' + parts.join(' · ') + '. Puoi continuare, per esempio: «e a ' + other + '?», «e nel tempo?». '));
+    const reset = make('button', 'Nuovo argomento', 'ask-reset'); reset.type = 'button'; reset.onclick = () => { remember(null); input.focus(); };
+    context.append(reset); context.hidden = false;
+  }
+  function sourceLink(metric, answer) {
+    if (!metric?.page) return;
+    const line = make('p', undefined, 'ask-source'); const a = make('a', 'Fonte e metodo: «' + metric.label + '» sull’Osservatorio');
+    a.href = metric.page; a.target = '_blank'; a.rel = 'noopener';
+    line.append(a); answer.append(line);
   }
   function describe(r) {
     const parts = ['«' + (r.viewLabel && r.metric.short ? r.metric.short : r.metric.label) + '»'];
@@ -356,10 +584,10 @@ export function startAsk(index, presentation) {
     parts.push(READINGS[r.selection.domanda] || r.selection.domanda);
     if (r.selection.comune) parts.push(townName(r.selection.comune));
     if (r.selection.riferimento) parts.push(r.selection.riferimento === 'italy' ? 'rispetto all’Italia' : 'rispetto alla Toscana');
-    return 'Ho capito: ' + parts.join(' · ') + '.';
+    return (r.followUp ? 'Continuo dalla domanda precedente. ' : '') + 'Ho capito: ' + parts.join(' · ') + '.';
   }
   function ask(question, options = {}, reuse = null) {
-    const r = interpret(question, prepared, options);
+    const r = interpret(question, prepared, { previous: current, ...options });
     const answer = reuse || say(question);
     answer.replaceChildren();
     if (r.kind === 'empty') { answer.append(make('p', 'Scrivi una domanda, per esempio sul reddito o sulla popolazione di un Comune.')); return; }
@@ -384,10 +612,12 @@ export function startAsk(index, presentation) {
     if (r.notes.includes('town_needed')) {
       answer.append(make('p', describe(r).replace(/\.$/, '') + ' — in quale Comune?'));
       const towns = make('div', undefined, 'ask-options');
-      for (const t of [...index.towns].sort((a, b) => a.name.localeCompare(b.name, 'it'))) towns.append(button(t.name, () => { const s = { ...r.selection, comune: t.code }; answer.querySelector('p').textContent = describe({ ...r, selection: s }); towns.remove(); apply(s, answer); }));
+      for (const t of [...index.towns].sort((a, b) => a.name.localeCompare(b.name, 'it'))) towns.append(button(t.name, () => { const s = { ...r.selection, comune: t.code }; answer.querySelector('p').textContent = describe({ ...r, selection: s }); towns.remove(); remember({ ...r, selection: s }); apply(s, answer); }));
       answer.append(towns);
+      remember(r);
     } else {
       answer.append(make('p', describe(r)));
+      remember(r);
       apply(r.selection, answer);
     }
     for (const note of notes) answer.append(make('p', note, 'ask-note'));
@@ -397,6 +627,40 @@ export function startAsk(index, presentation) {
       answer.append(other);
     }
   }
-  form.onsubmit = event => { event.preventDefault(); const q = input.value.trim(); if (q) ask(q); };
+  let options = [], active = -1, timer = null;
+  const close = () => { list.hidden = true; list.replaceChildren(); options = []; active = -1; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); };
+  function choose(item) {
+    if (item.kind === 'complete') { input.value = item.fill; input.focus(); refresh(); return; }
+    input.value = ''; close(); ask(item.text);
+  }
+  function highlight(i) {
+    active = i;
+    [...list.children].forEach((li, j) => li.setAttribute('aria-selected', String(j === i)));
+    if (i >= 0) input.setAttribute('aria-activedescendant', list.children[i].id); else input.removeAttribute('aria-activedescendant');
+  }
+  function refresh() {
+    options = suggest(input.value, prepared, { previous: current });
+    list.replaceChildren(); active = -1; input.removeAttribute('aria-activedescendant');
+    options.forEach((item, i) => {
+      const li = make('li', undefined, 'ask-suggestion'); li.id = 'ask-suggest-' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
+      li.append(make('span', item.text, 'ask-suggestion-text'));
+      if (item.reading) li.append(make('span', item.kind === 'complete' ? 'scegli il Comune' : (READINGS[item.reading] || ''), 'ask-suggestion-kind'));
+      // pointerdown: la scelta avviene prima che il campo perda il fuoco.
+      li.addEventListener('pointerdown', event => { event.preventDefault(); choose(item); });
+      list.append(li);
+    });
+    const open = options.length > 0 && document.activeElement === input;
+    list.hidden = !open; input.setAttribute('aria-expanded', String(open));
+  }
+  input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(refresh, 90); });
+  input.addEventListener('focus', refresh);
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  input.addEventListener('keydown', event => {
+    if (event.key === 'ArrowDown' && options.length) { event.preventDefault(); if (list.hidden) refresh(); highlight((active + 1) % options.length); }
+    else if (event.key === 'ArrowUp' && options.length) { event.preventDefault(); highlight(active <= 0 ? options.length - 1 : active - 1); }
+    else if (event.key === 'Escape' && !list.hidden) { event.preventDefault(); close(); }
+    else if (event.key === 'Enter' && active >= 0 && !list.hidden) { event.preventDefault(); choose(options[active]); }
+  });
+  form.onsubmit = event => { event.preventDefault(); close(); const q = input.value.trim(); if (q) { input.value = ''; ask(q); } };
   return { ask };
 }

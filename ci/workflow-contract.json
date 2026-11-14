@@ -355,7 +355,7 @@
         ]
       },
       {
-        "label": "Chiedi: interprete statico delle domande, risposte dal motore",
+        "label": "Chiedi: interprete statico delle domande, seguiti, suggeritore e fonti, risposte dal motore",
         "script": "scripts/test_chiedi_domande.py",
         "args": [
           "--dist",

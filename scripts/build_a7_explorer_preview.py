@@ -118,12 +118,17 @@ def build(dist, runtime, output, *, public=False, associations=False):
         graph = Path(tmp)/'graph'
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
         labels = public_labels(presentation(stage/'data/site-data.json'), runtime, stage)
-        metadata = 'export default '+encode(labels)+';\n'
-        (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
         # Interprete statico delle domande: solo etichette e letture disponibili.
-        from a7_ask_index import ask_index
+        from a7_ask_index import ask_index, indicator_pages
+        # «Fonte» rimanda alla pagina dell'indicatore dell'Osservatorio, che riporta
+        # origine, aggiornamento e metodo; il link originale resta nel CSV e nell'evidenza.
+        pages = indicator_pages(stage/'data/site-data.json', stage)
+        for key, page_path in pages.items():
+            if key in labels['metrics']:
+                labels['metrics'][key]['page'] = page_path
         views = {key: value['views'] for key, value in labels['metrics'].items()}
-        (graph/'ask-index.mjs').write_text('export default '+encode(ask_index(stage/'data/site-data.json', runtime, views))+';\n', encoding='utf-8')
+        (graph/'ask-index.mjs').write_text('export default '+encode(ask_index(stage/'data/site-data.json', runtime, views, pages))+';\n', encoding='utf-8')
+        (graph/'presentation.mjs').write_text('export default '+encode(labels)+';\n', encoding='utf-8')
         for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs', 'ask.mjs', 'ask.css']:
             shutil.copyfile(ASSETS/name, graph/name)
         if associations:
