@@ -17,7 +17,7 @@ export async function startAssociations(openRuntime,presentation){
  const panel=el('section');panel.id='association-explorer';panel.className='association-explorer';
  panel.setAttribute('aria-labelledby','association-title');
  const heading=el('h3','Metti in relazione due variabili');heading.id='association-title';
- panel.append(heading,el('p','Anteprima su un piano esplicito: i selettori mostrano soltanto le richieste preparate in questa versione. Non rappresentano tutti gli incroci del catalogo. Nessuna coppia viene scelta in base al coefficiente.'));
+ panel.append(heading,el('p','I selettori mostrano soltanto gli incroci rivisti in questa versione, non tutte le coppie del catalogo. Nessuna coppia viene scelta in base al coefficiente.'));
  const form=el('form'),fields=el('fieldset'),grid=el('div');fields.disabled=true;grid.className='explorer-fields';
  fields.append(el('legend','La relazione che vuoi esplorare'),grid);form.append(fields);
  const controls={};
@@ -75,7 +75,7 @@ export async function startAssociations(openRuntime,presentation){
      if(name==='right')fill(name,rows,s=>key(s.request.selectors[1]),s=>selectorLabel(s.request.selectors[1]));
      if(name==='axis')fill(name,rows,s=>String(s.request.axis??''),s=>axes[s.request.axis]||(s.request.axis?'Asse non riconosciuto':'Asse non dichiarato'));
      if(name==='method')fill(name,rows,s=>String(s.request.method??''),s=>methods[s.request.method]||(s.request.method?'Metodo non riconosciuto':'Metodo non dichiarato'));
-     if(name==='scope')fill(name,rows,s=>s.id,s=>(s.request.purpose?.slice(0,100)||'Motivo non dichiarato')+(s.request.allowPartial===true?' · copertura incompleta richiesta esplicitamente':' · nessun consenso implicito'));
+     if(name==='scope')fill(name,rows,s=>s.id,s=>(s.request.purpose?.slice(0,100)||'Motivo non dichiarato')+(s.request.allowPartial===true?' · copertura incompleta richiesta esplicitamente':''));
    }
    const step=selected();run.disabled=!step;reference.replaceChildren();
    if(step){

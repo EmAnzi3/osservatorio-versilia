@@ -71,10 +71,15 @@ di Quick/Full (`ci/workflow-contract.json`), verifica che:
   rispettino le attese A6 (coefficiente, n = 7, avvertenze);
 - il costo aggiunto resti entro 80 KB gzip di risposte e 12 KB di manifest.
 
-## Prossimo passo
+## Rollout pubblico (14 novembre 2026)
 
-Il rollout pubblico degli incroci resta separato e richiede approvazione:
-collegare questo piano al materializzatore pubblico, rimuovere il divieto
-soltanto per il piano rivisto, preview reale, browser 1440/390/320, Quick/Full
-locali e CI Quick→Full. Nuove coppie entrano solo dopo una revisione congiunta
-A6, mai scelte dal coefficiente.
+Su richiesta di Ema gli incroci sono pubblicati in «Chiedi», limitati al piano
+rivisto. `materialize_a7_public_explorer.py` costruisce il runtime pubblico con
+`ci/a7-association-perimeter.json` e integra l'interfaccia «Due variabili».
+`build_a7_explorer_preview.py` accetta `public=True, associations=True` solo se
+il piano del runtime coincide passo per passo con quello rivisto; qualunque
+altro piano resta rifiutato con `association_interface_preview_only`.
+`a7_explorer_release.validate_explorer` richiede nel sito pubblico
+`associationInterface = reviewed_plan_public`, l'interfaccia degli incroci e il
+piano nel manifest. Nuove coppie entrano solo dopo una revisione congiunta A6,
+mai scelte dal coefficiente.

@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: incroci pubblici del piano rivisto (14 novembre 2026)
+
+- «Chiedi» offre ora «Due variabili» accanto a «Una misura»: le sei associazioni riviste il 26 ottobre (`ci/a7-association-perimeter.json`), Spearman fra i sette Comuni, con coefficiente originale, coppie, grafico, tabella con periodi e fonti e limiti.
+- Il runtime pubblico include il piano (+≈40 KB gzip di risposte, +≈5 KB di manifest, entro i limiti del gate). Il sito pubblico accetta solo il piano rivisto identico; ogni altro piano resta rifiutato. `validate_explorer` rende obbligatori gli incroci nel sito pubblico.
+- Testi dell'interfaccia: tolto «Anteprima» e la dicitura tecnica «nessun consenso implicito»; la precisione del coefficiente resta quella originale (vincolo di test).
+- Dettagli in `docs/A7_ASSOCIATION_PERIMETER.md`, sezione «Rollout pubblico».
+
 ## Stato dati: data dell'ultimo controllo ferma dopo i merge di dati (14 novembre 2026)
 
 - Sintomo: la pagina Stato dati mostrava come ultimo controllo il 5 novembre, nonostante i run giornalieri di «Controllo frequente fonti» riusciti dal 6 al 13 novembre.
