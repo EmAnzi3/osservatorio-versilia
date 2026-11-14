@@ -23,10 +23,13 @@ from semantic_question_suite import QUESTIONS, check_expected
 
 PERIMETER = ROOT/'ci/a7-association-perimeter.json'
 # Costo misurato il 26/10/2026: 6 componenti, +39 KB gzip di blocchi e +4,5 KB di
-# manifest rispetto allo stesso runtime senza piano. Il margine evita falsi
-# allarmi da variazioni di compressione, non autorizza nuove componenti.
-MAX_ASSOCIATION_GZIP_BYTES = 80_000
-MAX_ASSOCIATION_RELEASE_BYTES = 12_000
+# manifest rispetto allo stesso runtime senza piano. Dal 14/11/2026 (perimetro
+# allargato su richiesta di Ema) il limite è per componente, con lo stesso margine:
+# 80 KB e 12 KB per 6 componenti. Nuove componenti entrano solo con una domanda
+# verificata e una revisione; il limite non le autorizza da solo.
+MAX_GZIP_BYTES_PER_COMPONENT = 80_000 // 6
+MAX_RELEASE_BYTES_PER_COMPONENT = 12_000 // 6
+MAX_COMPONENTS = 32
 ENGLISH = re.compile(r'\b(the|and|no|of|with|retained|interpretation|descriptive|example|technical)\b', re.I)
 
 
@@ -82,8 +85,10 @@ def verify(catalog):
     assert with_plan['statuses'].get('not_computable', 0) == without['statuses'].get('not_computable', 0)
     added_gzip = with_plan['gzipBytes'] - without['gzipBytes']
     added_release = with_plan['releaseBytes'] - without['releaseBytes']
-    assert 0 < added_gzip <= MAX_ASSOCIATION_GZIP_BYTES, added_gzip
-    assert 0 < added_release <= MAX_ASSOCIATION_RELEASE_BYTES, added_release
+    components = len(plan['steps'])
+    assert components <= MAX_COMPONENTS, components
+    assert 0 < added_gzip <= MAX_GZIP_BYTES_PER_COMPONENT * components, added_gzip
+    assert 0 < added_release <= MAX_RELEASE_BYTES_PER_COMPONENT * components, added_release
     return dict(components=len(plan['steps']), addedGzipBytes=added_gzip, addedReleaseBytes=added_release)
 
 

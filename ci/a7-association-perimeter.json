@@ -126,6 +126,259 @@
         "method": "spearman",
         "purpose": "Lettura descrittiva fra i sette Comuni dell’autocontenimento del lavoro e del saldo pendolare, con le componenti condivise dichiarate; nessuna inferenza causale"
       }
+    },
+    {
+      "id": "income_education_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "diplomaPlus",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito imponibile medio dei dichiaranti e quota di adulti diplomati, universi diversi; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "income_unemployment_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "unemploymentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito dei dichiaranti e disoccupazione dei residenti 25–64 anni; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "income_employment_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "employmentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito dei dichiaranti e occupazione dei residenti; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "education_unemployment_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "unemploymentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: istruzione degli adulti e disoccupazione dei residenti; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "income_waste_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wastePerResident",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: i rifiuti per residente includono anche turisti e attività; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "recycling_cost_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "recycling",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wasteServiceCost",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: quota di differenziata e costo del servizio per residente; nessuna valutazione di efficienza o causa"
+      }
+    },
+    {
+      "id": "waste_cost_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "wastePerResident",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wasteServiceCost",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: quantità e costo condividono il denominatore dei residenti; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "population_ageing_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2026"
+            ]
+          },
+          {
+            "metric": "oldAgeIndex",
+            "periods": [
+              "2026"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2026: dimensione demografica e struttura per età; nessuna interpretazione causale"
+      }
+    },
+    {
+      "id": "tourism_current_spending_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismIntensity",
+            "periods": [
+              "2025"
+            ]
+          },
+          {
+            "metric": "currentExpenditureCommittedPerResident",
+            "periods": [
+              "2025"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2025: pressione turistica e spesa corrente impegnata per residente; nessuna valutazione di efficienza o causa"
+      }
+    },
+    {
+      "id": "tourism_security_spending_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismIntensity",
+            "periods": [
+              "2025"
+            ]
+          },
+          {
+            "metric": "securityMissionExpenditurePerResident",
+            "periods": [
+              "2025"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2025: pressione turistica e spesa per polizia locale per residente; nessuna valutazione di efficienza o causa"
+      }
+    },
+    {
+      "id": "vacant_housing_association",
+      "request": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "vacantHomes",
+            "periods": [
+              "2023"
+            ]
+          },
+          {
+            "metric": "housingStockPer1000",
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2023: le seconde case pesano su entrambe le misure; nessuna interpretazione causale"
+      }
     }
   ]
 }

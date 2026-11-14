@@ -16,6 +16,12 @@ from a7_runtime_package import package_runtime, require
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT/'experiments/a7-guided-explorer'
+# Unico piano di incroci ammesso nel sito pubblico: quello rivisto dal proprietario.
+REVIEWED_PLAN = ROOT/'ci/a7-association-perimeter.json'
+
+
+def reviewed_association_plan():
+    return json.loads(REVIEWED_PLAN.read_text(encoding='utf-8'))
 
 
 class PreserveAttributeOrder(HTMLFormatter):
@@ -72,10 +78,12 @@ def public_labels(meta, runtime, dist):
 
 def build(dist, runtime, output, *, public=False, associations=False):
     dist, runtime, output = (Path(p).absolute() for p in (dist, runtime, output))
-    require(not (public and associations), 'association_interface_preview_only')
     if associations:
         index = json.loads((runtime/'release.json').read_text()).get('associationPlan')
         require(isinstance(index, dict), 'explicit_association_plan_required')
+        # Nel sito pubblico solo il piano rivisto, identico passo per passo:
+        # nessuna coppia aggiunta, tolta o riordinata senza nuova revisione.
+        require(not public or index['plan'] == reviewed_association_plan(), 'association_interface_preview_only')
         require(all(isinstance(s['request'].get('selectors'), list)
                     and len(s['request']['selectors']) == 2
                     and all(isinstance(selector, dict) and isinstance(selector.get('metric'), str)
@@ -109,9 +117,14 @@ def build(dist, runtime, output, *, public=False, associations=False):
             soup.head.append(soup.new_tag('meta', attrs={'name':'robots', 'content':'noindex,nofollow'}))
         graph = Path(tmp)/'graph'
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
-        metadata = 'export default '+encode(public_labels(presentation(stage/'data/site-data.json'), runtime, stage))+';\n'
+        labels = public_labels(presentation(stage/'data/site-data.json'), runtime, stage)
+        metadata = 'export default '+encode(labels)+';\n'
         (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
-        for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs']:
+        # Interprete statico delle domande: solo etichette e letture disponibili.
+        from a7_ask_index import ask_index
+        views = {key: value['views'] for key, value in labels['metrics'].items()}
+        (graph/'ask-index.mjs').write_text('export default '+encode(ask_index(stage/'data/site-data.json', runtime, views))+';\n', encoding='utf-8')
+        for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs', 'ask.mjs', 'ask.css']:
             shutil.copyfile(ASSETS/name, graph/name)
         if associations:
             for name in ['associations.mjs', 'associations.css']:
@@ -121,6 +134,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
             "import('./explorer.mjs'),import('./presentation.mjs'),import('./package/"+descriptor['entrypoint']+"')]);"
             "await startExplorer(openPackagedRuntime,presentation);"+
             ("const {startAssociations}=await import('./associations.mjs');await startAssociations(openPackagedRuntime,presentation);" if associations else '')+
+            "try{const [{startAsk},{default:askIndex}]=await Promise.all([import('./ask.mjs'),import('./ask-index.mjs')]);startAsk(askIndex,presentation);}catch{}"+
             "}catch{status.textContent='Impossibile caricare e verificare questa versione. Riprova la stessa versione.';"
             "document.getElementById('explorer-retry').hidden=false;document.getElementById('explorer-retry').onclick=()=>location.reload();}}\nboot();\n")
         (graph/'entry.mjs').write_text(entry, encoding='utf-8')
@@ -139,6 +153,8 @@ def build(dist, runtime, output, *, public=False, associations=False):
             # Hero e rimando ai dossier sono scritti da build_a7_public_page.
             panel.select_one('.explorer-eyebrow').string = 'ESPLORAZIONE DEI DATI'
             panel.select_one('.explorer-scope').string = 'Sono consultabili letture comunali, confronti, ordini numerici, serie, tendenze native, variazioni fra estremi, valori fuori scala, riferimenti Toscana/Italia e rapporti aggregati della Versilia dove ammessi. Un ordine numerico o un valore fuori scala non valutano la qualità amministrativa. Un confronto fra Comuni non è un aggregato; il rapporto della Versilia è una scelta separata. Altre operazioni possono non essere ancora consultabili qui.'
+            if associations:
+                panel.select_one('.explorer-scope').string += ' Gli incroci fra due variabili sono soltanto quelli rivisti: con sette Comuni una correlazione descrive un ordine comune, non dimostra una causa.'
         panel.section['data-explorer-graph'] = relative
         # Subito dopo il percorso di navigazione, prima del rimando ai dossier.
         crumbs = soup.select_one('#a7-guided > nav')
@@ -147,6 +163,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
         else:
             soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
+        soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'ask.css'))
         if associations:
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'associations.css'))
         soup.body.append(soup.new_tag('script', type='module', src=relative+'entry.mjs'))
@@ -156,7 +173,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
                        scope=descriptor['scope'], metrics=descriptor['metrics'], views=descriptor['views'],
                        graph=relative, files=hashes)
         if associations:
-            receipt['associationInterface'] = 'explicit_plan_preview_only'
+            receipt['associationInterface'] = 'reviewed_plan_public' if public else 'explicit_plan_preview_only'
         body = (encode(receipt)+'\n').encode()
         (stage/'explorer-preview.json').write_bytes(body)
         soup.select_one('#a7-explorer')['data-explorer-integrity'] = hashlib.sha256(body).hexdigest()

@@ -3,7 +3,8 @@ const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.
 const copy=x=>JSON.parse(JSON.stringify(x));
 const key=x=>JSON.stringify(x);
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(x);
-const coefficient=x=>(Object.is(x,-0)?'-0':String(x)).replace('.',',');
+// Due decimali in pagina (decisione del proprietario); il valore completo resta nell'evidenza.
+const coefficient=x=>new Intl.NumberFormat('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}).format(x).replace(/^-0,00$/,'0,00');
 const tick=x=>'≈ '+new Intl.NumberFormat('it-IT',{maximumSignificantDigits:3,notation:x!==0&&Math.abs(x)<.0001?'scientific':'compact'}).format(x);
 const fold=(title,content)=>{const n=el('details');n.append(el('summary',title),content);return n;};
 const option=(value,text)=>{const n=el('option',text);n.value=value;return n;};
@@ -17,7 +18,7 @@ export async function startAssociations(openRuntime,presentation){
  const panel=el('section');panel.id='association-explorer';panel.className='association-explorer';
  panel.setAttribute('aria-labelledby','association-title');
  const heading=el('h3','Metti in relazione due variabili');heading.id='association-title';
- panel.append(heading,el('p','Anteprima su un piano esplicito: i selettori mostrano soltanto le richieste preparate in questa versione. Non rappresentano tutti gli incroci del catalogo. Nessuna coppia viene scelta in base al coefficiente.'));
+ panel.append(heading,el('p','I selettori mostrano soltanto gli incroci rivisti in questa versione, non tutte le coppie del catalogo. Nessuna coppia viene scelta in base al coefficiente.'));
  const form=el('form'),fields=el('fieldset'),grid=el('div');fields.disabled=true;grid.className='explorer-fields';
  fields.append(el('legend','La relazione che vuoi esplorare'),grid);form.append(fields);
  const controls={};
@@ -47,7 +48,7 @@ export async function startAssociations(openRuntime,presentation){
  let runtime,root,steps=[],generation=0,pending=null;
  const revoke=()=>{generation++;pending=null;consent.hidden=true;out.hidden=true;out.replaceChildren();};
  const mode=pair=>{revoke();measure.hidden=pair;panel.hidden=!pair;one.setAttribute('aria-pressed',String(!pair));two.setAttribute('aria-pressed',String(pair));status.textContent='Scegli la relazione e mostra i dati per consultarla.';};
- one.onclick=()=>mode(false);two.onclick=()=>mode(true);mode(true);
+ one.onclick=()=>mode(false);two.onclick=()=>mode(true);mode(false); // si parte da «Una misura»
  const fail=()=>{revoke();fields.disabled=true;retry.hidden=false;status.textContent='Non possiamo verificare questa selezione. Nessun risultato viene mostrato. Riprova la stessa versione.';};
  const safe=fn=>async(...args)=>{try{await fn(...args);}catch{fail();}};
  const town=code=>root.towns.find(t=>t.code===code)?.name||String(code);
@@ -75,7 +76,7 @@ export async function startAssociations(openRuntime,presentation){
      if(name==='right')fill(name,rows,s=>key(s.request.selectors[1]),s=>selectorLabel(s.request.selectors[1]));
      if(name==='axis')fill(name,rows,s=>String(s.request.axis??''),s=>axes[s.request.axis]||(s.request.axis?'Asse non riconosciuto':'Asse non dichiarato'));
      if(name==='method')fill(name,rows,s=>String(s.request.method??''),s=>methods[s.request.method]||(s.request.method?'Metodo non riconosciuto':'Metodo non dichiarato'));
-     if(name==='scope')fill(name,rows,s=>s.id,s=>(s.request.purpose?.slice(0,100)||'Motivo non dichiarato')+(s.request.allowPartial===true?' · copertura incompleta richiesta esplicitamente':' · nessun consenso implicito'));
+     if(name==='scope')fill(name,rows,s=>s.id,s=>(s.request.purpose?.slice(0,100)||'Motivo non dichiarato')+(s.request.allowPartial===true?' · copertura incompleta richiesta esplicitamente':''));
    }
    const step=selected();run.disabled=!step;reference.replaceChildren();
    if(step){
@@ -120,15 +121,15 @@ export async function startAssociations(openRuntime,presentation){
    if(response.status==='computed'){
      const r=response.result;if(!r||!Number.isFinite(r.coefficient)||!['pearson','spearman'].includes(r.method)||!axes[r.axis])throw Error('incompatible_native_association');
      const cards=el('dl');cards.className='explorer-benchmark-values';
-     for(const [label,value,name] of [['Coefficiente originale',coefficient(r.coefficient),'coefficient'],['Coppie utilizzate',String(r.n),'n'],['Metodo',methods[r.method],'method']]){
+     for(const [label,value,name] of [['Coefficiente',coefficient(r.coefficient),'coefficient'],['Coppie utilizzate',String(r.n),'n'],['Metodo',methods[r.method],'method']]){
        const card=el('div'),valueNode=el('dd',value);valueNode.dataset.associationValue=name;card.append(el('dt',label),valueNode);cards.append(card);
      }
      out.append(cards,el('p','Nessun test di significatività o intervallo di confidenza fornito dal motore. '+(r.axis==='municipalities'?'I sette Comuni non sono automaticamente un campione indipendente.':'')),graph(r));
      const table=el('table');table.append(el('caption','Coppie originali · periodi, unità e fonti distinti per variabile'));
      const head=el('thead'),tr=el('tr');for(const label of ['Punto','Territorio o periodo','Prima variabile','Seconda variabile']){const th=el('th',label);th.scope='col';tr.append(th);}head.append(tr);table.append(head);
      const body=el('tbody');let pageIndex=0;
-     const rows=()=>{body.replaceChildren();r.pairs.slice(pageIndex*20,(pageIndex+1)*20).forEach((p,i)=>{const row=el('tr');row.dataset.pairKey=p.key;row.append(el('td',String(pageIndex*20+i+1)),el('td',r.axis==='municipalities'?town(p.key):p.key));for(const o of [p.x,p.y]){const cell=el('td');cell.append(el('p',number(o.value)+' '+unit(o)),el('p','Periodo: '+String(o.period)));sources(o,cell);row.append(cell);}body.append(row);});};rows();table.append(body);
-     const wrap=el('div');wrap.className='explorer-table-wrap';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Coppie originali, tabella scorribile');wrap.append(table);out.append(el('p','Puoi scorrere la tabella in orizzontale per leggere periodi e fonti.'),wrap);
+     const rows=()=>{body.replaceChildren();r.pairs.slice(pageIndex*20,(pageIndex+1)*20).forEach((p,i)=>{const row=el('tr');row.dataset.pairKey=p.key;const labels=['Punto','Territorio o periodo','Prima variabile','Seconda variabile'];const labelled=(cell,i)=>{cell.dataset.label=labels[i];return cell;};row.append(labelled(el('td',String(pageIndex*20+i+1)),0),labelled(el('td',r.axis==='municipalities'?town(p.key):p.key),1));for(const [j,o] of [p.x,p.y].entries()){const cell=labelled(el('td'),2+j);cell.append(el('p',number(o.value)+' '+unit(o)),el('p','Periodo: '+String(o.period)));sources(o,cell);row.append(cell);}body.append(row);});};rows();table.append(body);
+     const wrap=el('div');wrap.className='explorer-table-wrap association-pairs';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Coppie originali');wrap.append(table);out.append(wrap);
      if(r.pairs.length>20){const nav=el('nav');nav.setAttribute('aria-label','Pagine delle coppie originali');const previous=el('button','Precedenti'),next=el('button','Successive'),label=el('span');previous.type=next.type='button';previous.id='association-previous';next.id='association-next';const update=()=>{previous.disabled=pageIndex===0;next.disabled=(pageIndex+1)*20>=r.pairs.length;label.textContent=`Pagina ${pageIndex+1} di ${Math.ceil(r.pairs.length/20)} `;};previous.onclick=()=>{pageIndex--;rows();update();};next.onclick=()=>{pageIndex++;rows();update();};update();nav.append(previous,label,next);out.append(nav);}
    }else{
      out.append(el('p','Le eventuali osservazioni conservate nel rifiuto non costituiscono un coefficiente valido. Nessun grafico o numero sostitutivo viene calcolato.'));
@@ -161,5 +162,10 @@ export async function startAssociations(openRuntime,presentation){
    if(steps.some(s=>!Array.isArray(s.request.selectors)||s.request.selectors.length!==2))throw Error('association_controls_require_two_selectors');
    fill('left',steps,s=>key(s.request.selectors[0]),s=>selectorLabel(s.request.selectors[0]));update('left');fields.disabled=false;
  }
+ // «Fai una domanda» chiede un incrocio rivisto per identificativo.
+ document.addEventListener('chiedi-association',event=>{const step=steps.find(s=>s.id===event.detail?.id);if(!step||fields.disabled)return;mode(true);
+   const r=step.request;controls.left.value=key(r.selectors[0]);update('left');controls.right.value=key(r.selectors[1]);update('right');
+   controls.axis.value=String(r.axis??'');update('axis');controls.method.value=String(r.method??'');update('method');controls.scope.value=step.id;update('scope');
+   if(!run.disabled){form.requestSubmit();panel.scrollIntoView({block:'start'});}});
  retry.onclick=safe(initialize);await safe(initialize)();
 }
